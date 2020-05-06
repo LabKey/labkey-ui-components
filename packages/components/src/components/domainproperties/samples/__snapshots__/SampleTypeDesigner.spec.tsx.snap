@@ -2701,6 +2701,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -3339,6 +3340,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -3510,6 +3512,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -4083,6 +4086,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                     appPropertiesOnly={true}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -5040,6 +5044,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,

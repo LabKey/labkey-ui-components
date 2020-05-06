@@ -877,6 +877,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -2092,6 +2093,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -4637,6 +4639,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -5766,6 +5769,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
                 "hideRequired": false,
                 "hideTextOptions": false,

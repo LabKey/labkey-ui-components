@@ -4663,6 +4663,7 @@ exports[`DataClassDesigner initModel 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -5251,6 +5252,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -5439,6 +5441,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -6003,6 +6006,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -6982,6 +6986,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -7620,6 +7625,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -7797,6 +7803,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -8344,6 +8351,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -9286,6 +9294,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -9913,6 +9922,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -10090,6 +10100,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -10619,6 +10630,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -11523,6 +11535,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,

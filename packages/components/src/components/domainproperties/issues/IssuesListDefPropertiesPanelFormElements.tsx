@@ -271,7 +271,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
                         : <SelectInput
                             name={'assignedToUser'}
                             options={this.getFilteredCoreUsers(model.assignedToGroup, coreUsers)}
-                            placeholder="No default"
+                            placeholder="Unassigned"
                             inputClass="col-xs-12"
                             valueKey="userId"
                             labelKey="userName"

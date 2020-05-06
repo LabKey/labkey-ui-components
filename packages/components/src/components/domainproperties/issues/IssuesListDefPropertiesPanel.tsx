@@ -71,39 +71,28 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
         this.onChange(id, value);
     };
 
-    onChange = (identifier, value): void => {
+    onChange = (identifier: string, value: any, clearingField?: string): void => {
         const { model } = this.props;
         const newModel = produce(model, (draft: IssuesListDefModel) =>{
             draft[identifier] = value;
-        });
-
-        this.updateValidStatus(newModel);
-    };
-
-    //Change of Group selection clears default User val
-    onChangeAndClear = (identifier, value, clearingField): void => {
-        const { model } = this.props;
-        const newModel = produce(model, (draft: IssuesListDefModel) =>{
-            draft[identifier] = value;
-            draft[clearingField] = null;
+            if (clearingField) {
+                draft[clearingField] = undefined;
+            }
         });
         this.updateValidStatus(newModel);
     };
 
-    onSelectChange = (selection, name) => {
-        if (selection instanceof Principal) {
-            this.onChangeAndClear(name, selection.userId, 'assignedToUser');
-        }
-        else if (selection instanceof UserGroup) {
-            this.onChange(name, selection.userId);
+    onSelectChange = (name, value) => {
+        if (name === 'assignedToGroup') {
+            this.onChange(name, value, 'assignedToUser');
         }
         else {
-            this.onChange(name, selection);
+            this.onChange(name, value);
         }
     };
 
     render() {
-        const { model, successBsStyle } = this.props;
+        const { model } = this.props;
         const { isValid } = this.state;
         return (
             <BasePropertiesPanel

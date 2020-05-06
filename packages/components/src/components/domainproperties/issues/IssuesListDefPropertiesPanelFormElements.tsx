@@ -21,12 +21,12 @@ import produce from "immer";
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
     onInputChange?: (any) => void;
-    onSelect?: (selected: string, name?: string) => void;
+    onSelect?: (name: string, value: any) => any;
 }
 
 interface AssignmentOptionsProps {
     model: IssuesListDefModel;
-    onSelect?: (selected: Principal, name?: string) => any;
+    onSelect: (name: string, value: any) => any;
 }
 
 interface AssignmentOptionsState {
@@ -37,8 +37,8 @@ interface AssignmentOptionsState {
 //For AssignedToGroupInput & DefaultUserAssignmentInput components
 interface AssignmentOptionsInputProps {
     model: IssuesListDefModel;
+    onSelect: (name: string, value: any) => any;
     coreGroups?: List<Principal>;
-    onSelect?: (selected: any, name?: string) => any;
     coreUsers?: List<UserGroup>;
 }
 
@@ -163,7 +163,7 @@ export class CommentSortDirectionDropDown extends React.PureComponent<IssuesList
 
     onChange = (name: string, formValue: any, selected: any, ref: any): any => {
         if (selected && this.props.onSelect) {
-            this.props.onSelect(selected.id, name);
+            this.props.onSelect(name, selected.id);
         }
     };
 
@@ -207,36 +207,34 @@ export class AssignedToGroupInput extends React.PureComponent<AssignmentOptionsI
     }
 
     onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
-        if (selected && this.props.onSelect) {
-            this.props.onSelect(selected, name);
-        }
+        this.props.onSelect(name, selected ? selected.userId : undefined);
     };
 
     render() {
         const { model, coreGroups } = this.props;
-        if (!coreGroups) {
-            return <LoadingSpinner/>
-        }
+
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel label="Populate ‘Assigned To’ Field from" helpTipBody={this.getHelpTip} required={false} />
                 </Col>
                 <Col xs={9} lg={8}>
-                    <SelectInput
-                        name={'assignedToGroup'}
-                        options={coreGroups.toArray()}
-                        placeholder="All Project Users"
-                        inputClass="col-xs-12"
-                        valueKey="userId"
-                        labelKey="displayName"
-                        onChange={this.onChange}
-                        value={model.assignedToGroup ? model.assignedToGroup : undefined}
-                        formsy={false}
-                        showLabel={false}
-                        multiple={false}
-                        required={false}
-                    />
+                    {!coreGroups ? <LoadingSpinner/>
+                        : <SelectInput
+                            name={'assignedToGroup'}
+                            options={coreGroups.toArray()}
+                            placeholder="All Project Users"
+                            inputClass="col-xs-12"
+                            valueKey="userId"
+                            labelKey="displayName"
+                            onChange={this.onChange}
+                            value={model.assignedToGroup ? model.assignedToGroup : undefined}
+                            formsy={false}
+                            showLabel={false}
+                            multiple={false}
+                            required={false}
+                        />
+                    }
                 </Col>
             </Row>
         );
@@ -250,9 +248,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
     }
 
     onChange = (name: string, formValue: any, selected: UserGroup, ref: any): any => {
-        if (selected && this.props.onSelect) {
-            this.props.onSelect(selected, name);
-        }
+        this.props.onSelect(name, selected ? selected.userId : undefined);
     };
 
     getFilteredCoreUsers = (groupId: any, coreUsers: List<UserGroup>) => {
@@ -264,28 +260,29 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
 
     render() {
         const { model, coreUsers } = this.props;
-        if (!coreUsers) {
-            return <LoadingSpinner/>
-        }
+
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel label="Default User Assignment" helpTipBody={this.getHelpTip} required={false} />
                 </Col>
                 <Col xs={9} lg={8}>
-                    <SelectInput
-                        name={'assignedToUser'}
-                        options={this.getFilteredCoreUsers(model.assignedToGroup, coreUsers)}
-                        placeholder="No default"
-                        inputClass="col-xs-12"
-                        valueKey="userId"
-                        labelKey="userName"
-                        onChange={this.onChange}
-                        formsy={false}
-                        showLabel={false}
-                        multiple={false}
-                        required={false}
-                    />
+                    {!coreUsers ? <LoadingSpinner/>
+                        : <SelectInput
+                            name={'assignedToUser'}
+                            options={this.getFilteredCoreUsers(model.assignedToGroup, coreUsers)}
+                            placeholder="No default"
+                            inputClass="col-xs-12"
+                            valueKey="userId"
+                            labelKey="userName"
+                            onChange={this.onChange}
+                            value={model.assignedToUser ? model.assignedToUser : undefined}
+                            formsy={false}
+                            showLabel={false}
+                            multiple={false}
+                            required={false}
+                        />
+                    }
                 </Col>
             </Row>
         );

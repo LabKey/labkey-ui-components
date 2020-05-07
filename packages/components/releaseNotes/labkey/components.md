@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version 0.56.3-fb-FixDomainFormDisplayOptions.2
-*Released*: TBD May 2020
+## version 0.56.3
+*Released*: 7 May 2020
 * Changes for DomainFormDisplayOptions from show to hide for default cases
 * Issue 40032: PHI Levels not disabled in new query metadata editor
 

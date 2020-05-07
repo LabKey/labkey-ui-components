@@ -4,6 +4,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
 <ConditionalFormattingAndValidation
   domainFormDisplayOptions={
     Object {
+      "hideImportData": false,
       "isDragDisabled": false,
       "phiLevelDisabled": false,
       "showAddFieldsButton": true,
@@ -783,6 +784,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
 <ConditionalFormattingAndValidation
   domainFormDisplayOptions={
     Object {
+      "hideImportData": false,
       "isDragDisabled": false,
       "phiLevelDisabled": false,
       "showAddFieldsButton": true,

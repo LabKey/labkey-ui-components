@@ -2701,6 +2701,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -3339,6 +3340,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -3510,6 +3512,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -4083,6 +4086,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                     appPropertiesOnly={true}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -5040,6 +5044,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,

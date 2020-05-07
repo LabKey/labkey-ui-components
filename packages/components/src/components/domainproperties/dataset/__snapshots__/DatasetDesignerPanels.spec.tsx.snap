@@ -14909,6 +14909,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
         }
         domainFormDisplayOptions={
           Object {
+            "hideImportData": false,
             "isDragDisabled": false,
             "showAddFieldsButton": true,
           }
@@ -16073,6 +16074,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "showAddFieldsButton": true,
               }
@@ -16647,6 +16649,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -16820,6 +16823,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -17278,6 +17282,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -18216,6 +18221,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -18673,6 +18679,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -18857,6 +18864,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -19392,6 +19400,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -20061,6 +20070,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -20529,6 +20539,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -20713,6 +20724,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -21248,6 +21260,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -21917,6 +21930,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -22385,6 +22399,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -22569,6 +22584,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -23106,6 +23122,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -24289,6 +24306,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -24757,6 +24775,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -24941,6 +24960,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -25478,6 +25498,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -26661,6 +26682,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -27129,6 +27151,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -27313,6 +27336,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -27848,6 +27872,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -28517,6 +28542,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -28985,6 +29011,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -29158,6 +29185,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -29658,6 +29686,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -30305,6 +30334,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -30762,6 +30792,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -30946,6 +30977,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -31483,6 +31515,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -32666,6 +32699,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -33134,6 +33168,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -33318,6 +33353,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -33853,6 +33889,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -34522,6 +34559,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -34990,6 +35028,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -35174,6 +35213,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -35709,6 +35749,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -36378,6 +36419,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -36846,6 +36888,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -37030,6 +37073,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -37565,6 +37609,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -38234,6 +38279,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -38702,6 +38748,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -38875,6 +38922,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -39375,6 +39423,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -40275,6 +40324,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }
@@ -40732,6 +40782,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                       }
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "showAddFieldsButton": true,
                                                         }
@@ -40905,6 +40956,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                   }
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -41405,6 +41457,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "showAddFieldsButton": true,
                                                                       }
@@ -42286,6 +42339,7 @@ exports[`Dataset Designer Edit existing dataset 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "showAddFieldsButton": true,
                                                                                 }

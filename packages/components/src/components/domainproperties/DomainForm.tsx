@@ -874,6 +874,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             helpNoun,
             setFileImportData,
             importDataChildRenderer,
+            domainFormDisplayOptions,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -910,7 +911,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}
 
-                        {filePreviewData && (
+                        {filePreviewData && !domainFormDisplayOptions.hideImportData && (
                             <ImportDataFilePreview
                                 noun={helpNoun}
                                 filePreviewData={filePreviewData}
@@ -920,6 +921,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 {importDataChildRenderer && importDataChildRenderer()}
                             </ImportDataFilePreview>
                         )}
+                        {filePreviewData &&
+                            domainFormDisplayOptions.hideImportData &&
+                            importDataChildRenderer &&
+                            importDataChildRenderer()}
                     </Panel.Body>
                 </Panel>
                 {domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR && (

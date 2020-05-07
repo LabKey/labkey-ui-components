@@ -1802,6 +1802,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -2511,6 +2512,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -3220,6 +3222,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -8412,6 +8415,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -9944,6 +9948,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -10952,6 +10957,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -11124,6 +11130,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -11697,6 +11704,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     appPropertiesOnly={true}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -12654,6 +12662,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,
@@ -13119,6 +13128,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -13291,6 +13301,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -13864,6 +13875,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     appPropertiesOnly={true}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -14802,6 +14814,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,
@@ -15267,6 +15280,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -15439,6 +15453,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -16012,6 +16027,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     appPropertiesOnly={true}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -16915,6 +16931,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,
@@ -19450,6 +19467,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -20158,6 +20176,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -20866,6 +20885,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -23656,6 +23676,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -24364,6 +24385,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -31019,6 +31041,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -32027,6 +32050,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -32199,6 +32223,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -32802,6 +32827,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -33759,6 +33785,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,
@@ -34390,6 +34417,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -34562,6 +34590,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -35165,6 +35194,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -36103,6 +36133,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,
@@ -36734,6 +36765,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -36906,6 +36938,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -37509,6 +37542,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -38412,6 +38446,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,
@@ -44508,6 +44543,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -46039,6 +46075,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -47047,6 +47084,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -47219,6 +47257,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -47822,6 +47861,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -48779,6 +48819,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,
@@ -49410,6 +49451,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -49582,6 +49624,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -50185,6 +50228,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -51123,6 +51167,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,
@@ -51754,6 +51799,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "hideImportData": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
                                                           "showAddFieldsButton": true,
@@ -51926,6 +51972,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "hideImportData": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
                                                                       "showAddFieldsButton": true,
@@ -52529,6 +52576,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     appPropertiesOnly={false}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "hideImportData": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
                                                                         "showAddFieldsButton": true,
@@ -53432,6 +53480,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "hideImportData": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
                                                                                   "showAddFieldsButton": true,

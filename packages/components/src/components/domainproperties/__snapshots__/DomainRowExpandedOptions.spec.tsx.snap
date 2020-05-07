@@ -877,6 +877,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -2092,6 +2093,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -4645,6 +4647,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,
@@ -5774,6 +5777,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
           <ConditionalFormattingAndValidation
             domainFormDisplayOptions={
               Object {
+                "hideImportData": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
                 "showAddFieldsButton": true,

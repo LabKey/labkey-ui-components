@@ -265,6 +265,9 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const { setSubmitting } = this.props;
         const { model, fileImportData } = this.state;
 
+        let keyPropIndex;
+        let visitPropIndex;
+
         if (this._participantId && this._sequenceNum) {
             // filter out these fields
             const updatedDomain = model.domain.merge({
@@ -274,48 +277,69 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     .toList(),
             }) as DomainDesign;
 
+            updatedDomain.fields.map((field, index) => {
+                if (model.keyPropertyName && field.name === model.keyPropertyName) {
+                    keyPropIndex = index;
+                }
+                if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
+                    visitPropIndex = index;
+                }
+            });
+
             const updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
                 draft.domain = updatedDomain;
             });
 
-            saveDomain(updatedModel.domain, updatedModel.getDomainKind(), updatedModel.getOptions(), updatedModel.name)
-                .then(response => {
-                    this.setState(
-                        produce((draft: Draft<State>) => {
-                            const updatedModel = draft.model;
-                            updatedModel.exception = undefined;
-                            updatedModel.domain = response;
-                        }),
-                        () => {
-                            // If we're importing Dataset file data, import file contents
-                            if (fileImportData) {
-                                this.handleFileImport();
-                            } else {
-                                const { model } = this.state;
-                                setSubmitting(false, () => {
-                                    this.props.onComplete(model);
-                                });
-                            }
-                        }
-                    );
-                })
-                .catch(response => {
-                    const exception = resolveErrorMessage(response);
-
-                    setSubmitting(false, () => {
-                        this.setState(
-                            produce((draft: Draft<State>) => {
-                                const updatedModel = draft.model;
-                                if (exception) {
-                                    updatedModel.exception = exception;
-                                } else {
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.keyPropertyIndex = keyPropIndex;
+                    draft.visitDatePropertyIndex = visitPropIndex;
+                }),
+                () =>
+                    saveDomain(
+                        updatedModel.domain,
+                        updatedModel.getDomainKind(),
+                        updatedModel.getOptions(),
+                        updatedModel.name
+                    )
+                        .then(response => {
+                            this.setState(
+                                produce((draft: Draft<State>) => {
+                                    const updatedModel = draft.model;
                                     updatedModel.exception = undefined;
                                     updatedModel.domain = response;
+                                }),
+                                () => {
+                                    // If we're importing Dataset file data, import file contents
+                                    if (fileImportData) {
+                                        this.handleFileImport();
+                                    } else {
+                                        const { model } = this.state;
+                                        setSubmitting(false, () => {
+                                            this.props.onComplete(model);
+                                        });
+                                    }
                                 }
-                            })
-                        );
-                    });
-                });
+                            );
+                        })
+                        .catch(response => {
+                            const exception = resolveErrorMessage(response);
+
+                            setSubmitting(false, () => {
+                                this.setState(
+                                    produce((draft: Draft<State>) => {
+                                        const updatedModel = draft.model;
+                                        if (exception) {
+                                            updatedModel.exception = exception;
+                                        } else {
+                                            updatedModel.exception = undefined;
+                                            updatedModel.domain = response;
+                                        }
+                                    })
+                                );
+                            });
+                        })
+            );
         } else {
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -409,6 +433,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     domainFormDisplayOptions={{
                         isDragDisabled: model.isFromAssay(),
                         showAddFieldsButton: !model.isFromAssay(),
+                        hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                     }}
                 />
                 <Progress

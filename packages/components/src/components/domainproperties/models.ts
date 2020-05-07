@@ -305,6 +305,7 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     showTextOptions: true,
     phiLevelDisabled: false,
     showAddFieldsButton: true,
+    hideImportData: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -1596,6 +1597,7 @@ export interface IDomainFormDisplayOptions {
     showTextOptions?: boolean;
     phiLevelDisabled?: boolean;
     showAddFieldsButton?: boolean;
+    hideImportData?: boolean;
 }
 
 /**

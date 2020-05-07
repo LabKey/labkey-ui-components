@@ -215,6 +215,7 @@ exports[`DomainRow Sample Field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "hideImportData": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
                     "showAddFieldsButton": true,
@@ -391,6 +392,7 @@ exports[`DomainRow Sample Field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "hideImportData": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
                                 "showAddFieldsButton": true,
@@ -937,6 +939,7 @@ exports[`DomainRow Sample Field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "hideImportData": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
                                   "showAddFieldsButton": true,
@@ -1833,6 +1836,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "hideImportData": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
                                             "showAddFieldsButton": true,
@@ -2385,6 +2389,7 @@ exports[`DomainRow client side warning on field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "hideImportData": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
                     "showAddFieldsButton": true,
@@ -2573,6 +2578,7 @@ exports[`DomainRow client side warning on field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "hideImportData": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
                                 "showAddFieldsButton": true,
@@ -3257,6 +3263,7 @@ exports[`DomainRow client side warning on field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "hideImportData": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
                                   "showAddFieldsButton": true,
@@ -3907,6 +3914,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "hideImportData": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
                                             "showAddFieldsButton": true,
@@ -4459,6 +4467,7 @@ exports[`DomainRow date time field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "hideImportData": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
                     "showAddFieldsButton": true,
@@ -4635,6 +4644,7 @@ exports[`DomainRow date time field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "hideImportData": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
                                 "showAddFieldsButton": true,
@@ -5161,6 +5171,7 @@ exports[`DomainRow date time field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "hideImportData": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
                                   "showAddFieldsButton": true,
@@ -6063,6 +6074,7 @@ exports[`DomainRow date time field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "hideImportData": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
                                             "showAddFieldsButton": true,
@@ -6781,6 +6793,7 @@ exports[`DomainRow decimal field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "hideImportData": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
                     "showAddFieldsButton": true,
@@ -6957,6 +6970,7 @@ exports[`DomainRow decimal field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "hideImportData": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
                                 "showAddFieldsButton": true,
@@ -7483,6 +7497,7 @@ exports[`DomainRow decimal field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "hideImportData": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
                                   "showAddFieldsButton": true,
@@ -8420,6 +8435,7 @@ exports[`DomainRow decimal field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "hideImportData": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
                                             "showAddFieldsButton": true,
@@ -9138,6 +9154,7 @@ exports[`DomainRow participant id field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "hideImportData": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
                     "showAddFieldsButton": true,
@@ -9314,6 +9331,7 @@ exports[`DomainRow participant id field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "hideImportData": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
                                 "showAddFieldsButton": true,
@@ -9864,6 +9882,7 @@ exports[`DomainRow participant id field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "hideImportData": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
                                   "showAddFieldsButton": true,
@@ -10514,6 +10533,7 @@ exports[`DomainRow participant id field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "hideImportData": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
                                             "showAddFieldsButton": true,
@@ -11232,6 +11252,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "hideImportData": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
                     "showAddFieldsButton": true,
@@ -11420,6 +11441,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "hideImportData": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
                                 "showAddFieldsButton": true,
@@ -12027,6 +12049,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "hideImportData": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
                                   "showAddFieldsButton": true,
@@ -12677,6 +12700,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "hideImportData": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
                                             "showAddFieldsButton": true,
@@ -13229,6 +13253,7 @@ exports[`DomainRow string field test 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "hideImportData": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
                     "showAddFieldsButton": true,
@@ -13405,6 +13430,7 @@ exports[`DomainRow string field test 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "hideImportData": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
                                 "showAddFieldsButton": true,
@@ -13955,6 +13981,7 @@ exports[`DomainRow string field test 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "hideImportData": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
                                   "showAddFieldsButton": true,
@@ -14911,6 +14938,7 @@ exports[`DomainRow string field test 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "hideImportData": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
                                             "showAddFieldsButton": true,
@@ -15629,6 +15657,7 @@ exports[`DomainRow with empty domain form 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "hideImportData": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
                     "showAddFieldsButton": true,
@@ -15805,6 +15834,7 @@ exports[`DomainRow with empty domain form 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "hideImportData": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
                                 "showAddFieldsButton": true,
@@ -16404,6 +16434,7 @@ exports[`DomainRow with empty domain form 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "hideImportData": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
                                   "showAddFieldsButton": true,
@@ -17360,6 +17391,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "hideImportData": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
                                             "showAddFieldsButton": true,

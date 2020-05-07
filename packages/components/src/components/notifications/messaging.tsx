@@ -9,20 +9,18 @@ export function createDeleteSuccessNotification(
     noun: string,
     count?: number,
     additionalInfo?: string,
-    notify?: (notification: NotificationItemProps) => void
 ) {
     const countStr = count === undefined ? '' : count;
-    createNotification('Successfully deleted ' + countStr + ' ' + noun + '. ' + (additionalInfo || ''), notify);
+    createNotification('Successfully deleted ' + countStr + ' ' + noun + '. ' + (additionalInfo || ''));
 }
 
-export function createDeleteErrorNotification(noun: string, notify?: (notification: NotificationItemProps) => void) {
+export function createDeleteErrorNotification(noun: string) {
     createNotification(
         {
             alertClass: 'danger',
             message: () => {
                 return getActionErrorMessage('There was a problem deleting the ' + noun + '. ', noun);
             },
-        },
-        notify
+        }
     );
 }

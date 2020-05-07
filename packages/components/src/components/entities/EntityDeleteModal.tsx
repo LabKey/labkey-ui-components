@@ -18,12 +18,11 @@ interface Props {
     model: QueryGridModel;
     maxSelected?: number;
     useSelected: boolean;
-    beforeDelete: () => any;
+    beforeDelete?: () => any;
     afterDelete: (rowsToKeep?: any[]) => any;
     onCancel: () => any;
     entityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
-    notify?: (notification: NotificationItemProps) => void;
 }
 
 export const EntityDeleteModal: React.FC<Props> = (props) => {
@@ -60,10 +59,11 @@ export const EntityDeleteModal: React.FC<Props> = (props) => {
     }
 
     function onConfirm(rowsToDelete: any[], rowsToKeep: any[]): void {
-        const { notify } = props;
         setNumConfirmed(rowsToDelete.length);
         setShowProgress(true);
-        beforeDelete();
+        if (beforeDelete) {
+            beforeDelete();
+        }
         const noun = ' ' + getNoun(rowsToDelete.length);
 
         const schemaQuery = SchemaQuery.create(model.schema, model.query);
@@ -74,11 +74,11 @@ export const EntityDeleteModal: React.FC<Props> = (props) => {
             auditBehavior,
         }).then(() => {
                 afterDelete(rowsToKeep);
-                createDeleteSuccessNotification(noun, rowsToDelete.length, undefined, notify);
+                createDeleteSuccessNotification(noun, rowsToDelete.length, undefined);
             })
             .catch(error => {
                 setShowProgress(false);
-                createDeleteErrorNotification(noun, notify);
+                createDeleteErrorNotification(noun);
             });
     }
 

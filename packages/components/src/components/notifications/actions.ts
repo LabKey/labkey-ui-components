@@ -27,10 +27,7 @@ export type NotificationCreatable = string | NotificationItemProps | Notificatio
  * @param creatable
  * @param notify - Function that handles display of the notification. Default is global.addNotification as used in SampleManagement
  */
-export function createNotification(
-    creatable: NotificationCreatable,
-    notify: (notification: NotificationItemProps) => void = addNotification
-) {
+export function createNotification(creatable: NotificationCreatable) {
     let item: NotificationItemModel;
     if (Utils.isString(creatable)) {
         item = NotificationItemModel.create({
@@ -40,7 +37,7 @@ export function createNotification(
         item = NotificationItemModel.create(creatable as NotificationItemProps);
     } else item = creatable;
 
-    if (item) notify(item);
+    if (item) addNotification(item);
 }
 
 /**

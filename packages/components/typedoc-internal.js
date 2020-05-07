@@ -4,6 +4,7 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 module.exports = {
+    name: "@labkey/components (internal)",
     readme: "none",
     theme: "default",
     mode: "file",
@@ -14,7 +15,7 @@ module.exports = {
         "**/stories/**",
         "**/__snapshots__/**",
         "**/__mocks__/**",
-        "src/test/**"
+        "**/test/**",
     ],
     externalPattern: "**/node_modules/** ",
     excludeExternals: true,

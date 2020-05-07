@@ -4,6 +4,7 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 module.exports = {
+    name: "@labkey/components (public)",
     readme: "./docs/public.md",
     toc: [
         "DetailPanelWithModel",
@@ -13,9 +14,6 @@ module.exports = {
         "QueryModel",
         "withQueryModels",
     ],
-    // inputFiles: [
-    //     "./src/QueryModel/"
-    // ],
     theme: "default",
     mode: "file",
     includeVersion: true,
@@ -25,7 +23,7 @@ module.exports = {
         "**/stories/**",
         "**/__snapshots__/**",
         "**/__mocks__/**",
-        "src/test/**"
+        "**/test/**",
     ],
     externalPattern: "**/node_modules/** ",
     excludeExternals: true,

@@ -118,11 +118,7 @@ describe('DomainExpandedOptions', () => {
                 onMultiChange={jest.fn()}
                 showingModal={jest.fn()}
                 domainFormDisplayOptions={{
-                    showRequired: true,
-                    showValidators: true,
-                    isDragDisabled: false,
-                    showTextOptions: false,
-                    phiLevelDisabled: false,
+                    hideTextOptions: true,
                 }}
             />
         );

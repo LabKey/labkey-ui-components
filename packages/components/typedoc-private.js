@@ -4,17 +4,21 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 module.exports = {
-    out: './docs',
+    readme: "none",
     theme: "default",
-    mode: "modules",
+    mode: "file",
+    includeVersion: true,
+    ignoreCompilerErrors: true,
     exclude: [
         "**/*+(wrapper|wrapper-dom|.spec|.stories).ts*",
         "**/stories/**",
         "**/__snapshots__/**",
-        "**/__mocks__/**"
+        "**/__mocks__/**",
+        "src/test/**"
     ],
     externalPattern: "**/node_modules/** ",
     excludeExternals: true,
-    excludePrivate: true,
-    ignoreCompilerErrors: true
+    // excludePrivate: true,
+    // excludeProtected: true,
+    // excludeNotExported: true,
 };

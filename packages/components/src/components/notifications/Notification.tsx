@@ -35,14 +35,14 @@ interface NotificationProps {
 
 export class Notification extends React.Component<NotificationProps, any> {
     componentWillMount() {
-        Notification.createSystemNotification();
+        this.createSystemNotification();
     }
 
     componentWillUnmount() {
         dismissNotifications();
     }
 
-    static renderTrialServicesNotification(props: NotificationItemProps, user: User, data: any) {
+    renderTrialServicesNotification(props: NotificationItemProps, user: User) {
         if (LABKEY.moduleContext.trialservices.trialEndDate) {
             const endDate = moment(LABKEY.moduleContext.trialservices.trialEndDate, getDateFormat());
             const today = moment();
@@ -52,7 +52,7 @@ export class Notification extends React.Component<NotificationProps, any> {
             if (secondsDiff % 86400 > 0) dayDiff++;
             let message = '';
             if (dayDiff <= 0) message = 'This LabKey trial site has expired.';
-            else message = 'This LabKey trial site will expire in ' + dayDiff + (dayDiff == 1 ? ' day.' : ' days.');
+            else message = 'This LabKey trial site will expire in ' + dayDiff + (dayDiff === 1 ? ' day.' : ' days.');
             if (LABKEY.moduleContext.trialservices.upgradeLink && user && user.isAdmin)
                 return (
                     <span>
@@ -68,7 +68,7 @@ export class Notification extends React.Component<NotificationProps, any> {
         return null;
     }
 
-    static createSystemNotification() {
+    createSystemNotification(): void {
         if (
             LABKEY.moduleContext &&
             LABKEY.moduleContext.trialservices &&
@@ -77,14 +77,14 @@ export class Notification extends React.Component<NotificationProps, any> {
             createNotification({
                 alertClass: 'warning',
                 id: 'trial_ending',
-                message: Notification.renderTrialServicesNotification,
+                message: this.renderTrialServicesNotification,
                 onDismiss: setTrialBannerDismissSessionKey,
                 persistence: Persistence.LOGIN_SESSION,
             });
         }
     }
 
-    static renderItems(notifications: List<NotificationItemModel>, user: User) {
+    renderItems(notifications: List<NotificationItemModel>, user: User) {
         if (notifications.size > 1) {
             return (
                 <ul>
@@ -100,12 +100,12 @@ export class Notification extends React.Component<NotificationProps, any> {
         return notifications.map((item, index) => <NotificationItem item={item} key={index} user={user} />);
     }
 
-    getNotifications() {
+    getNotifications(): Map<string, NotificationItemModel> {
         // need to access this.global directly to connect this component to the re-render cycle
         return this.global.Notifications;
     }
 
-    getAlertClassLists() {
+    getAlertClassLists(): Map<string, List<NotificationItemModel>> {
         let listMap = Map<string, List<NotificationItemModel>>();
         const notifications = this.getNotifications();
         if (notifications) {
@@ -129,7 +129,7 @@ export class Notification extends React.Component<NotificationProps, any> {
             .map((list, alertClass) => (
                 <div className={'notification-container alert alert-' + alertClass} key={alertClass}>
                     {notificationHeader}
-                    {Notification.renderItems(list, user)}
+                    {this.renderItems(list, user)}
                 </div>
             ))
             .toArray();

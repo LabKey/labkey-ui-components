@@ -292,28 +292,48 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         let keyPropIndex;
         let visitPropIndex;
 
-        if (this._participantId && this._sequenceNum) {
-            // filter out these fields
-            const updatedDomain = model.domain.merge({
-                fields: model.domain.fields
-                    .filter(field => field.name != this._participantId)
-                    .filter(field => field.name != this._sequenceNum)
-                    .toList(),
-            }) as DomainDesign;
+        let updatedModel;
 
-            updatedDomain.fields.map((field, index) => {
-                if (model.keyPropertyName && field.name === model.keyPropertyName) {
-                    keyPropIndex = index;
-                }
-                if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
-                    visitPropIndex = index;
-                }
-            });
+        if (fileImportData) {
+            if (this._participantId && this._sequenceNum) {
+                // filter out these fields
+                const updatedDomain = model.domain.merge({
+                    fields: model.domain.fields
+                        .filter(field => field.name != this._participantId)
+                        .filter(field => field.name != this._sequenceNum)
+                        .toList(),
+                }) as DomainDesign;
 
-            const updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
-                draft.domain = updatedDomain;
-            });
+                updatedDomain.fields.map((field, index) => {
+                    if (model.keyPropertyName && field.name === model.keyPropertyName) {
+                        keyPropIndex = index;
+                    }
+                    if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
+                        visitPropIndex = index;
+                    }
+                });
 
+                updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
+                    draft.domain = updatedDomain;
+                });
+            } else {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        draft.model.exception =
+                            'Must select ' +
+                            getStudySubjectProp('nounPlural') +
+                            ' and ' +
+                            getStudyTimepointLabel() +
+                            ' fields in column mapping';
+                    }),
+                    () => setSubmitting(false, () => {})
+                );
+            }
+        } else {
+            updatedModel = model;
+        }
+
+        if (updatedModel) {
             this.setState(
                 produce((draft: Draft<State>) => {
                     draft.keyPropertyIndex = keyPropIndex;
@@ -363,18 +383,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                                 );
                             });
                         })
-            );
-        } else {
-            this.setState(
-                produce((draft: Draft<State>) => {
-                    draft.model.exception =
-                        'Must select ' +
-                        getStudySubjectProp('nounPlural') +
-                        ' and ' +
-                        getStudyTimepointLabel() +
-                        ' fields in column mapping';
-                }),
-                () => setSubmitting(false, () => {})
             );
         }
     };

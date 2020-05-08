@@ -315,6 +315,7 @@ import { IssuesListDefDesignerPanels } from './components/domainproperties/issue
 import { DatasetDesignerPanels } from './components/domainproperties/dataset/DatasetDesignerPanels';
 import { DatasetModel } from './components/domainproperties/dataset/models';
 import { fetchListDesign, getListProperties } from './components/domainproperties/list/actions';
+import { fetchIssuesListDefDesign } from './components/domainproperties/issues/actions';
 import { fetchDatasetDesign, getDatasetProperties } from './components/domainproperties/dataset/actions';
 import {
     DOMAIN_FIELD_REQUIRED,

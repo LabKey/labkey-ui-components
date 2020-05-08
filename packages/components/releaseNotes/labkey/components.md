@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.57.0
+*Released*: 8 May 2020
+* Item 7178: Factored EntityDeleteModal (and associated functions) out of Sample Manager into labkey-ui-components for use in Biologics.
+
+## version 0.56.3
+*Released*: 7 May 2020
+* Changes for DomainFormDisplayOptions from show to hide for default cases
+* Issue 40032: PHI Levels not disabled in new query metadata editor
+
 ### version 0.56.2
 *Released*: 6 May 2020
 * Epic 6800: Issue Definition designer (Story 1)-  IssuesPropertyPanel and IssuesListDesignerPanels

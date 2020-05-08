@@ -349,7 +349,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     successBsStyle={successBsStyle}
                     domainFormDisplayOptions={{
                         isDragDisabled: model.isFromAssay(),
-                        showAddFieldsButton: !model.isFromAssay(),
+                        hideAddFieldsButton: model.isFromAssay(),
                     }}
                 />
                 <Progress

@@ -658,11 +658,7 @@ describe('DomainForm', () => {
                 domain={domain}
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
-                    showRequired: false,
-                    showValidators: true,
-                    isDragDisabled: false,
-                    showTextOptions: true,
-                    phiLevelDisabled: false,
+                    hideRequired: true,
                 }}
             />
         );
@@ -679,11 +675,7 @@ describe('DomainForm', () => {
                 domain={domain}
                 onChange={jest.fn()}
                 domainFormDisplayOptions={{
-                    showRequired: false,
-                    showValidators: true,
-                    isDragDisabled: false,
-                    showTextOptions: true,
-                    phiLevelDisabled: false,
+                    hideAddFieldsButton: true,
                 }}
             />
         );

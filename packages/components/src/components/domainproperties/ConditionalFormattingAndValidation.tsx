@@ -134,7 +134,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
 
         return (
             <>
-                {domainFormDisplayOptions.showValidators && (
+                {!domainFormDisplayOptions.hideValidators && (
                     <div className={range ? '' : 'domain-validation-group'}>
                         <div className="domain-field-label domain-no-wrap">
                             <DomainFieldLabel

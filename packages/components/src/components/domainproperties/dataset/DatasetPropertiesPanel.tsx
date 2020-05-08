@@ -58,7 +58,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     Props & InjectedDomainPropertiesPanelCollapseProps,
     State
 > {
-    private _keyFieldError = 'Must select additional key field';
+    private _keyFieldError = 'You must select an Additional Key Field in the dataset properties panel.';
 
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
@@ -135,7 +135,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
             draft.demographicData = value == 0;
             draft.keyPropertyName = value != 2 ? undefined : ''; // resetting key property name
 
-            if (value == 2 && !model.keyPropertyName) {
+            if (value == 2) {
                 draft.exception = this._keyFieldError;
             } else if (draft.exception === this._keyFieldError) {
                 draft.exception = undefined;
@@ -189,7 +189,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                 draft.keyPropertyManaged = false;
             }
 
-            if (model.exception === this._keyFieldError) {
+            if (draft.exception === this._keyFieldError) {
                 draft.exception = undefined;
             }
         });

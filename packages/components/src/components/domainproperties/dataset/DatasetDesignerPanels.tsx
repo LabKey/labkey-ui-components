@@ -151,7 +151,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 if (keyPropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the keyPropertyIndex
                     if (rowIndexChange) {
-                        if (rowIndexChange.newIndex === 0 || rowIndexChange.newIndex) {
+                        if (rowIndexChange.newIndex !== undefined) {
                             domain.fields.map((field, index) => {
                                 if (this._selectedKeyFieldName && field.name === this._selectedKeyFieldName) {
                                     draft.keyPropertyIndex = index;
@@ -160,10 +160,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                             draft.model.keyPropertyName = domain.fields.get(draft.keyPropertyIndex).name;
                         }
                         // if row was removed, reset key property name
-                        else if (
-                            rowIndexChange.newIndex === undefined &&
-                            rowIndexChange.originalIndex === keyPropertyIndex
-                        ) {
+                        else if (rowIndexChange.originalIndex === keyPropertyIndex) {
                             draft.model.keyPropertyName = '';
                             draft.keyPropertyIndex = undefined;
                         }
@@ -177,7 +174,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 if (visitDatePropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the visitDatePropertyIndex
                     if (rowIndexChange) {
-                        if (rowIndexChange.newIndex === 0 || rowIndexChange.newIndex) {
+                        if (rowIndexChange.newIndex !== undefined) {
                             domain.fields.map((field, index) => {
                                 if (this._selectedVisitDateName && field.name === this._selectedVisitDateName) {
                                     draft.visitDatePropertyIndex = index;
@@ -186,10 +183,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                             draft.model.visitDatePropertyName = domain.fields.get(draft.visitDatePropertyIndex).name;
                         }
                         // if row was removed, reset visit date property name
-                        else if (
-                            rowIndexChange.newIndex === undefined &&
-                            rowIndexChange.originalIndex === visitDatePropertyIndex
-                        ) {
+                        else if (rowIndexChange.originalIndex === visitDatePropertyIndex) {
                             draft.model.visitDatePropertyName = '';
                             draft.visitDatePropertyIndex = undefined;
                         }
@@ -299,8 +293,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 // filter out these fields
                 const updatedDomain = model.domain.merge({
                     fields: model.domain.fields
-                        .filter(field => field.name != this._participantId)
-                        .filter(field => field.name != this._sequenceNum)
+                        .filter(field => field.name != this._participantId && field.name != this._sequenceNum)
                         .toList(),
                 }) as DomainDesign;
 

@@ -506,6 +506,7 @@ export {
     //issues list def
     IssuesListDefModel,
     IssuesListDefDesignerPanels,
+    fetchIssuesListDefDesign,
     // dataset
     DatasetDesignerPanels,
     DatasetModel,

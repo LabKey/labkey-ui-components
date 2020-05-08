@@ -2701,13 +2701,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             }
             domainFormDisplayOptions={
               Object {
+                "disableMvEnabled": false,
+                "hideAddFieldsButton": false,
                 "hideImportData": false,
+                "hideRequired": false,
+                "hideTextOptions": false,
+                "hideValidators": false,
                 "isDragDisabled": false,
                 "phiLevelDisabled": false,
-                "showAddFieldsButton": true,
-                "showRequired": true,
-                "showTextOptions": true,
-                "showValidators": true,
               }
             }
             domainIndex={0}
@@ -3340,13 +3341,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                       defaultValueOptions={Immutable.List []}
                                                       domainFormDisplayOptions={
                                                         Object {
+                                                          "disableMvEnabled": false,
+                                                          "hideAddFieldsButton": false,
                                                           "hideImportData": false,
+                                                          "hideRequired": false,
+                                                          "hideTextOptions": false,
+                                                          "hideValidators": false,
                                                           "isDragDisabled": false,
                                                           "phiLevelDisabled": false,
-                                                          "showAddFieldsButton": true,
-                                                          "showRequired": true,
-                                                          "showTextOptions": true,
-                                                          "showValidators": true,
                                                         }
                                                       }
                                                       domainId={null}
@@ -3512,13 +3514,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                   defaultValueOptions={Immutable.List []}
                                                                   domainFormDisplayOptions={
                                                                     Object {
+                                                                      "disableMvEnabled": false,
+                                                                      "hideAddFieldsButton": false,
                                                                       "hideImportData": false,
+                                                                      "hideRequired": false,
+                                                                      "hideTextOptions": false,
+                                                                      "hideValidators": false,
                                                                       "isDragDisabled": false,
                                                                       "phiLevelDisabled": false,
-                                                                      "showAddFieldsButton": true,
-                                                                      "showRequired": true,
-                                                                      "showTextOptions": true,
-                                                                      "showValidators": true,
                                                                     }
                                                                   }
                                                                   domainId={null}
@@ -4086,13 +4089,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                     appPropertiesOnly={true}
                                                                     domainFormDisplayOptions={
                                                                       Object {
+                                                                        "disableMvEnabled": false,
+                                                                        "hideAddFieldsButton": false,
                                                                         "hideImportData": false,
+                                                                        "hideRequired": false,
+                                                                        "hideTextOptions": false,
+                                                                        "hideValidators": false,
                                                                         "isDragDisabled": false,
                                                                         "phiLevelDisabled": false,
-                                                                        "showAddFieldsButton": true,
-                                                                        "showRequired": true,
-                                                                        "showTextOptions": true,
-                                                                        "showValidators": true,
                                                                       }
                                                                     }
                                                                     domainIndex={0}
@@ -5044,13 +5048,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             <ConditionalFormattingAndValidation
                                                                               domainFormDisplayOptions={
                                                                                 Object {
+                                                                                  "disableMvEnabled": false,
+                                                                                  "hideAddFieldsButton": false,
                                                                                   "hideImportData": false,
+                                                                                  "hideRequired": false,
+                                                                                  "hideTextOptions": false,
+                                                                                  "hideValidators": false,
                                                                                   "isDragDisabled": false,
                                                                                   "phiLevelDisabled": false,
-                                                                                  "showAddFieldsButton": true,
-                                                                                  "showRequired": true,
-                                                                                  "showTextOptions": true,
-                                                                                  "showValidators": true,
                                                                                 }
                                                                               }
                                                                               domainIndex={0}

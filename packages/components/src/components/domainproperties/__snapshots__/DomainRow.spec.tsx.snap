@@ -215,13 +215,14 @@ exports[`DomainRow Sample Field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "disableMvEnabled": false,
+                    "hideAddFieldsButton": false,
                     "hideImportData": false,
+                    "hideRequired": false,
+                    "hideTextOptions": false,
+                    "hideValidators": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
-                    "showAddFieldsButton": true,
-                    "showRequired": true,
-                    "showTextOptions": true,
-                    "showValidators": true,
                   }
                 }
                 domainIndex={1}
@@ -392,13 +393,14 @@ exports[`DomainRow Sample Field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "disableMvEnabled": false,
+                                "hideAddFieldsButton": false,
                                 "hideImportData": false,
+                                "hideRequired": false,
+                                "hideTextOptions": false,
+                                "hideValidators": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
-                                "showAddFieldsButton": true,
-                                "showRequired": true,
-                                "showTextOptions": true,
-                                "showValidators": true,
                               }
                             }
                             domainIndex={1}
@@ -939,13 +941,14 @@ exports[`DomainRow Sample Field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "disableMvEnabled": false,
+                                  "hideAddFieldsButton": false,
                                   "hideImportData": false,
+                                  "hideRequired": false,
+                                  "hideTextOptions": false,
+                                  "hideValidators": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
-                                  "showAddFieldsButton": true,
-                                  "showRequired": true,
-                                  "showTextOptions": true,
-                                  "showValidators": true,
                                 }
                               }
                               domainIndex={1}
@@ -1836,13 +1839,14 @@ exports[`DomainRow Sample Field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "disableMvEnabled": false,
+                                            "hideAddFieldsButton": false,
                                             "hideImportData": false,
+                                            "hideRequired": false,
+                                            "hideTextOptions": false,
+                                            "hideValidators": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
-                                            "showAddFieldsButton": true,
-                                            "showRequired": true,
-                                            "showTextOptions": true,
-                                            "showValidators": true,
                                           }
                                         }
                                         domainIndex={1}
@@ -2389,13 +2393,14 @@ exports[`DomainRow client side warning on field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "disableMvEnabled": false,
+                    "hideAddFieldsButton": false,
                     "hideImportData": false,
+                    "hideRequired": false,
+                    "hideTextOptions": false,
+                    "hideValidators": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
-                    "showAddFieldsButton": true,
-                    "showRequired": true,
-                    "showTextOptions": true,
-                    "showValidators": true,
                   }
                 }
                 domainIndex={1}
@@ -2578,13 +2583,14 @@ exports[`DomainRow client side warning on field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "disableMvEnabled": false,
+                                "hideAddFieldsButton": false,
                                 "hideImportData": false,
+                                "hideRequired": false,
+                                "hideTextOptions": false,
+                                "hideValidators": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
-                                "showAddFieldsButton": true,
-                                "showRequired": true,
-                                "showTextOptions": true,
-                                "showValidators": true,
                               }
                             }
                             domainIndex={1}
@@ -3263,13 +3269,14 @@ exports[`DomainRow client side warning on field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "disableMvEnabled": false,
+                                  "hideAddFieldsButton": false,
                                   "hideImportData": false,
+                                  "hideRequired": false,
+                                  "hideTextOptions": false,
+                                  "hideValidators": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
-                                  "showAddFieldsButton": true,
-                                  "showRequired": true,
-                                  "showTextOptions": true,
-                                  "showValidators": true,
                                 }
                               }
                               domainIndex={1}
@@ -3914,13 +3921,14 @@ exports[`DomainRow client side warning on field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "disableMvEnabled": false,
+                                            "hideAddFieldsButton": false,
                                             "hideImportData": false,
+                                            "hideRequired": false,
+                                            "hideTextOptions": false,
+                                            "hideValidators": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
-                                            "showAddFieldsButton": true,
-                                            "showRequired": true,
-                                            "showTextOptions": true,
-                                            "showValidators": true,
                                           }
                                         }
                                         domainIndex={1}
@@ -4467,13 +4475,14 @@ exports[`DomainRow date time field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "disableMvEnabled": false,
+                    "hideAddFieldsButton": false,
                     "hideImportData": false,
+                    "hideRequired": false,
+                    "hideTextOptions": false,
+                    "hideValidators": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
-                    "showAddFieldsButton": true,
-                    "showRequired": true,
-                    "showTextOptions": true,
-                    "showValidators": true,
                   }
                 }
                 domainIndex={1}
@@ -4644,13 +4653,14 @@ exports[`DomainRow date time field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "disableMvEnabled": false,
+                                "hideAddFieldsButton": false,
                                 "hideImportData": false,
+                                "hideRequired": false,
+                                "hideTextOptions": false,
+                                "hideValidators": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
-                                "showAddFieldsButton": true,
-                                "showRequired": true,
-                                "showTextOptions": true,
-                                "showValidators": true,
                               }
                             }
                             domainIndex={1}
@@ -5171,13 +5181,14 @@ exports[`DomainRow date time field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "disableMvEnabled": false,
+                                  "hideAddFieldsButton": false,
                                   "hideImportData": false,
+                                  "hideRequired": false,
+                                  "hideTextOptions": false,
+                                  "hideValidators": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
-                                  "showAddFieldsButton": true,
-                                  "showRequired": true,
-                                  "showTextOptions": true,
-                                  "showValidators": true,
                                 }
                               }
                               domainIndex={1}
@@ -6074,13 +6085,14 @@ exports[`DomainRow date time field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "disableMvEnabled": false,
+                                            "hideAddFieldsButton": false,
                                             "hideImportData": false,
+                                            "hideRequired": false,
+                                            "hideTextOptions": false,
+                                            "hideValidators": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
-                                            "showAddFieldsButton": true,
-                                            "showRequired": true,
-                                            "showTextOptions": true,
-                                            "showValidators": true,
                                           }
                                         }
                                         domainIndex={1}
@@ -6793,13 +6805,14 @@ exports[`DomainRow decimal field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "disableMvEnabled": false,
+                    "hideAddFieldsButton": false,
                     "hideImportData": false,
+                    "hideRequired": false,
+                    "hideTextOptions": false,
+                    "hideValidators": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
-                    "showAddFieldsButton": true,
-                    "showRequired": true,
-                    "showTextOptions": true,
-                    "showValidators": true,
                   }
                 }
                 domainIndex={1}
@@ -6970,13 +6983,14 @@ exports[`DomainRow decimal field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "disableMvEnabled": false,
+                                "hideAddFieldsButton": false,
                                 "hideImportData": false,
+                                "hideRequired": false,
+                                "hideTextOptions": false,
+                                "hideValidators": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
-                                "showAddFieldsButton": true,
-                                "showRequired": true,
-                                "showTextOptions": true,
-                                "showValidators": true,
                               }
                             }
                             domainIndex={1}
@@ -7497,13 +7511,14 @@ exports[`DomainRow decimal field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "disableMvEnabled": false,
+                                  "hideAddFieldsButton": false,
                                   "hideImportData": false,
+                                  "hideRequired": false,
+                                  "hideTextOptions": false,
+                                  "hideValidators": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
-                                  "showAddFieldsButton": true,
-                                  "showRequired": true,
-                                  "showTextOptions": true,
-                                  "showValidators": true,
                                 }
                               }
                               domainIndex={1}
@@ -8435,13 +8450,14 @@ exports[`DomainRow decimal field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "disableMvEnabled": false,
+                                            "hideAddFieldsButton": false,
                                             "hideImportData": false,
+                                            "hideRequired": false,
+                                            "hideTextOptions": false,
+                                            "hideValidators": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
-                                            "showAddFieldsButton": true,
-                                            "showRequired": true,
-                                            "showTextOptions": true,
-                                            "showValidators": true,
                                           }
                                         }
                                         domainIndex={1}
@@ -9154,13 +9170,14 @@ exports[`DomainRow participant id field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "disableMvEnabled": false,
+                    "hideAddFieldsButton": false,
                     "hideImportData": false,
+                    "hideRequired": false,
+                    "hideTextOptions": false,
+                    "hideValidators": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
-                    "showAddFieldsButton": true,
-                    "showRequired": true,
-                    "showTextOptions": true,
-                    "showValidators": true,
                   }
                 }
                 domainIndex={1}
@@ -9331,13 +9348,14 @@ exports[`DomainRow participant id field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "disableMvEnabled": false,
+                                "hideAddFieldsButton": false,
                                 "hideImportData": false,
+                                "hideRequired": false,
+                                "hideTextOptions": false,
+                                "hideValidators": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
-                                "showAddFieldsButton": true,
-                                "showRequired": true,
-                                "showTextOptions": true,
-                                "showValidators": true,
                               }
                             }
                             domainIndex={1}
@@ -9882,13 +9900,14 @@ exports[`DomainRow participant id field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "disableMvEnabled": false,
+                                  "hideAddFieldsButton": false,
                                   "hideImportData": false,
+                                  "hideRequired": false,
+                                  "hideTextOptions": false,
+                                  "hideValidators": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
-                                  "showAddFieldsButton": true,
-                                  "showRequired": true,
-                                  "showTextOptions": true,
-                                  "showValidators": true,
                                 }
                               }
                               domainIndex={1}
@@ -10533,13 +10552,14 @@ exports[`DomainRow participant id field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "disableMvEnabled": false,
+                                            "hideAddFieldsButton": false,
                                             "hideImportData": false,
+                                            "hideRequired": false,
+                                            "hideTextOptions": false,
+                                            "hideValidators": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
-                                            "showAddFieldsButton": true,
-                                            "showRequired": true,
-                                            "showTextOptions": true,
-                                            "showValidators": true,
                                           }
                                         }
                                         domainIndex={1}
@@ -11252,13 +11272,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "disableMvEnabled": false,
+                    "hideAddFieldsButton": false,
                     "hideImportData": false,
+                    "hideRequired": false,
+                    "hideTextOptions": false,
+                    "hideValidators": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
-                    "showAddFieldsButton": true,
-                    "showRequired": true,
-                    "showTextOptions": true,
-                    "showValidators": true,
                   }
                 }
                 domainIndex={1}
@@ -11441,13 +11462,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "disableMvEnabled": false,
+                                "hideAddFieldsButton": false,
                                 "hideImportData": false,
+                                "hideRequired": false,
+                                "hideTextOptions": false,
+                                "hideValidators": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
-                                "showAddFieldsButton": true,
-                                "showRequired": true,
-                                "showTextOptions": true,
-                                "showValidators": true,
                               }
                             }
                             domainIndex={1}
@@ -12049,13 +12071,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "disableMvEnabled": false,
+                                  "hideAddFieldsButton": false,
                                   "hideImportData": false,
+                                  "hideRequired": false,
+                                  "hideTextOptions": false,
+                                  "hideValidators": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
-                                  "showAddFieldsButton": true,
-                                  "showRequired": true,
-                                  "showTextOptions": true,
-                                  "showValidators": true,
                                 }
                               }
                               domainIndex={1}
@@ -12700,13 +12723,14 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "disableMvEnabled": false,
+                                            "hideAddFieldsButton": false,
                                             "hideImportData": false,
+                                            "hideRequired": false,
+                                            "hideTextOptions": false,
+                                            "hideValidators": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
-                                            "showAddFieldsButton": true,
-                                            "showRequired": true,
-                                            "showTextOptions": true,
-                                            "showValidators": true,
                                           }
                                         }
                                         domainIndex={1}
@@ -13253,13 +13277,14 @@ exports[`DomainRow string field test 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "disableMvEnabled": false,
+                    "hideAddFieldsButton": false,
                     "hideImportData": false,
+                    "hideRequired": false,
+                    "hideTextOptions": false,
+                    "hideValidators": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
-                    "showAddFieldsButton": true,
-                    "showRequired": true,
-                    "showTextOptions": true,
-                    "showValidators": true,
                   }
                 }
                 domainIndex={1}
@@ -13430,13 +13455,14 @@ exports[`DomainRow string field test 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "disableMvEnabled": false,
+                                "hideAddFieldsButton": false,
                                 "hideImportData": false,
+                                "hideRequired": false,
+                                "hideTextOptions": false,
+                                "hideValidators": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
-                                "showAddFieldsButton": true,
-                                "showRequired": true,
-                                "showTextOptions": true,
-                                "showValidators": true,
                               }
                             }
                             domainIndex={1}
@@ -13981,13 +14007,14 @@ exports[`DomainRow string field test 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "disableMvEnabled": false,
+                                  "hideAddFieldsButton": false,
                                   "hideImportData": false,
+                                  "hideRequired": false,
+                                  "hideTextOptions": false,
+                                  "hideValidators": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
-                                  "showAddFieldsButton": true,
-                                  "showRequired": true,
-                                  "showTextOptions": true,
-                                  "showValidators": true,
                                 }
                               }
                               domainIndex={1}
@@ -14938,13 +14965,14 @@ exports[`DomainRow string field test 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "disableMvEnabled": false,
+                                            "hideAddFieldsButton": false,
                                             "hideImportData": false,
+                                            "hideRequired": false,
+                                            "hideTextOptions": false,
+                                            "hideValidators": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
-                                            "showAddFieldsButton": true,
-                                            "showRequired": true,
-                                            "showTextOptions": true,
-                                            "showValidators": true,
                                           }
                                         }
                                         domainIndex={1}
@@ -15657,13 +15685,14 @@ exports[`DomainRow with empty domain form 1`] = `
                 }
                 domainFormDisplayOptions={
                   Object {
+                    "disableMvEnabled": false,
+                    "hideAddFieldsButton": false,
                     "hideImportData": false,
+                    "hideRequired": false,
+                    "hideTextOptions": false,
+                    "hideValidators": false,
                     "isDragDisabled": false,
                     "phiLevelDisabled": false,
-                    "showAddFieldsButton": true,
-                    "showRequired": true,
-                    "showTextOptions": true,
-                    "showValidators": true,
                   }
                 }
                 domainIndex={1}
@@ -15834,13 +15863,14 @@ exports[`DomainRow with empty domain form 1`] = `
                             }
                             domainFormDisplayOptions={
                               Object {
+                                "disableMvEnabled": false,
+                                "hideAddFieldsButton": false,
                                 "hideImportData": false,
+                                "hideRequired": false,
+                                "hideTextOptions": false,
+                                "hideValidators": false,
                                 "isDragDisabled": false,
                                 "phiLevelDisabled": false,
-                                "showAddFieldsButton": true,
-                                "showRequired": true,
-                                "showTextOptions": true,
-                                "showValidators": true,
                               }
                             }
                             domainIndex={1}
@@ -16434,13 +16464,14 @@ exports[`DomainRow with empty domain form 1`] = `
                             <DomainRowExpandedOptions
                               domainFormDisplayOptions={
                                 Object {
+                                  "disableMvEnabled": false,
+                                  "hideAddFieldsButton": false,
                                   "hideImportData": false,
+                                  "hideRequired": false,
+                                  "hideTextOptions": false,
+                                  "hideValidators": false,
                                   "isDragDisabled": false,
                                   "phiLevelDisabled": false,
-                                  "showAddFieldsButton": true,
-                                  "showRequired": true,
-                                  "showTextOptions": true,
-                                  "showValidators": true,
                                 }
                               }
                               domainIndex={1}
@@ -17391,13 +17422,14 @@ exports[`DomainRow with empty domain form 1`] = `
                                       <ConditionalFormattingAndValidation
                                         domainFormDisplayOptions={
                                           Object {
+                                            "disableMvEnabled": false,
+                                            "hideAddFieldsButton": false,
                                             "hideImportData": false,
+                                            "hideRequired": false,
+                                            "hideTextOptions": false,
+                                            "hideValidators": false,
                                             "isDragDisabled": false,
                                             "phiLevelDisabled": false,
-                                            "showAddFieldsButton": true,
-                                            "showRequired": true,
-                                            "showTextOptions": true,
-                                            "showValidators": true,
                                           }
                                         }
                                         domainIndex={1}

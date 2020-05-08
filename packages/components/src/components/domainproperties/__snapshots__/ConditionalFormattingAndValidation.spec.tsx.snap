@@ -4,13 +4,14 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
 <ConditionalFormattingAndValidation
   domainFormDisplayOptions={
     Object {
+      "disableMvEnabled": false,
+      "hideAddFieldsButton": false,
       "hideImportData": false,
+      "hideRequired": false,
+      "hideTextOptions": false,
+      "hideValidators": false,
       "isDragDisabled": false,
       "phiLevelDisabled": false,
-      "showAddFieldsButton": true,
-      "showRequired": true,
-      "showTextOptions": true,
-      "showValidators": true,
     }
   }
   domainIndex={1}
@@ -466,11 +467,7 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
 <ConditionalFormattingAndValidation
   domainFormDisplayOptions={
     Object {
-      "isDragDisabled": false,
-      "phiLevelDisabled": false,
-      "showRequired": true,
-      "showTextOptions": true,
-      "showValidators": false,
+      "hideValidators": true,
     }
   }
   domainIndex={1}
@@ -784,13 +781,14 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
 <ConditionalFormattingAndValidation
   domainFormDisplayOptions={
     Object {
+      "disableMvEnabled": false,
+      "hideAddFieldsButton": false,
       "hideImportData": false,
+      "hideRequired": false,
+      "hideTextOptions": false,
+      "hideValidators": false,
       "isDragDisabled": false,
       "phiLevelDisabled": false,
-      "showAddFieldsButton": true,
-      "showRequired": true,
-      "showTextOptions": true,
-      "showValidators": true,
     }
   }
   domainIndex={1}

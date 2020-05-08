@@ -18,7 +18,7 @@ import React from 'react';
 
 import { Col, Row } from 'react-bootstrap';
 
-import { getServerContext } from '@labkey/api';
+import { List } from 'immutable';
 
 import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
@@ -104,6 +104,19 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         );
     };
 
+    getTimepointFields(): List<DomainField> {
+        const { model, timepointType } = this.props;
+
+        if (timepointType === 'VISIT') {
+            return model.domain.fields.filter(field => field.dataType.isNumeric()).toList();
+        } else {
+            // DATE or CONTINUOUS
+            return model.domain.fields
+                .filter(field => field.rangeURI === 'xsd:dateTime' || field.rangeURI === 'xsd:datetime')
+                .toList();
+        }
+    }
+
     render() {
         const { model } = this.props;
         const { closestParticipantIdField, closestTimepointField } = this.state;
@@ -150,7 +163,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                         <SelectInput
                             onChange={this.onSelectChange}
                             value={closestTimepointField}
-                            options={domain.fields.toArray()}
+                            options={this.getTimepointFields().toArray()}
                             inputClass=""
                             containerClass=""
                             labelClass=""

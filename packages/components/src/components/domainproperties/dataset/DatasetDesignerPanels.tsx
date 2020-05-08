@@ -60,6 +60,8 @@ interface State {
 export class DatasetDesignerPanelImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
     private _participantId: string;
     private _sequenceNum: string;
+    private _selectedKeyFieldName: string;
+    private _selectedVisitDateName: string;
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
@@ -79,9 +81,11 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         let visitDatePropertyIndex;
         model.domain.fields.map((field, index) => {
             if (model.keyPropertyName && field.name === model.keyPropertyName) {
+                this._selectedKeyFieldName = model.keyPropertyName;
                 keyPropertyIndex = index;
             }
             if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
+                this._selectedVisitDateName = model.visitDatePropertyName;
                 visitDatePropertyIndex = index;
             }
         });
@@ -140,39 +144,59 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const { onChange } = this.props;
         const { keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
-        // TODO: this rowIndexChange handles if the selected keyPropertyIndex or visitDatePropertyIndex field is moved but not if another field moves up above it
-
         this.setState(
             produce((draft: Draft<State>) => {
                 draft.model.domain = domain;
 
                 if (keyPropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the keyPropertyIndex
-                    if (rowIndexChange && rowIndexChange.originalIndex === keyPropertyIndex) {
-                        draft.keyPropertyIndex = rowIndexChange.newIndex;
+                    if (rowIndexChange) {
+                        if (rowIndexChange.newIndex === 0 || rowIndexChange.newIndex) {
+                            domain.fields.map((field, index) => {
+                                if (this._selectedKeyFieldName && field.name === this._selectedKeyFieldName) {
+                                    draft.keyPropertyIndex = index;
+                                }
+                            });
+                            draft.model.keyPropertyName = domain.fields.get(draft.keyPropertyIndex).name;
+                        }
+                        // if row was removed, reset key property name
+                        else if (
+                            rowIndexChange.newIndex === undefined &&
+                            rowIndexChange.originalIndex === keyPropertyIndex
+                        ) {
+                            draft.model.keyPropertyName = '';
+                            draft.keyPropertyIndex = undefined;
+                        }
                     }
-
-                    // if row was removed, reset key property name
-                    if (draft.keyPropertyIndex === undefined) {
-                        draft.model.keyPropertyName = '';
-                    } else {
-                        // pick up any name changes to the selected field
-                        draft.model.keyPropertyName = domain.fields.get(draft.keyPropertyIndex).name;
+                    // pick up any name changes to the selected key field
+                    if (draft.keyPropertyIndex !== undefined) {
+                        this._selectedKeyFieldName = domain.fields.get(draft.keyPropertyIndex).name;
                     }
                 }
 
                 if (visitDatePropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the visitDatePropertyIndex
-                    if (rowIndexChange && rowIndexChange.originalIndex === visitDatePropertyIndex) {
-                        draft.visitDatePropertyIndex = rowIndexChange.newIndex;
+                    if (rowIndexChange) {
+                        if (rowIndexChange.newIndex === 0 || rowIndexChange.newIndex) {
+                            domain.fields.map((field, index) => {
+                                if (this._selectedVisitDateName && field.name === this._selectedVisitDateName) {
+                                    draft.visitDatePropertyIndex = index;
+                                }
+                            });
+                            draft.model.visitDatePropertyName = domain.fields.get(draft.visitDatePropertyIndex).name;
+                        }
+                        // if row was removed, reset visit date property name
+                        else if (
+                            rowIndexChange.newIndex === undefined &&
+                            rowIndexChange.originalIndex === visitDatePropertyIndex
+                        ) {
+                            draft.model.visitDatePropertyName = '';
+                            draft.visitDatePropertyIndex = undefined;
+                        }
                     }
-
-                    // if row was removed, reset visit date property name
-                    if (draft.visitDatePropertyIndex === undefined) {
-                        draft.model.visitDatePropertyName = undefined;
-                    } else {
-                        // pick up any name changes to the selected field
-                        draft.model.visitDatePropertyName = domain.fields.get(draft.visitDatePropertyIndex).name;
+                    // pick up any name changes to the selected visit date field
+                    if (draft.visitDatePropertyIndex !== undefined) {
+                        this._selectedVisitDateName = domain.fields.get(draft.visitDatePropertyIndex).name;
                     }
                 }
             }),

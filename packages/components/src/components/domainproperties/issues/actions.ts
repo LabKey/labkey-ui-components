@@ -1,4 +1,4 @@
-import {IssuesListDefModel} from "../../..";
+import {IssuesListDefModel} from "./models";
 import {Domain, getServerContext} from "@labkey/api";
 
 export function fetchIssuesListDefDesign(issueDefName: string): Promise<IssuesListDefModel> {

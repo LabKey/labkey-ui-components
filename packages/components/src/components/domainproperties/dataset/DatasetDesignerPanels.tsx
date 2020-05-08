@@ -456,7 +456,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     successBsStyle={successBsStyle}
                     domainFormDisplayOptions={{
                         isDragDisabled: model.isFromAssay(),
-                        showAddFieldsButton: !model.isFromAssay(),
+                        hideAddFieldsButton: model.isFromAssay(),
                         hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                     }}
                 />

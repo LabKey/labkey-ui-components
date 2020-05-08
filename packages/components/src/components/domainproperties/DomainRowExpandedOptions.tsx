@@ -48,7 +48,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
 
         switch (field.dataType.name) {
             case 'string':
-                if (domainFormDisplayOptions && domainFormDisplayOptions.showTextOptions) {
+                if (domainFormDisplayOptions && !domainFormDisplayOptions.hideTextOptions) {
                     if (field.isPrimaryKey)
                         // Issue39877: Max text length options should not be visible for text key field of list
                         return;

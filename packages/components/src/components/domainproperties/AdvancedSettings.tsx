@@ -470,6 +470,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         onChange={this.handleCheckbox}
                         name={createFormInputName(DOMAIN_FIELD_MVENABLED)}
                         id={createFormInputId(DOMAIN_FIELD_MVENABLED, domainIndex, index)}
+                        disabled={domainFormDisplayOptions.disableMvEnabled}
                     >
                         Track reason for missing data values
                         <LabelHelpTip title="Missing Value Indicators" body={this.getMissingValueHelpText} />

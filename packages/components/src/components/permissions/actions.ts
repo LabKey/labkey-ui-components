@@ -8,7 +8,7 @@ import { Filter, Security } from '@labkey/api';
 
 import { ISelectRowsResult, selectRows } from '../../query/api';
 
-import { Principal, SecurityPolicy, SecurityRole } from './models';
+import { Principal, SecurityPolicy, SecurityRole, UserGroup } from './models';
 
 export function processGetRolesResponse(response: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -26,6 +26,23 @@ export function getRolesByUniqueName(roles: List<SecurityRole>): Map<string, Sec
     return rolesByUniqueName;
 }
 
+function processPrincipalsResponse(data: ISelectRowsResult, resolve, isGroup: boolean) {
+    const models = fromJS(data.models[data.key]);
+    let principals = List<Principal>();
+
+    data.orderedModels[data.key].forEach(modelKey => {
+        const row = models.get(modelKey);
+        const principal = Principal.createFromSelectRow(row);
+        principals = principals.push(principal);
+    });
+
+    if (isGroup) {
+        resolve(principals.filter(principal => principal.type === 'g'));
+    } else {
+        resolve(principals);
+    }
+}
+
 export function getPrincipals(): Promise<List<Principal>> {
     return new Promise((resolve, reject) => {
         selectRows({
@@ -35,16 +52,51 @@ export function getPrincipals(): Promise<List<Principal>> {
             sql: "SELECT p.*, u.DisplayName FROM Principals p LEFT JOIN Users u ON p.type='u' AND p.UserId=u.UserId",
         })
             .then((data: ISelectRowsResult) => {
+                processPrincipalsResponse(data, resolve, false);
+            })
+            .catch(response => {
+                console.error(response);
+                reject(response.message);
+            });
+    });
+}
+
+export function getCoreGroups(): Promise<List<Principal>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            saveInSession: true, // needed so that we can call getQueryDetails
+            schemaName: 'core',
+            sql: "SELECT p.UserId, p.Name, p.Type, p.Container FROM Principals p WHERE p.Type='g'",
+        })
+            .then((data: ISelectRowsResult) => {
+                processPrincipalsResponse(data, resolve, true);
+            })
+            .catch(response => {
+                console.error(response);
+                reject(response.message);
+            });
+    });
+}
+
+export function getCoreUsersInGroups(): Promise<List<UserGroup>> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            saveInSession: true, // needed so that we can call getQueryDetails
+            schemaName: 'core',
+            sql: 'SELECT m.UserId, m.GroupId, p.Name FROM Members m LEFT JOIN Principals p ON p.UserId = m.UserId',
+            columns: 'UserId,GroupId,Name',
+        })
+            .then((data: ISelectRowsResult) => {
                 const models = fromJS(data.models[data.key]);
-                let principals = List<Principal>();
+                let usersInGroups = List<UserGroup>();
 
                 data.orderedModels[data.key].forEach(modelKey => {
                     const row = models.get(modelKey);
-                    const principal = Principal.createFromSelectRow(row);
-                    principals = principals.push(principal);
+                    const userGroup = UserGroup.createFromSelectRow(row);
+                    usersInGroups = usersInGroups.push(userGroup);
                 });
 
-                resolve(principals);
+                resolve(usersInGroups);
             })
             .catch(response => {
                 console.error(response);

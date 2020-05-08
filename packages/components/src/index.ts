@@ -96,12 +96,17 @@ import { WebDavFile, getWebDavFiles, uploadWebDavFile } from './components/files
 import { FileTree } from './components/files/FileTree';
 import { Notification } from './components/notifications/Notification';
 import { createNotification } from './components/notifications/actions';
-import { dismissNotifications, initNotificationsState } from './components/notifications/global';
+import { dismissNotifications, initNotificationsState, addNotification } from './components/notifications/global';
 import { ConfirmModal } from './components/base/ConfirmModal';
 import { datePlaceholder, formatDate, formatDateTime, getDateFormat, getUnFormattedNumber } from './util/Date';
 import { SVGIcon, Theme } from './components/base/SVGIcon';
 import { CreatedModified } from './components/base/CreatedModified';
-import { MessageFunction, NotificationItemProps, Persistence } from './components/notifications/model';
+import {
+    MessageFunction,
+    NotificationItemProps,
+    NotificationItemModel,
+    Persistence,
+} from './components/notifications/model';
 import { PermissionAllowed, PermissionNotAllowed } from './components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
@@ -212,7 +217,9 @@ import { QueriesListing } from './components/listing/QueriesListing';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
+import { EntityDeleteModal } from './components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './components/entities/ParentEntityEditPanel';
+import { createDeleteSuccessNotification, createDeleteErrorNotification } from './components/notifications/messaging';
 import {
     IParentOption,
     EntityInputProps,
@@ -330,7 +337,6 @@ import {
     getSampleDeleteConfirmationData,
     extractEntityTypeOptionFromRow,
 } from './components/entities/actions';
-
 import { SampleTypeDataType, DataClassDataType } from './components/entities/constants';
 import { SampleTypeModel } from './components/domainproperties/samples/models';
 import { SampleTypeDesigner } from './components/domainproperties/samples/SampleTypeDesigner';
@@ -546,6 +552,7 @@ export {
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
+    EntityDeleteModal,
     EntityDataType,
     EntityInsertPanel,
     SampleTypeDataType,
@@ -558,6 +565,9 @@ export {
     IEntityTypeOption,
     MaterialOutput,
     GenerateEntityResponse,
+    createDeleteSuccessNotification,
+    createDeleteErrorNotification,
+
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,
@@ -625,6 +635,7 @@ export {
     MessageLevel,
     MessageFunction,
     NotificationItemProps,
+    NotificationItemModel,
     LastActionStatus,
     GridColumn,
     InferDomainResponse,
@@ -682,6 +693,7 @@ export {
     getUserProperties,
     createNotification,
     dismissNotifications,
+    addNotification,
     initNotificationsState,
     datePlaceholder,
     getDateFormat,

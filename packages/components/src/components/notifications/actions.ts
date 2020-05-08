@@ -25,6 +25,7 @@ export type NotificationCreatable = string | NotificationItemProps | Notificatio
 /**
  * Create a notification that can be displayed on pages within the application
  * @param creatable
+ * @param notify - Function that handles display of the notification. Default is global.addNotification as used in SampleManagement
  */
 export function createNotification(creatable: NotificationCreatable) {
     let item: NotificationItemModel;

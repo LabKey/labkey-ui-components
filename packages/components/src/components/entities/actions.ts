@@ -1,7 +1,10 @@
-import { Ajax, Filter, Utils } from '@labkey/api';
+import { Ajax, AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
 import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
+
+import { QueryGridModel } from '../base/models/model';
+import { deleteRows } from '../../query/api';
 
 import {
     DisplayObject,

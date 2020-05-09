@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD May 2020
 * Item 7205: Includes support for import data in new Dataset Designer
 
+### version 0.57.0
+*Released*: 8 May 2020
+* Item 7178: Factored EntityDeleteModal (and associated functions) out of Sample Manager into labkey-ui-components for use in Biologics.
+
 ## version 0.56.3
 *Released*: 7 May 2020
 * Changes for DomainFormDisplayOptions from show to hide for default cases

@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
-import { LabelHelpTip} from '../base/LabelHelpTip';
+import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import {
     ADVANCED_FIELD_EDITOR_TOPIC,
@@ -20,7 +20,7 @@ import {
     DomainField,
     IDomainFormDisplayOptions,
     IFieldChange,
-    PropDescType
+    PropDescType,
 } from './models';
 import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
 import {

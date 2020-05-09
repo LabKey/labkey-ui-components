@@ -62,6 +62,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     private _sequenceNum: string;
     private _selectedKeyFieldName: string;
     private _selectedVisitDateName: string;
+    private _keyFieldMappingError = 'You must select the Additional Key field different than Column Mapping fields';
+    private _visitDateMappingError = 'You must select the Visit Date field different than Column Mapping fields';
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
@@ -117,17 +119,54 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         }
     }
 
+    checkFieldsInColumnMapping(model: DatasetModel): string {
+        let error: string;
+        if (
+            model.keyPropertyName &&
+            (model.keyPropertyName === this._participantId || model.keyPropertyName === this._sequenceNum)
+        ) {
+            error = this._keyFieldMappingError;
+        }
+        if (
+            model.visitDatePropertyName &&
+            (model.visitDatePropertyName === this._participantId || model.visitDatePropertyName === this._sequenceNum)
+        ) {
+            error = this._visitDateMappingError;
+        }
+        return error;
+    }
+
     onPropertiesChange = (model: DatasetModel) => {
         const { onChange } = this.props;
+        const { fileImportData } = this.state;
 
-        this.setState(
-            () => ({ model }),
-            () => {
-                if (onChange) {
-                    onChange(model);
+        if (fileImportData && (this._participantId || this._sequenceNum)) {
+            const error = this.checkFieldsInColumnMapping(model);
+
+            const updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
+                if (draft.exception !== error && (draft.keyPropertyName || draft.visitDatePropertyName)) {
+                    draft.exception = error;
                 }
-            }
-        );
+            });
+
+            this.setState(
+                () => ({ model: updatedModel }),
+                () => {
+                    if (onChange) {
+                        onChange(updatedModel);
+                    }
+                }
+            );
+        } else {
+            this.setState(
+                () => ({ model }),
+                () => {
+                    if (onChange) {
+                        onChange(model);
+                    }
+                }
+            );
+        }
     };
 
     onIndexChange = (keyPropertyIndex?: number, visitDatePropertyIndex?: number) => {
@@ -229,7 +268,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         this.setState(
             produce((draft: Draft<State>) => {
                 draft.model.domain = updatedDomain;
-                draft.model.exception = undefined;
+                draft.model.exception = this.checkFieldsInColumnMapping(draft.model);
             })
         );
     };

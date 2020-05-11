@@ -53,51 +53,60 @@ describe('GridPanel', () => {
         // Model is loading QueryInfo and Rows, should render loading, disabled ChartSelector, no pagination/ViewMenu.
         let model = makeTestModel(SCHEMA_QUERY);
         const wrapper = mount(<GridPanel actions={actions} model={model} />);
-        expect(wrapper.find('button#chart-menu-model[disabled]').exists());
-        expect(!wrapper.find(PAGINATION_SELECTOR).exists());
-        expect(!wrapper.find(VIEW_MENU_SELECTOR).exists());
+        expect(wrapper.find('button#chart-menu-model[disabled]').exists()).toEqual(true);
+        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(false);
 
         // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
         model = model.mutate({ queryInfoLoadingState: LoadingState.LOADED, queryInfo: QUERY_INFO });
         wrapper.setProps({ model });
-        expect(wrapper.find(PAGINATION_SELECTOR).exists());
-        expect(wrapper.find(VIEW_MENU_SELECTOR).exists());
-        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists());
+        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
+
         // Loaded rows and QueryInfo. Should render grid, pagination, ViewMenu, ChartMenu
         model = model.mutate({ rows, orderedRows: orderedRows.slice(0, 20), rowCount, rowsLoadingState: LoadingState.LOADED });
         wrapper.setProps({ model });
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).text()).toEqual('1 - 20 of 661');
-        expect(wrapper.find(PAGINATION_SELECTOR).exists()); //.toEqual(true);
+        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
+
         // Previous, Page Menu, Next buttons should be present.
         let paginationButtons = wrapper.find(PAGINATION_SELECTOR).find('button');
         expect(paginationButtons.length).toEqual(3);
+
         // Previous button should be disabled.
         expect(paginationButtons.first().hasClass(DISABLED_BUTTON_CLASS)).toEqual(true);
         expect(paginationButtons.last().hasClass(DISABLED_BUTTON_CLASS)).toEqual(false);
-        expect(wrapper.find(VIEW_MENU_SELECTOR).exists());
-        expect(wrapper.find(GRID_SELECTOR).exists());
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(GRID_SELECTOR).exists()).toEqual(true);
+
         // Header row + data rows.
         expect(wrapper.find(GRID_SELECTOR).find('tr').length).toEqual(21);
 
         // Has rows and QueryInfo, but new rows are loading, should render disabled pagination and loading spinner.
         model = model.mutate({ rowsLoadingState: LoadingState.LOADING });
         wrapper.setProps({ model });
-        expect(wrapper.find(VIEW_MENU_SELECTOR).exists());
-        expect(wrapper.find(PAGINATION_SELECTOR).exists())
+        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(true);
         paginationButtons = wrapper.find(PAGINATION_SELECTOR).find('button');
-        expect(paginationButtons.first().hasClass(DISABLED_BUTTON_CLASS));
-        expect(paginationButtons.last().hasClass(DISABLED_BUTTON_CLASS));
+        expect(paginationButtons.first().hasClass(DISABLED_BUTTON_CLASS)).toEqual(true);
+        expect(paginationButtons.last().hasClass(DISABLED_BUTTON_CLASS)).toEqual(true);
         expect(wrapper.find(GRID_INFO_SELECTOR).text()).toContain('Loading data...');
 
         // Should render TestButtons component in the left part of the grid bar.
-        model = model.mutate({ rowsLoadingState: LoadingState.LOADED });
         wrapper.setProps({ ButtonsComponent: TestButtons });
-        expect(wrapper.find(TestButtons).exists());
+        expect(wrapper.find(TestButtons).exists()).toEqual(true);
 
         // Panel classes should not be present.
         wrapper.setProps({ asPanel: false });
-        expect(!wrapper.find('.grid-panel').hasClass('panel'));
-        expect(!wrapper.find('.grid-panel').hasClass('panel-default'));
+        expect(wrapper.find('.grid-panel').hasClass('panel')).toEqual(false);
+        expect(wrapper.find('.grid-panel').hasClass('panel-default')).toEqual(false);
 
         // pageSizes should be different
         expect(wrapper.find(PAGE_SIZE_SELECTOR).find('ul').text()).toEqual('Page Size2040100250400');
@@ -106,16 +115,16 @@ describe('GridPanel', () => {
 
         // Pagination should not be present.
         wrapper.setProps({ isPaged: false });
-        expect(!wrapper.find(PAGINATION_INFO_SELECTOR).exists());
-        expect(!wrapper.find(PAGINATION_SELECTOR).exists());
-        expect(!wrapper.find(PAGE_SIZE_SELECTOR).exists());
+        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(PAGE_SIZE_SELECTOR).exists()).toEqual(false);
 
         // ViewMenu should not be present.
         wrapper.setProps({ showViewSelector: false });
-        expect(!wrapper.find(VIEW_MENU_SELECTOR).exists());
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(false);
 
         // export menu should not be rendered.
         wrapper.setProps({ showExport: false });
-        expect(!wrapper.find(EXPORT_MENU_SELECTOR).exists());
+        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
     });
 });

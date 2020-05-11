@@ -700,6 +700,7 @@ export {
     PaginationButtonsProps,
     SubMenuItemProps,
     ISubItem,
+    ToggleButtons,
 
     // application page related items
     LoadingPage,
@@ -728,7 +729,6 @@ export {
     GridColumn,
     Section,
     ConfirmModal,
-    ToggleButtons,
     Cards,
     Footer,
     DragDropHandle,

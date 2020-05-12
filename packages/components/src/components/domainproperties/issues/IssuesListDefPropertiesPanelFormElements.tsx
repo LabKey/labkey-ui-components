@@ -254,7 +254,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
             let coreUsers = List<UserGroup>();
             users.forEach(user => {
                 const usr = UserGroup.create(user);
-                coreUsers.push(usr);
+                coreUsers = coreUsers.push(usr);
             });
             return coreUsers.size > 0 ? coreUsers.toArray() : undefined;
         });

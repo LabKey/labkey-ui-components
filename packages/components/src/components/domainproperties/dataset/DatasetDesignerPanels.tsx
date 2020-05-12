@@ -139,9 +139,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
     onPropertiesChange = (model: DatasetModel) => {
         const { onChange } = this.props;
-        const { fileImportData } = this.state;
 
-        if (fileImportData && (this._participantId || this._sequenceNum)) {
+        if (this._importFromFile && (this._participantId || this._sequenceNum)) {
             const error = this.checkFieldsInColumnMapping(model);
 
             const updatedModel = produce(model, (draft: Draft<DatasetModel>) => {

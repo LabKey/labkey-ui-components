@@ -62,8 +62,9 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     private _sequenceNum: string;
     private _selectedKeyFieldName: string;
     private _selectedVisitDateName: string;
-    private _keyFieldMappingError = 'You must select the Additional Key field different than Column Mapping fields';
-    private _visitDateMappingError = 'You must select the Visit Date field different than Column Mapping fields';
+    private _keyFieldMappingError = 'Your Additional Key field must not be one of the Column Mapping fields.';
+    private _visitDateMappingError = 'Your Visit Date field must not be one of the Column Mapping fields.';
+    private _importFromFile?: boolean;
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
@@ -276,6 +277,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     datasetColumnMapping = () => {
         const { model } = this.state;
 
+        this._importFromFile = true;
+
         return (
             <>
                 {model && model.domain.fields && model.domain.fields.size > 0 && (
@@ -327,7 +330,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
         let updatedModel;
 
-        if (fileImportData) {
+        if (this._importFromFile) {
             if (this._participantId && this._sequenceNum) {
                 // filter out these fields
                 const updatedDomain = model.domain.merge({
@@ -387,7 +390,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                                 }),
                                 () => {
                                     // If we're importing Dataset file data, import file contents
-                                    if (fileImportData) {
+                                    if (fileImportData && !model.definitionIsShared) {
                                         this.handleFileImport();
                                     } else {
                                         const { model } = this.state;

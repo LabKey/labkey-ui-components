@@ -913,20 +913,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}
 
+                        {filePreviewData && importDataChildRenderer && importDataChildRenderer()}
+
                         {filePreviewData && !domainFormDisplayOptions.hideImportData && (
                             <ImportDataFilePreview
                                 noun={helpNoun}
                                 filePreviewData={filePreviewData}
                                 setFileImportData={setFileImportData}
                                 file={file}
-                            >
-                                {importDataChildRenderer && importDataChildRenderer()}
-                            </ImportDataFilePreview>
+                            />
                         )}
-                        {filePreviewData &&
-                            domainFormDisplayOptions.hideImportData &&
-                            importDataChildRenderer &&
-                            importDataChildRenderer()}
                     </Panel.Body>
                 </Panel>
                 {domain.hasException() && domain.domainException.severity === SEVERITY_LEVEL_ERROR && (

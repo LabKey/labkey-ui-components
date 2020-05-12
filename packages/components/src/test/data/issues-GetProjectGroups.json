@@ -1,0 +1,25 @@
+[ {
+  "userId" : -1,
+  "name" : "Administrators",
+  "displayName" : "Site:Administrators",
+  "type" : "g",
+  "active" : true
+}, {
+  "userId" : 1022,
+  "name" : "Updaters",
+  "displayName" : "Site:Updaters",
+  "type" : "g",
+  "active" : true
+}, {
+  "userId" : -2,
+  "name" : "Users",
+  "displayName" : "Site:Users",
+  "type" : "g",
+  "active" : true
+}, {
+  "userId" : 1025,
+  "name" : "AssayRequestGroup",
+  "displayName" : "AssayRequestGroup",
+  "type" : "g",
+  "active" : true
+} ]

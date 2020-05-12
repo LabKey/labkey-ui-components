@@ -1,0 +1,36 @@
+[{
+  "userId" : 1005,
+  "userName" : "binalp",
+  "groupId" : -1,
+  "groupName" : "Administrators"
+},{
+  "userId" : 1018,
+  "userName" : "tester2",
+  "groupId" : -1,
+  "groupName" : "Administrators"
+},{
+    "userId" : 1005,
+    "userName" : "binalp",
+    "groupId" : -2,
+    "groupName" : "Users"
+}, {
+  "userId" : 1018,
+  "userName" : "tester2",
+  "groupId" : -2,
+  "groupName" : "Users"
+}, {
+  "userId" : 1023,
+  "userName" : "updater",
+  "groupId" : -2,
+  "groupName" : "Users"
+}, {
+    "userId" : 1023,
+    "userName" : "updater",
+    "groupId" : 1025,
+    "groupName" : "AssayRequestGroup"
+},{
+  "userId" : 1023,
+  "userName" : "updater",
+  "groupId" : 0,
+  "groupName" : null
+}]

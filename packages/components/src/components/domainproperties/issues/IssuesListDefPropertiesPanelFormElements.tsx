@@ -12,7 +12,7 @@ import { LoadingSpinner, Principal, SelectInput } from '../../..';
 
 import { UserGroup } from '../../permissions/models';
 
-import { getCoreGroups, getCoreUsersInGroups } from '../../permissions/actions';
+import { getCoreGroups } from '../../permissions/actions';
 
 import { IssuesListDefModel } from './models';
 import {
@@ -36,7 +36,8 @@ interface AssignmentOptionsProps {
 
 interface AssignmentOptionsState {
     coreGroups?: List<Principal>;
-    coreUsers?: List<UserGroup>;
+    coreUsersLoading?: boolean
+    // coreUsers?: List<UserGroup>;
 }
 
 // For AssignedToGroupInput & DefaultUserAssignmentInput components
@@ -44,7 +45,8 @@ interface AssignmentOptionsInputProps {
     model: IssuesListDefModel;
     onSelect: (name: string, value: any) => any;
     coreGroups?: List<Principal>;
-    coreUsers?: List<UserGroup>;
+    coreUsersLoading?: boolean
+    // coreUsers?: List<UserGroup>;
 }
 
 export class BasicPropertiesFields extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
@@ -68,7 +70,8 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
         this.state = produce(
             {
                 coreGroups: undefined,
-                coreUsers: undefined,
+                coreUsersLoading: undefined,
+                // coreUsers: undefined,
             },
             () => {}
         );
@@ -80,47 +83,17 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
                 coreGroups: coreGroupsData,
             }));
         });
-
-        getCoreUsersInGroups().then((coreUsersData: List<UserGroup>) => {
-
-            let activeUsersWithUpdatePerms = List<UserGroup>();
-            coreUsersData.forEach(user => {
-                this.setCoreUsersWithUpdatePermission(user, user.userId, activeUsersWithUpdatePerms);
-            });
-        });
     }
-
-    setCoreUsersWithUpdatePermission = (user: UserGroup, userId?: number, activeUsersWithUpdatePerms?: any): void =>  {
-            Ajax.request({
-                url: ActionURL.buildURL('issues', 'HasUpdatePermission'),
-                method: 'GET',
-                params: { userId },
-                scope: this,
-                success: Utils.getCallbackWrapper(data => {
-
-                    if (data.hasUpdatePerm) {
-                        activeUsersWithUpdatePerms = activeUsersWithUpdatePerms.push(user);
-                        this.setState(() => ({
-                            coreUsers: activeUsersWithUpdatePerms,
-                        }));
-                    }
-                }),
-                failure: Utils.getCallbackWrapper(error => {
-                    alert('Error: ' + error);
-                    return false;
-                }),
-            });
-
-    };
 
     render() {
         const { model, onSelect } = this.props;
-        const { coreUsers, coreGroups } = this.state;
+        const { coreGroups } = this.state;
+        // const { coreUsers, coreGroups } = this.state;
         return (
             <Col xs={12} md={6}>
                 <SectionHeading title="Assignment Options" />
                 <AssignedToGroupInput model={model} coreGroups={coreGroups} onSelect={onSelect} />
-                <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={onSelect} />
+                <DefaultUserAssignmentInput model={model} onSelect={onSelect} />
             </Col>
         );
     }
@@ -276,28 +249,42 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
         this.props.onSelect(name, selected ? selected.userId : undefined);
     };
 
-    getFilteredCoreUsers = (groupId: any, coreUsers: List<UserGroup>) => {
-        const filteredCoreUser = coreUsers.filter(coreUser => {
-            return coreUser.groupId === groupId;
+    getFilteredCoreUsers = (groupId: any): any => {
+        this.getUsersForGroup(groupId).then((users: List<UserGroup>) => {
+            return users && users.toArray().length > 0 ? users.toArray() : undefined;
         });
-        return filteredCoreUser.toArray().length > 0 ? filteredCoreUser.toArray() : undefined;
+    };
+
+    getUsersForGroup = (groupId: any): Promise<any> => {
+        return new Promise((resolve, reject) => {
+            Ajax.request({
+                url: ActionURL.buildURL('issues', 'GetUsersForGroup'),
+                method: 'GET',
+                params: {groupId},
+                scope: this,
+                success: Utils.getCallbackWrapper(data => {
+                    resolve(data);
+                }),
+                failure: Utils.getCallbackWrapper(error => {
+                    reject(error);
+                }),
+            });
+        });
     };
 
     render() {
-        const { model, coreUsers } = this.props;
+        const { model } = this.props;
 
+        //TODO : add loading spinner
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel label="Default User Assignment" helpTipBody={this.getHelpTip} required={false} />
                 </Col>
                 <Col xs={9} lg={8}>
-                    {!coreUsers ? (
-                        <LoadingSpinner />
-                    ) : (
                         <SelectInput
                             name="assignedToUser"
-                            options={this.getFilteredCoreUsers(model.assignedToGroup, coreUsers)}
+                            options={this.getFilteredCoreUsers(model.assignedToGroup)}
                             placeholder="Unassigned"
                             inputClass="col-xs-12"
                             valueKey="userId"
@@ -309,7 +296,6 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
                             multiple={false}
                             required={false}
                         />
-                    )}
                 </Col>
             </Row>
         );

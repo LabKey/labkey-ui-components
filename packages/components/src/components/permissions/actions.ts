@@ -4,7 +4,7 @@
  */
 import { List, Map, fromJS } from 'immutable';
 
-import {Filter, getServerContext, Security} from '@labkey/api';
+import {ActionURL, Ajax, Filter, getServerContext, Security, Utils} from '@labkey/api';
 
 import { ISelectRowsResult, selectRows } from '../../query/api';
 
@@ -40,7 +40,7 @@ function processPrincipalsResponse(data: ISelectRowsResult, resolve, isGroup: bo
     });
 
     if (isGroup) {
-        //resolve non-guest groups and non-usere groups. This is specific to Issues Definition Admin
+        //resolve non-guest groups and non-users groups. This is specific to Issue Definition Admin
         resolve(principals.filter(principal => principal.type === 'g' && principal.userId !== GROUP_GUESTS_ID
             && (principal.userId !== GROUP_USERS_ID || getServerContext().user.isRootAdmin)));
     } else {
@@ -75,33 +75,6 @@ export function getCoreGroups(): Promise<List<Principal>> {
         })
             .then((data: ISelectRowsResult) => {
                 processPrincipalsResponse(data, resolve, true);
-            })
-            .catch(response => {
-                console.error(response);
-                reject(response.message);
-            });
-    });
-}
-
-export function getCoreUsersInGroups(): Promise<List<UserGroup>> {
-    return new Promise((resolve, reject) => {
-        selectRows({
-            saveInSession: true, // needed so that we can call getQueryDetails
-            schemaName: 'core',
-            sql: 'SELECT m.UserId, m.GroupId, p.Name FROM Members m LEFT JOIN Principals p ON p.UserId = m.UserId',
-            columns: 'UserId,GroupId,Name',
-        })
-            .then((data: ISelectRowsResult) => {
-                const models = fromJS(data.models[data.key]);
-                let usersInGroups = List<UserGroup>();
-
-                data.orderedModels[data.key].forEach(modelKey => {
-                    const row = models.get(modelKey);
-                    const userGroup = UserGroup.createFromSelectRow(row);
-                    usersInGroups = usersInGroups.push(userGroup);
-                });
-
-                resolve(usersInGroups);
             })
             .catch(response => {
                 console.error(response);

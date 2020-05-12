@@ -21,6 +21,7 @@ import {
     ISSUES_LIST_GROUP_ASSIGN_TIP,
     ISSUES_LIST_USER_ASSIGN_TIP,
 } from './constants';
+import {ActionURL, Ajax, Utils} from "@labkey/api";
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -81,11 +82,35 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
         });
 
         getCoreUsersInGroups().then((coreUsersData: List<UserGroup>) => {
-            this.setState(() => ({
-                coreUsers: coreUsersData,
-            }));
+
+            let activeUsersWithUpdatePerms = List<UserGroup>();
+            coreUsersData.forEach(user => {
+                this.hasUpdatePermission(user.userId).then((user) => {
+                    activeUsersWithUpdatePerms = activeUsersWithUpdatePerms.push(user);
+                    this.setState(() => ({
+                        coreUsers: activeUsersWithUpdatePerms,
+                    }));
+                })
+            });
         });
     }
+
+    hasUpdatePermission = (userId?: number): any =>  {
+            Ajax.request({
+                url: ActionURL.buildURL('issues', 'HasUpdatePermission'),
+                method: 'GET',
+                params: { userId },
+                scope: this,
+                success: Utils.getCallbackWrapper(data => {
+                    return data.hasUpdatePerm;
+                }),
+                failure: Utils.getCallbackWrapper(error => {
+                    alert('Error: ' + error);
+                    return false;
+                }),
+            });
+
+    };
 
     render() {
         const { model, onSelect } = this.props;

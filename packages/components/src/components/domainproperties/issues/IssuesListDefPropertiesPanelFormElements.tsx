@@ -21,7 +21,7 @@ import {
     ISSUES_LIST_GROUP_ASSIGN_TIP,
     ISSUES_LIST_USER_ASSIGN_TIP,
 } from './constants';
-import {ActionURL, Ajax, Utils} from "@labkey/api";
+import {getUsersForGroup} from "./actions";
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -36,8 +36,7 @@ interface AssignmentOptionsProps {
 
 interface AssignmentOptionsState {
     coreGroups?: List<Principal>;
-    coreUsersLoading?: boolean
-    // coreUsers?: List<UserGroup>;
+    coreUsers?: List<UserGroup>;
 }
 
 // For AssignedToGroupInput & DefaultUserAssignmentInput components
@@ -45,8 +44,7 @@ interface AssignmentOptionsInputProps {
     model: IssuesListDefModel;
     onSelect: (name: string, value: any) => any;
     coreGroups?: List<Principal>;
-    coreUsersLoading?: boolean
-    // coreUsers?: List<UserGroup>;
+    coreUsers?: List<UserGroup>;
 }
 
 export class BasicPropertiesFields extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
@@ -70,8 +68,7 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
         this.state = produce(
             {
                 coreGroups: undefined,
-                coreUsersLoading: undefined,
-                // coreUsers: undefined,
+                coreUsers: undefined,
             },
             () => {}
         );
@@ -83,17 +80,27 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
                 coreGroups: coreGroupsData,
             }));
         });
+
+        getUsersForGroup(this.props.model.assignedToGroup).then(users => {
+            let userGroupList = List<UserGroup>();
+            users.forEach(user => {
+                const usr = UserGroup.create(user);
+                userGroupList = userGroupList.push(usr);
+            });
+            this.setState(() => ({
+                coreUsers: userGroupList,
+            }));
+        });
     }
 
     render() {
         const { model, onSelect } = this.props;
-        const { coreGroups } = this.state;
-        // const { coreUsers, coreGroups } = this.state;
+        const { coreUsers, coreGroups } = this.state;
         return (
             <Col xs={12} md={6}>
                 <SectionHeading title="Assignment Options" />
                 <AssignedToGroupInput model={model} coreGroups={coreGroups} onSelect={onSelect} />
-                <DefaultUserAssignmentInput model={model} onSelect={onSelect} />
+                <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={onSelect} />
             </Col>
         );
     }
@@ -250,7 +257,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
     };
 
     getFilteredCoreUsers = (groupId: any): any => {
-        this.getUsersForGroup(groupId).then(users => {
+        getUsersForGroup(groupId).then(users => {
             let coreUsers = List<UserGroup>();
             users.forEach(user => {
                 const usr = UserGroup.create(user);
@@ -260,33 +267,18 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
         });
     };
 
-    getUsersForGroup = (groupId: any): Promise<any> => {
-        return new Promise((resolve, reject) => {
-            Ajax.request({
-                url: ActionURL.buildURL('issues', 'GetUsersForGroup'),
-                method: 'GET',
-                params: {groupId},
-                scope: this,
-                success: Utils.getCallbackWrapper(data => {
-                    resolve(data);
-                }),
-                failure: Utils.getCallbackWrapper(error => {
-                    reject(error);
-                }),
-            });
-        });
-    };
-
     render() {
-        const { model } = this.props;
+        const { model, coreUsers } = this.props;
 
-        //TODO : add loading spinner
         return (
             <Row className="margin-top">
                 <Col xs={3} lg={4}>
                     <DomainFieldLabel label="Default User Assignment" helpTipBody={this.getHelpTip} required={false} />
                 </Col>
                 <Col xs={9} lg={8}>
+                    {!coreUsers ? (
+                        <LoadingSpinner />
+                    ) : (
                         <SelectInput
                             name="assignedToUser"
                             options={this.getFilteredCoreUsers(model.assignedToGroup)}
@@ -301,6 +293,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
                             multiple={false}
                             required={false}
                         />
+                    )}
                 </Col>
             </Row>
         );

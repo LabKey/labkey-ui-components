@@ -21,18 +21,17 @@ export class Principal extends Record({
         super(values);
     }
 
+    static create(raw: any): Principal {
+        return new Principal({...raw});
+    }
+
     static createFromSelectRow(row: Map<string, Map<string, any>>): Principal {
         const userId = row.getIn(['UserId', 'value']);
         const type = row.getIn(['Type', 'value']);
         const name = row.getIn(['Name', 'value']);
-        const container = row.getIn(['Container', 'value']);
 
         let displayName = row.getIn(['DisplayName', 'value']);
         displayName = type === 'u' && displayName ? name + ' (' + displayName + ')' : name;
-
-        if (type === 'g') {
-            displayName = container === null ? 'Site: ' + name : name;
-        }
 
         return new Principal({ userId, name, type, displayName });
     }

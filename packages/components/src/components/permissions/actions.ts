@@ -4,14 +4,11 @@
  */
 import { List, Map, fromJS } from 'immutable';
 
-import {ActionURL, Ajax, Filter, getServerContext, Security, Utils} from '@labkey/api';
+import {Filter, Security} from '@labkey/api';
 
 import { ISelectRowsResult, selectRows } from '../../query/api';
 
-import {Principal, SecurityPolicy, SecurityRole, UserGroup} from './models';
-
-const GROUP_GUESTS_ID = -3; // as per core.Principals or Group.java
-const GROUP_USERS_ID = -2;
+import {Principal, SecurityPolicy, SecurityRole} from './models';
 
 export function processGetRolesResponse(response: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -39,13 +36,7 @@ function processPrincipalsResponse(data: ISelectRowsResult, resolve, isGroup: bo
         principals = principals.push(principal);
     });
 
-    if (isGroup) {
-        //resolve non-guest groups and non-users groups. This is specific to Issue Definition Admin
-        resolve(principals.filter(principal => principal.type === 'g' && principal.userId !== GROUP_GUESTS_ID
-            && (principal.userId !== GROUP_USERS_ID || getServerContext().user.isRootAdmin)));
-    } else {
-        resolve(principals);
-    }
+    resolve(principals);
 }
 
 export function getPrincipals(): Promise<List<Principal>> {
@@ -58,23 +49,6 @@ export function getPrincipals(): Promise<List<Principal>> {
         })
             .then((data: ISelectRowsResult) => {
                 processPrincipalsResponse(data, resolve, false);
-            })
-            .catch(response => {
-                console.error(response);
-                reject(response.message);
-            });
-    });
-}
-
-export function getCoreGroups(): Promise<List<Principal>> {
-    return new Promise((resolve, reject) => {
-        selectRows({
-            saveInSession: true, // needed so that we can call getQueryDetails
-            schemaName: 'core',
-            sql: "SELECT p.UserId, p.Name, p.Type, p.Container FROM Principals p WHERE p.Type='g'",
-        })
-            .then((data: ISelectRowsResult) => {
-                processPrincipalsResponse(data, resolve, true);
             })
             .catch(response => {
                 console.error(response);

@@ -4,11 +4,14 @@
  */
 import { List, Map, fromJS } from 'immutable';
 
-import { Filter, Security } from '@labkey/api';
+import {Filter, getServerContext, Security} from '@labkey/api';
 
 import { ISelectRowsResult, selectRows } from '../../query/api';
 
-import { Principal, SecurityPolicy, SecurityRole, UserGroup } from './models';
+import {Principal, SecurityPolicy, SecurityRole, UserGroup} from './models';
+
+const GROUP_GUESTS_ID = -3; // as per core.Principals or Group.java
+const GROUP_USERS_ID = -2;
 
 export function processGetRolesResponse(response: any): List<SecurityRole> {
     let roles = List<SecurityRole>();
@@ -37,7 +40,9 @@ function processPrincipalsResponse(data: ISelectRowsResult, resolve, isGroup: bo
     });
 
     if (isGroup) {
-        resolve(principals.filter(principal => principal.type === 'g'));
+        //resolve non-guest groups and non-usere groups. This is specific to Issues Definition Admin
+        resolve(principals.filter(principal => principal.type === 'g' && principal.userId !== GROUP_GUESTS_ID
+            && (principal.userId !== GROUP_USERS_ID || getServerContext().user.isRootAdmin)));
     } else {
         resolve(principals);
     }

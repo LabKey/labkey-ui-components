@@ -250,8 +250,12 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
     };
 
     getFilteredCoreUsers = (groupId: any): any => {
+        let coreUsers = List<UserGroup>();
         this.getUsersForGroup(groupId).then(users => {
-            return users && users.length > 0 ? users : undefined;
+            users.forEach(user => {
+               coreUsers.push(UserGroup.create(user));
+            });
+            return coreUsers.size > 0 ? coreUsers.toArray() : undefined;
         });
     };
 

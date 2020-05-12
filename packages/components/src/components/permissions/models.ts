@@ -77,6 +77,10 @@ export class UserGroup extends Record({
         const groupName = row.getIn(['GroupId', 'displayValue']);
         return new UserGroup({ userId, userName, groupId, groupName });
     }
+
+    static create(raw: any): UserGroup {
+        return new UserGroup({...raw});
+    }
 }
 
 export class SecurityRole extends Record({

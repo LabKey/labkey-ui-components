@@ -104,7 +104,7 @@ class ButtonBar extends PureComponent<GridBarProps> {
 }
 
 interface State {
-    omniBoxValues: ActionValue[],
+    actionValues: ActionValue[],
 }
 
 export class GridPanel extends PureComponent<Props, State> {
@@ -144,7 +144,7 @@ export class GridPanel extends PureComponent<Props, State> {
         };
 
         this.state = {
-            omniBoxValues: [],
+            actionValues: [],
         };
     }
 
@@ -198,7 +198,7 @@ export class GridPanel extends PureComponent<Props, State> {
 
         if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
             // Remove the old filter
-            const value = this.state.omniBoxValues[change.index].valueObject;
+            const value = this.state.actionValues[change.index].valueObject;
             newFilters = newFilters.filter(filter => !filtersEqual(filter, value));
         }
 
@@ -221,19 +221,19 @@ export class GridPanel extends PureComponent<Props, State> {
         }
 
         actions.setFilters(model.id, newFilters, allowSelections);
-        this.setState({ omniBoxValues: actionValues });
+        this.setState({ actionValues });
     };
 
     handleSortChange = (actionValues: ActionValue[], change: Change): void => {
         const { model, actions } = this.props;
 
         if (change.type === ChangeType.remove) {
-            const value = this.state.omniBoxValues[change.index].valueObject;
+            const value = this.state.actionValues[change.index].valueObject;
             const newSorts = model.sorts.filter(sort => !sortsEqual(sort, value));
             actions.setSorts(model.id, newSorts);
         } else {
             const newActionValue = actionValues[actionValues.length - 1];
-            const oldActionValue = this.state.omniBoxValues[change.index];
+            const oldActionValue = this.state.actionValues[change.index];
             const newValue = newActionValue.valueObject;
             const oldValue = oldActionValue?.valueObject;
 
@@ -261,7 +261,7 @@ export class GridPanel extends PureComponent<Props, State> {
             }
         }
 
-        this.setState({ omniBoxValues: actionValues });
+        this.setState({ actionValues });
     };
 
     handleSearchChange = (actionValues: ActionValue[], change: Change): void => {
@@ -270,7 +270,7 @@ export class GridPanel extends PureComponent<Props, State> {
 
         if (change.type === ChangeType.modify || change.type === ChangeType.remove) {
             // Remove the filter with the value of oldValue
-            const oldValue = this.state.omniBoxValues[change.index].valueObject;
+            const oldValue = this.state.actionValues[change.index].valueObject;
             newFilters = newFilters.filter(filter => !filtersEqual(filter, oldValue));
         }
 
@@ -281,7 +281,7 @@ export class GridPanel extends PureComponent<Props, State> {
         }
 
         actions.setFilters(model.id, newFilters, allowSelections);
-        this.setState({ omniBoxValues: actionValues });
+        this.setState({ actionValues });
     };
 
     handleViewChange = (actionValues: ActionValue[], change: Change): void => {
@@ -307,7 +307,7 @@ export class GridPanel extends PureComponent<Props, State> {
             ];
         }
 
-        this.setState({ omniBoxValues: actionValues });
+        this.setState({ actionValues });
     };
 
     /**
@@ -321,7 +321,7 @@ export class GridPanel extends PureComponent<Props, State> {
         if (change.type === ChangeType.add || change.type === ChangeType.modify) {
             keyword = actionValues[actionValues.length - 1].action.keyword;
         } else {
-            keyword = this.state.omniBoxValues[change.index].action.keyword;
+            keyword = this.state.actionValues[change.index].action.keyword;
         }
 
         this.omniBoxChangeHandlers[keyword](actionValues, change);
@@ -343,8 +343,8 @@ export class GridPanel extends PureComponent<Props, State> {
             valueObject: sort,
             action: this.omniBoxActions.sort,
         };
-        const actionValues = this.state.omniBoxValues.concat([actionValue]);
-        this.handleSortChange(actionValues, { type: ChangeType.add, index: undefined });
+        const actionValues = this.state.actionValues.concat([actionValue]);
+        this.handleSortChange(actionValues, { type: ChangeType.add });
     };
 
     /**
@@ -354,14 +354,15 @@ export class GridPanel extends PureComponent<Props, State> {
     onViewSelect = (viewName: string): void => {
         const actionValue = { value: viewName, action: this.omniBoxActions.view };
         let changeType = ChangeType.remove;
-        let actionValues = this.state.omniBoxValues.filter(av => av.action.keyword !== 'view');
+        let actionValues = this.state.actionValues.filter(av => av.action.keyword !== 'view');
+        console.log(viewName);
 
         if (viewName !== undefined) {
             changeType = ChangeType.add;
             actionValues = actionValues.concat([actionValue]);
         }
 
-        this.handleViewChange(actionValues, { type: changeType, index: undefined });
+        this.handleViewChange(actionValues, { type: changeType });
     };
 
     getGridColumns = (): List<GridColumn | QueryColumn> => {
@@ -437,7 +438,7 @@ export class GridPanel extends PureComponent<Props, State> {
                                 getSelectDistinctOptions={this.getSelectDistinctOptions}
                                 mergeValues={false}
                                 onChange={this.omniBoxChange}
-                                values={this.state.omniBoxValues}
+                                values={this.state.actionValues}
                             />
                         </div>
                     )}

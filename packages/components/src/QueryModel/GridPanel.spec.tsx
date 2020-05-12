@@ -38,6 +38,7 @@ const VIEW_MENU_SELECTOR = '.view-menu';
 const GRID_SELECTOR = '.grid-panel__grid .table-responsive';
 const GRID_INFO_SELECTOR = '.grid-panel__info';
 const EXPORT_MENU_SELECTOR = '.export-menu';
+const OMNIBOX_SELECTOR = '.grid-panel__omnibox OmniBox';
 const DISABLED_BUTTON_CLASS = 'disabled-button-with-tooltip';
 
 describe('GridPanel', () => {
@@ -58,6 +59,9 @@ describe('GridPanel', () => {
         expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(false);
+        // OmniBox should be present, but disabled when we're loading
+        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
 
         // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
         model = model.mutate({ queryInfoLoadingState: LoadingState.LOADED, queryInfo: QUERY_INFO });
@@ -66,6 +70,8 @@ describe('GridPanel', () => {
         expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
 
         // Loaded rows and QueryInfo. Should render grid, pagination, ViewMenu, ChartMenu
         model = model.mutate({ rows, orderedRows: orderedRows.slice(0, 20), rowCount, rowsLoadingState: LoadingState.LOADED });
@@ -73,6 +79,8 @@ describe('GridPanel', () => {
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).text()).toEqual('1 - 20 of 661');
         expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(false);
 
         // Previous, Page Menu, Next buttons should be present.
         let paginationButtons = wrapper.find(PAGINATION_SELECTOR).find('button');

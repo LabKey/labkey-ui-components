@@ -85,24 +85,25 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
 
             let activeUsersWithUpdatePerms = List<UserGroup>();
             coreUsersData.forEach(user => {
-                this.hasUpdatePermission(user.userId).then((user) => {
-                    activeUsersWithUpdatePerms = activeUsersWithUpdatePerms.push(user);
-                    this.setState(() => ({
-                        coreUsers: activeUsersWithUpdatePerms,
-                    }));
-                })
+                this.setCoreUsersWithUpdatePermission(user, user.userId, activeUsersWithUpdatePerms);
             });
         });
     }
 
-    hasUpdatePermission = (userId?: number): any =>  {
+    setCoreUsersWithUpdatePermission = (user: UserGroup, userId?: number, activeUsersWithUpdatePerms?: any): void =>  {
             Ajax.request({
                 url: ActionURL.buildURL('issues', 'HasUpdatePermission'),
                 method: 'GET',
                 params: { userId },
                 scope: this,
                 success: Utils.getCallbackWrapper(data => {
-                    return data.hasUpdatePerm;
+
+                    if (data.hasUpdatePerm) {
+                        activeUsersWithUpdatePerms = activeUsersWithUpdatePerms.push(user);
+                        this.setState(() => ({
+                            coreUsers: activeUsersWithUpdatePerms,
+                        }));
+                    }
                 }),
                 failure: Utils.getCallbackWrapper(error => {
                     alert('Error: ' + error);

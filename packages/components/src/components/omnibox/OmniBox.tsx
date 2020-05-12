@@ -36,7 +36,7 @@ export enum ChangeType {
 
 export interface Change {
     type: ChangeType;
-    index: number;
+    index?: number;
 }
 
 type MergedValuesHandler = (actionValueCollection: ActionValueCollection[], actions?: Action[]) => void;

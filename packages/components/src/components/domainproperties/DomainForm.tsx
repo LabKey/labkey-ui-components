@@ -649,6 +649,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (response && response.fields.size > 0) {
             if (setFileImportData) {
                 this.setState({ filePreviewData: response, file, filePreviewMsg: undefined });
+                setFileImportData(file, true);
             }
 
             this.onDomainChange(setDomainFields(domain, response.fields));

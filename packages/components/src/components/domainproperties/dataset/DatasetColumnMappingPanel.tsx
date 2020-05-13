@@ -26,6 +26,7 @@ import { DomainField, SelectInput } from '../../..';
 
 import { DatasetModel } from './models';
 import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
+import { DATETIME_RANGE_URI } from "../constants";
 
 interface Props {
     model: DatasetModel;
@@ -112,7 +113,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         } else {
             // DATE or CONTINUOUS
             return model.domain.fields
-                .filter(field => field.rangeURI === 'xsd:dateTime' || field.rangeURI === 'xsd:datetime')
+                .filter(field => field.rangeURI.toLowerCase() === 'xsd:datetime' || field.rangeURI === DATETIME_RANGE_URI)
                 .toList();
         }
     }

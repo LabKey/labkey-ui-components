@@ -187,6 +187,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             return;
         }
 
+        if (this.checkFieldsInColumnMapping(model)) {
+            return;
+        }
+
         this.props.onFinish(model.isValid(), this.saveDomain);
     };
 

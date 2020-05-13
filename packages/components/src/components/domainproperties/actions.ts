@@ -207,7 +207,8 @@ export function saveDomain(
     kind?: string,
     options?: any,
     name?: string,
-    includeWarnings?: boolean
+    includeWarnings?: boolean,
+    addRowIndexes?: boolean
 ): Promise<DomainDesign> {
     return new Promise((resolve, reject) => {
         function successHandler(response) {
@@ -226,7 +227,7 @@ export function saveDomain(
             }
 
             const exception = DomainException.create(response, SEVERITY_LEVEL_ERROR);
-            const badDomain = setDomainException(domain, exception);
+            const badDomain = setDomainException(domain, exception, addRowIndexes);
             reject(badDomain);
         }
 
@@ -607,8 +608,14 @@ export function setDomainFields(domain: DomainDesign, fields: List<QueryColumn>)
     }) as DomainDesign;
 }
 
-export function setDomainException(domain: DomainDesign, exception: DomainException): DomainDesign {
-    const exceptionWithRowIndexes = DomainException.addRowIndexesToErrors(domain, exception);
+export function setDomainException(
+    domain: DomainDesign,
+    exception: DomainException,
+    addRowIndexes = true
+): DomainDesign {
+    const exceptionWithRowIndexes = addRowIndexes
+        ? DomainException.addRowIndexesToErrors(domain, exception)
+        : exception;
     const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exceptionWithRowIndexes);
     return domain.set('domainException', exceptionWithAllErrors ? exceptionWithAllErrors : exception) as DomainDesign;
 }

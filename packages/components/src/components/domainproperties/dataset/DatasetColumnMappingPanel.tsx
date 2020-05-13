@@ -122,21 +122,20 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         const { closestParticipantIdField, closestTimepointField } = this.state;
         const participantIdTxt = getStudySubjectProp('nounPlural');
         const timepointTxt = getStudyTimepointLabel();
-
         const domain = model.domain;
 
         return (
             <>
                 <SectionHeading title="Column mapping" />
                 <div className="margin-top">
-                    Columns already existing in the domain can be mapped with columns from your file. Choose a column to
-                    match your {participantIdTxt} and {timepointTxt}.
+                    Columns already existing in the base dataset can be mapped with columns from your file. Choose a
+                    column to map your {participantIdTxt} and {timepointTxt}.
                 </div>
                 <Row className="margin-top">
-                    <Col xs={4}>
+                    <Col lg={2} xs={2}>
                         <DomainFieldLabel label={participantIdTxt} />
                     </Col>
-                    <Col xs={5}>
+                    <Col lg={4} xs={5}>
                         <SelectInput
                             onChange={this.onSelectChange}
                             value={closestParticipantIdField}
@@ -153,13 +152,13 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             clearable={true}
                         />
                     </Col>
-                    <Col xs={3} />
+                    <Col lg={6} xs={5} />
                 </Row>
                 <Row className="margin-top">
-                    <Col xs={4}>
+                    <Col lg={2} xs={2}>
                         <DomainFieldLabel label={timepointTxt} />
                     </Col>
-                    <Col xs={5}>
+                    <Col lg={4} xs={5}>
                         <SelectInput
                             onChange={this.onSelectChange}
                             value={closestTimepointField}
@@ -176,7 +175,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             clearable={true}
                         />
                     </Col>
-                    <Col xs={3} />
+                    <Col lg={6} xs={5} />
                 </Row>
             </>
         );

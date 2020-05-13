@@ -24,7 +24,7 @@ import produce, { Draft } from 'immer';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { DomainDesign, DomainFieldIndexChange } from '../models';
+import { DomainDesign, DomainField, DomainFieldIndexChange } from '../models';
 
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
@@ -39,6 +39,9 @@ import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
 import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
 
+const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
+const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';
+
 interface Props {
     initModel?: DatasetModel;
     onChange?: (model: DatasetModel) => void;
@@ -52,7 +55,8 @@ interface Props {
 
 interface State {
     model: DatasetModel;
-    fileImportData: File;
+    file: File;
+    shouldImportData: boolean;
     keyPropertyIndex?: number;
     visitDatePropertyIndex?: number;
 }
@@ -62,16 +66,14 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     private _sequenceNum: string;
     private _selectedKeyFieldName: string;
     private _selectedVisitDateName: string;
-    private _keyFieldMappingError = 'Your Additional Key field must not be one of the Column Mapping fields.';
-    private _visitDateMappingError = 'Your Visit Date field must not be one of the Column Mapping fields.';
-    private _importFromFile?: boolean;
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
         this.state = {
             model: props.initModel || DatasetModel.create(null, {}),
-            fileImportData: undefined,
+            file: undefined,
+            shouldImportData: false,
         };
     }
 
@@ -126,47 +128,38 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             model.keyPropertyName &&
             (model.keyPropertyName === this._participantId || model.keyPropertyName === this._sequenceNum)
         ) {
-            error = this._keyFieldMappingError;
-        }
-        if (
+            error = KEY_FIELD_MAPPING_ERROR;
+        } else if (
             model.visitDatePropertyName &&
             (model.visitDatePropertyName === this._participantId || model.visitDatePropertyName === this._sequenceNum)
         ) {
-            error = this._visitDateMappingError;
+            error = VISIT_DATE_MAPPING_ERROR;
         }
         return error;
     }
 
     onPropertiesChange = (model: DatasetModel) => {
         const { onChange } = this.props;
+        const { file } = this.state;
 
-        if (this._importFromFile && (this._participantId || this._sequenceNum)) {
+        let updatedModel = model;
+        if (file && (this._participantId || this._sequenceNum)) {
             const error = this.checkFieldsInColumnMapping(model);
-
-            const updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
-                if (draft.exception !== error && (draft.keyPropertyName || draft.visitDatePropertyName)) {
+            if (model.exception !== error) {
+                updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
                     draft.exception = error;
-                }
-            });
-
-            this.setState(
-                () => ({ model: updatedModel }),
-                () => {
-                    if (onChange) {
-                        onChange(updatedModel);
-                    }
-                }
-            );
-        } else {
-            this.setState(
-                () => ({ model }),
-                () => {
-                    if (onChange) {
-                        onChange(model);
-                    }
-                }
-            );
+                });
+            }
         }
+
+        this.setState(
+            () => ({ model: updatedModel }),
+            () => {
+                if (onChange) {
+                    onChange(model);
+                }
+            }
+        );
     };
 
     onIndexChange = (keyPropertyIndex?: number, visitDatePropertyIndex?: number) => {
@@ -174,7 +167,25 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     };
 
     onFinish = () => {
-        const { model } = this.state;
+        const { setSubmitting } = this.props;
+        const { model, shouldImportData } = this.state;
+
+        if (shouldImportData && !(this._participantId && this._sequenceNum)) {
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.model.exception =
+                        'You must select a column mapping field for ' +
+                        getStudySubjectProp('nounPlural') +
+                        ' and ' +
+                        getStudyTimepointLabel() +
+                        ' in the fields panel.';
+                }),
+                () => {
+                    setSubmitting(false);
+                }
+            );
+            return;
+        }
 
         this.props.onFinish(model.isValid(), this.saveDomain);
     };
@@ -186,6 +197,14 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         this.setState(
             produce((draft: Draft<State>) => {
                 draft.model.domain = domain;
+
+                // if we are back to the no fields state, reset the file related items
+                if (domain.fields.size === 0) {
+                    draft.file = undefined;
+                    draft.shouldImportData = false;
+                    this._participantId = undefined;
+                    this._sequenceNum = undefined;
+                }
 
                 if (keyPropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the keyPropertyIndex
@@ -242,8 +261,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
-    setFileImportData = fileImportData => {
-        this.setState({ fileImportData });
+    setFileImportData = (file: File, shouldImportData: boolean) => {
+        this.setState({ file, shouldImportData });
     };
 
     onColumnMappingChange = (participantIdField?: string, timePointField?: string) => {
@@ -255,7 +274,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         // lock down these fields from domain
         const updatedDomain = model.domain.merge({
             fields: model.domain.fields
-                .map((field, index) => {
+                .map((field: DomainField) => {
                     if (field.name === participantIdField || field.name === timePointField) {
                         return field.set('lockType', DOMAIN_FIELD_FULLY_LOCKED);
                     } else {
@@ -273,14 +292,13 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
-    datasetColumnMapping = () => {
-        const { model } = this.state;
+    renderColumnMappingSection = () => {
+        const { model, file } = this.state;
 
-        this._importFromFile = true;
-
+        // only show this column mapping section in the file infer fields case when there is at least one field
         return (
             <>
-                {model && model.domain.fields && model.domain.fields.size > 0 && (
+                {file && model && model.domain.fields && model.domain.fields.size > 0 && (
                     <DatasetColumnMappingPanel
                         model={model}
                         onColumnMappingChange={this.onColumnMappingChange}
@@ -292,20 +310,19 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
-    handleFileImport() {
+    handleFileImport(participantId, sequenceNum) {
         const { setSubmitting } = this.props;
-        const { fileImportData, model } = this.state;
-        const parameters = {
-            name: model.name,
-            participantId: this._participantId,
-            sequenceNum: this._sequenceNum,
-        };
+        const { file, model } = this.state;
 
         importData({
             schemaName: 'study',
             queryName: model.name,
-            file: fileImportData,
-            importUrl: ActionURL.buildURL('study', 'import', getServerContext().container.path, parameters),
+            file,
+            importUrl: ActionURL.buildURL('study', 'import', getServerContext().container.path, {
+                name: model.name,
+                participantId,
+                sequenceNum,
+            }),
         })
             .then(response => {
                 setSubmitting(false, () => {
@@ -322,103 +339,74 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
     saveDomain = () => {
         const { setSubmitting } = this.props;
-        const { model, fileImportData } = this.state;
+        const { model, shouldImportData } = this.state;
+        const participantIdMapCol = this._participantId;
+        const sequenceNumMapCol = this._sequenceNum;
 
+        // if there is a domain error and we are mapping columns, the row indices will be incorrect so don't include them
+        const addRowIndexes = !(participantIdMapCol || sequenceNumMapCol);
+
+        // filter out the selected column mapping files as those will be created in the base domain fields
+        const updatedDomain = model.domain.merge({
+            fields: model.domain.fields
+                .filter(field => !this._participantId || field.name !== this._participantId)
+                .filter(field => !this._sequenceNum || field.name !== this._sequenceNum)
+                .toList(),
+        }) as DomainDesign;
+
+        // need to track the updated field index values for property values after the filter
         let keyPropIndex;
         let visitPropIndex;
+        updatedDomain.fields.map((field, index) => {
+            if (model.keyPropertyName && field.name === model.keyPropertyName) {
+                keyPropIndex = index;
+            }
+            if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
+                visitPropIndex = index;
+            }
+        });
 
-        let updatedModel;
-
-        if (this._importFromFile) {
-            if (this._participantId && this._sequenceNum) {
-                // filter out these fields
-                const updatedDomain = model.domain.merge({
-                    fields: model.domain.fields
-                        .filter(field => field.name != this._participantId && field.name != this._sequenceNum)
-                        .toList(),
-                }) as DomainDesign;
-
-                updatedDomain.fields.map((field, index) => {
-                    if (model.keyPropertyName && field.name === model.keyPropertyName) {
-                        keyPropIndex = index;
-                    }
-                    if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
-                        visitPropIndex = index;
-                    }
-                });
-
-                updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
-                    draft.domain = updatedDomain;
-                });
-            } else {
+        saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, addRowIndexes)
+            .then(response => {
                 this.setState(
                     produce((draft: Draft<State>) => {
-                        draft.model.exception =
-                            'Must select ' +
-                            getStudySubjectProp('nounPlural') +
-                            ' and ' +
-                            getStudyTimepointLabel() +
-                            ' fields in column mapping';
+                        draft.keyPropertyIndex = keyPropIndex;
+                        draft.visitDatePropertyIndex = visitPropIndex;
+                        draft.model.exception = undefined;
+                        draft.model.domain = response;
                     }),
-                    () => setSubmitting(false, () => {})
-                );
-            }
-        } else {
-            updatedModel = model;
-        }
-
-        if (updatedModel) {
-            this.setState(
-                produce((draft: Draft<State>) => {
-                    draft.keyPropertyIndex = keyPropIndex;
-                    draft.visitDatePropertyIndex = visitPropIndex;
-                }),
-                () =>
-                    saveDomain(
-                        updatedModel.domain,
-                        updatedModel.getDomainKind(),
-                        updatedModel.getOptions(),
-                        updatedModel.name
-                    )
-                        .then(response => {
-                            this.setState(
-                                produce((draft: Draft<State>) => {
-                                    const updatedModel = draft.model;
-                                    updatedModel.exception = undefined;
-                                    updatedModel.domain = response;
-                                }),
-                                () => {
-                                    // If we're importing Dataset file data, import file contents
-                                    if (fileImportData && !model.definitionIsShared) {
-                                        this.handleFileImport();
-                                    } else {
-                                        const { model } = this.state;
-                                        setSubmitting(false, () => {
-                                            this.props.onComplete(model);
-                                        });
-                                    }
-                                }
-                            );
-                        })
-                        .catch(response => {
-                            const exception = resolveErrorMessage(response);
-
+                    () => {
+                        // If we're importing Dataset file and not in a Dataspace study, import the file contents
+                        if (shouldImportData && !model.definitionIsShared) {
+                            this.handleFileImport(participantIdMapCol, sequenceNumMapCol);
+                        } else {
                             setSubmitting(false, () => {
-                                this.setState(
-                                    produce((draft: Draft<State>) => {
-                                        const updatedModel = draft.model;
-                                        if (exception) {
-                                            updatedModel.exception = exception;
-                                        } else {
-                                            updatedModel.exception = undefined;
-                                            updatedModel.domain = response;
-                                        }
-                                    })
-                                );
+                                this.props.onComplete(this.state.model);
                             });
+                        }
+                    }
+                );
+            })
+            .catch(response => {
+                const exception = resolveErrorMessage(response);
+
+                setSubmitting(false, () => {
+                    this.setState(
+                        produce((draft: Draft<State>) => {
+                            if (exception) {
+                                draft.model.exception = exception;
+                            } else {
+                                // since the create case filters out the mapped columns, we don't replace the full
+                                // model.domain with response but just update the domainException
+                                draft.model.domain = draft.model.domain.merge({
+                                    domainException: response.domainException,
+                                }) as DomainDesign;
+                                draft.model.exception = undefined;
+                            }
                         })
-            );
-        }
+                    );
+                });
+            });
     };
 
     render() {
@@ -436,7 +424,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             saveBtnText,
         } = this.props;
 
-        const { model, fileImportData, keyPropertyIndex, visitDatePropertyIndex } = this.state;
+        const { model, file, keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -494,7 +482,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         onTogglePanel(1, collapsed, callback);
                     }}
                     useTheme={useTheme}
-                    importDataChildRenderer={this.datasetColumnMapping}
+                    fieldsAdditionalRenderer={this.renderColumnMappingSection}
                     successBsStyle={successBsStyle}
                     domainFormDisplayOptions={{
                         isDragDisabled: model.isFromAssay(),
@@ -505,9 +493,9 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 <Progress
                     modal={true}
                     delay={1000}
-                    estimate={fileImportData ? fileImportData.size * 0.005 : undefined}
+                    estimate={file ? file.size * 0.005 : undefined}
                     title="Importing data from selected file..."
-                    toggle={submitting && fileImportData !== undefined}
+                    toggle={submitting && file !== undefined}
                 />
             </BaseDomainDesigner>
         );

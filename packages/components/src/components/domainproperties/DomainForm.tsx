@@ -91,9 +91,9 @@ interface IDomainFormInput {
     showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
     domainIndex?: number;
     successBsStyle?: string;
-    setFileImportData?: (file: File) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
+    setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    importDataChildRenderer?: () => any;
+    fieldsAdditionalRenderer?: () => any;
 }
 
 interface IDomainFormState {
@@ -875,7 +875,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             useTheme,
             helpNoun,
             setFileImportData,
-            importDataChildRenderer,
+            fieldsAdditionalRenderer,
             domainFormDisplayOptions,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
@@ -913,7 +913,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}
 
-                        {filePreviewData && importDataChildRenderer && importDataChildRenderer()}
+                        {fieldsAdditionalRenderer && fieldsAdditionalRenderer()}
 
                         {filePreviewData && !domainFormDisplayOptions.hideImportData && (
                             <ImportDataFilePreview

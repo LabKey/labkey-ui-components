@@ -28,7 +28,8 @@ interface Props {
 
 interface State {
     model: ListModel;
-    fileImportData: File;
+    file: File;
+    shouldImportData: boolean;
 }
 
 class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -37,7 +38,8 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
 
         this.state = {
             model: props.initModel || ListModel.create({}),
-            fileImportData: undefined,
+            file: undefined,
+            shouldImportData: false,
         };
     }
 
@@ -70,18 +72,18 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         );
     };
 
-    setFileImportData = fileImportData => {
-        this.setState({ fileImportData });
+    setFileImportData = (file: File, shouldImportData: boolean) => {
+        this.setState({ file, shouldImportData });
     };
 
     handleFileImport() {
         const { setSubmitting } = this.props;
-        const { fileImportData, model } = this.state;
+        const { file, model } = this.state;
 
         importData({
             schemaName: 'lists',
             queryName: model.name,
-            file: fileImportData,
+            file,
             importUrl: ActionURL.buildURL('list', 'UploadListItems', LABKEY.container.path, { name: model.name }),
         })
             .then(response => {
@@ -117,7 +119,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
 
     saveDomain = () => {
         const { setSubmitting } = this.props;
-        const { model, fileImportData } = this.state;
+        const { model, shouldImportData } = this.state;
 
         saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
             .then(response => {
@@ -126,7 +128,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 this.setState(() => ({ model: updatedModel }));
 
                 // If we're importing List file data, import file contents
-                if (fileImportData) {
+                if (shouldImportData) {
                     this.handleFileImport();
                 } else {
                     setSubmitting(false, () => {
@@ -164,7 +166,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             onTogglePanel,
             saveBtnText,
         } = this.props;
-        const { model, fileImportData } = this.state;
+        const { model, file } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -225,9 +227,9 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 <Progress
                     modal={true}
                     delay={1000}
-                    estimate={fileImportData ? fileImportData.size * 0.005 : undefined}
+                    estimate={file ? file.size * 0.005 : undefined}
                     title="Importing data from selected file..."
-                    toggle={submitting && fileImportData !== undefined}
+                    toggle={submitting && file !== undefined}
                 />
             </BaseDomainDesigner>
         );

@@ -1467,7 +1467,7 @@ export class DomainException
         return exception.set('errors', exception.errors);
     }
 
-    static addRowIndexesToErrors(domain: DomainDesign, exceptionFromServer: DomainException) {
+    static addRowIndexesToErrors(domain: DomainDesign, exceptionFromServer: DomainException): DomainException {
         let allFieldErrors = exceptionFromServer.get('errors');
 
         allFieldErrors = allFieldErrors.map(error => {

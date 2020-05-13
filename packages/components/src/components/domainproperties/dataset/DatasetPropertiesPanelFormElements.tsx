@@ -258,12 +258,10 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
         const validKeyField = model.validManagedKeyField(keyPropertyName);
 
         const showAdditionalKeyFieldCls = showAdditionalKeyField
-            ? 'dataset_data_row_element_show margin-top'
+            ? 'dataset_data_row_element_show'
             : 'dataset_data_row_element_hide';
         const keyPropertyManagedCls =
-            showAdditionalKeyField && validKeyField
-                ? 'dataset_data_row_element_show margin-top'
-                : 'dataset_data_row_element_hide margin-top';
+            showAdditionalKeyField && validKeyField ? 'dataset_data_row_element_show' : 'dataset_data_row_element_hide';
 
         const managedKeyDisabled = !showAdditionalKeyField || !validKeyField || model.isFromAssay();
 

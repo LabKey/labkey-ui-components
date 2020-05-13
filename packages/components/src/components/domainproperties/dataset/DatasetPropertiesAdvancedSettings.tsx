@@ -257,12 +257,20 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     <Modal.Body>
                         <SectionHeading title="Miscellaneous Options" />
 
-                        <div className="margin-top">
-                            <Checkbox checked={showByDefault} onChange={this.onInputChange} id="showByDefault">
+                        <Row className="margin-top">
+                            <Col xs={5}>
                                 {showInOverviewLabel}
                                 <LabelHelpTip title={showInOverviewLabel} body={() => SHOW_IN_OVERVIEW} />
-                            </Checkbox>
-                        </div>
+                            </Col>
+                            <Col xs={7}>
+                                <Checkbox
+                                    checked={showByDefault}
+                                    onChange={this.onInputChange}
+                                    id="showByDefault"
+                                    className="domain-field-checkbox"
+                                />
+                            </Col>
+                        </Row>
 
                         <DatasetSettingsInput
                             name="datasetId"
@@ -294,33 +302,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                             selectedValue={cohortId}
                             onSelectChange={this.onSelectChange}
                         />
-                        {/* <Row className={'margin-top'}>*/}
-
-                        {/*    <Col xs={5} >*/}
-                        {/*        <DomainFieldLabel*/}
-                        {/*            label={"Cohort Association"}*/}
-                        {/*            helpTipBody={() => this.getHelpTipElement("tag")}*/}
-                        {/*        />*/}
-                        {/*    </Col>*/}
-
-                        {/*    <Col xs={7} >*/}
-                        {/*        <QuerySelect*/}
-                        {/*            componentId={"cohortId"}*/}
-                        {/*            name={"cohortId"}*/}
-                        {/*            schemaQuery={SCHEMAS.STUDY_TABLES.COHORT}*/}
-                        {/*            formsy={false}*/}
-                        {/*            showLabel={false}*/}
-                        {/*            preLoad={true}*/}
-                        {/*            loadOnChange={true}*/}
-                        {/*            onQSChange={this.onSelectChange}*/}
-                        {/*            value={cohortId}*/}
-                        {/*            displayColumn={'label'}*/}
-                        {/*            valueColumn={'rowId'}*/}
-                        {/*            inputClass={"col-xs-12"}*/}
-
-                        {/*        />*/}
-                        {/*    </Col>*/}
-                        {/* </Row>*/}
 
                         <DatasetSettingsInput
                             name="tag"

@@ -2703,6 +2703,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -3342,6 +3343,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -3514,6 +3516,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -4088,6 +4091,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -5046,6 +5050,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,

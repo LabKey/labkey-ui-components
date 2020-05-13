@@ -879,6 +879,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -2095,6 +2096,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -4641,6 +4643,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -5771,6 +5774,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,

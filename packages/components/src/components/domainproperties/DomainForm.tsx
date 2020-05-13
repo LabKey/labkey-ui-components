@@ -91,9 +91,9 @@ interface IDomainFormInput {
     showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
     domainIndex?: number;
     successBsStyle?: string;
-    setFileImportData?: (file: File) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
+    setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    importDataChildRenderer?: () => any;
+    fieldsAdditionalRenderer?: () => any;
 }
 
 interface IDomainFormState {
@@ -649,6 +649,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (response && response.fields.size > 0) {
             if (setFileImportData) {
                 this.setState({ filePreviewData: response, file, filePreviewMsg: undefined });
+                setFileImportData(file, true);
             }
 
             this.onDomainChange(setDomainFields(domain, response.fields));
@@ -875,7 +876,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             useTheme,
             helpNoun,
             setFileImportData,
-            importDataChildRenderer,
+            fieldsAdditionalRenderer,
+            domainFormDisplayOptions,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -912,15 +914,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <Panel.Body collapsible={collapsible || controlledCollapse}>
                         {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}
 
-                        {filePreviewData && (
+                        {fieldsAdditionalRenderer && fieldsAdditionalRenderer()}
+
+                        {filePreviewData && !domainFormDisplayOptions.hideImportData && (
                             <ImportDataFilePreview
                                 noun={helpNoun}
                                 filePreviewData={filePreviewData}
                                 setFileImportData={setFileImportData}
                                 file={file}
-                            >
-                                {importDataChildRenderer && importDataChildRenderer()}
-                            </ImportDataFilePreview>
+                            />
                         )}
                     </Panel.Body>
                 </Panel>

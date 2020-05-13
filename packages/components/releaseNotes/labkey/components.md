@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.58.0
+*Released*: 13 May 2020
+* Item 7205: Includes support for column mappings for fields during import data in new Dataset Designer
+
 ### version 0.57.0
 *Released*: 8 May 2020
 * Item 7178: Factored EntityDeleteModal (and associated functions) out of Sample Manager into labkey-ui-components for use in Biologics.

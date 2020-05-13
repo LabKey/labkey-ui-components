@@ -306,6 +306,7 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     phiLevelDisabled: false,
     hideAddFieldsButton: false,
     disableMvEnabled: false,
+    hideImportData: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -1466,7 +1467,7 @@ export class DomainException
         return exception.set('errors', exception.errors);
     }
 
-    static addRowIndexesToErrors(domain: DomainDesign, exceptionFromServer: DomainException) {
+    static addRowIndexesToErrors(domain: DomainDesign, exceptionFromServer: DomainException): DomainException {
         let allFieldErrors = exceptionFromServer.get('errors');
 
         allFieldErrors = allFieldErrors.map(error => {
@@ -1598,6 +1599,7 @@ export interface IDomainFormDisplayOptions {
     phiLevelDisabled?: boolean;
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
+    hideImportData?: boolean;
 }
 
 /**

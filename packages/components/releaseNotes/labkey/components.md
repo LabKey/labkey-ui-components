@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version 0.57.1-fb-datasetDesigner-story4-7205.0
-*Released*: TBD May 2020
+## version 0.58.0
+*Released*: 13 May 2020
 * Item 7205: Includes support for column mappings for fields during import data in new Dataset Designer
 
 ### version 0.57.0

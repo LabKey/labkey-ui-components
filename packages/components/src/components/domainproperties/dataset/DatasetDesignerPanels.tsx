@@ -258,7 +258,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     };
 
     setFileImportData = (file: File, shouldImportData: boolean) => {
-        this.setState({ file, shouldImportData });
+        this.setState(state => ({
+            file,
+            shouldImportData: shouldImportData && !state.model.definitionIsShared,
+        }));
     };
 
     onColumnMappingChange = (participantIdField?: string, timePointField?: string) => {
@@ -373,7 +376,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     }),
                     () => {
                         // If we're importing Dataset file and not in a Dataspace study, import the file contents
-                        if (shouldImportData && !model.definitionIsShared) {
+                        if (shouldImportData) {
                             this.handleFileImport(participantIdMapCol, sequenceNumMapCol);
                         } else {
                             setSubmitting(false, () => {

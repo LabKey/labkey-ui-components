@@ -206,7 +206,7 @@ export class GridPanel extends PureComponent<Props, State> {
             const newValue = actionValues[actionValues.length - 1].valueObject;
             const newColumnName = newValue.getColumnName();
             // Remove any filters on the same column, and append the new filter.
-            newFilters = newFilters.filter(filter => filter.getColumnName() !== newColumnName).concat([newValue]);
+            newFilters = newFilters.filter(filter => filter.getColumnName() !== newColumnName).concat(newValue);
             // Remove any filter ActionValues with the same columnName as well.
             actionValues = actionValues.filter(actionValue => {
                 const { action, valueObject } = actionValue;
@@ -277,7 +277,7 @@ export class GridPanel extends PureComponent<Props, State> {
         if (change.type === ChangeType.add || change.type === ChangeType.modify) {
             // Append the new value
             const newValue = actionValues[actionValues.length - 1].valueObject;
-            newFilters = newFilters.concat([newValue]);
+            newFilters = newFilters.concat(newValue);
         }
 
         actions.setFilters(model.id, newFilters, allowSelections);
@@ -343,7 +343,7 @@ export class GridPanel extends PureComponent<Props, State> {
             valueObject: sort,
             action: this.omniBoxActions.sort,
         };
-        const actionValues = this.state.actionValues.concat([actionValue]);
+        const actionValues = this.state.actionValues.concat(actionValue);
         this.handleSortChange(actionValues, { type: ChangeType.add });
     };
 

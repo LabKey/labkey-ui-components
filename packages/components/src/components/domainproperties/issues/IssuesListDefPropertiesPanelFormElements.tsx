@@ -68,8 +68,6 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
             },
             () => {}
         );
-
-        this.handleGroupChange = this.handleGroupChange;
     }
 
     handleGroupChange = (groupId: number) => {

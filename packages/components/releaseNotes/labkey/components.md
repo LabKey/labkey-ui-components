@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version TBD
+*Released*: TBD
+* Epic 6800:  Issue Definition designer (Story 3)- Issues module implementation
+- Usage of new issues api actions to getProjectGroups and to getUsersForGroup and refactoring around this change.
+- Removal of selectQuery methods that were getting Groups and Users.
+- Re-purpose permission's Principal model, and remove UserGroup model.
+
 ## version 0.58.0
 *Released*: 13 May 2020
 * Item 7205: Includes support for column mappings for fields during import data in new Dataset Designer

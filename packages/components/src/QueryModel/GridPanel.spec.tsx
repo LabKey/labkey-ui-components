@@ -33,6 +33,7 @@ beforeAll(() => {
     });
 });
 
+const CHART_MENU_SELECTOR = '.chart-menu';
 const PAGINATION_SELECTOR = '.pagination-button-group';
 const PAGINATION_INFO_SELECTOR = '.pagination-info';
 const PAGE_SIZE_SELECTOR = '.page-size-menu'
@@ -51,13 +52,18 @@ describe('GridPanel', () => {
         actions = makeTestActions();
     });
 
+    const expectChartMenu = (wrapper, disabledState) => {
+        expect(wrapper.find(CHART_MENU_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown').at(0).hasClass('disabled')).toEqual(disabledState);
+    };
+
     test('Render GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;
 
         // Model is loading QueryInfo and Rows, should render loading, disabled ChartSelector, no pagination/ViewMenu.
         let model = makeTestModel(SCHEMA_QUERY);
         const wrapper = mount(<GridPanel actions={actions} model={model} />);
-        expect(wrapper.find('button#chart-menu-model[disabled]').exists()).toEqual(true);
+        expectChartMenu(wrapper, true);
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
@@ -77,13 +83,26 @@ describe('GridPanel', () => {
         expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
 
         // Loaded rows and QueryInfo. Should render grid, pagination, ViewMenu, ChartMenu
-        model = model.mutate({ rows, orderedRows: orderedRows.slice(0, 20), rowCount, rowsLoadingState: LoadingState.LOADED });
+        model = model.mutate({
+            rows,
+            orderedRows: orderedRows.slice(0, 20),
+            rowCount,
+            rowsLoadingState: LoadingState.LOADED,
+            charts: [],
+            chartsLoadingState: LoadingState.LOADED,
+        });
         wrapper.setProps({ model });
+
+        // Chart menu should be disabled if no charts are present and showSampleComparisonReports is false.
+        expectChartMenu(wrapper, true);
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).text()).toEqual('1 - 20 of 661');
         expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(false);
+
+        wrapper.setProps({ showSampleComparisonReports: true });
+        expectChartMenu(wrapper, false);
 
         // Previous, Page Menu, Next buttons should be present.
         let paginationButtons = wrapper.find(PAGINATION_SELECTOR).find('button');

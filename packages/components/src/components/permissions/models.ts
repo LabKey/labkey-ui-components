@@ -22,7 +22,7 @@ export class Principal extends Record({
     }
 
     static create(raw: any): Principal {
-        return new Principal({...raw});
+        return new Principal({ ...raw });
     }
 
     static createFromSelectRow(row: Map<string, Map<string, any>>): Principal {

@@ -331,7 +331,7 @@ export function initMocks() {
     });
 
     mock.get(/.*getProjectGroups.*/, (req, res) => {
-        let responseBody = issuesProjectGroups;
+        const responseBody = issuesProjectGroups;
         return jsonResponse(responseBody, res);
     });
 
@@ -339,11 +339,14 @@ export function initMocks() {
         const queryParams = req.url().query;
         let responseBody;
 
-        if(queryParams.groupId === '') {
-            responseBody = issuesUsersForGroup.filter(users => { return users.groupId === null});
-        }
-        else if(queryParams.groupId === '-1' || queryParams.groupId === '-2' || queryParams.groupId === '1025') {
-            responseBody = issuesUsersForGroup.filter(users => { return null !== users.groupId && users.groupId.toString() === queryParams.groupId});
+        if (queryParams.groupId === '') {
+            responseBody = issuesUsersForGroup.filter(users => {
+                return users.groupId === null;
+            });
+        } else if (queryParams.groupId === '-1' || queryParams.groupId === '-2' || queryParams.groupId === '1025') {
+            responseBody = issuesUsersForGroup.filter(users => {
+                return users.groupId !== null && users.groupId.toString() === queryParams.groupId;
+            });
         }
         return jsonResponse(responseBody, res);
     });

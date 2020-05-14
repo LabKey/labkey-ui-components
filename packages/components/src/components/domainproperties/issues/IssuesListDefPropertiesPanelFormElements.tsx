@@ -9,6 +9,7 @@ import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { LoadingSpinner, Principal, SelectInput } from '../../..';
+
 import { IssuesListDefModel } from './models';
 import {
     ISSUES_LIST_DEF_SORT_DIRECTION_TIP,
@@ -16,7 +17,7 @@ import {
     ISSUES_LIST_GROUP_ASSIGN_TIP,
     ISSUES_LIST_USER_ASSIGN_TIP,
 } from './constants';
-import {getProjectGroups, getUsersForGroup} from "./actions";
+import { getProjectGroups, getUsersForGroup } from './actions';
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -40,7 +41,7 @@ interface AssignmentOptionsInputProps {
     onSelect: (name: string, value: any) => any;
     coreGroups?: List<Principal>;
     coreUsers?: List<Principal>;
-    onGroupChange?: (groupId: number) =>  any
+    onGroupChange?: (groupId: number) => any;
 }
 
 export class BasicPropertiesFields extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
@@ -99,7 +100,12 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
         return (
             <Col xs={12} md={6}>
                 <SectionHeading title="Assignment Options" />
-                <AssignedToGroupInput model={model} coreGroups={coreGroups} onSelect={onSelect} onGroupChange={this.handleGroupChange}/>
+                <AssignedToGroupInput
+                    model={model}
+                    coreGroups={coreGroups}
+                    onSelect={onSelect}
+                    onGroupChange={this.handleGroupChange}
+                />
                 <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={onSelect} />
             </Col>
         );

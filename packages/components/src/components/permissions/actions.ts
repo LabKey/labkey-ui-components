@@ -4,11 +4,11 @@
  */
 import { List, Map, fromJS } from 'immutable';
 
-import {Filter, Security} from '@labkey/api';
+import { Filter, Security } from '@labkey/api';
 
 import { ISelectRowsResult, selectRows } from '../../query/api';
 
-import {Principal, SecurityPolicy, SecurityRole} from './models';
+import { Principal, SecurityPolicy, SecurityRole } from './models';
 
 export function processGetRolesResponse(response: any): List<SecurityRole> {
     let roles = List<SecurityRole>();

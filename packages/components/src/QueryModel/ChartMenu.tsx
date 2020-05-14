@@ -61,8 +61,8 @@ export class ChartMenu extends PureComponent<Props, State> {
         const chartMapper = (chart): ReactNode => (
             <ChartMenuItem key={chart.reportId} chart={chart} showChart={this.chartClicked} />
         );
-        const hasChartItems = hasCharts && charts.length === 0 && !showSampleComparisonReports;
-        const disabled = isLoading || isLoadingCharts || hasChartItems;
+        const noCharts = hasCharts && charts.length === 0 && !showSampleComparisonReports;
+        const disabled = isLoading || isLoadingCharts || noCharts;
         const { selectedChart } = this.state;
         // Have to safe guard around isLoading here because model.filters getter will throw an error if there is no
         // queryInfo.

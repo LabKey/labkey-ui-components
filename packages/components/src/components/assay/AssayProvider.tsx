@@ -1,25 +1,27 @@
 import React from 'react';
 
 import { WithRouterProps } from 'react-router';
+
 import { Alert, AssayDefinitionModel, AssayProtocolModel, getActionErrorMessage, LoadingPage, NotFound } from '../..';
+
 import { AssayStateModel } from './models';
 
 interface IContext {
-    assayDefinition: AssayDefinitionModel
-    assayProtocol: AssayProtocolModel
+    assayDefinition: AssayDefinitionModel;
+    assayProtocol: AssayProtocolModel;
 }
 
 interface AssayLoadProps {
-    loadAssay: (protocolName: string) => any
-    assay: AssayStateModel
+    loadAssay: (protocolName: string) => any;
+    assay: AssayStateModel;
 }
 
 export interface AssayProviderProps extends WithRouterProps {
-    assayDefinition: AssayDefinitionModel
-    assayProtocol: AssayProtocolModel
+    assayDefinition: AssayDefinitionModel;
+    assayProtocol: AssayProtocolModel;
 }
 
-type Props =  AssayProviderProps & AssayLoadProps;
+type Props = AssayProviderProps & AssayLoadProps;
 
 interface State extends IContext {}
 
@@ -28,14 +30,13 @@ const AssayContextProvider = Context.Provider;
 export const AssayContextConsumer = Context.Consumer;
 
 export const AssayProvider = (Component: React.ComponentType) => {
-
     return class AssayProviderImpl extends React.Component<Props, State> {
         constructor(props: Props) {
             super(props);
 
             this.state = {
                 assayDefinition: undefined,
-                assayProtocol: undefined
+                assayProtocol: undefined,
             };
         }
 
@@ -50,20 +51,19 @@ export const AssayProvider = (Component: React.ComponentType) => {
         }
 
         render() {
-            const {assay, params} = this.props;
-            const {protocol} = params;
+            const { assay, params } = this.props;
+            const { protocol } = params;
             const assayDefinition = assay.getByName(protocol);
 
             if (assay.isLoaded && assayDefinition) {
                 if (!assay.getProtocol(assayDefinition.id)) {
-                    return <LoadingPage/>;
+                    return <LoadingPage />;
                 }
 
                 const state = {
                     assayDefinition,
-                    assayProtocol: assay.getProtocol(assayDefinition.id)
+                    assayProtocol: assay.getProtocol(assayDefinition.id),
                 };
-                console.log('assayDefinition', assayDefinition);
 
                 return (
                     <AssayContextProvider value={state}>
@@ -76,10 +76,14 @@ export const AssayProvider = (Component: React.ComponentType) => {
             }
             else if (assay.hasError) {
                 console.error(assay.errorMsg);
-                return <Alert>{getActionErrorMessage('There was a problem loading the assay design.', 'assay design')}</Alert>
+                return (
+                    <Alert>
+                        {getActionErrorMessage('There was a problem loading the assay design.', 'assay design')}
+                    </Alert>
+                )
             }
 
-            return <NotFound/>;
+            return <NotFound />;
         }
-    }
-}
+    };
+};

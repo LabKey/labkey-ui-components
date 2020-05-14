@@ -155,14 +155,14 @@ export class GridPanel extends PureComponent<Props, State> {
 
     selectRow = (row, event): void => {
         const { model, actions } = this.props;
-        const checked = event.currentTarget.checked === true;
+        const checked = event.target.checked === true;
         // Have to call toJS() on the row because <Grid /> converts rows to Immutable objects.
         actions.selectRow(model.id, checked, row.toJS());
     };
 
     selectPage = (event): void => {
         const { model, actions } = this.props;
-        const checked = event.currentTarget.checked === true && model.selectedState !== GRID_CHECKBOX_OPTIONS.SOME;
+        const checked = event.target.checked === true && model.selectedState !== GRID_CHECKBOX_OPTIONS.SOME;
         actions.selectPage(model.id, checked);
     };
 

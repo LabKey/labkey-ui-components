@@ -26,7 +26,7 @@ export function getRolesByUniqueName(roles: List<SecurityRole>): Map<string, Sec
     return rolesByUniqueName;
 }
 
-function processPrincipalsResponse(data: ISelectRowsResult, resolve, isGroup: boolean) {
+function processPrincipalsResponse(data: ISelectRowsResult, resolve) {
     const models = fromJS(data.models[data.key]);
     let principals = List<Principal>();
 
@@ -48,7 +48,7 @@ export function getPrincipals(): Promise<List<Principal>> {
             sql: "SELECT p.*, u.DisplayName FROM Principals p LEFT JOIN Users u ON p.type='u' AND p.UserId=u.UserId",
         })
             .then((data: ISelectRowsResult) => {
-                processPrincipalsResponse(data, resolve, false);
+                processPrincipalsResponse(data, resolve);
             })
             .catch(response => {
                 console.error(response);

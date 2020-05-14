@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { initQueryGridState } from '../../../global';
-
 import { Col, Form, Row } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
@@ -41,7 +39,6 @@ export class IssuesListDefPropertiesPanelImpl extends React.PureComponent<
 > {
     constructor(props: Props & InjectedDomainPropertiesPanelCollapseProps) {
         super(props);
-        initQueryGridState(); // needed for QuerySelect usage
 
         this.state = produce(
             {

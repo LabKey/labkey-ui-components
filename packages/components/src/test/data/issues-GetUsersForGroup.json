@@ -13,17 +13,17 @@
     "userName" : "binalp",
     "groupId" : -2,
     "groupName" : "Users"
-}, {
+},{
   "userId" : 1018,
   "userName" : "tester2",
   "groupId" : -2,
   "groupName" : "Users"
-}, {
+},{
   "userId" : 1023,
   "userName" : "updater",
   "groupId" : -2,
   "groupName" : "Users"
-}, {
+},{
     "userId" : 1023,
     "userName" : "updater",
     "groupId" : 1025,

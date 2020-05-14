@@ -35,7 +35,6 @@ interface AssignmentOptionsProps {
 interface AssignmentOptionsState {
     coreGroups?: List<Principal>;
     coreUsers?: List<UserGroup>;
-    isGroupChange?: boolean;
 }
 
 // For AssignedToGroupInput & DefaultUserAssignmentInput components
@@ -44,7 +43,7 @@ interface AssignmentOptionsInputProps {
     onSelect: (name: string, value: any) => any;
     coreGroups?: List<Principal>;
     coreUsers?: List<UserGroup>;
-    onGroupChange?: (groupChanged: boolean) =>  any
+    onGroupChange?: (groupId: number) =>  any
 }
 
 export class BasicPropertiesFields extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
@@ -69,29 +68,21 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
             {
                 coreGroups: undefined,
                 coreUsers: undefined,
-                isGroupChange: false
             },
             () => {}
         );
 
-        this.handleGroupChange = this.handleGroupChange.bind(this);
+        this.handleGroupChange = this.handleGroupChange;
     }
 
-    handleGroupChange = (groupChanged?: boolean) => {
-        this.setState({
-            isGroupChange: groupChanged
-        });
+    handleGroupChange = (groupId: number) => {
+        this.getFilteredCoreUsers(groupId);
     };
 
     componentDidMount() {
         getProjectGroups().then(coreGroupsData => {
-            let coreGroupsList = List<Principal>();
-            coreGroupsData.forEach(principal => {
-                const grp = Principal.create(principal);
-                coreGroupsList = coreGroupsList.push(grp);
-            });
             this.setState(() => ({
-                coreGroups: coreGroupsList,
+                coreGroups: coreGroupsData,
             }));
         });
 
@@ -99,27 +90,17 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
     }
 
     getFilteredCoreUsers = (groupId: any): any => {
-        getUsersForGroup(groupId).then(users => {
-            let userGroupList = List<UserGroup>();
-            users.forEach(user => {
-                const usr = UserGroup.create(user);
-                userGroupList = userGroupList.push(usr);
-            });
+        getUsersForGroup(groupId).then(coreUsersData => {
             this.setState(() => ({
-                coreUsers: userGroupList,
-                isGroupChange: false
+                coreUsers: coreUsersData,
             }));
         });
     };
 
     render() {
         const { model, onSelect } = this.props;
-        const { coreUsers, coreGroups, isGroupChange } = this.state;
+        const { coreUsers, coreGroups } = this.state;
 
-        //get core users when a different group is selected
-        if (isGroupChange) {
-            this.getFilteredCoreUsers(model.assignedToGroup);
-        }
         return (
             <Col xs={12} md={6}>
                 <SectionHeading title="Assignment Options" />
@@ -230,9 +211,10 @@ export class AssignedToGroupInput extends React.PureComponent<AssignmentOptionsI
         return ISSUES_LIST_GROUP_ASSIGN_TIP;
     }
 
-    onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
-        this.props.onGroupChange(true);
-        this.props.onSelect(name, selected ? selected.userId : undefined);
+    onChange = (name: string, formValue: any, selected: Principal, ref: any): void => {
+        const groupId = selected ? selected.userId : undefined;
+        this.props.onGroupChange(groupId);
+        this.props.onSelect(name, groupId);
     };
 
     render() {

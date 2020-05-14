@@ -359,7 +359,7 @@ export class GridPanel extends PureComponent<Props, State> {
 
         if (viewName !== undefined) {
             changeType = ChangeType.add;
-            actionValues = actionValues.concat([actionValue]);
+            actionValues = actionValues.concat(actionValue);
         }
 
         this.handleViewChange(actionValues, { type: changeType });
@@ -380,7 +380,13 @@ export class GridPanel extends PureComponent<Props, State> {
                     const disabled = isLoading || isLoadingSelections;
                     return (
                         // eslint-disable-next-line react/jsx-no-bind
-                        <input type="checkbox" disabled={disabled} checked={selected === true} onChange={onChange} />
+                        <input
+                            className="grid-panel__row-checkbox"
+                            type="checkbox"
+                            disabled={disabled}
+                            checked={selected === true}
+                            onChange={onChange}
+                        />
                     );
                 },
             });
@@ -397,7 +403,7 @@ export class GridPanel extends PureComponent<Props, State> {
         const disabled = isLoadingSelections || isLoading || (hasData && rowCount === 0);
 
         if (column.index === GRID_SELECTION_INDEX) {
-            return headerSelectionCell(this.selectPage, model.selectedState, disabled);
+            return headerSelectionCell(this.selectPage, model.selectedState, disabled, 'grid-panel__page-checkbox');
         }
 
         return headerCell(this.sortColumn, column, index, allowSelections, allowSorting, columnCount);

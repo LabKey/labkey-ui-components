@@ -244,9 +244,7 @@ import { DataClassDesigner } from './components/domainproperties/dataclasses/Dat
 import { DataClassModel } from './components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
-import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
-import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel';
-import { RunDataPanel } from './components/assay/RunDataPanel';
+import { AssayProvider, AssayProviderProps, AssayContextConsumer } from './components/assay/AssayProvider';
 import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader';
 import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal';
@@ -257,6 +255,7 @@ import {
     AssayWizardModel,
     IAssayUploadOptions,
     IAssayURLContext,
+    AssayStateModel,
 } from './components/assay/models';
 import {
     deleteAssayDesign,
@@ -539,13 +538,14 @@ export {
     AssayResultDeleteConfirmModal,
     AssayRunDeleteConfirmModal,
     AssayWizardModel,
+    AssayStateModel,
     IAssayURLContext,
     IAssayUploadOptions,
     AssayUploadGridLoader,
     AssayImportPanels,
-    BatchPropertiesPanel,
-    RunPropertiesPanel,
-    RunDataPanel,
+    AssayProvider,
+    AssayProviderProps,
+    AssayContextConsumer,
     AssayImportSubMenuItem,
     importAssayRun,
     uploadAssayRunFiles,

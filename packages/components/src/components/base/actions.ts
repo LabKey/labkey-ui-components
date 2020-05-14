@@ -20,6 +20,7 @@ import { buildURL } from '../../url/ActionURL';
 
 import { AssayDefinitionModel, InferDomainResponse } from './models/model';
 
+// TODO move to assay?
 export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
     return new Promise((res, rej) => {
         Assay.getAll({

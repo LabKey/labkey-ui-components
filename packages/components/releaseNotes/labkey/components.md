@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version TBD
+*Release*: TBD
+* Move AssayProvider from SampleManager to ui-components
+
 ## version 0.59.0
 *Released*: 14 May 2020
 * Epic 6800:  Issue Definition designer (Story 3)- Issues module implementation

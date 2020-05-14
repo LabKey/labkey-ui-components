@@ -22,6 +22,7 @@ import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel } fr
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { generateNameWithTimestamp } from '../../util/Date';
+import { AssayProtocolModel } from '../..';
 
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel;
@@ -262,5 +263,44 @@ export class AssayUploadResultModel extends Record({
 
     constructor(values?: { [key: string]: any }) {
         super(values);
+    }
+}
+
+export class AssayStateModel extends Record({
+    byId: Map<number, AssayDefinitionModel>(),
+    byName: Map<string, number>(),
+    errorMsg: undefined,
+    hasError: false,
+    isLoaded: false,
+    isLoading: false,
+    protocolsById: Map<number, AssayProtocolModel>()
+}) {
+    byId: Map<number, AssayDefinitionModel>;
+    byName: Map<string, number>;
+    errorMsg: string;
+    hasError: boolean;
+    isLoaded: boolean;
+    isLoading: boolean;
+    protocolsById: Map<number, AssayProtocolModel>;
+
+    constructor(values?: {[key:string]: any}) {
+        super(values);
+    }
+
+    getById(assayRowId: number): AssayDefinitionModel {
+        return this.byId.get(assayRowId);
+    }
+
+    getByName(assayName: string): AssayDefinitionModel {
+        if (assayName) {
+            let assayRowId = this.byName.get(assayName.toLowerCase());
+            if (assayRowId !== undefined) {
+                return this.byId.get(assayRowId);
+            }
+        }
+    }
+
+    getProtocol(assayRowId: number): AssayProtocolModel {
+        return this.protocolsById.get(assayRowId);
     }
 }

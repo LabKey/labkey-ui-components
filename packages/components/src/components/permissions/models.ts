@@ -54,34 +54,6 @@ export class Principal extends Record({
     }
 }
 
-export class UserGroup extends Record({
-    userId: undefined,
-    userName: undefined,
-    groupId: undefined,
-    groupName: undefined,
-}) {
-    userId: number;
-    userName: string;
-    groupId: string;
-    groupName: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
-    static createFromSelectRow(row: Map<string, Map<string, any>>): UserGroup {
-        const userId = row.getIn(['UserId', 'value']);
-        const userName = row.getIn(['UserId', 'displayValue']);
-        const groupId = row.getIn(['GroupId', 'value']);
-        const groupName = row.getIn(['GroupId', 'displayValue']);
-        return new UserGroup({ userId, userName, groupId, groupName });
-    }
-
-    static create(raw: any): UserGroup {
-        return new UserGroup({...raw});
-    }
-}
-
 export class SecurityRole extends Record({
     description: undefined,
     displayName: undefined,

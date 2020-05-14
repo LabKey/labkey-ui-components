@@ -9,9 +9,6 @@ import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { LoadingSpinner, Principal, SelectInput } from '../../..';
-
-import { UserGroup } from '../../permissions/models';
-
 import { IssuesListDefModel } from './models';
 import {
     ISSUES_LIST_DEF_SORT_DIRECTION_TIP,
@@ -34,7 +31,7 @@ interface AssignmentOptionsProps {
 
 interface AssignmentOptionsState {
     coreGroups?: List<Principal>;
-    coreUsers?: List<UserGroup>;
+    coreUsers?: List<Principal>;
 }
 
 // For AssignedToGroupInput & DefaultUserAssignmentInput components
@@ -42,7 +39,7 @@ interface AssignmentOptionsInputProps {
     model: IssuesListDefModel;
     onSelect: (name: string, value: any) => any;
     coreGroups?: List<Principal>;
-    coreUsers?: List<UserGroup>;
+    coreUsers?: List<Principal>;
     onGroupChange?: (groupId: number) =>  any
 }
 
@@ -259,7 +256,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
         return ISSUES_LIST_USER_ASSIGN_TIP;
     }
 
-    onChange = (name: string, formValue: any, selected: UserGroup, ref: any): any => {
+    onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         this.props.onSelect(name, selected ? selected.userId : undefined);
     };
 
@@ -281,7 +278,7 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
                             placeholder="Unassigned"
                             inputClass="col-xs-12"
                             valueKey="userId"
-                            labelKey="userName"
+                            labelKey="displayName"
                             onChange={this.onChange}
                             value={model.assignedToUser ? model.assignedToUser : undefined}
                             formsy={false}

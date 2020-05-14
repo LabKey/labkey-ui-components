@@ -1,25 +1,21 @@
-[ {
+[{
+  "groupId" : null,
   "userId" : -1,
-  "name" : "Administrators",
-  "displayName" : "Site:Administrators",
-  "type" : "g",
-  "active" : true
-}, {
+  "displayName" : "Site: Administrators"
+},{
+  "groupId" : null,
   "userId" : 1022,
-  "name" : "Updaters",
-  "displayName" : "Site:Updaters",
-  "type" : "g",
-  "active" : true
-}, {
+  "displayName" : "Site: Updaters"
+},{
+  "groupId" : null,
   "userId" : -2,
-  "name" : "Users",
-  "displayName" : "Site:Users",
-  "type" : "g",
-  "active" : true
-}, {
+  "displayName" : "Site: Users"
+},{
+  "groupId" : null,
   "userId" : 1025,
-  "name" : "AssayRequestGroup",
-  "displayName" : "AssayRequestGroup",
-  "type" : "g",
-  "active" : true
-} ]
+  "displayName" : "AssayRequestGroup"
+},{
+  "groupId" : null,
+  "userId" : 1017,
+  "displayName" : "Users"
+}]

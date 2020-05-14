@@ -98,8 +98,8 @@ import secondSourceQuery from '../test/data/secondSource-getQuery.json';
 import secondSourceQueryDetails from '../test/data/secondSource-getQueryDetails.json';
 import source1Query from '../test/data/source1-getQuery.json';
 import source1QueryDetails from '../test/data/source1-getQueryDetails.json';
-import issuesProjectGroups from '../test/data/issues-GetProjectGroups.json';
-import issuesUsersForGroup from '../test/data/issues-GetUsersForGroup.json';
+import issuesProjectGroups from '../test/data/issues-getProjectGroups.json';
+import issuesUsersForGroup from '../test/data/issues-getUsersForGroup.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -330,20 +330,20 @@ export function initMocks() {
         return jsonResponse(responseBody, res);
     });
 
-    mock.get(/.*GetProjectGroups.*/, (req, res) => {
+    mock.get(/.*getProjectGroups.*/, (req, res) => {
         let responseBody = issuesProjectGroups;
         return jsonResponse(responseBody, res);
     });
 
-    mock.get(/.*GetUsersForGroup.*/, (req, res) => {
+    mock.get(/.*getUsersForGroup.*/, (req, res) => {
         const queryParams = req.url().query;
         let responseBody;
 
         if(queryParams.groupId === '') {
-            responseBody = issuesUsersForGroup.filter(users => { return users.groupId === 0});
+            responseBody = issuesUsersForGroup.filter(users => { return users.groupId === null});
         }
         else if(queryParams.groupId === '-1' || queryParams.groupId === '-2' || queryParams.groupId === '1025') {
-            responseBody = issuesUsersForGroup.filter(users => { return users.groupId.toString() === queryParams.groupId});
+            responseBody = issuesUsersForGroup.filter(users => { return null !== users.groupId && users.groupId.toString() === queryParams.groupId});
         }
         return jsonResponse(responseBody, res);
     });

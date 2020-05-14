@@ -2,7 +2,6 @@ import {IssuesListDefModel} from "./models";
 import {ActionURL, Ajax, Domain, getServerContext, Utils} from "@labkey/api";
 import {Principal} from "../../..";
 import { List } from 'immutable';
-import {UserGroup} from "../../permissions/models";
 
 export function fetchIssuesListDefDesign(issueDefName: string): Promise<IssuesListDefModel> {
     return new Promise((resolve, reject) => {
@@ -22,23 +21,23 @@ export function fetchIssuesListDefDesign(issueDefName: string): Promise<IssuesLi
 
 }
 
-export function getUsersForGroup(groupId: number): Promise<List<UserGroup>> {
+export function getUsersForGroup(groupId: number): Promise<List<Principal>> {
 
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('issues', 'GetUsersForGroup.api'),
+            url: ActionURL.buildURL('issues', 'getUsersForGroup.api'),
             method: 'GET',
             params: {groupId},
             scope: this,
             success: Utils.getCallbackWrapper(coreUsersData => {
 
-                let userGroupList = List<UserGroup>();
+                let users = List<Principal>();
                 coreUsersData.forEach(user => {
-                    const usr = UserGroup.create(user);
-                    userGroupList = userGroupList.push(usr);
+                    const usr = Principal.create(user);
+                    users = users.push(usr);
                 });
 
-                resolve(userGroupList);
+                resolve(users);
 
             }),
             failure: Utils.getCallbackWrapper(error => {
@@ -51,18 +50,18 @@ export function getUsersForGroup(groupId: number): Promise<List<UserGroup>> {
 export function getProjectGroups(): Promise<List<Principal>> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('issues', 'GetProjectGroups.api'),
+            url: ActionURL.buildURL('issues', 'getProjectGroups.api'),
             method: 'GET',
             scope: this,
             success: Utils.getCallbackWrapper(coreGroupsData => {
 
-                let coreGroupsList = List<Principal>();
+                let groups = List<Principal>();
                 coreGroupsData.forEach(principal => {
                     const grp = Principal.create(principal);
-                    coreGroupsList = coreGroupsList.push(grp);
+                    groups = groups.push(grp);
                 });
 
-                resolve(coreGroupsList);
+                resolve(groups);
 
             }),
             failure: Utils.getCallbackWrapper(error => {

@@ -14,21 +14,20 @@ import { DeleteIcon } from '../..';
 interface Props {
     noun: string;
     filePreviewData: InferDomainResponse;
-    setFileImportData: (file: File) => any;
+    setFileImportData: (file: File, shouldImportData: boolean) => any;
     file: File;
 }
 
 interface State {
-    importData: boolean;
+    shouldImportData: boolean;
 }
 
 export class ImportDataFilePreview extends React.PureComponent<Props, State> {
     constructor(props) {
         super(props);
 
-        props.setFileImportData(props.file);
         this.state = {
-            importData: true,
+            shouldImportData: true,
         };
     }
 
@@ -36,16 +35,16 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
         const { setFileImportData, file } = this.props;
 
         this.setState(
-            state => ({ importData: !state.importData }),
+            state => ({ shouldImportData: !state.shouldImportData }),
             () => {
-                setFileImportData(this.state.importData ? file : undefined);
+                setFileImportData(file, this.state.shouldImportData);
             }
         );
     };
 
     render() {
         const { filePreviewData, noun, file } = this.props;
-        const { importData } = this.state;
+        const { shouldImportData } = this.state;
 
         if (filePreviewData == null) {
             return;
@@ -58,13 +57,13 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
                 <div className="domain-form__file-preview__text">Import data from this file upon {noun} creation? </div>
                 <div className="domain-form__file-preview__toggle">
                     <ToggleWithInputField
-                        active={importData}
+                        active={shouldImportData}
                         id="importData"
                         onClick={this.onToggleClick}
                         on="Import Data"
                         off="Don't Import"
                     />
-                    {importData && file && (
+                    {shouldImportData && file && (
                         <>
                             <DeleteIcon title={null} iconCls="domain-field-delete-icon" onDelete={this.onToggleClick} />
                             <span className="domain__import-data__file-icon">
@@ -76,9 +75,9 @@ export class ImportDataFilePreview extends React.PureComponent<Props, State> {
                     )}
                 </div>
 
-                {importData && this.props.children}
+                {shouldImportData && this.props.children}
 
-                {importData && <FilePreviewGrid previewCount={4} data={data} header={null} />}
+                {shouldImportData && <FilePreviewGrid previewCount={4} data={data} header={null} />}
             </div>
         );
     }

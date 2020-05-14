@@ -4665,6 +4665,7 @@ exports[`DataClassDesigner initModel 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -5254,6 +5255,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -5443,6 +5445,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -6008,6 +6011,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -6988,6 +6992,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -7627,6 +7632,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -7805,6 +7811,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -8353,6 +8360,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -9296,6 +9304,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -9924,6 +9933,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -10102,6 +10112,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -10632,6 +10643,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -11537,6 +11549,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,

@@ -24,18 +24,23 @@ import produce, { Draft } from 'immer';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { DomainDesign, DomainFieldIndexChange } from '../models';
+import { DomainDesign, DomainField, DomainFieldIndexChange } from '../models';
 
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
 
 import { importData, Progress, resolveErrorMessage } from '../../..';
 
+import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_NOT_LOCKED } from '../constants';
+
 import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
-import { getStudySubjectProp } from './actions';
+import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
+
+const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
+const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';
 
 interface Props {
     initModel?: DatasetModel;
@@ -50,18 +55,23 @@ interface Props {
 
 interface State {
     model: DatasetModel;
-    fileImportData: File;
+    file: File;
+    shouldImportData: boolean;
     keyPropertyIndex?: number;
     visitDatePropertyIndex?: number;
 }
 
 export class DatasetDesignerPanelImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
+    private _participantId: string;
+    private _sequenceNum: string;
+
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
         this.state = {
             model: props.initModel || DatasetModel.create(null, {}),
-            fileImportData: undefined,
+            file: undefined,
+            shouldImportData: false,
         };
     }
 
@@ -70,16 +80,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
         // setting initial indexes if these properties are already present and there are changes to them in
         // the domain form
-        let keyPropertyIndex;
-        let visitDatePropertyIndex;
-        model.domain.fields.map((field, index) => {
-            if (model.keyPropertyName && field.name === model.keyPropertyName) {
-                keyPropertyIndex = index;
-            }
-            if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
-                visitDatePropertyIndex = index;
-            }
-        });
+        const keyPropertyIndex = this.findFieldIndexByName(model.domain, model.keyPropertyName);
+        const visitDatePropertyIndex = this.findFieldIndexByName(model.domain, model.visitDatePropertyName);
 
         // disabling the phi level for initially selected additional key field
         if (model.keyPropertyName) {
@@ -108,11 +110,43 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         }
     }
 
+    findFieldIndexByName(domain: DomainDesign, fieldName: string): number {
+        const index = domain.fields.findIndex((field: DomainField) => fieldName && field.name === fieldName);
+        return index > -1 ? index : undefined;
+    }
+
+    checkFieldsInColumnMapping(model: DatasetModel): string {
+        let error: string;
+        if (
+            model.keyPropertyName &&
+            (model.keyPropertyName === this._participantId || model.keyPropertyName === this._sequenceNum)
+        ) {
+            error = KEY_FIELD_MAPPING_ERROR;
+        } else if (
+            model.visitDatePropertyName &&
+            (model.visitDatePropertyName === this._participantId || model.visitDatePropertyName === this._sequenceNum)
+        ) {
+            error = VISIT_DATE_MAPPING_ERROR;
+        }
+        return error;
+    }
+
     onPropertiesChange = (model: DatasetModel) => {
         const { onChange } = this.props;
+        const { file } = this.state;
+
+        let updatedModel = model;
+        if (file && (this._participantId || this._sequenceNum)) {
+            const error = this.checkFieldsInColumnMapping(model);
+            if (model.exception !== error) {
+                updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
+                    draft.exception = error;
+                });
+            }
+        }
 
         this.setState(
-            () => ({ model }),
+            () => ({ model: updatedModel }),
             () => {
                 if (onChange) {
                     onChange(model);
@@ -126,7 +160,29 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     };
 
     onFinish = () => {
-        const { model } = this.state;
+        const { setSubmitting } = this.props;
+        const { model, shouldImportData } = this.state;
+
+        if (shouldImportData && !(this._participantId && this._sequenceNum)) {
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.model.exception =
+                        'You must select a column mapping field for ' +
+                        getStudySubjectProp('nounPlural') +
+                        ' and ' +
+                        getStudyTimepointLabel() +
+                        ' in the fields panel.';
+                }),
+                () => {
+                    setSubmitting(false);
+                }
+            );
+            return;
+        }
+
+        if (this.checkFieldsInColumnMapping(model)) {
+            return;
+        }
 
         this.props.onFinish(model.isValid(), this.saveDomain);
     };
@@ -135,16 +191,30 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const { onChange } = this.props;
         const { keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
-        // TODO: this rowIndexChange handles if the selected keyPropertyIndex or visitDatePropertyIndex field is moved but not if another field moves up above it
-
         this.setState(
             produce((draft: Draft<State>) => {
                 draft.model.domain = domain;
 
+                // if we are back to the no fields state, reset the file related items
+                if (domain.fields.size === 0) {
+                    draft.file = undefined;
+                    draft.shouldImportData = false;
+                    this._participantId = undefined;
+                    this._sequenceNum = undefined;
+                }
+
                 if (keyPropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the keyPropertyIndex
-                    if (rowIndexChange && rowIndexChange.originalIndex === keyPropertyIndex) {
-                        draft.keyPropertyIndex = rowIndexChange.newIndex;
+                    // else if a different row was removed or reordered, refind out index by name
+                    if (rowIndexChange) {
+                        if (rowIndexChange.originalIndex === keyPropertyIndex) {
+                            draft.keyPropertyIndex = rowIndexChange.newIndex;
+                        } else {
+                            draft.keyPropertyIndex = this.findFieldIndexByName(
+                                draft.model.domain,
+                                draft.model.keyPropertyName
+                            );
+                        }
                     }
 
                     // if row was removed, reset key property name
@@ -158,8 +228,15 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
                 if (visitDatePropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the visitDatePropertyIndex
-                    if (rowIndexChange && rowIndexChange.originalIndex === visitDatePropertyIndex) {
-                        draft.visitDatePropertyIndex = rowIndexChange.newIndex;
+                    if (rowIndexChange) {
+                        if (rowIndexChange && rowIndexChange.originalIndex === visitDatePropertyIndex) {
+                            draft.visitDatePropertyIndex = rowIndexChange.newIndex;
+                        } else {
+                            draft.visitDatePropertyIndex = this.findFieldIndexByName(
+                                draft.model.domain,
+                                draft.model.visitDatePropertyName
+                            );
+                        }
                     }
 
                     // if row was removed, reset visit date property name
@@ -180,20 +257,47 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
-    setFileImportData = fileImportData => {
-        this.setState({ fileImportData });
+    setFileImportData = (file: File, shouldImportData: boolean) => {
+        this.setState(state => ({
+            file,
+            shouldImportData: shouldImportData && !state.model.definitionIsShared,
+        }));
     };
 
     onColumnMappingChange = (participantIdField?: string, timePointField?: string) => {
-        // TODO: these will be needed in import data call
-    };
-
-    datasetColumnMapping = () => {
         const { model } = this.state;
 
+        this._participantId = participantIdField;
+        this._sequenceNum = timePointField;
+
+        // lock down these fields from domain
+        const updatedDomain = model.domain.merge({
+            fields: model.domain.fields
+                .map((field: DomainField) => {
+                    if (field.name === participantIdField || field.name === timePointField) {
+                        return field.set('lockType', DOMAIN_FIELD_FULLY_LOCKED);
+                    } else {
+                        return field.set('lockType', DOMAIN_FIELD_NOT_LOCKED);
+                    }
+                })
+                .toList(),
+        }) as DomainDesign;
+
+        this.setState(
+            produce((draft: Draft<State>) => {
+                draft.model.domain = updatedDomain;
+                draft.model.exception = this.checkFieldsInColumnMapping(draft.model);
+            })
+        );
+    };
+
+    renderColumnMappingSection = () => {
+        const { model, file } = this.state;
+
+        // only show this column mapping section in the file infer fields case when there is at least one field
         return (
             <>
-                {model && model.domain.fields && model.domain.fields.size > 0 && (
+                {file && model && model.domain.fields && model.domain.fields.size > 0 && (
                     <DatasetColumnMappingPanel
                         model={model}
                         onColumnMappingChange={this.onColumnMappingChange}
@@ -205,15 +309,19 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
-    handleFileImport() {
+    handleFileImport(participantId, sequenceNum) {
         const { setSubmitting } = this.props;
-        const { fileImportData, model } = this.state;
+        const { file, model } = this.state;
 
         importData({
             schemaName: 'study',
             queryName: model.name,
-            file: fileImportData,
-            importUrl: ActionURL.buildURL('study', 'import', getServerContext().container.path, { name: model.name }),
+            file,
+            importUrl: ActionURL.buildURL('study', 'import', getServerContext().container.path, {
+                name: model.name,
+                participantId,
+                sequenceNum,
+            }),
         })
             .then(response => {
                 setSubmitting(false, () => {
@@ -230,24 +338,49 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
     saveDomain = () => {
         const { setSubmitting } = this.props;
-        const { model, fileImportData } = this.state;
+        const { model, shouldImportData } = this.state;
+        const participantIdMapCol = this._participantId;
+        const sequenceNumMapCol = this._sequenceNum;
 
-        saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
+        // if there is a domain error and we are mapping columns, the row indices will be incorrect so don't include them
+        const addRowIndexes = !(participantIdMapCol || sequenceNumMapCol);
+
+        // filter out the selected column mapping files as those will be created in the base domain fields
+        const updatedDomain = model.domain.merge({
+            fields: model.domain.fields
+                .filter(field => !this._participantId || field.name !== this._participantId)
+                .filter(field => !this._sequenceNum || field.name !== this._sequenceNum)
+                .toList(),
+        }) as DomainDesign;
+
+        // need to track the updated field index values for property values after the filter
+        let keyPropIndex;
+        let visitPropIndex;
+        updatedDomain.fields.map((field, index) => {
+            if (model.keyPropertyName && field.name === model.keyPropertyName) {
+                keyPropIndex = index;
+            }
+            if (model.visitDatePropertyName && field.name === model.visitDatePropertyName) {
+                visitPropIndex = index;
+            }
+        });
+
+        saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, addRowIndexes)
             .then(response => {
                 this.setState(
                     produce((draft: Draft<State>) => {
-                        const updatedModel = draft.model;
-                        updatedModel.exception = undefined;
-                        updatedModel.domain = response;
+                        draft.keyPropertyIndex = keyPropIndex;
+                        draft.visitDatePropertyIndex = visitPropIndex;
+                        draft.model.exception = undefined;
+                        draft.model.domain = response;
                     }),
                     () => {
-                        // If we're importing Dataset file data, import file contents
-                        if (fileImportData) {
-                            this.handleFileImport();
+                        // If we're importing Dataset file and not in a Dataspace study, import the file contents
+                        if (shouldImportData) {
+                            this.handleFileImport(participantIdMapCol, sequenceNumMapCol);
                         } else {
-                            const { model } = this.state;
                             setSubmitting(false, () => {
-                                this.props.onComplete(model);
+                                this.props.onComplete(this.state.model);
                             });
                         }
                     }
@@ -259,12 +392,15 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 setSubmitting(false, () => {
                     this.setState(
                         produce((draft: Draft<State>) => {
-                            const updatedModel = draft.model;
                             if (exception) {
-                                updatedModel.exception = exception;
+                                draft.model.exception = exception;
                             } else {
-                                updatedModel.exception = undefined;
-                                updatedModel.domain = response;
+                                // since the create case filters out the mapped columns, we don't replace the full
+                                // model.domain with response but just update the domainException
+                                draft.model.domain = draft.model.domain.merge({
+                                    domainException: response.domainException,
+                                }) as DomainDesign;
+                                draft.model.exception = undefined;
                             }
                         })
                     );
@@ -287,7 +423,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             saveBtnText,
         } = this.props;
 
-        const { model, fileImportData, keyPropertyIndex, visitDatePropertyIndex } = this.state;
+        const { model, file, keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -345,19 +481,20 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         onTogglePanel(1, collapsed, callback);
                     }}
                     useTheme={useTheme}
-                    importDataChildRenderer={this.datasetColumnMapping}
+                    fieldsAdditionalRenderer={this.renderColumnMappingSection}
                     successBsStyle={successBsStyle}
                     domainFormDisplayOptions={{
                         isDragDisabled: model.isFromAssay(),
                         hideAddFieldsButton: model.isFromAssay(),
+                        hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                     }}
                 />
                 <Progress
                     modal={true}
                     delay={1000}
-                    estimate={fileImportData ? fileImportData.size * 0.005 : undefined}
+                    estimate={file ? file.size * 0.005 : undefined}
                     title="Importing data from selected file..."
-                    toggle={submitting && fileImportData !== undefined}
+                    toggle={submitting && file !== undefined}
                 />
             </BaseDomainDesigner>
         );

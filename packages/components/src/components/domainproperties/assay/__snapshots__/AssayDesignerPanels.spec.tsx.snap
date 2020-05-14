@@ -1804,6 +1804,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -2514,6 +2515,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -3224,6 +3226,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -8417,6 +8420,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -9950,6 +9954,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -10959,6 +10964,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -11132,6 +11138,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -11706,6 +11713,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -12664,6 +12672,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -13130,6 +13139,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -13303,6 +13313,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -13877,6 +13888,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -14816,6 +14828,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -15282,6 +15295,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -15455,6 +15469,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -16029,6 +16044,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -16933,6 +16949,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -19469,6 +19486,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -20178,6 +20196,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -20887,6 +20906,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -23678,6 +23698,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -24387,6 +24408,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -31043,6 +31065,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -32052,6 +32075,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -32225,6 +32249,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -32829,6 +32854,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -33787,6 +33813,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -34419,6 +34446,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -34592,6 +34620,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -35196,6 +35225,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -36135,6 +36165,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -36767,6 +36798,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -36940,6 +36972,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -37544,6 +37577,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -38448,6 +38482,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -44545,6 +44580,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -46077,6 +46113,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
+                "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
                 "hideValidators": false,
@@ -47086,6 +47123,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -47259,6 +47297,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -47863,6 +47902,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -48821,6 +48861,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -49453,6 +49494,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -49626,6 +49668,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -50230,6 +50273,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -51169,6 +51213,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
@@ -51801,6 +51846,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
@@ -51974,6 +52020,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     Object {
                                                                       "disableMvEnabled": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
@@ -52578,6 +52625,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       Object {
                                                                         "disableMvEnabled": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
@@ -53482,6 +53530,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,

@@ -18,7 +18,7 @@ import React from 'react';
 
 import { Col, Row } from 'react-bootstrap';
 
-import { getServerContext } from '@labkey/api';
+import { List } from 'immutable';
 
 import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
@@ -26,6 +26,7 @@ import { DomainField, SelectInput } from '../../..';
 
 import { DatasetModel } from './models';
 import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
+import { DATETIME_RANGE_URI } from "../constants";
 
 interface Props {
     model: DatasetModel;
@@ -104,26 +105,38 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         );
     };
 
+    getTimepointFields(): List<DomainField> {
+        const { model, timepointType } = this.props;
+
+        if (timepointType === 'VISIT') {
+            return model.domain.fields.filter(field => field.dataType.isNumeric()).toList();
+        } else {
+            // DATE or CONTINUOUS
+            return model.domain.fields
+                .filter(field => field.rangeURI.toLowerCase() === 'xsd:datetime' || field.rangeURI === DATETIME_RANGE_URI)
+                .toList();
+        }
+    }
+
     render() {
         const { model } = this.props;
         const { closestParticipantIdField, closestTimepointField } = this.state;
         const participantIdTxt = getStudySubjectProp('nounPlural');
         const timepointTxt = getStudyTimepointLabel();
-
         const domain = model.domain;
 
         return (
             <>
                 <SectionHeading title="Column mapping" />
                 <div className="margin-top">
-                    Columns already existing in the domain can be mapped with columns from your file. Choose a column to
-                    match your {participantIdTxt} and {timepointTxt}.
+                    Columns already existing in the base dataset can be mapped with columns from your file. Choose a
+                    column to map your {participantIdTxt} and {timepointTxt}.
                 </div>
                 <Row className="margin-top">
-                    <Col xs={4}>
+                    <Col lg={2} xs={2}>
                         <DomainFieldLabel label={participantIdTxt} />
                     </Col>
-                    <Col xs={5}>
+                    <Col lg={4} xs={5}>
                         <SelectInput
                             onChange={this.onSelectChange}
                             value={closestParticipantIdField}
@@ -140,17 +153,17 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             clearable={true}
                         />
                     </Col>
-                    <Col xs={3} />
+                    <Col lg={6} xs={5} />
                 </Row>
                 <Row className="margin-top">
-                    <Col xs={4}>
+                    <Col lg={2} xs={2}>
                         <DomainFieldLabel label={timepointTxt} />
                     </Col>
-                    <Col xs={5}>
+                    <Col lg={4} xs={5}>
                         <SelectInput
                             onChange={this.onSelectChange}
                             value={closestTimepointField}
-                            options={domain.fields.toArray()}
+                            options={this.getTimepointFields().toArray()}
                             inputClass=""
                             containerClass=""
                             labelClass=""
@@ -163,7 +176,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
                             clearable={true}
                         />
                     </Col>
-                    <Col xs={3} />
+                    <Col lg={6} xs={5} />
                 </Row>
             </>
         );

@@ -29,8 +29,11 @@ export function fetchDataClass(queryName?: string, rowId?: number): Promise<Data
             .catch(error => {
                 return Promise.reject(error);
             });
-    } else {
+    } else if (queryName) {
         return _fetchDataClass(queryName);
+    } else {
+        // for the create case to get the domain details based on domainKind param only
+        return _fetchDataClass();
     }
 }
 
@@ -41,6 +44,7 @@ function _fetchDataClass(queryName?: string, domainId?: number): Promise<DataCla
             schemaName: SCHEMAS.DATA_CLASSES.SCHEMA,
             queryName,
             domainId,
+            domainKind: queryName === undefined && domainId === undefined ? 'DataClass' : undefined,
             success: data => {
                 if (data.domainKindName === 'DataClass') {
                     resolve(DataClassModel.create(data));

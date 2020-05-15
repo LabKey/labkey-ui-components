@@ -1553,10 +1553,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@labkey/api@0.2.8":
-  version "0.2.8"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.2.8.tgz#c83a4705894b0084f778d9ae89cf161b9ef6a1f6"
-  integrity sha1-yDpHBYlLAIT3eNmuic8WG572ofY=
+"@labkey/api@0.2.8-fb-domainDesignersIssue40347.0":
+  version "0.2.8-fb-domainDesignersIssue40347.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.2.8-fb-domainDesignersIssue40347.0.tgz#bef01e50a182644b734ba27b228f963c4ad820df"
+  integrity sha1-vvAeUKGCZEtzS6J7Io+WPErYIN8=
 
 "@labkey/eslint-config-base@0.0.7":
   version "0.0.7"

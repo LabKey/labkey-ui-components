@@ -3,6 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 0.59.1
 *Released*: 15 May 2020
+* Issue 40347: Domain designer wrappers not supporting domain kind specific properties in the create case
+    - allow for calls to Domain.getDomainDetails to pass in a domainKind param to get domain kind specific properties
+
+### version 0.59.1
+*Released*: 15 May 2020
 * Merge forward changes from release20.5-SNAPSHOT branch
     - includes hotfix changes from version 0.55.1
 

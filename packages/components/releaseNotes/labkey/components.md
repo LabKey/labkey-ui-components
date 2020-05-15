@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.59.1
+*Released*: 15 May 2020
+* Merge forward changes from release20.5-SNAPSHOT branch
+    - includes hotfix changes from version 0.55.1
+
 ## version 0.59.0
 *Released*: 14 May 2020
 * Epic 6800:  Issue Definition designer (Story 3)- Issues module implementation
@@ -40,6 +45,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     - `LineageGraph` supports additional details from `experiment-lineage.api`.
     - `withLineage` HOC for managing lineage state.
     - See https://github.com/LabKey/labkey-ui-components/pull/237 for more details.
+
+### version 0.55.1
+*Released*: 6 May 2020
+* `@labkey/api` dependency update.
+* allow using separate singleFilterValue for createQueryGridModelFilteredBySample
 
 ## version 0.55.0
 *Released*: 30 April 2020

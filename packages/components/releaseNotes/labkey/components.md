@@ -41,6 +41,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     - `withLineage` HOC for managing lineage state.
     - See https://github.com/LabKey/labkey-ui-components/pull/237 for more details.
 
+### version 0.55.1
+*Released*: 6 May 2020
+* `@labkey/api` dependency update.
+* allow using separate singleFilterValue for createQueryGridModelFilteredBySample
+
 ## version 0.55.0
 *Released*: 30 April 2020
 * Issue 39633: Choosing to cancel navigating away from a page when using react-router's setRouteLeaveHook will leave

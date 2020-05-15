@@ -32,6 +32,7 @@ import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayUploadTabs,
+    QueryColumn,
     QueryGridModel,
     SchemaQuery,
 } from '../base/models/model';
@@ -80,6 +81,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     maxInsertRows?: number;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
+    loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -259,10 +261,11 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const sampleColumnData = assayDefinition.getSampleColumn();
 
         if (sampleColumnData && location) {
+            const selectedSamplesFunction = this.props.loadSelections ? this.props.loadSelections : loadSelectedSamples;
             // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
             // the currently selected samples so we can pre-populate the fields in the wizard with the selected
             // samples.
-            loadSelectedSamples(location, sampleColumnData.column).then(samples => {
+            selectedSamplesFunction(location, sampleColumnData.column).then(samples => {
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
                 let runProperties = this.getRunPropertiesRow(this.props);
                 let batchProperties = this.getBatchPropertiesRow(this.props);

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.59.1
+*Released*: 15 May 2020
+* Merge forward changes from release20.5-SNAPSHOT branch
+    - includes hotfix changes from version 0.55.1
+
 ## version 0.59.0
 *Released*: 14 May 2020
 * Epic 6800:  Issue Definition designer (Story 3)- Issues module implementation

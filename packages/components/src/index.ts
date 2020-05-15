@@ -231,7 +231,7 @@ import {
 } from './components/entities/models';
 import { SearchResultCard } from './components/search/SearchResultCard';
 import { SearchResultsPanel } from './components/search/SearchResultsPanel';
-import { searchUsingIndex } from './components/search/actions';
+import { searchUsingIndex, getProcessedSearchHits } from './components/search/actions';
 import { SearchResultsModel, SearchResultCardData } from './components/search/models';
 import {
     deleteSampleSet,
@@ -532,6 +532,7 @@ export {
     SearchResultsPanel,
     searchUsingIndex,
     SearchResultCardData,
+    getProcessedSearchHits,
 
     // assay
     AssayUploadResultModel,

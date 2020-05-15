@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version XXX
+*Released*: XXX
+* Improve search experience
+- Updated SearchResultsPanel to skip result processing and assume SearchResultsModel already has cardData processed and available. 
+Refactored search result processing and SearchResultCardData generation into getProcessedSearchHits function, that should be called while creating/updating SearchResultsModel with search results.
+- Added emptyResultDisplay and hidePanelFrame props to SearchResultsPanel
+
 ## version 0.59.0
 *Released*: 14 May 2020
 * Epic 6800:  Issue Definition designer (Story 3)- Issues module implementation

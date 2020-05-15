@@ -14,33 +14,18 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Map } from 'immutable';
 
 import { SVGIcon } from '../base/SVGIcon';
-
 import { SearchResultCardData } from './models';
-import { getSearchResultCardData } from './actions';
 
 interface SearchResultProps {
-    category?: string;
-    title: string;
+    cardData: SearchResultCardData;
     summary: string;
     url: string;
-    data?: Map<any, any>;
     iconUrl?: string;
-    getCardData?: (data: Map<any, any>, category?: string) => SearchResultCardData; // allows for customization of mappings from search results to icons, altText and titles.
 }
 
 export class SearchResultCard extends React.Component<SearchResultProps, any> {
-    getCardData(): SearchResultCardData {
-        const { category, data, getCardData, title } = this.props;
-
-        let cardData = getSearchResultCardData(data, category, title);
-        if (getCardData) {
-            cardData = { ...cardData, ...getCardData(data, category) };
-        }
-        return cardData;
-    }
 
     renderType(cardData: SearchResultCardData) {
         if (cardData.typeName) {
@@ -66,9 +51,7 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
     }
 
     render() {
-        const { summary, url } = this.props;
-
-        const cardData = this.getCardData();
+        const { summary, url, cardData } = this.props;
 
         return (
             <a href={url}>

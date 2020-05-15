@@ -57,27 +57,27 @@ function parseSearchIdToData(idString): SearchIdData {
     return idData;
 }
 
-function resolveTypeName(data: Map<string, any>) {
+function resolveTypeName(data: any) {
     let typeName;
     if (data) {
-        if (data.getIn(['dataClass', 'name'])) {
-            typeName = data.getIn(['dataClass', 'name']);
-        } else if (data.getIn(['sampleSet', 'name'])) {
-            typeName = data.getIn(['sampleSet', 'name']);
+        if (data.dataClass?.name) {
+            typeName = data.dataClass.name;
+        } else if (data.sampleSet?.name) {
+            typeName = data.sampleSet.name;
         }
     }
     return typeName;
 }
 
-function resolveIconSrc(data: Map<string, any>, category: string): string {
+function resolveIconSrc(data: any, category: string): string {
     let iconSrc = '';
     if (data) {
-        if (data.hasIn(['dataClass', 'name'])) {
-            iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
-        } else if (data.hasIn(['sampleSet', 'name'])) {
+        if (data.dataClass?.name) {
+            iconSrc = data.dataClass.name.toLowerCase();
+        } else if (data.sampleSet?.name) {
             iconSrc = 'samples';
-        } else if (data.has('type')) {
-            const lcType = data.get('type').toLowerCase();
+        } else if (data.type) {
+            const lcType = data.type.toLowerCase();
             if (lcType === 'sampleset') {
                 iconSrc = 'sample_set';
             } else if (lcType.indexOf('dataclass') === 0) {
@@ -95,10 +95,38 @@ function resolveIconSrc(data: Map<string, any>, category: string): string {
     return iconSrc;
 }
 
-export function getSearchResultCardData(data: Map<any, any>, category: string, title: string): SearchResultCardData {
+function getSearchResultCardData(data: any, category: string, title: string): SearchResultCardData {
     return {
         title,
         iconSrc: resolveIconSrc(data, category),
         typeName: resolveTypeName(data),
     };
+}
+
+function getCardData(category: string, data: any, title: string, getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData): SearchResultCardData {
+    let cardData = getSearchResultCardData(data, category, title);
+    if (getCardDataFn) {
+        cardData = { ...cardData, ...getCardDataFn(data, category) };
+    }
+    return cardData;
+}
+
+// result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
+// cannot seem be to be removable, cause sample type search to be missing?
+export function getProcessedSearchHits(results: any, getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData) : List<Map<any, any>> {
+    return results ? results.filter(result => {
+            const category = result['category'];
+            return (
+                category == 'data' ||
+                category == 'material' ||
+                category == 'workflowJob' ||
+                category == 'file workflowJob' ||
+                result['data']
+            );
+        }).map(result => {
+            return ({...result,
+                cardData: getCardData(result['category'], result['data'], result['title'], getCardDataFn)
+            })
+        })
+        : undefined;
 }

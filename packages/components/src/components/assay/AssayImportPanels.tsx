@@ -684,7 +684,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                 <WizardNavButtons cancel={onCancel} containerClassName="" includeNext={false}>
                     {showSaveAgainBtn && (
                         <Button type="submit" onClick={this.onSaveClick.bind(this, true)} disabled={disabledSave}>
-                            {model.isSubmitting ? 'Saving...' : 'Save And Import Another Run'}
+                            {model.isSubmitting ? 'Saving...' : 'Save and Import Another Run'}
                         </Button>
                     )}
                     <Button

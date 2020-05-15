@@ -28,6 +28,7 @@ interface Props {
     model: SearchResultsModel;
     emptyResultDisplay?: React.ReactNode;
     iconUrl?: string;
+    hideHeader?: boolean
     hidePanelFrame?: boolean
 }
 
@@ -60,7 +61,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     renderResults() {
-        const { model, iconUrl, emptyResultDisplay } = this.props;
+        const { model, iconUrl, emptyResultDisplay, hideHeader } = this.props;
 
         if (this.isLoading()) return;
 
@@ -69,7 +70,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         if (data && data.size > 0) {
             return (
                 <div>
-                    <h3 className="no-margin-top search-results__amount">{data.size} Results</h3>
+                    {!hideHeader && <h3 className="no-margin-top search-results__amount">{data.size} Results</h3>}
                     {data.size > 0 &&
                         data.map((item, i) => (
                             <div key={i} className="col-md-6 col-sm-12 search-results__margin-top">

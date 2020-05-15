@@ -9,7 +9,7 @@ import { SCHEMAS } from '../..';
 
 import { SearchIdData, SearchResultCardData } from './models';
 
-export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
+export function searchUsingIndex(userConfig, getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData): Promise<{}> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('search', 'json.api'),
@@ -18,7 +18,9 @@ export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
             success: Utils.getCallbackWrapper(json => {
                 addDataObjects(json);
                 const urlResolver = new URLResolver();
-                resolve(urlResolver.resolveSearchUsingIndex(json));
+                urlResolver.resolveSearchUsingIndex(json).then(results => {
+                    resolve({...results, hits: getProcessedSearchHits(results['hits'], getCardDataFn)});
+                });
             }),
             failure: Utils.getCallbackWrapper(
                 json => {
@@ -113,7 +115,7 @@ function getCardData(category: string, data: any, title: string, getCardDataFn?:
 
 // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
 // cannot seem be to be removable, cause sample type search to be missing?
-export function getProcessedSearchHits(results: any, getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData) : List<Map<any, any>> {
+function getProcessedSearchHits(results: any, getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData) : {} {
     return results ? results.filter(result => {
             const category = result['category'];
             return (

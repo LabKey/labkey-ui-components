@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.59.2
+*Released*: 16 May 2020
+* Lineage: improve caching, allow non-default distance
+
 ### version 0.59.1
 *Released*: 15 May 2020
 * Merge forward changes from release20.5-SNAPSHOT branch

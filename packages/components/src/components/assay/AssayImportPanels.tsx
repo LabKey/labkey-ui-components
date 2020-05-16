@@ -63,6 +63,7 @@ import {
     importAssayRun,
     uploadAssayRunFiles,
 } from './actions';
+import { dismissNotifications } from '../..';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({ isInit: false });
@@ -488,6 +489,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             );
         } else {
             this.setModelState(true, undefined);
+            dismissNotifications();
             const errorPrefix = 'There was a problem importing the assay results.';
             uploadAssayRunFiles(data)
                 .then((processedData: IAssayUploadOptions) => {

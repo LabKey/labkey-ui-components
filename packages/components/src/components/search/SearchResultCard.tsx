@@ -38,6 +38,17 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
         }
     }
 
+    renderDetail(label: string, value?: string) {
+        if (value) {
+            return (
+                <div>
+                    <strong>{label}: </strong>
+                    {value}
+                </div>
+            );
+        }
+    }
+
     renderImage(cardData: SearchResultCardData) {
         const { iconUrl } = this.props;
 
@@ -63,7 +74,8 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
                         <div>
                             <h4 className="text-capitalize">{cardData.title}</h4>
                         </div>
-                        {this.renderType(cardData)}
+                        {this.renderDetail("Category", cardData.category)}
+                        {this.renderDetail("Type", cardData.typeName)}
                         <div title={summary}>
                             <strong>Summary: </strong>{' '}
                             {summary.length

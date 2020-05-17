@@ -13,50 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List } from 'immutable';
-import { Ajax, Assay, AssayDOM, Utils } from '@labkey/api';
+import { Ajax, Utils } from '@labkey/api';
 
 import { buildURL } from '../../url/ActionURL';
 
-import { AssayDefinitionModel, InferDomainResponse } from './models/model';
-
-// TODO move to assay?
-export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
-    return new Promise((res, rej) => {
-        Assay.getAll({
-            parameters: {
-                type,
-            },
-            success: (rawModels: any[]) => {
-                const models = List<AssayDefinitionModel>().asMutable();
-                rawModels.forEach(rawModel => {
-                    models.push(AssayDefinitionModel.create(rawModel));
-                });
-                res(models.asImmutable());
-            },
-            failure: error => {
-                rej(error);
-            },
-        });
-    });
-}
-
-export function importGeneralAssayRun(assayId: number, file: File, name?: string, comment?: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-        AssayDOM.importRun({
-            assayId,
-            name,
-            comment,
-            files: [file],
-            success: response => {
-                resolve(response);
-            },
-            failure: error => {
-                reject(error.exception);
-            },
-        });
-    });
-}
+import { InferDomainResponse } from './models/model';
 
 export function inferDomainFromFile(file: File, numLinesToInclude: number): Promise<InferDomainResponse> {
     return new Promise((resolve, reject) => {

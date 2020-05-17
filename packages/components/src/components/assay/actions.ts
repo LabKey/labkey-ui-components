@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, AssayDOM, Filter, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
@@ -24,6 +24,43 @@ import { SCHEMAS } from '../base/models/schemas';
 import { AssayDefinitionModel, AssayUploadTabs, QueryGridModel, SchemaQuery } from '../base/models/model';
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models';
+
+export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
+    return new Promise((res, rej) => {
+        Assay.getAll({
+            parameters: {
+                type,
+            },
+            success: (rawModels: any[]) => {
+                const models = List<AssayDefinitionModel>().asMutable();
+                rawModels.forEach(rawModel => {
+                    models.push(AssayDefinitionModel.create(rawModel));
+                });
+                res(models.asImmutable());
+            },
+            failure: error => {
+                rej(error);
+            },
+        });
+    });
+}
+
+export function importGeneralAssayRun(assayId: number, file: File, name?: string, comment?: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+        AssayDOM.importRun({
+            assayId,
+            name,
+            comment,
+            files: [file],
+            success: response => {
+                resolve(response);
+            },
+            failure: error => {
+                reject(error.exception);
+            },
+        });
+    });
+}
 
 export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
@@ -321,3 +358,5 @@ export function deleteAssayDesign(rowId: string): Promise<any> {
         });
     });
 }
+
+

@@ -16,9 +16,7 @@
 import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
 import { SCHEMAS } from './components/base/models/schemas';
 import {
-    fetchAllAssays,
     getUserProperties,
-    importGeneralAssayRun,
     inferDomainFromFile,
 } from './components/base/actions';
 import { QueryInfo } from './components/base/models/QueryInfo';
@@ -255,12 +253,13 @@ import {
 import {
     deleteAssayDesign,
     deleteAssayRuns,
+    fetchAllAssays,
     getBatchPropertiesModel,
     getBatchPropertiesRow,
     getImportItemsForAssayDefinitions,
     getRunPropertiesModel,
     getRunPropertiesRow,
-    importAssayRun, // TODO reconcile with importAssayGeneralRun
+    importAssayRun, importGeneralAssayRun, // TODO reconcile with importAssayGeneralRun
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { invalidateLineageResults } from './components/lineage/actions';

@@ -26,7 +26,6 @@ import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    AssayUploadTabs,
     Container,
     IGridLoader,
     IGridResponse,
@@ -245,16 +244,12 @@ import { DataClassModel } from './components/domainproperties/dataclasses/models
 import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
 import { AssayProvider, AssayProviderProps, AssayContextConsumer } from './components/assay/AssayProvider';
-import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader';
 import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal';
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal';
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem';
 import {
     AssayUploadResultModel,
-    AssayWizardModel,
-    IAssayUploadOptions,
-    IAssayURLContext,
     AssayStateModel,
 } from './components/assay/models';
 import {
@@ -265,8 +260,7 @@ import {
     getImportItemsForAssayDefinitions,
     getRunPropertiesModel,
     getRunPropertiesRow,
-    importAssayRun,
-    uploadAssayRunFiles,
+    importAssayRun, // TODO reconcile with importAssayGeneralRun
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { invalidateLineageResults } from './components/lineage/actions';
@@ -537,18 +531,13 @@ export {
     AssayDesignDeleteConfirmModal,
     AssayResultDeleteConfirmModal,
     AssayRunDeleteConfirmModal,
-    AssayWizardModel,
     AssayStateModel,
-    IAssayURLContext,
-    IAssayUploadOptions,
-    AssayUploadGridLoader,
     AssayImportPanels,
     AssayProvider,
     AssayProviderProps,
     AssayContextConsumer,
     AssayImportSubMenuItem,
-    importAssayRun,
-    uploadAssayRunFiles,
+    // importAssayRun, // TODO reconcile with importAssayGeneralRun
     deleteAssayDesign,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
@@ -559,7 +548,6 @@ export {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    AssayUploadTabs,
     fetchAllAssays,
     importGeneralAssayRun,
 

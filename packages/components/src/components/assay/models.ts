@@ -30,14 +30,6 @@ export interface AssayPropertiesPanelProps {
     title?: string;
 }
 
-export interface IAssayURLContext {
-    assayRequest?: string;
-    location?: string;
-    protocol: string;
-    provider: string;
-    runId?: string;
-}
-
 export class AssayWizardModel
     extends Record({
         assayDef: undefined,

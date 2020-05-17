@@ -45,24 +45,7 @@ export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel
     });
 }
 
-export function importGeneralAssayRun(assayId: number, file: File, name?: string, comment?: string): Promise<any> {
-    return new Promise((resolve, reject) => {
-        AssayDOM.importRun({
-            assayId,
-            name,
-            comment,
-            files: [file],
-            success: response => {
-                resolve(response);
-            },
-            failure: error => {
-                reject(error.exception);
-            },
-        });
-    });
-}
-
-export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
+export function importAssayRun(config: Partial<AssayDOM.IImportRunOptions>): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
         AssayDOM.importRun(
             Object.assign({}, config, {

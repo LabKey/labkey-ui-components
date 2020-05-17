@@ -259,7 +259,7 @@ import {
     getImportItemsForAssayDefinitions,
     getRunPropertiesModel,
     getRunPropertiesRow,
-    importAssayRun, importGeneralAssayRun, // TODO reconcile with importAssayGeneralRun
+    importAssayRun,
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { invalidateLineageResults } from './components/lineage/actions';
@@ -536,7 +536,7 @@ export {
     AssayProviderProps,
     AssayContextConsumer,
     AssayImportSubMenuItem,
-    // importAssayRun, // TODO reconcile with importAssayGeneralRun
+    importAssayRun,
     deleteAssayDesign,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
@@ -548,7 +548,6 @@ export {
     AssayDomainTypes,
     AssayLink,
     fetchAllAssays,
-    importGeneralAssayRun,
 
     // heatmap
     HeatMap,

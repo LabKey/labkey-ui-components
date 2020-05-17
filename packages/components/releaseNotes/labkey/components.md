@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ## version TBD
 *Release*: TBD
 * Move AssayProvider from SampleManager to ui-components
+* Remove redundnat importGeneralAssayRun method (in favor of importAssayRun)
 
 ## version 0.59.0
 *Released*: 14 May 2020

@@ -359,7 +359,6 @@ export class GridPanel extends PureComponent<Props, State> {
         const actionValue = { value: viewName, action: this.omniBoxActions.view };
         let changeType = ChangeType.remove;
         let actionValues = this.state.actionValues.filter(av => av.action.keyword !== 'view');
-        console.log(viewName);
 
         if (viewName !== undefined) {
             changeType = ChangeType.add;

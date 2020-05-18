@@ -24,9 +24,10 @@ import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { DomainField, SelectInput } from '../../..';
 
+import { DATETIME_RANGE_URI } from '../constants';
+
 import { DatasetModel } from './models';
 import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
-import { DATETIME_RANGE_URI } from "../constants";
 
 interface Props {
     model: DatasetModel;
@@ -109,11 +110,15 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         const { model, timepointType } = this.props;
 
         if (timepointType === 'VISIT') {
-            return model.domain.fields.filter(field => field.dataType.isNumeric() || field.dataType.isString()).toList();
+            return model.domain.fields
+                .filter(field => field.dataType.isNumeric() || field.dataType.isString())
+                .toList();
         } else {
             // DATE or CONTINUOUS
             return model.domain.fields
-                .filter(field => field.rangeURI.toLowerCase() === 'xsd:datetime' || field.rangeURI === DATETIME_RANGE_URI)
+                .filter(
+                    field => field.rangeURI.toLowerCase() === 'xsd:datetime' || field.rangeURI === DATETIME_RANGE_URI
+                )
                 .toList();
         }
     }

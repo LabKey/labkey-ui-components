@@ -30,13 +30,13 @@ interface GridPanelProps {
     advancedExportOptions?: { [key: string]: string };
     ButtonsComponent?: ComponentType<RequiresModelAndActions>;
     hideEmptyViewSelector?: boolean;
-    isPaged?: boolean;
     pageSizes?: number[];
     title?: string;
     showButtonBar?: boolean;
     showChartSelector?: boolean;
     showExport?: boolean;
     showOmniBox?: boolean;
+    showPagination?: boolean;
     showSampleComparisonReports?: boolean;
     showViewSelector?: boolean;
 }
@@ -59,12 +59,13 @@ class ButtonBar extends PureComponent<GridBarProps> {
             pageSizes,
             showChartSelector,
             showExport,
+            showPagination,
             showSampleComparisonReports,
             showViewSelector,
         } = this.props;
         const { hasData, isPaged, queryInfo, queryInfoError, rowsError, selectionsError } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
-        const paginate = this.props.isPaged && isPaged && hasData && !hasError;
+        const paginate = showPagination && isPaged && hasData && !hasError;
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewSelector && queryInfo !== undefined;
@@ -115,7 +116,7 @@ export class GridPanel extends PureComponent<Props, State> {
         allowSorting: true,
         asPanel: true,
         hideEmptyViewSelector: false,
-        isPaged: true,
+        showPagination: true,
         showButtonBar: true,
         showChartSelector: true,
         showExport: true,

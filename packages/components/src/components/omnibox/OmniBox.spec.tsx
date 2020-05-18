@@ -17,9 +17,9 @@ import React from 'react';
 
 import { mount, shallow } from 'enzyme';
 
-import { fromJS, List } from 'immutable';
+import { fromJS } from 'immutable';
 
-import { QueryColumn, QueryGridModel, QueryInfo } from '../..';
+import { QueryGridModel, QueryInfo } from '../..';
 
 import { initUnitTests, makeQueryInfo, makeTestData } from '../../testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';

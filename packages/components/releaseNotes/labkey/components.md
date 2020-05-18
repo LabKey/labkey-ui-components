@@ -17,6 +17,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     * OmniBox no longer emits a change event when the user cancels an action change, or enters an invalid action.
     * Actions now add a `valueObject` during `completeAction` so consumers don't need to parse string values, used by
     GridPanel.
+* Add `showButtonBar` and `title` props to GridPanel
+* Enabled Maps, Sets, and Patches in Immer
+* Refactored the GridPanel tests to not use snapshotting
+* Add another view to sample mixutres data.
 
 ### version 0.60.0
 *Released*: 20 May 2020

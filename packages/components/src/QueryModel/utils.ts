@@ -3,7 +3,7 @@
  * @param value
  * @param defaultValue
  */
-import { DataViewInfo, IDataViewInfo } from '../models';
+import { IDataViewInfo } from '../models';
 import { naturalSort, QuerySort } from '..';
 import { Filter } from '@labkey/api';
 
@@ -11,7 +11,7 @@ export function getOrDefault(value, defaultValue?) {
     return value ?? defaultValue;
 }
 
-export function dataViewInfoSorter(a: IDataViewInfo, b: DataViewInfo) {
+export function dataViewInfoSorter(a: IDataViewInfo, b: IDataViewInfo): number {
     return naturalSort(a.name, b.name);
 }
 

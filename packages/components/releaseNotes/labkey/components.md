@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 7207: DatasetColumnMappingPanel fix to allow for numeric and text fields to be used for timepoint/visit column mapping
+    - Fix for StudyScheduleTest use case which uses the text visit values instead of Sequence Num during import
+
 ### version 0.59.2
 *Released*: 16 May 2020
 * Lineage: improve caching, allow non-default distance

@@ -109,7 +109,7 @@ export class DatasetColumnMappingPanel extends React.PureComponent<Props, State>
         const { model, timepointType } = this.props;
 
         if (timepointType === 'VISIT') {
-            return model.domain.fields.filter(field => field.dataType.isNumeric()).toList();
+            return model.domain.fields.filter(field => field.dataType.isNumeric() || field.dataType.isString()).toList();
         } else {
             // DATE or CONTINUOUS
             return model.domain.fields

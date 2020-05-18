@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { QueryModel, Tip } from '..';
+import { GRID_CHECKBOX_OPTIONS, QueryModel, Tip } from '..';
 import { EXPORT_TYPES } from '../constants';
-import { exportRows } from '../actions';
+import { exportRows, ExportOptions } from '../actions';
 
 interface ExportMenuProps {
     // pageSizes is expected to be sorted (ascending)
@@ -24,13 +24,14 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
 
     export = option => {
         const { model, advancedOptions } = this.props;
-        const { id, schemaQuery, exportColumnString, sortString, filters } = model;
-        const exportOptions = {
+        const { id, filters, hasSelections, selectedState, schemaQuery, exportColumnString, sortString } = model;
+        const showRows = (hasSelections && selectedState !== GRID_CHECKBOX_OPTIONS.NONE) ? 'SELECTED' : 'ALL';
+        const exportOptions: ExportOptions = {
             filters: List(filters),
             columns: exportColumnString,
             sorts: sortString,
             selectionKey: id,
-            // TODO: Implement showRows when selections are implemented.
+            showRows,
         };
 
         exportRows(option.type, schemaQuery, exportOptions, advancedOptions);
@@ -38,15 +39,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
 
     render() {
         const { model } = this.props;
-        const { id, hasData } = model;
-        const menuItems = ExportMenu.exportOptions.map(option => (
-            <MenuItem key={option.type} onClick={() => this.export(option)}>
-                <div className="export-menu__item">
-                    <span className={`fa ${option.icon}`} />
-                    <span>{option.label}</span>
-                </div>
-            </MenuItem>
-        ));
+        const { id, hasData, hasSelections, selections } = model;
 
         return (
             hasData && (
@@ -58,10 +51,19 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                             pullRight
                             title={<span className="fa fa-download" />}
                         >
-                            {/* TODO: render selection size when selections are implemented */}
-                            <MenuItem header>Export</MenuItem>
+                            <MenuItem header>
+                                Export
+                                {(hasSelections && selections.size > 0) ? ' Selected' : ''}
+                            </MenuItem>
 
-                            {menuItems}
+                            {ExportMenu.exportOptions.map(option => (
+                                <MenuItem key={option.type} onClick={() => this.export(option)}>
+                                    <div className="export-menu__item">
+                                        <span className={`fa ${option.icon} export-menu-icon`} />
+                                        <span>{option.label}</span>
+                                    </div>
+                                </MenuItem>
+                            ))}
                         </DropdownButton>
                     </Tip>
                 </div>

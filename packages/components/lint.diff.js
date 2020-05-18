@@ -40,7 +40,7 @@ if (process.argv.length > 2) {
     let stdout; // This is the supported way to pipe stdout to a local variable
     if (currentBranch) {
         // Get name of the current branch
-        ({ stdout } = await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD']))
+        ({ stdout } = await execa('git', ['rev-parse', '--abbrev-ref', 'HEAD']));
         if (!stdout) {
             console.error('Error finding git branch name');
         } else {
@@ -50,7 +50,7 @@ if (process.argv.length > 2) {
         const branch = stdout;
 
         // Diff current branch against master to get changed file names
-        ({stdout} = await execa('git', ['diff', 'master...' + branch, '--name-only', '--diff-filter=AM']))
+        ({stdout} = await execa('git', ['diff', 'master...' + branch, '--name-only', '--diff-filter=AM']));
         if (!stdout) {
             console.log('No changed files in branch ' + branch);
         }
@@ -58,7 +58,7 @@ if (process.argv.length > 2) {
         files = stdout;
     } else {
         // Diff uncommitted changes against committed to
-        ({stdout} = await execa('git', ['diff', '--name-only', '--diff-filter=AM', lintPath]))
+        ({stdout} = await execa('git', ['diff', '--name-only', '--diff-filter=AM', lintPath]));
         if (!stdout) {
             console.log('No changed files at ' + lintPath);
         }
@@ -75,7 +75,7 @@ if (process.argv.length > 2) {
             const correctPath = file.startsWith(repoPath + 'src/');
             const correctExt = fileExtensions.findIndex(ext => (file.endsWith(ext))) !== -1;
             return correctPath && correctExt
-        })
+        });
 
         if (filtered.length < 1) {
             console.log('No changed files match the file extension.')
@@ -84,7 +84,7 @@ if (process.argv.length > 2) {
             // Remove file path relative to git repo
             filtered = filtered.map(file => {
                 return file.substring(repoPath.length);
-            })
+            });
 
             console.log('Linting files:\n', filtered);
 

@@ -6,6 +6,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Move AssayProvider from SampleManager to ui-components
 * Remove redundnat importGeneralAssayRun method (in favor of importAssayRun)
 
+### version 0.59.3
+*Released*: 18 May 2020
+* Item 7207: DatasetColumnMappingPanel fix to allow for numeric and text fields to be used for timepoint/visit column mapping
+    - Fix for StudyScheduleTest use case which uses the text visit values instead of Sequence Num during import
+
 ### version 0.59.2
 *Released*: 16 May 2020
 * Lineage: improve caching, allow non-default distance

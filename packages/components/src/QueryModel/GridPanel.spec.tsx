@@ -150,7 +150,7 @@ describe('GridPanel', () => {
         expect(wrapper.find(PAGE_SIZE_SELECTOR).find('ul').text()).toEqual('Page Size5101520');
 
         // Pagination should not be present.
-        wrapper.setProps({ isPaged: false });
+        wrapper.setProps({ showPagination: false });
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(PAGE_SIZE_SELECTOR).exists()).toEqual(false);

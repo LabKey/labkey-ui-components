@@ -47,9 +47,10 @@ class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps &
     render() {
         const { editingMode, queryColumns } = this.props;
         const model = this.getModel();
+        const error = model.queryInfoError ?? model.rowsError;
 
-        if (model.error !== undefined) {
-            return <Alert>{model.error}</Alert>;
+        if (error !== undefined) {
+            return <Alert>{error}</Alert>;
         } else if (model.isLoading) {
             return <LoadingSpinner />;
         }

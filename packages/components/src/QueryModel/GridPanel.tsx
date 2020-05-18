@@ -32,6 +32,8 @@ interface GridPanelProps {
     hideEmptyViewSelector?: boolean;
     isPaged?: boolean;
     pageSizes?: number[];
+    title?: string;
+    showButtonBar?: boolean;
     showChartSelector?: boolean;
     showExport?: boolean;
     showOmniBox?: boolean;
@@ -114,6 +116,7 @@ export class GridPanel extends PureComponent<Props, State> {
         asPanel: true,
         hideEmptyViewSelector: false,
         isPaged: true,
+        showButtonBar: true,
         showChartSelector: true,
         showExport: true,
         showOmniBox: true,
@@ -410,7 +413,7 @@ export class GridPanel extends PureComponent<Props, State> {
     };
 
     render(): ReactNode {
-        const { actions, allowSelections, asPanel, model, showOmniBox } = this.props;
+        const { actions, allowSelections, asPanel, model, showButtonBar, showOmniBox, title } = this.props;
         const {
             hasData,
             id,
@@ -423,17 +426,30 @@ export class GridPanel extends PureComponent<Props, State> {
         } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
         let loadingMessage;
+        let header;
 
         if (isLoading) {
             loadingMessage = 'Loading data...';
-        } else if (isLoadingSelections) {
+        } else if (allowSelections && isLoadingSelections) {
             loadingMessage = 'Loading selections...';
+        }
+
+        if (title) {
+            header = (
+                <div className="panel-heading">
+                    <span>{title}</span>
+                </div>
+            );
         }
 
         return (
             <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
+                {header}
+
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
-                    <ButtonBar {...this.props} onViewSelect={this.onViewSelect} />
+                    {showButtonBar && (
+                        <ButtonBar {...this.props} onViewSelect={this.onViewSelect} />
+                    )}
 
                     {showOmniBox && (
                         <div className="grid-panel__omnibox">

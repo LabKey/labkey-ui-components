@@ -685,7 +685,7 @@ function bindSearch(searchTerm: string): List<Filter.IFilter> {
     return searchFilters.asImmutable();
 }
 
-interface IExportOptions {
+export interface ExportOptions {
     columns?: string;
     filters?: List<Filter.IFilter>;
     sorts?: string;
@@ -696,7 +696,7 @@ interface IExportOptions {
 export function exportRows(
     type: EXPORT_TYPES,
     schemaQuery: SchemaQuery,
-    options?: IExportOptions,
+    options?: ExportOptions,
     advancedOptions?: Record<string, any>
 ): void {
     let params: any = {

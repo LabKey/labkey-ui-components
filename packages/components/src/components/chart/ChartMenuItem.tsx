@@ -5,7 +5,7 @@ import { DataViewInfo } from '../../models';
 
 interface ChartMenuItemProps {
     chart: DataViewInfo;
-    showChart: Function;
+    showChart: (chart: DataViewInfo) => void;
 }
 
 export class ChartMenuItem extends PureComponent<ChartMenuItemProps> {

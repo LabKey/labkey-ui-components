@@ -20,7 +20,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add `showButtonBar` and `title` props to GridPanel
 * Enabled Maps, Sets, and Patches in Immer
 * Refactored the GridPanel tests to not use snapshotting
-* Add another view to sample mixutres data.
+* Add another view to sample mixtures data.
+* Remove IQueryModel interface, it was not necessary.
 
 ### version 0.60.0
 *Released*: 20 May 2020

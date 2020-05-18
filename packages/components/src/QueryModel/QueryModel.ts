@@ -14,7 +14,6 @@ import {
     ViewInfo,
 } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
-import { getOrDefault } from './utils';
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
@@ -52,34 +51,14 @@ export interface QueryConfig {
     sorts?: QuerySort[];
 }
 
-export interface IQueryModel extends QueryConfig {
-    // Separate from baseFilters because these are set by the user when interacting with grids (e.g. via omnibox)
-    filterArray: Filter.IFilter[];
-    // Set by server (Assay QC, etc)
-    messages?: GridMessage[];
-    queryInfo?: QueryInfo;
-    queryInfoError?: string;
-    queryInfoLoadingState: LoadingState;
-    orderedRows?: string[];
-    rows?: { [key: string]: any };
-    rowCount?: number;
-    rowsError?: string;
-    rowsLoadingState: LoadingState;
-    selections?: Set<string>;
-    selectionsError?: string;
-    selectionsLoadingState: LoadingState;
-    charts: IDataViewInfo[];
-    chartsError: string;
-    chartsLoadingState: LoadingState;
-}
-
 const DEFAULT_OFFSET = 0;
 const DEFAULT_MAX_ROWS = 20;
 
-export class QueryModel implements IQueryModel {
+export class QueryModel {
     [immerable] = true;
 
     // Fields from QueryConfig
+    // Some of the fields we have in common with QueryConfig are not optional because we give them default values.
     readonly baseFilters: Filter.IFilter[];
     readonly containerFilter?: Query.ContainerFilter;
     readonly containerPath?: string;
@@ -87,7 +66,7 @@ export class QueryModel implements IQueryModel {
     readonly includeDetailsColumn: boolean;
     readonly includeUpdateColumn: boolean;
     readonly keyValue?: any;
-    readonly maxRows?: number;
+    readonly maxRows: number;
     readonly offset: number;
     readonly omittedColumns: string[];
     readonly queryParameters?: { [key: string]: any };
@@ -114,10 +93,10 @@ export class QueryModel implements IQueryModel {
     readonly chartsLoadingState: LoadingState;
 
     constructor(queryConfig: QueryConfig) {
-        this.baseFilters = getOrDefault(queryConfig.baseFilters, []);
-        this.containerFilter = getOrDefault(queryConfig.containerFilter);
-        this.containerPath = getOrDefault(queryConfig.containerPath);
-        this.schemaQuery = getOrDefault(queryConfig.schemaQuery);
+        this.baseFilters = queryConfig.baseFilters ?? [];
+        this.containerFilter = queryConfig.containerFilter;
+        this.containerPath = queryConfig.containerPath;
+        this.schemaQuery = queryConfig.schemaQuery;
 
         // Even though this is a situation that we shouldn't be in due to the type annotations it's still possible
         // due to conversion from any, and it's best to have a specific error than an error due to undefined later
@@ -126,16 +105,16 @@ export class QueryModel implements IQueryModel {
             throw new Error('schemaQuery is required to instantiate a QueryModel');
         }
 
-        this.id = getOrDefault(queryConfig.id, createQueryModelId(this.schemaQuery));
-        this.includeDetailsColumn = getOrDefault(queryConfig.includeDetailsColumn, false);
-        this.includeUpdateColumn = getOrDefault(queryConfig.includeUpdateColumn, false);
-        this.keyValue = getOrDefault(queryConfig.keyValue);
-        this.maxRows = getOrDefault(queryConfig.maxRows, DEFAULT_MAX_ROWS);
-        this.offset = getOrDefault(queryConfig.offset, DEFAULT_OFFSET);
-        this.omittedColumns = getOrDefault(queryConfig.omittedColumns, []);
-        this.queryParameters = getOrDefault(queryConfig.queryParameters);
-        this.requiredColumns = getOrDefault(queryConfig.requiredColumns, []);
-        this.sorts = getOrDefault(queryConfig.sorts, []);
+        this.id = queryConfig.id ?? createQueryModelId(this.schemaQuery);
+        this.includeDetailsColumn = queryConfig.includeDetailsColumn ?? false;
+        this.includeUpdateColumn = queryConfig.includeUpdateColumn ?? false;
+        this.keyValue = queryConfig.keyValue;
+        this.maxRows = queryConfig.maxRows ?? DEFAULT_MAX_ROWS;
+        this.offset = queryConfig.offset ?? DEFAULT_OFFSET;
+        this.omittedColumns = queryConfig.omittedColumns ?? [];
+        this.queryParameters = queryConfig.queryParameters;
+        this.requiredColumns = queryConfig.requiredColumns ?? [];
+        this.sorts = queryConfig.sorts ?? [];
         this.rowsError = undefined;
         this.filterArray = [];
         this.messages = [];
@@ -385,7 +364,7 @@ export class QueryModel implements IQueryModel {
      * returns this.
      * @param props
      */
-    mutate(props: Partial<IQueryModel>): QueryModel {
+    mutate(props: Partial<QueryModel>): QueryModel {
         return produce(this, (draft: Draft<QueryModel>) => {
             Object.assign(draft, props);
         });

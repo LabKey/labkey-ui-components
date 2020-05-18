@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
+
+import { Filter } from '@labkey/api';
 
 import { GRID_CHECKBOX_OPTIONS, GridPanel, LoadingState, QueryInfo, QuerySort, SchemaQuery } from '..';
 
@@ -7,11 +9,15 @@ import { initUnitTests, makeQueryInfo, makeTestData } from '../testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
 
+import { ActionValue } from '../components/omnibox/actions/Action';
+import { Change, ChangeType } from '../components/omnibox/OmniBox';
+
 import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
 import { makeTestActions, makeTestModel } from './testUtils';
-import { Change, ChangeType } from '../components/omnibox/OmniBox';
-import { Filter } from '@labkey/api';
+
+// The wrapper's return type for mount<GridPanel>(<GridPanel ... />)
+type GridPanelWrapper = ReactWrapper<Readonly<GridPanel['props']>, Readonly<GridPanel['state']>, GridPanel>;
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -36,7 +42,7 @@ beforeAll(() => {
 const CHART_MENU_SELECTOR = '.chart-menu';
 const PAGINATION_SELECTOR = '.pagination-button-group';
 const PAGINATION_INFO_SELECTOR = '.pagination-info';
-const PAGE_SIZE_SELECTOR = '.page-size-menu'
+const PAGE_SIZE_SELECTOR = '.page-size-menu';
 const VIEW_MENU_SELECTOR = '.view-menu';
 const GRID_SELECTOR = '.grid-panel__grid .table-responsive';
 const GRID_INFO_SELECTOR = '.grid-panel__info';
@@ -52,7 +58,7 @@ describe('GridPanel', () => {
         actions = makeTestActions();
     });
 
-    const expectChartMenu = (wrapper, disabledState) => {
+    const expectChartMenu = (wrapper: GridPanelWrapper, disabledState: boolean): void => {
         expect(wrapper.find(CHART_MENU_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown').at(0).hasClass('disabled')).toEqual(disabledState);
     };
@@ -62,7 +68,7 @@ describe('GridPanel', () => {
 
         // Model is loading QueryInfo and Rows, should render loading, disabled ChartSelector, no pagination/ViewMenu.
         let model = makeTestModel(SCHEMA_QUERY);
-        const wrapper = mount(<GridPanel actions={actions} model={model} />);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         expectChartMenu(wrapper, true);
         expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(false);
         expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
@@ -158,35 +164,49 @@ describe('GridPanel', () => {
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
     });
 
-    const expectFilterState = (wrapper, actionValue, actionValues, expectedFilters) => {
-        const grid = wrapper.instance() as GridPanel;
+    const expectFilterState = (
+        wrapper: GridPanelWrapper,
+        actionValue: ActionValue,
+        actionValues: ActionValue[],
+        expectedFilters: Filter.IFilter[]
+    ): void => {
+        const grid = wrapper.instance();
         const { model } = grid.props;
         const { valueObject } = actionValue;
-        const expectedOmniText = actionValues.filter(av => {
-            return av.valueObject === valueObject || av.valueObject.getColumnName() !== valueObject.getColumnName();
-        }).map(av => av.value).join('');
+        const expectedOmniText = actionValues
+            .filter(
+                av => av.valueObject === valueObject || av.valueObject.getColumnName() !== valueObject.getColumnName()
+            )
+            .map(av => av.value)
+            .join('');
         expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
         expect(actions.setFilters).toHaveBeenCalledWith(model.id, expectedFilters, grid.props.allowSelections);
         // Set the filterArray to expectedFilters to emulate actual behavior, so we can more easily test realistic
         // scenarios.
-        wrapper.setProps({ model: model.mutate({ filterArray: expectedFilters })});
+        wrapper.setProps({ model: model.mutate({ filterArray: expectedFilters }) });
     };
 
-    const expectSortsState = (wrapper, actionValue, actionValues, expectedSorts) => {
-        const grid = wrapper.instance() as GridPanel;
+    const expectSortsState = (
+        wrapper: GridPanelWrapper,
+        actionValue: ActionValue,
+        actionValues: ActionValue[],
+        expectedSorts: Filter.IFilter[]
+    ): void => {
+        const grid = wrapper.instance();
         const { model } = grid.props;
         const { valueObject } = actionValue;
-        const expectedOmniText = actionValues.filter(av => {
-            return av.valueObject === valueObject || av.valueObject.fieldKey !== valueObject.fieldKey;
-        }).map(av => av.value).join('');
+        const expectedOmniText = actionValues
+            .filter(av => av.valueObject === valueObject || av.valueObject.fieldKey !== valueObject.fieldKey)
+            .map(av => av.value)
+            .join('');
         expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
         expect(actions.setSorts).toHaveBeenCalledWith(model.id, expectedSorts);
         // Set the sorts to expectedSorts to emulate actual behavior, so we can more easily test realistic scenarios.
-        wrapper.setProps({ model: model.mutate({ filterArray: expectedSorts })});
+        wrapper.setProps({ model: model.mutate({ filterArray: expectedSorts }) });
     };
 
-    const testAddOmniBoxValue = (wrapper, actionValue, expectedState) => {
-        const grid = wrapper.instance() as GridPanel;
+    const testAddOmniBoxValue = (wrapper: GridPanelWrapper, actionValue: ActionValue, expectedState: any): void => {
+        const grid = wrapper.instance();
         const values = grid.state.actionValues.concat(actionValue);
         grid.omniBoxChange(values, { type: ChangeType.add });
         if (actionValue.valueObject.fieldKey === undefined) {
@@ -197,8 +217,13 @@ describe('GridPanel', () => {
         }
     };
 
-    const testModifyOmniBoxValue = (wrapper, actionValue, index, expectedState) => {
-        const grid = wrapper.instance() as GridPanel;
+    const testModifyOmniBoxValue = (
+        wrapper: GridPanelWrapper,
+        actionValue: ActionValue,
+        index: number,
+        expectedState: any
+    ): void => {
+        const grid = wrapper.instance();
         // OmniBox moves the modified action to the end of the actionValues array.
         const values = grid.state.actionValues.filter((v, i) => i !== index).concat(actionValue);
         grid.omniBoxChange(values, { type: ChangeType.modify, index });
@@ -211,8 +236,13 @@ describe('GridPanel', () => {
         }
     };
 
-    const testChangeSearch = (wrapper, actionValue, expectedFilters, index?) => {
-        const grid = wrapper.instance() as GridPanel;
+    const testChangeSearch = (
+        wrapper: GridPanelWrapper,
+        actionValue: ActionValue,
+        expectedFilters: Filter.IFilter[],
+        index?: number
+    ): void => {
+        const grid = wrapper.instance();
         let values = grid.state.actionValues.concat(actionValue);
         let change: Change = { type: ChangeType.add };
 
@@ -226,32 +256,34 @@ describe('GridPanel', () => {
         const expectedOmniText = values.map(av => av.value).join('');
         expect(actions.setFilters).toHaveBeenCalledWith(model.id, expectedFilters, grid.props.allowSelections);
         expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
-        wrapper.setProps({ model: model.mutate({ filterArray: expectedFilters })});
+        wrapper.setProps({ model: model.mutate({ filterArray: expectedFilters }) });
     };
 
     // Triggers a remove event at index and checks expectedFilters were passed to setFilters. Works for removing
     // filters and searches on OmniBox.
-    const testRemoveFilter = (wrapper, expectedFilters, index) => {
-        const grid = wrapper.instance() as GridPanel;
+    const testRemoveFilter = (wrapper: GridPanelWrapper, expectedFilters: Filter.IFilter[], index: number): void => {
+        const grid = wrapper.instance();
         const values = grid.state.actionValues.filter((av, i) => i !== index);
         grid.omniBoxChange(values, { type: ChangeType.remove, index });
         const { model } = grid.props;
         const expectedOmniText = values.map(av => av.value).join('');
         expect(actions.setFilters).toHaveBeenCalledWith(model.id, expectedFilters, grid.props.allowSelections);
         expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
-        wrapper.setProps({ model: model.mutate({ filterArray: expectedFilters })});
+        wrapper.setProps({ model: model.mutate({ filterArray: expectedFilters }) });
     };
 
-    const testSetView = (wrapper, viewName, viewLabel) => {
-        const grid = wrapper.instance() as GridPanel;
+    const testSetView = (wrapper: GridPanelWrapper, viewName: string, viewLabel: string): void => {
+        const grid = wrapper.instance();
         // Omnibox filters out existing view actions for us because they are singletons.
         let values = grid.state.actionValues.filter(v => v.action.keyword !== 'view');
         // GridPanel converts viewName to label
         const expectedOmniText = values.map(v => v.value).join('') + viewLabel;
-        values = values.concat([{
-            action: grid.omniBoxActions.view,
-            value: viewName,
-        }]);
+        values = values.concat([
+            {
+                action: grid.omniBoxActions.view,
+                value: viewName,
+            },
+        ]);
         grid.omniBoxChange(values, { type: ChangeType.add });
         expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
         expect(actions.setView).toHaveBeenCalledWith('model', viewName, grid.props.allowSelections);
@@ -260,8 +292,8 @@ describe('GridPanel', () => {
     test('OmniBox', () => {
         const { rows, orderedRows, rowCount } = DATA;
         const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
-        const wrapper = mount(<GridPanel actions={actions} model={model} />);
-        const grid = wrapper.instance() as GridPanel;
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const grid = wrapper.instance();
 
         const filter1 = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
         const filterAction1 = {
@@ -305,7 +337,7 @@ describe('GridPanel', () => {
             value: 'bar',
             valueObject: Filter.create('*', 'bar', Filter.Types.Q),
         };
-        const search3 = Filter.create('*', 'foo2', Filter.Types.Q)
+        const search3 = Filter.create('*', 'foo2', Filter.Types.Q);
         const searchAction3 = {
             action: grid.omniBoxActions.search,
             value: 'foo2',
@@ -365,9 +397,9 @@ describe('GridPanel', () => {
         testModifyOmniBoxValue(wrapper, sortAction1, 2, [sort1]);
 
         // Setting a view for the first time adds it to the OmniBox values
-        testSetView(wrapper,'noMixtures', 'No Mixtures or Extra');
+        testSetView(wrapper, 'noMixtures', 'No Mixtures or Extra');
         // Setting it a second time modifies the existing value
-        testSetView(wrapper,'noExtraColumn', 'No Extra Column');
+        testSetView(wrapper, 'noExtraColumn', 'No Extra Column');
 
         // Emulate remove view
         const values = grid.state.actionValues.filter(v => v.action.keyword !== 'view');
@@ -376,20 +408,19 @@ describe('GridPanel', () => {
         expect(actions.setView).toHaveBeenCalledWith('model', undefined, false);
     });
 
-    const getCheckbox = (wrapper, index) => {
+    const getCheckbox = (wrapper: GridPanelWrapper, index: number) => {
         return wrapper.find(GRID_SELECTOR).find('tr').at(index).find('input[type="checkbox"]');
     };
 
-    const testSelectRow = (wrapper, index, expectedState) => {
-        const grid = wrapper.instance() as GridPanel;
+    const testSelectRow = (wrapper: GridPanelWrapper, index: number, expectedState: boolean): void => {
+        const grid = wrapper.instance();
         const { model } = grid.props;
         const row = model.gridData[index];
         const rowId = model.orderedRows[index];
-        const currentValue = model.selections.has(rowId);
 
         // The first tr is the header, so we increment the index by 1
         let checkbox = getCheckbox(wrapper, index + 1);
-        const event = { target: { checked: expectedState }};
+        const event = { target: { checked: expectedState } };
         checkbox.simulate('change', event);
         expect(actions.selectRow).toHaveBeenCalledWith(model.id, expectedState, row);
         const newSelections = new Set(model.selections);
@@ -412,8 +443,8 @@ describe('GridPanel', () => {
      * @param expectedState the value you expect to be passed to selectPage, due to how indeterminate state works true
      * checkedState may still result in false expectedState (see GridPanel.selectPage for details)
      */
-    const testSelectPage = (wrapper, checkedState, expectedState) => {
-        const grid = wrapper.instance() as GridPanel;
+    const testSelectPage = (wrapper: GridPanelWrapper, checkedState: boolean, expectedState: boolean): void => {
+        const grid = wrapper.instance();
         const { model } = grid.props;
         let checkbox = getCheckbox(wrapper, 0);
         checkbox.simulate('change', { target: { checked: checkedState } });
@@ -428,23 +459,23 @@ describe('GridPanel', () => {
         expect(grid.props.model.selectedState).toEqual(expectedSelectedState);
     };
 
-    const expectHeaderSelectionStatus = (wrapper, expectedState) => {
+    const expectHeaderSelectionStatus = (wrapper: GridPanelWrapper, expectedState: boolean): void => {
         const checkbox = getCheckbox(wrapper, 0);
         expect(checkbox.props().checked).toEqual(expectedState);
     };
 
-    const expectSelectionStatusCount = (wrapper, count) => {
+    const expectSelectionStatusCount = (wrapper: GridPanelWrapper, count: number): void => {
         const selectionStatus = wrapper.find('.selection-status__count');
         if (count === 0) {
             expect(selectionStatus.exists()).toEqual(false);
         } else {
-            const grid = wrapper.instance() as GridPanel;
+            const grid = wrapper.instance();
             const total = grid.props.model.rowCount;
             expect(selectionStatus.text()).toEqual(`${count} of ${total} selected`);
         }
     };
 
-    const expectClearButtonState = (wrapper, text?) => {
+    const expectClearButtonState = (wrapper: GridPanelWrapper, text?: string): void => {
         const clearButton = wrapper.find(CLEAR_ALL_SELECTOR);
 
         if (text === undefined) {
@@ -454,8 +485,8 @@ describe('GridPanel', () => {
         }
     };
 
-    const testSelectAll = (wrapper) => {
-        const grid = wrapper.instance() as GridPanel;
+    const testSelectAll = (wrapper: GridPanelWrapper): void => {
+        const grid = wrapper.instance();
         const { model } = grid.props;
         wrapper.find('.selection-status__select-all button').simulate('click');
         expect(actions.selectAllRows).toHaveBeenCalledWith(model.id);
@@ -463,10 +494,10 @@ describe('GridPanel', () => {
         // all 661 rows in it, which is not normal in production use.
         wrapper.setProps({ model: model.mutate({ selections: new Set(Object.keys(model.rows)) }) });
         expectClearButtonState(wrapper, 'Clear all');
-    }
+    };
 
-    const testClearAll = (wrapper) => {
-        const grid = wrapper.instance() as GridPanel;
+    const testClearAll = (wrapper: GridPanelWrapper): void => {
+        const grid = wrapper.instance();
         const { model } = grid.props;
         wrapper.find(CLEAR_ALL_SELECTOR + ' button').simulate('click');
         expect(actions.clearSelections).toHaveBeenCalledWith(model.id);
@@ -476,12 +507,11 @@ describe('GridPanel', () => {
 
     test('Selections', () => {
         const { rows, orderedRows, rowCount } = DATA;
-        const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount)
-            .mutate({
-                selections: new Set(),
-                selectionsLoadingState: LoadingState.LOADED,
-            });
-        const wrapper = mount(<GridPanel actions={actions} model={model} />);
+        const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount).mutate({
+            selections: new Set(),
+            selectionsLoadingState: LoadingState.LOADED,
+        });
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
 
         // Check that with no selections the header checkbox is not selected.
         expectHeaderSelectionStatus(wrapper, false);
@@ -496,7 +526,7 @@ describe('GridPanel', () => {
         testSelectRow(wrapper, 1, true);
         expectSelectionStatusCount(wrapper, 2);
         expectClearButtonState(wrapper, 'Clear both');
-        // Enzyme doesn't support refs, and React doesn't nateively support indeterminate status on checkboxes, so we
+        // Enzyme doesn't support refs, and React doesn't natively support indeterminate status on checkboxes, so we
         // should expect the checkbox to not be checked, and we check the model for selectedState.
         expectHeaderSelectionStatus(wrapper, false);
         expect(wrapper.props().model.selectedState).toEqual(GRID_CHECKBOX_OPTIONS.SOME);

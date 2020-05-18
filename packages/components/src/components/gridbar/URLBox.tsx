@@ -83,14 +83,11 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
     onOmniBoxChange = (actionValueCollection: ActionValueCollection[], boxActions: Action[]) => {
         const queryModel = this.getQueryModel();
         const location = getLocation();
-
         const params = Map<string, string>().asMutable();
 
-        console.log('Action Values:')
         if (actionValueCollection.length > 0) {
             for (let i = 0; i < actionValueCollection.length; i++) {
                 const av = actionValueCollection[i];
-                console.log(av.action.keyword, av.values);
                 const actionParams = actionValueCollection[i].action.buildParams(actionValueCollection[i].values);
                 for (let p = 0; p < actionParams.length; p++) {
                     params.set(

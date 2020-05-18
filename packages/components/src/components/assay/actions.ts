@@ -198,7 +198,7 @@ export function getImportItemsForAssayDefinitions(
 ): OrderedMap<AssayDefinitionModel, string> {
     let items = OrderedMap<AssayDefinitionModel, string>();
     let targetSQ;
-    const selectionKey = sampleModel.selectionKey;
+    const selectionKey = sampleModel ? sampleModel.selectionKey : undefined;
 
     if (sampleModel && sampleModel.queryInfo) {
         targetSQ = sampleModel.queryInfo.schemaQuery;
@@ -211,7 +211,7 @@ export function getImportItemsForAssayDefinitions(
             const href = assay.getImportUrl(
                 selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
                 selectionKey,
-                sampleModel.getFilters()
+                sampleModel ? sampleModel.getFilters() : undefined
             );
             items = items.set(assay, href);
         });

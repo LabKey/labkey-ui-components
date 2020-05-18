@@ -33,7 +33,11 @@ export class ChartMenu extends PureComponent<Props, State> {
 
     onCreateClicked = (): void => {
         // We only support creating SampleComparison reports at the moment.
-        this.props.onCreateReportClicked(DataViewInfoTypes.SampleComparison);
+        const { onCreateReportClicked } = this.props;
+
+        if (onCreateReportClicked) {
+            onCreateReportClicked(DataViewInfoTypes.SampleComparison);
+        }
     };
 
     chartClicked = (chart): void => {
@@ -52,15 +56,14 @@ export class ChartMenu extends PureComponent<Props, State> {
         this.setState({ selectedChart: undefined });
     };
 
+    chartMapper = (chart) => <ChartMenuItem key={chart.reportId} chart={chart} showChart={this.chartClicked} />
+
     render(): ReactNode {
         const { model, showSampleComparisonReports } = this.props;
         const { charts, chartsError, hasCharts, id, isLoading, isLoadingCharts } = model;
         const privateCharts = hasCharts ? charts.filter(chart => !chart.shared) : [];
         const publicCharts = hasCharts ? charts.filter(chart => chart.shared) : [];
         const title = isLoadingCharts ? <span className="fa fa-spinner fa-pulse" /> : 'Charts';
-        const chartMapper = (chart): ReactNode => (
-            <ChartMenuItem key={chart.reportId} chart={chart} showChart={this.chartClicked} />
-        );
         const noCharts = hasCharts && charts.length === 0 && !showSampleComparisonReports;
         const disabled = isLoading || isLoadingCharts || noCharts;
         const { selectedChart } = this.state;
@@ -88,11 +91,11 @@ export class ChartMenu extends PureComponent<Props, State> {
 
                     {privateCharts.length > 0 && <MenuItem header>My Saved Charts</MenuItem>}
 
-                    {privateCharts.length > 0 && privateCharts.map(chartMapper)}
+                    {privateCharts.length > 0 && privateCharts.map(this.chartMapper)}
 
                     {publicCharts.length > 0 && <MenuItem header>All Saved Charts</MenuItem>}
 
-                    {publicCharts.length > 0 && publicCharts.map(chartMapper)}
+                    {publicCharts.length > 0 && publicCharts.map(this.chartMapper)}
                 </DropdownButton>
 
                 {selectedChart !== undefined && (

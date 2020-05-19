@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactElement, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { Filter } from '@labkey/api';
@@ -473,6 +473,7 @@ describe('GridPanel', () => {
         expect(actions.setView).toHaveBeenCalledWith('model', undefined, false);
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getCheckbox = (wrapper: GridPanelWrapper, index: number): ReactWrapper<any> => {
         return wrapper.find(GRID_SELECTOR).find('tr').at(index).find('input[type="checkbox"]');
     };

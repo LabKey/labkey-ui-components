@@ -19,6 +19,7 @@ import { dataViewInfoSorter } from './utils';
 
 export interface RowsResponse {
     messages: GridMessage[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rows: { [key: string]: any };
     orderedRows: string[];
     rowCount: number;
@@ -106,7 +107,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     },
     // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
     // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementations.
-    async clearSelections(model) {
+    clearSelections(model) {
         const { id, schemaName, queryName, filters, containerPath } = model;
         return clearSelected(id, schemaName, queryName, List(filters), containerPath);
     },
@@ -115,7 +116,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         const result = await getSelected(id, schemaName, queryName, List(filters), containerPath);
         return new Set(result.selected);
     },
-    async setSelections(model, checked: boolean, selections: string[]) {
+    setSelections(model, checked: boolean, selections: string[]) {
         const { id, containerPath } = model;
         return setSelected(id, checked, selections, containerPath);
     },
@@ -131,7 +132,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             const { schemaName, queryName } = schemaQuery;
             const charts = await loadReports();
             return charts
-                .filter(report => {
+                .filter((report): boolean => {
                     const { type } = report;
                     const matchingSq = report.schemaName === schemaName && report.queryName === queryName;
                     const isVisualization = VISUALIZATION_REPORTS.contains(type);

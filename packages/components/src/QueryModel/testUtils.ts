@@ -9,7 +9,14 @@ import { Actions, LoadingState, QueryInfo, QueryModel } from '..';
  * @param orderedRows
  * @param rowCount
  */
-export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, orderedRows?: any, rowCount?: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const makeTestModel = (
+    schemaQuery,
+    queryInfo?: QueryInfo,
+    rows?: any,
+    orderedRows?: any,
+    rowCount?: number
+): QueryModel => {
     let model = new QueryModel({
         id: 'model',
         schemaQuery,

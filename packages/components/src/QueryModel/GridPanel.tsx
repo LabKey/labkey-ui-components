@@ -121,10 +121,6 @@ export class GridPanel extends PureComponent<Props, State> {
         showViewMenu: true,
     };
 
-    omniBoxActions: { [name: string]: Action };
-
-    omniBoxChangeHandlers: { [name: string]: (actionValues: ActionValue[], change: Change) => void };
-
     constructor(props) {
         super(props);
         const { id } = props.model;
@@ -152,6 +148,10 @@ export class GridPanel extends PureComponent<Props, State> {
         const { model, actions, allowSelections } = this.props;
         actions.loadModel(model.id, allowSelections);
     }
+
+    omniBoxActions: { [name: string]: Action };
+
+    omniBoxChangeHandlers: { [name: string]: (actionValues: ActionValue[], change: Change) => void };
 
     selectRow = (row, event): void => {
         const { model, actions } = this.props;

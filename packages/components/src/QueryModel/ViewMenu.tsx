@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { QueryModel, ViewInfo } from '..';
@@ -11,7 +11,7 @@ interface ViewMenuProps {
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {
-    render() {
+    render(): ReactNode {
         const { model, hideEmptyViewMenu, onViewSelect } = this.props;
         const { isLoading, views, viewName } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
@@ -23,11 +23,11 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const hidden = hideEmptyViewMenu && noViews;
         const disabled = isLoading || noViews;
 
-        const viewMapper = view => {
-            const { name, label, isDefault } = view;
-            const viewName = isDefault ? undefined : name;
-            const onSelect = () => {
-                onViewSelect(viewName);
+        const viewMapper = (viewInfo): ReactNode => {
+            const { name, label, isDefault } = viewInfo;
+            const view = isDefault ? undefined : name;
+            const onSelect = (): void => {
+                onViewSelect(view);
                 blurActiveElement();
             };
 

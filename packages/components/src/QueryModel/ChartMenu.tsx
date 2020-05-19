@@ -56,7 +56,9 @@ export class ChartMenu extends PureComponent<Props, State> {
         this.setState({ selectedChart: undefined });
     };
 
-    chartMapper = chart => <ChartMenuItem key={chart.reportId} chart={chart} showChart={this.chartClicked} />;
+    chartMapper = (chart): ReactNode => (
+        <ChartMenuItem key={chart.reportId} chart={chart} showChart={this.chartClicked} />
+    );
 
     render(): ReactNode {
         const { model, showSampleComparisonReports } = this.props;

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { QueryModel, Tip } from '..';
@@ -13,7 +13,7 @@ interface PaginationInfoProps {
 }
 
 export class PaginationInfo extends PureComponent<PaginationInfoProps> {
-    render() {
+    render(): ReactNode {
         const { model } = this.props;
         const { hasData, offset, maxRows, rowCount } = model;
         let message = '';
@@ -40,19 +40,19 @@ export class PaginationInfo extends PureComponent<PaginationInfoProps> {
 }
 
 export class PageSelector extends PureComponent<RequiresModelAndActions> {
-    loadFirstPage = () => {
+    loadFirstPage = (): void => {
         const { model, actions } = this.props;
         actions.loadFirstPage(model.id);
         blurActiveElement();
     };
 
-    loadLastPage = () => {
+    loadLastPage = (): void => {
         const { model, actions } = this.props;
         actions.loadLastPage(model.id);
         blurActiveElement();
     };
 
-    render() {
+    render(): ReactNode {
         const { model } = this.props;
         const { id, currentPage, isFirstPage, isLastPage, isLoading, isPaged, pageCount } = model;
 
@@ -79,19 +79,19 @@ export class PageSelector extends PureComponent<RequiresModelAndActions> {
 }
 
 export class PaginationButtons extends PureComponent<RequiresModelAndActions> {
-    loadPreviousPage = () => {
+    loadPreviousPage = (): void => {
         const { model, actions } = this.props;
         actions.loadPreviousPage(model.id);
         blurActiveElement();
     };
 
-    loadNextPage = () => {
+    loadNextPage = (): void => {
         const { model, actions } = this.props;
         actions.loadNextPage(model.id);
         blurActiveElement();
     };
 
-    render() {
+    render(): ReactNode {
         const { model, actions } = this.props;
         const { isFirstPage, isLastPage, isLoading, isPaged } = model;
         return (

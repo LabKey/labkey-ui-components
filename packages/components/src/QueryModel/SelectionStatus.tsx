@@ -1,19 +1,19 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { Button } from 'react-bootstrap';
 
 import { RequiresModelAndActions } from './withQueryModels';
 
 export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
-    clearSelections = () => {
+    clearSelections = (): void => {
         this.props.actions.clearSelections(this.props.model.id);
     };
 
-    selectAll = () => {
+    selectAll = (): void => {
         this.props.actions.selectAllRows(this.props.model.id);
     };
 
-    clearText = () => {
+    clearText = (): string => {
         const { selections } = this.props.model;
         let clearText = 'Clear';
 
@@ -26,7 +26,7 @@ export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
         return clearText;
     };
 
-    render() {
+    render(): ReactNode {
         const { model } = this.props;
         const { hasSelections, isLoading, isLoadingSelections, maxRows, rowCount, selections } = model;
 

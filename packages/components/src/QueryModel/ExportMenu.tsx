@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
@@ -22,7 +22,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
         // this implementation until we need them.
     ];
 
-    export = option => {
+    export = (option): void => {
         const { model, advancedOptions } = this.props;
         const { id, filters, hasSelections, selectedState, schemaQuery, exportColumnString, sortString } = model;
         const showRows = hasSelections && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
@@ -37,7 +37,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
         exportRows(option.type, schemaQuery, exportOptions, advancedOptions);
     };
 
-    render() {
+    render(): ReactNode {
         const { model } = this.props;
         const { id, hasData, hasSelections, selections } = model;
 
@@ -57,6 +57,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                             </MenuItem>
 
                             {ExportMenu.exportOptions.map(option => (
+                                // eslint-disable-next-line react/jsx-no-bind
                                 <MenuItem key={option.type} onClick={() => this.export(option)}>
                                     <div className="export-menu__item">
                                         <span className={`fa ${option.icon} export-menu-icon`} />

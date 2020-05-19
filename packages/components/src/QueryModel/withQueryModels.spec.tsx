@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { mount } from 'enzyme';
 
 import { Actions, LoadingState, QueryInfo, QueryModel, QueryModelMap, SchemaQuery, withQueryModels } from '..';
@@ -34,7 +34,7 @@ describe('withQueryModels', () => {
         let injectedModels: QueryModelMap;
         let injectedModel: QueryModel;
         let injectedActions: Actions;
-        const TestComponentImpl = ({ queryModels, actions }) => {
+        const TestComponentImpl = ({ queryModels, actions }): ReactElement => {
             injectedModels = queryModels;
             injectedModel = queryModels.model;
             injectedActions = actions;
@@ -42,6 +42,8 @@ describe('withQueryModels', () => {
         };
         const WrappedComponent = withQueryModels<{}>(TestComponentImpl);
         const queryConfigs = { model: { schemaQuery: MIXTURES_SCHEMA_QUERY } };
+        // Wrapper is technically used.
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const wrapper = mount(<WrappedComponent queryConfigs={queryConfigs} modelLoader={modelLoader} />);
         // When we first mount a component we initialize rows and queryInfo to undefined with loading states set to
         // loading.

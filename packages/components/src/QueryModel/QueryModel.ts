@@ -41,10 +41,12 @@ export interface QueryConfig {
     id?: string;
     includeDetailsColumn?: boolean;
     includeUpdateColumn?: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     keyValue?: any; // Should be a Primary Key Value, used when loading/rendering details pages.
     maxRows?: number;
     offset?: number;
     omittedColumns?: string[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     queryParameters?: { [key: string]: any };
     requiredColumns?: string[];
     schemaQuery: SchemaQuery;
@@ -65,10 +67,12 @@ export class QueryModel {
     readonly id: string;
     readonly includeDetailsColumn: boolean;
     readonly includeUpdateColumn: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly keyValue?: any;
     readonly maxRows: number;
     readonly offset: number;
     readonly omittedColumns: string[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly queryParameters?: { [key: string]: any };
     readonly requiredColumns: string[];
     readonly schemaQuery: SchemaQuery;
@@ -81,6 +85,7 @@ export class QueryModel {
     readonly queryInfo?: QueryInfo;
     readonly queryInfoError?: string;
     readonly queryInfoLoadingState: LoadingState;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly rows?: { [key: string]: any };
     readonly rowCount?: number;
     readonly rowsError?: string;
@@ -134,20 +139,16 @@ export class QueryModel {
         this.chartsLoadingState = LoadingState.INITIALIZED;
     }
 
-    get schemaName() {
+    get schemaName(): string {
         return this.schemaQuery.schemaName;
     }
 
-    get queryName() {
+    get queryName(): string {
         return this.schemaQuery.queryName;
     }
 
-    get viewName() {
+    get viewName(): string {
         return this.schemaQuery.viewName;
-    }
-
-    getColumn(fieldKey: string): QueryColumn {
-        return this.queryInfo?.getColumn(fieldKey);
     }
 
     get detailColumns(): QueryColumn[] {
@@ -258,7 +259,8 @@ export class QueryModel {
     /**
      * Returns the data needed for a <Grid /> component to render.
      */
-    get gridData() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    get gridData(): Array<{ [key: string]: any }> {
         const { hasSelections, selections } = this;
 
         return this.orderedRows.map(value => {

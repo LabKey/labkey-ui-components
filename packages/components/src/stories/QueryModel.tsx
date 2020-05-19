@@ -151,6 +151,25 @@ storiesOf('QueryModel', module)
             </div>
         );
     })
+    .add('Bad Query', () => {
+        const queryConfigs: QueryConfigMap = {
+            mixtures: {
+                schemaQuery: SchemaQuery.create('i.do.not.exist', 'IAmNonExistent'),
+            },
+        };
+
+        return (
+            <div className="query-model-example">
+                <GridPanelWithModel
+                    queryConfigs={queryConfigs}
+                    asPanel={false}
+                    showOmniBox={false}
+                    showButtonBar={false}
+                    allowSelections={false}
+                />
+            </div>
+        );
+    })
     .add('Changeable SchemaQuery', () => {
         return <ChangeableSchemaQuery />;
     });

@@ -2,9 +2,11 @@ import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { Principal } from '../../..';
+import { buildURL, Principal } from '../../..';
 
-import { IssuesListDefModel } from './models';
+import { DuplicateFilesResponse } from '../../assay/actions';
+
+import { IssuesListDefModel, IssuesListDefOptionsConfig } from './models';
 
 export function fetchIssuesListDefDesign(issueDefName: string): Promise<IssuesListDefModel> {
     return new Promise((resolve, reject) => {
@@ -62,6 +64,23 @@ export function getProjectGroups(): Promise<List<Principal>> {
             }),
             failure: Utils.getCallbackWrapper(error => {
                 reject(error);
+            }),
+        });
+    });
+}
+
+export function saveIssueListDefOptions(options: IssuesListDefOptionsConfig): Promise<DuplicateFilesResponse> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: buildURL('issues', 'admin.api'),
+            method: 'POST',
+            params: options,
+            success: Utils.getCallbackWrapper(res => {
+                resolve(res);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(response);
             }),
         });
     });

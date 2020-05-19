@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 6646: IssuesListDefDesignerPanels fix for shared domain scenario
+    - Add helpers to DomainDesign model to getDomainContainer and isSharedDomain
+    - Allow for a shared def to be used in another container where only the top level properties can be saved via saveIssueListDefOptions
+    - Show alert if the current container is using a shared domain with link to get to source container
+
 ### version 0.59.3
 *Released*: 18 May 2020
 * Item 7207: DatasetColumnMappingPanel fix to allow for numeric and text fields to be used for timepoint/visit column mapping

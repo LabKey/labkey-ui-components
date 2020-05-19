@@ -10,6 +10,7 @@ import { DomainDesign } from '../models';
 
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesListDefModel } from './models';
+import { saveIssueListDefOptions } from './actions';
 
 interface Props {
     initModel?: IssuesListDefModel;
@@ -71,7 +72,24 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
         const { model } = this.state;
         const isValid = IssuesListDefModel.isValid(model);
 
-        this.props.onFinish(isValid, this.saveDomain);
+        this.props.onFinish(isValid, model.domain.isSharedDomain() ? this.saveOptions : this.saveDomain);
+    };
+
+    saveOptions = () => {
+        const { setSubmitting } = this.props;
+        const { model } = this.state;
+
+        saveIssueListDefOptions(model.getOptions())
+            .then(() => this.onSaveComplete())
+            .catch(response => {
+                setSubmitting(false, () => {
+                    this.setState(
+                        produce((draft: Draft<State>) => {
+                            draft.model.exception = response.exception;
+                        })
+                    );
+                });
+            });
     };
 
     saveDomain = () => {
@@ -79,20 +97,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
         const { model } = this.state;
 
         saveDomain(model.domain, model.domainKindName, model.getOptions(), model.issueDefName)
-            .then(response => {
-                this.setState(
-                    produce((draft: Draft<State>) => {
-                        draft.model.exception = undefined;
-                        draft.model.domain = response;
-                    }),
-                    () => {
-                        setSubmitting(false, () => {
-                            const { model } = this.state;
-                            this.props.onComplete(model);
-                        });
-                    }
-                );
-            })
+            .then(response => this.onSaveComplete(response))
             .catch(response => {
                 const exception = resolveErrorMessage(response);
 
@@ -109,6 +114,25 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                     );
                 });
             });
+    };
+
+    onSaveComplete = (response?: any) => {
+        const { setSubmitting } = this.props;
+
+        this.setState(
+            produce((draft: Draft<State>) => {
+                draft.model.exception = undefined;
+                if (response) {
+                    draft.model.domain = response;
+                }
+            }),
+            () => {
+                setSubmitting(false, () => {
+                    const { model } = this.state;
+                    this.props.onComplete(model);
+                });
+            }
+        );
     };
 
     render() {

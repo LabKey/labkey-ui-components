@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, Record } from 'immutable';
-import { Domain } from '@labkey/api';
+import { Domain, getServerContext } from '@labkey/api';
 
 import { SCHEMAS } from '../base/models/schemas';
 
@@ -463,6 +463,16 @@ export class DomainDesign
         }
 
         return false;
+    }
+
+    getDomainContainer(): string {
+        const currentContainer = getServerContext().container.id;
+        return this.container || currentContainer;
+    }
+
+    isSharedDomain(): boolean {
+        const currentContainer = getServerContext().container.id;
+        return this.getDomainContainer() !== currentContainer;
     }
 }
 

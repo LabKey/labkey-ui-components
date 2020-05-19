@@ -25,7 +25,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
     export = option => {
         const { model, advancedOptions } = this.props;
         const { id, filters, hasSelections, selectedState, schemaQuery, exportColumnString, sortString } = model;
-        const showRows = (hasSelections && selectedState !== GRID_CHECKBOX_OPTIONS.NONE) ? 'SELECTED' : 'ALL';
+        const showRows = hasSelections && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
         const exportOptions: ExportOptions = {
             filters: List(filters),
             columns: exportColumnString,
@@ -53,7 +53,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                         >
                             <MenuItem header>
                                 Export
-                                {(hasSelections && selections.size > 0) ? ' Selected' : ''}
+                                {hasSelections && selections.size > 0 ? ' Selected' : ''}
                             </MenuItem>
 
                             {ExportMenu.exportOptions.map(option => (

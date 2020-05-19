@@ -492,7 +492,7 @@ export function withQueryModels<Props>(
                     })
                 );
             }
-        }
+        };
 
         addModel = (queryConfig: QueryConfig, load = true, loadSelections = false) => {
             let id;

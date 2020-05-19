@@ -105,7 +105,7 @@ describe('GridPanel', () => {
 
     const expectError = (wrapper: GridPanelWrapper, error: string): void => {
         expect(wrapper.find(ERROR_SELECTOR).text()).toEqual(error);
-    }
+    };
 
     test('Render GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;

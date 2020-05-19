@@ -12,9 +12,9 @@ import {
 } from '..';
 import { bindColumnRenderers } from '../renderers';
 import { clearSelected, fetchCharts, ISelectResponse, selectAll } from '../actions';
+import { VISUALIZATION_REPORTS } from '../constants';
 
 import { GridMessage, QueryModel } from './QueryModel';
-import { VISUALIZATION_REPORTS } from '../constants';
 import { dataViewInfoSorter } from './utils';
 
 export interface RowsResponse {
@@ -130,13 +130,15 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         if (includeSampleComparison) {
             const { schemaName, queryName } = schemaQuery;
             const charts = await loadReports();
-            return charts.filter(report => {
-                const { type } = report;
-                const matchingSq = report.schemaName === schemaName && report.queryName === queryName;
-                const isVisualization = VISUALIZATION_REPORTS.contains(type);
-                const isSampleComparison = type === DataViewInfoTypes.SampleComparison;
-                return matchingSq && (isVisualization || isSampleComparison);
-            }).sort(dataViewInfoSorter);
+            return charts
+                .filter(report => {
+                    const { type } = report;
+                    const matchingSq = report.schemaName === schemaName && report.queryName === queryName;
+                    const isVisualization = VISUALIZATION_REPORTS.contains(type);
+                    const isSampleComparison = type === DataViewInfoTypes.SampleComparison;
+                    return matchingSq && (isVisualization || isSampleComparison);
+                })
+                .sort(dataViewInfoSorter);
         } else {
             const charts = await fetchCharts(schemaQuery, containerPath);
             return charts.toArray().sort(dataViewInfoSorter);

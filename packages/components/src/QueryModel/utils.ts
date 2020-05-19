@@ -3,9 +3,10 @@
  * @param value
  * @param defaultValue
  */
+import { Filter } from '@labkey/api';
+
 import { IDataViewInfo } from '../models';
 import { naturalSort, QuerySort } from '..';
-import { Filter } from '@labkey/api';
 
 export function dataViewInfoSorter(a: IDataViewInfo, b: IDataViewInfo): number {
     return naturalSort(a.name, b.name);
@@ -39,7 +40,13 @@ export function sortArraysEqual(a: QuerySort[], b: QuerySort[]) {
         return false;
     }
 
-    const aStr = a.map(qs => qs.toRequestString()).sort(naturalSort).join(';');
-    const bStr = b.map(qs => qs.toRequestString()).sort(naturalSort).join(';');
+    const aStr = a
+        .map(qs => qs.toRequestString())
+        .sort(naturalSort)
+        .join(';');
+    const bStr = b
+        .map(qs => qs.toRequestString())
+        .sort(naturalSort)
+        .join(';');
     return aStr === bStr;
 }

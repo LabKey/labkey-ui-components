@@ -6,7 +6,7 @@ import { blurActiveElement } from '../util/utils';
 
 interface ViewMenuProps {
     hideEmptyViewMenu: boolean;
-    model: QueryModel,
+    model: QueryModel;
     onViewSelect: (viewName) => void;
 }
 
@@ -41,12 +41,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         return (
             !hidden && (
                 <div className="view-menu">
-                    <DropdownButton
-                        disabled={disabled}
-                        id={`view-menu-drop-${model.id}`}
-                        pullRight
-                        title="Grid Views"
-                    >
+                    <DropdownButton disabled={disabled} id={`view-menu-drop-${model.id}`} pullRight title="Grid Views">
                         {defaultView && viewMapper(defaultView)}
                         {privateViews.length > 0 && <MenuItem header>My Saved Views</MenuItem>}
                         {privateViews.length > 0 && privateViews.map(viewMapper)}

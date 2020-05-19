@@ -6,6 +6,12 @@ import { Query } from '@labkey/api';
 import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner, QueryColumn, QueryInfo, QuerySort } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { headerCell, headerSelectionCell } from '../renderers';
+import { Action, ActionValue } from '../components/omnibox/actions/Action';
+import { FilterAction } from '../components/omnibox/actions/Filter';
+import { SearchAction } from '../components/omnibox/actions/Search';
+import { SortAction } from '../components/omnibox/actions/Sort';
+import { ViewAction } from '../components/omnibox/actions/View';
+import { Change, ChangeType, OmniBox } from '../components/omnibox/OmniBox';
 
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { PaginationButtons, PaginationInfo } from './Pagination';
@@ -14,13 +20,7 @@ import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
-import { Action, ActionValue } from '../components/omnibox/actions/Action';
-import { FilterAction } from '../components/omnibox/actions/Filter';
-import { SearchAction } from '../components/omnibox/actions/Search';
-import { SortAction } from '../components/omnibox/actions/Sort';
-import { ViewAction } from '../components/omnibox/actions/View';
 
-import { Change, ChangeType, OmniBox } from '../components/omnibox/OmniBox';
 import { filtersEqual, sortsEqual } from './utils';
 
 interface GridPanelProps {
@@ -93,11 +93,7 @@ class ButtonBar extends PureComponent<GridBarProps> {
                         {paginate && <PageSizeMenu model={model} actions={actions} pageSizes={pageSizes} />}
                         {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} />}
                         {canSelectView && (
-                            <ViewMenu
-                                model={model}
-                                onViewSelect={onViewSelect}
-                                hideEmptyViewMenu={hideEmptyViewMenu}
-                            />
+                            <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />
                         )}
                     </div>
                 </div>
@@ -107,7 +103,7 @@ class ButtonBar extends PureComponent<GridBarProps> {
 }
 
 interface State {
-    actionValues: ActionValue[],
+    actionValues: ActionValue[];
 }
 
 export class GridPanel extends PureComponent<Props, State> {
@@ -127,7 +123,7 @@ export class GridPanel extends PureComponent<Props, State> {
 
     omniBoxActions: { [name: string]: Action };
 
-    omniBoxChangeHandlers: { [name: string]: (actionValues: ActionValue[], change: Change) =>  void };
+    omniBoxChangeHandlers: { [name: string]: (actionValues: ActionValue[], change: Change) => void };
 
     constructor(props) {
         super(props);
@@ -179,7 +175,7 @@ export class GridPanel extends PureComponent<Props, State> {
     // Needed by OmniBox.
     getQueryInfo = (): QueryInfo => {
         return this.props.model.queryInfo;
-    }
+    };
 
     // Needed by OmniBox.
     getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions => {
@@ -305,10 +301,7 @@ export class GridPanel extends PureComponent<Props, State> {
                 actions.setView(model.id, newValue, allowSelections);
             }
 
-            actionValues = [
-                ...actionValues.slice(0, actionValues.length - 1),
-                { ...newActionValue, value: viewLabel },
-            ];
+            actionValues = [...actionValues.slice(0, actionValues.length - 1), { ...newActionValue, value: viewLabel }];
         }
 
         this.setState({ actionValues });
@@ -445,9 +438,7 @@ export class GridPanel extends PureComponent<Props, State> {
                 )}
 
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
-                    {showButtonBar && (
-                        <ButtonBar {...this.props} onViewSelect={this.onViewSelect} />
-                    )}
+                    {showButtonBar && <ButtonBar {...this.props} onViewSelect={this.onViewSelect} />}
 
                     {showOmniBox && (
                         <div className="grid-panel__omnibox">
@@ -471,7 +462,7 @@ export class GridPanel extends PureComponent<Props, State> {
                     <div className="grid-panel__grid">
                         {hasError && <Alert>{queryInfoError || rowsError || selectionsError}</Alert>}
 
-                        {(!hasGridError && hasData) && (
+                        {!hasGridError && hasData && (
                             <Grid
                                 headerCell={this.headerCell}
                                 calcWidths

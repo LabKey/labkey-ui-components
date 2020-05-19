@@ -50,6 +50,7 @@ const EXPORT_MENU_SELECTOR = '.export-menu';
 const OMNIBOX_SELECTOR = '.grid-panel__omnibox OmniBox';
 const DISABLED_BUTTON_CLASS = 'disabled-button-with-tooltip';
 const CLEAR_ALL_SELECTOR = '.selection-status__clear-all';
+const ERROR_SELECTOR = '.grid-panel__grid .alert-danger';
 
 describe('GridPanel', () => {
     let actions;
@@ -63,30 +64,61 @@ describe('GridPanel', () => {
         expect(wrapper.find(CHART_MENU_SELECTOR).find('.dropdown').at(0).hasClass('disabled')).toEqual(disabledState);
     };
 
+    const expectPanelClasses = (wrapper: GridPanelWrapper, classesExist): void => {
+        expect(wrapper.find('.grid-panel').hasClass('panel')).toEqual(classesExist);
+        expect(wrapper.find('.grid-panel').hasClass('panel-default')).toEqual(classesExist);
+    };
+
+    const expectPaginationVisible = (wrapper: GridPanelWrapper, visible: boolean): void => {
+        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(visible);
+        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(visible);
+        expect(wrapper.find(PAGE_SIZE_SELECTOR).exists()).toEqual(visible);
+    };
+
+    const expectNoQueryInfo = (wrapper: GridPanelWrapper): void => {
+        expectPaginationVisible(wrapper, false);
+        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(false);
+        // OmniBox should be present, but disabled when we don't have a QueryInfo yet
+        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
+        expectChartMenu(wrapper, true);
+    };
+
+    const expectNoRows = (wrapper: GridPanelWrapper): void => {
+        const expectedButtons = wrapper.props().ButtonsComponent !== undefined;
+        expectPaginationVisible(wrapper, false);
+        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
+        expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
+        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
+        expect(wrapper.find(TestButtons).exists()).toEqual(expectedButtons);
+        expectChartMenu(wrapper, true);
+    };
+
+    const expectGrid = (wrapper: GridPanelWrapper): void => {
+        const { orderedRows } = wrapper.props().model;
+        expect(wrapper.find(GRID_SELECTOR).exists());
+        // +1 because of header row
+        expect(wrapper.find(GRID_SELECTOR).find('tr').length).toEqual(orderedRows.length + 1);
+    };
+
+    const expectError = (wrapper: GridPanelWrapper, error: string): void => {
+        expect(wrapper.find(ERROR_SELECTOR).text()).toEqual(error);
+    }
+
     test('Render GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;
 
-        // Model is loading QueryInfo and Rows, should render loading, disabled ChartSelector, no pagination/ViewMenu.
+        // Model is loading QueryInfo and Rows, should render loading, disabled ChartMenu, no pagination/ViewMenu.
         let model = makeTestModel(SCHEMA_QUERY);
         const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
-        expectChartMenu(wrapper, true);
-        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(false);
-        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
-        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
-        expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(false);
-        // OmniBox should be present, but disabled when we're loading
-        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
+        expectNoQueryInfo(wrapper);
 
         // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
         model = model.mutate({ queryInfoLoadingState: LoadingState.LOADED, queryInfo: QUERY_INFO });
         wrapper.setProps({ model });
-        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(false);
-        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
-        expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
-        expect(wrapper.find(OMNIBOX_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(OMNIBOX_SELECTOR).props().disabled).toEqual(true);
+        expectNoRows(wrapper);
 
         // Loaded rows and QueryInfo. Should render grid, pagination, ViewMenu, ChartMenu
         model = model.mutate({
@@ -128,8 +160,7 @@ describe('GridPanel', () => {
         wrapper.setProps({ model });
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(true);
         expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(true);
-        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(true);
+        expectPaginationVisible(wrapper, true);
         paginationButtons = wrapper.find(PAGINATION_SELECTOR).find('button');
         expect(paginationButtons.first().hasClass(DISABLED_BUTTON_CLASS)).toEqual(true);
         expect(paginationButtons.last().hasClass(DISABLED_BUTTON_CLASS)).toEqual(true);
@@ -139,10 +170,10 @@ describe('GridPanel', () => {
         wrapper.setProps({ ButtonsComponent: TestButtons });
         expect(wrapper.find(TestButtons).exists()).toEqual(true);
 
-        // Panel classes should not be present.
+        // Panel classes should only be present when asPanel is true.
+        expectPanelClasses(wrapper, true);
         wrapper.setProps({ asPanel: false });
-        expect(wrapper.find('.grid-panel').hasClass('panel')).toEqual(false);
-        expect(wrapper.find('.grid-panel').hasClass('panel-default')).toEqual(false);
+        expectPanelClasses(wrapper, false);
 
         // pageSizes should be different
         expect(wrapper.find(PAGE_SIZE_SELECTOR).find('ul').text()).toEqual('Page Size2040100250400');
@@ -151,17 +182,47 @@ describe('GridPanel', () => {
 
         // Pagination should not be present.
         wrapper.setProps({ showPagination: false });
-        expect(wrapper.find(PAGINATION_INFO_SELECTOR).exists()).toEqual(false);
-        expect(wrapper.find(PAGINATION_SELECTOR).exists()).toEqual(false);
-        expect(wrapper.find(PAGE_SIZE_SELECTOR).exists()).toEqual(false);
+        expectPaginationVisible(wrapper, false);
 
         // ViewMenu should not be present.
-        wrapper.setProps({ showViewSelector: false });
+        wrapper.setProps({ showViewMenu: false });
         expect(wrapper.find(VIEW_MENU_SELECTOR).exists()).toEqual(false);
 
         // export menu should not be rendered.
         wrapper.setProps({ showExport: false });
         expect(wrapper.find(EXPORT_MENU_SELECTOR).exists()).toEqual(false);
+
+        // chart menu should not be rendered.
+        wrapper.setProps({ showChartMenu: false });
+        expect(wrapper.find(CHART_MENU_SELECTOR).exists()).toEqual(false);
+
+        // We should render nothing but an error if we had issues loading the QueryInfo.
+        const queryInfoError = 'Error loading query info';
+        model = model = makeTestModel(SCHEMA_QUERY).mutate({ queryInfoError });
+        wrapper.setProps({
+            model,
+            asPanel: true,
+            showPagination: true,
+            showViewMenu: true,
+            showExport: true,
+            showChartMenu: true,
+        });
+        expectNoQueryInfo(wrapper);
+        expectError(wrapper, queryInfoError);
+
+        // We still render ChartMenu, ViewMenu, and any custom buttons
+        const rowsError = 'Error loading rows';
+        model = makeTestModel(SCHEMA_QUERY, QUERY_INFO).mutate({ rowsError });
+        wrapper.setProps({ model });
+        expectNoRows(wrapper);
+        expectError(wrapper, rowsError);
+
+        // If an error happens when loading selections we render a grid and an error.
+        const selectionsError = 'Error loading selections';
+        model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows, rowCount).mutate({ selectionsError });
+        wrapper.setProps({ model });
+        expectGrid(wrapper);
+        expectError(wrapper, selectionsError);
     });
 
     const expectFilterState = (

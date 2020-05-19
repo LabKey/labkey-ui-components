@@ -1,5 +1,7 @@
-import React, { ComponentType, PureComponent } from 'react';
+import React, { ComponentType, PureComponent, ReactNode } from 'react';
 import { Filter } from '@labkey/api';
+// eslint cannot find Draft for some reason, but Intellij can.
+// eslint-disable-next-line import/named
 import { Draft, produce } from 'immer';
 
 import { LoadingState, QuerySort, resolveErrorMessage, SchemaQuery } from '..';
@@ -20,6 +22,7 @@ export interface Actions {
     loadLastPage: (id: string) => void;
     loadCharts: (id: string, includeSampleComparison: boolean) => void;
     selectAllRows: (id: string) => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectRow: (id: string, checked, row: { [key: string]: any }) => void;
     selectPage: (id: string, checked) => void;
     setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
@@ -58,7 +61,7 @@ interface State {
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
  * @param model: Draft<QueryModel> the model to reset queryInfo state on.
  */
-const resetQueryInfoState = (model: Draft<QueryModel>) => {
+const resetQueryInfoState = (model: Draft<QueryModel>): void => {
     model.queryInfo = undefined;
     model.queryInfoError = undefined;
     model.queryInfoLoadingState = LoadingState.INITIALIZED;
@@ -69,7 +72,7 @@ const resetQueryInfoState = (model: Draft<QueryModel>) => {
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
  * @param model: Draft<QueryModel> the model to reset selection state on.
  */
-const resetRowsState = (model: Draft<QueryModel>) => {
+const resetRowsState = (model: Draft<QueryModel>): void => {
     model.rowsError = undefined;
     model.messages = undefined;
     model.offset = 0;
@@ -84,7 +87,7 @@ const resetRowsState = (model: Draft<QueryModel>) => {
  * Note: This method intentionally has side effects, it is only to be used inside of an Immer produce() callback.
  * @param model: Draft<QueryModel> the model to reset selection state on.
  */
-const resetSelectionState = (model: Draft<QueryModel>) => {
+const resetSelectionState = (model: Draft<QueryModel>): void => {
     model.selections = undefined;
     model.selectionsError = undefined;
     model.selectionsLoadingState = LoadingState.INITIALIZED;
@@ -94,7 +97,6 @@ export function withQueryModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedQueryModels>
 ): ComponentType<Props & MakeQueryModels> {
     class ComponentWithQueryModels extends PureComponent<Props & MakeQueryModels, State> {
-        actions: Actions;
         static defaultProps;
 
         constructor(props: Props & MakeQueryModels) {
@@ -108,7 +110,7 @@ export function withQueryModels<Props>(
                 return models;
             }, {});
 
-            this.state = produce({ queryModels }, () => {});
+            this.state = produce({}, () => ({ queryModels }));
 
             this.actions = {
                 addModel: this.addModel,
@@ -133,7 +135,33 @@ export function withQueryModels<Props>(
             };
         }
 
-        loadSelections = async (id: string) => {
+        componentDidMount(): void {
+            if (this.props.autoLoad) {
+                this.loadAllModels();
+            }
+        }
+
+        actions: Actions;
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        setSelectionsError = (id: string, error: any, action: string): void => {
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    let selectionsError = resolveErrorMessage(error);
+
+                    if (selectionsError === undefined) {
+                        const schemaQuery = model.schemaQuery.toString();
+                        selectionsError = `Error while ${action} selections for SchemaQuery: ${schemaQuery}`;
+                    }
+
+                    console.error(`Error setting selections for model ${id}:`, selectionsError);
+                    model.selectionsError = selectionsError;
+                })
+            );
+        };
+
+        loadSelections = async (id: string): Promise<void> => {
             const { loadSelections } = this.props.modelLoader;
 
             this.setState(
@@ -154,25 +182,11 @@ export function withQueryModels<Props>(
                     })
                 );
             } catch (error) {
-                this.setState(
-                    produce((draft: Draft<State>) => {
-                        const model = draft.queryModels[id];
-                        let selectionsError = resolveErrorMessage(error);
-
-                        if (selectionsError === undefined) {
-                            const schemaQuery = model.schemaQuery.toString();
-                            selectionsError = `Error while loading selections for SchemaQuery: ${schemaQuery}`;
-                        }
-
-                        console.error(`Error loading selections for model ${id}: `, selectionsError);
-                        model.selectionsLoadingState = LoadingState.LOADED;
-                        model.selectionsError = selectionsError;
-                    })
-                );
+                this.setSelectionsError(id, error, 'loading');
             }
         };
 
-        clearSelections = async (id: string) => {
+        clearSelections = async (id: string): Promise<void> => {
             const { modelLoader } = this.props;
 
             try {
@@ -185,24 +199,11 @@ export function withQueryModels<Props>(
                     })
                 );
             } catch (error) {
-                this.setState(
-                    produce((draft: Draft<State>) => {
-                        const model = draft.queryModels[id];
-                        let selectionsError = resolveErrorMessage(error);
-
-                        if (selectionsError === undefined) {
-                            const schemaQuery = model.schemaQuery.toString();
-                            selectionsError = `Error while clearing selections for SchemaQuery: ${schemaQuery}`;
-                        }
-
-                        console.error(`Error clearing selections for model ${id}:`, selectionsError);
-                        model.selectionsError = selectionsError;
-                    })
-                );
+                this.setSelectionsError(id, error, 'clearing');
             }
         };
 
-        setSelections = async (id: string, checked: boolean, selections: string[]) => {
+        setSelections = async (id: string, checked: boolean, selections: string[]): Promise<void> => {
             const { modelLoader } = this.props;
 
             try {
@@ -221,24 +222,11 @@ export function withQueryModels<Props>(
                     })
                 );
             } catch (error) {
-                this.setState(
-                    produce((draft: Draft<State>) => {
-                        const model = draft.queryModels[id];
-                        let selectionsError = resolveErrorMessage(error);
-
-                        if (selectionsError === undefined) {
-                            const schemaQuery = model.schemaQuery.toString();
-                            selectionsError = `Error while setting selections for SchemaQuery: ${schemaQuery}`;
-                        }
-
-                        console.error(`Error setting selections for model ${id}:`, selectionsError);
-                        model.selectionsError = selectionsError;
-                    })
-                );
+                this.setSelectionsError(id, error, 'setting');
             }
         };
 
-        selectAllRows = async (id: string) => {
+        selectAllRows = async (id: string): Promise<void> => {
             const { modelLoader } = this.props;
 
             this.setState(
@@ -257,10 +245,13 @@ export function withQueryModels<Props>(
                         model.selectionsLoadingState = LoadingState.LOADED;
                     })
                 );
-            } catch (error) {}
+            } catch (error) {
+                this.setSelectionsError(id, error, 'setting');
+            }
         };
 
-        selectRow = (id: string, checked: boolean, row: { [key: string]: any }) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        selectRow = (id: string, checked: boolean, row: { [key: string]: any }): void => {
             const model = this.state.queryModels[id];
             const pkCols = model.queryInfo.getPkCols();
 
@@ -279,11 +270,11 @@ export function withQueryModels<Props>(
             }
         };
 
-        selectPage = (id: string, checked: boolean) => {
+        selectPage = (id: string, checked: boolean): void => {
             this.setSelections(id, checked, this.state.queryModels[id].orderedRows);
         };
 
-        loadRows = async (id: string) => {
+        loadRows = async (id: string): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
 
             this.setState(
@@ -325,7 +316,7 @@ export function withQueryModels<Props>(
             }
         };
 
-        loadQueryInfo = async (id: string, loadRows = false, loadSelections = false) => {
+        loadQueryInfo = async (id: string, loadRows = false, loadSelections = false): Promise<void> => {
             const { loadQueryInfo } = this.props.modelLoader;
 
             this.setState(
@@ -371,7 +362,7 @@ export function withQueryModels<Props>(
          * @param loadRows: boolean, if true will load the model's rows.
          * @param loadSelections: boolean, if true will load selections after loading QueryInfo.
          */
-        maybeLoad = (id: string, loadQueryInfo = false, loadRows = false, loadSelections = false) => {
+        maybeLoad = (id: string, loadQueryInfo = false, loadRows = false, loadSelections = false): void => {
             if (loadQueryInfo) {
                 // Postpone loading any rows or selections if we're loading the QueryInfo.
                 this.loadQueryInfo(id, loadRows, loadSelections);
@@ -388,15 +379,15 @@ export function withQueryModels<Props>(
             }
         };
 
-        loadModel = (id: string, loadSelections = false) => {
+        loadModel = (id: string, loadSelections = false): void => {
             this.loadQueryInfo(id, true, loadSelections);
         };
 
-        loadAllModels = (loadSelections = false) => {
+        loadAllModels = (loadSelections = false): void => {
             Object.keys(this.state.queryModels).forEach(id => this.loadModel(id, loadSelections));
         };
 
-        loadNextPage = (id: string) => {
+        loadNextPage = (id: string): void => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -411,7 +402,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadPreviousPage = (id: string) => {
+        loadPreviousPage = (id: string): void => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -426,7 +417,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadFirstPage = (id: string) => {
+        loadFirstPage = (id: string): void => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -441,7 +432,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadLastPage = (id: string) => {
+        loadLastPage = (id: string): void => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -456,7 +447,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        loadCharts = async (id: string, includeSampleComparison) => {
+        loadCharts = async (id: string, includeSampleComparison): Promise<void> => {
             const { modelLoader } = this.props;
 
             this.setState(
@@ -494,7 +485,7 @@ export function withQueryModels<Props>(
             }
         };
 
-        addModel = (queryConfig: QueryConfig, load = true, loadSelections = false) => {
+        addModel = (queryConfig: QueryConfig, load = true, loadSelections = false): void => {
             let id;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -508,7 +499,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        setOffset = (id: string, offset: number) => {
+        setOffset = (id: string, offset: number): void => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -523,7 +514,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        setMaxRows = (id: string, maxRows: number) => {
+        setMaxRows = (id: string, maxRows: number): void => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -539,7 +530,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        setView = (id: string, viewName: string, loadSelections = false) => {
+        setView = (id: string, viewName: string, loadSelections = false): void => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -558,7 +549,7 @@ export function withQueryModels<Props>(
             );
         };
 
-        setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false) => {
+        setSchemaQuery = (id: string, schemaQuery: SchemaQuery, loadSelections = false): void => {
             let shouldLoad = false;
             this.setState(
                 produce((draft: Draft<State>) => {
@@ -607,14 +598,9 @@ export function withQueryModels<Props>(
             );
         };
 
-        componentDidMount(): void {
-            if (this.props.autoLoad) {
-                this.loadAllModels();
-            }
-        }
-
-        render() {
+        render(): ReactNode {
             // Intentionally not using queryConfigs and modelLoader, we don't want to pass them to children.
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { queryConfigs, modelLoader, ...props } = this.props;
             return (
                 <ComponentToWrap queryModels={this.state.queryModels} actions={this.actions} {...(props as Props)} />

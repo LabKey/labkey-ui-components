@@ -60,16 +60,14 @@ export class ChartMenu extends PureComponent<Props, State> {
 
     render(): ReactNode {
         const { model, showSampleComparisonReports } = this.props;
-        const { charts, chartsError, hasCharts, id, isLoading, isLoadingCharts } = model;
+        const { charts, chartsError, hasCharts, id, isLoading, isLoadingCharts, rowsError, queryInfoError } = model;
         const privateCharts = hasCharts ? charts.filter(chart => !chart.shared) : [];
         const publicCharts = hasCharts ? charts.filter(chart => chart.shared) : [];
         const title = isLoadingCharts ? <span className="fa fa-spinner fa-pulse" /> : 'Charts';
         const noCharts = hasCharts && charts.length === 0 && !showSampleComparisonReports;
-        const disabled = isLoading || isLoadingCharts || noCharts;
+        const hasError = queryInfoError !== undefined || rowsError !== undefined;
+        const disabled = isLoading || isLoadingCharts || noCharts || hasError;
         const { selectedChart } = this.state;
-        // Have to safe guard around isLoading here because model.filters getter will throw an error if there is no
-        // queryInfo.
-        const filters = isLoading ? [] : model.filters;
 
         return (
             <div className="chart-menu">
@@ -99,7 +97,7 @@ export class ChartMenu extends PureComponent<Props, State> {
                 </DropdownButton>
 
                 {selectedChart !== undefined && (
-                    <ChartModal selectedChart={selectedChart} filters={filters} onHide={this.clearChart} />
+                    <ChartModal selectedChart={selectedChart} filters={model.filters} onHide={this.clearChart} />
                 )}
             </div>
         );

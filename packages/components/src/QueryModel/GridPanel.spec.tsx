@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactElement } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { Filter } from '@labkey/api';
@@ -24,7 +24,7 @@ let QUERY_INFO: QueryInfo;
 let DATA: RowsResponse;
 
 class TestButtons extends PureComponent<RequiresModelAndActions> {
-    render() {
+    render(): ReactElement {
         return <div className="test-buttons-component">ButtonComponent for {this.props.model.id}</div>;
     }
 }
@@ -251,7 +251,7 @@ describe('GridPanel', () => {
         wrapper: GridPanelWrapper,
         actionValue: ActionValue,
         actionValues: ActionValue[],
-        expectedSorts: Filter.IFilter[]
+        expectedSorts: QuerySort[]
     ): void => {
         const grid = wrapper.instance();
         const { model } = grid.props;
@@ -263,18 +263,22 @@ describe('GridPanel', () => {
         expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
         expect(actions.setSorts).toHaveBeenCalledWith(model.id, expectedSorts);
         // Set the sorts to expectedSorts to emulate actual behavior, so we can more easily test realistic scenarios.
-        wrapper.setProps({ model: model.mutate({ filterArray: expectedSorts }) });
+        wrapper.setProps({ model: model.mutate({ sorts: expectedSorts }) });
     };
 
-    const testAddOmniBoxValue = (wrapper: GridPanelWrapper, actionValue: ActionValue, expectedState: any): void => {
+    const testAddOmniBoxValue = (
+        wrapper: GridPanelWrapper,
+        actionValue: ActionValue,
+        expectedState: Filter.IFilter[] | QuerySort[]
+    ): void => {
         const grid = wrapper.instance();
         const values = grid.state.actionValues.concat(actionValue);
         grid.omniBoxChange(values, { type: ChangeType.add });
         if (actionValue.valueObject.fieldKey === undefined) {
             // assume filter
-            expectFilterState(wrapper, actionValue, values, expectedState);
+            expectFilterState(wrapper, actionValue, values, expectedState as Filter.IFilter[]);
         } else {
-            expectSortsState(wrapper, actionValue, values, expectedState);
+            expectSortsState(wrapper, actionValue, values, expectedState as QuerySort[]);
         }
     };
 
@@ -282,7 +286,7 @@ describe('GridPanel', () => {
         wrapper: GridPanelWrapper,
         actionValue: ActionValue,
         index: number,
-        expectedState: any
+        expectedState: Filter.IFilter[] | QuerySort[]
     ): void => {
         const grid = wrapper.instance();
         // OmniBox moves the modified action to the end of the actionValues array.
@@ -291,9 +295,9 @@ describe('GridPanel', () => {
 
         if (actionValue.valueObject.fieldKey === undefined) {
             // assume filter
-            expectFilterState(wrapper, actionValue, values, expectedState);
+            expectFilterState(wrapper, actionValue, values, expectedState as Filter.IFilter[]);
         } else {
-            expectSortsState(wrapper, actionValue, values, expectedState);
+            expectSortsState(wrapper, actionValue, values, expectedState as QuerySort[]);
         }
     };
 
@@ -469,7 +473,7 @@ describe('GridPanel', () => {
         expect(actions.setView).toHaveBeenCalledWith('model', undefined, false);
     });
 
-    const getCheckbox = (wrapper: GridPanelWrapper, index: number) => {
+    const getCheckbox = (wrapper: GridPanelWrapper, index: number): ReactWrapper<any> => {
         return wrapper.find(GRID_SELECTOR).find('tr').at(index).find('input[type="checkbox"]');
     };
 

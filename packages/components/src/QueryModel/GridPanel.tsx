@@ -312,7 +312,7 @@ export class GridPanel extends PureComponent<Props, State> {
      * @param actionValues: ActionValue[]
      * @param change: Change
      */
-    omniBoxChange = (actionValues: ActionValue[], change: Change) => {
+    omniBoxChange = (actionValues: ActionValue[], change: Change): void => {
         let keyword;
 
         if (change.type === ChangeType.add || change.type === ChangeType.modify) {
@@ -381,7 +381,7 @@ export class GridPanel extends PureComponent<Props, State> {
                             type="checkbox"
                             disabled={disabled}
                             checked={selected === true}
-                            onChange={onChange}
+                            onChange={onChange} // eslint-disable-line
                         />
                     );
                 },

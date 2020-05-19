@@ -150,6 +150,22 @@ describe('DomainDesign', () => {
         expect(domain.hasInvalidNameField({ name: 'abc' })).toBeTruthy();
         expect(domain.hasInvalidNameField({ name: 'ABC' })).toBeTruthy();
     });
+
+    test('getDomainContainer', () => {
+        const domain = DomainDesign.create({ name: 'Test Container' });
+        expect(domain.getDomainContainer()).toBe(undefined);
+
+        const domain2 = DomainDesign.create({ name: 'Test Container', container: 'SOMETHINGELSE' });
+        expect(domain2.getDomainContainer()).toBe('SOMETHINGELSE');
+    });
+
+    test('isSharedDomain', () => {
+        const domain = DomainDesign.create({ name: 'Test Container' });
+        expect(domain.isSharedDomain()).toBeFalsy();
+
+        const domain2 = DomainDesign.create({ name: 'Test Container', container: 'SOMETHINGELSE' });
+        expect(domain2.isSharedDomain()).toBeTruthy();
+    });
 });
 
 describe('DomainField', () => {

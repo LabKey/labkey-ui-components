@@ -426,25 +426,22 @@ export class GridPanel extends PureComponent<Props, State> {
         } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
         let loadingMessage;
-        let header;
+        const gridIsLoading = !hasError && isLoading;
+        const selectionsAreLoading = allowSelections && !selectionsError && isLoadingSelections;
 
-        if (isLoading) {
+        if (gridIsLoading) {
             loadingMessage = 'Loading data...';
-        } else if (allowSelections && isLoadingSelections) {
+        } else if (selectionsAreLoading) {
             loadingMessage = 'Loading selections...';
-        }
-
-        if (title) {
-            header = (
-                <div className="panel-heading">
-                    <span>{title}</span>
-                </div>
-            );
         }
 
         return (
             <div className={classNames('grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-                {header}
+                {title !== undefined && asPanel && (
+                    <div className="grid-panel__title panel-heading">
+                        <span>{title}</span>
+                    </div>
+                )}
 
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
                     {showButtonBar && (

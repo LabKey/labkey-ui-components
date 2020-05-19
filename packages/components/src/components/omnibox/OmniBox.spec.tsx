@@ -111,14 +111,14 @@ describe('OmniBox component', () => {
     const actions = [new HelloWorldAction()];
 
     test('requires only an action', () => {
-        const component = shallow(<OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} />);
+        const component = shallow<OmniBox>(<OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} />);
 
         expect(component.find('.OmniBox').length).toBe(1);
     });
 
     test('respects openAfterFocus', () => {
         // True
-        const openComponent = mount(<OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} openAfterFocus={true} />);
+        const openComponent = mount<OmniBox>(<OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} openAfterFocus={true} />);
         const openControlElement = openComponent.find('.OmniBox-control');
 
         expect(openControlElement.length).toEqual(1);
@@ -130,7 +130,7 @@ describe('OmniBox component', () => {
         expect(openState.options.length).toBe(1);
         // False
 
-        const closedComponent = mount(<OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} openAfterFocus={false} />);
+        const closedComponent = mount<OmniBox>(<OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} openAfterFocus={false} />);
         const closedControlElement = closedComponent.find('.OmniBox-control');
 
         expect(closedControlElement.length).toEqual(1);

@@ -151,7 +151,7 @@ storiesOf('QueryModel', module)
             </div>
         );
     })
-    .add('Bad Query', () => {
+    .add('Bad Query Info', () => {
         const queryConfigs: QueryConfigMap = {
             mixtures: {
                 schemaQuery: SchemaQuery.create('i.do.not.exist', 'IAmNonExistent'),
@@ -160,13 +160,20 @@ storiesOf('QueryModel', module)
 
         return (
             <div className="query-model-example">
-                <GridPanelWithModel
-                    queryConfigs={queryConfigs}
-                    asPanel={false}
-                    showOmniBox={false}
-                    showButtonBar={false}
-                    allowSelections={false}
-                />
+                <GridPanelWithModel title="Bad QueryInfo" queryConfigs={queryConfigs}/>
+            </div>
+        );
+    })
+    .add('Bad Query', () => {
+        const queryConfigs: QueryConfigMap = {
+            mixtures: {
+                schemaQuery: SchemaQuery.create('exp.data', 'mixturesbad'),
+            },
+        };
+
+        return (
+            <div className="query-model-example">
+                <GridPanelWithModel title="Bad Query" queryConfigs={queryConfigs}/>
             </div>
         );
     })

@@ -131,6 +131,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     },
     'exp.data': {
         mixtures: mixturesQueryInfo,
+        mixturesbad: mixturesQueryInfo,
         mixturespaging: mixturesQueryInfo,
         expressionsystem: expressionsystemQueryInfo,
         'second source': secondSourceQueryDetails,
@@ -432,6 +433,8 @@ export function initQueryGridMocks(delayMs = undefined) {
             params['query.viewName'] === '~~DETAILS~~'
         ) {
             responseBody = lineageRunDetail;
+        } else if (queryName === 'mixturesbad') {
+            return res.status(400).headers(JSON_HEADERS).body(JSON.stringify({ exception: 'Error loading rows'}));
         }
 
         if (!responseBody) {

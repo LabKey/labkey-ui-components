@@ -29,16 +29,16 @@ interface GridPanelProps {
     asPanel?: boolean;
     advancedExportOptions?: { [key: string]: string };
     ButtonsComponent?: ComponentType<RequiresModelAndActions>;
-    hideEmptyViewSelector?: boolean;
+    hideEmptyViewMenu?: boolean;
     pageSizes?: number[];
     title?: string;
     showButtonBar?: boolean;
-    showChartSelector?: boolean;
+    showChartMenu?: boolean;
     showExport?: boolean;
     showOmniBox?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
-    showViewSelector?: boolean;
+    showViewMenu?: boolean;
 }
 
 type Props = GridPanelProps & RequiresModelAndActions;
@@ -54,21 +54,21 @@ class ButtonBar extends PureComponent<GridBarProps> {
             actions,
             advancedExportOptions,
             ButtonsComponent,
-            hideEmptyViewSelector,
+            hideEmptyViewMenu,
             onViewSelect,
             pageSizes,
-            showChartSelector,
+            showChartMenu,
             showExport,
             showPagination,
             showSampleComparisonReports,
-            showViewSelector,
+            showViewMenu,
         } = this.props;
         const { hasData, isPaged, queryInfo, queryInfoError, rowsError, selectionsError } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
         const paginate = showPagination && isPaged && hasData && !hasError;
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
-        const canSelectView = showViewSelector && queryInfo !== undefined;
+        const canSelectView = showViewMenu && queryInfo !== undefined;
 
         return (
             <div className="grid-panel__button-bar">
@@ -76,7 +76,7 @@ class ButtonBar extends PureComponent<GridBarProps> {
                     <div className="button-bar__section">
                         {ButtonsComponent !== undefined && <ButtonsComponent model={model} actions={actions} />}
 
-                        {showChartSelector && (
+                        {showChartMenu && (
                             <ChartMenu
                                 model={model}
                                 actions={actions}
@@ -96,7 +96,7 @@ class ButtonBar extends PureComponent<GridBarProps> {
                             <ViewMenu
                                 model={model}
                                 onViewSelect={onViewSelect}
-                                hideEmptyViewSelector={hideEmptyViewSelector}
+                                hideEmptyViewMenu={hideEmptyViewMenu}
                             />
                         )}
                     </div>
@@ -115,14 +115,14 @@ export class GridPanel extends PureComponent<Props, State> {
         allowSelections: true,
         allowSorting: true,
         asPanel: true,
-        hideEmptyViewSelector: false,
+        hideEmptyViewMenu: false,
         showPagination: true,
         showButtonBar: true,
-        showChartSelector: true,
+        showChartMenu: true,
         showExport: true,
         showOmniBox: true,
         showSampleComparisonReports: false,
-        showViewSelector: true,
+        showViewMenu: true,
     };
 
     omniBoxActions: { [name: string]: Action };
@@ -424,10 +424,11 @@ export class GridPanel extends PureComponent<Props, State> {
             messages,
             queryInfoError,
         } = model;
-        const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
+        const hasGridError = queryInfoError !== undefined || rowsError !== undefined;
+        const hasError = hasGridError || selectionsError !== undefined;
         let loadingMessage;
-        const gridIsLoading = !hasError && isLoading;
-        const selectionsAreLoading = allowSelections && !selectionsError && isLoadingSelections;
+        const gridIsLoading = !hasGridError && isLoading;
+        const selectionsAreLoading = !hasError && allowSelections && isLoadingSelections;
 
         if (gridIsLoading) {
             loadingMessage = 'Loading data...';
@@ -470,7 +471,7 @@ export class GridPanel extends PureComponent<Props, State> {
                     <div className="grid-panel__grid">
                         {hasError && <Alert>{queryInfoError || rowsError || selectionsError}</Alert>}
 
-                        {(!hasError && hasData) && (
+                        {(!hasGridError && hasData) && (
                             <Grid
                                 headerCell={this.headerCell}
                                 calcWidths

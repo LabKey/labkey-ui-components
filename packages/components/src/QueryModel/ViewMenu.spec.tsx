@@ -9,7 +9,7 @@ import { initUnitTests, makeQueryInfo } from '../testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 
 import { ViewMenu } from './ViewMenu';
-import { makeTestActions, makeTestModel } from './testUtils';
+import { makeTestModel } from './testUtils';
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO_NO_VIEWS: QueryInfo;
@@ -41,27 +41,27 @@ describe('ViewMenu', () => {
         // Renders nothing
         let model = makeTestModel(SCHEMA_QUERY, QUERY_INFO_NO_VIEWS, {}, []);
         let tree = renderer.create(
-            <ViewMenu hideEmptyViewSelector model={model} onViewSelect={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu model={model} onViewSelect={jest.fn()} />
         );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // Renders empty view selector with disabled dropdown.
         tree = renderer.create(
-            <ViewMenu hideEmptyViewSelector={false} model={model} onViewSelect={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={false} model={model} onViewSelect={jest.fn()} />
         );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // No Extra columns shows up under "All Saved Views"
         model = makeTestModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         tree = renderer.create(
-            <ViewMenu hideEmptyViewSelector={true} model={model} onViewSelect={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} />
         );
         expect(tree.toJSON()).toMatchSnapshot();
 
         // No Extra columns shows up under "My Saved Views"
         model = makeTestModel(SCHEMA_QUERY, QUERY_INFO_PRIVATE_VIEWS, {}, []);
         tree = renderer.create(
-            <ViewMenu hideEmptyViewSelector={true} model={model} onViewSelect={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} />
         );
         expect(tree.toJSON()).toMatchSnapshot();
 
@@ -70,7 +70,7 @@ describe('ViewMenu', () => {
             schemaQuery: SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, 'noExtraColumn'),
         });
         tree = renderer.create(
-            <ViewMenu hideEmptyViewSelector={true} model={model} onViewSelect={jest.fn()} />
+            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={jest.fn()} />
         );
         expect(tree.toJSON()).toMatchSnapshot();
     });
@@ -79,7 +79,7 @@ describe('ViewMenu', () => {
         const onViewSelect = jest.fn();
         const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO_PUBLIC_VIEWS, {}, []);
         const wrapper = mount(
-            <ViewMenu hideEmptyViewSelector={true} model={model} onViewSelect={onViewSelect} />
+            <ViewMenu hideEmptyViewMenu={true} model={model} onViewSelect={onViewSelect} />
         );
         wrapper.find('MenuItem').last().find('a').simulate('click');
         expect(onViewSelect).toHaveBeenCalledWith('noMixtures');

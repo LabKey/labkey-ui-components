@@ -5,14 +5,14 @@ import { QueryModel, ViewInfo } from '..';
 import { blurActiveElement } from '../util/utils';
 
 interface ViewMenuProps {
-    hideEmptyViewSelector: boolean;
+    hideEmptyViewMenu: boolean;
     model: QueryModel,
     onViewSelect: (viewName) => void;
 }
 
 export class ViewMenu extends PureComponent<ViewMenuProps> {
     render() {
-        const { model, hideEmptyViewSelector, onViewSelect } = this.props;
+        const { model, hideEmptyViewMenu, onViewSelect } = this.props;
         const { isLoading, views, viewName } = model;
         const activeViewName = viewName ?? ViewInfo.DEFAULT_NAME;
         const defaultView = views.find(view => view.isDefault);
@@ -20,7 +20,7 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const publicViews = validViews.filter(view => !view.isDefault && view.shared);
         const privateViews = validViews.filter(view => !view.isDefault && !view.shared);
         const noViews = publicViews.length === 0 && privateViews.length === 0;
-        const hidden = hideEmptyViewSelector && noViews;
+        const hidden = hideEmptyViewMenu && noViews;
         const disabled = isLoading || noViews;
 
         const viewMapper = view => {

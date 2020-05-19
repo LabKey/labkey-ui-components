@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactElement } from 'react';
+import React, { PureComponent, ReactElement, ReactNode } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { Filter } from '@labkey/api';
@@ -24,7 +24,7 @@ let QUERY_INFO: QueryInfo;
 let DATA: RowsResponse;
 
 class TestButtons extends PureComponent<RequiresModelAndActions> {
-    render(): ReactElement {
+    render(): ReactNode {
         return <div className="test-buttons-component">ButtonComponent for {this.props.model.id}</div>;
     }
 }

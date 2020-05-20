@@ -203,6 +203,10 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                     }}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
+                    domainFormDisplayOptions={{
+                        isDragDisabled: model.domain.isSharedDomain(),
+                        hideAddFieldsButton: model.domain.isSharedDomain(),
+                    }}
                 />
             </BaseDomainDesigner>
         );

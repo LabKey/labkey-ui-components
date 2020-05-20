@@ -1,12 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.60.0
+*Released*: 20 May 2020
 * Item 6646: IssuesListDefDesignerPanels fix for shared domain scenario
-    - Add helpers to DomainDesign model to getDomainContainer and isSharedDomain
+    - Add helpers to DomainDesign model to getDomainContainer() and isSharedDomain()
     - Allow for a shared def to be used in another container where only the top level properties can be saved via saveIssueListDefOptions
     - Show alert if the current container is using a shared domain with link to get to source container
+    - Disable field re-order and add field for a shared domain (read only display)
 
 ### version 0.59.3
 *Released*: 18 May 2020

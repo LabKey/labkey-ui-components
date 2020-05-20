@@ -32,11 +32,11 @@ export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel
                 type,
             },
             success: (rawModels: any[]) => {
-                const models = List<AssayDefinitionModel>().asMutable();
+                let models = List<AssayDefinitionModel>();
                 rawModels.forEach(rawModel => {
-                    models.push(AssayDefinitionModel.create(rawModel));
+                    models = models.push(AssayDefinitionModel.create(rawModel));
                 });
-                res(models.asImmutable());
+                res(models);
             },
             failure: error => {
                 rej(error);

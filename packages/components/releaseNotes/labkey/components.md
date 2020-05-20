@@ -8,6 +8,28 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Added emptyResultDisplay, hideHeader and hidePanelFrame props to SearchResultsPanel
 - Add useEmail to UserSelectInput
 
+### version 0.60.0
+*Released*: 20 May 2020
+* Item 6646: IssuesListDefDesignerPanels fix for shared domain scenario
+    - Add helpers to DomainDesign model to getDomainContainer() and isSharedDomain()
+    - Allow for a shared def to be used in another container where only the top level properties can be saved via saveIssueListDefOptions
+    - Show alert if the current container is using a shared domain with link to get to source container
+    - Disable field re-order and add field for a shared domain (read only display)
+
+### version 0.59.3
+*Released*: 18 May 2020
+* Item 7207: DatasetColumnMappingPanel fix to allow for numeric and text fields to be used for timepoint/visit column mapping
+    - Fix for StudyScheduleTest use case which uses the text visit values instead of Sequence Num during import
+
+### version 0.59.2
+*Released*: 16 May 2020
+* Lineage: improve caching, allow non-default distance
+
+### version 0.59.1
+*Released*: 15 May 2020
+* Merge forward changes from release20.5-SNAPSHOT branch
+    - includes hotfix changes from version 0.55.1
+
 ## version 0.59.0
 *Released*: 14 May 2020
 * Epic 6800:  Issue Definition designer (Story 3)- Issues module implementation
@@ -47,6 +69,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     - `LineageGraph` supports additional details from `experiment-lineage.api`.
     - `withLineage` HOC for managing lineage state.
     - See https://github.com/LabKey/labkey-ui-components/pull/237 for more details.
+
+### version 0.55.1
+*Released*: 6 May 2020
+* `@labkey/api` dependency update.
+* allow using separate singleFilterValue for createQueryGridModelFilteredBySample
 
 ## version 0.55.0
 *Released*: 30 April 2020

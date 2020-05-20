@@ -212,9 +212,15 @@ export function loadLineageResult(
         lsid: seed,
     };
 
+    const currentContainerId = getServerContext().container.id;
+
+    if (!container) {
+        container = currentContainerId;
+    }
+
     // Lineage API currently responds with the container's entity ID.
     // Only apply container if it doesn't match the current container.
-    if (container !== getServerContext().container.id) {
+    if (container !== currentContainerId) {
         fetchOptions.containerPath = container;
     }
 

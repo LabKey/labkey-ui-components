@@ -29,7 +29,8 @@ interface State {
 export function withLineage<Props>(
     ComponentToWrap: ComponentType<Props & InjectedLineage>,
     allowSeedPrefetch = true,
-    allowLoadSampleStats = false
+    allowLoadSampleStats = false,
+    applyDefaultDistance = true
 ): ComponentType<Props & WithLineageOptions> {
     class ComponentWithLineage extends PureComponent<Props & WithLineageOptions, State> {
         static defaultProps;
@@ -157,7 +158,7 @@ export function withLineage<Props>(
     }
 
     ComponentWithLineage.defaultProps = {
-        distance: DEFAULT_LINEAGE_DISTANCE,
+        distance: applyDefaultDistance ? DEFAULT_LINEAGE_DISTANCE : undefined,
         prefetchSeed: true,
     };
 

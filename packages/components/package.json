@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.60.0-fb-smImproveSearch.5",
+  "version": "0.60.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -82,8 +82,8 @@
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
-    "@labkey/eslint-config-base": "0.0.7",
-    "@labkey/eslint-config-react": "0.0.7",
+    "@labkey/eslint-config-base": "0.0.8",
+    "@labkey/eslint-config-react": "0.0.8",
     "@storybook/addon-knobs": "5.2.8",
     "@storybook/addon-notes": "5.2.8",
     "@storybook/react": "5.2.8",

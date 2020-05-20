@@ -40,6 +40,19 @@ export const AssayProvider = (Component: React.ComponentType) => {
             };
         }
 
+        static getDerivedStateFromProps(nextProps: Props, prevState: State): State {
+            const { assay, params } = nextProps;
+            const { protocol } = params;
+            const assayDefinition = assay.getByName(protocol);
+
+            if (assay.isLoaded && assayDefinition && assay.getProtocol(assayDefinition.id)) {
+                return {
+                    assayDefinition,
+                    assayProtocol: assay.getProtocol(assayDefinition.id),
+                }
+            }
+        }
+
         componentDidMount() {
             this.props.loadAssay(this.props.params.protocol);
         }
@@ -60,14 +73,9 @@ export const AssayProvider = (Component: React.ComponentType) => {
                     return <LoadingPage />;
                 }
 
-                const state = {
-                    assayDefinition,
-                    assayProtocol: assay.getProtocol(assayDefinition.id),
-                };
-
                 return (
-                    <AssayContextProvider value={state}>
-                        <Component {...Object.assign({}, this.props, state)}/>
+                    <AssayContextProvider value={this.state}>
+                        <Component {...this.props} {...this.state}/>
                     </AssayContextProvider>
                 );
             }

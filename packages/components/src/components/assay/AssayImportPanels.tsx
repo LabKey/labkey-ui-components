@@ -97,6 +97,11 @@ interface State {
 }
 
 class AssayImportPanelsImpl extends React.Component<Props, State> {
+
+    static defaultProps = {
+        loadSelections : loadSelectedSamples
+    }
+
     constructor(props: Props) {
         super(props);
 
@@ -262,11 +267,10 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         const sampleColumnData = assayDefinition.getSampleColumn();
 
         if (sampleColumnData && location) {
-            const selectedSamplesFunction = this.props.loadSelections ? this.props.loadSelections : loadSelectedSamples;
             // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
             // the currently selected samples so we can pre-populate the fields in the wizard with the selected
             // samples.
-            selectedSamplesFunction(location, sampleColumnData.column).then(samples => {
+            this.props.loadSelections(location, sampleColumnData.column).then(samples => {
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
                 let runProperties = this.getRunPropertiesRow(this.props);
                 let batchProperties = this.getBatchPropertiesRow(this.props);

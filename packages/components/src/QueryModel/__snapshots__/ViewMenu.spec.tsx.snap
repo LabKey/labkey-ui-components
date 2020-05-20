@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewSelector Render 1`] = `null`;
+exports[`ViewMenu Render 1`] = `null`;
 
-exports[`ViewSelector Render 2`] = `
+exports[`ViewMenu Render 2`] = `
 <div
-  className="view-selector"
+  className="view-menu"
 >
   <div
     className="dropdown disabled btn-group"
@@ -14,7 +14,7 @@ exports[`ViewSelector Render 2`] = `
       aria-haspopup={true}
       className="dropdown-toggle btn btn-default"
       disabled={true}
-      id="view-selector-drop-model"
+      id="view-menu-drop-model"
       onClick={[Function]}
       onKeyDown={[Function]}
       role="button"
@@ -27,7 +27,7 @@ exports[`ViewSelector Render 2`] = `
       />
     </button>
     <ul
-      aria-labelledby="view-selector-drop-model"
+      aria-labelledby="view-menu-drop-model"
       className="dropdown-menu dropdown-menu-right"
       role="menu"
     />
@@ -35,9 +35,9 @@ exports[`ViewSelector Render 2`] = `
 </div>
 `;
 
-exports[`ViewSelector Render 3`] = `
+exports[`ViewMenu Render 3`] = `
 <div
-  className="view-selector"
+  className="view-menu"
 >
   <div
     className="dropdown btn-group"
@@ -47,7 +47,7 @@ exports[`ViewSelector Render 3`] = `
       aria-haspopup={true}
       className="dropdown-toggle btn btn-default"
       disabled={false}
-      id="view-selector-drop-model"
+      id="view-menu-drop-model"
       onClick={[Function]}
       onKeyDown={[Function]}
       role="button"
@@ -60,7 +60,7 @@ exports[`ViewSelector Render 3`] = `
       />
     </button>
     <ul
-      aria-labelledby="view-selector-drop-model"
+      aria-labelledby="view-menu-drop-model"
       className="dropdown-menu dropdown-menu-right"
       role="menu"
     >
@@ -99,14 +99,28 @@ exports[`ViewSelector Render 3`] = `
           No Extra Column
         </a>
       </li>
+      <li
+        className=""
+        role="presentation"
+      >
+        <a
+          href="#"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          role="menuitem"
+          tabIndex="-1"
+        >
+          No Mixtures or Extra
+        </a>
+      </li>
     </ul>
   </div>
 </div>
 `;
 
-exports[`ViewSelector Render 4`] = `
+exports[`ViewMenu Render 4`] = `
 <div
-  className="view-selector"
+  className="view-menu"
 >
   <div
     className="dropdown btn-group"
@@ -116,7 +130,7 @@ exports[`ViewSelector Render 4`] = `
       aria-haspopup={true}
       className="dropdown-toggle btn btn-default"
       disabled={false}
-      id="view-selector-drop-model"
+      id="view-menu-drop-model"
       onClick={[Function]}
       onKeyDown={[Function]}
       role="button"
@@ -129,7 +143,7 @@ exports[`ViewSelector Render 4`] = `
       />
     </button>
     <ul
-      aria-labelledby="view-selector-drop-model"
+      aria-labelledby="view-menu-drop-model"
       className="dropdown-menu dropdown-menu-right"
       role="menu"
     >
@@ -173,9 +187,9 @@ exports[`ViewSelector Render 4`] = `
 </div>
 `;
 
-exports[`ViewSelector Render 5`] = `
+exports[`ViewMenu Render 5`] = `
 <div
-  className="view-selector"
+  className="view-menu"
 >
   <div
     className="dropdown btn-group"
@@ -185,7 +199,7 @@ exports[`ViewSelector Render 5`] = `
       aria-haspopup={true}
       className="dropdown-toggle btn btn-default"
       disabled={false}
-      id="view-selector-drop-model"
+      id="view-menu-drop-model"
       onClick={[Function]}
       onKeyDown={[Function]}
       role="button"
@@ -198,7 +212,7 @@ exports[`ViewSelector Render 5`] = `
       />
     </button>
     <ul
-      aria-labelledby="view-selector-drop-model"
+      aria-labelledby="view-menu-drop-model"
       className="dropdown-menu dropdown-menu-right"
       role="menu"
     >

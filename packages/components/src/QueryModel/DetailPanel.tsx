@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
@@ -40,16 +40,19 @@ class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps &
     }
 
     get detailDisplayProps(): DetailDisplaySharedProps {
+        // Purposely not using queryColumns, queryModels, do not want to pass to DetailDisplay
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { queryColumns, queryModels, ...detailDisplayProps } = this.props;
         return detailDisplayProps;
     }
 
-    render() {
+    render(): ReactNode {
         const { editingMode, queryColumns } = this.props;
         const model = this.getModel();
+        const error = model.queryInfoError ?? model.rowsError;
 
-        if (model.error !== undefined) {
-            return <Alert>{model.error}</Alert>;
+        if (error !== undefined) {
+            return <Alert>{error}</Alert>;
         } else if (model.isLoading) {
             return <LoadingSpinner />;
         }

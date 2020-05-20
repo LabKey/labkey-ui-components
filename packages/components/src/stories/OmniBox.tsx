@@ -6,8 +6,9 @@
 import React, { PureComponent } from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
+import { fromJS, List } from 'immutable';
+import { Query } from '@labkey/api';
 
-import { fromJS } from 'immutable';
 
 import { SearchAction } from '../components/omnibox/actions/Search';
 import { FilterAction } from '../components/omnibox/actions/Filter';
@@ -19,7 +20,7 @@ import { ViewAction } from '../components/omnibox/actions/View';
 import { makeQueryInfo, makeTestData } from '../testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQuery.json';
-import { LoadingSpinner, QueryGridModel } from '..';
+import { LoadingSpinner, QueryColumn, QueryGridModel, QueryInfo } from '..';
 
 interface Props {
     actions: string[];
@@ -54,17 +55,16 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
                 dataIds: fromJS(mockData.orderedRows),
                 totalRows: mockData.rowCount,
             });
-            const getModel = () => model;
             const actions = this.props.actions.map(action => {
                 switch (action) {
                     case 'search':
                         return new SearchAction('q');
                     case 'sort':
-                        return new SortAction('s', getModel);
+                        return new SortAction('s', this.getColumns);
                     case 'filter':
-                        return new FilterAction('f', getModel);
+                        return new FilterAction('f', this.getColumns);
                     case 'view':
-                        return new ViewAction('v', getModel);
+                        return new ViewAction('v', this.getColumns, this.getQueryInfo);
                 }
             });
 
@@ -75,6 +75,29 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
         });
     }
 
+    getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions => {
+        const model = this.state.model;
+        return {
+            column,
+            containerFilter: model.containerFilter,
+            containerPath: model.containerPath,
+            schemaName: model.schema,
+            queryName: model.query,
+            viewName: model.view,
+            filterArray: model.getFilters().toJS(),
+            parameters: model.queryParameters,
+        }
+    }
+
+    getColumns = (all?): List<QueryColumn> => {
+        const { model } = this.state;
+        return all ? model.getAllColumns() : model.getDisplayColumns();
+    };
+
+    getQueryInfo = (): QueryInfo => {
+        return this.state.model.queryInfo;
+    };
+
     render() {
         const { actions, model } = this.state;
 
@@ -84,7 +107,12 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
 
         return (
             <div className="omnibox-renderer">
-                <OmniBox getModel={() => model} actions={actions} placeholder={this.props.placeholder} />
+                <OmniBox
+                    getColumns={this.getColumns}
+                    getSelectDistinctOptions={this.getSelectDistinctOptions}
+                    actions={actions}
+                    placeholder={this.props.placeholder}
+                />
                 <Grid data={model.getData()} />
             </div>
         );

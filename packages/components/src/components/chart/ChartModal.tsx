@@ -1,21 +1,20 @@
 import React, { PureComponent } from 'react';
-
 import { Modal } from 'react-bootstrap';
+import { Filter } from '@labkey/api';
 
-import { QueryGridModel } from '../base/models/model';
 import { DataViewInfo } from '../../models';
 
 import { Chart } from './Chart';
 
 interface ChartModalProps {
     selectedChart: DataViewInfo;
-    model: QueryGridModel;
+    filters: Filter.IFilter[];
     onHide: Function;
 }
 
 export class ChartModal extends PureComponent<ChartModalProps> {
     render() {
-        const { selectedChart, model, onHide } = this.props;
+        const { selectedChart, filters, onHide } = this.props;
         let description;
 
         if (selectedChart.description) {
@@ -36,7 +35,7 @@ export class ChartModal extends PureComponent<ChartModalProps> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <Chart chart={selectedChart} model={model} />
+                    <Chart chart={selectedChart} filters={filters} />
                 </Modal.Body>
             </Modal>
         );

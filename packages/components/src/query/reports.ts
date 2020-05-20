@@ -1,4 +1,4 @@
-import { Ajax } from '@labkey/api';
+import { Ajax, Utils } from '@labkey/api';
 
 import { IDataViewInfo } from '../models';
 import { AppURL, buildURL } from '..';
@@ -41,7 +41,9 @@ export function loadReports(urlMapper?: ReportURLMapper): Promise<IDataViewInfo[
                 const reports = flattenBrowseDataTreeResponse(JSON.parse(request.responseText), urlMapper);
                 resolve(reports);
             },
-            failure: (request: XMLHttpRequest) => reject(request),
+            failure: Utils.getCallbackWrapper(error => {
+                reject(error);
+            }, this, true),
         });
     });
 }

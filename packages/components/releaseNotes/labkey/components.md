@@ -6,6 +6,29 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Move AssayProvider from SampleManager to ui-components
 * Remove redundnat importGeneralAssayRun method (in favor of importAssayRun)
 
+## version 0.61.0
+*Released*: 20 May 2020
+* Add Chart Menu to GridPanel
+* Add View Menu to GridPanel
+* Add Export Menu to GridPanel
+* Implement Selections in GridPanel
+    * Mock.tsx now implements a mock version of our selection API, which uses browser localStorage to store selections.
+* Add Omnibox to GridPanel
+* Refactor OmniBox to support GridPanel and QueryGridPanel
+    * OmniBox and Actions are no longer aware of QueryGridModel, this way they can be used by QueryGridPanel and
+    GridPanel.
+    * OmniBox now has a `mergeValues` flag, when false it emits more granular change events, and does not merge
+    ActionValues (needed by GridPanel). Defaults to true, which was previous behavior.
+    * OmniBox no longer emits a change event when the user cancels an action change, or enters an invalid action.
+    * Actions now add a `valueObject` during `completeAction` so consumers don't need to parse string values, used by
+    GridPanel.
+* Add `showButtonBar` and `title` props to GridPanel
+* Enabled Maps, Sets, and Patches in Immer
+* Refactored the GridPanel tests to not use snapshotting
+* Add another view to sample mixtures data.
+* Remove IQueryModel interface, it was not necessary
+* Remove getOrDefault, not necessary with nullish coalescing
+
 ### version 0.60.0
 *Released*: 20 May 2020
 * Item 6646: IssuesListDefDesignerPanels fix for shared domain scenario

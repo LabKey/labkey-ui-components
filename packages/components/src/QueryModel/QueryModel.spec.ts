@@ -1,5 +1,4 @@
-import { LoadingState, QueryInfo, SchemaQuery } from '..';
-import { QuerySort } from '../components/base/models/model';
+import { LoadingState, QueryInfo, SchemaQuery, QuerySort } from '..';
 import { initUnitTests, makeQueryInfo } from '../testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 

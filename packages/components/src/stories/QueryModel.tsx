@@ -77,7 +77,7 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
         }
 
         return (
-            <div>
+            <div className="query-model-example">
                 <div className="form-row">
                     <div className="form-row__input">
                         <label htmlFor="schemaName">Schema</label>
@@ -123,8 +123,57 @@ storiesOf('QueryModel', module)
         };
 
         return (
-            <div style={{ marginTop: '2em' }}>
-                <GridPanelWithModel queryConfigs={queryConfigs} ButtonsComponent={GridPanelButtonsExample} />
+            <div className="query-model-example">
+                <GridPanelWithModel
+                    ButtonsComponent={GridPanelButtonsExample}
+                    title="Mixtures"
+                    queryConfigs={queryConfigs}
+                />
+            </div>
+        );
+    })
+    .add('Minimal GridPanel', () => {
+        const queryConfigs: QueryConfigMap = {
+            mixtures: {
+                schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
+            },
+        };
+
+        return (
+            <div className="query-model-example">
+                <GridPanelWithModel
+                    queryConfigs={queryConfigs}
+                    asPanel={false}
+                    showOmniBox={false}
+                    showButtonBar={false}
+                    allowSelections={false}
+                />
+            </div>
+        );
+    })
+    .add('Bad Query Info', () => {
+        const queryConfigs: QueryConfigMap = {
+            mixtures: {
+                schemaQuery: SchemaQuery.create('i.do.not.exist', 'IAmNonExistent'),
+            },
+        };
+
+        return (
+            <div className="query-model-example">
+                <GridPanelWithModel title="Bad QueryInfo" queryConfigs={queryConfigs}/>
+            </div>
+        );
+    })
+    .add('Bad Query', () => {
+        const queryConfigs: QueryConfigMap = {
+            mixtures: {
+                schemaQuery: SchemaQuery.create('exp.data', 'mixturesbad'),
+            },
+        };
+
+        return (
+            <div className="query-model-example">
+                <GridPanelWithModel title="Bad Query" queryConfigs={queryConfigs}/>
             </div>
         );
     })

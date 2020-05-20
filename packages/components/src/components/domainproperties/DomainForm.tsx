@@ -65,6 +65,7 @@ import {
 } from './models';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
+import { blurActiveElement } from '../../util/utils';
 
 interface IDomainFormInput {
     domain: DomainDesign;
@@ -400,7 +401,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(domain);
 
         // remove focus for any current element so that it doesn't "jump" after drag end
-        (document.activeElement as HTMLElement).blur();
+        blurActiveElement()
     };
 
     onDragEnd = result => {

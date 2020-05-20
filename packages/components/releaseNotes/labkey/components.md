@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Improve search experience
 - Move search results filtering and cardData processing from SearchResultsPanel to searchUsingIndex action.
 - Added emptyResultDisplay, hideHeader and hidePanelFrame props to SearchResultsPanel
+- Add useEmail to UserSelectInput
 
 ## version 0.59.0
 *Released*: 14 May 2020

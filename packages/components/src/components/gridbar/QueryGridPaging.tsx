@@ -19,6 +19,7 @@ import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { loadPage } from '../../actions';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
+import { blurActiveElement } from '../../util/utils';
 
 interface Props {
     model: QueryGridModel;
@@ -58,7 +59,7 @@ export class QueryGridPaging extends React.Component<Props, any> {
     goToPage = (pageNumber: number) => {
         const { model } = this.props;
         loadPage(model, pageNumber);
-        (document.activeElement as HTMLElement).blur(); // Issue 39418
+        blurActiveElement(); // Issue 39418
     };
 
     render() {

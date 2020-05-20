@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { List } from 'immutable';
+import { Filter } from '@labkey/api';
 
 import { QueryColumn } from '../../base/models/model';
 
@@ -38,7 +39,9 @@ export class SearchAction implements Action {
         // @ts-ignore
         return Promise.resolve({
             value: token,
+            valueObject: Filter.create('*', token, Filter.Types.Q),
             param: token,
+            isValid: token !== '',
         });
     }
 

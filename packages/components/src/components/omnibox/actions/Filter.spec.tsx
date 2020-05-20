@@ -30,7 +30,7 @@ import { FilterAction, getURLSuffix } from './Filter';
 import { ActionOption, Value } from './Action';
 
 let queryInfo: QueryInfo;
-let getModel: () => QueryGridModel;
+let getColumns: () => List<QueryColumn>;
 
 beforeAll(() => {
     initUnitTests();
@@ -43,7 +43,7 @@ beforeAll(() => {
             dataIds: fromJS(mockData.orderedRows),
             totalRows: mockData.rowCount,
         });
-        getModel = () => model;
+        getColumns = (all?) => all ? model.getAllColumns() : model.getDisplayColumns();
     });
 });
 
@@ -102,7 +102,7 @@ describe('FilterAction::completeAction', () => {
 
     beforeEach(() => {
         // needs to be in beforeEach so it gets instantiated after beforeAll
-        action = new FilterAction(urlPrefix, getModel);
+        action = new FilterAction(urlPrefix, getColumns);
     });
 
     test('invalid tokens', () => {
@@ -177,19 +177,18 @@ describe('FilterAction::fetchOptions', () => {
 
     beforeEach(() => {
         // needs to be in beforeEach so it gets instantiated after beforeAll
-        action = new FilterAction(urlPrefix, getModel);
+        action = new FilterAction(urlPrefix, getColumns);
     });
 
     test('column options', () => {
         return Promise.all([
             // nothing entered -- should display all available columns
             fetchOptions([], undefined, options => {
-                expect(options.length).toEqual(getModel().getDisplayColumns().size);
+                expect(options.length).toEqual(getColumns().size);
 
                 // none should complete the action
                 expect(options.map(o => o.isComplete)).toEqual(
-                    getModel()
-                        .getDisplayColumns()
+                    getColumns()
                         .map(c => false)
                         .toArray()
                 );

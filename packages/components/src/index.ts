@@ -13,6 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { enableMapSet, enablePatches } from 'immer';
+
+// See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
+enableMapSet();
+enablePatches();
+
 import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
 import { SCHEMAS } from './components/base/models/schemas';
 import {
@@ -22,6 +28,7 @@ import {
     inferDomainFromFile,
 } from './components/base/actions';
 import { QueryInfo } from './components/base/models/QueryInfo';
+import { QuerySort } from './components/base/models/QuerySort';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -753,6 +760,7 @@ export {
     QueryInfo,
     QueryLookup,
     QueryInfoStatus,
+    QuerySort,
     SchemaDetails,
     SchemaQuery,
     ViewInfo,

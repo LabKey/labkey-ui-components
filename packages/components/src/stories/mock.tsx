@@ -21,7 +21,6 @@ import mixtureTypesQueryInfo from '../test/data/mixtureTypes-getQueryDetails.jso
 import mixtureTypesQuery from '../test/data/mixtureTypes-getQuery.json';
 import mixturesQuery from '../test/data/mixtures-getQuery.json';
 import mixturesQueryPaging from '../test/data/mixtures-getQueryPaging.json';
-import mixturesSelected from '../test/data/mixtures-getSelected.json';
 import mixturesReportInfos from '../test/data/mixtures-getReportInfos.json';
 import samplesInsert from '../test/data/samples-insertRows.json';
 import noDataQuery from '../test/data/noData-getQuery.json';
@@ -132,6 +131,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     },
     'exp.data': {
         mixtures: mixturesQueryInfo,
+        mixturesbad: mixturesQueryInfo,
         mixturespaging: mixturesQueryInfo,
         expressionsystem: expressionsystemQueryInfo,
         'second source': secondSourceQueryDetails,
@@ -225,6 +225,20 @@ function jsonResponse(payload: any, res?: MockResponse): any {
         headers: JSON_HEADERS,
         body: JSON.stringify(payload),
     };
+}
+
+function getSelections() {
+    const selectionsStr = localStorage.getItem('__selections__');
+
+    if (selectionsStr !== null) {
+        return JSON.parse(selectionsStr);
+    }
+
+    return {};
+}
+
+function saveSelections(selections) {
+    localStorage.setItem('__selections__', JSON.stringify(selections));
 }
 
 export function initMocks() {
@@ -419,6 +433,8 @@ export function initQueryGridMocks(delayMs = undefined) {
             params['query.viewName'] === '~~DETAILS~~'
         ) {
             responseBody = lineageRunDetail;
+        } else if (queryName === 'mixturesbad') {
+            return res.status(400).headers(JSON_HEADERS).body(JSON.stringify({ exception: 'Error loading rows'}));
         }
 
         if (!responseBody) {
@@ -441,14 +457,15 @@ export function initQueryGridMocks(delayMs = undefined) {
     };
 
     let getSelected = (req, res) => {
-        const queryParams = req.url().query;
-        const key = queryParams.key;
+        const body = JSON.parse(req.body());
+        const key = body.key;
         let responseBody;
 
         if (key && key.toLowerCase() === 'sample-set-name%20expression%20set|samples/name%20expression%20set') {
             responseBody = nameExpressionSelected;
         } else {
-            responseBody = mixturesSelected;
+            const selections = getSelections();
+            responseBody = { selected: selections[key] ?? [] };
         }
 
         return jsonResponse(responseBody, res);
@@ -488,8 +505,81 @@ export function initQueryGridMocks(delayMs = undefined) {
     mock.get(/.*\/query\/?.*\/selectDistinct.*/, selectDistinct);
     mock.post(/.*\/query\/?.*\/getSelected.*/, getSelected);
 
-    // TODO response JSON?
-    mock.post(/.*\/query\/?.*\/setSelected.*/, jsonResponse({}));
+    mock.post(/.*\/query\/?.*\/setSelected.*/, (req, res) => {
+        const params = decodeURIComponent(req.body())
+            .split('&')
+            .reduce((result, param) => {
+                const [name, value] = param.split('=');
+
+                if (result[name] === undefined) {
+                    result[name] = [];
+                }
+
+                result[name].push(value);
+                return result;
+            }, {}) as any;
+        const reqSelections = params.id;
+        const queryParams = req.url().query;
+        const { key, checked } = queryParams;
+        const selections = getSelections();
+
+        let currentSelections = new Set();
+
+        if (selections[key] !== undefined) {
+            currentSelections = new Set(selections[key]);
+        }
+
+        if (checked === 'true') {
+            reqSelections.forEach(id => {
+                currentSelections.add(id);
+            });
+        } else {
+            reqSelections.forEach(id => {
+                currentSelections.delete(id);
+            });
+        }
+
+        selections[key] = Array.from(currentSelections);
+        saveSelections(selections);
+        const responseBody = { count: currentSelections.size };
+        return jsonResponse(responseBody, res);
+    });
+
+    mock.post(/.*\/query\/?.*\/selectAll.*/, (req, res) => {
+        const params = decodeURIComponent(req.body())
+            .split('&')
+            .reduce((result, param) => {
+                const [name, value] = param.split('=');
+                result[name] = value;
+                return result;
+            }, {}) as any;
+        const key = params['query.selectionKey'];
+        const { schemaName, queryName } = params;
+        const queryResponse = QUERY_RESPONSES.getIn([schemaName, queryName]);
+        const reqSelections = new Set();
+
+        if (queryResponse) {
+            queryResponse.get('rows').forEach(row => {
+                reqSelections.add(row.getIn(['data', 'RowId', 'value']).toString());
+            });
+            const selections = getSelections();
+            selections[key] = Array.from(reqSelections);
+            saveSelections(selections);
+        }
+
+        const responseBody = { count: reqSelections.size };
+        return jsonResponse(responseBody, res);
+    });
+
+    mock.post(/.*\/query\/?.*\/clearSelected.*/, (req, res) => {
+        const body = JSON.parse(req.body());
+        const key = body.key;
+        const selections = getSelections();
+        delete selections[key];
+        saveSelections(selections);
+        const responseBody = { count: 0 };
+        return jsonResponse(responseBody, res);
+    });
 
     // TODO conditionalize based on queryName
     mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, jsonResponse(mixturesReportInfos));

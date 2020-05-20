@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.31.5
+*Released*: 20 May 2020
+Fix for List Designer issues targeting LK release 20.3
+    - Issue 40373: List designer fails to save any changes after the list's name has been edited
+
 ### version 0.31.4
 *Released*: 6 March 2020
 * Fixes for List Designer issues targeting LabKey release 20.3

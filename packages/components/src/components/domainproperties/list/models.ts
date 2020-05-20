@@ -140,9 +140,9 @@ export class ListModel extends Record({
 
         // Note: keyName is primarily set using <SetKeyFieldNamePanel/>'s onSelectionChange()
         // Setting keyName here covers the use-case where a user sets a Key Field, and then changes its name
-        const keyFieldName = (this.domain.fields).find((field) => (field.isPrimaryKey)).name;
-        if (this.keyName !== keyFieldName) {
-            options.keyName = keyFieldName;
+        const keyField = (this.domain.fields).find((field) => (field.isPrimaryKey));
+        if (keyField && this.keyName !== keyField.name) {
+            options.keyName = keyField.name;
         }
 
         delete options.exception;

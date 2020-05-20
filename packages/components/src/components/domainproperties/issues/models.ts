@@ -13,13 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Draft, immerable, produce } from 'immer';
-
-import { Record } from 'immutable';
+import { immerable } from 'immer';
 
 import { DomainDesign } from '../models';
 
-export class IssuesListDefModel {
+export interface IssuesListDefOptionsConfig {
+    entityId?: string;
+    issueDefName: string;
+    singularItemName: string;
+    pluralItemName: string;
+    commentSortDirection: string;
+    assignedToGroup: number;
+    assignedToUser: number;
+}
+
+interface IssuesListDefModelConfig extends IssuesListDefOptionsConfig {
+    exception: string;
+    domain: DomainDesign;
+    domainId: number;
+    domainKindName: string;
+}
+
+export class IssuesListDefModel implements IssuesListDefModelConfig {
     [immerable] = true;
 
     readonly exception: string;
@@ -34,8 +49,8 @@ export class IssuesListDefModel {
     readonly assignedToUser: number;
     readonly domainKindName: string;
 
-    constructor(issuesListDefModel: IssuesListDefModel) {
-        Object.assign(this, issuesListDefModel);
+    constructor(values?: Partial<IssuesListDefModelConfig>) {
+        Object.assign(this, values);
     }
 
     static create(raw: any, defaultSettings = null): IssuesListDefModel {
@@ -60,10 +75,15 @@ export class IssuesListDefModel {
         return this.issueDefName !== undefined && this.issueDefName !== null && this.issueDefName.trim().length > 0;
     }
 
-    getOptions(): Record<string, any> {
-        return produce(this, (draft: Draft<IssuesListDefModel>) => {
-            delete draft.exception;
-            delete draft.domain;
-        });
+    getOptions(): IssuesListDefOptionsConfig {
+        return {
+            entityId: this.entityId,
+            issueDefName: this.issueDefName,
+            singularItemName: this.singularItemName,
+            pluralItemName: this.pluralItemName,
+            commentSortDirection: this.commentSortDirection,
+            assignedToGroup: this.assignedToGroup,
+            assignedToUser: this.assignedToUser,
+        };
     }
 }

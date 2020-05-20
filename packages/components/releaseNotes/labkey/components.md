@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version 0.??.0
-*Released*: ?? May 2020
+## version 0.61.0
+*Released*: 20 May 2020
 * Add Chart Menu to GridPanel
 * Add View Menu to GridPanel
 * Add Export Menu to GridPanel
@@ -21,7 +21,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Enabled Maps, Sets, and Patches in Immer
 * Refactored the GridPanel tests to not use snapshotting
 * Add another view to sample mixtures data.
-* Remove IQueryModel interface, it was not necessary.
+* Remove IQueryModel interface, it was not necessary
+* Remove getOrDefault, not necessary with nullish coalescing
 
 ### version 0.60.0
 *Released*: 20 May 2020

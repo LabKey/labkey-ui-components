@@ -45,10 +45,20 @@ export const AssayProvider = (Component: React.ComponentType) => {
             const { protocol } = params;
             const assayDefinition = assay.getByName(protocol);
 
-            if (assay.isLoaded && assayDefinition && assay.getProtocol(assayDefinition.id)) {
+            if (assay.isLoaded && assayDefinition) {
+                const assayProtocol = assay.getProtocol(assayDefinition.id);
+                // we need to load the assay protocol if it has changed
+                if (!assayProtocol && prevState.assayProtocol)
+                    nextProps.loadAssay(nextProps.params.protocol);
+
                 return {
                     assayDefinition,
-                    assayProtocol: assay.getProtocol(assayDefinition.id),
+                    assayProtocol,
+                }
+            } else {
+                return {
+                    assayDefinition,
+                    assayProtocol: undefined,
                 }
             }
         }

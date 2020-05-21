@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.62.0-fb-biolgicsAssayImport.7",
+  "version": "0.63.0-fb-biologicsAssayReimport.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

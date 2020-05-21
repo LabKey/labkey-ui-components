@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 40347: Domain designer wrappers not supporting domain kind specific properties in the create case
+    - Update to @labkey/api version with Domain.getDomainDetails support for domainKind param
+    - Allow for calls to Domain.getDomainDetails to pass in a domainKind param to get domain kind specific properties
+    - Remove getListProperties and getDatasetProperties from index.ts as those are internal only now
+
 ## version 0.62.0
 *Release*: 21 May 2020
 * Move AssayProvider from SampleManager to ui-components
@@ -45,11 +52,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.59.2
 *Released*: 16 May 2020
 * Lineage: improve caching, allow non-default distance
-
-### version 0.59.1
-*Released*: 15 May 2020
-* Issue 40347: Domain designer wrappers not supporting domain kind specific properties in the create case
-    - allow for calls to Domain.getDomainDetails to pass in a domainKind param to get domain kind specific properties
 
 ### version 0.59.1
 *Released*: 15 May 2020

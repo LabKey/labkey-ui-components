@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`PageSizeSelector pageSizes 1`] = `
+exports[`PageSizeMenu pageSizes 1`] = `
 <div
-  className="page-size-selector"
+  className="page-size-menu"
 >
   <div
     className="dropdown btn-group"
@@ -113,9 +113,9 @@ exports[`PageSizeSelector pageSizes 1`] = `
 </div>
 `;
 
-exports[`PageSizeSelector pageSizes 2`] = `
+exports[`PageSizeMenu pageSizes 2`] = `
 <div
-  className="page-size-selector"
+  className="page-size-menu"
 >
   <div
     className="dropdown btn-group"
@@ -226,4 +226,4 @@ exports[`PageSizeSelector pageSizes 2`] = `
 </div>
 `;
 
-exports[`PageSizeSelector pageSizes 3`] = `null`;
+exports[`PageSizeMenu pageSizes 3`] = `null`;

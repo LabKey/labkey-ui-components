@@ -96,7 +96,7 @@ export function headerCell(
     );
 }
 
-export function headerSelectionCell(handleSelection: any, selectedState: GRID_CHECKBOX_OPTIONS, disabled: boolean) {
+export function headerSelectionCell(handleSelection: any, selectedState: GRID_CHECKBOX_OPTIONS, disabled: boolean, className?) {
     const isChecked = selectedState === GRID_CHECKBOX_OPTIONS.ALL;
     const isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME;
 
@@ -104,6 +104,7 @@ export function headerSelectionCell(handleSelection: any, selectedState: GRID_CH
     // See: https://github.com/facebook/react/issues/1798
     return (
         <input
+            className={className}
             checked={isChecked}
             disabled={disabled}
             onChange={handleSelection}

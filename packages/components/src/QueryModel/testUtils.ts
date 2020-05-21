@@ -9,7 +9,14 @@ import { Actions, LoadingState, QueryInfo, QueryModel } from '..';
  * @param orderedRows
  * @param rowCount
  */
-export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, orderedRows?: any, rowCount?: number) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const makeTestModel = (
+    schemaQuery,
+    queryInfo?: QueryInfo,
+    rows?: any,
+    orderedRows?: any,
+    rowCount?: number
+): QueryModel => {
     let model = new QueryModel({
         id: 'model',
         schemaQuery,
@@ -42,6 +49,7 @@ export const makeTestModel = (schemaQuery, queryInfo?: QueryInfo, rows?: any, or
 export const makeTestActions = (): Actions => {
     return {
         addModel: jest.fn(),
+        clearSelections: jest.fn(),
         loadModel: jest.fn(),
         loadAllModels: jest.fn(),
         loadRows: jest.fn(),
@@ -49,9 +57,15 @@ export const makeTestActions = (): Actions => {
         loadPreviousPage: jest.fn(),
         loadFirstPage: jest.fn(),
         loadLastPage: jest.fn(),
-        setOffset: jest.fn(),
+        loadCharts: jest.fn(),
+        selectAllRows: jest.fn(),
+        selectRow: jest.fn(),
+        selectPage: jest.fn(),
+        setFilters: jest.fn(),
         setMaxRows: jest.fn(),
-        setView: jest.fn(),
+        setOffset: jest.fn(),
         setSchemaQuery: jest.fn(),
+        setSorts: jest.fn(),
+        setView: jest.fn(),
     };
 };

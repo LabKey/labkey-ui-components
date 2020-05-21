@@ -16,32 +16,16 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
+import { Filter } from '@labkey/api';
 
-import { generateId } from '../../util/utils';
+import { blurActiveElement, generateId } from '../../util/utils';
 import { QueryGridModel } from '../base/models/model';
 import { DataViewInfo } from '../../models';
 import { setReportId } from '../../actions';
 import { DataViewInfoTypes } from '../../constants';
 
 import { ChartModal } from './ChartModal';
-
-interface ChartMenuItemProps {
-    chart: DataViewInfo;
-    showChart: Function;
-}
-
-class ChartMenuItem extends PureComponent<ChartMenuItemProps> {
-    render() {
-        const { chart, showChart } = this.props;
-
-        return (
-            <MenuItem onSelect={() => showChart(chart)}>
-                <i className={`chart-menu-icon ${chart.iconCls}`} />
-                <span className="chart-menu-label">{chart.getLabel()}</span>
-            </MenuItem>
-        );
-    }
-}
+import { ChartMenuItem } from './ChartMenuItem';
 
 interface Props {
     model: QueryGridModel;
@@ -118,6 +102,8 @@ export class ChartMenu extends PureComponent<Props> {
         if (!onReportClicked || (onReportClicked && onReportClicked(chart))) {
             setReportId(this.props.model, chart.reportId);
         }
+
+        blurActiveElement();
     };
 
     hideChart = () => {
@@ -156,7 +142,13 @@ export class ChartMenu extends PureComponent<Props> {
         }
 
         if (selectedChart) {
-            chartModal = <ChartModal selectedChart={selectedChart} model={model} onHide={this.hideChart} />;
+            chartModal = (
+                <ChartModal
+                    selectedChart={selectedChart}
+                    filters={model.getFilters().toArray() as Filter.IFilter[]}
+                    onHide={this.hideChart}
+                />
+            );
         }
 
         return (

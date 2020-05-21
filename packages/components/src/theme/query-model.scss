@@ -1,20 +1,16 @@
-.grid-panel {
-    padding: 0 1em;
-}
-
-.grid-panel__bar {
+.grid-panel__button-bar {
     display: flex;
 }
 
-.grid-panel__bar-left {
+.grid-panel__button-bar-left {
     flex: 1;
 }
 
-.grid-bar__section {
+.button-bar__section {
     display: flex;
 }
 
-.grid-bar__section > *:not(:first-child) {
+.button-bar__section > *:not(:first-child) {
     margin-left: 1em;
 }
 
@@ -28,6 +24,13 @@
     vertical-align: middle;
 }
 .grid-panel__info,
-.grid-panel__grid {
+.grid-panel__grid,
+.grid-panel__omnibox {
     margin-top: 1em;
+}
+.export-menu-icon {
+    margin-right: 0.5em;
+}
+.selection-status > span {
+    margin-right: 1em;
 }

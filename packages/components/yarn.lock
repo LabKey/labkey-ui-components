@@ -1558,10 +1558,10 @@
   resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.2.8-fb-domainDesignersIssue40347.0.tgz#bef01e50a182644b734ba27b228f963c4ad820df"
   integrity sha1-vvAeUKGCZEtzS6J7Io+WPErYIN8=
 
-"@labkey/eslint-config-base@0.0.7":
-  version "0.0.7"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-base/-/@labkey/eslint-config-base-0.0.7.tgz#4f7eba4102d00a3f6df4f23e1a15e676fbd4be3d"
-  integrity sha1-T366QQLQCj9t9PI+GhXmdvvUvj0=
+"@labkey/eslint-config-base@0.0.8":
+  version "0.0.8"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-base/-/@labkey/eslint-config-base-0.0.8.tgz#cc6040f5af238304808774e9c964456aa7c5374b"
+  integrity sha1-zGBA9a8jgwSAh3TpyWRFaqfFN0s=
   dependencies:
     "@typescript-eslint/eslint-plugin" "2.27.0"
     "@typescript-eslint/parser" "2.27.0"
@@ -1573,12 +1573,12 @@
     eslint-plugin-prettier "3.1.2"
     prettier "2.0.4"
 
-"@labkey/eslint-config-react@0.0.7":
-  version "0.0.7"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.7.tgz#13b55b4fe2598932611d2c92094e839b01036e7a"
-  integrity sha1-E7VbT+JZiTJhHSySCU6DmwEDbno=
+"@labkey/eslint-config-react@0.0.8":
+  version "0.0.8"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/eslint-config-react/-/@labkey/eslint-config-react-0.0.8.tgz#e77dba4f41b7dff7f10e1072238777071c0122b1"
+  integrity sha1-5326T0G33/fxDhByI4d3BxwBIrE=
   dependencies:
-    "@labkey/eslint-config-base" "0.0.7"
+    "@labkey/eslint-config-base" "0.0.8"
     eslint-plugin-react "7.19.0"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":

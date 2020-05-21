@@ -109,7 +109,7 @@ export interface Action {
 
 export interface Value {
     value: string;
-
+    valueObject?: any;
     displayValue?: string;
     isReadOnly?: boolean;
     isRemovable?: boolean;

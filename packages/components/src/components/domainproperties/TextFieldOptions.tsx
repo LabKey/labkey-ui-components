@@ -78,6 +78,20 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
     render() {
         const { index, label, scale, lockType, domainIndex } = this.props;
         const { radio } = this.state;
+        const textOptionsFormControl =
+            <FormControl
+                type="number"
+                id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
+                name={createFormInputName(DOMAIN_FIELD_SCALE)}
+                className="domain-text-length-field"
+                value={
+                    typeof scale !== 'undefined' && radio === DOMAIN_FIELD_CUSTOM_LENGTH
+                        ? scale
+                        : MAX_TEXT_LENGTH
+                }
+                onChange={this.handleChange}
+                disabled={isFieldFullyLocked(lockType) || radio === DOMAIN_FIELD_MAX_LENGTH}
+            />;
 
         return (
             <div>
@@ -124,21 +138,8 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                                 'domain-text-label': radio !== DOMAIN_FIELD_CUSTOM_LENGTH,
                             })}
                         >
-                            No longer than X characters
+                            No longer than {textOptionsFormControl} characters
                         </span>
-                        <FormControl
-                            type="number"
-                            id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_SCALE)}
-                            className="domain-text-length-field"
-                            value={
-                                typeof scale !== 'undefined' && radio === DOMAIN_FIELD_CUSTOM_LENGTH
-                                    ? scale
-                                    : MAX_TEXT_LENGTH
-                            }
-                            onChange={this.handleChange}
-                            disabled={isFieldFullyLocked(lockType) || radio === DOMAIN_FIELD_MAX_LENGTH}
-                        />
                     </Col>
                 </Row>
             </div>

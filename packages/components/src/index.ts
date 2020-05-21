@@ -22,9 +22,7 @@ enablePatches();
 import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
 import { SCHEMAS } from './components/base/models/schemas';
 import {
-    fetchAllAssays,
     getUserProperties,
-    importGeneralAssayRun,
     inferDomainFromFile,
 } from './components/base/actions';
 import { QueryInfo } from './components/base/models/QueryInfo';
@@ -33,7 +31,6 @@ import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    AssayUploadTabs,
     Container,
     IGridLoader,
     IGridResponse,
@@ -251,30 +248,25 @@ import { DataClassDesigner } from './components/domainproperties/dataclasses/Dat
 import { DataClassModel } from './components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
-import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
-import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel';
-import { RunDataPanel } from './components/assay/RunDataPanel';
-import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader';
+import { AssayProvider, AssayProviderProps, AssayContextConsumer } from './components/assay/AssayProvider';
 import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal';
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal';
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem';
 import {
     AssayUploadResultModel,
-    AssayWizardModel,
-    IAssayUploadOptions,
-    IAssayURLContext,
+    AssayStateModel,
 } from './components/assay/models';
 import {
     deleteAssayDesign,
     deleteAssayRuns,
+    fetchAllAssays,
     getBatchPropertiesModel,
     getBatchPropertiesRow,
     getImportItemsForAssayDefinitions,
     getRunPropertiesModel,
     getRunPropertiesRow,
     importAssayRun,
-    uploadAssayRunFiles,
 } from './components/assay/actions';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { invalidateLineageResults } from './components/lineage/actions';
@@ -545,17 +537,13 @@ export {
     AssayDesignDeleteConfirmModal,
     AssayResultDeleteConfirmModal,
     AssayRunDeleteConfirmModal,
-    AssayWizardModel,
-    IAssayURLContext,
-    IAssayUploadOptions,
-    AssayUploadGridLoader,
+    AssayStateModel,
     AssayImportPanels,
-    BatchPropertiesPanel,
-    RunPropertiesPanel,
-    RunDataPanel,
+    AssayProvider,
+    AssayProviderProps,
+    AssayContextConsumer,
     AssayImportSubMenuItem,
     importAssayRun,
-    uploadAssayRunFiles,
     deleteAssayDesign,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
@@ -566,9 +554,7 @@ export {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    AssayUploadTabs,
     fetchAllAssays,
-    importGeneralAssayRun,
 
     // heatmap
     HeatMap,

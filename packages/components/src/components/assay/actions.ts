@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, AssayDOM, Filter, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
@@ -25,7 +25,27 @@ import { AssayDefinitionModel, AssayUploadTabs, QueryGridModel, SchemaQuery } fr
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models';
 
-export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
+export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
+    return new Promise((res, rej) => {
+        Assay.getAll({
+            parameters: {
+                type,
+            },
+            success: (rawModels: any[]) => {
+                let models = List<AssayDefinitionModel>();
+                rawModels.forEach(rawModel => {
+                    models = models.push(AssayDefinitionModel.create(rawModel));
+                });
+                res(models);
+            },
+            failure: error => {
+                rej(error);
+            },
+        });
+    });
+}
+
+export function importAssayRun(config: Partial<AssayDOM.IImportRunOptions>): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
         AssayDOM.importRun(
             Object.assign({}, config, {
@@ -178,7 +198,7 @@ export function getImportItemsForAssayDefinitions(
 ): OrderedMap<AssayDefinitionModel, string> {
     let items = OrderedMap<AssayDefinitionModel, string>();
     let targetSQ;
-    const selectionKey = sampleModel.selectionKey;
+    const selectionKey = sampleModel ? sampleModel.selectionKey : undefined;
 
     if (sampleModel && sampleModel.queryInfo) {
         targetSQ = sampleModel.queryInfo.schemaQuery;
@@ -191,7 +211,7 @@ export function getImportItemsForAssayDefinitions(
             const href = assay.getImportUrl(
                 selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
                 selectionKey,
-                sampleModel.getFilters()
+                sampleModel ? sampleModel.getFilters() : undefined
             );
             items = items.set(assay, href);
         });
@@ -321,3 +341,5 @@ export function deleteAssayDesign(rowId: string): Promise<any> {
         });
     });
 }
+
+

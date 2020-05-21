@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version TBD
+*Release*: TBD
+* Issue 29819: Change styling for Text Options under a text-column's additional options within a domain.
+
 ## version 0.62.0
 *Release*: 21 May 2020
 * Move AssayProvider from SampleManager to ui-components

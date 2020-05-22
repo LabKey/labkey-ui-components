@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.63.0
+*Released*: 22 May 2020
 * Issue 40347: Domain designer wrappers not supporting domain kind specific properties in the create case
     - Update to @labkey/api version with Domain.getDomainDetails support for domainKind param
     - Allow for calls to Domain.getDomainDetails to pass in a domainKind param to get domain kind specific properties

@@ -187,7 +187,6 @@ import { CollapsiblePanel } from './components/CollapsiblePanel';
 import { ErrorBoundary } from './components/error/ErrorBoundary';
 import { AliasRenderer } from './renderers/AliasRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
-import { AssayRunReferenceRenderer } from './renderers/AssayRunReferenceRenderer';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
@@ -433,7 +432,6 @@ export {
     // renderers
     AliasRenderer,
     AppendUnits,
-    AssayRunReferenceRenderer, // TODO may get to remove this if we implement a registerDetailRenderers method
     DefaultRenderer,
     FileColumnRenderer,
     MultiValueRenderer,

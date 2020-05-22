@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version TBD
+*Release*: TBD
+* Issue39819: Make stylistic change in 
+
 ## version 0.62.0
 *Release*: 21 May 2020
 * Move AssayProvider from SampleManager to ui-components

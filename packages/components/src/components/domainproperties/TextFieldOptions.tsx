@@ -118,7 +118,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, domainIndex, index)}
                             disabled={isFieldFullyLocked(lockType)}
                         />
-                        <div className={classNames({ 'domain-text-label': radio !== DOMAIN_FIELD_MAX_LENGTH })}>
+                        <div>
                             Unlimited
                         </div>
                     </Col>
@@ -134,9 +134,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, domainIndex, index)}
                         />
                         <span
-                            className={classNames('domain-text-options-length domain-field-float-left', {
-                                'domain-text-label': radio !== DOMAIN_FIELD_CUSTOM_LENGTH,
-                            })}
+                            className="domain-text-options-length domain-field-float-left"
                         >
                             No longer than {textOptionsFormControl} characters
                         </span>

@@ -14349,9 +14349,7 @@ exports[`DomainRow string field test 1`] = `
                                                       value="maxLength"
                                                     />
                                                   </FormControl>
-                                                  <div
-                                                    className="domain-text-label"
-                                                  >
+                                                  <div>
                                                     Unlimited
                                                   </div>
                                                 </div>
@@ -16807,9 +16805,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       value="maxLength"
                                                     />
                                                   </FormControl>
-                                                  <div
-                                                    className="domain-text-label"
-                                                  >
+                                                  <div>
                                                     Unlimited
                                                   </div>
                                                 </div>

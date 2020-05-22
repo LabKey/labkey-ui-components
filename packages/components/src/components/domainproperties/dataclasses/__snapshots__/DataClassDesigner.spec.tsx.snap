@@ -6363,9 +6363,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                             value="maxLength"
                                                                                           />
                                                                                         </FormControl>
-                                                                                        <div
-                                                                                          className="domain-text-label"
-                                                                                        >
+                                                                                        <div>
                                                                                           Unlimited
                                                                                         </div>
                                                                                       </div>

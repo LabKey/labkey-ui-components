@@ -12054,9 +12054,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                             value="maxLength"
                                                                                           />
                                                                                         </FormControl>
-                                                                                        <div
-                                                                                          className="domain-text-label"
-                                                                                        >
+                                                                                        <div>
                                                                                           Unlimited
                                                                                         </div>
                                                                                       </div>
@@ -33196,9 +33194,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                             value="maxLength"
                                                                                           />
                                                                                         </FormControl>
-                                                                                        <div
-                                                                                          className="domain-text-label"
-                                                                                        >
+                                                                                        <div>
                                                                                           Unlimited
                                                                                         </div>
                                                                                       </div>
@@ -48245,9 +48241,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                             value="maxLength"
                                                                                           />
                                                                                         </FormControl>
-                                                                                        <div
-                                                                                          className="domain-text-label"
-                                                                                        >
+                                                                                        <div>
                                                                                           Unlimited
                                                                                         </div>
                                                                                       </div>

@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ## version TBD
 *Release*: TBD
-* Issue39819: Make stylistic change in 
+* Issue39819: Make stylistic changes in a text field's Text Options
 
 ## version 0.62.0
 *Release*: 21 May 2020

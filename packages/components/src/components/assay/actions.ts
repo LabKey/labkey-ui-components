@@ -21,7 +21,7 @@ import { getQueryGridModel } from '../../global';
 import { buildURL } from '../../url/ActionURL';
 import { naturalSort } from '../../util/utils';
 import { SCHEMAS } from '../base/models/schemas';
-import { AssayDefinitionModel, AssayUploadTabs, QueryGridModel, SchemaQuery } from '../base/models/model';
+import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models';
 
@@ -266,6 +266,27 @@ export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, run
     );
 
     return getQueryGridModel(model.getId()) || model;
+}
+
+/**
+ * N.B. Because the schema name for assay queries includes the assay type and name (e.g., assay.General.GPAT 1),
+ * we are not currently equipped to handle this in the application metadata defined in App/constants.ts.
+ */
+export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel) : List<QueryColumn> {
+    let columns = runPropertiesModel.getDisplayColumns();
+
+    const replacedByIndex = columns.findIndex((col) => (col.fieldKey === "ReplacedByRun"));
+    if (replacedByIndex > -1) {
+        columns = columns.set(replacedByIndex, columns.get(replacedByIndex).set('detailRenderer', 'assayrunreference') as QueryColumn);
+    }
+
+    // add "replaces" field just after "replaced by"
+    const replaces = runPropertiesModel.getColumn("ReplacesRun");
+    if (replaces) {
+        columns = columns.insert(replacedByIndex > -1 ? replacedByIndex + 1 : columns.size, replaces.set('detailRenderer', 'assayrunreference') as QueryColumn);
+    }
+
+    return columns;
 }
 
 export function getRunPropertiesFileName(row: Map<string, any>): string {

@@ -254,6 +254,7 @@ import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDel
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal';
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal';
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem';
+import { AssayReimportRunButton } from './components/assay/AssayReimportRunButton';
 import {
     AssayUploadResultModel,
     AssayStateModel,
@@ -265,6 +266,7 @@ import {
     getBatchPropertiesModel,
     getBatchPropertiesRow,
     getImportItemsForAssayDefinitions,
+    getRunDetailsQueryColumns,
     getRunPropertiesModel,
     getRunPropertiesRow,
     importAssayRun,
@@ -545,10 +547,12 @@ export {
     AssayProviderProps,
     AssayContextConsumer,
     AssayImportSubMenuItem,
+    AssayReimportRunButton,
     importAssayRun,
     deleteAssayDesign,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
+    getRunDetailsQueryColumns,
     getRunPropertiesModel,
     getRunPropertiesRow,
     getBatchPropertiesModel,

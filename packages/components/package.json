@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.57.0-biologics-sample-update.18",
+  "version": "0.57.0-biologics-sample-update.19",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

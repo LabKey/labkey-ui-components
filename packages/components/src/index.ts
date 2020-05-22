@@ -21,10 +21,7 @@ enablePatches();
 
 import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
 import { SCHEMAS } from './components/base/models/schemas';
-import {
-    getUserProperties,
-    inferDomainFromFile,
-} from './components/base/actions';
+import { getUserProperties, inferDomainFromFile } from './components/base/actions';
 import { QueryInfo } from './components/base/models/QueryInfo';
 import { QuerySort } from './components/base/models/QuerySort';
 import {
@@ -253,10 +250,7 @@ import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDel
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal';
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal';
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem';
-import {
-    AssayUploadResultModel,
-    AssayStateModel,
-} from './components/assay/models';
+import { AssayUploadResultModel, AssayStateModel } from './components/assay/models';
 import {
     deleteAssayDesign,
     deleteAssayRuns,
@@ -544,7 +538,6 @@ export {
     AssayDomainTypes,
     AssayLink,
     fetchAllAssays,
-
     // heatmap
     HeatMap,
     addDateRangeFilter,

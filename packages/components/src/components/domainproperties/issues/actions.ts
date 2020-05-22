@@ -8,12 +8,13 @@ import { DuplicateFilesResponse } from '../../assay/actions';
 
 import { IssuesListDefModel, IssuesListDefOptionsConfig } from './models';
 
-export function fetchIssuesListDefDesign(issueDefName: string): Promise<IssuesListDefModel> {
+export function fetchIssuesListDefDesign(issueDefName?: string): Promise<IssuesListDefModel> {
     return new Promise((resolve, reject) => {
         Domain.getDomainDetails({
             containerPath: getServerContext().container.path,
             schemaName: 'issues',
             queryName: issueDefName,
+            domainKind: issueDefName === undefined ? 'IssueDefinition' : undefined,
             success: data => {
                 resolve(IssuesListDefModel.create(data));
             },

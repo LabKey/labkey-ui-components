@@ -18,7 +18,7 @@ import { ActionURL, Utils } from '@labkey/api';
 
 import { AppURL } from './AppURL';
 
-function applyURL(prop: string, options?: BuildURLOptions): string {
+export function applyURL(prop: string, options?: BuildURLOptions): string {
     if (options) {
         if (typeof options[prop] === 'string') {
             return options[prop];

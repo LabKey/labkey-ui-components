@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { AppURL, AssayContextConsumer, buildURL, PermissionTypes } from '../..';
+import { AppURL, AssayContextConsumer, AssayLink } from '../..';
+import { applyURL } from '../../url/ActionURL';
 
 interface AssayReImportRunButtonProps  {
     runId: string | number
@@ -25,21 +26,25 @@ export class AssayReimportRunButton extends React.Component<AssayReImportRunButt
             );
         }
         else {
+
             return (
                 <AssayContextConsumer>
                     {({assayDefinition, assayProtocol}) => {
-                        if (runId !== undefined) {
-                            const params = {
-                                rowId: assayDefinition.id,
-                                reRunId: runId
-                            };
-                            const options = {
-                                returnURL: assayDefinition.getRunsUrl(),
-                            };
-                            let url = (assayProtocol.isGPAT()) ?
-                                AppURL.create('assays', assayProtocol.providerName, assayProtocol.name, 'upload').addParam("runId", this.props.runId).toHref()
-                                :
-                                buildURL('assay', 'uploadWizard', params, options);
+                        if (runId !== undefined && assayDefinition.reRunSupport && assayDefinition.reRunSupport.toLowerCase() != "none") {
+                            let url;
+                            if (assayProtocol.isGPAT()) {
+                               url =  AppURL.create('assays', assayProtocol.providerName, assayProtocol.name, 'upload').addParam("runId", this.props.runId).toHref();
+                            }
+                            else {
+                                const params = {
+                                    reRunId: runId
+                                };
+                                const options = {
+                                    returnURL: assayDefinition.getRunsUrl(),
+                                };
+
+                                url = assayDefinition.links.get(AssayLink.IMPORT) + "&reRunId=" + runId + applyURL("returnURL", options);
+                            }
                             return (
                                 <OverlayTrigger
                                     overlay={<Popover

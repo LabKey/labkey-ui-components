@@ -272,18 +272,25 @@ export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, run
  * N.B. Because the schema name for assay queries includes the assay type and name (e.g., assay.General.GPAT 1),
  * we are not currently equipped to handle this in the application metadata defined in App/constants.ts.
  */
-export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel) : List<QueryColumn> {
+export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel, rerunSupport: string) : List<QueryColumn> {
     let columns = runPropertiesModel.getDisplayColumns();
 
+    const includeRerunColumns = rerunSupport === "reRunAndReplace";
     const replacedByIndex = columns.findIndex((col) => (col.fieldKey === "ReplacedByRun"));
     if (replacedByIndex > -1) {
-        columns = columns.set(replacedByIndex, columns.get(replacedByIndex).set('detailRenderer', 'assayrunreference') as QueryColumn);
+        if (includeRerunColumns) {
+            columns = columns.set(replacedByIndex, columns.get(replacedByIndex).set('detailRenderer', 'assayrunreference') as QueryColumn);
+        } else {
+            columns = columns.delete(replacedByIndex);
+        }
     }
 
-    // add "replaces" field just after "replaced by"
-    const replaces = runPropertiesModel.getColumn("ReplacesRun");
-    if (replaces) {
-        columns = columns.insert(replacedByIndex > -1 ? replacedByIndex + 1 : columns.size, replaces.set('detailRenderer', 'assayrunreference') as QueryColumn);
+    if (includeRerunColumns) {
+        // add "replaces" field just after "replaced by"
+        const replaces = runPropertiesModel.getColumn("ReplacesRun");
+        if (replaces) {
+            columns = columns.insert(replacedByIndex > -1 ? replacedByIndex + 1 : columns.size, replaces.set('detailRenderer', 'assayrunreference') as QueryColumn);
+        }
     }
 
     return columns;

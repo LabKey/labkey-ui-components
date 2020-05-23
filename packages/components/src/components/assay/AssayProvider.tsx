@@ -67,7 +67,7 @@ export const AssayProvider = (Component: React.ComponentType) => {
             this.props.loadAssay(this.props.params.protocol);
         }
 
-        componentWillReceiveProps(nextProps: Props) {
+        componentDidUpdate(nextProps: Props) {
             if (this.props.params.protocol !== nextProps.params.protocol) {
                 this.props.loadAssay(nextProps.params.protocol);
             }

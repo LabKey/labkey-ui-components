@@ -24,6 +24,7 @@ import { SCHEMAS } from '../base/models/schemas';
 import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models';
+import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 
 export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
     return new Promise((res, rej) => {
@@ -244,24 +245,20 @@ export function checkForDuplicateAssayFiles(fileNames: string[]): Promise<Duplic
     });
 }
 
-export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, runId: string): QueryGridModel {
+export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, runId: string, props?: any): QueryGridModel {
+    let initProps = {
+        allowSelection: false,
+        requiredColumns: RUN_PROPERTIES_REQUIRED_COLUMNS,
+        // allow for the possibility of viewing runs that have been replaced.
+        baseFilters: List([Filter.create('Replaced', undefined, Filter.Types.NONBLANK)]),
+    };
+    if (props) {
+        initProps = {...initProps, ...props};
+    }
     const model = getStateQueryGridModel(
-        'assay-run-details',
+        RUN_PROPERTIES_GRID_ID,
         SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
-        {
-            allowSelection: false,
-            requiredColumns: SCHEMAS.CBMB.concat(
-                'Name',
-                'RowId',
-                'ReplacesRun',
-                'ReplacedByRun',
-                'DataOutputs',
-                'DataOutputs/DataFileUrl',
-                'Batch'
-            ).toList(),
-            // allow for the possibility of viewing runs that have been replaced.
-            baseFilters: List([Filter.create('Replaced', undefined, Filter.Types.NONBLANK)]),
-        },
+        initProps,
         runId
     );
 

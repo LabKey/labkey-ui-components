@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Merge AssayReimportRunButton from Biologics and SampleManager and move here for common use
 * Add isGPAT utility method to AssayProtocol model
 * Move getRunDetailsQueryColumns from SampleManager
+* Check for null or undefined value in initSelect for QuerySelect
 
 ## version 0.62.0
 *Released*: 21 May 2020

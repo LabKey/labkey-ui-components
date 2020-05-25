@@ -326,7 +326,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         this.props.onFinish(isValid, this.saveDomain);
 
         if (!isValid) {
-            let exception;
+            let exception: string;
 
             if (model.hasInvalidNameField(defaultSampleFieldConfig)) {
                 exception =
@@ -335,6 +335,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     ' field name is reserved for imported or generated sample ids.';
             } else if (model.getDuplicateAlias(true).size > 0) {
                 exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
+            } else {
+                exception = model.domain.getFirstFieldError();
             }
 
             const updatedModel = model.set('exception', exception) as SampleTypeModel;

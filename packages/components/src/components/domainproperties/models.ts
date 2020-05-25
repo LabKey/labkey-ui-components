@@ -470,6 +470,11 @@ export class DomainDesign
         return false;
     }
 
+    getFirstFieldError(): FieldErrors {
+        const invalidFields = this.getInvalidFields();
+        return invalidFields.size > 0 ? invalidFields.first().getErrors() : undefined;
+    }
+
     getDomainContainer(): string {
         const currentContainer = getServerContext().container.id;
         return this.container || currentContainer;

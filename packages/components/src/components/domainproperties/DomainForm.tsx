@@ -215,7 +215,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (invalidFields.size > 0) {
             const exception = DomainException.clientValidationExceptions(
                 'Missing required field properties.',
-                'Missing required property',
                 invalidFields
             );
             const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exception);

@@ -78,12 +78,12 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         const { setSubmitting } = this.props;
         const { protocolModel } = this.state;
         const appIsValidMsg = this.getAppIsValidMsg();
-        const isValid = AssayProtocolModel.isValid(protocolModel) && appIsValidMsg === undefined;
+        const isValid = protocolModel.isValid() && appIsValidMsg === undefined;
 
         this.props.onFinish(isValid, this.saveDomain);
 
         if (!isValid) {
-            const exception = appIsValidMsg !== undefined ? appIsValidMsg : undefined;
+            const exception = appIsValidMsg !== undefined ? appIsValidMsg : protocolModel.getFirstDomainFieldError();
             const updatedModel = protocolModel.set('exception', exception) as AssayProtocolModel;
             setSubmitting(false, () => {
                 this.setState(() => ({ protocolModel: updatedModel }));

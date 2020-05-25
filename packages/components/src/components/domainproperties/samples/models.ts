@@ -60,11 +60,12 @@ export class SampleTypeModel extends Record({
         return !this.rowId;
     }
 
-    static isValid(model: SampleTypeModel, defaultNameFieldConfig?: Partial<IDomainField>) {
+    isValid(defaultNameFieldConfig?: Partial<IDomainField>) {
         return (
-            model.hasValidProperties() &&
-            !model.hasInvalidNameField(defaultNameFieldConfig) &&
-            model.getDuplicateAlias(true).size === 0
+            this.hasValidProperties() &&
+            !this.hasInvalidNameField(defaultNameFieldConfig) &&
+            this.getDuplicateAlias(true).size === 0 &&
+            !this.domain.hasInValidFields()
         );
     }
 

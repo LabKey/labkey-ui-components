@@ -51,7 +51,6 @@ import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DomainField,
     DomainFieldError,
-    FieldErrors,
     IDomainFormDisplayOptions,
     IFieldChange,
     PropDescType,
@@ -126,19 +125,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         const { field, index, fieldError } = this.props;
         const details = [];
 
-        if (field.hasErrors()) {
-            switch (field.getErrors()) {
-                case FieldErrors.MISSING_SCHEMA_QUERY:
-                    details.push(
-                        <span key={details.length} style={{ color: 'red' }}>
-                            Missing required lookup target schema/table properties.
-                        </span>
-                    );
-                    break;
-                default:
-                    break;
-            }
-        } else if (field.dataType.isSample()) {
+        if (field.dataType.isSample()) {
             const detailsText =
                 field.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName &&
                 SCHEMAS.EXP_TABLES.MATERIALS.queryName.localeCompare(field.lookupQuery, 'en', {

@@ -7,6 +7,8 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Issue 40286: Domain designer panel header does not scroll to top of page
     - Issue 40447: Fix error message when selecting 3rd setting of Data Row Uniqueness in dataset designer
     - Issue 40149: Sample Type Designer - Not properly validating error state on parent alias
+    - Issue 38399: Domain Designer doesn't show error message when field of type lookup is missing required properties
+    - Issue 38929: Domain designer lookups fail validation immediately instead of waiting for user input
 
 ### version 0.63.0
 *Released*: 22 May 2020

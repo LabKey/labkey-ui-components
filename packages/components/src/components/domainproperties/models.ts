@@ -440,12 +440,17 @@ export class DomainDesign
         return this.name && this.name.endsWith(name + ' Fields');
     }
 
+    // Issue 38399: helper for each designer model to know if there are field level errors
+    hasInValidFields(): boolean {
+        return this.getInvalidFields().size > 0;
+    }
+
     getInvalidFields(): Map<number, DomainField> {
         let invalid = Map<number, DomainField>();
 
         for (let i = 0; i < this.fields.size; i++) {
             const field = this.fields.get(i);
-            if (!field.isValid()) {
+            if (field.hasErrors()) {
                 invalid = invalid.set(i, field);
             }
         }
@@ -506,8 +511,10 @@ export class DomainIndex
 }
 
 export enum FieldErrors {
-    NONE,
-    MISSING_SCHEMA_QUERY,
+    NONE = '',
+    MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
+    MISSING_DATA_TYPE = 'Missing required field data type.',
+    MISSING_FIELD_NAME = 'Missing required field name.',
 }
 
 export interface IConditionalFormat {
@@ -988,6 +995,14 @@ export class DomainField
             return FieldErrors.MISSING_SCHEMA_QUERY;
         }
 
+        if (!(this.dataType && (this.dataType.rangeURI || this.rangeURI))) {
+            return FieldErrors.MISSING_DATA_TYPE;
+        }
+
+        if (this.name === undefined || this.name === null || this.name.trim() === '') {
+            return FieldErrors.MISSING_FIELD_NAME;
+        }
+
         return FieldErrors.NONE;
     }
 
@@ -1001,12 +1016,6 @@ export class DomainField
 
     isSaved(): boolean {
         return isFieldSaved(this);
-    }
-
-    isValid(): boolean {
-        // TODO should the rest of these checks move up to the getErrors() function and return different FieldErrors?
-        // if so, then we can remove this isValid() function and just use !hasErrors()
-        return !!this.name && !!this.dataType && (!!this.dataType.rangeURI || !!this.rangeURI) && !this.hasErrors();
     }
 
     static hasRangeValidation(field: DomainField): boolean {
@@ -1421,7 +1430,6 @@ export class DomainException
 
     static clientValidationExceptions(
         exception: string,
-        fieldMessage: string,
         fields: Map<number, DomainField>
     ): DomainException {
         let fieldErrors = List<DomainFieldError>();
@@ -1429,7 +1437,7 @@ export class DomainException
         fields.forEach((field, index) => {
             fieldErrors = fieldErrors.push(
                 new DomainFieldError({
-                    message: fieldMessage,
+                    message: field.getErrors(),
                     fieldName: field.get('name'),
                     propertyId: field.get('propertyId'),
                     severity: SEVERITY_LEVEL_ERROR,

@@ -102,7 +102,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
     onFinish = () => {
         const { setSubmitting } = this.props;
         const { model } = this.state;
-        const isValid = ListModel.isValid(model);
+        const isValid = model.isValid();
 
         this.props.onFinish(isValid, this.saveDomain);
 

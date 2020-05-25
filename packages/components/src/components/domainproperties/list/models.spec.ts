@@ -32,7 +32,7 @@ describe('ListModel', () => {
 
     test('isValid', () => {
         const validModel = ListModel.create(getDomainDetailsJSON);
-        expect(ListModel.isValid(validModel)).toBeTruthy();
+        expect(validModel.isValid()).toBeTruthy();
     });
 
     test('hasValidProperties', () => {

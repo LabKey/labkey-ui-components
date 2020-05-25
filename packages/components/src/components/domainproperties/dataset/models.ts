@@ -183,7 +183,7 @@ export class DatasetModel implements IDatasetModel {
     }
 
     isValid(): boolean {
-        return this.hasValidProperties();
+        return this.hasValidProperties() && !this.domain.hasInValidFields();
     }
 
     isFromAssay(): boolean {

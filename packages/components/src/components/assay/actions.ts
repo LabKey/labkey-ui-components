@@ -272,7 +272,7 @@ export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, run
 export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel, rerunSupport: string) : List<QueryColumn> {
     let columns = runPropertiesModel.getDisplayColumns();
 
-    const includeRerunColumns = rerunSupport === "reRunAndReplace";
+    const includeRerunColumns = rerunSupport === "ReRunAndReplace";
     const replacedByIndex = columns.findIndex((col) => (col.fieldKey === "ReplacedByRun"));
     if (replacedByIndex > -1) {
         if (includeRerunColumns) {

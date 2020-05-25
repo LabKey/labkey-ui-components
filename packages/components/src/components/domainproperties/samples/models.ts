@@ -75,8 +75,8 @@ export class SampleTypeModel extends Record({
     parentAliasInvalid(alias: IParentAlias): boolean {
         if (!alias) return true;
 
-        const aliasValueInvalid = !alias.ignoreAliasError && (!alias.alias || alias.alias.trim() === '');
-        const parentValueInvalid = !alias.ignoreSelectError && !alias.parentValue;
+        const aliasValueInvalid = !alias.alias || alias.alias.trim() === '';
+        const parentValueInvalid = !alias.parentValue || !alias.parentValue.value;
 
         return aliasValueInvalid || parentValueInvalid || alias.isDupe;
     }
@@ -84,7 +84,7 @@ export class SampleTypeModel extends Record({
     hasValidProperties(): boolean {
         const { parentAliases } = this;
         const hasInvalidAliases =
-            parentAliases && parentAliases.size > 0 && parentAliases.find(this.parentAliasInvalid);
+            parentAliases && parentAliases.size > 0 && parentAliases.find(this.parentAliasInvalid) !== undefined;
 
         return this.name !== undefined && this.name !== null && this.name.trim().length > 0 && !hasInvalidAliases;
     }

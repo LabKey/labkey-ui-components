@@ -252,7 +252,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         const newAliases = parentAliases.set(id, changedAlias);
         const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
-        this.setState(() => ({ model: newModel }));
+        this.onFieldChange(newModel);
     };
 
     updateDupes = (id: string): void => {
@@ -275,6 +275,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 changedAlias = {
                     ...changedAlias,
                     ignoreAliasError: false,
+                    ignoreSelectError: false,
                 };
             }
 
@@ -282,14 +283,14 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         });
 
         const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
-        this.setState(() => ({ model: newModel }));
+        this.onFieldChange(newModel);
     };
 
     addParentAlias = (id: string, newAlias: IParentAlias): void => {
         const { model } = this.state;
         const { parentAliases } = model;
         const newModel = model.merge({ parentAliases: parentAliases.set(id, newAlias) }) as SampleTypeModel;
-        this.setState(() => ({ model: newModel }));
+        this.onFieldChange(newModel);
     };
 
     removeParentAlias = (id: string) => {
@@ -297,7 +298,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const { parentAliases } = model;
         const aliases = parentAliases.delete(id);
         const newModel = model.set('parentAliases', aliases) as SampleTypeModel;
-        this.setState(() => ({ model: newModel }));
+        this.onFieldChange(newModel);
     };
 
     domainChangeHandler = (domain: DomainDesign, dirty: boolean) => {

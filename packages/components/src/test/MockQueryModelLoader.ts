@@ -14,6 +14,7 @@ export class MockQueryModelLoader implements QueryModelLoader {
         this.rowsException = rowsException;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     loadQueryInfo = (model: QueryModel): Promise<QueryInfo> => {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -44,7 +45,28 @@ export class MockQueryModelLoader implements QueryModelLoader {
         });
     };
 
-    loadSelections = async (model: QueryModel) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    loadSelections = (model: QueryModel): Promise<never> => {
         return Promise.reject('Not implemented!');
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setSelections = (model: QueryModel, selections): Promise<never> => {
+        return Promise.reject('Not implemented!');
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    selectAllRows = (model: QueryModel): Promise<never> => {
+        return Promise.reject('Not implemented!');
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    clearSelections = (model: QueryModel): Promise<never> => {
+        return Promise.reject('Not implemented!');
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    loadCharts = (model: QueryModel, includeSampleComparison: boolean): Promise<never> => {
+        return Promise.reject('Not Implemented!');
     };
 }

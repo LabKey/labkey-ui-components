@@ -1,0 +1,21 @@
+[{
+  "groupId" : null,
+  "userId" : -1,
+  "displayName" : "Site: Administrators"
+},{
+  "groupId" : null,
+  "userId" : 1022,
+  "displayName" : "Site: Updaters"
+},{
+  "groupId" : null,
+  "userId" : -2,
+  "displayName" : "Site: Users"
+},{
+  "groupId" : null,
+  "userId" : 1025,
+  "displayName" : "AssayRequestGroup"
+},{
+  "groupId" : null,
+  "userId" : 1017,
+  "displayName" : "Users"
+}]

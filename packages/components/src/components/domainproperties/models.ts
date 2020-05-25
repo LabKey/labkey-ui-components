@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, Record } from 'immutable';
-import { Domain } from '@labkey/api';
+import { Domain, getServerContext } from '@labkey/api';
 
 import { SCHEMAS } from '../base/models/schemas';
 
@@ -306,6 +306,7 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     phiLevelDisabled: false,
     hideAddFieldsButton: false,
     disableMvEnabled: false,
+    hideImportData: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -462,6 +463,16 @@ export class DomainDesign
         }
 
         return false;
+    }
+
+    getDomainContainer(): string {
+        const currentContainer = getServerContext().container.id;
+        return this.container || currentContainer;
+    }
+
+    isSharedDomain(): boolean {
+        const currentContainer = getServerContext().container.id;
+        return this.getDomainContainer() !== currentContainer;
     }
 }
 
@@ -1466,7 +1477,7 @@ export class DomainException
         return exception.set('errors', exception.errors);
     }
 
-    static addRowIndexesToErrors(domain: DomainDesign, exceptionFromServer: DomainException) {
+    static addRowIndexesToErrors(domain: DomainDesign, exceptionFromServer: DomainException): DomainException {
         let allFieldErrors = exceptionFromServer.get('errors');
 
         allFieldErrors = allFieldErrors.map(error => {
@@ -1598,6 +1609,7 @@ export interface IDomainFormDisplayOptions {
     phiLevelDisabled?: boolean;
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
+    hideImportData?: boolean;
 }
 
 /**

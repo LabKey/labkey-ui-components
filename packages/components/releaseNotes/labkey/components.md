@@ -1,6 +1,74 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.63.0
+*Released*: 22 May 2020
+* Issue 40347: Domain designer wrappers not supporting domain kind specific properties in the create case
+    - Update to @labkey/api version with Domain.getDomainDetails support for domainKind param
+    - Allow for calls to Domain.getDomainDetails to pass in a domainKind param to get domain kind specific properties
+    - Remove getListProperties and getDatasetProperties from index.ts as those are internal only now
+
+## version 0.62.0
+*Release*: 21 May 2020
+* Move AssayProvider from SampleManager to ui-components
+* Remove redundant importGeneralAssayRun method (in favor of importAssayRun)
+
+## version 0.61.0
+*Released*: 20 May 2020
+* Add Chart Menu to GridPanel
+* Add View Menu to GridPanel
+* Add Export Menu to GridPanel
+* Implement Selections in GridPanel
+    * Mock.tsx now implements a mock version of our selection API, which uses browser localStorage to store selections.
+* Add Omnibox to GridPanel
+* Refactor OmniBox to support GridPanel and QueryGridPanel
+    * OmniBox and Actions are no longer aware of QueryGridModel, this way they can be used by QueryGridPanel and
+    GridPanel.
+    * OmniBox now has a `mergeValues` flag, when false it emits more granular change events, and does not merge
+    ActionValues (needed by GridPanel). Defaults to true, which was previous behavior.
+    * OmniBox no longer emits a change event when the user cancels an action change, or enters an invalid action.
+    * Actions now add a `valueObject` during `completeAction` so consumers don't need to parse string values, used by
+    GridPanel.
+* Add `showButtonBar` and `title` props to GridPanel
+* Enabled Maps, Sets, and Patches in Immer
+* Refactored the GridPanel tests to not use snapshotting
+* Add another view to sample mixtures data.
+* Remove IQueryModel interface, it was not necessary
+* Remove getOrDefault, not necessary with nullish coalescing
+
+### version 0.60.0
+*Released*: 20 May 2020
+* Item 6646: IssuesListDefDesignerPanels fix for shared domain scenario
+    - Add helpers to DomainDesign model to getDomainContainer() and isSharedDomain()
+    - Allow for a shared def to be used in another container where only the top level properties can be saved via saveIssueListDefOptions
+    - Show alert if the current container is using a shared domain with link to get to source container
+    - Disable field re-order and add field for a shared domain (read only display)
+
+### version 0.59.3
+*Released*: 18 May 2020
+* Item 7207: DatasetColumnMappingPanel fix to allow for numeric and text fields to be used for timepoint/visit column mapping
+    - Fix for StudyScheduleTest use case which uses the text visit values instead of Sequence Num during import
+
+### version 0.59.2
+*Released*: 16 May 2020
+* Lineage: improve caching, allow non-default distance
+
+### version 0.59.1
+*Released*: 15 May 2020
+* Merge forward changes from release20.5-SNAPSHOT branch
+    - includes hotfix changes from version 0.55.1
+
+## version 0.59.0
+*Released*: 14 May 2020
+* Epic 6800:  Issue Definition designer (Story 3)- Issues module implementation
+- Usage of new issues api actions to getProjectGroups and to getUsersForGroup and refactoring around this change.
+- Removal of selectQuery methods that were getting Groups and Users.
+- Re-purpose permission's Principal model, and remove UserGroup model.
+
+## version 0.58.0
+*Released*: 13 May 2020
+* Item 7205: Includes support for column mappings for fields during import data in new Dataset Designer
+
 ### version 0.57.0
 *Released*: 8 May 2020
 * Item 7178: Factored EntityDeleteModal (and associated functions) out of Sample Manager into labkey-ui-components for use in Biologics.
@@ -29,6 +97,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     - `LineageGraph` supports additional details from `experiment-lineage.api`.
     - `withLineage` HOC for managing lineage state.
     - See https://github.com/LabKey/labkey-ui-components/pull/237 for more details.
+
+### version 0.55.1
+*Released*: 6 May 2020
+* `@labkey/api` dependency update.
+* allow using separate singleFilterValue for createQueryGridModelFilteredBySample
 
 ## version 0.55.0
 *Released*: 30 April 2020

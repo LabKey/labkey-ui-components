@@ -10,10 +10,6 @@ import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { LoadingSpinner, Principal, SelectInput } from '../../..';
 
-import { UserGroup } from '../../permissions/models';
-
-import { getCoreGroups, getCoreUsersInGroups } from '../../permissions/actions';
-
 import { IssuesListDefModel } from './models';
 import {
     ISSUES_LIST_DEF_SORT_DIRECTION_TIP,
@@ -21,6 +17,7 @@ import {
     ISSUES_LIST_GROUP_ASSIGN_TIP,
     ISSUES_LIST_USER_ASSIGN_TIP,
 } from './constants';
+import { getProjectGroups, getUsersForGroup } from './actions';
 
 interface IssuesListDefBasicPropertiesInputsProps {
     model: IssuesListDefModel;
@@ -35,7 +32,7 @@ interface AssignmentOptionsProps {
 
 interface AssignmentOptionsState {
     coreGroups?: List<Principal>;
-    coreUsers?: List<UserGroup>;
+    coreUsers?: List<Principal>;
 }
 
 // For AssignedToGroupInput & DefaultUserAssignmentInput components
@@ -43,7 +40,8 @@ interface AssignmentOptionsInputProps {
     model: IssuesListDefModel;
     onSelect: (name: string, value: any) => any;
     coreGroups?: List<Principal>;
-    coreUsers?: List<UserGroup>;
+    coreUsers?: List<Principal>;
+    onGroupChange?: (groupId: number) => any;
 }
 
 export class BasicPropertiesFields extends React.PureComponent<IssuesListDefBasicPropertiesInputsProps> {
@@ -73,27 +71,41 @@ export class AssignmentOptions extends React.PureComponent<AssignmentOptionsProp
         );
     }
 
+    handleGroupChange = (groupId: number) => {
+        this.getFilteredCoreUsers(groupId);
+    };
+
     componentDidMount() {
-        getCoreGroups().then((coreGroupsData: List<Principal>) => {
+        getProjectGroups().then(coreGroupsData => {
             this.setState(() => ({
                 coreGroups: coreGroupsData,
             }));
         });
 
-        getCoreUsersInGroups().then((coreUsersData: List<UserGroup>) => {
+        this.getFilteredCoreUsers(this.props.model.assignedToGroup);
+    }
+
+    getFilteredCoreUsers = (groupId: any): any => {
+        getUsersForGroup(groupId).then(coreUsersData => {
             this.setState(() => ({
                 coreUsers: coreUsersData,
             }));
         });
-    }
+    };
 
     render() {
         const { model, onSelect } = this.props;
         const { coreUsers, coreGroups } = this.state;
+
         return (
             <Col xs={12} md={6}>
                 <SectionHeading title="Assignment Options" />
-                <AssignedToGroupInput model={model} coreGroups={coreGroups} onSelect={onSelect} />
+                <AssignedToGroupInput
+                    model={model}
+                    coreGroups={coreGroups}
+                    onSelect={onSelect}
+                    onGroupChange={this.handleGroupChange}
+                />
                 <DefaultUserAssignmentInput model={model} coreUsers={coreUsers} onSelect={onSelect} />
             </Col>
         );
@@ -200,8 +212,10 @@ export class AssignedToGroupInput extends React.PureComponent<AssignmentOptionsI
         return ISSUES_LIST_GROUP_ASSIGN_TIP;
     }
 
-    onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
-        this.props.onSelect(name, selected ? selected.userId : undefined);
+    onChange = (name: string, formValue: any, selected: Principal, ref: any): void => {
+        const groupId = selected ? selected.userId : undefined;
+        this.props.onGroupChange(groupId);
+        this.props.onSelect(name, groupId);
     };
 
     render() {
@@ -246,15 +260,8 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
         return ISSUES_LIST_USER_ASSIGN_TIP;
     }
 
-    onChange = (name: string, formValue: any, selected: UserGroup, ref: any): any => {
+    onChange = (name: string, formValue: any, selected: Principal, ref: any): any => {
         this.props.onSelect(name, selected ? selected.userId : undefined);
-    };
-
-    getFilteredCoreUsers = (groupId: any, coreUsers: List<UserGroup>) => {
-        const filteredCoreUser = coreUsers.filter(coreUser => {
-            return coreUser.groupId === groupId;
-        });
-        return filteredCoreUser.toArray().length > 0 ? filteredCoreUser.toArray() : undefined;
     };
 
     render() {
@@ -271,11 +278,11 @@ export class DefaultUserAssignmentInput extends React.PureComponent<AssignmentOp
                     ) : (
                         <SelectInput
                             name="assignedToUser"
-                            options={this.getFilteredCoreUsers(model.assignedToGroup, coreUsers)}
+                            options={coreUsers ? coreUsers.toArray() : undefined}
                             placeholder="Unassigned"
                             inputClass="col-xs-12"
                             valueKey="userId"
-                            labelKey="userName"
+                            labelKey="displayName"
                             onChange={this.onChange}
                             value={model.assignedToUser ? model.assignedToUser : undefined}
                             formsy={false}

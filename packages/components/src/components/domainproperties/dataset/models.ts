@@ -87,7 +87,7 @@ export class DatasetModel implements IDatasetModel {
         Object.assign(this, datasetModel);
     }
 
-    static create(newDataset = null, raw: any): DatasetModel {
+    static create(newDataset = null, raw?: any): DatasetModel {
         if (newDataset) {
             const domain = DomainDesign.create(undefined);
             return new DatasetModel({ ...newDataset, domain });

@@ -1,0 +1,29 @@
+[{
+  "groupId" : -1,
+  "userId" : 1005,
+  "displayName" : "binalp"
+},{
+  "groupId" : -1,
+  "userId" : 1018,
+  "displayName" : "tester2"
+},{
+  "groupId" : -2,
+  "userId" : 1005,
+  "displayName" : "binalp"
+},{
+  "groupId" : -2,
+  "userId" : 1018,
+  "displayName" : "tester2"
+},{
+  "groupId" : -2,
+  "userId" : 1023,
+  "displayName" : "updater"
+},{
+  "groupId" : 1025,
+  "userId" : 1023,
+  "displayName" : "updater"
+},{
+    "groupId" : null,
+    "userId" : 1023,
+    "displayName" : "updater"
+}]

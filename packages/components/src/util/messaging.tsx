@@ -56,7 +56,10 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
         } else if (lcMessage.indexOf(IllegalArgumentMessage) >= 0) {
             const startIndex = lcMessage.indexOf(IllegalArgumentMessage);
             return errorMsg.substring(startIndex + IllegalArgumentMessage.length).trim();
+        } else if (lcMessage.indexOf('at least one of "file", "runfilepath", or "datarows" is required') >= 0) {
+            return `No data provided for ${verb || 'import'}.`;
         }
+
     }
     return errorMsg;
 }

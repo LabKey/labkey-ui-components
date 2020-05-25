@@ -22,6 +22,7 @@ import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
 import { QueryInfo } from './QueryInfo';
+import { QuerySort } from './QuerySort';
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -1037,23 +1038,6 @@ export class QueryGridModel
     }
 }
 
-export class QuerySort extends Record({
-    dir: '',
-    fieldKey: undefined,
-}) {
-    dir: string;
-    fieldKey: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
-    toRequestString() {
-        const { dir, fieldKey } = this;
-        return dir === '-' ? '-' + fieldKey : fieldKey;
-    }
-}
-
 export class SchemaDetails extends Record({
     description: undefined,
     fullyQualifiedName: undefined,
@@ -1459,13 +1443,14 @@ export class AssayDefinitionModel extends Record({
         value,
         singleFilter: Filter.IFilterType,
         whereClausePart: (fieldKey, value) => string,
-        useLsid?: boolean
+        useLsid?: boolean,
+        singleFilterValue?: any
     ) {
         const keyCol = useLsid ? '/LSID' : '/RowId';
         if (sampleColumns.size == 1) {
             // generate simple equals filter
             const sampleColumn = sampleColumns.get(0);
-            return Filter.create(sampleColumn + keyCol, value, singleFilter);
+            return Filter.create(sampleColumn + keyCol, singleFilterValue ? singleFilterValue : value, singleFilter);
         } else {
             // generate an OR filter to include all sample columns
             const whereClause =

@@ -460,7 +460,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             </div>
           </div>
           <div
-            className="dataset_data_row_element_show margin-top"
+            className="dataset_data_row_element_show"
           >
             <div
               className="margin-top row"
@@ -602,7 +602,7 @@ exports[`Dataset Properties Panel Edit existing dataset 1`] = `
             </div>
           </div>
           <div
-            className="dataset_data_row_element_show margin-top"
+            className="dataset_data_row_element_show"
           >
             <div
               className="checkbox"
@@ -1187,7 +1187,7 @@ exports[`Dataset Properties Panel New dataset 1`] = `
             </div>
           </div>
           <div
-            className="dataset_data_row_element_hide margin-top"
+            className="dataset_data_row_element_hide"
           >
             <div
               className="checkbox disabled"

@@ -3,8 +3,6 @@ import renderer from 'react-test-renderer';
 
 import { mount } from 'enzyme';
 
-import { DEFAULT_LIST_SETTINGS } from '../../../test/data/constants';
-
 import { DomainPanelStatus } from '../models';
 
 import { Alert } from '../../..';

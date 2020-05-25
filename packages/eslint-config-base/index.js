@@ -183,7 +183,7 @@ module.exports = {
       }
     }],
     '@typescript-eslint/explicit-member-accessibility': ['error', {'accessibility': 'no-public'}],
-    //'@typescript/interface-name-prefix': 'off',
+    '@typescript-eslint/interface-name-prefix': 'off',
 
 
     // Import plugin (https://github.com/benmosher/eslint-plugin-import)

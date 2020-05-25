@@ -528,3 +528,11 @@ export function getUpdatedDataFromGrid(
     });
     return updatedRows;
 }
+
+/**
+ * This forces tooltips to close and menus to stop showing pressed state after you close them on Chrome. We likely will
+ * not need this if/when we upgrade React Bootstrap to something beyond the pre-release version we are using.
+ */
+export const blurActiveElement = () => {
+    (document.activeElement as HTMLElement).blur();
+};

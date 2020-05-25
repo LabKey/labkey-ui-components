@@ -8,6 +8,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Move getRunDetailsQueryColumns from SampleManager
 * Check for null or undefined value in initSelect for QuerySelect
 
+### version 0.63.0
+*Released*: 22 May 2020
+* Issue 40347: Domain designer wrappers not supporting domain kind specific properties in the create case
+    - Update to @labkey/api version with Domain.getDomainDetails support for domainKind param
+    - Allow for calls to Domain.getDomainDetails to pass in a domainKind param to get domain kind specific properties
+    - Remove getListProperties and getDatasetProperties from index.ts as those are internal only now
+
 ## version 0.62.0
 *Released*: 21 May 2020
 * Move AssayProvider from SampleManager to ui-components

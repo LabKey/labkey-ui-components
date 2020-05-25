@@ -33,7 +33,9 @@ export function resolveRenderer(column: QueryColumn) {
                     key: any,
                     value?: string,
                     editing?: boolean,
-                    allowFieldDisable = false
+                    allowFieldDisable = false,
+                    initiallyDisabled = false,
+                    onToggleDisable?: (boolean) => void,
                 ) => {
                     return (
                         <AliasInput
@@ -42,6 +44,8 @@ export function resolveRenderer(column: QueryColumn) {
                             key={key}
                             value={value}
                             allowDisable={allowFieldDisable}
+                            initiallyDisabled={initiallyDisabled}
+                            onToggleDisable={onToggleDisable}
                         />
                     );
                 };
@@ -52,11 +56,13 @@ export function resolveRenderer(column: QueryColumn) {
                     key: any,
                     val?: string,
                     editing?: boolean,
-                    allowFieldDisable = false
+                    allowFieldDisable = false,
+                    initiallyDisabled = false
                 ) => {
                     return (
                         <Input
                             allowDisable={allowFieldDisable}
+                            disabled={initiallyDisabled}
                             addonAfter={<span>{col.units}</span>}
                             changeDebounceInterval={0}
                             elementWrapperClassName={editing ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}

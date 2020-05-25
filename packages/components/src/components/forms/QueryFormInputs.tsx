@@ -221,7 +221,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputRenderer) {
                         const renderer = resolveRenderer(col);
                         if (renderer) {
-                            return renderer(col, i, value, false, allowFieldDisable);
+                            return renderer(col, i, value, false, allowFieldDisable, shouldDisableField, this.onToggleDisable);
                         }
 
                         throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);

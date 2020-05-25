@@ -370,11 +370,22 @@ export function getCommonDataValues(data: Map<any, any>): any {
             rowData.forEach((data, key) => {
                 if (!fieldsInConflict.has(key)) {
                     // skip fields that are already in conflict
-                    const value = Iterable.isIterable(data) ? data.get('value') : data;
+                    let value = data;
+
+                    // Convert from immutable to regular JS
+                    if (Iterable.isIterable(data)) {
+                        if (List.isList(data)) {
+                            value = data.toJS();
+                        }
+                        else {
+                            value = data.get('value');
+                        }
+                    }
+
                     const currentValueEmpty = valueIsEmpty(value);
                     const havePreviousValue = valueMap.has(key);
                     const arrayNotEqual =
-                        Array.isArray(value) &&
+                        Array.isArray(value) && valueMap.get(key) &&
                         (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
 
                     if (!currentValueEmpty) {
@@ -431,7 +442,7 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
     const updateValuesMap = Map<any, any>(updatedValues);
     const updatedData = originalData.map(originalRowMap => {
         return originalRowMap.reduce((m, fieldValueMap, key) => {
-            if (fieldValueMap && fieldValueMap.has('value')) {
+            if (fieldValueMap?.has('value')) {
                 if (primaryKeys.indexOf(key) > -1) {
                     return m.set(key, fieldValueMap.get('value'));
                 } else if (updateValuesMap.has(key) && !isSameWithStringCompare(updateValuesMap.get(key), fieldValueMap.get('value'))) {
@@ -439,7 +450,35 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                 } else {
                     return m;
                 }
-            } else return m;
+            }
+            // Handle multi-value select
+            else if (List.isList(fieldValueMap)) {
+                let updatedVal = updateValuesMap.get(key);
+                if (Array.isArray(updatedVal)) {
+                    updatedVal = updatedVal.map(val => {
+                        let match = fieldValueMap.find(original => original.get('value') === val);
+                        if (match !== undefined) {
+                            return match.get('displayValue');
+                        }
+                        return val;
+                    });
+
+                    return m.set(key, updatedVal);
+                    // Get original values still in updates
+                    // let origValues = fieldValueMap.filter((original => (updatedVal.indexOf(original.get('value')) !== -1)));
+                    // origValues = origValues.map(value => value.get('value'));
+
+                    // Find new values and format
+                    // let newValues = updatedVal.filter((updated) => (origValues.findIndex((orig) => (orig === updated)) === -1));
+
+                    // return m.set(key, origValues.toJS().concat(newValues));
+                }
+                else if (updateValuesMap.has(key) && updatedVal === undefined) {
+                    return m.set(key, []);
+                }
+                else return m;
+            }
+            else return m;
         }, Map<any, any>());
     });
     // we want the rows that contain more than just the primaryKeys
@@ -469,7 +508,7 @@ export function getUpdatedDataFromGrid(
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
                 let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
-                if (List.isList(originalValue)) {
+                if (List.isList(originalValue) && originalValue.size > 0) {
                     originalValue = originalValue.get(0).value;
                 }
                 if ((value && !originalValue) || originalValue != value) {

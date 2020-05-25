@@ -108,7 +108,8 @@ export function updateQueryGridModel(
     model: QueryGridModel,
     updates: any,
     connectedComponent?: React.Component,
-    failIfNotFound = true
+    failIfNotFound = true,
+    onLoad?: () => void
 ): QueryGridModel {
     if (failIfNotFound && !getGlobalState('models').has(model.getId())) {
         throw new Error('Unable to find QueryGridModel for modelId: ' + model.getId());
@@ -124,6 +125,10 @@ export function updateQueryGridModel(
         global => {
             if (connectedComponent) {
                 connectedComponent.forceUpdate();
+            }
+
+            if (onLoad) {
+                onLoad();
             }
         }
     );

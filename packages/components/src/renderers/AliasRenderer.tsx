@@ -15,6 +15,7 @@
  */
 import React from 'react';
 import { List } from 'immutable';
+import {ValueDescriptor} from "../models";
 
 const DETAIL_ALIAS_WORD_LENGTH = 5,
     GRID_ALIAS_WORD_LENGTH = 3;
@@ -36,6 +37,30 @@ export class AliasRenderer extends React.Component<AliasRendererProps, AliasRend
             showMore: false,
         };
     }
+
+    static getEditableRawValue = (values: List<ValueDescriptor>): Array<string> => {
+        return values.reduce((arr, vd) => {
+            if (vd.display !== undefined && vd.display !== null) {
+                arr.push(vd.display);
+            }
+            return arr;
+        }, []);
+    };
+
+    static getEditableValue = (values: List<ValueDescriptor>) => {
+        return (values?.size === 0 ? '' : values.first().display !== undefined
+            ? values.reduce((str, v) => {
+                if (v.display !== undefined)
+                {
+                    if (str)
+                    {
+                        return (str + ', ' + v.display)
+                    }
+                    return v.display
+                }
+                else return str;
+            }, '') : '');
+    };
 
     handleClick() {
         const { showMore } = this.state;

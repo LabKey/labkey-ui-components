@@ -26,6 +26,7 @@ import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 import { QueryColumn } from '../base/models/model';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
+import {getQueryColumnRenderers} from "../../global";
 
 interface Props {
     col: QueryColumn;
@@ -277,9 +278,23 @@ export class Cell extends React.PureComponent<Props, any> {
             return <LookupCell {...lookupProps} />;
         }
 
+        let renderer;
+        let defaultValue;
+        if (col.columnRenderer) {
+            renderer = getQueryColumnRenderers().get(col.columnRenderer.toLowerCase());
+        }
+
+        if (renderer?.getEditableValue) {
+            defaultValue = renderer.getEditableValue(values);
+        }
+
+        if (defaultValue === undefined) {
+            defaultValue = values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : '';
+        }
+
         const inputProps = {
             autoFocus: true,
-            defaultValue: values.size === 0 ? '' : values.first().display !== undefined ? values.first().display : '',
+            defaultValue: defaultValue,
             disabled: this.isReadOnly(),
             className: 'cellular-input',
             onBlur: this.handleBlur,

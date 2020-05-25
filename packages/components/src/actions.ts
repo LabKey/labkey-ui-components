@@ -74,14 +74,14 @@ import { resolveErrorMessage } from './util/messaging';
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
 
-export function gridInit(model: QueryGridModel, shouldLoadData = true, connectedComponent?: React.Component) {
+export function gridInit(model: QueryGridModel, shouldLoadData = true, connectedComponent?: React.Component, onLoad?: () => void) {
     // return quickly if we don't have a model or if it is already loading
     if (!model || model.isLoading) {
         return;
     }
 
     // call to updateQueryGridModel to make sure this model is in the global state, if it wasn't already
-    let newModel = updateQueryGridModel(model, {}, connectedComponent, false);
+    let newModel = updateQueryGridModel(model, {}, connectedComponent, false, onLoad);
 
     if (!newModel.isLoaded) {
         if (newModel.bindURL) {
@@ -91,10 +91,12 @@ export function gridInit(model: QueryGridModel, shouldLoadData = true, connected
                     isLoading: true,
                     ...bindURLProps(newModel),
                 },
-                connectedComponent
+                connectedComponent,
+                true,
+                onLoad
             );
         } else {
-            newModel = updateQueryGridModel(newModel, { isLoading: true }, connectedComponent);
+            newModel = updateQueryGridModel(newModel, { isLoading: true }, connectedComponent, true, onLoad);
         }
 
         fetchQueryInfo(newModel)
@@ -104,7 +106,9 @@ export function gridInit(model: QueryGridModel, shouldLoadData = true, connected
                     {
                         queryInfo: bindQueryInfo(queryInfo),
                     },
-                    connectedComponent
+                    connectedComponent,
+                    true,
+                    onLoad
                 );
 
                 if (newModel.editable) {
@@ -112,7 +116,7 @@ export function gridInit(model: QueryGridModel, shouldLoadData = true, connected
                 }
 
                 if (shouldLoadData) {
-                    gridLoad(newModel, connectedComponent);
+                    gridLoad(newModel, connectedComponent, onLoad);
                 } else {
                     newModel = updateQueryGridModel(
                         newModel,
@@ -122,7 +126,9 @@ export function gridInit(model: QueryGridModel, shouldLoadData = true, connected
                             isLoaded: true,
                             message: undefined,
                         },
-                        connectedComponent
+                        connectedComponent,
+                        true,
+                        onLoad
                     );
 
                     if (newModel.editable) {
@@ -137,9 +143,11 @@ export function gridInit(model: QueryGridModel, shouldLoadData = true, connected
         newModel = updateQueryGridModel(
             newModel,
             { selectedLoaded: false, ...QueryGridModel.EMPTY_SELECTION, ...bindURLProps(newModel) },
-            connectedComponent
+            connectedComponent,
+            true,
+            onLoad
         );
-        gridLoad(newModel, connectedComponent);
+        gridLoad(newModel, connectedComponent, onLoad);
     }
 }
 
@@ -559,14 +567,14 @@ function loadDataForEditor(model: QueryGridModel, response?: any) {
     });
 }
 
-export function gridLoad(model: QueryGridModel, connectedComponent?: React.Component) {
+export function gridLoad(model: QueryGridModel, connectedComponent?: React.Component, onLoad?: () => void) {
     // validate view exists prior to initiating request
     if (model.view && model.queryInfo && !model.queryInfo.getView(model.view)) {
         setError(model, `Unable to find view "${model.view}".`);
         return;
     }
 
-    let newModel = updateQueryGridModel(model, { isLoading: true }, connectedComponent);
+    let newModel = updateQueryGridModel(model, { isLoading: true }, connectedComponent, true, onLoad);
 
     newModel.loader.fetch(newModel).then(
         response => {
@@ -600,11 +608,13 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
                     data,
                     dataIds,
                 },
-                connectedComponent
+                connectedComponent,
+                true,
+                onLoad
             );
 
             if (newModel.allowSelection) {
-                fetchSelectedIfNeeded(newModel, connectedComponent);
+                fetchSelectedIfNeeded(newModel, connectedComponent, onLoad);
             }
         },
         payload => {
@@ -858,7 +868,7 @@ function getSelectedState(
     return GRID_CHECKBOX_OPTIONS.NONE;
 }
 
-function fetchSelectedIfNeeded(model: QueryGridModel, connectedComponent: React.Component) {
+function fetchSelectedIfNeeded(model: QueryGridModel, connectedComponent: React.Component, onLoad?: () => void) {
     const { allowSelection, isLoaded, loader, selectedLoaded } = model;
 
     if (allowSelection && isLoaded && !selectedLoaded && loader.fetchSelection) {
@@ -878,7 +888,9 @@ function fetchSelectedIfNeeded(model: QueryGridModel, connectedComponent: React.
                             selectedIds,
                             selectedState,
                         },
-                        connectedComponent
+                        connectedComponent,
+                        true,
+                        onLoad
                     );
                 } else {
                     updateQueryGridModel(
@@ -888,7 +900,9 @@ function fetchSelectedIfNeeded(model: QueryGridModel, connectedComponent: React.
                             selectedQuantity: 0,
                             selectedIds,
                         },
-                        connectedComponent
+                        connectedComponent,
+                        true,
+                        onLoad
                     );
                 }
             },

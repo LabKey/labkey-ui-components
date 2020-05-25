@@ -98,7 +98,7 @@ interface State {
     fieldEnabledCount: number;
 }
 
-export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
+export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State> {
     static defaultProps: Partial<QueryInfoFormProps> = {
         canSubmitForEdit: true,
         canSubmitNotDirty: true,

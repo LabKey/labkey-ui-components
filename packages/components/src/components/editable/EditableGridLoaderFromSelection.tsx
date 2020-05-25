@@ -37,6 +37,7 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
         return new Promise((resolve, reject) => {
             // N.B.  gridModel is the model backing the editable grid, which has no selection on it,
             // so we use this.model, the model for the original query grid with selection.
+            this.model = this.model.set('requiredColumns', gridModel.get('requiredColumns')) as QueryGridModel;
             return getSelectedData(this.model)
                 .then(response => {
                     const { data, dataIds, totalRows } = response;

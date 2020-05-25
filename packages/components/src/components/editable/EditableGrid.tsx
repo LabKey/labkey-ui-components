@@ -148,7 +148,7 @@ export interface EditableGridState {
     showBulkUpdate: boolean;
 }
 
-export class EditableGrid extends React.Component<EditableGridProps, EditableGridState> {
+export class EditableGrid extends React.PureComponent<EditableGridProps, EditableGridState> {
     static defaultProps = {
         allowAdd: true,
         allowBulkAdd: false,

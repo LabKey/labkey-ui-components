@@ -337,8 +337,8 @@ export class DomainDesign
         description: undefined,
         domainURI: undefined,
         domainId: null,
-        allowFileLinkProperties: true, // TODO this default should be false and the per domain type values should come from the domain kind
-        allowAttachmentProperties: true, // TODO this default should be false and the per domain type values should come from the domain kind
+        allowFileLinkProperties: false,
+        allowAttachmentProperties: false,
         allowFlagProperties: true,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,

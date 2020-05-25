@@ -954,7 +954,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
 >
   <SampleTypeDesignerImpl
     appPropertiesOnly={true}
-    containerTop={60}
     currentPanelIndex={0}
     defaultSampleFieldConfig={
       Object {
@@ -2478,7 +2477,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
         appPropertiesOnly={true}
-        containerTop={60}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -2596,7 +2594,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         <LookupProvider>
           <DomainFormImpl
             appPropertiesOnly={true}
-            containerTop={60}
             controlledCollapse={true}
             domain={
               Immutable.Record {
@@ -3072,14 +3069,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             disableCompensation={false}
                                             disableHardwareAcceleration={false}
                                             relative={false}
-                                            topOffset={-60}
+                                            topOffset={0}
                                           >
                                             <div>
                                               <div />
                                               <div
                                                 style={
                                                   Object {
-                                                    "top": 60,
+                                                    "top": 0,
                                                     "zIndex": 1000,
                                                   }
                                                 }

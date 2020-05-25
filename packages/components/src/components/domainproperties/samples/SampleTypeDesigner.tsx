@@ -20,7 +20,7 @@ import { IParentOption } from '../../entities/models';
 
 import { addDomainField, getDomainPanelStatus } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
-import { SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT } from '../../../constants';
+import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
 import { IParentAlias, SampleTypeModel } from './models';
@@ -75,7 +75,7 @@ interface Props {
     nameExpressionPlaceholder?: string;
 
     // DomainDesigner props
-    containerTop?: number; // This sets the height of the sticky header, default is 60
+    containerTop?: number; // This sets the top of the sticky header, default is 0
     useTheme?: boolean;
     appPropertiesOnly?: boolean;
     successBsStyle?: string;
@@ -94,7 +94,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         includeDataClasses: false,
         useSeparateDataClassesAliasMenu: false,
 
-        containerTop: STICKY_HEADER_HEIGHT,
         useTheme: false,
         appPropertiesOnly: true,
     };

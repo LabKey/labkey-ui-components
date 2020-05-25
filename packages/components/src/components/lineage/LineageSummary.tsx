@@ -39,7 +39,7 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
                 title={
                     groupName +
                     ' ' +
-                    (suffixes.has(groupName.toLowerCase()) ? suffixes.get(groupName.toLowerCase()) : defaultTitleSuffix)
+                    (suffixes.has(nodesByType[groupName].queryName) ? suffixes.get(nodesByType[groupName].queryName) : defaultTitleSuffix)
                 }
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}

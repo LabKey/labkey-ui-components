@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 40008: Allow override of heading shown on LineageSummary panel for the Parents and Children of a node
+(e.g., to show "Source" instead of "Parent")
+
 ### version 0.63.0
 *Released*: 22 May 2020
 * Issue 40347: Domain designer wrappers not supporting domain kind specific properties in the create case

@@ -75,6 +75,7 @@ export const DEFAULT_NODE_PROPS = {
 export interface LineageNodeCollection {
     cpasType: string;
     displayType: string;
+    queryName: string;
     listURL: string;
     nodes: LineageNode[];
 }
@@ -96,6 +97,7 @@ export function createLineageNodeCollections(
             if (!byTypeList) {
                 byTypeList = {
                     displayType,
+                    queryName: n.queryName,
                     cpasType: n.cpasType,
                     listURL: undefined,
                     nodes: [],

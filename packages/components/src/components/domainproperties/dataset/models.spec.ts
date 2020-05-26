@@ -176,6 +176,24 @@ describe('DatasetModel', () => {
         expect(model.validManagedKeyField('file')).toBeFalsy();
     });
 
+    test('isValid', () => {
+        const validModel = DatasetModel.create(null, {options: { name: 'test' }});
+        expect(validModel.isValid()).toBeTruthy();
+
+        let invalidModel = DatasetModel.create(null, {options: { name: '' }});
+        expect(invalidModel.isValid()).toBeFalsy();
+
+        invalidModel = DatasetModel.create(null, {
+            options: { name: 'test' },
+            domainDesign: {
+                fields: [
+                    { name: '', rangeURI: TEXT_TYPE.rangeURI },
+                ],
+            },
+        });
+        expect(invalidModel.isValid()).toBeFalsy();
+    });
+
     test('getDomainKind', () => {
         // this is based on the setting in the package.json jest "timepointType"
         expect(DatasetModel.create({ name: 'test' }).getDomainKind()).toBe('StudyDatasetVisit');

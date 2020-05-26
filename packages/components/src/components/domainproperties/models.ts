@@ -905,7 +905,7 @@ export class DomainField
 
         // lockType can either come from the rawField, or be based on the domain's mandatoryFieldNames
         const isMandatoryFieldMatch =
-            mandatoryFieldNames !== undefined && mandatoryFieldNames.contains(raw.name.toLowerCase());
+            mandatoryFieldNames !== undefined && raw.name && mandatoryFieldNames.contains(raw.name.toLowerCase());
         let lockType = raw.lockType || DOMAIN_FIELD_NOT_LOCKED;
         if (lockType === DOMAIN_FIELD_NOT_LOCKED && isMandatoryFieldMatch) {
             lockType = DOMAIN_FIELD_PARTIALLY_LOCKED;

@@ -19,7 +19,7 @@ import {
     DATETIME_TYPE,
     DomainDesign,
     DomainField,
-    DOUBLE_TYPE,
+    DOUBLE_TYPE, FieldErrors,
     FILE_TYPE,
     FLAG_TYPE,
     INTEGER_TYPE,
@@ -31,7 +31,7 @@ import {
     TEXT_TYPE,
     USERS_TYPE,
 } from './models';
-import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED } from './constants';
+import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, INT_RANGE_URI } from './constants';
 
 describe('PropDescType', () => {
     test('isInteger', () => {
@@ -165,6 +165,55 @@ describe('DomainDesign', () => {
 
         const domain2 = DomainDesign.create({ name: 'Test Container', container: 'SOMETHINGELSE' });
         expect(domain2.isSharedDomain()).toBeTruthy();
+    });
+
+    test('hasInvalidFields', () => {
+        let domain = DomainDesign.create({ name: 'Test Fields', fields: [] });
+        expect(domain.hasInvalidFields()).toBeFalsy();
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: 'abc'}] });
+        expect(domain.hasInvalidFields()).toBeFalsy();
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{}] });
+        expect(domain.hasInvalidFields()).toBeTruthy();
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: undefined }] });
+        expect(domain.hasInvalidFields()).toBeTruthy();
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: null }] });
+        expect(domain.hasInvalidFields()).toBeTruthy();
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: '' }] });
+        expect(domain.hasInvalidFields()).toBeTruthy();
+    });
+
+    test('getInvalidFields', () => {
+        let domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: 'abc'}, { name: 'def'}] });
+        expect(domain.getInvalidFields().size).toBe(0);
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: 'abc'}, { name: ''}] });
+        expect(domain.getInvalidFields().size).toBe(1);
+        expect(domain.getInvalidFields().has(0)).toBeFalsy();
+        expect(domain.getInvalidFields().has(1)).toBeTruthy();
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: ''}, { name: ''}] });
+        expect(domain.getInvalidFields().size).toBe(2);
+        expect(domain.getInvalidFields().has(0)).toBeTruthy();
+        expect(domain.getInvalidFields().has(1)).toBeTruthy();
+    });
+
+    test('getFirstFieldError', () => {
+        let domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: 'abc'}, { name: 'def'}] });
+        expect(domain.getFirstFieldError()).toBe(undefined);
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: 'abc'}, { name: ''}] });
+        expect(domain.getFirstFieldError()).toBe(FieldErrors.MISSING_FIELD_NAME);
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: 'abc'}, { name: 'def', rangeURI: INT_RANGE_URI, lookupSchema: undefined, lookupQuery: 'test' }] });
+        expect(domain.getFirstFieldError()).toBe(FieldErrors.MISSING_SCHEMA_QUERY);
+
+        domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: ''}, { name: 'def', rangeURI: INT_RANGE_URI, lookupSchema: undefined, lookupQuery: 'test' }] });
+        expect(domain.getFirstFieldError()).toBe(FieldErrors.MISSING_FIELD_NAME);
     });
 });
 

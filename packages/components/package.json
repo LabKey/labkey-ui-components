@@ -102,7 +102,6 @@
     "@types/react-router": "3.0.13",
     "@types/react-select": "1.0.57",
     "@types/react-test-renderer": "16.9.1",
-    "@welldone-software/why-did-you-render": "4.2.1",
     "babel-loader": "8.1.0",
     "bootstrap-sass": "3.4.1",
     "cross-env": "7.0.2",

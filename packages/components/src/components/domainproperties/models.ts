@@ -518,8 +518,8 @@ export class DomainIndex
 export enum FieldErrors {
     NONE = '',
     MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
-    MISSING_DATA_TYPE = 'Missing required field data type.',
-    MISSING_FIELD_NAME = 'Missing required field name.',
+    MISSING_DATA_TYPE = 'Please provide a data type for each field.',
+    MISSING_FIELD_NAME = 'Please provide a name for each field.',
 }
 
 export interface IConditionalFormat {

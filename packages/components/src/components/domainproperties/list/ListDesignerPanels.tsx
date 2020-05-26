@@ -102,14 +102,14 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
     onFinish = () => {
         const { setSubmitting } = this.props;
         const { model } = this.state;
-        const isValid = ListModel.isValid(model);
+        const isValid = model.isValid();
 
         this.props.onFinish(isValid, this.saveDomain);
 
         if (!isValid) {
             const exception = !model.hasValidKeyType()
                 ? 'You must specify a key field for your list in the fields panel to continue.'
-                : undefined;
+                : model.domain.getFirstFieldError();
             const updatedModel = model.set('exception', exception) as ListModel;
             setSubmitting(false, () => {
                 this.setState(() => ({ model: updatedModel }));

@@ -74,7 +74,11 @@ export class DataClassModel implements DataClassModelConfig {
     }
 
     isValid(defaultNameFieldConfig?: Partial<IDomainField>): boolean {
-        return this.hasValidProperties && !this.hasInvalidNameField(defaultNameFieldConfig);
+        return (
+            this.hasValidProperties &&
+            !this.hasInvalidNameField(defaultNameFieldConfig) &&
+            !this.domain.hasInvalidFields()
+        );
     }
 
     get hasValidProperties(): boolean {

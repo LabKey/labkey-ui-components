@@ -337,8 +337,8 @@ export class DomainDesign
         description: undefined,
         domainURI: undefined,
         domainId: null,
-        allowFileLinkProperties: true, // TODO this default should be false and the per domain type values should come from the domain kind
-        allowAttachmentProperties: true, // TODO this default should be false and the per domain type values should come from the domain kind
+        allowFileLinkProperties: false,
+        allowAttachmentProperties: false,
         allowFlagProperties: true,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
@@ -440,12 +440,17 @@ export class DomainDesign
         return this.name && this.name.endsWith(name + ' Fields');
     }
 
+    // Issue 38399: helper for each designer model to know if there are field-level errors
+    hasInvalidFields(): boolean {
+        return this.getInvalidFields().size > 0;
+    }
+
     getInvalidFields(): Map<number, DomainField> {
         let invalid = Map<number, DomainField>();
 
         for (let i = 0; i < this.fields.size; i++) {
             const field = this.fields.get(i);
-            if (!field.isValid()) {
+            if (field.hasErrors()) {
                 invalid = invalid.set(i, field);
             }
         }
@@ -463,6 +468,11 @@ export class DomainDesign
         }
 
         return false;
+    }
+
+    getFirstFieldError(): FieldErrors {
+        const invalidFields = this.getInvalidFields();
+        return invalidFields.size > 0 ? invalidFields.first().getErrors() : undefined;
     }
 
     getDomainContainer(): string {
@@ -506,8 +516,10 @@ export class DomainIndex
 }
 
 export enum FieldErrors {
-    NONE,
-    MISSING_SCHEMA_QUERY,
+    NONE = '',
+    MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
+    MISSING_DATA_TYPE = 'Please provide a data type for each field.',
+    MISSING_FIELD_NAME = 'Please provide a name for each field.',
 }
 
 export interface IConditionalFormat {
@@ -893,7 +905,7 @@ export class DomainField
 
         // lockType can either come from the rawField, or be based on the domain's mandatoryFieldNames
         const isMandatoryFieldMatch =
-            mandatoryFieldNames !== undefined && mandatoryFieldNames.contains(raw.name.toLowerCase());
+            mandatoryFieldNames !== undefined && raw.name && mandatoryFieldNames.contains(raw.name.toLowerCase());
         let lockType = raw.lockType || DOMAIN_FIELD_NOT_LOCKED;
         if (lockType === DOMAIN_FIELD_NOT_LOCKED && isMandatoryFieldMatch) {
             lockType = DOMAIN_FIELD_PARTIALLY_LOCKED;
@@ -988,6 +1000,14 @@ export class DomainField
             return FieldErrors.MISSING_SCHEMA_QUERY;
         }
 
+        if (!(this.dataType && (this.dataType.rangeURI || this.rangeURI))) {
+            return FieldErrors.MISSING_DATA_TYPE;
+        }
+
+        if (this.name === undefined || this.name === null || this.name.trim() === '') {
+            return FieldErrors.MISSING_FIELD_NAME;
+        }
+
         return FieldErrors.NONE;
     }
 
@@ -1001,12 +1021,6 @@ export class DomainField
 
     isSaved(): boolean {
         return isFieldSaved(this);
-    }
-
-    isValid(): boolean {
-        // TODO should the rest of these checks move up to the getErrors() function and return different FieldErrors?
-        // if so, then we can remove this isValid() function and just use !hasErrors()
-        return !!this.name && !!this.dataType && (!!this.dataType.rangeURI || !!this.rangeURI) && !this.hasErrors();
     }
 
     static hasRangeValidation(field: DomainField): boolean {
@@ -1419,17 +1433,13 @@ export class DomainException
         return undefined;
     }
 
-    static clientValidationExceptions(
-        exception: string,
-        fieldMessage: string,
-        fields: Map<number, DomainField>
-    ): DomainException {
+    static clientValidationExceptions(exception: string, fields: Map<number, DomainField>): DomainException {
         let fieldErrors = List<DomainFieldError>();
 
         fields.forEach((field, index) => {
             fieldErrors = fieldErrors.push(
                 new DomainFieldError({
-                    message: fieldMessage,
+                    message: field.getErrors(),
                     fieldName: field.get('name'),
                     propertyId: field.get('propertyId'),
                     severity: SEVERITY_LEVEL_ERROR,

@@ -59,9 +59,10 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
 
     onSelectChange = (name: string, selectedValue: string, selectedOption: IParentOption): void => {
         // Issue 40149: on clear, need to retain the IParentOption with schema
+        const { parentAlias } = this.props;
         let newValue = selectedOption;
-        if (!selectedOption) {
-            newValue = { schema: this.props.parentAlias.parentValue.schema };
+        if (!selectedOption && parentAlias && parentAlias.parentValue) {
+            newValue = { schema: parentAlias.parentValue.schema };
         }
 
         this.props.onAliasChange(this.props.id, name, newValue);

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.63.1
+*Released*: 26 May 2020
 * Misc domain designer fixes for 20.7
     - Issue 40286: Domain designer panel header does not scroll to top of page
     - Issue 40447: Fix error message when selecting 3rd setting of Data Row Uniqueness in dataset designer

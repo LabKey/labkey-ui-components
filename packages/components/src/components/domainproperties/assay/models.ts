@@ -190,7 +190,7 @@ export class AssayProtocolModel extends Record({
     }
 
     getFirstDomainFieldError(): FieldErrors {
-        const firstErrantDomain = this.domains.find(domain => domain.hasInValidFields());
+        const firstErrantDomain = this.domains.find(domain => domain.hasInvalidFields());
         return firstErrantDomain !== undefined ? firstErrantDomain.getInvalidFields().first().getErrors() : undefined;
     }
 

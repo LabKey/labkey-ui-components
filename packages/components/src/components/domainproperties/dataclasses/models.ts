@@ -77,7 +77,7 @@ export class DataClassModel implements DataClassModelConfig {
         return (
             this.hasValidProperties &&
             !this.hasInvalidNameField(defaultNameFieldConfig) &&
-            !this.domain.hasInValidFields()
+            !this.domain.hasInvalidFields()
         );
     }
 

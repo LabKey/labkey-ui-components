@@ -65,7 +65,7 @@ export class SampleTypeModel extends Record({
             this.hasValidProperties() &&
             !this.hasInvalidNameField(defaultNameFieldConfig) &&
             this.getDuplicateAlias(true).size === 0 &&
-            !this.domain.hasInValidFields()
+            !this.domain.hasInvalidFields()
         );
     }
 

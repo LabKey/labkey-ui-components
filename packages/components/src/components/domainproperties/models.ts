@@ -440,8 +440,8 @@ export class DomainDesign
         return this.name && this.name.endsWith(name + ' Fields');
     }
 
-    // Issue 38399: helper for each designer model to know if there are field level errors
-    hasInValidFields(): boolean {
+    // Issue 38399: helper for each designer model to know if there are field-level errors
+    hasInvalidFields(): boolean {
         return this.getInvalidFields().size > 0;
     }
 

@@ -183,7 +183,7 @@ export function toLowerSafe(a: List<string>): List<string> {
     return emptyList;
 }
 
-function toLowerReducer(s: Set<string>, v: string) {
+function toLowerReducer(s: Set<string>, v: string): Set<string> {
     if (typeof v === 'string') {
         s.add(v.toLowerCase());
     }
@@ -210,7 +210,7 @@ export function devToolsActive(): boolean {
     return LABKEY.devMode === true && hasParameter(DEV_TOOLS_URL_PARAMETER);
 }
 
-export function toggleDevTools() {
+export function toggleDevTools(): void {
     if (LABKEY.devMode) {
         toggleParameter(DEV_TOOLS_URL_PARAMETER, 1);
     }
@@ -221,7 +221,7 @@ const DOM_PREFIX = 'labkey-app-';
 
 // Only exported to use with tests. Don't use this anywhere else. This is needed so we can use it in beforeEach for jest
 // snapshot tests. This way a snapshot will be identical when run as part of a test suite or run individually.
-export function TESTS_ONLY_RESET_DOM_COUNT() {
+export function TESTS_ONLY_RESET_DOM_COUNT(): void {
     DOM_COUNT = 0;
 }
 
@@ -231,12 +231,12 @@ export function generateId(prefix?: string): string {
 }
 
 // http://davidwalsh.name/javascript-debounce-function
-export function debounce(func, wait, immediate?: boolean) {
+export function debounce(func, wait, immediate?: boolean): () => void {
     let timeout: number;
     return function () {
         const context = this,
             args = arguments;
-        const later = function () {
+        const later = function (): void {
             timeout = null;
             if (!immediate) func.apply(context, args);
         };
@@ -376,8 +376,7 @@ export function getCommonDataValues(data: Map<any, any>): any {
                     if (Iterable.isIterable(data)) {
                         if (List.isList(data)) {
                             value = data.toJS();
-                        }
-                        else {
+                        } else {
                             value = data.get('value');
                         }
                     }
@@ -385,7 +384,8 @@ export function getCommonDataValues(data: Map<any, any>): any {
                     const currentValueEmpty = valueIsEmpty(value);
                     const havePreviousValue = valueMap.has(key);
                     const arrayNotEqual =
-                        Array.isArray(value) && valueMap.get(key) &&
+                        Array.isArray(value) &&
+                        valueMap.get(key) &&
                         (!Array.isArray(valueMap.get(key)) || !unorderedEqual(valueMap.get(key), value));
 
                     if (!currentValueEmpty) {
@@ -419,8 +419,7 @@ export function getCommonDataValues(data: Map<any, any>): any {
 }
 
 function isSameWithStringCompare(value1: any, value2: any): boolean {
-    if ((value1 === value2) || (valueIsEmpty(value1) && valueIsEmpty(value2)))
-        return true;
+    if (value1 === value2 || (valueIsEmpty(value1) && valueIsEmpty(value2))) return true;
     if (value1 && value2) {
         const strVal1 = value1.toString();
         const strVal2 = value2.toString();
@@ -445,7 +444,10 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
             if (fieldValueMap?.has('value')) {
                 if (primaryKeys.indexOf(key) > -1) {
                     return m.set(key, fieldValueMap.get('value'));
-                } else if (updateValuesMap.has(key) && !isSameWithStringCompare(updateValuesMap.get(key), fieldValueMap.get('value'))) {
+                } else if (
+                    updateValuesMap.has(key) &&
+                    !isSameWithStringCompare(updateValuesMap.get(key), fieldValueMap.get('value'))
+                ) {
                     return m.set(key, updateValuesMap.get(key) == undefined ? null : updateValuesMap.get(key));
                 } else {
                     return m;
@@ -456,7 +458,7 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                 let updatedVal = updateValuesMap.get(key);
                 if (Array.isArray(updatedVal)) {
                     updatedVal = updatedVal.map(val => {
-                        let match = fieldValueMap.find(original => original.get('value') === val);
+                        const match = fieldValueMap.find(original => original.get('value') === val);
                         if (match !== undefined) {
                             return match.get('displayValue');
                         }
@@ -472,13 +474,10 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                     // let newValues = updatedVal.filter((updated) => (origValues.findIndex((orig) => (orig === updated)) === -1));
 
                     // return m.set(key, origValues.toJS().concat(newValues));
-                }
-                else if (updateValuesMap.has(key) && updatedVal === undefined) {
+                } else if (updateValuesMap.has(key) && updatedVal === undefined) {
                     return m.set(key, []);
-                }
-                else return m;
-            }
-            else return m;
+                } else return m;
+            } else return m;
         }, Map<any, any>());
     });
     // we want the rows that contain more than just the primaryKeys
@@ -502,7 +501,7 @@ export function getUpdatedDataFromGrid(
     idField: string
 ): any[] {
     const updatedRows = [];
-    editorRows.forEach((editedRow, index) => {
+    editorRows.forEach(editedRow => {
         const id = editedRow.get(idField);
         const originalRow = originalGridData.get(id.toString());
         if (originalRow) {
@@ -533,6 +532,6 @@ export function getUpdatedDataFromGrid(
  * This forces tooltips to close and menus to stop showing pressed state after you close them on Chrome. We likely will
  * not need this if/when we upgrade React Bootstrap to something beyond the pre-release version we are using.
  */
-export const blurActiveElement = () => {
+export const blurActiveElement = (): void => {
     (document.activeElement as HTMLElement).blur();
 };

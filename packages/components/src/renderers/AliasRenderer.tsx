@@ -15,7 +15,8 @@
  */
 import React from 'react';
 import { List } from 'immutable';
-import {ValueDescriptor} from "../models";
+
+import { ValueDescriptor } from '../models';
 
 const DETAIL_ALIAS_WORD_LENGTH = 5,
     GRID_ALIAS_WORD_LENGTH = 3;
@@ -38,7 +39,7 @@ export class AliasRenderer extends React.Component<AliasRendererProps, AliasRend
         };
     }
 
-    static getEditableRawValue = (values: List<ValueDescriptor>): Array<string> => {
+    static getEditableRawValue = (values: List<ValueDescriptor>): string[] => {
         return values.reduce((arr, vd) => {
             if (vd.display !== undefined && vd.display !== null) {
                 arr.push(vd.display);
@@ -47,28 +48,28 @@ export class AliasRenderer extends React.Component<AliasRendererProps, AliasRend
         }, []);
     };
 
-    static getEditableValue = (values: List<ValueDescriptor>) => {
-        return (values?.size === 0 ? '' : values.first().display !== undefined
+    static getEditableValue = (values: List<ValueDescriptor>): string => {
+        return values?.size === 0
+            ? ''
+            : values.first().display !== undefined
             ? values.reduce((str, v) => {
-                if (v.display !== undefined)
-                {
-                    if (str)
-                    {
-                        return (str + ', ' + v.display)
-                    }
-                    return v.display
-                }
-                else return str;
-            }, '') : '');
+                  if (v.display !== undefined) {
+                      if (str) {
+                          return str + ', ' + v.display;
+                      }
+                      return v.display;
+                  } else return str;
+              }, '')
+            : '';
     };
 
-    handleClick() {
+    handleClick = (): void => {
         const { showMore } = this.state;
 
         this.setState({
             showMore: !showMore,
         });
-    }
+    };
 
     render() {
         const { data, view } = this.props;
@@ -91,7 +92,7 @@ export class AliasRenderer extends React.Component<AliasRendererProps, AliasRend
                 trailingLink = (
                     <span>
                         {!showMore ? `... and ${extraCount} more ` : ' '}
-                        <span className="alias-renderer--more-link" onClick={this.handleClick.bind(this)}>
+                        <span className="alias-renderer--more-link" onClick={this.handleClick}>
                             {!showMore ? '(see all)' : '(see less)'}
                         </span>
                     </span>

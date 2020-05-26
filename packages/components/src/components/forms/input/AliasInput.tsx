@@ -5,14 +5,14 @@ import { generateId, QueryColumn, SelectInput } from '../../..';
 interface AliasInputProps {
     col: QueryColumn;
     editing?: boolean;
-    value?: string | Array<Object>;
+    value?: string | Array<Record<string, any>>;
     allowDisable?: boolean;
     initiallyDisabled: boolean;
     onToggleDisable?: (boolean) => void;
 }
 
 interface AliasInputState {
-    labelKey?: string
+    labelKey?: string;
 }
 
 export class AliasInput extends React.Component<AliasInputProps, AliasInputState> {
@@ -32,10 +32,6 @@ export class AliasInput extends React.Component<AliasInputProps, AliasInputState
         }
 
         this.state = { labelKey };
-    }
-
-    onChange = () => {
-
     }
 
     render() {

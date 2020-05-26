@@ -35,7 +35,7 @@ export function resolveRenderer(column: QueryColumn) {
                     editing?: boolean,
                     allowFieldDisable = false,
                     initiallyDisabled = false,
-                    onToggleDisable?: (boolean) => void,
+                    onToggleDisable?: (boolean) => void
                 ) => {
                     return (
                         <AliasInput
@@ -87,7 +87,7 @@ export function resolveRenderer(column: QueryColumn) {
     return inputRenderer;
 }
 
-function findValue(data: Map<string, any>, lookup?: boolean) {
+function findValue(data: Map<string, any>, lookup?: boolean): any {
     return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value');
 }
 

@@ -25,8 +25,9 @@ import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
 import { QueryColumn } from '../base/models/model';
 
+import { getQueryColumnRenderers } from '../../global';
+
 import { LookupCell, LookupCellProps } from './LookupCell';
-import {getQueryColumnRenderers} from "../../global";
 
 interface Props {
     col: QueryColumn;
@@ -43,7 +44,7 @@ interface Props {
     values?: List<ValueDescriptor>;
 }
 
-export class Cell extends React.PureComponent<Props, any> {
+export class Cell extends React.PureComponent<Props> {
     private changeTO: number;
     private clickTO: number;
     private displayEl: React.RefObject<any>;
@@ -59,14 +60,6 @@ export class Cell extends React.PureComponent<Props, any> {
     constructor(props: Props) {
         super(props);
 
-        this.handleBlur = this.handleBlur.bind(this);
-        this.handleSelectionBlur = this.handleSelectionBlur.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleDblClick = this.handleDblClick.bind(this);
-        this.handleKeys = this.handleKeys.bind(this);
-        this.handleMouseEnter = this.handleMouseEnter.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
-
         this.displayEl = React.createRef();
     }
 
@@ -76,13 +69,13 @@ export class Cell extends React.PureComponent<Props, any> {
         }
     }
 
-    handleSelectionBlur() {
+    handleSelectionBlur = (): void => {
         if (this.props.selected) {
             unfocusCellSelection(this.props.modelId);
         }
-    }
+    };
 
-    handleBlur(evt: any) {
+    handleBlur = (evt: any): void => {
         clearTimeout(this.changeTO);
         const { colIdx, modelId, rowIdx } = this.props;
         modifyCell(
@@ -95,9 +88,9 @@ export class Cell extends React.PureComponent<Props, any> {
             },
             MODIFICATION_TYPES.REPLACE
         );
-    }
+    };
 
-    handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         event.persist();
 
         clearTimeout(this.changeTO);
@@ -114,21 +107,21 @@ export class Cell extends React.PureComponent<Props, any> {
                 MODIFICATION_TYPES.REPLACE
             );
         }, 250);
-    }
+    };
 
-    isReadOnly(): boolean {
+    isReadOnly = (): boolean => {
         return this.props.readOnly || this.props.col.readOnly;
-    }
+    };
 
-    handleDblClick() {
+    handleDblClick = (): void => {
         if (this.isReadOnly()) return;
 
         clearTimeout(this.clickTO);
         const { colIdx, modelId, rowIdx } = this.props;
         focusCell(modelId, colIdx, rowIdx);
-    }
+    };
 
-    handleKeys(event: React.KeyboardEvent<HTMLElement>) {
+    handleKeys = (event: React.KeyboardEvent<HTMLElement>) => {
         const { colIdx, focused, modelId, rowIdx, selected } = this.props;
 
         switch (event.keyCode) {
@@ -192,18 +185,18 @@ export class Cell extends React.PureComponent<Props, any> {
                     }
                 }
         }
-    }
+    };
 
-    handleMouseEnter(event: any) {
+    handleMouseEnter = (event: any): void => {
         const { colIdx, modelId, rowIdx } = this.props;
 
         if (inDrag(modelId)) {
             cancelEvent(event);
             selectCell(modelId, colIdx, rowIdx, SELECTION_TYPES.AREA);
         }
-    }
+    };
 
-    handleSelect(event) {
+    handleSelect = (event): void => {
         const { colIdx, modelId, rowIdx, selected } = this.props;
 
         if (event.ctrlKey || event.metaKey) {
@@ -214,7 +207,7 @@ export class Cell extends React.PureComponent<Props, any> {
         } else if (!selected) {
             selectCell(modelId, colIdx, rowIdx);
         }
-    }
+    };
 
     render() {
         const { col, colIdx, focused, message, modelId, placeholder, rowIdx, selected, selection, values } = this.props;
@@ -232,7 +225,7 @@ export class Cell extends React.PureComponent<Props, any> {
                     'cell-selection': selection,
                     'cell-warning': message !== undefined,
                     'cell-read-only': this.isReadOnly(),
-                    'cell-placeholder': valueDisplay.length == 0 && placeholder !== undefined,
+                    'cell-placeholder': valueDisplay.length === 0 && placeholder !== undefined,
                 }),
                 onDoubleClick: this.handleDblClick,
                 onKeyDown: this.handleKeys,
@@ -243,7 +236,7 @@ export class Cell extends React.PureComponent<Props, any> {
                 tabIndex: -1,
             };
 
-            if (valueDisplay.length == 0 && placeholder) valueDisplay = placeholder;
+            if (valueDisplay.length === 0 && placeholder) valueDisplay = placeholder;
             const cell = <div {...displayProps}>{valueDisplay}</div>;
 
             if (message) {
@@ -294,7 +287,7 @@ export class Cell extends React.PureComponent<Props, any> {
 
         const inputProps = {
             autoFocus: true,
-            defaultValue: defaultValue,
+            defaultValue,
             disabled: this.isReadOnly(),
             className: 'cellular-input',
             onBlur: this.handleBlur,

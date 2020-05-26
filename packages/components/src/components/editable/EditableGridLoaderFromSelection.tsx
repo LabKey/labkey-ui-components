@@ -56,7 +56,7 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
         });
     }
 
-    fetchFromData(gridModel: QueryGridModel): Promise<IGridResponse> {
+    fetchFromData(): Promise<IGridResponse> {
         return new Promise(resolve => {
             const data = EditorModel.convertQueryDataToEditorData(
                 this.dataForSelection,
@@ -73,7 +73,7 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
 
     fetch(gridModel: QueryGridModel): Promise<IGridResponse> {
         if (this.dataForSelection) {
-            return this.fetchFromData(gridModel);
+            return this.fetchFromData();
         } else {
             return this.selectAndFetch(gridModel);
         }

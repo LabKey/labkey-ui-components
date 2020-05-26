@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Iterable, List, Map, OrderedMap, Record, Set} from 'immutable';
+import { Iterable, List, Map, OrderedMap, Record, Set } from 'immutable';
 
 import { genCellKey } from './actions';
-import {getQueryColumnRenderers, getQueryGridModel, getQueryMetadata} from './global';
+import { getQueryColumnRenderers, getQueryGridModel, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
 import { IQueryGridModel, QueryColumn, QueryGridModel, SchemaQuery, ViewInfo } from './components/base/models/model';
 import { resolveSchemaQuery } from './util/utils';
@@ -391,7 +391,7 @@ export class EditorModel
         return this.cellMessages.get(genCellKey(colIdx, rowIdx));
     }
 
-    getColumns(model: QueryGridModel, forUpdate?: boolean, readOnlyColumns?: List<string>) {
+    getColumns(model: QueryGridModel, forUpdate?: boolean, readOnlyColumns?: List<string>): List<QueryColumn> {
         if (forUpdate) {
             return model.getUpdateColumns(readOnlyColumns);
         } else {
@@ -414,9 +414,8 @@ export class EditorModel
                 }
 
                 if (renderer?.getEditableRawValue) {
-                    row.set(col.name, renderer.getEditableRawValue(values))
-                }
-                else if (col.isLookup()) {
+                    row.set(col.name, renderer.getEditableRawValue(values));
+                } else if (col.isLookup()) {
                     if (col.isExpInput()) {
                         let sep = '';
                         row = row.set(
@@ -660,20 +659,22 @@ export class EditorModel
     static getEditorDataFromQueryValueMap(valueMap: any): List<any> | any {
         // Editor expects to get either a single value or an array of an object with fields displayValue and value
         if (valueMap && List.isList(valueMap)) {
-            return valueMap.map((val) => {
+            return valueMap.map(val => {
                 // If immutable convert to normal JS
                 if (Iterable.isIterable(val)) {
-                    return {displayValue: val.get('displayValue'), value: val.get('value')}
-                }
-                else return val;
+                    return { displayValue: val.get('displayValue'), value: val.get('value') };
+                } else return val;
             });
-        }
-        else if (valueMap && valueMap.has('value') && valueMap.get('value') !== null && valueMap.get('value') !== undefined) {
+        } else if (
+            valueMap &&
+            valueMap.has('value') &&
+            valueMap.get('value') !== null &&
+            valueMap.get('value') !== undefined
+        ) {
             return valueMap.has('displayValue')
-                ? List<any>([{displayValue: valueMap.get('displayValue'), value: valueMap.get('value')}])
+                ? List<any>([{ displayValue: valueMap.get('displayValue'), value: valueMap.get('value') }])
                 : valueMap.get('value');
-        }
-        else return undefined;
+        } else return undefined;
     }
 
     static convertQueryDataToEditorData(data: Map<string, any>, updates?: Map<any, any>): Map<any, Map<string, any>> {

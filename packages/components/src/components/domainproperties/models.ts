@@ -1433,10 +1433,7 @@ export class DomainException
         return undefined;
     }
 
-    static clientValidationExceptions(
-        exception: string,
-        fields: Map<number, DomainField>
-    ): DomainException {
+    static clientValidationExceptions(exception: string, fields: Map<number, DomainField>): DomainException {
         let fieldErrors = List<DomainFieldError>();
 
         fields.forEach((field, index) => {

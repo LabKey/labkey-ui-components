@@ -177,18 +177,16 @@ describe('DatasetModel', () => {
     });
 
     test('isValid', () => {
-        const validModel = DatasetModel.create(null, {options: { name: 'test' }});
+        const validModel = DatasetModel.create(null, { options: { name: 'test' } });
         expect(validModel.isValid()).toBeTruthy();
 
-        let invalidModel = DatasetModel.create(null, {options: { name: '' }});
+        let invalidModel = DatasetModel.create(null, { options: { name: '' } });
         expect(invalidModel.isValid()).toBeFalsy();
 
         invalidModel = DatasetModel.create(null, {
             options: { name: 'test' },
             domainDesign: {
-                fields: [
-                    { name: '', rangeURI: TEXT_TYPE.rangeURI },
-                ],
+                fields: [{ name: '', rangeURI: TEXT_TYPE.rangeURI }],
             },
         });
         expect(invalidModel.isValid()).toBeFalsy();

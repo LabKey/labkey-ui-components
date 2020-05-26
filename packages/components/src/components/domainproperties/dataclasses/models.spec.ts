@@ -38,7 +38,7 @@ describe('DataClassModel', () => {
 
         const invalidModel = DataClassModel.create({
             name: 'test',
-            domainDesign: {fields: [{name: ''}]},
+            domainDesign: { fields: [{ name: '' }] },
         });
         expect(invalidModel.isValid()).toBeFalsy();
     });

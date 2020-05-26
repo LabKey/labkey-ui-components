@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import produce from 'immer';
+
 import getDomainDetailsJSON from '../../../test/data/issuesListDef-getDomainDetails.json';
 
+import { DomainDesign, DomainField } from '../../..';
+
 import { IssuesListDefModel } from './models';
-import { DomainDesign, DomainField } from "../../..";
-import produce from "immer";
 
 describe('IssuesListDefModel', () => {
     test('isNew', () => {
@@ -42,7 +44,9 @@ describe('IssuesListDefModel', () => {
         });
         expect(invalidModel.isValid()).toBeFalsy();
         invalidModel = produce(validModel, draft => {
-            draft.domain = validModel.domain.merge({fields: validModel.domain.fields.push(DomainField.create({}))}) as DomainDesign;
+            draft.domain = validModel.domain.merge({
+                fields: validModel.domain.fields.push(DomainField.create({})),
+            }) as DomainDesign;
         });
         expect(invalidModel.isValid()).toBeFalsy();
     });

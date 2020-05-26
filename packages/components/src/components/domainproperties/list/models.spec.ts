@@ -1,8 +1,9 @@
 import { DEFAULT_LIST_SETTINGS } from '../../../test/data/constants';
 import getDomainDetailsJSON from '../../../test/data/list-getDomainDetails.json';
 
+import { DomainField } from '../models';
+
 import { ListModel } from './models';
-import { DomainField } from "../models";
 
 // Minimal domain object mock
 const domainDesign = { fields: [{ name: 'PK', isPrimaryKey: true }] };
@@ -35,11 +36,13 @@ describe('ListModel', () => {
         const validModel = ListModel.create(getDomainDetailsJSON);
         expect(validModel.isValid()).toBeTruthy();
 
-        let invalidModel = validModel.merge({name: undefined}) as ListModel;
+        let invalidModel = validModel.merge({ name: undefined }) as ListModel;
         expect(invalidModel.isValid()).toBeFalsy();
-        invalidModel = validModel.merge({keyType: undefined}) as ListModel;
+        invalidModel = validModel.merge({ keyType: undefined }) as ListModel;
         expect(invalidModel.isValid()).toBeFalsy();
-        invalidModel = validModel.merge({domain: validModel.domain.merge({fields: validModel.domain.fields.push(DomainField.create({}))})}) as ListModel;
+        invalidModel = validModel.merge({
+            domain: validModel.domain.merge({ fields: validModel.domain.fields.push(DomainField.create({})) }),
+        }) as ListModel;
         expect(invalidModel.isValid()).toBeFalsy();
     });
 

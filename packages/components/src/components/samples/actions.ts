@@ -71,6 +71,7 @@ export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
                 resolve(Map(response));
             }),
             failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
                 reject(response);
             }),
         });
@@ -84,10 +85,12 @@ export function getSampleTypeDetails(query?: SchemaQuery, domainId?: number): Pr
             containerPath: ActionURL.getContainer(),
             queryName: query ? query.getQuery() : undefined,
             schemaName: query ? query.getSchema() : undefined,
+            domainKind: query === undefined && domainId === undefined ? 'SampleSet' : undefined,
             success: response => {
                 resolve(DomainDetails.create(Map(response)));
             },
             failure: response => {
+                console.error(response);
                 reject(response);
             },
         });

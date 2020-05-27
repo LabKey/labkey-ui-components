@@ -17,9 +17,7 @@ import { List, Record } from 'immutable';
 
 import { Utils } from '@labkey/api';
 
-import { IEntityDetails } from '../entities/models';
-import { SEVERITY_LEVEL_ERROR } from '../constants';
-import { DomainDesign } from '../models';
+import { DomainDesign, FieldErrors } from '../models';
 
 export class AssayProtocolModel extends Record({
     allowBackgroundUpload: false,
@@ -191,8 +189,13 @@ export class AssayProtocolModel extends Record({
         }
     }
 
-    static isValid(model: AssayProtocolModel): boolean {
-        return model.hasValidProperties();
+    getFirstDomainFieldError(): FieldErrors {
+        const firstErrantDomain = this.domains.find(domain => domain.hasInvalidFields());
+        return firstErrantDomain !== undefined ? firstErrantDomain.getInvalidFields().first().getErrors() : undefined;
+    }
+
+    isValid(): boolean {
+        return this.hasValidProperties() && this.getFirstDomainFieldError() === undefined;
     }
 
     hasValidProperties(): boolean {

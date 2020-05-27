@@ -27,6 +27,8 @@ import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
+import { blurActiveElement } from '../../util/utils';
+
 import { EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR } from './constants';
 import { LookupProvider } from './Lookup/Context';
 import {
@@ -65,7 +67,6 @@ import {
 } from './models';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
-import { blurActiveElement } from '../../util/utils';
 
 interface IDomainFormInput {
     domain: DomainDesign;
@@ -215,7 +216,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (invalidFields.size > 0) {
             const exception = DomainException.clientValidationExceptions(
                 'Missing required field properties.',
-                'Missing required property',
                 invalidFields
             );
             const exceptionWithAllErrors = DomainException.mergeWarnings(domain, exception);
@@ -401,7 +401,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(domain);
 
         // remove focus for any current element so that it doesn't "jump" after drag end
-        blurActiveElement()
+        blurActiveElement();
     };
 
     onDragEnd = result => {

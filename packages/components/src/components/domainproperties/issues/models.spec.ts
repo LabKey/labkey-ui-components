@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import produce from 'immer';
+
 import getDomainDetailsJSON from '../../../test/data/issuesListDef-getDomainDetails.json';
+
+import { DomainDesign, DomainField } from '../../..';
 
 import { IssuesListDefModel } from './models';
 
@@ -29,6 +33,22 @@ describe('IssuesListDefModel', () => {
         expect(IssuesListDefModel.create({ options: { issueDefName: '' } }).hasValidProperties()).toBeFalsy();
         expect(IssuesListDefModel.create({ options: { issueDefName: ' ' } }).hasValidProperties()).toBeFalsy();
         expect(IssuesListDefModel.create({ options: { issueDefName: 'test' } }).hasValidProperties()).toBeTruthy();
+    });
+
+    test('isValid', () => {
+        const validModel = IssuesListDefModel.create(getDomainDetailsJSON);
+        expect(validModel.isValid()).toBeTruthy();
+
+        let invalidModel = produce(validModel, draft => {
+            draft.issueDefName = undefined;
+        });
+        expect(invalidModel.isValid()).toBeFalsy();
+        invalidModel = produce(validModel, draft => {
+            draft.domain = validModel.domain.merge({
+                fields: validModel.domain.fields.push(DomainField.create({})),
+            }) as DomainDesign;
+        });
+        expect(invalidModel.isValid()).toBeFalsy();
     });
 
     test('getOptions', () => {

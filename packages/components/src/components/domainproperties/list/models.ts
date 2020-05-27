@@ -138,8 +138,8 @@ export class ListModel extends Record({
         return !this.listId;
     }
 
-    static isValid(model: ListModel): boolean {
-        return model.hasValidProperties() && model.hasValidKeyType();
+    isValid(): boolean {
+        return this.hasValidProperties() && this.hasValidKeyType() && !this.domain.hasInvalidFields();
     }
 
     hasValidProperties(): boolean {

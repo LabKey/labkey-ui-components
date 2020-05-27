@@ -78,6 +78,20 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
     render() {
         const { index, label, scale, lockType, domainIndex } = this.props;
         const { radio } = this.state;
+        const textOptionsFormControl =
+            <FormControl
+                type="number"
+                id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
+                name={createFormInputName(DOMAIN_FIELD_SCALE)}
+                className="domain-text-length-field"
+                value={
+                    typeof scale !== 'undefined' && radio === DOMAIN_FIELD_CUSTOM_LENGTH
+                        ? scale
+                        : MAX_TEXT_LENGTH
+                }
+                onChange={this.handleChange}
+                disabled={isFieldFullyLocked(lockType) || radio === DOMAIN_FIELD_MAX_LENGTH}
+            />;
 
         return (
             <div>
@@ -104,7 +118,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             id={createFormInputId(DOMAIN_FIELD_MAX_LENGTH, domainIndex, index)}
                             disabled={isFieldFullyLocked(lockType)}
                         />
-                        <div className={classNames({ 'domain-text-label': radio !== DOMAIN_FIELD_MAX_LENGTH })}>
+                        <div>
                             Unlimited
                         </div>
                     </Col>
@@ -120,25 +134,10 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                             id={createFormInputId(DOMAIN_FIELD_CUSTOM_LENGTH, domainIndex, index)}
                         />
                         <span
-                            className={classNames('domain-text-options-length domain-field-float-left', {
-                                'domain-text-label': radio !== DOMAIN_FIELD_CUSTOM_LENGTH,
-                            })}
+                            className="domain-text-options-length domain-field-float-left"
                         >
-                            No longer than X characters
+                            No longer than {textOptionsFormControl} characters
                         </span>
-                        <FormControl
-                            type="number"
-                            id={createFormInputId(DOMAIN_FIELD_SCALE, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_SCALE)}
-                            className="domain-text-length-field"
-                            value={
-                                typeof scale !== 'undefined' && radio === DOMAIN_FIELD_CUSTOM_LENGTH
-                                    ? scale
-                                    : MAX_TEXT_LENGTH
-                            }
-                            onChange={this.handleChange}
-                            disabled={isFieldFullyLocked(lockType) || radio === DOMAIN_FIELD_MAX_LENGTH}
-                        />
                     </Col>
                 </Row>
             </div>

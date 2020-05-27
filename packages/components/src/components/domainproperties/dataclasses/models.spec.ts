@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { DomainDesign } from '../models';
+import { DomainDesign, DomainField } from '../models';
 
 import { DataClassModel } from './models';
 
@@ -30,6 +30,17 @@ describe('DataClassModel', () => {
         expect(DataClassModel.create({ name: '' }).hasValidProperties).toBeFalsy();
         expect(DataClassModel.create({ name: ' ' }).hasValidProperties).toBeFalsy();
         expect(DataClassModel.create({ name: 'test' }).hasValidProperties).toBeTruthy();
+    });
+
+    test('isValid', () => {
+        expect(DataClassModel.create({ name: 'test' }).isValid()).toBeTruthy();
+        expect(DataClassModel.create({ name: '' }).isValid()).toBeFalsy();
+
+        const invalidModel = DataClassModel.create({
+            name: 'test',
+            domainDesign: { fields: [{ name: '' }] },
+        });
+        expect(invalidModel.isValid()).toBeFalsy();
     });
 
     test('getOptions', () => {

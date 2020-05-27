@@ -20,7 +20,7 @@ import { IParentOption } from '../../entities/models';
 
 import { addDomainField, getDomainPanelStatus } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
-import { SAMPLE_SET_DISPLAY_TEXT, STICKY_HEADER_HEIGHT } from '../../../constants';
+import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
 import { IParentAlias, SampleTypeModel } from './models';
@@ -75,7 +75,7 @@ interface Props {
     nameExpressionPlaceholder?: string;
 
     // DomainDesigner props
-    containerTop?: number; // This sets the height of the sticky header, default is 60
+    containerTop?: number; // This sets the top of the sticky header, default is 0
     useTheme?: boolean;
     appPropertiesOnly?: boolean;
     successBsStyle?: string;
@@ -94,7 +94,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         includeDataClasses: false,
         useSeparateDataClassesAliasMenu: false,
 
-        containerTop: STICKY_HEADER_HEIGHT,
         useTheme: false,
         appPropertiesOnly: true,
     };
@@ -253,7 +252,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         const newAliases = parentAliases.set(id, changedAlias);
         const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
-        this.setState(() => ({ model: newModel }));
+        this.onFieldChange(newModel);
     };
 
     updateDupes = (id: string): void => {
@@ -276,6 +275,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 changedAlias = {
                     ...changedAlias,
                     ignoreAliasError: false,
+                    ignoreSelectError: false,
                 };
             }
 
@@ -283,14 +283,14 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         });
 
         const newModel = model.merge({ parentAliases: newAliases }) as SampleTypeModel;
-        this.setState(() => ({ model: newModel }));
+        this.onFieldChange(newModel);
     };
 
     addParentAlias = (id: string, newAlias: IParentAlias): void => {
         const { model } = this.state;
         const { parentAliases } = model;
         const newModel = model.merge({ parentAliases: parentAliases.set(id, newAlias) }) as SampleTypeModel;
-        this.setState(() => ({ model: newModel }));
+        this.onFieldChange(newModel);
     };
 
     removeParentAlias = (id: string) => {
@@ -298,7 +298,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const { parentAliases } = model;
         const aliases = parentAliases.delete(id);
         const newModel = model.set('parentAliases', aliases) as SampleTypeModel;
-        this.setState(() => ({ model: newModel }));
+        this.onFieldChange(newModel);
     };
 
     domainChangeHandler = (domain: DomainDesign, dirty: boolean) => {
@@ -321,12 +321,12 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     onFinish = (): void => {
         const { defaultSampleFieldConfig, setSubmitting } = this.props;
         const { model } = this.state;
-        const isValid = SampleTypeModel.isValid(model, defaultSampleFieldConfig);
+        const isValid = model.isValid(defaultSampleFieldConfig);
 
         this.props.onFinish(isValid, this.saveDomain);
 
         if (!isValid) {
-            let exception;
+            let exception: string;
 
             if (model.hasInvalidNameField(defaultSampleFieldConfig)) {
                 exception =
@@ -335,6 +335,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     ' field name is reserved for imported or generated sample ids.';
             } else if (model.getDuplicateAlias(true).size > 0) {
                 exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
+            } else {
+                exception = model.domain.getFirstFieldError();
             }
 
             const updatedModel = model.set('exception', exception) as SampleTypeModel;

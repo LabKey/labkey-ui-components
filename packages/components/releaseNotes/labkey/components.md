@@ -5,6 +5,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Release*: TBD
 * Issue39819: Make stylistic changes in a text field's Text Options
 
+### version 0.63.1
+*Released*: 26 May 2020
+* Misc domain designer fixes for 20.7
+    - Issue 40286: Domain designer panel header does not scroll to top of page
+    - Issue 40447: Fix error message when selecting 3rd setting of Data Row Uniqueness in dataset designer
+    - Issue 40149: Sample Type Designer - Not properly validating error state on parent alias
+    - Issue 38399: Domain Designer doesn't show error message when field of type lookup is missing required properties
+    - Issue 38929: Domain designer lookups fail validation immediately instead of waiting for user input
+
+### version 0.63.0
+*Released*: 22 May 2020
+* Issue 40347: Domain designer wrappers not supporting domain kind specific properties in the create case
+    - Update to @labkey/api version with Domain.getDomainDetails support for domainKind param
+    - Allow for calls to Domain.getDomainDetails to pass in a domainKind param to get domain kind specific properties
+    - Remove getListProperties and getDatasetProperties from index.ts as those are internal only now
+
 ## version 0.62.0
 *Release*: 21 May 2020
 * Move AssayProvider from SampleManager to ui-components

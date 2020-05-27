@@ -58,7 +58,14 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
     };
 
     onSelectChange = (name: string, selectedValue: string, selectedOption: IParentOption): void => {
-        this.props.onAliasChange(this.props.id, name, selectedOption);
+        // Issue 40149: on clear, need to retain the IParentOption with schema
+        const { parentAlias } = this.props;
+        let newValue = selectedOption;
+        if (!selectedOption && parentAlias && parentAlias.parentValue) {
+            newValue = { schema: parentAlias.parentValue.schema };
+        }
+
+        this.props.onAliasChange(this.props.id, name, newValue);
     };
 
     removeParentAlias = (): void => {
@@ -66,12 +73,18 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
         this.props.onRemove(id);
     };
 
-    onAliasBlur = (e: React.ChangeEvent<FormControl>): void => {
+    onAliasBlur = (): void => {
         this.props.updateDupeParentAliases(this.props.id);
     };
 
-    onSelectBlur = () => {
+    // Issue 40149: update alias ignoreSelectError prop on both blur and focus
+    onParentValueBlur = (): void => {
         this.props.onAliasChange(this.props.id, 'ignoreSelectError', false);
+    };
+
+    // Issue 40149: update alias ignoreSelectError prop on both blur and focus
+    onParentValueFocus = (): void => {
+        this.props.onAliasChange(this.props.id, 'ignoreSelectError', true);
     };
 
     render() {
@@ -79,8 +92,8 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
         if (!parentOptions) return null;
 
         const { alias, parentValue, ignoreAliasError, ignoreSelectError, isDupe } = parentAlias;
-
         const aliasBlank = !alias || alias.trim().length === 0;
+        const parentValueBlank = !parentValue || !parentValue.value;
 
         return (
             <Row key={id}>
@@ -98,7 +111,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         onBlur={this.onAliasBlur}
                     />
                 </Col>
-                <Col xs={5} className={classNames({ 'has-error': !ignoreSelectError && !parentValue })}>
+                <Col xs={5} className={classNames({ 'has-error': !ignoreSelectError && parentValueBlank })}>
                     <SelectInput
                         formsy={false}
                         inputClass="sampleset-insert--parent-select"
@@ -107,7 +120,8 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
                         options={parentOptions}
                         placeholder={`Select a ${parentTypeCaption.toLowerCase()}...`}
                         value={parentValue ? parentValue.value : undefined}
-                        onBlur={this.onSelectBlur}
+                        onFocus={this.onParentValueFocus}
+                        onBlur={this.onParentValueBlur}
                     />
                 </Col>
                 <Col>

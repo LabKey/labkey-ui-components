@@ -119,13 +119,17 @@ export class DatasetModel implements IDatasetModel {
         const isValidLabel =
             this.isNew() || (this.label !== undefined && this.label !== null && this.label.trim().length > 0);
 
+        return isValidName && isValidLabel && this.hasValidAdditionalKey();
+    }
+
+    hasValidAdditionalKey(): boolean {
         let isValidKeySetting = true;
         if (this.getDataRowSetting() === 2) {
             isValidKeySetting =
                 (this.keyPropertyName !== undefined && this.keyPropertyName !== '') || this.useTimeKeyField;
         }
 
-        return isValidName && isValidLabel && isValidKeySetting;
+        return isValidKeySetting;
     }
 
     isNew(): boolean {
@@ -179,7 +183,7 @@ export class DatasetModel implements IDatasetModel {
     }
 
     isValid(): boolean {
-        return this.hasValidProperties();
+        return this.hasValidProperties() && !this.domain.hasInvalidFields();
     }
 
     isFromAssay(): boolean {

@@ -41,6 +41,7 @@ import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
 
 const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
 const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';
+const ADDITIONAL_KEY_ERROR = 'You must select an Additional Key Field in the dataset properties panel.';
 
 interface Props {
     initModel?: DatasetModel;
@@ -145,6 +146,12 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             }
         }
 
+        if (!model.hasValidAdditionalKey() && model.exception !== ADDITIONAL_KEY_ERROR) {
+            updatedModel = produce(model, (draft: Draft<DatasetModel>) => {
+                draft.exception = ADDITIONAL_KEY_ERROR;
+            });
+        }
+
         this.setState(
             () => ({ model: updatedModel }),
             () => {
@@ -180,7 +187,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             return;
         }
 
-        if (this.checkFieldsInColumnMapping(model)) {
+        if (this.checkFieldsInColumnMapping(model) || !model.hasValidAdditionalKey()) {
             return;
         }
 

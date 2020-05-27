@@ -70,9 +70,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
 
     onFinish = () => {
         const { model } = this.state;
-        const isValid = IssuesListDefModel.isValid(model);
-
-        this.props.onFinish(isValid, model.domain.isSharedDomain() ? this.saveOptions : this.saveDomain);
+        this.props.onFinish(model.isValid(), model.domain.isSharedDomain() ? this.saveOptions : this.saveDomain);
     };
 
     saveOptions = () => {

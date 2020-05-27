@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version TBD
-*Release*: TBD
+## version 0.63.2
+*Release*: 27 May 2020
 * Issue39819: Make stylistic changes in a text field's Text Options
 
 ### version 0.63.1

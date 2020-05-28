@@ -6,8 +6,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 40008: Allow override of heading shown on LineageSummary panel for the Parents and Children of a node
 (e.g., to show "Source" instead of "Parent")
 
-## version 0.63.2
-*Release*: 27 May 2020
+### version 0.63.2
+*Released*: 27 May 2020
 * Issue39819: Make stylistic changes in a text field's Text Options
 
 ### version 0.63.1

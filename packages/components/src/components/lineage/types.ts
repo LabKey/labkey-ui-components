@@ -56,6 +56,7 @@ export interface LineageOptions {
     filterIn?: boolean;
     filters?: LineageFilter[];
     grouping?: LineageGroupingOptions;
+    // the Map<string, string> should be keyed off of the queryName for the group title suffix being modified
     groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
     request?: Experiment.ExperimentJSONConverterOptions;
     urlResolver?: LineageURLResolvers;

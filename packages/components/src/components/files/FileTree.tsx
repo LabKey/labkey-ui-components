@@ -3,7 +3,7 @@ import { Treebeard, decorators } from 'react-treebeard';
 import React, { PureComponent } from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolder, faFileAlt } from '@fortawesome/free-solid-svg-icons';
+import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { Checkbox, Alert } from 'react-bootstrap';
 import { List } from 'immutable';
 
@@ -46,11 +46,11 @@ const customStyle = {
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
-                    margin: '-7px 0 0 -7px',
-                    height: '14px',
+                    margin: '-10px 0 0 -5px',
+                    height: '10px',
                 },
-                height: 14,
-                width: 14,
+                height: 10,
+                width: 10,
                 arrow: {
                     fill: '#777',
                     strokeWidth: 0,
@@ -103,9 +103,10 @@ const nodeIsEmpty = (id: string): boolean => {
 };
 
 const Header = props => {
-    const { style, onSelect, node, customStyles, checked, handleCheckbox } = props;
-    const iconType = node.children ? 'folder' : 'file-text';
-    const icon = iconType === 'folder' ? faFolder : faFileAlt;
+    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls } = props;
+    const isDirectory = node.children !== undefined;
+    const iconType = isDirectory ? 'folder' : 'file-text';
+    const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
 
     if (nodeIsEmpty(node.id)) {
         return <div className="filetree-empty-directory">No Files Found</div>;
@@ -125,11 +126,14 @@ const Header = props => {
     };
 
     return (
-        <span className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node')}>
-            <Checkbox id={CHECK_ID_PREFIX + node.id} checked={checked} onChange={handleCheckbox} onClick={checkClick} />
+        <span className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node') + (node.active ? ' active' : '')}>
+            {handleCheckbox && <Checkbox id={CHECK_ID_PREFIX + node.id} checked={checked} onChange={handleCheckbox} onClick={checkClick} />}
             <div style={style.base} onClick={onSelect}>
                 <div style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}>
-                    <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
+                    {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls
+                        ? <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
+                        : <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
+                    }
                     {node.name}
                 </div>
             </div>
@@ -139,7 +143,9 @@ const Header = props => {
 
 interface FileTreeProps {
     loadData: (directory?: string) => Promise<any>;
-    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean) => void;
+    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => void;
+    showCheckboxes?: boolean;
+    useFileIconCls?: boolean;
 }
 
 interface FileTreeState {
@@ -151,6 +157,11 @@ interface FileTreeState {
 }
 
 export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
+    static defaultProps = {
+        showCheckboxes: true,
+        useFileIconCls: false,
+    };
+
     constructor(props: FileTreeProps) {
         super(props);
 
@@ -197,8 +208,14 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     }
 
     headerDecorator = props => {
+        const { showCheckboxes, useFileIconCls } = this.props;
         const { checked } = this.state;
-        return <Header {...props} checked={checked.contains(props.node.id)} handleCheckbox={this.handleCheckbox} />;
+
+        if (showCheckboxes) {
+            return <Header {...props} useFileIconCls={useFileIconCls} checked={checked.contains(props.node.id)} handleCheckbox={this.handleCheckbox} />;
+        } else {
+            return <Header {...props} useFileIconCls={useFileIconCls} />;
+        }
     };
 
     getNodeIdFromId = (id: string): string => {
@@ -246,11 +263,11 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     };
 
     // Callback to parent with actual path of selected file
-    onFileSelect = (id: string, checked: boolean, isDirectory: boolean): void => {
+    onFileSelect = (id: string, checked: boolean, isDirectory: boolean, node: any): void => {
         const { onFileSelect } = this.props;
 
         if (!nodeIsEmpty(id)) {
-            onFileSelect(this.getNameFromId(id), this.getPathFromId(id), checked, isDirectory);
+            onFileSelect(this.getNameFromId(id), this.getPathFromId(id), checked, isDirectory, node);
         }
     };
 
@@ -267,7 +284,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             if (checked) {
                 this.setState(
                     state => ({ checked: state.checked.push(node.id) }),
-                    () => this.onFileSelect(node.id, checked, !!node.children)
+                    () => this.onFileSelect(node.id, checked, !!node.children, node)
                 );
             } else {
                 this.setState(
@@ -276,7 +293,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                             return check !== node.id;
                         }) as List<string>,
                     }),
-                    () => this.onFileSelect(node.id, checked, !!node.children)
+                    () => this.onFileSelect(node.id, checked, !!node.children, node)
                 );
             }
         }
@@ -350,27 +367,31 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     // we make a clone of this.state.data for setState.  Directly manipulating anything in this.state is NOT a recommended React
     // pattern.  This is done in this case to work with the treebeard package, but should not be copied elsewhere.
     onToggle = (node: any, toggled: boolean, callback?: () => any): void => {
+        const { showCheckboxes } = this.props;
         const { cursor, data } = this.state;
 
         if (cursor) {
-            node.active = false;
+            cursor.active = false;
+            this.setState(() => ({ cursor, data: { ...data } }));
         }
         node.active = true;
         node.toggled = toggled;
 
-        if (node.children) {
-            // load data if not already loaded
-            if (node.children.length === 0) {
-                node.children = [{ id: node.id + '|' + LOADING_FILE_NAME }];
-                this.setState(
-                    () => ({ cursor: node, data: { ...data } }),
-                    () => {
-                        this.loadDirectory(node.id, callback);
-                    }
-                );
-            } else {
-                this.setState(() => ({ cursor: node, data: { ...data }, error: undefined }), callback);
-            }
+        // load data if not already loaded
+        if (node.children && node.children.length === 0) {
+            node.children = [{ id: node.id + '|' + LOADING_FILE_NAME }];
+            this.setState(
+                () => ({ cursor: node, data: { ...data } }),
+                () => {
+                    this.loadDirectory(node.id, callback);
+                }
+            );
+        } else {
+            this.setState(() => ({ cursor: node, data: { ...data }, error: undefined }), callback);
+        }
+
+        if (!showCheckboxes) {
+            this.onFileSelect(node.id, true, !!node.children, node);
         }
     };
 

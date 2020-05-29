@@ -21,9 +21,10 @@ import { getQueryGridModel } from '../../global';
 import { buildURL } from '../../url/ActionURL';
 import { naturalSort } from '../../util/utils';
 import { SCHEMAS } from '../base/models/schemas';
-import { AssayDefinitionModel, AssayUploadTabs, QueryGridModel, SchemaQuery } from '../base/models/model';
+import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models';
+import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 
 export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
     return new Promise((res, rej) => {
@@ -244,28 +245,62 @@ export function checkForDuplicateAssayFiles(fileNames: string[]): Promise<Duplic
     });
 }
 
-export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, runId: string): QueryGridModel {
+export function getRunPropertiesModel(
+    assayDefinition: AssayDefinitionModel,
+    runId: string,
+    props?: any
+): QueryGridModel {
+    let initProps = {
+        allowSelection: false,
+        requiredColumns: RUN_PROPERTIES_REQUIRED_COLUMNS,
+        // allow for the possibility of viewing runs that have been replaced.
+        baseFilters: List([Filter.create('Replaced', undefined, Filter.Types.NONBLANK)]),
+    };
+    if (props) {
+        initProps = { ...initProps, ...props };
+    }
     const model = getStateQueryGridModel(
-        'assay-run-details',
+        RUN_PROPERTIES_GRID_ID,
         SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
-        {
-            allowSelection: false,
-            requiredColumns: SCHEMAS.CBMB.concat(
-                'Name',
-                'RowId',
-                'ReplacesRun',
-                'ReplacedByRun',
-                'DataOutputs',
-                'DataOutputs/DataFileUrl',
-                'Batch'
-            ).toList(),
-            // allow for the possibility of viewing runs that have been replaced.
-            baseFilters: List([Filter.create('Replaced', undefined, Filter.Types.NONBLANK)]),
-        },
+        initProps,
         runId
     );
 
     return getQueryGridModel(model.getId()) || model;
+}
+
+/**
+ * N.B. Because the schema name for assay queries includes the assay type and name (e.g., assay.General.GPAT 1),
+ * we are not currently equipped to handle this in the application metadata defined in App/constants.ts.
+ */
+export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel, rerunSupport: string): List<QueryColumn> {
+    let columns = runPropertiesModel.getDisplayColumns();
+
+    const includeRerunColumns = rerunSupport === 'ReRunAndReplace';
+    const replacedByIndex = columns.findIndex(col => col.fieldKey === 'ReplacedByRun');
+    if (replacedByIndex > -1) {
+        if (includeRerunColumns) {
+            columns = columns.set(
+                replacedByIndex,
+                columns.get(replacedByIndex).set('detailRenderer', 'assayrunreference') as QueryColumn
+            );
+        } else {
+            columns = columns.delete(replacedByIndex);
+        }
+    }
+
+    if (includeRerunColumns) {
+        // add "replaces" field just after "replaced by"
+        const replaces = runPropertiesModel.getColumn('ReplacesRun');
+        if (replaces) {
+            columns = columns.insert(
+                replacedByIndex > -1 ? replacedByIndex + 1 : columns.size,
+                replaces.set('detailRenderer', 'assayrunreference') as QueryColumn
+            );
+        }
+    }
+
+    return columns;
 }
 
 export function getRunPropertiesFileName(row: Map<string, any>): string {
@@ -341,5 +376,3 @@ export function deleteAssayDesign(rowId: string): Promise<any> {
         });
     });
 }
-
-

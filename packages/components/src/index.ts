@@ -15,10 +15,6 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-// See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
-enableMapSet();
-enablePatches();
-
 import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
 import { SCHEMAS } from './components/base/models/schemas';
 import { getUserProperties, inferDomainFromFile } from './components/base/actions';
@@ -250,6 +246,7 @@ import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDel
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal';
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal';
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem';
+import { AssayReimportRunButton } from './components/assay/AssayReimportRunButton';
 import { AssayUploadResultModel, AssayStateModel } from './components/assay/models';
 import {
     deleteAssayDesign,
@@ -258,10 +255,12 @@ import {
     getBatchPropertiesModel,
     getBatchPropertiesRow,
     getImportItemsForAssayDefinitions,
+    getRunDetailsQueryColumns,
     getRunPropertiesModel,
     getRunPropertiesRow,
     importAssayRun,
 } from './components/assay/actions';
+import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './components/assay/constants';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { invalidateLineageResults } from './components/lineage/actions';
 import {
@@ -350,6 +349,10 @@ import {
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanelWithModel } from './QueryModel/DetailPanel';
+
+// See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
+enableMapSet();
+enablePatches();
 
 export {
     // global state functions
@@ -526,10 +529,12 @@ export {
     AssayProviderProps,
     AssayContextConsumer,
     AssayImportSubMenuItem,
+    AssayReimportRunButton,
     importAssayRun,
     deleteAssayDesign,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
+    getRunDetailsQueryColumns,
     getRunPropertiesModel,
     getRunPropertiesRow,
     getBatchPropertiesModel,
@@ -538,6 +543,8 @@ export {
     AssayDomainTypes,
     AssayLink,
     fetchAllAssays,
+    RUN_PROPERTIES_GRID_ID,
+    RUN_PROPERTIES_REQUIRED_COLUMNS,
     // heatmap
     HeatMap,
     addDateRangeFilter,

@@ -162,16 +162,6 @@ export function resolveDetailRenderer(column: QueryColumn) {
 
     if (column && column.detailRenderer) {
         switch (column.detailRenderer.toLowerCase()) {
-            // TODO add a mechanism for the application to register detail renderers (similar to column renderers, see getQueryColumnRenderers() in querygrid/src/global.ts)
-            // case 'nucleotidesequencedetail':
-            //     renderer = (d) => <NucleotideSequenceDetail data={d}/>;
-            //     break;
-            // case 'sequencejunctiondetail':
-            //     renderer = (d, r) => <SequenceJunctionDetail data={d} row={r}/>;
-            //     break;
-            // case 'sequenceloadrenderer':
-            //     renderer = (d) => <SequenceLoader data={d}/>;
-            //     break;
             case 'multivaluedetailrenderer':
                 renderer = d => <MultiValueRenderer data={d} />;
                 break;

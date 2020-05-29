@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version TBD
-*Released*: TBD
+## version 0.64.0
+*Released*: 29 May 2020
 * Merge AssayReimportRunButton from Biologics and SampleManager and move here for common use
 * Add isGPAT utility method to AssayProtocol model
 * Move getRunDetailsQueryColumns from SampleManager

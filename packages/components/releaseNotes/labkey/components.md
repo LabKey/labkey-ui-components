@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* FileTree component
+    - add prop to remove checkbox selection option from node display
+    - support font awesome icon display for file based on WebDav iconFontCls data
+    - call the onFileSelect callback function on node select for non-checkbox case
+    - make the arrow toggle smaller
+* WebDav model updates for module editor browser scenario
+    - add contentType and options properties to model
+    - add param to getWebDavFiles for the non-@files case
+
 ### version 0.63.3
 *Released*: 27 May 2020
 * Issue 40008: Allow override of heading shown on LineageSummary panel for the Parents and Children of a node

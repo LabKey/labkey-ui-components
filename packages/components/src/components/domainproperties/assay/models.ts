@@ -198,8 +198,8 @@ export class AssayProtocolModel extends Record({
         return this.hasValidProperties() && this.getFirstDomainFieldError() === undefined;
     }
 
-    isGPAT() : boolean {
-        return this.providerName.toLowerCase() === "general";
+    isGPAT(): boolean {
+        return this.providerName.toLowerCase() === 'general';
     }
 
     hasValidProperties(): boolean {

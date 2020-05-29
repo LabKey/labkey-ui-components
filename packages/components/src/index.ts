@@ -15,10 +15,6 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-// See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
-enableMapSet();
-enablePatches();
-
 import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
 import { SCHEMAS } from './components/base/models/schemas';
 import { getUserProperties, inferDomainFromFile } from './components/base/actions';
@@ -251,10 +247,7 @@ import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDel
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal';
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './components/assay/AssayReimportRunButton';
-import {
-    AssayUploadResultModel,
-    AssayStateModel,
-} from './components/assay/models';
+import { AssayUploadResultModel, AssayStateModel } from './components/assay/models';
 import {
     deleteAssayDesign,
     deleteAssayRuns,
@@ -267,10 +260,7 @@ import {
     getRunPropertiesRow,
     importAssayRun,
 } from './components/assay/actions';
-import {
-    RUN_PROPERTIES_GRID_ID,
-    RUN_PROPERTIES_REQUIRED_COLUMNS,
-} from './components/assay/constants';
+import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './components/assay/constants';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { invalidateLineageResults } from './components/lineage/actions';
 import {
@@ -359,6 +349,10 @@ import {
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanelWithModel } from './QueryModel/DetailPanel';
+
+// See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
+enableMapSet();
+enablePatches();
 
 export {
     // global state functions

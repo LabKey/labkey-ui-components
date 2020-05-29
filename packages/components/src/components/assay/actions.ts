@@ -245,7 +245,11 @@ export function checkForDuplicateAssayFiles(fileNames: string[]): Promise<Duplic
     });
 }
 
-export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, runId: string, props?: any): QueryGridModel {
+export function getRunPropertiesModel(
+    assayDefinition: AssayDefinitionModel,
+    runId: string,
+    props?: any
+): QueryGridModel {
     let initProps = {
         allowSelection: false,
         requiredColumns: RUN_PROPERTIES_REQUIRED_COLUMNS,
@@ -253,7 +257,7 @@ export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, run
         baseFilters: List([Filter.create('Replaced', undefined, Filter.Types.NONBLANK)]),
     };
     if (props) {
-        initProps = {...initProps, ...props};
+        initProps = { ...initProps, ...props };
     }
     const model = getStateQueryGridModel(
         RUN_PROPERTIES_GRID_ID,
@@ -269,14 +273,17 @@ export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, run
  * N.B. Because the schema name for assay queries includes the assay type and name (e.g., assay.General.GPAT 1),
  * we are not currently equipped to handle this in the application metadata defined in App/constants.ts.
  */
-export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel, rerunSupport: string) : List<QueryColumn> {
+export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel, rerunSupport: string): List<QueryColumn> {
     let columns = runPropertiesModel.getDisplayColumns();
 
-    const includeRerunColumns = rerunSupport === "ReRunAndReplace";
-    const replacedByIndex = columns.findIndex((col) => (col.fieldKey === "ReplacedByRun"));
+    const includeRerunColumns = rerunSupport === 'ReRunAndReplace';
+    const replacedByIndex = columns.findIndex(col => col.fieldKey === 'ReplacedByRun');
     if (replacedByIndex > -1) {
         if (includeRerunColumns) {
-            columns = columns.set(replacedByIndex, columns.get(replacedByIndex).set('detailRenderer', 'assayrunreference') as QueryColumn);
+            columns = columns.set(
+                replacedByIndex,
+                columns.get(replacedByIndex).set('detailRenderer', 'assayrunreference') as QueryColumn
+            );
         } else {
             columns = columns.delete(replacedByIndex);
         }
@@ -284,9 +291,12 @@ export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel, re
 
     if (includeRerunColumns) {
         // add "replaces" field just after "replaced by"
-        const replaces = runPropertiesModel.getColumn("ReplacesRun");
+        const replaces = runPropertiesModel.getColumn('ReplacesRun');
         if (replaces) {
-            columns = columns.insert(replacedByIndex > -1 ? replacedByIndex + 1 : columns.size, replaces.set('detailRenderer', 'assayrunreference') as QueryColumn);
+            columns = columns.insert(
+                replacedByIndex > -1 ? replacedByIndex + 1 : columns.size,
+                replaces.set('detailRenderer', 'assayrunreference') as QueryColumn
+            );
         }
     }
 
@@ -366,5 +376,3 @@ export function deleteAssayDesign(rowId: string): Promise<any> {
         });
     });
 }
-
-

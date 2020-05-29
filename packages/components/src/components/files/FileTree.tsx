@@ -144,7 +144,7 @@ const Header = props => {
 interface FileTreeProps {
     loadData: (directory?: string) => Promise<any>;
     onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => void;
-    showCheckboxes?: boolean;
+    allowMultiSelect?: boolean;
     useFileIconCls?: boolean;
 }
 
@@ -158,7 +158,7 @@ interface FileTreeState {
 
 export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     static defaultProps = {
-        showCheckboxes: true,
+        allowMultiSelect: true,
         useFileIconCls: false,
     };
 
@@ -208,10 +208,10 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     }
 
     headerDecorator = props => {
-        const { showCheckboxes, useFileIconCls } = this.props;
+        const { allowMultiSelect, useFileIconCls } = this.props;
         const { checked } = this.state;
 
-        if (showCheckboxes) {
+        if (allowMultiSelect) {
             return <Header {...props} useFileIconCls={useFileIconCls} checked={checked.contains(props.node.id)} handleCheckbox={this.handleCheckbox} />;
         } else {
             return <Header {...props} useFileIconCls={useFileIconCls} />;
@@ -367,7 +367,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     // we make a clone of this.state.data for setState.  Directly manipulating anything in this.state is NOT a recommended React
     // pattern.  This is done in this case to work with the treebeard package, but should not be copied elsewhere.
     onToggle = (node: any, toggled: boolean, callback?: () => any): void => {
-        const { showCheckboxes } = this.props;
+        const { allowMultiSelect } = this.props;
         const { cursor, data } = this.state;
 
         if (cursor) {
@@ -390,7 +390,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             this.setState(() => ({ cursor: node, data: { ...data }, error: undefined }), callback);
         }
 
-        if (!showCheckboxes) {
+        if (!allowMultiSelect) {
             this.onFileSelect(node.id, true, !!node.children, node);
         }
     };

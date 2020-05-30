@@ -164,10 +164,10 @@ export function getHelpTip(fieldName: string): string {
     return helpTip;
 }
 
-export function getDatasetProperties(datasetId?: number) {
+function getDatasetProperties(datasetId?: number): Promise<DatasetModel> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('study', 'GetDataset'),
+            url: ActionURL.buildURL('study', 'getDataset.api'),
             method: 'GET',
             params: { datasetId },
             success: Utils.getCallbackWrapper(data => {
@@ -180,13 +180,14 @@ export function getDatasetProperties(datasetId?: number) {
     });
 }
 
-export function fetchDatasetDesign(datasetId: number): Promise<DatasetModel> {
+export function fetchDatasetDesign(datasetId?: number): Promise<DatasetModel> {
     return new Promise((resolve, reject) => {
         getDatasetProperties(datasetId)
             .then((model: DatasetModel) => {
                 Domain.getDomainDetails({
                     containerPath: LABKEY.container.path,
                     domainId: model.domainId,
+                    domainKind: datasetId === undefined ? 'StudyDatasetDate' : undefined, // NOTE there is also a StudyDatasetVisit domain kind but for this purpose either will work
                     success: data => {
                         resolve(DatasetModel.create(undefined, data));
                     },

@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { enableMapSet, enablePatches } from 'immer';
+
 import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
 import { SCHEMAS } from './components/base/models/schemas';
-import {
-    fetchAllAssays,
-    getUserProperties,
-    importGeneralAssayRun,
-    inferDomainFromFile,
-} from './components/base/actions';
+import { getUserProperties, inferDomainFromFile } from './components/base/actions';
 import { QueryInfo } from './components/base/models/QueryInfo';
+import { QuerySort } from './components/base/models/QuerySort';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    AssayUploadTabs,
     Container,
     IGridLoader,
     IGridResponse,
@@ -244,31 +241,26 @@ import { DataClassDesigner } from './components/domainproperties/dataclasses/Dat
 import { DataClassModel } from './components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './components/assay/AssayImportPanels';
-import { BatchPropertiesPanel } from './components/assay/BatchPropertiesPanel';
-import { RunPropertiesPanel } from './components/assay/RunPropertiesPanel';
-import { RunDataPanel } from './components/assay/RunDataPanel';
-import { AssayUploadGridLoader } from './components/assay/AssayUploadGridLoader';
+import { AssayProvider, AssayProviderProps, AssayContextConsumer } from './components/assay/AssayProvider';
 import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal';
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal';
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem';
-import {
-    AssayUploadResultModel,
-    AssayWizardModel,
-    IAssayUploadOptions,
-    IAssayURLContext,
-} from './components/assay/models';
+import { AssayReimportRunButton } from './components/assay/AssayReimportRunButton';
+import { AssayUploadResultModel, AssayStateModel } from './components/assay/models';
 import {
     deleteAssayDesign,
     deleteAssayRuns,
+    fetchAllAssays,
     getBatchPropertiesModel,
     getBatchPropertiesRow,
     getImportItemsForAssayDefinitions,
+    getRunDetailsQueryColumns,
     getRunPropertiesModel,
     getRunPropertiesRow,
     importAssayRun,
-    uploadAssayRunFiles,
 } from './components/assay/actions';
+import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './components/assay/constants';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { invalidateLineageResults } from './components/lineage/actions';
 import {
@@ -321,9 +313,9 @@ import { IssuesListDefModel } from './components/domainproperties/issues/models'
 import { IssuesListDefDesignerPanels } from './components/domainproperties/issues/IssuesListDefDesignerPanels';
 import { DatasetDesignerPanels } from './components/domainproperties/dataset/DatasetDesignerPanels';
 import { DatasetModel } from './components/domainproperties/dataset/models';
-import { fetchListDesign, getListProperties } from './components/domainproperties/list/actions';
+import { fetchListDesign } from './components/domainproperties/list/actions';
 import { fetchIssuesListDefDesign } from './components/domainproperties/issues/actions';
-import { fetchDatasetDesign, getDatasetProperties } from './components/domainproperties/dataset/actions';
+import { fetchDatasetDesign } from './components/domainproperties/dataset/actions';
 import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
@@ -358,6 +350,10 @@ import {
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanelWithModel } from './QueryModel/DetailPanel';
 
+// See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
+enableMapSet();
+enablePatches();
+
 export {
     // global state functions
     initQueryGridState,
@@ -373,7 +369,6 @@ export {
     gridIdInvalidate,
     queryGridInvalidate,
     schemaGridInvalidate,
-
     // grid functions
     getSelected,
     getSelection,
@@ -381,7 +376,6 @@ export {
     gridShowError,
     setSelected,
     unselectAll,
-
     // query related items
     ISelectRowsResult,
     InsertRowsResponse,
@@ -396,7 +390,6 @@ export {
     importData,
     getQueryDetails,
     invalidateQueryDetailsCacheKey,
-
     // editable grid related items
     MAX_EDITABLE_GRID_ROWS,
     EditableGridLoaderFromSelection,
@@ -406,7 +399,6 @@ export {
     EditableGridModal,
     EditableColumnMetadata,
     EditorModel,
-
     // url and location related items
     AppURL,
     Location,
@@ -427,7 +419,6 @@ export {
     imageURL,
     spliceURL,
     WHERE_FILTER_TYPE,
-
     // renderers
     AliasRenderer,
     AppendUnits,
@@ -438,7 +429,6 @@ export {
     resolveDetailRenderer,
     titleRenderer,
     resolveRenderer,
-
     // form related items
     BulkAddUpdateForm,
     BulkUpdateForm,
@@ -471,7 +461,6 @@ export {
     LabelOverlay,
     WizardNavButtons,
     FormSection,
-
     // user/permissions related items
     getUsersWithPermissions,
     getUserProperties,
@@ -492,7 +481,6 @@ export {
     SecurityPolicy,
     SecurityRole,
     Principal,
-
     // data class and sample type related items
     DataClassModel,
     deleteDataClass,
@@ -506,7 +494,6 @@ export {
     loadSelectedSamples,
     SampleTypeDataType,
     DataClassDataType,
-
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -525,33 +512,29 @@ export {
     RemoveEntityButton,
     getSampleDeleteConfirmationData,
     getDataDeleteConfirmationData,
-
     // search related items
     SearchResultsModel,
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
     SearchResultCardData,
-
     // assay
     AssayUploadResultModel,
     AssayDesignDeleteConfirmModal,
     AssayResultDeleteConfirmModal,
     AssayRunDeleteConfirmModal,
-    AssayWizardModel,
-    IAssayURLContext,
-    IAssayUploadOptions,
-    AssayUploadGridLoader,
+    AssayStateModel,
     AssayImportPanels,
-    BatchPropertiesPanel,
-    RunPropertiesPanel,
-    RunDataPanel,
+    AssayProvider,
+    AssayProviderProps,
+    AssayContextConsumer,
     AssayImportSubMenuItem,
+    AssayReimportRunButton,
     importAssayRun,
-    uploadAssayRunFiles,
     deleteAssayDesign,
     deleteAssayRuns,
     getImportItemsForAssayDefinitions,
+    getRunDetailsQueryColumns,
     getRunPropertiesModel,
     getRunPropertiesRow,
     getBatchPropertiesModel,
@@ -559,16 +542,14 @@ export {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    AssayUploadTabs,
     fetchAllAssays,
-    importGeneralAssayRun,
-
+    RUN_PROPERTIES_GRID_ID,
+    RUN_PROPERTIES_REQUIRED_COLUMNS,
     // heatmap
     HeatMap,
     addDateRangeFilter,
     last12Months,
     monthSort,
-
     // report / chart related items
     DataViewInfoTypes,
     IDataViewInfo,
@@ -577,7 +558,6 @@ export {
     ReportListItem,
     ReportItemModal,
     ReportList,
-
     // lineage
     LINEAGE_GROUPING_GENERATIONS,
     LINEAGE_DIRECTIONS,
@@ -589,7 +569,6 @@ export {
     SampleTypeLineageCounts,
     VisGraphNode,
     invalidateLineageResults,
-
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,
@@ -603,7 +582,6 @@ export {
     Breadcrumb,
     BreadcrumbCreate,
     confirmLeaveWhenDirty,
-
     // notification related items
     NO_UPDATES_MESSAGE,
     NotificationItemProps,
@@ -616,7 +594,6 @@ export {
     addNotification,
     createDeleteSuccessNotification,
     createDeleteErrorNotification,
-
     // domain designer related items
     DomainForm,
     DomainFieldsDisplay,
@@ -646,19 +623,14 @@ export {
     ListDesignerPanels,
     ListModel,
     fetchListDesign,
-    getListProperties,
     DatasetDesignerPanels,
     DatasetModel,
     fetchDatasetDesign,
-    getDatasetProperties,
     DataClassDesigner,
     SampleTypeDesigner,
-
-    //issues list def
     IssuesListDefModel,
     IssuesListDefDesignerPanels,
     fetchIssuesListDefDesign,
-
     // file / webdav related items
     FileAttachmentFormModel,
     DEFAULT_FILE,
@@ -671,7 +643,6 @@ export {
     WebDavFile,
     getWebDavFiles,
     uploadWebDavFile,
-
     // util functions (TODO: need to see if all of these are still being used outside of this package)
     datePlaceholder,
     getDateFormat,
@@ -690,12 +661,10 @@ export {
     resolveErrorMessage,
     getHelpLink,
     helpLinkNode,
-
     // devTools functions
     applyDevTools,
     devToolsActive,
     toggleDevTools,
-
     // buttons and menus
     MenuOption,
     MultiMenuButton,
@@ -709,7 +678,6 @@ export {
     SubMenuItemProps,
     ISubItem,
     ToggleButtons,
-
     // application page related items
     LoadingPage,
     LoadingPageProps,
@@ -724,7 +692,6 @@ export {
     QueriesListing,
     Theme,
     SVGIcon,
-
     // general components
     Alert,
     CollapsiblePanel,
@@ -745,7 +712,6 @@ export {
     LoadingSpinner,
     CreatedModified,
     DeleteIcon,
-
     // base models, enums, constants
     Container,
     User,
@@ -753,6 +719,7 @@ export {
     QueryInfo,
     QueryLookup,
     QueryInfoStatus,
+    QuerySort,
     SchemaDetails,
     SchemaQuery,
     ViewInfo,
@@ -765,7 +732,6 @@ export {
     getSchemaQuery,
     resolveSchemaQuery,
     insertColumnFilter,
-
     // QueryGridModel
     QueryGridModel,
     QueryGridPanel,
@@ -773,7 +739,6 @@ export {
     GRID_CHECKBOX_OPTIONS,
     IGridLoader,
     IGridResponse,
-
     // QueryModel
     QueryModel,
     QueryConfigMap,

@@ -2,10 +2,18 @@ import { List } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
-import { LoadingState, naturalSort, QueryColumn, QueryInfo, SchemaQuery, ViewInfo } from '..';
-import { QuerySort } from '../components/base/models/model';
-
-import { getOrDefault } from './utils';
+import {
+    GRID_CHECKBOX_OPTIONS,
+    LoadingState,
+    IDataViewInfo,
+    naturalSort,
+    QueryColumn,
+    QueryInfo,
+    QuerySort,
+    SchemaQuery,
+    ViewInfo,
+} from '..';
+import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
@@ -33,68 +41,67 @@ export interface QueryConfig {
     id?: string;
     includeDetailsColumn?: boolean;
     includeUpdateColumn?: boolean;
-    keyValue?: any; // TODO: better name
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    keyValue?: any; // Should be a Primary Key Value, used when loading/rendering details pages.
     maxRows?: number;
     offset?: number;
     omittedColumns?: string[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     queryParameters?: { [key: string]: any };
     requiredColumns?: string[];
     schemaQuery: SchemaQuery;
     sorts?: QuerySort[];
 }
 
-export interface IQueryModel extends QueryConfig {
-    error?: string;
-    // Separate from baseFilters because these are set by the user when interacting with grids (e.g. via omnibox)
-    filterArray: Filter.IFilter[];
-    // Set by server (Assay QC, etc)
-    messages: GridMessage[];
-    queryInfo?: QueryInfo;
-    queryInfoLoadingState: LoadingState;
-    orderedRows?: string[];
-    rows?: { [key: string]: any };
-    rowCount?: number;
-    rowsLoadingState: LoadingState;
-}
-
 const DEFAULT_OFFSET = 0;
 const DEFAULT_MAX_ROWS = 20;
 
-export class QueryModel implements IQueryModel {
+export class QueryModel {
     [immerable] = true;
 
     // Fields from QueryConfig
+    // Some of the fields we have in common with QueryConfig are not optional because we give them default values.
     readonly baseFilters: Filter.IFilter[];
     readonly containerFilter?: Query.ContainerFilter;
     readonly containerPath?: string;
     readonly id: string;
     readonly includeDetailsColumn: boolean;
     readonly includeUpdateColumn: boolean;
-    readonly keyValue?: any; // TODO: better name
-    readonly maxRows?: number;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    readonly keyValue?: any;
+    readonly maxRows: number;
     readonly offset: number;
     readonly omittedColumns: string[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly queryParameters?: { [key: string]: any };
     readonly requiredColumns: string[];
     readonly schemaQuery: SchemaQuery;
-    readonly sorts?: QuerySort[];
+    readonly sorts: QuerySort[];
 
     // QueryModel only fields
-    readonly error: string;
     readonly filterArray: Filter.IFilter[];
-    readonly rowsLoadingState: LoadingState;
-    readonly messages: GridMessage[];
+    readonly messages?: GridMessage[];
     readonly orderedRows?: string[];
     readonly queryInfo?: QueryInfo;
+    readonly queryInfoError?: string;
     readonly queryInfoLoadingState: LoadingState;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly rows?: { [key: string]: any };
     readonly rowCount?: number;
+    readonly rowsError?: string;
+    readonly rowsLoadingState: LoadingState;
+    readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set
+    readonly selectionsError?: string;
+    readonly selectionsLoadingState: LoadingState;
+    readonly charts: IDataViewInfo[];
+    readonly chartsError: string;
+    readonly chartsLoadingState: LoadingState;
 
     constructor(queryConfig: QueryConfig) {
-        this.baseFilters = getOrDefault(queryConfig.baseFilters, []);
-        this.containerFilter = getOrDefault(queryConfig.containerFilter);
-        this.containerPath = getOrDefault(queryConfig.containerPath);
-        this.schemaQuery = getOrDefault(queryConfig.schemaQuery);
+        this.baseFilters = queryConfig.baseFilters ?? [];
+        this.containerFilter = queryConfig.containerFilter;
+        this.containerPath = queryConfig.containerPath;
+        this.schemaQuery = queryConfig.schemaQuery;
 
         // Even though this is a situation that we shouldn't be in due to the type annotations it's still possible
         // due to conversion from any, and it's best to have a specific error than an error due to undefined later
@@ -103,41 +110,45 @@ export class QueryModel implements IQueryModel {
             throw new Error('schemaQuery is required to instantiate a QueryModel');
         }
 
-        this.id = getOrDefault(queryConfig.id, createQueryModelId(this.schemaQuery));
-        this.includeDetailsColumn = getOrDefault(queryConfig.includeDetailsColumn, false);
-        this.includeUpdateColumn = getOrDefault(queryConfig.includeUpdateColumn, false);
-        this.keyValue = getOrDefault(queryConfig.keyValue);
-        this.maxRows = getOrDefault(queryConfig.maxRows, DEFAULT_MAX_ROWS);
-        this.offset = getOrDefault(queryConfig.offset, DEFAULT_OFFSET);
-        this.omittedColumns = getOrDefault(queryConfig.omittedColumns, []);
-        this.queryParameters = getOrDefault(queryConfig.queryParameters);
-        this.requiredColumns = getOrDefault(queryConfig.requiredColumns, []);
-        this.sorts = getOrDefault(queryConfig.sorts);
-        this.error = undefined;
+        this.id = queryConfig.id ?? createQueryModelId(this.schemaQuery);
+        this.includeDetailsColumn = queryConfig.includeDetailsColumn ?? false;
+        this.includeUpdateColumn = queryConfig.includeUpdateColumn ?? false;
+        this.keyValue = queryConfig.keyValue;
+        this.maxRows = queryConfig.maxRows ?? DEFAULT_MAX_ROWS;
+        this.offset = queryConfig.offset ?? DEFAULT_OFFSET;
+        this.omittedColumns = queryConfig.omittedColumns ?? [];
+        this.queryParameters = queryConfig.queryParameters;
+        this.requiredColumns = queryConfig.requiredColumns ?? [];
+        this.sorts = queryConfig.sorts ?? [];
+        this.rowsError = undefined;
         this.filterArray = [];
         this.messages = [];
         this.queryInfo = undefined;
+        this.queryInfoError = undefined;
+        this.queryInfoLoadingState = LoadingState.INITIALIZED;
         this.orderedRows = undefined;
         this.rows = undefined;
         this.rowCount = undefined;
+        this.rowsError = undefined;
         this.rowsLoadingState = LoadingState.INITIALIZED;
-        this.queryInfoLoadingState = LoadingState.INITIALIZED;
+        this.selections = undefined;
+        this.selectionsError = undefined;
+        this.selectionsLoadingState = LoadingState.INITIALIZED;
+        this.charts = undefined;
+        this.chartsError = undefined;
+        this.chartsLoadingState = LoadingState.INITIALIZED;
     }
 
-    get schemaName() {
+    get schemaName(): string {
         return this.schemaQuery.schemaName;
     }
 
-    get queryName() {
+    get queryName(): string {
         return this.schemaQuery.queryName;
     }
 
-    get viewName() {
+    get viewName(): string {
         return this.schemaQuery.viewName;
-    }
-
-    getColumn(fieldKey: string): QueryColumn {
-        return this.queryInfo?.getColumn(fieldKey);
     }
 
     get detailColumns(): QueryColumn[] {
@@ -222,6 +233,10 @@ export class QueryModel implements IQueryModel {
         return fieldKeys.join(',');
     }
 
+    get exportColumnString(): string {
+        return this.displayColumns.map(column => column.fieldKey).join(',');
+    }
+
     get sortString(): string {
         const { sorts, viewName, queryInfo } = this;
 
@@ -231,7 +246,7 @@ export class QueryModel implements IQueryModel {
             throw new Error('Cannot construct sort string, no QueryInfo available');
         }
 
-        let sortStrings = sorts?.map(sortStringMapper) || [];
+        let sortStrings = sorts.map(sortStringMapper);
         const viewSorts = queryInfo.getSorts(viewName).map(sortStringMapper).toArray();
 
         if (viewSorts.length > 0) {
@@ -244,8 +259,22 @@ export class QueryModel implements IQueryModel {
     /**
      * Returns the data needed for a <Grid /> component to render.
      */
-    get gridData() {
-        return this.orderedRows.map(i => this.rows[i]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    get gridData(): Array<{ [key: string]: any }> {
+        const { hasSelections, selections } = this;
+
+        return this.orderedRows.map(value => {
+            const row = this.rows[value];
+
+            if (hasSelections) {
+                return {
+                    ...row,
+                    [GRID_SELECTION_INDEX]: selections.has(value),
+                };
+            }
+
+            return row;
+        });
     }
 
     get pageCount(): number {
@@ -270,6 +299,32 @@ export class QueryModel implements IQueryModel {
         return this.rows !== undefined;
     }
 
+    get hasCharts(): boolean {
+        return this.charts !== undefined;
+    }
+
+    get hasSelections(): boolean {
+        return this.selections !== undefined;
+    }
+
+    get selectedState(): GRID_CHECKBOX_OPTIONS {
+        const { hasSelections, hasData, isLoading, maxRows, orderedRows, selections, rowCount } = this;
+
+        if (!isLoading && hasData && hasSelections) {
+            const selectedOnPage = orderedRows.filter(rowId => selections.has(rowId)).length;
+
+            if (selectedOnPage === maxRows && rowCount > 0) {
+                return GRID_CHECKBOX_OPTIONS.ALL;
+            } else if (selectedOnPage > 0) {
+                // if model has any selected on the page show checkbox as indeterminate
+                return GRID_CHECKBOX_OPTIONS.SOME;
+            }
+        }
+
+        // Default to none.
+        return GRID_CHECKBOX_OPTIONS.NONE;
+    }
+
     get isLoading(): boolean {
         const { queryInfoLoadingState, rowsLoadingState } = this;
         return (
@@ -278,6 +333,16 @@ export class QueryModel implements IQueryModel {
             rowsLoadingState === LoadingState.INITIALIZED ||
             rowsLoadingState === LoadingState.LOADING
         );
+    }
+
+    get isLoadingCharts(): boolean {
+        const { chartsLoadingState } = this;
+        return chartsLoadingState === LoadingState.INITIALIZED || chartsLoadingState === LoadingState.LOADING;
+    }
+
+    get isLoadingSelections(): boolean {
+        const { selectionsLoadingState } = this;
+        return selectionsLoadingState === LoadingState.INITIALIZED || selectionsLoadingState === LoadingState.LOADING;
     }
 
     get isLastPage(): boolean {
@@ -301,7 +366,7 @@ export class QueryModel implements IQueryModel {
      * returns this.
      * @param props
      */
-    mutate(props: Partial<IQueryModel>): QueryModel {
+    mutate(props: Partial<QueryModel>): QueryModel {
         return produce(this, (draft: Draft<QueryModel>) => {
             Object.assign(draft, props);
         });

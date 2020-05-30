@@ -62,7 +62,7 @@ export function initSelect(props: QuerySelectOwnProps): Promise<QuerySelectModel
                     const valueColumn = initValueColumn(queryInfo, props.valueColumn);
                     const displayColumn = initDisplayColumn(queryInfo, props.displayColumn);
 
-                    if (props.value !== undefined) {
+                    if (props.value !== undefined && props.value !== null) {
                         let filter = Filter.create(valueColumn, props.value);
 
                         if (props.multiple && typeof props.value === 'string') {

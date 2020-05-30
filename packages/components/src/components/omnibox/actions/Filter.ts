@@ -16,8 +16,7 @@
 import { List, Map, Set } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { QueryColumn, QueryGridModel } from '../../base/models/model';
-import { naturalSort } from '../../../util/utils';
+import { QueryColumn } from '../../base/models/model';
 
 import { parseColumns, resolveFieldKey } from '../utils';
 
@@ -163,11 +162,11 @@ export class FilterAction implements Action {
     iconCls = 'filter';
     keyword = 'filter';
     optionalLabel = 'columns';
-    getModel: () => QueryGridModel;
+    getColumns: (all?: boolean) => List<QueryColumn>;
     urlPrefix: string;
 
-    constructor(urlPrefix: string, getModel: () => QueryGridModel) {
-        this.getModel = getModel;
+    constructor(urlPrefix: string, getColumns: () => List<QueryColumn>) {
+        this.getColumns = getColumns;
         this.urlPrefix = urlPrefix;
     }
 
@@ -209,7 +208,7 @@ export class FilterAction implements Action {
 
     completeAction(tokens: string[]): Promise<Value> {
         return new Promise(resolve => {
-            const columns = this.getModel().getAllColumns();
+            const columns = this.getColumns(true);
             const { activeFilterType, column, columnName, rawValue } = FilterAction.parseTokens(tokens, columns, true);
 
             if (column && activeFilterType && (rawValue !== undefined || !activeFilterType.isDataValueRequired())) {
@@ -217,10 +216,12 @@ export class FilterAction implements Action {
                 const filter = Filter.create(resolveFieldKey(columnName, column), rawValue, activeFilterType);
                 const display = this.getDisplayValue(column.shortCaption, activeFilterType, rawValue);
                 resolve({
+                    isValid: true,
                     displayValue: display.displayValue,
                     isReadOnly: display.isReadOnly,
                     param: filter.getURLParameterName(this.urlPrefix) + '=' + filter.getURLParameterValue(),
                     value: [`"${column.shortCaption}"`, operator, rawValue].join(' '),
+                    valueObject: filter,
                 });
             } else {
                 resolve({
@@ -233,7 +234,7 @@ export class FilterAction implements Action {
 
     fetchOptions(tokens: string[], uniqueValues?: List<any>): Promise<ActionOption[]> {
         return new Promise(resolve => {
-            const columns = this.getModel().getDisplayColumns();
+            const columns = this.getColumns();
             let actionOptions: ActionOption[] = [];
             const { activeFilterType, column, columnName, rawValue, filterTypes } = FilterAction.parseTokens(
                 tokens,

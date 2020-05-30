@@ -1,8 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { ButtonGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { QueryModel, Tip } from '..';
 import { PagingButton } from '../components/gridbar/QueryGridPaging';
+
+import { blurActiveElement } from '../util/utils';
 
 import { RequiresModelAndActions } from './withQueryModels';
 
@@ -11,7 +13,7 @@ interface PaginationInfoProps {
 }
 
 export class PaginationInfo extends PureComponent<PaginationInfoProps> {
-    render() {
+    render(): ReactNode {
         const { model } = this.props;
         const { hasData, offset, maxRows, rowCount } = model;
         let message = '';
@@ -38,9 +40,20 @@ export class PaginationInfo extends PureComponent<PaginationInfoProps> {
 }
 
 export class PageSelector extends PureComponent<RequiresModelAndActions> {
-    render() {
+    loadFirstPage = (): void => {
         const { model, actions } = this.props;
-        const { loadFirstPage, loadLastPage } = actions;
+        actions.loadFirstPage(model.id);
+        blurActiveElement();
+    };
+
+    loadLastPage = (): void => {
+        const { model, actions } = this.props;
+        actions.loadLastPage(model.id);
+        blurActiveElement();
+    };
+
+    render(): ReactNode {
+        const { model } = this.props;
         const { id, currentPage, isFirstPage, isLastPage, isLoading, isPaged, pageCount } = model;
 
         return (
@@ -49,11 +62,11 @@ export class PageSelector extends PureComponent<RequiresModelAndActions> {
                     <DropdownButton id={`current-page-drop-${id}`} pullRight title={currentPage}>
                         <MenuItem header>Jump To</MenuItem>
 
-                        <MenuItem disabled={isLoading || isFirstPage} onClick={() => loadFirstPage(id)}>
+                        <MenuItem disabled={isLoading || isFirstPage} onClick={this.loadFirstPage}>
                             First Page
                         </MenuItem>
 
-                        <MenuItem disabled={isLoading || isLastPage} onClick={() => loadLastPage(id)}>
+                        <MenuItem disabled={isLoading || isLastPage} onClick={this.loadLastPage}>
                             Last Page
                         </MenuItem>
 
@@ -66,9 +79,21 @@ export class PageSelector extends PureComponent<RequiresModelAndActions> {
 }
 
 export class PaginationButtons extends PureComponent<RequiresModelAndActions> {
-    render() {
+    loadPreviousPage = (): void => {
         const { model, actions } = this.props;
-        const { id, isFirstPage, isLastPage, isLoading, isPaged } = model;
+        actions.loadPreviousPage(model.id);
+        blurActiveElement();
+    };
+
+    loadNextPage = (): void => {
+        const { model, actions } = this.props;
+        actions.loadNextPage(model.id);
+        blurActiveElement();
+    };
+
+    render(): ReactNode {
+        const { model, actions } = this.props;
+        const { isFirstPage, isLastPage, isLoading, isPaged } = model;
         return (
             isPaged && (
                 <ButtonGroup className="pagination-button-group">
@@ -76,7 +101,7 @@ export class PaginationButtons extends PureComponent<RequiresModelAndActions> {
                         disabled={isLoading || isFirstPage}
                         iconClass="fa-chevron-left"
                         tooltip="Previous Page"
-                        onClick={() => actions.loadPreviousPage(id)}
+                        onClick={this.loadPreviousPage}
                     />
 
                     <PageSelector model={model} actions={actions} />
@@ -85,7 +110,7 @@ export class PaginationButtons extends PureComponent<RequiresModelAndActions> {
                         disabled={isLoading || isLastPage}
                         iconClass="fa-chevron-right"
                         tooltip="Next Page"
-                        onClick={() => actions.loadNextPage(id)}
+                        onClick={this.loadNextPage}
                     />
                 </ButtonGroup>
             )

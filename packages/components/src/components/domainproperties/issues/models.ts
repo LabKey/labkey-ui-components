@@ -67,8 +67,8 @@ export class IssuesListDefModel implements IssuesListDefModelConfig {
         return !this.entityId;
     }
 
-    static isValid(model: IssuesListDefModel): boolean {
-        return model.hasValidProperties();
+    isValid(): boolean {
+        return this.hasValidProperties() && !this.domain.hasInvalidFields();
     }
 
     hasValidProperties(): boolean {

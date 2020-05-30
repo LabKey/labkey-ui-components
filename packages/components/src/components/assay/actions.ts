@@ -14,18 +14,39 @@
  * limitations under the License.
  */
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, AssayDOM, Filter, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
 import { buildURL } from '../../url/ActionURL';
 import { naturalSort } from '../../util/utils';
 import { SCHEMAS } from '../base/models/schemas';
-import { AssayDefinitionModel, AssayUploadTabs, QueryGridModel, SchemaQuery } from '../base/models/model';
+import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
 
 import { AssayUploadResultModel, IAssayUploadOptions } from './models';
+import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 
-export function importAssayRun(config: AssayDOM.IImportRunOptions): Promise<AssayUploadResultModel> {
+export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
+    return new Promise((res, rej) => {
+        Assay.getAll({
+            parameters: {
+                type,
+            },
+            success: (rawModels: any[]) => {
+                let models = List<AssayDefinitionModel>();
+                rawModels.forEach(rawModel => {
+                    models = models.push(AssayDefinitionModel.create(rawModel));
+                });
+                res(models);
+            },
+            failure: error => {
+                rej(error);
+            },
+        });
+    });
+}
+
+export function importAssayRun(config: Partial<AssayDOM.IImportRunOptions>): Promise<AssayUploadResultModel> {
     return new Promise((resolve, reject) => {
         AssayDOM.importRun(
             Object.assign({}, config, {
@@ -178,7 +199,7 @@ export function getImportItemsForAssayDefinitions(
 ): OrderedMap<AssayDefinitionModel, string> {
     let items = OrderedMap<AssayDefinitionModel, string>();
     let targetSQ;
-    const selectionKey = sampleModel.selectionKey;
+    const selectionKey = sampleModel ? sampleModel.selectionKey : undefined;
 
     if (sampleModel && sampleModel.queryInfo) {
         targetSQ = sampleModel.queryInfo.schemaQuery;
@@ -191,7 +212,7 @@ export function getImportItemsForAssayDefinitions(
             const href = assay.getImportUrl(
                 selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
                 selectionKey,
-                sampleModel.getFilters()
+                sampleModel ? sampleModel.getFilters() : undefined
             );
             items = items.set(assay, href);
         });
@@ -224,28 +245,62 @@ export function checkForDuplicateAssayFiles(fileNames: string[]): Promise<Duplic
     });
 }
 
-export function getRunPropertiesModel(assayDefinition: AssayDefinitionModel, runId: string): QueryGridModel {
+export function getRunPropertiesModel(
+    assayDefinition: AssayDefinitionModel,
+    runId: string,
+    props?: any
+): QueryGridModel {
+    let initProps = {
+        allowSelection: false,
+        requiredColumns: RUN_PROPERTIES_REQUIRED_COLUMNS,
+        // allow for the possibility of viewing runs that have been replaced.
+        baseFilters: List([Filter.create('Replaced', undefined, Filter.Types.NONBLANK)]),
+    };
+    if (props) {
+        initProps = { ...initProps, ...props };
+    }
     const model = getStateQueryGridModel(
-        'assay-run-details',
+        RUN_PROPERTIES_GRID_ID,
         SchemaQuery.create(assayDefinition.protocolSchemaName, 'Runs'),
-        {
-            allowSelection: false,
-            requiredColumns: SCHEMAS.CBMB.concat(
-                'Name',
-                'RowId',
-                'ReplacesRun',
-                'ReplacedByRun',
-                'DataOutputs',
-                'DataOutputs/DataFileUrl',
-                'Batch'
-            ).toList(),
-            // allow for the possibility of viewing runs that have been replaced.
-            baseFilters: List([Filter.create('Replaced', undefined, Filter.Types.NONBLANK)]),
-        },
+        initProps,
         runId
     );
 
     return getQueryGridModel(model.getId()) || model;
+}
+
+/**
+ * N.B. Because the schema name for assay queries includes the assay type and name (e.g., assay.General.GPAT 1),
+ * we are not currently equipped to handle this in the application metadata defined in App/constants.ts.
+ */
+export function getRunDetailsQueryColumns(runPropertiesModel: QueryGridModel, rerunSupport: string): List<QueryColumn> {
+    let columns = runPropertiesModel.getDisplayColumns();
+
+    const includeRerunColumns = rerunSupport === 'ReRunAndReplace';
+    const replacedByIndex = columns.findIndex(col => col.fieldKey === 'ReplacedByRun');
+    if (replacedByIndex > -1) {
+        if (includeRerunColumns) {
+            columns = columns.set(
+                replacedByIndex,
+                columns.get(replacedByIndex).set('detailRenderer', 'assayrunreference') as QueryColumn
+            );
+        } else {
+            columns = columns.delete(replacedByIndex);
+        }
+    }
+
+    if (includeRerunColumns) {
+        // add "replaces" field just after "replaced by"
+        const replaces = runPropertiesModel.getColumn('ReplacesRun');
+        if (replaces) {
+            columns = columns.insert(
+                replacedByIndex > -1 ? replacedByIndex + 1 : columns.size,
+                replaces.set('detailRenderer', 'assayrunreference') as QueryColumn
+            );
+        }
+    }
+
+    return columns;
 }
 
 export function getRunPropertiesFileName(row: Map<string, any>): string {

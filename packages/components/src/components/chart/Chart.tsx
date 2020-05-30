@@ -15,16 +15,16 @@
  */
 import React from 'react';
 import $ from 'jquery';
+import { Filter } from '@labkey/api';
 
 import { DataViewInfo, VisualizationConfigModel } from '../../models';
 import { getVisualizationConfig } from '../../actions';
-import { QueryGridModel } from '../base/models/model';
 import { debounce, generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 interface Props {
     chart: DataViewInfo;
-    model?: QueryGridModel;
+    filters?: Filter.IFilter[];
 }
 
 interface State {
@@ -91,7 +91,7 @@ export class Chart extends React.Component<Props, State> {
     }
 
     renderChart() {
-        const { model } = this.props;
+        const { filters } = this.props;
         const { config } = this.state;
         const processedConfig = config.toJS();
 
@@ -100,13 +100,8 @@ export class Chart extends React.Component<Props, State> {
             processedConfig.chartConfig.width = this.getPlotElement().width();
             processedConfig.chartConfig.height = (processedConfig.chartConfig.width * 9) / 16; // 16:9 aspect ratio
 
-            // apply the baseFilters and filterArray from this model to the chart config queryConfig filterArray
-            if (model && model.baseFilters && !model.baseFilters.isEmpty()) {
-                model.baseFilters.forEach(filter => processedConfig.queryConfig.filterArray.push(filter));
-            }
-
-            if (model && model.filterArray && !model.filterArray.isEmpty()) {
-                model.filterArray.forEach(filter => processedConfig.queryConfig.filterArray.push(filter));
+            if (filters && filters.length > 0) {
+                processedConfig.queryConfig.filterArray = [...processedConfig.queryConfig.filterArray, ...filters];
             }
 
             this.getPlotElement().html('');

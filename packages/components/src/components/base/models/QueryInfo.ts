@@ -10,10 +10,10 @@ import {
     LastActionStatus,
     QueryColumn,
     QueryInfoStatus,
-    QuerySort,
     SchemaQuery,
     ViewInfo,
 } from './model';
+import { QuerySort } from './QuerySort';
 
 export class QueryInfo extends Record({
     // canEdit: false,

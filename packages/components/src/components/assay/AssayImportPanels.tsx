@@ -32,6 +32,7 @@ import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayUploadTabs,
+    QueryColumn,
     QueryGridModel,
     SchemaQuery,
 } from '../base/models/model';
@@ -62,6 +63,7 @@ import {
     importAssayRun,
     uploadAssayRunFiles,
 } from './actions';
+import { dismissNotifications } from '../..';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({ isInit: false });
@@ -80,6 +82,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     maxInsertRows?: number;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
+    loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -94,6 +97,11 @@ interface State {
 }
 
 class AssayImportPanelsImpl extends React.Component<Props, State> {
+
+    static defaultProps = {
+        loadSelections : loadSelectedSamples
+    }
+
     constructor(props: Props) {
         super(props);
 
@@ -262,7 +270,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             // If the assay has a sample column look up at Batch, Run, or Result level then we want to retrieve
             // the currently selected samples so we can pre-populate the fields in the wizard with the selected
             // samples.
-            loadSelectedSamples(location, sampleColumnData.column).then(samples => {
+            this.props.loadSelections(location, sampleColumnData.column).then(samples => {
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
                 let runProperties = this.getRunPropertiesRow(this.props);
                 let batchProperties = this.getBatchPropertiesRow(this.props);
@@ -485,6 +493,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             );
         } else {
             this.setModelState(true, undefined);
+            dismissNotifications();
             const errorPrefix = 'There was a problem importing the assay results.';
             uploadAssayRunFiles(data)
                 .then((processedData: IAssayUploadOptions) => {
@@ -681,7 +690,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                 <WizardNavButtons cancel={onCancel} containerClassName="" includeNext={false}>
                     {showSaveAgainBtn && (
                         <Button type="submit" onClick={this.onSaveClick.bind(this, true)} disabled={disabledSave}>
-                            {model.isSubmitting ? 'Saving...' : 'Save And Import Another Run'}
+                            {model.isSubmitting ? 'Saving...' : 'Save and Import Another Run'}
                         </Button>
                     )}
                     <Button

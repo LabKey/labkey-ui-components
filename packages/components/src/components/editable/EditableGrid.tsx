@@ -41,7 +41,7 @@ import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { Grid, GridColumn } from '../base/Grid';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from '../base/models/constants';
 import { QueryColumn, QueryGridModel } from '../base/models/model';
-import { capitalizeFirstChar, caseInsensitive } from '../../util/utils';
+import { blurActiveElement, capitalizeFirstChar, caseInsensitive } from '../../util/utils';
 import { DeleteIcon } from '../base/DeleteIcon';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
@@ -511,25 +511,17 @@ export class EditableGrid extends React.Component<EditableGridProps, EditableGri
 
     toggleBulkAdd() {
         this.setState(
-            state => ({
-                showBulkAdd: !state.showBulkAdd,
-            }),
-            () => {
-                // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
-                (document.activeElement as HTMLElement).blur();
-            }
+            state => ({ showBulkAdd: !state.showBulkAdd }),
+            // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
+            blurActiveElement
         );
     }
 
     toggleBulkUpdate = () => {
         this.setState(
-            state => ({
-                showBulkUpdate: !state.showBulkUpdate,
-            }),
-            () => {
-                // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
-                (document.activeElement as HTMLElement).blur();
-            }
+            state => ({ showBulkUpdate: !state.showBulkUpdate }),
+            // Issue 38420: Without this, the BulkUpdate button always retains focus after modal is shown
+            blurActiveElement
         );
     };
 

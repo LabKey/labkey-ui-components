@@ -38,9 +38,14 @@ export function searchUsingIndex(userConfig, getCardDataFn?: (data: Map<any, any
 // data element
 function addDataObjects(jsonResults) {
     jsonResults.hits.forEach(hit => {
-        if (hit.data === undefined) {
+        if (hit.data === undefined || !hit.data.id) {
             const data = parseSearchIdToData(hit.id);
-            if (data.type && RELEVANT_SEARCH_RESULT_TYPES.indexOf(data.type) >= 0) hit.data = data;
+            if (data.type && RELEVANT_SEARCH_RESULT_TYPES.indexOf(data.type) >= 0) {
+                if (!hit.data)
+                    hit.data = data;
+                else
+                    hit.data = {...data, ...hit.data};
+            }
         }
     });
 }

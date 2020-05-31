@@ -635,9 +635,9 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 className="domain-adv-footer domain-adv-cancel-btn"
                             >
                                 Cancel
-                            </Button>https://www.labkey.org/Documentation/20.3/wiki-page.view?name=createListOptions#advanced
+                            </Button>
 
-                            {helpLinkNode('lists', 'Get help with list settings', 'domain-adv-footer domain-adv-link')}
+                            {helpLinkNode('createListOptions#advanced', 'Get help with list settings', 'domain-adv-footer domain-adv-link')}
 
                             <Button
                                 onClick={this.applyChanges}

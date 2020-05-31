@@ -440,6 +440,8 @@ export class EditorModel
                             }, [])
                         );
                         return;
+                    } else {
+                        row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
                     }
                 }
                 else {

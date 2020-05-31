@@ -414,7 +414,7 @@ export class EditorModel
                 }
 
                 if (renderer?.getEditableRawValue) {
-                    row.set(col.name, renderer.getEditableRawValue(values));
+                    row = row.set(col.name, renderer.getEditableRawValue(values));
                 } else if (col.isLookup()) {
                     if (col.isExpInput()) {
                         let sep = '';
@@ -442,8 +442,9 @@ export class EditorModel
                         return;
                     }
                 }
-
-                row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
+                else {
+                    row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
+                }
             });
             if (forUpdate) {
                 row = row.merge(model.getPkData(model.dataIds.get(rn)));

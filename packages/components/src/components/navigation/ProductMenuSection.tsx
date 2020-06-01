@@ -40,7 +40,7 @@ export class MenuSectionConfig extends Record({
     seeAllURL?: AppURL;
     emptyURL?: AppURL;
     emptyURLText: string;
-    headerURL: AppURL;
+    headerURL: AppURL | string;
 }
 
 interface MenuSectionProps {
@@ -133,7 +133,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         const header = (
             <>
                 <span className="menu-section-header">
-                    {headerURL ? <a href={headerURL.toHref()}>{label}</a> : <>{label}</>}
+                    {headerURL ? <a href={typeof headerURL === 'string' ? headerURL : headerURL.toHref()}>{label}</a> : <>{label}</>}
                 </span>
                 <hr />
             </>

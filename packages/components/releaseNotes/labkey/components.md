@@ -4,6 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ## version TBD
 *Released*: TBD
 * Update parameter for getting product menu to productIds instead of productId
+* Update MenuItemModel to account for linking to a different application (based on productId)
+* Allow ProductMenuSection headerURL to be string (i.e., link to separate application)
 
 ## version 0.64.2
 *Released*: 1 June 2020

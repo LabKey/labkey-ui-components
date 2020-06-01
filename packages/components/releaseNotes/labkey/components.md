@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.64.1
+*Released*: 1 June 2020
+* Issue 40026: Change doc link from Advanced List Settings popup - Update text and topic for Advance Settings help link
+
 ## version 0.64.0
 *Released*: 29 May 2020
 * Merge AssayReimportRunButton from Biologics and SampleManager and move here for common use

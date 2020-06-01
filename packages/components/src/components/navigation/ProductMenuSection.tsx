@@ -101,6 +101,9 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
     render() {
         const { config, section } = this.props;
         let icon;
+        if (!section)
+            return null;
+
         if (config.iconURL) {
             icon = (
                 <img

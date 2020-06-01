@@ -157,7 +157,7 @@ export class ProductMenuModel extends Record({
                 url: buildURL('product', 'menuSections.api'),
                 method: 'GET',
                 params: Object.assign({
-                    productId: this.productId,
+                    productIds: this.productId,
                 }),
                 success: Utils.getCallbackWrapper(response => {
                     const sections = List<MenuSectionModel>().asMutable();

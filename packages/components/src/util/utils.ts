@@ -466,14 +466,7 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                     });
 
                     return m.set(key, updatedVal);
-                    // Get original values still in updates
-                    // let origValues = fieldValueMap.filter((original => (updatedVal.indexOf(original.get('value')) !== -1)));
-                    // origValues = origValues.map(value => value.get('value'));
 
-                    // Find new values and format
-                    // let newValues = updatedVal.filter((updated) => (origValues.findIndex((orig) => (orig === updated)) === -1));
-
-                    // return m.set(key, origValues.toJS().concat(newValues));
                 } else if (updateValuesMap.has(key) && updatedVal === undefined) {
                     return m.set(key, []);
                 } else return m;

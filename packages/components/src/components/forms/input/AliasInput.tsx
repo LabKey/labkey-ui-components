@@ -11,12 +11,9 @@ interface AliasInputProps {
     onToggleDisable?: (boolean) => void;
 }
 
-interface AliasInputState {
-    labelKey?: string;
-}
-
-export class AliasInput extends React.Component<AliasInputProps, AliasInputState> {
+export class AliasInput extends React.Component<AliasInputProps> {
     _id: string;
+    _labelKey: string;
 
     constructor(props: AliasInputProps) {
         super(props);
@@ -24,19 +21,15 @@ export class AliasInput extends React.Component<AliasInputProps, AliasInputState
         this._id = generateId();
 
         // Alias fields could use label or displayValue
-        let labelKey = 'label';
-        if (typeof props.value !== 'string') {
-            if (props.value[0] && 'displayValue' in props.value[0]) {
-                labelKey = 'displayValue';
-            }
+        this._labelKey = 'label';
+        if (Array.isArray(props.value) && props.value.length > 0
+            && typeof props.value[0] === 'object' && 'displayValue' in props.value[0]) {
+            this._labelKey = 'displayValue';
         }
-
-        this.state = { labelKey };
     }
 
     render() {
         const { allowDisable, col, editing, value, initiallyDisabled, onToggleDisable } = this.props;
-        const { labelKey } = this.state;
 
         return (
             <SelectInput
@@ -58,7 +51,7 @@ export class AliasInput extends React.Component<AliasInputProps, AliasInputState
                 promptTextCreator={(text: string) => `Create alias "${text}"`}
                 saveOnBlur={true}
                 value={value}
-                labelKey={labelKey}
+                labelKey={this._labelKey}
             />
         );
     }

@@ -99,8 +99,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             throw new Error('QueryFormInputs: If queryInfo is not provided, queryColumns is required.');
         }
 
-        this.onQSChange = this.onQSChange.bind(this);
-
         this.state = {
             labels: {},
         };

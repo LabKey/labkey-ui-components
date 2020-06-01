@@ -91,9 +91,15 @@ export class MenuItemModel extends Record({
                 const decodedPart = subParts.join('/');
                 const decodedKey = rawData.key.replace(parts[0], decodedPart);
 
-                let url = AppURL.create(sectionKey, ...subParts);
-                if (parts.length > 1 && parts[1]) {
-                    url = url.addParams(ActionURL.getParameters(rawData.key));
+                let url;
+                if (rawData.productId) {
+                    url = buildURL(rawData.productId, "app.view#/" + subParts.join('/'))
+                }
+                else {
+                    url = AppURL.create(sectionKey, ...subParts);
+                    if (parts.length > 1 && parts[1]) {
+                        url = url.addParams(ActionURL.getParameters(rawData.key));
+                    }
                 }
 
                 return new MenuItemModel(

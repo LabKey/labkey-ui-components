@@ -16,11 +16,18 @@
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
 import { ActionURL, Filter, Query, Utils } from '@labkey/api';
 
-import { getSchemaQuery, intersect, resolveKey, resolveSchemaQuery, toLowerSafe } from '../../../util/utils';
+import {
+    getSchemaQuery,
+    hasAllPermissions,
+    intersect,
+    resolveKey,
+    resolveSchemaQuery,
+    toLowerSafe
+} from '../../../util/utils';
 import { AppURL } from '../../../url/AppURL';
 import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './constants';
 import { QueryInfo } from './QueryInfo';
 import { QuerySort } from './QuerySort';
 
@@ -150,6 +157,34 @@ export class User extends Record(defaultUser) implements IUserProps {
 
     constructor(values?: { [key: string]: any }) {
         super(values);
+    }
+
+    hasUpdatePermission(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.Update]);
+    }
+
+    hasInsertPermission(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.Insert]);
+    }
+
+    hasDeletePermission(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.Delete]);
+    }
+
+    hasDesignAssaysPermission(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.DesignAssay]);
+    }
+
+    hasDesignSampleSetsPermission(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.DesignSampleSet]);
+    }
+
+    hasManageUsersPermission(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.UserManagement], false);
+    }
+
+    isAppAdmin(): boolean {
+        return hasAllPermissions(this, [PermissionTypes.ApplicationAdmin], false);
     }
 }
 

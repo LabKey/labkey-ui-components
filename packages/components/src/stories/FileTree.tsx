@@ -12,6 +12,7 @@ storiesOf('FileTree', module)
         <div>
             <FileTree
                 allowMultiSelect={boolean('allowMultiSelect', true)}
+                useFileIconCls={boolean('useFileIconCls', true)}
                 loadData={fetchFileTestTree}
                 onFileSelect={(name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => {
                     console.log(path, checked);

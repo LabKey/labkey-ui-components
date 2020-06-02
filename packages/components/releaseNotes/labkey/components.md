@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ## version TBD
 *Released*: TBD
 * Item 7373: Move base user permission check helpers from Sample Manager to User model
+* Fix for NavigationBar.tsx to not show the search icon in the narrow window case when showSearchBox is false
 
 ## version 0.64.0
 *Released*: 29 May 2020

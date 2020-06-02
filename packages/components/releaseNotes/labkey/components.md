@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.65.0
+*Released*: 2 June 2020
+* FileTree component
+    - add prop to remove checkbox selection option from node display
+    - support font awesome icon display for file based on WebDav iconFontCls data
+    - call the onFileSelect callback function on node select for non-checkbox case
+    - make the arrow toggle smaller
+* WebDav model updates for module editor browser scenario
+    - add contentType and options properties to model
+    - add param to getWebDavFiles for the non-@files case
+
 ## version 0.64.3
 *Released*: 2 June 2020
 * Item 7373: Move base user permission check helpers from Sample Manager to User model

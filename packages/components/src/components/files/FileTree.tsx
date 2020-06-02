@@ -125,14 +125,28 @@ const Header = props => {
     };
 
     return (
-        <span className={'filetree-checkbox-container' + (isDirectory ? '' : ' filetree-leaf-node') + (node.active ? ' active' : '')}>
-            {handleCheckbox && <Checkbox id={CHECK_ID_PREFIX + node.id} checked={checked} onChange={handleCheckbox} onClick={checkClick} />}
+        <span
+            className={
+                'filetree-checkbox-container' +
+                (isDirectory ? '' : ' filetree-leaf-node') +
+                (node.active ? ' active' : '')
+            }
+        >
+            {handleCheckbox && (
+                <Checkbox
+                    id={CHECK_ID_PREFIX + node.id}
+                    checked={checked}
+                    onChange={handleCheckbox}
+                    onClick={checkClick}
+                />
+            )}
             <div style={style.base} onClick={onSelect}>
                 <div style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}>
-                    {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls
-                        ? <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
-                        : <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
-                    }
+                    {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls ? (
+                        <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
+                    ) : (
+                        <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
+                    )}
                     {node.name}
                 </div>
             </div>
@@ -213,7 +227,14 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         const { checked } = this.state;
 
         if (allowMultiSelect) {
-            return <Header {...props} useFileIconCls={useFileIconCls} checked={checked.contains(props.node.id)} handleCheckbox={this.handleCheckbox} />;
+            return (
+                <Header
+                    {...props}
+                    useFileIconCls={useFileIconCls}
+                    checked={checked.contains(props.node.id)}
+                    handleCheckbox={this.handleCheckbox}
+                />
+            );
         } else {
             return <Header {...props} useFileIconCls={useFileIconCls} />;
         }

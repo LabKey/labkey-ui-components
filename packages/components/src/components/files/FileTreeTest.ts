@@ -3,13 +3,16 @@ const data = {
     children: [
         {
             name: 'parent1',
-            children: [{
-                name: 'child1.xlsx',
-                data: { iconFontCls: 'fa fa-file-excel-o' }
-            }, {
-                name: 'child2.pdf',
-                data: { iconFontCls: 'fa fa-file-pdf-o' }
-            }],
+            children: [
+                {
+                    name: 'child1.xlsx',
+                    data: { iconFontCls: 'fa fa-file-excel-o' },
+                },
+                {
+                    name: 'child2.pdf',
+                    data: { iconFontCls: 'fa fa-file-pdf-o' },
+                },
+            ],
         },
         {
             name: 'loading parent',

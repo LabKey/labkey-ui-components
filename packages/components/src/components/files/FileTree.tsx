@@ -105,7 +105,6 @@ const nodeIsEmpty = (id: string): boolean => {
 const Header = props => {
     const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls } = props;
     const isDirectory = node.children !== undefined;
-    const iconType = isDirectory ? 'folder' : 'file-text';
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
 
     if (nodeIsEmpty(node.id)) {
@@ -126,7 +125,7 @@ const Header = props => {
     };
 
     return (
-        <span className={'filetree-checkbox-container' + (iconType === 'folder' ? '' : ' filetree-leaf-node') + (node.active ? ' active' : '')}>
+        <span className={'filetree-checkbox-container' + (isDirectory ? '' : ' filetree-leaf-node') + (node.active ? ' active' : '')}>
             {handleCheckbox && <Checkbox id={CHECK_ID_PREFIX + node.id} checked={checked} onChange={handleCheckbox} onClick={checkClick} />}
             <div style={style.base} onClick={onSelect}>
                 <div style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}>
@@ -155,6 +154,8 @@ interface FileTreeState {
     error?: string;
     loading: boolean; // Only used for testing
 }
+
+// TODO add typings for nodes, see https://github.com/storybookjs/react-treebeard/issues/186#issuecomment-502162650
 
 export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     static defaultProps = {

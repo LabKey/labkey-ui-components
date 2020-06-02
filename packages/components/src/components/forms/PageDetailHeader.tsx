@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { hasAllPermissions } from '../../util/utils';
 import { User } from '../base/models/model';
@@ -23,29 +23,29 @@ import { SVGIcon } from '../base/SVGIcon';
 import { FieldEditTrigger, FieldEditTriggerProps } from './FieldEditTrigger';
 
 interface Props {
-    user: User;
-    content?: any[];
-    description?: React.ReactNode;
+    description?: ReactNode;
     fieldTriggerProps?: FieldEditTriggerProps;
     iconAltText?: string;
     iconDir?: string;
     iconSrc?: string;
     iconUrl?: string;
     leftColumns?: number;
-    subTitle?: any;
-    title: any;
+    subTitle?: ReactNode;
+    title: ReactNode;
+    user?: User;
 }
 
-export class PageDetailHeader extends React.Component<Props, any> {
+export class PageDetailHeader extends PureComponent<Props> {
     static defaultProps = {
         leftColumns: 6,
     };
 
-    render() {
+    render(): ReactNode {
         const {
             children,
             description,
             fieldTriggerProps,
+            iconAltText,
             iconUrl,
             iconDir,
             iconSrc,
@@ -53,8 +53,11 @@ export class PageDetailHeader extends React.Component<Props, any> {
             subTitle,
             title,
             user,
-            iconAltText,
         } = this.props;
+
+        if (fieldTriggerProps && !user) {
+            throw Error('PageDetailHeader: If supplying "fieldTriggerProps", then "user" prop must be specified.');
+        }
 
         return (
             <div className="page-header">
@@ -85,9 +88,7 @@ export class PageDetailHeader extends React.Component<Props, any> {
                         </div>
                     )}
                 </div>
-
                 {children && <div className="pull-right">{children}</div>}
-
                 <div className="clearfix" />
             </div>
         );

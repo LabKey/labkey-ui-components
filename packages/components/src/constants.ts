@@ -19,7 +19,6 @@ export const QUERY_GRID_PREFIX = 'labkey-querygrid-';
 export const FASTA_EXPORT_CONTROLLER = 'biologics';
 export const GENBANK_EXPORT_CONTROLLER = 'biologics';
 export const SAMPLE_SET_DISPLAY_TEXT = 'Sample Type';
-export const STICKY_HEADER_HEIGHT = 60; // Issue 38478
 
 export const MAX_EDITABLE_GRID_ROWS = 1000;
 export const LOOKUP_DEFAULT_SIZE = 25;

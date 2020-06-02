@@ -1,6 +1,39 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.64.2
+*Released*: 1 June 2020
+* `<PageDetailHeader/>` no longer requires `user` prop. Remove unused `content` prop.
+
+## version 0.64.1
+*Released*: 1 June 2020
+* Issue 40026: Change doc link from Advanced List Settings popup - Update text and topic for Advance Settings help link
+
+## version 0.64.0
+*Released*: 29 May 2020
+* Merge AssayReimportRunButton from Biologics and SampleManager and move here for common use
+* Add isGPAT utility method to AssayProtocol model
+* Move getRunDetailsQueryColumns from SampleManager
+* Check for null or undefined value in initSelect for QuerySelect
+
+### version 0.63.3
+*Released*: 27 May 2020
+* Issue 40008: Allow override of heading shown on LineageSummary panel for the Parents and Children of a node
+(e.g., to show "Source" instead of "Parent")
+
+### version 0.63.2
+*Released*: 27 May 2020
+* Issue39819: Make stylistic changes in a text field's Text Options
+
+### version 0.63.1
+*Released*: 26 May 2020
+* Misc domain designer fixes for 20.7
+    - Issue 40286: Domain designer panel header does not scroll to top of page
+    - Issue 40447: Fix error message when selecting 3rd setting of Data Row Uniqueness in dataset designer
+    - Issue 40149: Sample Type Designer - Not properly validating error state on parent alias
+    - Issue 38399: Domain Designer doesn't show error message when field of type lookup is missing required properties
+    - Issue 38929: Domain designer lookups fail validation immediately instead of waiting for user input
+
 ### version 0.63.0
 *Released*: 22 May 2020
 * Issue 40347: Domain designer wrappers not supporting domain kind specific properties in the create case
@@ -9,7 +42,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Remove getListProperties and getDatasetProperties from index.ts as those are internal only now
 
 ## version 0.62.0
-*Release*: 21 May 2020
+*Released*: 21 May 2020
 * Move AssayProvider from SampleManager to ui-components
 * Remove redundant importGeneralAssayRun method (in favor of importAssayRun)
 

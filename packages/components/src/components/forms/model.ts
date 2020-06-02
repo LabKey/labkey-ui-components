@@ -104,7 +104,7 @@ export class QuerySelectModel
             return options[0];
         } else if (options.length > 1) {
             console.warn(
-                'QuerySelect.getSelectedOptions: There are more than one options available, however, must in in "multiple" mode.'
+                'QuerySelect.getSelectedOptions: There are multiple options available, but model does not allow multiple selections.'
             );
         }
 

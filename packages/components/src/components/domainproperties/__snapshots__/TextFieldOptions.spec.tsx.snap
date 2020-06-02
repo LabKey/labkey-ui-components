@@ -230,9 +230,7 @@ exports[`TextFieldOptions Text data type 1`] = `
                 value="maxLength"
               />
             </FormControl>
-            <div
-              className="domain-text-label"
-            >
+            <div>
               Unlimited
             </div>
           </div>
@@ -277,29 +275,30 @@ exports[`TextFieldOptions Text data type 1`] = `
             <span
               className="domain-text-options-length domain-field-float-left"
             >
-              No longer than X characters
-            </span>
-            <FormControl
-              bsClass="form-control"
-              className="domain-text-length-field"
-              componentClass="input"
-              disabled={false}
-              id="domainpropertiesrow-scale-1-1"
-              name="domainpropertiesrow-scale"
-              onChange={[Function]}
-              type="number"
-              value={200}
-            >
-              <input
-                className="domain-text-length-field form-control"
+              No longer than 
+              <FormControl
+                bsClass="form-control"
+                className="domain-text-length-field"
+                componentClass="input"
                 disabled={false}
                 id="domainpropertiesrow-scale-1-1"
                 name="domainpropertiesrow-scale"
                 onChange={[Function]}
                 type="number"
                 value={200}
-              />
-            </FormControl>
+              >
+                <input
+                  className="domain-text-length-field form-control"
+                  disabled={false}
+                  id="domainpropertiesrow-scale-1-1"
+                  name="domainpropertiesrow-scale"
+                  onChange={[Function]}
+                  type="number"
+                  value={200}
+                />
+              </FormControl>
+               characters
+            </span>
           </div>
         </Col>
       </div>

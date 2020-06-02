@@ -1257,6 +1257,7 @@ export class AssayDefinitionModel extends Record({
     name: undefined,
     projectLevel: undefined,
     protocolSchemaName: undefined,
+    reRunSupport: undefined,
     templateLink: undefined,
     type: undefined,
 }) {
@@ -1271,6 +1272,7 @@ export class AssayDefinitionModel extends Record({
     name: string;
     projectLevel: boolean;
     protocolSchemaName: string;
+    reRunSupport: string;
     templateLink: string;
     type: string;
 

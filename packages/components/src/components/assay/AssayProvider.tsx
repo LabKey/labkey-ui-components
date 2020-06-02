@@ -23,7 +23,7 @@ export interface AssayProviderProps extends WithRouterProps {
 
 type Props = AssayProviderProps & AssayLoadProps;
 
-interface State extends IContext {}
+type State = IContext;
 
 const Context = React.createContext<IContext>(undefined);
 const AssayContextProvider = Context.Provider;
@@ -48,18 +48,17 @@ export const AssayProvider = (Component: React.ComponentType) => {
             if (assay.isLoaded && assayDefinition) {
                 const assayProtocol = assay.getProtocol(assayDefinition.id);
                 // we need to load the assay protocol if it has changed
-                if (!assayProtocol && prevState.assayProtocol)
-                    nextProps.loadAssay(nextProps.params.protocol);
+                if (!assayProtocol && prevState.assayProtocol) nextProps.loadAssay(nextProps.params.protocol);
 
                 return {
                     assayDefinition,
                     assayProtocol,
-                }
+                };
             } else {
                 return {
                     assayDefinition,
                     assayProtocol: undefined,
-                }
+                };
             }
         }
 
@@ -67,7 +66,7 @@ export const AssayProvider = (Component: React.ComponentType) => {
             this.props.loadAssay(this.props.params.protocol);
         }
 
-        componentWillReceiveProps(nextProps: Props) {
+        componentDidUpdate(nextProps: Props) {
             if (this.props.params.protocol !== nextProps.params.protocol) {
                 this.props.loadAssay(nextProps.params.protocol);
             }
@@ -85,20 +84,18 @@ export const AssayProvider = (Component: React.ComponentType) => {
 
                 return (
                     <AssayContextProvider value={this.state}>
-                        <Component {...this.props} {...this.state}/>
+                        <Component {...this.props} {...this.state} />
                     </AssayContextProvider>
                 );
-            }
-            else if (assay.isLoading || !assay.isLoaded) {
-                return <LoadingPage/>;
-            }
-            else if (assay.hasError) {
+            } else if (assay.isLoading || !assay.isLoaded) {
+                return <LoadingPage />;
+            } else if (assay.hasError) {
                 console.error(assay.errorMsg);
                 return (
                     <Alert>
                         {getActionErrorMessage('There was a problem loading the assay design.', 'assay design')}
                     </Alert>
-                )
+                );
             }
 
             return <NotFound />;

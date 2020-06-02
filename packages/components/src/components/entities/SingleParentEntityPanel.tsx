@@ -26,7 +26,6 @@ import { DELIMITER } from '../forms/input/SelectInput';
 
 import { IEntityTypeOption } from './models';
 import { getParentGridPrefix } from './utils';
-import { PARENT_DATA_GRID_PREFIX } from './constants';
 
 interface Props {
     childNounSingular?: string;
@@ -192,7 +191,6 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                     <QuerySelect
                         componentId={'parentEntityValue_' + lcTypeName} // important that this key off of the schemaQuery or it won't update when the SelectInput changes
                         containerClass="row"
-                        disabled={lcTypeName === undefined}
                         formsy={false}
                         label={capitalizeFirstChar(parentDataType.nounSingular) + ' IDs'}
                         inputClass="col-sm-6"

@@ -81,7 +81,9 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
                             <div className="navbar-item pull-right">{userMenu}</div>
                             <div className="navbar-item pull-right hidden-xs">{searchBox}</div>
                             <div className="navbar-item pull-right visible-xs">
-                                <i className="fa fa-search navbar__xs-search-icon" onClick={() => onSearch('')} />
+                                {showSearchBox && (
+                                    <i className="fa fa-search navbar__xs-search-icon" onClick={() => onSearch('')} />
+                                )}
                             </div>
                         </div>
                     </div>

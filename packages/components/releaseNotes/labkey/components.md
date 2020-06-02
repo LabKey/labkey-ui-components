@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+## version 0.64.3
+*Released*: 2 June 2020
+* Item 7373: Move base user permission check helpers from Sample Manager to User model
+* Fix for NavigationBar.tsx to not show the search icon in the narrow window case when showSearchBox is false
+
 ## version 0.64.2
 *Released*: 1 June 2020
 * `<PageDetailHeader/>` no longer requires `user` prop. Remove unused `content` prop.

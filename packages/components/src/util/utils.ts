@@ -510,6 +510,12 @@ export function getUpdatedDataFromGrid(
                         row[key] = value;
                     }
                 }
+                // Lookup columns store a list but grid only holds a single value
+                else if (List.isList(originalValue) && !Array.isArray(value)) {
+                    if (originalValue.get(0).value !== value) {
+                        row[key] = value || null;
+                    }
+                }
                 else if ((value && !originalValue) || originalValue != value) {
                     // if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value, we set the value to null in our update data

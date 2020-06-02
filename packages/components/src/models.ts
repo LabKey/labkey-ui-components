@@ -408,6 +408,8 @@ export class EditorModel
             columns.forEach((col, cn) => {
                 const values = this.getValue(cn, rn);
 
+                // Some column types have special handling of raw data, such as multi value columns like alias,
+                // so first check renderer for how to retrieve raw data
                 let renderer;
                 if (col.columnRenderer) {
                     renderer = getQueryColumnRenderers().get(col.columnRenderer.toLowerCase());

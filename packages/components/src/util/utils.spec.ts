@@ -690,6 +690,91 @@ describe('getUpdatedData', () => {
             IntValue: "234",
         });
     })
+
+    test('Update multi value by displayValue', () => {
+        const originalData = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Alias: List<string>([
+                        Map<string, number>({displayValue: 'alias1', value: 1}),
+                        Map<string, number>({displayValue: 'alias2', value: 2})
+                    ])
+
+            }
+        });
+
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                Alias: ["alias3"],
+            },
+            List<string>(['RowId'])
+        );
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 448,
+            Alias: ["alias3"],
+        });
+    });
+
+    test('Update multi value by value', () => {
+        const originalData = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Alias: List<string>([
+                        Map<string, number>({displayValue: 'alias1', value: 1}),
+                        Map<string, number>({displayValue: 'alias2', value: 2})
+                    ])
+            }
+        });
+
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                Alias: [2],
+            },
+            List<string>(['RowId'])
+        );
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 448,
+            Alias: ["alias2"],
+        });
+    });
+
+    test('Delete multi value', () => {
+        const originalData = fromJS({
+            '448': {
+                RowId: {
+                    value: 448,
+                    url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
+                },
+                Alias: List<string>([
+                        Map<string, number>({displayValue: 'alias1', value: 1}),
+                        Map<string, number>({displayValue: 'alias2', value: 2})
+                    ])
+            }
+        });
+
+        const updatedData = getUpdatedData(
+            originalData,
+            {
+                Alias: [],
+            },
+            List<string>(['RowId'])
+        );
+        expect(updatedData).toHaveLength(1);
+        expect(updatedData[0]).toStrictEqual({
+            RowId: 448,
+            Alias: [],
+        });
+    });
 });
 
 describe('getUpdatedDataFromGrid', () => {

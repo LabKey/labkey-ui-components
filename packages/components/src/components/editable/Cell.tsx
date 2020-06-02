@@ -271,6 +271,8 @@ export class Cell extends React.PureComponent<Props> {
             return <LookupCell {...lookupProps} />;
         }
 
+        // Some cells have custom displays such as multi value comma separated values like alias so
+        // first check renderer for editable value
         let renderer;
         let defaultValue;
         if (col.columnRenderer) {

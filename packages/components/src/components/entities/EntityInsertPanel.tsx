@@ -633,7 +633,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             this.setSubmitting(false);
             gridShowError(queryGridModel, {
                 message: errors.join('  '),
-            });
+            }, this);
             return;
         }
 
@@ -658,7 +658,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                     this.setSubmitting(false);
                     gridShowError(queryGridModel, {
                         message: 'Insert response has unexpected format. No "rows" available.',
-                    });
+                    }, this);
                 }
             })
             .catch((response: InsertRowsResponse) => {
@@ -666,7 +666,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                 const message = resolveErrorMessage(response.error, this.props.nounPlural);
                 gridShowError(queryGridModel, {
                     message,
-                });
+                }, this);
             });
     };
 

@@ -12,6 +12,26 @@ Components, models, actions, and utility functions for LabKey applications and p
     - add contentType and options properties to model
     - add param to getWebDavFiles for the non-@files case
 
+## version 0.64.3
+*Released*: 2 June 2020
+* Item 7373: Move base user permission check helpers from Sample Manager to User model
+* Fix for NavigationBar.tsx to not show the search icon in the narrow window case when showSearchBox is false
+
+## version 0.64.2
+*Released*: 1 June 2020
+* `<PageDetailHeader/>` no longer requires `user` prop. Remove unused `content` prop.
+
+## version 0.64.1
+*Released*: 1 June 2020
+* Issue 40026: Change doc link from Advanced List Settings popup - Update text and topic for Advance Settings help link
+
+## version 0.64.0
+*Released*: 29 May 2020
+* Merge AssayReimportRunButton from Biologics and SampleManager and move here for common use
+* Add isGPAT utility method to AssayProtocol model
+* Move getRunDetailsQueryColumns from SampleManager
+* Check for null or undefined value in initSelect for QuerySelect
+
 ### version 0.63.3
 *Released*: 27 May 2020
 * Issue 40008: Allow override of heading shown on LineageSummary panel for the Parents and Children of a node
@@ -38,7 +58,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Remove getListProperties and getDatasetProperties from index.ts as those are internal only now
 
 ## version 0.62.0
-*Release*: 21 May 2020
+*Released*: 21 May 2020
 * Move AssayProvider from SampleManager to ui-components
 * Remove redundant importGeneralAssayRun method (in favor of importAssayRun)
 

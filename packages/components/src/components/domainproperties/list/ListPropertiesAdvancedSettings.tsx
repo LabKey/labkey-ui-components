@@ -637,7 +637,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                                 Cancel
                             </Button>
 
-                            {helpLinkNode('lists', 'Learn more about using lists', 'domain-adv-footer domain-adv-link')}
+                            {helpLinkNode('createListOptions#advanced', 'Get help with list settings', 'domain-adv-footer domain-adv-link')}
 
                             <Button
                                 onClick={this.applyChanges}

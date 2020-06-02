@@ -8,7 +8,6 @@ import { fetchFileTestTree } from './FileTreeTest';
 const waitForLoad = jest.fn(component => Promise.resolve(!component.state().loading));
 
 describe('FileTree', () => {
-
     test('with data', () => {
         const component = <FileTree loadData={fetchFileTestTree} onFileSelect={jest.fn()} />;
         const tree = shallow(component);

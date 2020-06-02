@@ -22,10 +22,28 @@ let appRegistry: {
     registry: {},
 };
 
+function loadApp<CTX = any>(appName: string, appTarget: string, appContext: CTX): void {
+    if (window.dispatchEvent && window.CustomEvent) {
+        window.dispatchEvent(
+            new CustomEvent('initApp', {
+                detail: {
+                    appName,
+                    appContext,
+                    appTarget,
+                },
+            })
+        );
+    }
+}
+
 declare var LABKEY: any;
 
-// Prepare global registry shared across apps
+// Hook loadApp and prepare global registry shared across apps
 if (LABKEY) {
+    if (!LABKEY.loadApp) {
+        LABKEY.loadApp = loadApp;
+    }
+
     if (!LABKEY.__app__) {
         LABKEY.__app__ = appRegistry;
     }

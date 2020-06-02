@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.65.0
+*Released*: 2 June 2020
 * FileTree component
     - add prop to remove checkbox selection option from node display
     - support font awesome icon display for file based on WebDav iconFontCls data

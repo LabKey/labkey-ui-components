@@ -21,9 +21,10 @@ import sampleSetQueryInfo from '../../../test/data/sampleSet-getQueryDetails.jso
 import nameExpSetQueryColumn from '../../../test/data/NameExprParent-QueryColumn.json';
 import sampleSet3QueryColumn from '../../../test/data/SampleSet3Parent-QueryColumn.json';
 
+import { GUEST, READER, AUTHOR, EDITOR, ASSAYDESIGNER, FOLDER_ADMIN, APP_ADMIN } from '../../../test/data/users';
+
 import { AssayDefinitionModel, AssayDomainTypes, QueryColumn, QueryGridModel, SchemaQuery } from './model';
 import { QueryInfo } from './QueryInfo';
-import { GUEST, READER, AUTHOR, EDITOR, ASSAYDESIGNER, FOLDER_ADMIN, APP_ADMIN } from "../../../test/data/users";
 
 describe('QueryGridModel', () => {
     test('createParam no prefix', () => {
@@ -451,7 +452,6 @@ describe('Sample Lookup', () => {
 });
 
 describe('User permissions', () => {
-
     test('hasInsertPermission', () => {
         expect(GUEST.hasInsertPermission()).toBeFalsy();
         expect(READER.hasInsertPermission()).toBeFalsy();

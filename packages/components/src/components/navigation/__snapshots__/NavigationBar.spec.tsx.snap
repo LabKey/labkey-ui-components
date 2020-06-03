@@ -31,12 +31,7 @@ exports[`<NavigationBar/> default props 1`] = `
         />
         <div
           className="navbar-item pull-right visible-xs"
-        >
-          <i
-            className="fa fa-search navbar__xs-search-icon"
-            onClick={[Function]}
-          />
-        </div>
+        />
       </div>
     </div>
   </div>

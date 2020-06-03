@@ -6,6 +6,7 @@ import { DEFAULT_FILE, IFile } from './models';
 
 export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     contentLength: number;
+    contentType: string;
     created: string;
     createdBy: string;
     createdById: number;
@@ -19,6 +20,7 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     isLeaf: boolean;
     lastModified: string;
     name: string;
+    options: string;
     propertiesRowId?: number;
 
     constructor(params?: IFile) {
@@ -36,17 +38,17 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
             lastModified: values.lastmodified,
             downloadUrl: values.href ? values.href + '?contentDisposition=attachment' : undefined,
             name: values.text,
+            contentType: values.contenttype || webDavFile.contentType,
         }) as WebDavFile;
     }
 }
 
-function getWebDavUrl(containerPath: string, directory?: string, createIntermediates?: boolean) {
+function getWebDavUrl(containerPath: string, directory?: string, createIntermediates?: boolean, skipAtFiles?: boolean) {
     let url =
         ActionURL.getContextPath() +
         '/_webdav' +
         ActionURL.encodePath(containerPath) +
-        '/' +
-        encodeURIComponent('@files');
+        (!skipAtFiles ? '/' + encodeURIComponent('@files') : '');
 
     if (directory) {
         url += '/' + directory;
@@ -62,10 +64,11 @@ function getWebDavUrl(containerPath: string, directory?: string, createIntermedi
 export function getWebDavFiles(
     containerPath: string,
     directory?: string,
-    includeDirectories?: boolean
+    includeDirectories?: boolean,
+    skipAtFiles?: boolean
 ): Promise<Map<string, WebDavFile>> {
     return new Promise((resolve, reject) => {
-        const url = getWebDavUrl(containerPath, directory);
+        const url = getWebDavUrl(containerPath, directory, false, skipAtFiles);
 
         return Ajax.request({
             url: url + '?method=JSON',

@@ -93,7 +93,7 @@ export class MenuItemModel extends Record({
 
                 let url;
                 if (rawData.productId) {
-                    const params = parts.length && parts[1] ? ActionURL.getParamters(rawData.key) : undefined;
+                    const params = parts.length && parts[1] ? ActionURL.getParameters(rawData.key) : undefined;
                     url = buildURL(rawData.productId, "app.view#/" + subParts.join('/'), params);
                 }
                 else {

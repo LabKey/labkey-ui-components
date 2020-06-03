@@ -93,7 +93,8 @@ export class MenuItemModel extends Record({
 
                 let url;
                 if (rawData.productId) {
-                    url = buildURL(rawData.productId, "app.view#/" + subParts.join('/'))
+                    const params = parts.length && parts[1] ? ActionURL.getParamters(rawData.key) : undefined;
+                    url = buildURL(rawData.productId, "app.view#/" + subParts.join('/'), params);
                 }
                 else {
                     url = AppURL.create(sectionKey, ...subParts);

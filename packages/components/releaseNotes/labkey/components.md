@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 7373: Move InsufficientPermissionsPage and BasePermissionsCheckPage from Sample Manager
+
 ### version 0.65.0
 *Released*: 2 June 2020
 * FileTree component

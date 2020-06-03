@@ -9,7 +9,10 @@ import { SCHEMAS } from '../..';
 
 import { SearchIdData, SearchResultCardData } from './models';
 
-export function searchUsingIndex(userConfig, getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData): Promise<{}> {
+export function searchUsingIndex(
+    userConfig,
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
+): Promise<{}> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('search', 'json.api'),
@@ -19,7 +22,7 @@ export function searchUsingIndex(userConfig, getCardDataFn?: (data: Map<any, any
                 addDataObjects(json);
                 const urlResolver = new URLResolver();
                 urlResolver.resolveSearchUsingIndex(json).then(results => {
-                    resolve({...results, hits: getProcessedSearchHits(results['hits'], getCardDataFn)});
+                    resolve({ ...results, hits: getProcessedSearchHits(results['hits'], getCardDataFn) });
                 });
             }),
             failure: Utils.getCallbackWrapper(
@@ -41,10 +44,8 @@ function addDataObjects(jsonResults) {
         if (hit.data === undefined || !hit.data.id) {
             const data = parseSearchIdToData(hit.id);
             if (data.type && RELEVANT_SEARCH_RESULT_TYPES.indexOf(data.type) >= 0) {
-                if (!hit.data)
-                    hit.data = data;
-                else
-                    hit.data = {...data, ...hit.data};
+                if (!hit.data) hit.data = data;
+                else hit.data = { ...data, ...hit.data };
             }
         }
     });
@@ -110,7 +111,12 @@ function getSearchResultCardData(data: any, category: string, title: string): Se
     };
 }
 
-function getCardData(category: string, data: any, title: string, getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData): SearchResultCardData {
+function getCardData(
+    category: string,
+    data: any,
+    title: string,
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
+): SearchResultCardData {
     let cardData = getSearchResultCardData(data, category, title);
     if (getCardDataFn) {
         cardData = { ...cardData, ...getCardDataFn(data, category) };
@@ -120,20 +126,27 @@ function getCardData(category: string, data: any, title: string, getCardDataFn?:
 
 // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
 // cannot seem be to be removable, cause sample type search to be missing?
-function getProcessedSearchHits(results: any, getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData) : {} {
-    return results ? results.filter(result => {
-            const category = result['category'];
-            return (
-                category == 'data' ||
-                category == 'material' ||
-                category == 'workflowJob' ||
-                category == 'file workflowJob' ||
-                result['data']
-            );
-        }).map(result => {
-            return ({...result,
-                cardData: getCardData(result['category'], result['data'], result['title'], getCardDataFn)
-            })
-        })
+function getProcessedSearchHits(
+    results: any,
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
+): {} {
+    return results
+        ? results
+              .filter(result => {
+                  const category = result['category'];
+                  return (
+                      category == 'data' ||
+                      category == 'material' ||
+                      category == 'workflowJob' ||
+                      category == 'file workflowJob' ||
+                      result['data']
+                  );
+              })
+              .map(result => {
+                  return {
+                      ...result,
+                      cardData: getCardData(result['category'], result['data'], result['title'], getCardDataFn),
+                  };
+              })
         : undefined;
 }

@@ -28,8 +28,8 @@ interface Props {
     model: SearchResultsModel;
     emptyResultDisplay?: React.ReactNode;
     iconUrl?: string;
-    hideHeader?: boolean
-    hidePanelFrame?: boolean
+    hideHeader?: boolean;
+    hidePanelFrame?: boolean;
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
@@ -85,7 +85,11 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                 </div>
             );
         } else {
-            return emptyResultDisplay ? emptyResultDisplay : <div className="search-results__margin-top">No Results Found</div>;//
+            return emptyResultDisplay ? (
+                emptyResultDisplay
+            ) : (
+                <div className="search-results__margin-top">No Results Found</div>
+            ); //
         }
     }
 
@@ -100,14 +104,11 @@ export class SearchResultsPanel extends React.Component<Props, any> {
             </>
         );
 
-        if (hidePanelFrame)
-            return body;
+        if (hidePanelFrame) return body;
 
         return (
             <Panel>
-                <Panel.Body>
-                    {body}
-                </Panel.Body>
+                <Panel.Body>{body}</Panel.Body>
             </Panel>
         );
     }

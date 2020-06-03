@@ -14,7 +14,7 @@ interface UserSelectInputProps extends SelectInputProps {
     // specify whether this Select should correspond with a NotifyList on the server
     notifyList?: boolean;
     permissions?: string | string[];
-    useEmail?: boolean
+    useEmail?: boolean;
 }
 
 export class UserSelectInput extends React.Component<UserSelectInputProps, any> {

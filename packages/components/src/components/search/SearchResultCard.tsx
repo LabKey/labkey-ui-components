@@ -16,6 +16,7 @@
 import React from 'react';
 
 import { SVGIcon } from '../base/SVGIcon';
+
 import { SearchResultCardData } from './models';
 
 interface SearchResultProps {
@@ -26,7 +27,6 @@ interface SearchResultProps {
 }
 
 export class SearchResultCard extends React.Component<SearchResultProps, any> {
-
     renderType(cardData: SearchResultCardData) {
         if (cardData.typeName) {
             return (
@@ -74,8 +74,8 @@ export class SearchResultCard extends React.Component<SearchResultProps, any> {
                         <div>
                             <h4 className="text-capitalize">{cardData.title}</h4>
                         </div>
-                        {this.renderDetail("Category", cardData.category)}
-                        {this.renderDetail("Type", cardData.typeName)}
+                        {this.renderDetail('Category', cardData.category)}
+                        {this.renderDetail('Type', cardData.typeName)}
                         <div title={summary}>
                             <strong>Summary: </strong>{' '}
                             {summary.length

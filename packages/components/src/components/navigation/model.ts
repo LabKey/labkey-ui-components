@@ -38,12 +38,12 @@ export class MenuSectionModel extends Record({
         super(values);
     }
 
-    static create(rawData): MenuSectionModel {
+    static create(rawData: any, currentProductId?: string): MenuSectionModel {
         if (rawData) {
             let items;
 
             if (rawData.items) {
-                items = rawData.items.map(i => MenuItemModel.create(i, rawData.key));
+                items = rawData.items.map(i => MenuItemModel.create(i, rawData.key, currentProductId));
             }
 
             return new MenuSectionModel(
@@ -76,7 +76,7 @@ export class MenuItemModel extends Record({
         super(values);
     }
 
-    static create(rawData, sectionKey: string): MenuItemModel {
+    static create(rawData, sectionKey: string, currentProductId?: string): MenuItemModel {
         if (rawData) {
             if (rawData.key && sectionKey !== 'user') {
                 const parts = rawData.key.split('?');
@@ -92,9 +92,10 @@ export class MenuItemModel extends Record({
                 const decodedKey = rawData.key.replace(parts[0], decodedPart);
 
                 let url;
-                if (rawData.productId) {
+                const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
+                if (dataProductId && (!currentProductId || dataProductId !== currentProductId.toLowerCase())) {
                     const params = parts.length && parts[1] ? ActionURL.getParameters(rawData.key) : undefined;
-                    url = buildURL(rawData.productId, "app.view#/" + subParts.join('/'), params);
+                    url = buildURL(dataProductId, "app.view#/" + subParts.join('/'), params, {returnURL: false});
                 }
                 else {
                     url = AppURL.create(sectionKey, ...subParts);
@@ -127,14 +128,14 @@ export class ProductMenuModel extends Record({
     isLoading: false,
     sections: List<MenuSectionModel>(),
     message: undefined,
-    productId: undefined,
+    productIds: undefined,
 }) {
     isError: boolean;
     isLoaded: boolean;
     isLoading: boolean;
     message: string;
     sections: List<MenuSectionModel>;
-    productId: string;
+    productIds: Array<string>;
 
     constructor(values?: { [key: string]: any }) {
         super(values);
@@ -164,7 +165,7 @@ export class ProductMenuModel extends Record({
                 url: buildURL('product', 'menuSections.api'),
                 method: 'GET',
                 params: Object.assign({
-                    productIds: this.productId,
+                    productIds: Array.isArray(this.productIds) ? this.productIds.join(',') : this.productIds,
                 }),
                 success: Utils.getCallbackWrapper(response => {
                     const sections = List<MenuSectionModel>().asMutable();

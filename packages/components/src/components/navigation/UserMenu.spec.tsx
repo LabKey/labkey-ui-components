@@ -52,14 +52,14 @@ describe('UserMenu', () => {
 
     test('not initialized', () => {
         const model = new ProductMenuModel({
-            productId: 'testProduct',
+            productIds: ['testProduct'],
         });
         const tree = renderer.create(<UserMenu model={model} user={new User()} showSwitchToLabKey={true} />).toJSON();
         expect(tree).toBe(null);
     });
 
     test('user not logged in', () => {
-        const productId = 'notLoggedInUser';
+        const productIds = ['notLoggedInUser'];
         const user = new User({
             isSignedIn: false,
         });
@@ -67,7 +67,7 @@ describe('UserMenu', () => {
         const model = new ProductMenuModel({
             isLoaded: true,
             isLoading: false,
-            productId,
+            productIds,
             sections: sections.asImmutable(),
         });
         const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} />).toJSON();
@@ -75,7 +75,7 @@ describe('UserMenu', () => {
     });
 
     test('user logged in, but not in dev mode', () => {
-        const productId = 'loggedInUser';
+        const productIds = ['loggedInUser'];
         const user = new User({
             isSignedIn: true,
         });
@@ -83,7 +83,7 @@ describe('UserMenu', () => {
         const model = new ProductMenuModel({
             isLoaded: true,
             isLoading: false,
-            productId,
+            productIds,
             sections: sections.asImmutable(),
         });
         const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} />).toJSON();
@@ -91,7 +91,7 @@ describe('UserMenu', () => {
     });
 
     test('user logged in dev mode', () => {
-        const productId = 'logginedInDevMode';
+        const productIds = ['logginedInDevMode'];
         const user = new User({
             isSignedIn: true,
         });
@@ -99,7 +99,7 @@ describe('UserMenu', () => {
         const model = new ProductMenuModel({
             isLoaded: true,
             isLoading: false,
-            productId,
+            productIds,
             sections: sections.asImmutable(),
         });
         const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} />).toJSON();
@@ -107,7 +107,7 @@ describe('UserMenu', () => {
     });
 
     test('user logged in extra items', () => {
-        const productId = 'extraUserItems';
+        const productIds = ['extraUserItems'];
         const user = new User({
             isSignedIn: true,
         });
@@ -115,7 +115,7 @@ describe('UserMenu', () => {
         const model = new ProductMenuModel({
             isLoaded: true,
             isLoading: false,
-            productId,
+            productIds,
             sections: sections.asImmutable(),
         });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
@@ -126,7 +126,7 @@ describe('UserMenu', () => {
     });
 
     test('user logged in, without switch to labkey', () => {
-        const productId = 'switchToLabkey';
+        const productIds = ['switchToLabkey'];
         const user = new User({
             isSignedIn: true,
         });
@@ -134,7 +134,7 @@ describe('UserMenu', () => {
         const model = new ProductMenuModel({
             isLoaded: true,
             isLoading: false,
-            productId,
+            productIds,
             sections: sections.asImmutable(),
         });
         const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={false} />).toJSON();
@@ -142,7 +142,7 @@ describe('UserMenu', () => {
     });
 
     test('user logged in extra dev mode items', () => {
-        const productId = 'extraDevItems';
+        const productIds = ['extraDevItems'];
         const user = new User({
             isSignedIn: true,
         });
@@ -150,7 +150,7 @@ describe('UserMenu', () => {
         const model = new ProductMenuModel({
             isLoaded: true,
             isLoading: false,
-            productId,
+            productIds,
             sections: sections.asImmutable(),
         });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];

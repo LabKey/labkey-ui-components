@@ -37,14 +37,13 @@ export class MenuSectionConfig extends Record({
     iconCls?: string;
     maxItemsPerColumn: number;
     maxColumns: number;
-    seeAllURL?: AppURL;
-    emptyURL?: AppURL;
+    seeAllURL?: AppURL | string;
+    emptyURL?: AppURL | string;
     emptyURLText: string;
     headerURL: AppURL | string;
 }
 
 interface MenuSectionProps {
-    productId: string;
     section: MenuSectionModel;
     config: MenuSectionConfig;
 }
@@ -65,7 +64,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
                 )}
                 {config.emptyURL && (
                     <li key="emptyUrl" className="empty-section-link">
-                        <a href={config.emptyURL.toHref()}>{config.emptyURLText}</a>
+                        <a href={typeof config.emptyURL == 'string' ? config.emptyURL : config.emptyURL.toHref()}>{config.emptyURLText}</a>
                     </li>
                 )}
             </>
@@ -159,7 +158,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
             const seeAllUrl = config.seeAllURL || AppURL.create(section.key);
             columns.push(
                 <span className="overflow-link" key="overflow">
-                    <a href={seeAllUrl.toHref()}>See all {section.totalCount}</a>
+                    <a href={typeof seeAllUrl == 'string' ? seeAllUrl : seeAllUrl.toHref()}>See all {section.totalCount}</a>
                 </span>
             );
         }

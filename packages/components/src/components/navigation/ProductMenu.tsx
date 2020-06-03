@@ -55,7 +55,6 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
 
     render() {
         const { model, sectionConfigs } = this.props;
-        const { productId } = model;
 
         let containerCls = 'product-menu-content ';
         let menuSectionCls = 'menu-section col-' + model.sections.size;
@@ -80,7 +79,6 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
                                         return (
                                             <ProductMenuSection
                                                 key={key}
-                                                productId={productId}
                                                 section={this.getSectionModel(key)}
                                                 config={menuConfig}
                                             />
@@ -98,7 +96,6 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
                             return (
                                 <div key={section.key} className={menuSectionCls}>
                                     <ProductMenuSection
-                                        productId={model.productId}
                                         section={section}
                                         config={new MenuSectionConfig()}
                                     />

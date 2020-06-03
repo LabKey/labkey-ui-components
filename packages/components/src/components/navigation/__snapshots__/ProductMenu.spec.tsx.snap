@@ -219,7 +219,9 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
         },
       ],
       "message": undefined,
-      "productId": "testProduct3Columns",
+      "productIds": Array [
+        "testProduct3Columns",
+      ],
     }
   }
 >
@@ -346,7 +348,6 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                             }
                           }
                           maxColumns={1}
-                          productId="testProduct3Columns"
                           section={
                             Immutable.Record {
                               "label": "Sample Sets",
@@ -443,7 +444,6 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                             }
                           }
                           maxColumns={1}
-                          productId="testProduct3Columns"
                           section={
                             Immutable.Record {
                               "label": "Assays",
@@ -553,7 +553,6 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                             }
                           }
                           maxColumns={1}
-                          productId="testProduct3Columns"
                           section={
                             Immutable.Record {
                               "label": "Your Items",
@@ -723,7 +722,9 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
         },
       ],
       "message": undefined,
-      "productId": "testProduct2Columns",
+      "productIds": Array [
+        "testProduct2Columns",
+      ],
     }
   }
   sectionConfigs={
@@ -881,7 +882,6 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                           }
                           key="samples"
                           maxColumns={1}
-                          productId="testProduct2Columns"
                           section={
                             Immutable.Record {
                               "label": "Sample Sets",
@@ -983,7 +983,6 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                           }
                           key="assays"
                           maxColumns={1}
-                          productId="testProduct2Columns"
                           section={
                             Immutable.Record {
                               "label": "Assays",

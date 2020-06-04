@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.65.1
+*Released*: 4 June 2020
+* Update `@labkey/api` dependency to `v0.3.0`.
+
 ### version 0.65.0
 *Released*: 2 June 2020
 * FileTree component

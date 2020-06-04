@@ -7,7 +7,7 @@ import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
 import { QueryInfo } from '../base/models/QueryInfo';
-import { QueryGridModel, SchemaQuery } from '../base/models/model';
+import {QueryColumn, QueryGridModel, SchemaQuery} from '../base/models/model';
 
 import { QueryInfoForm } from './QueryInfoForm';
 
@@ -23,6 +23,7 @@ interface Props {
     onComplete: (data: any, submitForEdit: boolean) => any;
     onSubmitForEdit: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
+    shownInUpdateColumns?: boolean;
 }
 
 interface State {
@@ -51,9 +52,12 @@ export class BulkUpdateForm extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        const { model, onCancel, pluralNoun } = this.props;
+        const { model, onCancel, pluralNoun, shownInUpdateColumns } = this.props;
 
-        getSelectedData(model)
+        // Get all shownInUpdateView columns or undefined
+        const columns = shownInUpdateColumns ? model.getKeyColumns().concat(model.getUpdateColumns()) as List<QueryColumn> : undefined;
+
+        getSelectedData(model, columns)
             .then(response => {
                 const { data, dataIds } = response;
                 this.setState(() => ({

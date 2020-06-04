@@ -1186,9 +1186,12 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
     });
 }
 
-export function getSelectedData(model: QueryGridModel): Promise<IGridResponse> {
+export function getSelectedData(model: QueryGridModel, columns?: List<QueryColumn>): Promise<IGridResponse> {
     let filters = model.getFilters();
     filters = filters.push(Filter.create('RowId', model.selectedIds.toArray(), Filter.Types.IN));
+
+    // If columns defined use those for the query columns else use the display columns
+    const columnString = columns ? columns.map(c => (c.fieldKey)).join(',') : model.getRequestColumnsString();
 
     return new Promise((resolve, reject) =>
         selectRows({
@@ -1196,7 +1199,7 @@ export function getSelectedData(model: QueryGridModel): Promise<IGridResponse> {
             queryName: model.query,
             filterArray: filters.toJS(),
             sort: model.getSorts() || '-RowId',
-            columns: model.getRequestColumnsString(),
+            columns: columnString,
             offset: 0,
         })
             .then(response => {

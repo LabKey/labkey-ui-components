@@ -28,7 +28,7 @@ import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
  * @param metadata Optional Map to set the query metadata for this application
  * @param columnRenderers Optional Map to set the column renderers for this application
  */
-export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Map<string, any>) {
+export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void {
     if (!getGlobal().QueryGrid_models) {
         resetQueryGridState();
     }
@@ -46,7 +46,7 @@ export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?
 /**
  * Clear out all of the global state object for this package
  */
-export function resetQueryGridState() {
+export function resetQueryGridState(): void {
     setGlobal({
         QueryGrid_editors: Map<string, EditorModel>(),
         QueryGrid_lookups: Map<string, LookupStore>(),
@@ -57,7 +57,7 @@ export function resetQueryGridState() {
     });
 }
 
-function getGlobalState(property: string) {
+function getGlobalState(property: string): any {
     if (!getGlobal()['QueryGrid_' + property]) {
         throw new Error(
             'Must call initQueryGridState before you can access anything from the global.QueryGrid_' +
@@ -121,7 +121,7 @@ export function updateQueryGridModel(
             QueryGrid_models: getGlobalState('models').set(model.getId(), updatedModel),
         },
 
-        global => {
+        () => {
             if (connectedComponent) {
                 connectedComponent.forceUpdate();
             }
@@ -136,14 +136,14 @@ export function updateQueryGridModel(
  * @param model QueryGridModel to be removed
  * @param connectedComponent Optional React.Component which should be re-rendered with this QueryGridModel update (prevents the need to "connect" the component to the global state)
  */
-export function removeQueryGridModel(model: QueryGridModel, connectedComponent?: React.Component) {
+export function removeQueryGridModel(model: QueryGridModel, connectedComponent?: React.Component): void {
     setGlobal(
         {
             QueryGrid_models: getGlobalState('models').delete(model.getId()),
             QueryGrid_editors: getGlobalState('editors').delete(model.getId()),
         },
 
-        global => {
+        () => {
             if (connectedComponent) {
                 connectedComponent.forceUpdate();
             }
@@ -154,7 +154,7 @@ export function removeQueryGridModel(model: QueryGridModel, connectedComponent?:
 /**
  * Get the query metadata object from the global QueryGrid state
  */
-export function getQueryMetadata() {
+export function getQueryMetadata(): any {
     return getGlobalState('metadata');
 }
 
@@ -162,7 +162,7 @@ export function getQueryMetadata() {
  * Sets the query metadata object to be used for this application in the global QueryGrid state
  * @param metadata Map of query metadata to be applied to the query infos and column infos
  */
-export function setQueryMetadata(metadata: Map<string, any>) {
+export function setQueryMetadata(metadata: Map<string, any>): void {
     setGlobal({
         QueryGrid_metadata: metadata,
     });
@@ -171,7 +171,7 @@ export function setQueryMetadata(metadata: Map<string, any>) {
 /**
  * Get the query grid column renderers map from the global QueryGrid state
  */
-export function getQueryColumnRenderers() {
+export function getQueryColumnRenderers(): any {
     return getGlobalState('columnrenderers');
 }
 
@@ -179,7 +179,7 @@ export function getQueryColumnRenderers() {
  * Sets the valid column renderers for this application in the global QueryGrid state
  * @param renderers Map of query grid column renderers to be bound to the queryInfo columns
  */
-export function setQueryColumnRenderers(columnrenderers: Map<string, any>) {
+export function setQueryColumnRenderers(columnrenderers: Map<string, any>): void {
     setGlobal({
         QueryGrid_columnrenderers: columnrenderers,
     });
@@ -328,7 +328,7 @@ export function getUsers(permissions?: string | string[]): List<IUser> {
  * Sets the users list to be used for this application in the global QueryGrid state
  * @param users List of users
  */
-export function setUsers(users: List<IUser>, permissions?: string | string[]) {
+export function setUsers(users: List<IUser>, permissions?: string | string[]): void {
     setGlobal({
         QueryGrid_users: getGlobalState('users').set(getPermissionsKey(permissions), users),
     });
@@ -337,7 +337,7 @@ export function setUsers(users: List<IUser>, permissions?: string | string[]) {
 /**
  * Invalidate the global state users list
  */
-export function invalidateUsers() {
+export function invalidateUsers(): void {
     setGlobal({
         QueryGrid_users: Map<string, List<IUser>>(),
     });

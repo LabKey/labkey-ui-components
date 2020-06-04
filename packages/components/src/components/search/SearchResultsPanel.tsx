@@ -89,7 +89,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                 emptyResultDisplay
             ) : (
                 <div className="search-results__margin-top">No Results Found</div>
-            ); //
+            ); 
         }
     }
 

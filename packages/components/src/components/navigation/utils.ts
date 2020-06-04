@@ -29,6 +29,10 @@ export function confirmLeaveWhenDirty(currentLocation: Location) : boolean {
     }
 }
 
+export function getHref(url : AppURL | string) : string {
+    return typeof url == 'string' ? url : url.toHref();
+}
+
 export function createApplicationUrl(urlProductId: string, currentProductId: string, params: {[key:string]: any}, ...parts) : string {
     let appUrl = AppURL.create(...parts);
     appUrl = appUrl.addParams(params);

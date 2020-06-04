@@ -20,7 +20,7 @@ import { AppURL } from '../../url/AppURL';
 import { naturalSort } from '../../util/utils';
 
 import { MenuSectionModel } from './model';
-import { createApplicationUrl } from './utils';
+import { createApplicationUrl, getHref } from './utils';
 
 export class MenuSectionConfig extends Record({
     emptyText: undefined,
@@ -66,7 +66,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
                 )}
                 {config.emptyURL && (
                     <li key="emptyUrl" className="empty-section-link">
-                        <a href={typeof config.emptyURL == 'string' ? config.emptyURL : config.emptyURL.toHref()}>{config.emptyURLText}</a>
+                        <a href={getHref(config.emptyURL)}>{config.emptyURLText}</a>
                     </li>
                 )}
             </>
@@ -134,7 +134,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         const header = (
             <>
                 <span className="menu-section-header">
-                    {headerURL ? <a href={typeof headerURL === 'string' ? headerURL : headerURL.toHref()}>{label}</a> : <>{label}</>}
+                    {headerURL ? <a href={getHref(headerURL)}>{label}</a> : <>{label}</>}
                 </span>
                 <hr />
             </>
@@ -160,7 +160,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
             const seeAllUrl = config.seeAllURL || AppURL.create(section.key);
             columns.push(
                 <span className="overflow-link" key="overflow">
-                    <a href={typeof seeAllUrl == 'string' ? seeAllUrl : seeAllUrl.toHref()}>See all {section.totalCount}</a>
+                    <a href={getHref(seeAllUrl)}>See all {section.totalCount}</a>
                 </span>
             );
         }

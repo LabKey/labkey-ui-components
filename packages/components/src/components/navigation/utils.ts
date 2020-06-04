@@ -32,7 +32,7 @@ export function confirmLeaveWhenDirty(currentLocation: Location) : boolean {
 export function createApplicationUrl(urlProductId: string, currentProductId: string, params: {[key:string]: any}, ...parts) : string {
     let appUrl = AppURL.create(...parts);
     appUrl = appUrl.addParams(params);
-    if (urlProductId && (!currentProductId || urlProductId !== currentProductId.toLowerCase())) {
+    if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
         return buildURL(urlProductId.toLowerCase(), "app.view", undefined, {returnURL: false}) + appUrl.toHref();
     }
     else {

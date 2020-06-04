@@ -652,13 +652,13 @@ describe('getUpdatedData', () => {
                 },
                 IntValue: {
                     value: 123,
-                }
-            }
+                },
+            },
         });
         const updatedData = getUpdatedData(
             originalData,
             {
-                IntValue: "123",
+                IntValue: '123',
             },
             List<string>(['RowId'])
         );
@@ -674,22 +674,22 @@ describe('getUpdatedData', () => {
                 },
                 IntValue: {
                     value: 123,
-                }
-            }
+                },
+            },
         });
         const updatedData = getUpdatedData(
             originalData,
             {
-                IntValue: "234",
+                IntValue: '234',
             },
             List<string>(['RowId'])
         );
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
             RowId: 448,
-            IntValue: "234",
+            IntValue: '234',
         });
-    })
+    });
 
     test('Update multi value by displayValue', () => {
         const originalData = fromJS({
@@ -699,24 +699,23 @@ describe('getUpdatedData', () => {
                     url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
                 },
                 Alias: List<string>([
-                        Map<string, number>({displayValue: 'alias1', value: 1}),
-                        Map<string, number>({displayValue: 'alias2', value: 2})
-                    ])
-
-            }
+                    Map<string, number>({ displayValue: 'alias1', value: 1 }),
+                    Map<string, number>({ displayValue: 'alias2', value: 2 }),
+                ]),
+            },
         });
 
         const updatedData = getUpdatedData(
             originalData,
             {
-                Alias: ["alias3"],
+                Alias: ['alias3'],
             },
             List<string>(['RowId'])
         );
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
             RowId: 448,
-            Alias: ["alias3"],
+            Alias: ['alias3'],
         });
     });
 
@@ -728,10 +727,10 @@ describe('getUpdatedData', () => {
                     url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
                 },
                 Alias: List<string>([
-                        Map<string, number>({displayValue: 'alias1', value: 1}),
-                        Map<string, number>({displayValue: 'alias2', value: 2})
-                    ])
-            }
+                    Map<string, number>({ displayValue: 'alias1', value: 1 }),
+                    Map<string, number>({ displayValue: 'alias2', value: 2 }),
+                ]),
+            },
         });
 
         const updatedData = getUpdatedData(
@@ -744,7 +743,7 @@ describe('getUpdatedData', () => {
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
             RowId: 448,
-            Alias: ["alias2"],
+            Alias: ['alias2'],
         });
     });
 
@@ -756,10 +755,10 @@ describe('getUpdatedData', () => {
                     url: '/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448',
                 },
                 Alias: List<string>([
-                        Map<string, number>({displayValue: 'alias1', value: 1}),
-                        Map<string, number>({displayValue: 'alias2', value: 2})
-                    ])
-            }
+                    Map<string, number>({ displayValue: 'alias1', value: 1 }),
+                    Map<string, number>({ displayValue: 'alias2', value: 2 }),
+                ]),
+            },
         });
 
         const updatedData = getUpdatedData(

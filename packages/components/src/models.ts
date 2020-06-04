@@ -430,7 +430,6 @@ export class EditorModel
                                 return str;
                             }, '')
                         );
-                        return;
                     } else if (col.isJunctionLookup()) {
                         row = row.set(
                             col.name,
@@ -441,12 +440,10 @@ export class EditorModel
                                 return arr;
                             }, [])
                         );
-                        return;
                     } else {
                         row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
                     }
-                }
-                else {
+                } else {
                     row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
                 }
             });

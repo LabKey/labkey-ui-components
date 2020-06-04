@@ -466,7 +466,6 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
                     });
 
                     return m.set(key, updatedVal);
-
                 } else if (updateValuesMap.has(key) && updatedVal === undefined) {
                     return m.set(key, []);
                 } else return m;
@@ -499,13 +498,15 @@ export function getUpdatedDataFromGrid(
         const originalRow = originalGridData.get(id.toString());
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
-                let originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
+                const originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
 
                 // If col is a multi-value column, compare all values for changes
                 if (List.isList(originalValue) && Array.isArray(value)) {
-                    if (originalValue.size !== value.length ||
-                        originalValue.findIndex((o) =>
-                            (value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1)) !== -1
+                    if (
+                        originalValue.size !== value.length ||
+                        originalValue.findIndex(
+                            o => value.indexOf(o.value) === -1 && value.indexOf(o.displayValue) === -1
+                        ) !== -1
                     ) {
                         row[key] = value;
                     }
@@ -515,8 +516,7 @@ export function getUpdatedDataFromGrid(
                     if (originalValue.get(0).value !== value) {
                         row[key] = value || null;
                     }
-                }
-                else if ((value && !originalValue) || originalValue != value) {
+                } else if ((value && !originalValue) || originalValue != value) {
                     // if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value, we set the value to null in our update data
                     row[key] = value || null;

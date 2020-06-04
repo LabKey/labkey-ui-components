@@ -75,11 +75,7 @@ import { resolveErrorMessage } from './util/messaging';
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
 
-export function gridInit(
-    model: QueryGridModel,
-    shouldLoadData = true,
-    connectedComponent?: React.Component
-): void {
+export function gridInit(model: QueryGridModel, shouldLoadData = true, connectedComponent?: React.Component): void {
     // return quickly if we don't have a model or if it is already loading
     if (!model || model.isLoading) {
         return;
@@ -526,7 +522,7 @@ function loadDataForEditor(model: QueryGridModel, response?: any): void {
     const rows: Map<any, Map<string, any>> = response ? response.data : Map<string, Map<string, any>>();
     const ids = response ? response.dataIds : List();
     const columns = model.queryInfo.columns.toList().filter(column => {
-        return insertColumnFilter(column) || (model.requiredColumns?.indexOf(column.fieldKey) > -1);
+        return insertColumnFilter(column) || model.requiredColumns?.indexOf(column.fieldKey) > -1;
     });
 
     const getLookup = (col: QueryColumn) => getLookupStore(col);
@@ -1191,7 +1187,7 @@ export function getSelectedData(model: QueryGridModel, columns?: List<QueryColum
     filters = filters.push(Filter.create('RowId', model.selectedIds.toArray(), Filter.Types.IN));
 
     // If columns defined use those for the query columns else use the display columns
-    const columnString = columns ? columns.map(c => (c.fieldKey)).join(',') : model.getRequestColumnsString();
+    const columnString = columns ? columns.map(c => c.fieldKey).join(',') : model.getRequestColumnsString();
 
     return new Promise((resolve, reject) =>
         selectRows({

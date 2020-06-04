@@ -22,8 +22,12 @@ export class AliasInput extends React.Component<AliasInputProps> {
 
         // Alias fields could use label or displayValue
         this._labelKey = 'label';
-        if (Array.isArray(props.value) && props.value.length > 0
-            && typeof props.value[0] === 'object' && 'displayValue' in props.value[0]) {
+        if (
+            Array.isArray(props.value) &&
+            props.value.length > 0 &&
+            typeof props.value[0] === 'object' &&
+            'displayValue' in props.value[0]
+        ) {
             this._labelKey = 'displayValue';
         }
     }

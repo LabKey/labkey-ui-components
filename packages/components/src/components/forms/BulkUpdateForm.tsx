@@ -7,7 +7,7 @@ import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
 import { QueryInfo } from '../base/models/QueryInfo';
-import {QueryColumn, QueryGridModel, SchemaQuery} from '../base/models/model';
+import { QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
 
 import { QueryInfoForm } from './QueryInfoForm';
 
@@ -55,7 +55,9 @@ export class BulkUpdateForm extends React.Component<Props, State> {
         const { model, onCancel, pluralNoun, shownInUpdateColumns } = this.props;
 
         // Get all shownInUpdateView columns or undefined
-        const columns = shownInUpdateColumns ? model.getKeyColumns().concat(model.getUpdateColumns()) as List<QueryColumn> : undefined;
+        const columns = shownInUpdateColumns
+            ? (model.getKeyColumns().concat(model.getUpdateColumns()) as List<QueryColumn>)
+            : undefined;
 
         getSelectedData(model, columns)
             .then(response => {

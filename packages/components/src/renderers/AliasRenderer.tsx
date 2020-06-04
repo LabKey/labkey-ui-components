@@ -55,8 +55,7 @@ export class AliasRenderer extends React.Component<AliasRendererProps, AliasRend
                     return str + ', ' + v.display;
                 }
                 return v.display;
-            }
-            else return str;
+            } else return str;
         }, '');
     };
 

@@ -7,7 +7,6 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import {
     ADVANCED_FIELD_EDITOR_TOPIC,
-    ADVANCED_PROPERTY_FIELDS_TOPIC,
     CHART_MEASURES_AND_DIMENSIONS_TOPIC,
     PROPERTY_FIELDS_PHI_TOPIC,
     helpLinkNode,
@@ -255,8 +254,8 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     getPhiHelpText = () => {
         return (
             <div>
-                <p>Sets Protected Health Information (PHI) level for this field. This is a premium LabKey feature.</p>
-                <p>Learn more about {helpLinkNode(PROPERTY_FIELDS_PHI_TOPIC, 'PHI Compliance')} in LabKey.</p>
+                <p>Sets Protected Health Information (PHI) level for this field.</p>
+                <p>Learn more about {helpLinkNode(PROPERTY_FIELDS_PHI_TOPIC, 'protecting PHI')} in LabKey.</p>
             </div>
         );
     };
@@ -270,7 +269,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     Last entered: An editable default value is provided on first use. The last value entered will be
                     provided on later imports.
                 </p>
-                <p>Learn more about using {helpLinkNode(ADVANCED_PROPERTY_FIELDS_TOPIC, 'Default Type')} settings.</p>
+                <p>Learn more about using {helpLinkNode(ADVANCED_FIELD_EDITOR_TOPIC, 'Default Type')} settings.</p>
             </div>
         );
     };

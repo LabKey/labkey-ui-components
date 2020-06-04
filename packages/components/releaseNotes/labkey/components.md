@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 40541: Dataset Designer/Field Editor tooltip and help link fixes
+
 ### version 0.65.2
 *Released*: 4 June 2020
 * Support for multi-value columns in bulk and grid updates.

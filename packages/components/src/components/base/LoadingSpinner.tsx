@@ -20,7 +20,7 @@ interface SpinnerProps {
     wrapperClassName?: string;
 }
 
-export class LoadingSpinner extends React.Component<SpinnerProps, any> {
+export class LoadingSpinner extends React.PureComponent<SpinnerProps, any> {
     static defaultProps = {
         msg: 'Loading...',
         wrapperClassName: '',

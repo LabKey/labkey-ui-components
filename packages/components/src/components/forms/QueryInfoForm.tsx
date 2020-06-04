@@ -98,7 +98,7 @@ interface State {
     fieldEnabledCount: number;
 }
 
-export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
+export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State> {
     static defaultProps: Partial<QueryInfoFormProps> = {
         canSubmitForEdit: true,
         canSubmitNotDirty: true,
@@ -118,20 +118,9 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
     constructor(props: QueryInfoFormProps) {
         super(props);
 
-        this.disableSubmitButton = this.disableSubmitButton.bind(this);
-        this.enableSubmitButton = this.enableSubmitButton.bind(this);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleValidSubmit = this.handleValidSubmit.bind(this);
-        this.onHide = this.onHide.bind(this);
-        this.onCountChange = this.onCountChange.bind(this);
-        this.setSubmitting = this.setSubmitting.bind(this);
-        this.setSubmittingForEdit = this.setSubmittingForEdit.bind(this);
-        this.setSubmittingForSave = this.setSubmittingForSave.bind(this);
-
         this.state = {
             show: true,
-            fieldEnabledCount: (!props.allowFieldDisable || !props.initiallyDisableFields ? 1 : 0), // initial value of 1 is really just a boolean at this point
+            fieldEnabledCount: !props.allowFieldDisable || !props.initiallyDisableFields ? 1 : 0, // initial value of 1 is really just a boolean at this point
             canSubmit: !props.includeCountField && !props.checkRequiredFields,
             isSubmitted: false,
             isSubmitting: false,
@@ -151,23 +140,22 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         });
     }
 
-    enableSubmitButton() {
-        if (this.state.fieldEnabledCount > 0)
-            this.setState({ canSubmit: true });
-    }
+    enableSubmitButton = (): void => {
+        if (this.state.fieldEnabledCount > 0) this.setState({ canSubmit: true });
+    };
 
-    disableSubmitButton() {
+    disableSubmitButton = (): void => {
         this.setState({ canSubmit: false });
-    }
+    };
 
-    handleCancel() {
+    handleCancel = (): void => {
         const { onCancel } = this.props;
         if (Utils.isFunction(onCancel)) {
             onCancel();
         }
-    }
+    };
 
-    handleChange() {
+    handleChange = (): void => {
         const { onFormChange } = this.props;
         if (Utils.isFunction(onFormChange)) {
             onFormChange();
@@ -179,18 +167,18 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                     isDirty: true,
                 };
             });
-    }
+    };
 
-    handleSubmitError(error: any) {
+    handleSubmitError = (error: any): void => {
         console.error(error);
         const errorMsg = error ? error.exception : 'Your session may have expired or the form may no longer be valid.';
         this.setState({
             errorMsg: 'There was an error submitting the data. ' + errorMsg, // TODO add some actionable text here
             isSubmitting: false,
         });
-    }
+    };
 
-    filterDisabledFields(data: any, requiredFields?: string[]): OrderedMap<string, any> {
+    filterDisabledFields = (data: any, requiredFields?: string[]): OrderedMap<string, any> => {
         const fieldsToUpdate = this.props.queryInfo.columns.filter(column => {
             const enabledKey = getFieldEnabledFieldName(column);
             return data[enabledKey] === undefined || data[enabledKey] === 'true';
@@ -206,9 +194,9 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
         }
 
         return filteredData;
-    }
+    };
 
-    handleValidSubmit(row: any) {
+    handleValidSubmit = (row: any): void => {
         const { errorCallback, onSubmit, onSubmitForEdit, onSuccess } = this.props;
         const { submitForEdit } = this.state;
 
@@ -238,15 +226,15 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                 }
             }
         );
-    }
+    };
 
-    isValid(count: number): boolean {
+    isValid = (count: number): boolean => {
         const { maxCount } = this.props;
 
         return !maxCount || (count !== undefined && count > 0 && count <= maxCount);
-    }
+    };
 
-    renderError() {
+    renderError = (): ReactNode => {
         const { errorMessagePrefix } = this.props;
         const { errorMsg } = this.state;
         if (errorMsg) {
@@ -257,43 +245,43 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
             );
         }
         return null;
-    }
+    };
 
-    setSubmittingForEdit() {
+    setSubmittingForEdit = (): void => {
         this.setSubmitting(true);
-    }
+    };
 
-    setSubmittingForSave() {
+    setSubmittingForSave = (): void => {
         this.setSubmitting(false);
-    }
+    };
 
-    setSubmitting(submitForEdit: boolean) {
+    setSubmitting = (submitForEdit: boolean): void => {
         this.setState(() => {
             return {
                 submitForEdit,
             };
         });
-    }
+    };
 
-    onHide() {
+    onHide = (): void => {
         const { onHide } = this.props;
 
         if (onHide) {
             onHide();
         }
 
-        this.setState(() => ({show: false,}));
-    }
+        this.setState(() => ({ show: false }));
+    };
 
-    onCountChange(field, value) {
-        this.setState(() => ({count: value}));
-    }
+    onCountChange = (field, value): void => {
+        this.setState(() => ({ count: value }));
+    };
 
     onFieldsEnabledChange = (fieldEnabledCount: number) => {
-        this.setState(() => ({fieldEnabledCount}));
-    }
+        this.setState(() => ({ fieldEnabledCount }));
+    };
 
-    renderButtons() {
+    renderButtons = (): ReactNode => {
         const {
             cancelText,
             canSubmitNotDirty,
@@ -353,7 +341,13 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                             <Button
                                 className="test-loc-submit-button"
                                 bsStyle="success"
-                                disabled={isSubmitting || fieldEnabledCount == 0 || !canSubmit || count === 0 || !(canSubmitNotDirty || isDirty)}
+                                disabled={
+                                    isSubmitting ||
+                                    fieldEnabledCount === 0 ||
+                                    !canSubmit ||
+                                    count === 0 ||
+                                    !(canSubmitNotDirty || isDirty)
+                                }
                                 onClick={this.setSubmittingForSave}
                                 type="submit"
                             >
@@ -365,7 +359,7 @@ export class QueryInfoForm extends React.Component<QueryInfoFormProps, State> {
                 </div>
             </div>
         );
-    }
+    };
 
     render() {
         const {

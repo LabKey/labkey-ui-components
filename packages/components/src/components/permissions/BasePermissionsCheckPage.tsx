@@ -3,6 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'react';
+
 import { InsufficientPermissionsPage, LoadingSpinner, Page, PageDetailHeader, Notification, User } from '../..';
 
 interface Props {
@@ -17,9 +18,7 @@ export class BasePermissionsCheckPage extends React.PureComponent<Props, any> {
         const { user, title, hasPermission, renderButtons, children } = this.props;
 
         if (!hasPermission) {
-            return (
-                <InsufficientPermissionsPage title={title} />
-            );
+            return <InsufficientPermissionsPage title={title} />;
         }
 
         let body;

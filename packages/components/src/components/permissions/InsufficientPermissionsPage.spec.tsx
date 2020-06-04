@@ -1,18 +1,13 @@
-import * as React from 'react'
-import renderer from 'react-test-renderer'
-import { InsufficientPermissionsPage } from "./InsufficientPermissionsPage";
+import * as React from 'react';
+import renderer from 'react-test-renderer';
 
-describe("<PermissionsPanel/>", () => {
+import { InsufficientPermissionsPage } from './InsufficientPermissionsPage';
 
-   test("default properties", () => {
-      const component = (
-          <InsufficientPermissionsPage
-              title={'Test Page Title'}
-          />
-       );
+describe('<PermissionsPanel/>', () => {
+    test('default properties', () => {
+        const component = <InsufficientPermissionsPage title="Test Page Title" />;
 
-      const tree = renderer.create(component).toJSON();
-      expect(tree).toMatchSnapshot();
-   });
-
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });

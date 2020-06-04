@@ -120,6 +120,19 @@ export function naturalSort(aso: string, bso: string): number {
     return b[i] ? -1 : 0;
 }
 
+type SortFn = (a, b) => number;
+
+/**
+ * Creates a sort function that will natural sort an array of objects by property.
+ * Ex:`
+ *  const myArray = [{ displayName: 'Nick' }, { displayName: 'Alan' }, { displayName: 'Susan' }];
+ *  myArray.sort(naturalSortByProperty('displayName'));
+ * @param property: string, the property you want to sort on.
+ */
+export function naturalSortByProperty(property: string): SortFn {
+    return (a, b) => naturalSort(a[property], b[property]);
+}
+
 // Case insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
 export function caseInsensitive(obj: Record<string, any>, prop: string): any {

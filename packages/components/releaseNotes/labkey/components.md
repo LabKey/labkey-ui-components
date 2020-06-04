@@ -19,6 +19,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update `@labkey/api` dependency to `v0.3.1`.
 
 ### version 0.65.2
+*Released*: ??? June 2020
+* Add naturalSortByProperty
+
+### version 0.65.2
 *Released*: 4 June 2020
 * Support for multi-value columns in bulk and grid updates.
 

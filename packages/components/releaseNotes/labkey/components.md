@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 7373: Move InsufficientPermissionsPage and BasePermissionsCheckPage from Sample Manager
+* Update `@labkey/api` dependency to `v0.3.TBD`.
 
 ### version 0.65.2
 *Released*: 4 June 2020

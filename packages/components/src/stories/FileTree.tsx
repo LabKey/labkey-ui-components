@@ -1,5 +1,5 @@
 import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 
 import React from 'react';
 
@@ -11,8 +11,12 @@ storiesOf('FileTree', module)
     .add('With basic data', () => (
         <div>
             <FileTree
+                allowMultiSelect={boolean('allowMultiSelect', true)}
+                useFileIconCls={boolean('useFileIconCls', true)}
                 loadData={fetchFileTestTree}
-                onFileSelect={(name: string, path: string, checked: boolean, isDirectory: boolean) => {}}
+                onFileSelect={(name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => {
+                    console.log(path, checked);
+                }}
             />
         </div>
     ));

@@ -24,6 +24,7 @@ export interface FileAttachmentFormModel {
 
 export interface IFile {
     contentLength: number;
+    contentType: string;
     created: string;
     createdBy: string;
     createdById: number;
@@ -37,11 +38,13 @@ export interface IFile {
     isLeaf: boolean;
     lastModified: string;
     name: string;
+    options: string;
     propertiesRowId?: number;
 }
 
 export const DEFAULT_FILE: IFile = {
     contentLength: 0,
+    contentType: undefined,
     created: undefined,
     createdBy: undefined,
     createdById: -1,
@@ -55,6 +58,7 @@ export const DEFAULT_FILE: IFile = {
     isLeaf: false,
     lastModified: undefined,
     name: undefined,
+    options: undefined,
     propertiesRowId: undefined,
 };
 

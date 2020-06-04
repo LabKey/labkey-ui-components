@@ -17,6 +17,10 @@
     & input[type='checkbox'] {
         margin-top: 15%;
     }
+
+    &.active {
+        font-weight: bold;
+    }
 }
 
 .filetree-container {

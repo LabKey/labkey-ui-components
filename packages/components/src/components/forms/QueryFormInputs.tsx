@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Input } from 'formsy-react-components';
 import { Utils } from '@labkey/api';
@@ -88,7 +88,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         disabledFields: List<string>(),
     };
 
-    private _fieldEnabledCount: number = 0;
+    private _fieldEnabledCount = 0;
 
     constructor(props: QueryFormInputsProps) {
         super(props);
@@ -98,8 +98,6 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         if (!queryInfo && !queryColumns) {
             throw new Error('QueryFormInputs: If queryInfo is not provided, queryColumns is required.');
         }
-
-        this.onQSChange = this.onQSChange.bind(this);
 
         this.state = {
             labels: {},
@@ -117,7 +115,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             }, {});
     }
 
-    onQSChange(name: string, value: string | any[], items: any) {
+    onQSChange = (name: string, value: string | any[], items: any): void => {
         const { includeLabelField, onQSChange } = this.props;
 
         if (includeLabelField) {
@@ -126,36 +124,35 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                 allItems = [allItems];
             }
 
-            this.setState({
+            this.setState((prevState: State) => ({
                 labels: {
-                    ...this.state.labels,
+                    ...prevState.labels,
                     ...{
                         [getQueryFormLabelFieldName(name)]: allItems
                             .map(item => (item ? item.label : '(label not found)'))
                             .join(', '),
                     },
                 },
-            });
+            }));
         }
 
         if (onQSChange) {
             onQSChange(name, value, items);
         }
-    }
+    };
 
-    onToggleDisable = (disabled: boolean) => {
+    onToggleDisable = (disabled: boolean): void => {
         if (disabled) {
             this._fieldEnabledCount--;
-        }
-        else {
+        } else {
             this._fieldEnabledCount++;
         }
         if (this.props.onFieldsEnabledChange) {
             this.props.onFieldsEnabledChange(this._fieldEnabledCount);
         }
-    }
+    };
 
-    renderLabelField(col: QueryColumn) {
+    renderLabelField = (col: QueryColumn): ReactNode => {
         const { includeLabelField } = this.props;
 
         if (includeLabelField) {
@@ -164,7 +161,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         }
 
         return null;
-    }
+    };
 
     render() {
         const {
@@ -221,7 +218,15 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                     if (col.inputRenderer) {
                         const renderer = resolveRenderer(col);
                         if (renderer) {
-                            return renderer(col, i, value, false, allowFieldDisable);
+                            return renderer(
+                                col,
+                                i,
+                                value,
+                                false,
+                                allowFieldDisable,
+                                shouldDisableField,
+                                this.onToggleDisable
+                            );
                         }
 
                         throw new Error(`"${col.inputRenderer}" is not a valid inputRenderer.`);

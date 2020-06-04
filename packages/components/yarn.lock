@@ -1553,10 +1553,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@labkey/api@0.3.0":
-  version "0.3.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.3.0.tgz#eb842c63833037734673c1f82eaf9e543a3946cc"
-  integrity sha1-64QsY4MwN3NGc8H4Lq+eVDo5Rsw=
+"@labkey/api@0.3.0-fb-fmAppSetupPlaceholders.0":
+  version "0.3.0-fb-fmAppSetupPlaceholders.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-0.3.0-fb-fmAppSetupPlaceholders.0.tgz#32eb7c17292473292b17d6329f960d31af2c4716"
+  integrity sha1-Mut8FykkcykrF9Yyn5YNMa8sRxY=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"

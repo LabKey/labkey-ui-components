@@ -81,6 +81,7 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
                                                 key={key}
                                                 section={this.getSectionModel(key)}
                                                 config={menuConfig}
+                                                currentProductId={model.currentProductId}
                                             />
                                         );
                                     })}
@@ -98,6 +99,7 @@ export class ProductMenu extends React.Component<ProductMenuProps, any> {
                                     <ProductMenuSection
                                         section={section}
                                         config={new MenuSectionConfig()}
+                                        currentProductId={model.currentProductId}
                                     />
                                 </div>
                             );

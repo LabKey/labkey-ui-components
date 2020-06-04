@@ -89,7 +89,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
-                productId="testProduct"
+                currentProductId="testProduct"
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -111,7 +111,7 @@ describe('ProductMenuSection render', () => {
         });
         const menuSection = mount(
             <ProductMenuSection
-                productId="testProduct"
+                currentProductId="testProduct"
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -139,7 +139,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
-                productId="testProductHeaderUrl"
+                currentProductId="testProductHeaderUrl"
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -166,7 +166,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
-                productId={productId}
+                currentProductId={productId}
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -196,7 +196,7 @@ describe('ProductMenuSection render', () => {
         });
 
         const menuSection = mount(
-            <ProductMenuSection section={section} productId={productId} config={sectionConfig} />
+            <ProductMenuSection section={section} currentProductId={productId} config={sectionConfig} />
         );
 
         expect(menuSection.find('ul').length).toBe(2);
@@ -222,7 +222,7 @@ describe('ProductMenuSection render', () => {
         });
 
         const menuSection = mount(
-            <ProductMenuSection section={section} productId={productId} config={sectionConfig} />
+            <ProductMenuSection section={section} currentProductId={productId} config={sectionConfig} />
         );
         expect(menuSection.find('ul').length).toBe(2);
         expect(menuSection.find('span.overflow-link').length).toBe(1);

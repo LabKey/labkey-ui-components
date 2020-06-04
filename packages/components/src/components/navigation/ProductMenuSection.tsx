@@ -20,6 +20,7 @@ import { AppURL } from '../../url/AppURL';
 import { naturalSort } from '../../util/utils';
 
 import { MenuSectionModel } from './model';
+import { createApplicationUrl } from './utils';
 
 export class MenuSectionConfig extends Record({
     emptyText: undefined,
@@ -46,6 +47,7 @@ export class MenuSectionConfig extends Record({
 interface MenuSectionProps {
     section: MenuSectionModel;
     config: MenuSectionConfig;
+    currentProductId: string;
 }
 
 export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
@@ -72,7 +74,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
     }
 
     renderMenuItemsList(items, columnNumber = 1, totalColumns = 1, withOverflow = false) {
-        const { config, section } = this.props;
+        const { section } = this.props;
 
         return (
             <ul className={'col-' + totalColumns} key={section.key + 'col-' + columnNumber}>
@@ -126,7 +128,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         let headerURL = config.headerURL;
         if (headerURL === undefined) {
             if (section.url) {
-                headerURL = AppURL.create(section.key);
+                headerURL = createApplicationUrl(section.productId, this.props.currentProductId, undefined, section.key);
             }
         }
         const header = (

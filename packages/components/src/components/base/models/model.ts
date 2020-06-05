@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
-import { ActionURL, Filter, Query, Utils } from '@labkey/api';
+import { ActionURL, Filter, Query, UserWithPermissions, Utils } from '@labkey/api';
 
 import {
     getSchemaQuery,
@@ -83,25 +83,7 @@ export class Container extends Record({
     }
 }
 
-interface IUserProps {
-    id: number;
-
-    canDelete: boolean;
-    canDeleteOwn: boolean;
-    canInsert: boolean;
-    canUpdate: boolean;
-    canUpdateOwn: boolean;
-
-    displayName: string;
-    email: string;
-    phone: string;
-    avatar: string;
-
-    isAdmin: boolean;
-    isGuest: boolean;
-    isSignedIn: boolean;
-    isSystemAdmin: boolean;
-
+interface IUserProps extends Partial<UserWithPermissions> {
     permissionsList: List<string>;
 }
 

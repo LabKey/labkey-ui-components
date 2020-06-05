@@ -22,22 +22,22 @@ export enum GRID_CHECKBOX_OPTIONS {
     NONE,
 }
 
-export const PermissionTypes = {
+export enum PermissionTypes {
     // CRUD
-    Admin: 'org.labkey.api.security.permissions.AdminPermission',
-    Delete: 'org.labkey.api.security.permissions.DeletePermission',
-    Insert: 'org.labkey.api.security.permissions.InsertPermission',
-    Read: 'org.labkey.api.security.permissions.ReadPermission',
-    Update: 'org.labkey.api.security.permissions.UpdatePermission',
+    Admin = 'org.labkey.api.security.permissions.AdminPermission',
+    Delete = 'org.labkey.api.security.permissions.DeletePermission',
+    Insert = 'org.labkey.api.security.permissions.InsertPermission',
+    Read = 'org.labkey.api.security.permissions.ReadPermission',
+    Update = 'org.labkey.api.security.permissions.UpdatePermission',
 
     // Other
-    DesignAssay: 'org.labkey.api.assay.security.DesignAssayPermission',
-    DesignDataClass: 'org.labkey.api.security.permissions.DesignDataClassPermission',
-    DesignSampleSet: 'org.labkey.api.security.permissions.DesignSampleSetPermission',
-    DesignList: 'org.labkey.api.lists.permissions.DesignListPermission',
-    UserManagement: 'org.labkey.api.security.permissions.UserManagementPermission',
-    ApplicationAdmin: 'org.labkey.api.security.permissions.ApplicationAdminPermission',
+    DesignAssay = 'org.labkey.api.assay.security.DesignAssayPermission',
+    DesignDataClass = 'org.labkey.api.security.permissions.DesignDataClassPermission',
+    DesignSampleSet = 'org.labkey.api.security.permissions.DesignSampleSetPermission',
+    DesignList = 'org.labkey.api.lists.permissions.DesignListPermission',
+    UserManagement = 'org.labkey.api.security.permissions.UserManagementPermission',
+    ApplicationAdmin = 'org.labkey.api.security.permissions.ApplicationAdminPermission',
 
     // Assay QC
-    QCAnalyst: 'org.labkey.api.security.permissions.QCAnalystPermission',
-};
+    QCAnalyst = 'org.labkey.api.security.permissions.QCAnalystPermission',
+}

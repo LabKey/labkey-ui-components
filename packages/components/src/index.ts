@@ -209,7 +209,7 @@ import {
 } from './components/forms/detail/DetailEditRenderer';
 import { Detail } from './components/forms/detail/Detail';
 import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
-import { ISelectInitData, IUser } from './components/forms/model';
+import { ISelectInitData } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
@@ -466,7 +466,6 @@ export {
     // user/permissions related items
     getUsersWithPermissions,
     getUserProperties,
-    IUser,
     UserDetailHeader,
     UserProfile,
     ChangePasswordModal,

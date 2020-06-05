@@ -163,6 +163,7 @@ export class ProductMenuModel extends Record({
                 url: buildURL('product', 'menuSections.api'),
                 method: 'GET',
                 params: Object.assign({
+                    currentProductId: this.currentProductId,
                     productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
                 }),
                 success: Utils.getCallbackWrapper(response => {

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.66.0-fb-fmProductMenu.5",
+  "version": "0.67.0-fb-fmProductMenu.6",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

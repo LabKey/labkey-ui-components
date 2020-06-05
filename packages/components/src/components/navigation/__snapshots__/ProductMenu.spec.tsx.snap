@@ -349,6 +349,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                               "emptyURL": undefined,
                               "emptyURLText": "Get started...",
                               "headerURL": undefined,
+                              "headerText": undefined,
                             }
                           }
                           maxColumns={1}
@@ -446,6 +447,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                               "emptyURL": undefined,
                               "emptyURLText": "Get started...",
                               "headerURL": undefined,
+                              "headerText": undefined,
                             }
                           }
                           maxColumns={1}
@@ -556,6 +558,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                               "emptyURL": undefined,
                               "emptyURLText": "Get started...",
                               "headerURL": undefined,
+                              "headerText": undefined,
                             }
                           }
                           maxColumns={1}
@@ -751,6 +754,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
           "emptyURL": undefined,
           "emptyURLText": "Get started...",
           "headerURL": undefined,
+          "headerText": undefined,
         },
       },
       Immutable.Map {
@@ -764,6 +768,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
           "emptyURL": undefined,
           "emptyURLText": "Get started...",
           "headerURL": undefined,
+          "headerText": undefined,
         },
       },
     ]
@@ -889,6 +894,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                               "emptyURL": undefined,
                               "emptyURLText": "Get started...",
                               "headerURL": undefined,
+                              "headerText": undefined,
                             }
                           }
                           key="samples"
@@ -991,6 +997,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                               "emptyURL": undefined,
                               "emptyURLText": "Get started...",
                               "headerURL": undefined,
+                              "headerText": undefined,
                             }
                           }
                           key="assays"

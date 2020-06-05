@@ -129,7 +129,7 @@ describe('ProductMenuSection render', () => {
         expect(toJson(menuSection)).toMatchSnapshot();
     });
 
-    test('section with custom headerURL', () => {
+    test('section with custom headerURL and headerText', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             items: List<MenuSectionModel>(),
@@ -145,6 +145,7 @@ describe('ProductMenuSection render', () => {
                     new MenuSectionConfig({
                         iconURL: '/testProduct/images/samples.svg',
                         headerURL: AppURL.create('sample', 'new').addParams({ sort: 'date' }),
+                        headerText: 'Custom Sample Sets',
                     })
                 }
             />

@@ -4,7 +4,7 @@ describe("createApplicationUrl", () => {
 
     test("no productId", () => {
         const url = createApplicationUrl(undefined, "currentProduct", undefined, "destination");
-        expect(url).toEqual("#/destination");
+        expect(url.toString()).toEqual("/destination");
     });
 
     test("no currentProductId", () => {
@@ -19,16 +19,16 @@ describe("createApplicationUrl", () => {
 
     test("is current product", () => {
         const url = createApplicationUrl("currentProduct", "currentProduct", {rowId: 123}, "destination");
-        expect(url).toEqual("#/destination?rowId=123");
+        expect(url.toString()).toEqual("/destination?rowId=123");
     });
 
     test("with multiple params", () => {
         const url = createApplicationUrl(undefined, "currentProduct", {rowId: 123, view: "grid"}, "destination");
-        expect(url).toEqual("#/destination?rowId=123&view=grid");
+        expect(url.toString()).toEqual("/destination?rowId=123&view=grid");
     });
 
     test("with multiple parts", () => {
         const url = createApplicationUrl(undefined, "currentProduct", {rowId: 42}, "destination", "mars");
-        expect(url).toEqual("#/destination/mars?rowId=42");
+        expect(url.toString()).toEqual("/destination/mars?rowId=42");
     });
 })

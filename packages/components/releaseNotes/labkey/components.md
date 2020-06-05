@@ -9,6 +9,11 @@ Components, models, actions, and utility functions for LabKey applications and p
   - Add utility method for getting application URL based on productIds
   - Modify menu models to carry through productIds
 
+### version 0.66.0
+*Released*: 5 June 2020
+* Item 7373: Move InsufficientPermissionsPage and BasePermissionsCheckPage from Sample Manager
+* Update `@labkey/api` dependency to `v0.3.1`.
+
 ### version 0.65.2
 *Released*: 4 June 2020
 * Support for multi-value columns in bulk and grid updates.

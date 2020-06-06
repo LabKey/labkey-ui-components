@@ -8,6 +8,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Added emptyResultDisplay, hideHeader and hidePanelFrame props to SearchResultsPanel
 - Add useEmail to UserSelectInput
 
+### version 0.66.0
+*Released*: 5 June 2020
+* Item 7373: Move InsufficientPermissionsPage and BasePermissionsCheckPage from Sample Manager
+* Update `@labkey/api` dependency to `v0.3.1`.
+
+### version 0.65.2
+*Released*: 4 June 2020
+* Support for multi-value columns in bulk and grid updates.
+
+### version 0.65.1
+*Released*: 4 June 2020
+* Update `@labkey/api` dependency to `v0.3.0`.
+
 ### version 0.65.0
 *Released*: 2 June 2020
 * FileTree component

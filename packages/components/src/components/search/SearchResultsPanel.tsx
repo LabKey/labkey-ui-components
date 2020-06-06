@@ -30,9 +30,15 @@ interface Props {
     iconUrl?: string;
     hideHeader?: boolean;
     hidePanelFrame?: boolean;
+    maxHitSize?: number;
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
+
+    static defaultProps = {
+        maxHitSize: 1000
+    };
+
     isLoading(): boolean {
         const { model } = this.props;
         return model ? model.get('isLoading') : false;
@@ -61,16 +67,21 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     renderResults() {
-        const { model, iconUrl, emptyResultDisplay, hideHeader } = this.props;
+        const { model, iconUrl, emptyResultDisplay, hideHeader, maxHitSize } = this.props;
 
         if (this.isLoading()) return;
 
         const data = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (data && data.size > 0) {
+
+            const totalHit = model.getIn(['entities', 'totalHits']);
+            const msg = data.size.toLocaleString() + ' Result' + (data.size !== 1 ? 's' : '');
+            const headerMsg = totalHit > maxHitSize ? `${data.size.toLocaleString()} of ${totalHit.toLocaleString()} Results` : msg;
+
             return (
                 <div>
-                    {!hideHeader && <h3 className="no-margin-top search-results__amount">{data.size} Results</h3>}
+                    {!hideHeader && <h3 className="no-margin-top search-results__amount">{headerMsg}</h3>}
                     {data.size > 0 &&
                         data.map((item, i) => (
                             <div key={i} className="col-md-6 col-sm-12 search-results__margin-top">
@@ -89,7 +100,7 @@ export class SearchResultsPanel extends React.Component<Props, any> {
                 emptyResultDisplay
             ) : (
                 <div className="search-results__margin-top">No Results Found</div>
-            ); 
+            );
         }
     }
 

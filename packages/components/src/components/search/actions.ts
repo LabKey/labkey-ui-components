@@ -124,8 +124,7 @@ function getCardData(
     return cardData;
 }
 
-// result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
-// cannot seem be to be removable, cause sample type search to be missing?
+// TODO: add categories for other search results so the result['data'] check could be removed.
 function getProcessedSearchHits(
     results: any,
     getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData

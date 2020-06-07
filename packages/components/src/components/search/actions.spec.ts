@@ -4,13 +4,13 @@ import { getSearchResultCardData } from './actions';
 
 describe('getSearchResultCardData', () => {
     test('data class object', () => {
-        const data = fromJS({
+        const data = {
             dataClass: {
                 name: 'Test Source',
                 category: 'sources',
                 type: 'dataClass',
             },
-        });
+        };
 
         const resultCardData = getSearchResultCardData(data, 'dataClass', 'my title');
         expect(resultCardData).toStrictEqual({
@@ -21,12 +21,12 @@ describe('getSearchResultCardData', () => {
     });
 
     test('sample set sample', () => {
-        const data = fromJS({
+        const data = {
             sampleSet: {
                 name: 'Test Sample Set',
                 type: 'sampleSet',
             },
-        });
+        };
 
         const resultCardData = getSearchResultCardData(data, 'material', undefined);
         expect(resultCardData).toStrictEqual({
@@ -37,10 +37,10 @@ describe('getSearchResultCardData', () => {
     });
 
     test('data class', () => {
-        const data = fromJS({
+        const data = {
             name: 'Test Source',
             type: 'dataClass',
-        });
+        };
 
         const resultCardData = getSearchResultCardData(data, 'dataClass', 'my title');
         expect(resultCardData).toStrictEqual({
@@ -51,10 +51,10 @@ describe('getSearchResultCardData', () => {
     });
 
     test('sample set', () => {
-        const data = fromJS({
+        const data = {
             name: 'Test SampleSet',
             type: 'sampleSet',
-        });
+        };
 
         const resultCardData = getSearchResultCardData(data, 'materialSource', undefined);
         expect(resultCardData).toStrictEqual({
@@ -65,12 +65,12 @@ describe('getSearchResultCardData', () => {
     });
 
     test('ingredients icon', () => {
-        const data = fromJS({
+        const data = {
             sampleSet: {
                 name: 'RawMaterials',
                 type: 'sampleSet',
             },
-        });
+        };
 
         const resultCardData = getSearchResultCardData(data, 'material', undefined);
         expect(resultCardData).toStrictEqual({
@@ -81,12 +81,12 @@ describe('getSearchResultCardData', () => {
     });
 
     test('batch icon', () => {
-        const data = fromJS({
+        const data = {
             sampleSet: {
                 name: 'MixtureBatches',
                 type: 'sampleSet',
             },
-        });
+        };
 
         const resultCardData = getSearchResultCardData(data, 'material', undefined);
         expect(resultCardData).toStrictEqual({
@@ -97,7 +97,7 @@ describe('getSearchResultCardData', () => {
     });
 
     test('sample icon', () => {
-        const data = fromJS({});
+        const data = {};
 
         const resultCardData = getSearchResultCardData(data, 'material', undefined);
         expect(resultCardData).toStrictEqual({

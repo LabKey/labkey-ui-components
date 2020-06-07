@@ -103,7 +103,7 @@ function resolveIconSrc(data: any, category: string): string {
     return iconSrc;
 }
 
-function getSearchResultCardData(data: any, category: string, title: string): SearchResultCardData {
+export function getSearchResultCardData(data: any, category: string, title: string): SearchResultCardData {
     return {
         title,
         iconSrc: resolveIconSrc(data, category),
@@ -125,7 +125,7 @@ function getCardData(
 }
 
 // TODO: add categories for other search results so the result['data'] check could be removed.
-function getProcessedSearchHits(
+export function getProcessedSearchHits(
     results: any,
     getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
 ): {} {

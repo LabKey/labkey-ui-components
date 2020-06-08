@@ -6,6 +6,7 @@ import {
     getSelected,
     IDataViewInfo,
     loadReports,
+    naturalSortByProperty,
     QueryInfo,
     selectRows,
     setSelected,
@@ -15,7 +16,6 @@ import { clearSelected, fetchCharts, ISelectResponse, selectAll } from '../actio
 import { VISUALIZATION_REPORTS } from '../constants';
 
 import { GridMessage, QueryModel } from './QueryModel';
-import { dataViewInfoSorter } from './utils';
 
 export interface RowsResponse {
     messages: GridMessage[];
@@ -127,6 +127,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     },
     async loadCharts(model, includeSampleComparison) {
         const { schemaQuery, containerPath } = model;
+        const sortByName = naturalSortByProperty('name');
 
         if (includeSampleComparison) {
             const { schemaName, queryName } = schemaQuery;
@@ -139,10 +140,10 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
                     const isSampleComparison = type === DataViewInfoTypes.SampleComparison;
                     return matchingSq && (isVisualization || isSampleComparison);
                 })
-                .sort(dataViewInfoSorter);
+                .sort(sortByName);
         } else {
             const charts = await fetchCharts(schemaQuery, containerPath);
-            return charts.toArray().sort(dataViewInfoSorter);
+            return charts.toArray().sort(sortByName);
         }
     },
 };

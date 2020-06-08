@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.67.2
+*Released*: ??? June 2020
+* Add `naturalSortByProperty<T>(property: string)`
+* `naturalSort` is now typed to accept any, which was always the case, so this is backwards compatible
+
 ### version 0.67.1
 *Released*: 8 June 2020
 * Issue 40541: Dataset Designer/Field Editor tooltip and help link fixes
@@ -17,10 +22,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 5 June 2020
 * Item 7373: Move InsufficientPermissionsPage and BasePermissionsCheckPage from Sample Manager
 * Update `@labkey/api` dependency to `v0.3.1`.
-
-### version 0.65.2
-*Released*: ??? June 2020
-* Add naturalSortByProperty
 
 ### version 0.65.2
 *Released*: 4 June 2020

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version TBD
-*Released*: TBD
+## version 0.67.0
+*Released*: 8 June 2020
 * Support handling of multiple applications in product menu
   - Update type parameter for getting product menu to List of productIds instead of productId
   - Update MenuItemModel to account for linking to a different application (based on productId)

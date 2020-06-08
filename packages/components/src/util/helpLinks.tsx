@@ -2,8 +2,7 @@ import React from 'react';
 
 export const CHART_MEASURES_AND_DIMENSIONS_TOPIC = 'chartTrouble';
 export const MISSING_VALUES_TOPIC = 'manageMissing';
-export const PROPERTY_FIELDS_PHI_TOPIC = 'propertyFields#phi';
-export const ADVANCED_PROPERTY_FIELDS_TOPIC = 'propertyFields#advanced';
+export const PROPERTY_FIELDS_PHI_TOPIC = 'phiLevels';
 
 export const FIELD_EDITOR_TOPIC = 'fieldEditor';
 export const ADVANCED_FIELD_EDITOR_TOPIC = FIELD_EDITOR_TOPIC + '#advanced';
@@ -24,7 +23,7 @@ export const DEFINE_SAMPLE_TYPE_TOPIC = 'createSampleSet';
 export const DEFINE_LIST_TOPIC = 'createListOptions';
 export const DEFINE_ISSUES_LIST_TOPIC = 'adminIssues';
 export const DEFINE_DATASET_TOPIC = 'createDataset';
-export const DATASET_PROPERTIES_TOPIC = 'datasetProperties';
+export const DATASET_PROPERTIES_TOPIC = 'datasetProperties#advanced';
 
 export const DELETE_SAMPLES_TOPIC = 'viewSampleSets#delete';
 export const DERIVE_SAMPLES_TOPIC = 'deriveSamples';

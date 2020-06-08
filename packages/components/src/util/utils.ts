@@ -88,7 +88,8 @@ export function getSchemaQuery(encodedKey: string): SchemaQuery {
  * @param aso
  * @param bso
  */
-export function naturalSort(aso: string, bso: string): number {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function naturalSort(aso: any, bso: any): number {
     // http://stackoverflow.com/questions/19247495/alphanumeric-sorting-an-array-in-javascript
     if (aso === bso) return 0;
     if (aso === undefined || aso === null || aso === '') return 1;
@@ -118,6 +119,19 @@ export function naturalSort(aso: string, bso: string): number {
         }
     }
     return b[i] ? -1 : 0;
+}
+
+type SortFn<T> = (a: T, b: T) => number;
+
+/**
+ * Creates a sort function that will natural sort an array of objects by property.
+ * Ex:`
+ *  const myArray = [{ displayName: 'Nick' }, { displayName: 'Alan' }, { displayName: 'Susan' }];
+ *  myArray.sort(naturalSortByProperty('displayName'));
+ * @param property: string, the property you want to sort on.
+ */
+export function naturalSortByProperty<T>(property: keyof T): SortFn<T> {
+    return (a, b) => naturalSort(a[property], b[property]);
 }
 
 // Case insensitive Object reference. Returns undefined if either object or prop does not resolve.

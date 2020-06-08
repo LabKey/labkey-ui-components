@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { PureComponent, ReactNode, HTMLAttributes } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { Filter } from '@labkey/api';

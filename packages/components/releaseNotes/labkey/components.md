@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 0.67.2
-*Released*: ??? June 2020
+*Released*: 8 June 2020
 * Add `naturalSortByProperty<T>(property: string)`
 * `naturalSort` is now typed to accept any, which was always the case, so this is backwards compatible
 

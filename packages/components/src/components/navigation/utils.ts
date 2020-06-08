@@ -1,4 +1,4 @@
-import { AppURL } from '../..';
+import { AppURL, buildURL } from '../..';
 import { Location } from "history";
 
 export const ON_LEAVE_DIRTY_STATE_MESSAGE = 'You have unsaved changes that will be lost. Are you sure you want to continue?';
@@ -26,5 +26,20 @@ export function confirmLeaveWhenDirty(currentLocation: Location) : boolean {
         }
 
         return false;
+    }
+}
+
+export function getHref(url : AppURL | string) : string {
+    return typeof url == 'string' ? url : url.toHref();
+}
+
+export function createApplicationUrl(urlProductId: string, currentProductId: string, params: { [key: string]: any }, ...parts) : string | AppURL {
+    let appUrl = AppURL.create(...parts);
+    appUrl = appUrl.addParams(params);
+    if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
+        return buildURL(urlProductId.toLowerCase(), "app.view", undefined, {returnURL: false}) + appUrl.toHref();
+    }
+    else {
+        return appUrl
     }
 }

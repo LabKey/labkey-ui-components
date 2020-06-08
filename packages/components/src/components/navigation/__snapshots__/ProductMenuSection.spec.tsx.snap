@@ -13,10 +13,11 @@ exports[`ProductMenuSection render empty section no text 1`] = `
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
       "headerURL": undefined,
+      "headerText": undefined,
     }
   }
+  currentProductId="testProduct"
   maxColumns={1}
-  productId="testProduct"
   section={
     Immutable.Record {
       "label": "Sample Sets",
@@ -25,6 +26,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
       "totalCount": 0,
       "itemLimit": 2,
       "key": "samples",
+      "productId": undefined,
     }
   }
 >
@@ -66,10 +68,11 @@ exports[`ProductMenuSection render empty section with empty text and create link
       },
       "emptyURLText": "Test empty link",
       "headerURL": undefined,
+      "headerText": undefined,
     }
   }
+  currentProductId="testProduct"
   maxColumns={1}
-  productId="testProduct"
   section={
     Immutable.Record {
       "label": "Sample Sets",
@@ -78,6 +81,7 @@ exports[`ProductMenuSection render empty section with empty text and create link
       "totalCount": 0,
       "itemLimit": undefined,
       "key": "samples",
+      "productId": undefined,
     }
   }
 >
@@ -132,10 +136,11 @@ exports[`ProductMenuSection render one-column section 1`] = `
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
       "headerURL": undefined,
+      "headerText": undefined,
     }
   }
+  currentProductId="testProduct3Columns"
   maxColumns={1}
-  productId="testProduct3Columns"
   section={
     Immutable.Record {
       "label": "Sample Sets",
@@ -177,6 +182,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
       "totalCount": 0,
       "itemLimit": 2,
       "key": "samples",
+      "productId": undefined,
     }
   }
 >
@@ -222,7 +228,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
 </ProductMenuSection>
 `;
 
-exports[`ProductMenuSection render section with custom headerURL 1`] = `
+exports[`ProductMenuSection render section with custom headerURL and headerText 1`] = `
 <ProductMenuSection
   config={
     Immutable.Record {
@@ -241,10 +247,11 @@ exports[`ProductMenuSection render section with custom headerURL 1`] = `
           "sort": "date",
         },
       },
+      "headerText": "Custom Sample Sets",
     }
   }
+  currentProductId="testProductHeaderUrl"
   maxColumns={1}
-  productId="testProductHeaderUrl"
   section={
     Immutable.Record {
       "label": "Sample Sets",
@@ -253,6 +260,7 @@ exports[`ProductMenuSection render section with custom headerURL 1`] = `
       "totalCount": 0,
       "itemLimit": 2,
       "key": "samples",
+      "productId": undefined,
     }
   }
 >
@@ -270,7 +278,7 @@ exports[`ProductMenuSection render section with custom headerURL 1`] = `
         width="24px"
       />
        
-      Sample Sets
+      Custom Sample Sets
     </a>
   </span>
   <hr />
@@ -294,10 +302,11 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
       "headerURL": undefined,
+      "headerText": undefined,
     }
   }
+  currentProductId="testProductOverflowLink"
   maxColumns={1}
-  productId="testProductOverflowLink"
   section={
     Immutable.Record {
       "label": "Assays",
@@ -327,6 +336,7 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
       "totalCount": 5,
       "itemLimit": undefined,
       "key": "assays",
+      "productId": undefined,
     }
   }
 >
@@ -401,10 +411,11 @@ exports[`ProductMenuSection render two-column section 1`] = `
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
       "headerURL": undefined,
+      "headerText": undefined,
     }
   }
+  currentProductId="testProduct4Columns"
   maxColumns={1}
-  productId="testProduct4Columns"
   section={
     Immutable.Record {
       "label": "Assays",
@@ -454,6 +465,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
       "totalCount": 0,
       "itemLimit": undefined,
       "key": "assays",
+      "productId": undefined,
     }
   }
 >

@@ -20,6 +20,7 @@ import { AppURL } from '../../url/AppURL';
 import { naturalSort } from '../../util/utils';
 
 import { MenuSectionModel } from './model';
+import { createApplicationUrl, getHref } from './utils';
 
 export class MenuSectionConfig extends Record({
     emptyText: undefined,
@@ -31,22 +32,24 @@ export class MenuSectionConfig extends Record({
     emptyURL: undefined,
     emptyURLText: 'Get started...',
     headerURL: undefined,
+    headerText: undefined,
 }) {
     emptyText?: string;
     iconURL?: string;
     iconCls?: string;
     maxItemsPerColumn: number;
     maxColumns: number;
-    seeAllURL?: AppURL;
-    emptyURL?: AppURL;
+    seeAllURL?: AppURL | string;
+    emptyURL?: AppURL | string;
     emptyURLText: string;
-    headerURL: AppURL;
+    headerURL: AppURL | string;
+    headerText?: string;
 }
 
 interface MenuSectionProps {
-    productId: string;
     section: MenuSectionModel;
     config: MenuSectionConfig;
+    currentProductId: string;
 }
 
 export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
@@ -65,7 +68,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
                 )}
                 {config.emptyURL && (
                     <li key="emptyUrl" className="empty-section-link">
-                        <a href={config.emptyURL.toHref()}>{config.emptyURLText}</a>
+                        <a href={getHref(config.emptyURL)}>{config.emptyURLText}</a>
                     </li>
                 )}
             </>
@@ -73,7 +76,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
     }
 
     renderMenuItemsList(items, columnNumber = 1, totalColumns = 1, withOverflow = false) {
-        const { config, section } = this.props;
+        const { section } = this.props;
 
         return (
             <ul className={'col-' + totalColumns} key={section.key + 'col-' + columnNumber}>
@@ -101,6 +104,9 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
     render() {
         const { config, section } = this.props;
         let icon;
+        if (!section)
+            return null;
+
         if (config.iconURL) {
             icon = (
                 <img
@@ -114,23 +120,24 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         } else if (config.iconCls) {
             icon = <span className={(config.iconCls || '') + ' menu-section-icon'} />;
         }
+        const headerText = config.headerText ? config.headerText : section.label;
         const label = icon ? (
             <>
-                {icon}&nbsp;{section.label}
+                {icon}&nbsp;{headerText}
             </>
         ) : (
-            section.label
+            headerText
         );
         let headerURL = config.headerURL;
         if (headerURL === undefined) {
             if (section.url) {
-                headerURL = AppURL.create(section.key);
+                headerURL = createApplicationUrl(section.productId, this.props.currentProductId, undefined, section.key);
             }
         }
         const header = (
             <>
                 <span className="menu-section-header">
-                    {headerURL ? <a href={headerURL.toHref()}>{label}</a> : <>{label}</>}
+                    {headerURL ? <a href={getHref(headerURL)}>{label}</a> : <>{label}</>}
                 </span>
                 <hr />
             </>
@@ -156,7 +163,7 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
             const seeAllUrl = config.seeAllURL || AppURL.create(section.key);
             columns.push(
                 <span className="overflow-link" key="overflow">
-                    <a href={seeAllUrl.toHref()}>See all {section.totalCount}</a>
+                    <a href={getHref(seeAllUrl)}>See all {section.totalCount}</a>
                 </span>
             );
         }

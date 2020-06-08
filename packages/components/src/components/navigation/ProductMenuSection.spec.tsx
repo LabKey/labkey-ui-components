@@ -89,7 +89,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
-                productId="testProduct"
+                currentProductId="testProduct"
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -111,7 +111,7 @@ describe('ProductMenuSection render', () => {
         });
         const menuSection = mount(
             <ProductMenuSection
-                productId="testProduct"
+                currentProductId="testProduct"
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -129,7 +129,7 @@ describe('ProductMenuSection render', () => {
         expect(toJson(menuSection)).toMatchSnapshot();
     });
 
-    test('section with custom headerURL', () => {
+    test('section with custom headerURL and headerText', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             items: List<MenuSectionModel>(),
@@ -139,12 +139,13 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
-                productId="testProductHeaderUrl"
+                currentProductId="testProductHeaderUrl"
                 section={section}
                 config={
                     new MenuSectionConfig({
                         iconURL: '/testProduct/images/samples.svg',
                         headerURL: AppURL.create('sample', 'new').addParams({ sort: 'date' }),
+                        headerText: 'Custom Sample Sets',
                     })
                 }
             />
@@ -166,7 +167,7 @@ describe('ProductMenuSection render', () => {
 
         const menuSection = mount(
             <ProductMenuSection
-                productId={productId}
+                currentProductId={productId}
                 section={section}
                 config={
                     new MenuSectionConfig({
@@ -196,7 +197,7 @@ describe('ProductMenuSection render', () => {
         });
 
         const menuSection = mount(
-            <ProductMenuSection section={section} productId={productId} config={sectionConfig} />
+            <ProductMenuSection section={section} currentProductId={productId} config={sectionConfig} />
         );
 
         expect(menuSection.find('ul').length).toBe(2);
@@ -222,7 +223,7 @@ describe('ProductMenuSection render', () => {
         });
 
         const menuSection = mount(
-            <ProductMenuSection section={section} productId={productId} config={sectionConfig} />
+            <ProductMenuSection section={section} currentProductId={productId} config={sectionConfig} />
         );
         expect(menuSection.find('ul').length).toBe(2);
         expect(menuSection.find('span.overflow-link').length).toBe(1);

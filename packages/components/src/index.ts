@@ -15,7 +15,7 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import { GRID_CHECKBOX_OPTIONS, PermissionTypes } from './components/base/models/constants';
+import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 import { SCHEMAS } from './components/base/models/schemas';
 import { getUserProperties, inferDomainFromFile } from './components/base/actions';
 import { QueryInfo } from './components/base/models/QueryInfo';
@@ -470,7 +470,6 @@ export {
     UserProfile,
     ChangePasswordModal,
     SiteUsersGridPanel,
-    PermissionTypes,
     InsufficientPermissionsPage,
     BasePermissionsCheckPage,
     PermissionAllowed,

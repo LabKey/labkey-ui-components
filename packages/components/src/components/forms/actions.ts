@@ -15,13 +15,12 @@
  */
 import { fromJS, List, Map } from 'immutable';
 import { Option } from 'react-select';
-import { Filter, Security, User, Utils } from '@labkey/api';
+import { Filter, Security, PermissionTypes, User, Utils } from '@labkey/api';
 
 import { getQueryDetails, ISelectRowsResult, searchRows, selectRows } from '../../query/api';
 
 import { getUsers, setUsers } from '../../global';
 import { naturalSort, similaritySortFactory } from '../../util/utils';
-import { PermissionTypes } from '../base/models/constants';
 import { QueryInfo } from '../base/models/QueryInfo';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';

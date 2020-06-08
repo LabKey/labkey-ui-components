@@ -16,6 +16,7 @@ import { clearSelected, fetchCharts, ISelectResponse, selectAll } from '../actio
 import { VISUALIZATION_REPORTS } from '../constants';
 
 import { GridMessage, QueryModel } from './QueryModel';
+import { DataViewInfo } from '../models';
 
 export interface RowsResponse {
     messages: GridMessage[];
@@ -127,7 +128,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     },
     async loadCharts(model, includeSampleComparison) {
         const { schemaQuery, containerPath } = model;
-        const sortByName = naturalSortByProperty('name');
+        const sortByName = naturalSortByProperty<IDataViewInfo>('name');
 
         if (includeSampleComparison) {
             const { schemaName, queryName } = schemaQuery;

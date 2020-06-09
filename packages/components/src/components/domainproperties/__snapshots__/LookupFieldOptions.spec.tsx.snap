@@ -151,7 +151,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -182,7 +182,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                     context={
                       Object {
                         "activeContainer": Immutable.Record {
-                          "activeModules": Immutable.List [],
+                          "activeModules": Array [],
                           "folderType": "",
                           "hasRestrictedActiveModule": false,
                           "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -212,7 +212,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                       context={
                         Object {
                           "activeContainer": Immutable.Record {
-                            "activeModules": Immutable.List [],
+                            "activeModules": Array [],
                             "folderType": "",
                             "hasRestrictedActiveModule": false,
                             "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -276,7 +276,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -361,7 +361,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -742,7 +742,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -773,7 +773,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                     context={
                       Object {
                         "activeContainer": Immutable.Record {
-                          "activeModules": Immutable.List [],
+                          "activeModules": Array [],
                           "folderType": "",
                           "hasRestrictedActiveModule": false,
                           "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -803,7 +803,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                       context={
                         Object {
                           "activeContainer": Immutable.Record {
-                            "activeModules": Immutable.List [],
+                            "activeModules": Array [],
                             "folderType": "",
                             "hasRestrictedActiveModule": false,
                             "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -879,7 +879,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -990,7 +990,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -1394,7 +1394,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -1425,7 +1425,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                     context={
                       Object {
                         "activeContainer": Immutable.Record {
-                          "activeModules": Immutable.List [],
+                          "activeModules": Array [],
                           "folderType": "",
                           "hasRestrictedActiveModule": false,
                           "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -1455,7 +1455,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                       context={
                         Object {
                           "activeContainer": Immutable.Record {
-                            "activeModules": Immutable.List [],
+                            "activeModules": Array [],
                             "folderType": "",
                             "hasRestrictedActiveModule": false,
                             "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -1531,7 +1531,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -1642,7 +1642,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -2046,7 +2046,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -2077,7 +2077,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                     context={
                       Object {
                         "activeContainer": Immutable.Record {
-                          "activeModules": Immutable.List [],
+                          "activeModules": Array [],
                           "folderType": "",
                           "hasRestrictedActiveModule": false,
                           "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -2107,7 +2107,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                       context={
                         Object {
                           "activeContainer": Immutable.Record {
-                            "activeModules": Immutable.List [],
+                            "activeModules": Array [],
                             "folderType": "",
                             "hasRestrictedActiveModule": false,
                             "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -2183,7 +2183,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",
@@ -2291,7 +2291,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                   context={
                     Object {
                       "activeContainer": Immutable.Record {
-                        "activeModules": Immutable.List [],
+                        "activeModules": Array [],
                         "folderType": "",
                         "hasRestrictedActiveModule": false,
                         "id": "e0ea3e55-3420-1035-8057-68fea9bfb3a0",

@@ -5164,7 +5164,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -7540,7 +7540,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -9841,7 +9841,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",

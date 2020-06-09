@@ -10869,7 +10869,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -11437,7 +11437,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"
@@ -13023,7 +13023,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -13591,7 +13591,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"
@@ -15159,7 +15159,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -15727,7 +15727,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"
@@ -31919,7 +31919,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -32487,7 +32487,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"
@@ -34257,7 +34257,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -34825,7 +34825,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"
@@ -36577,7 +36577,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -37145,7 +37145,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"
@@ -46870,7 +46870,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -47438,7 +47438,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"
@@ -49208,7 +49208,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -49776,7 +49776,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"
@@ -51528,7 +51528,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -52096,7 +52096,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"

@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Added emptyResultDisplay, hideHeader and hidePanelFrame props to SearchResultsPanel
 - Add useEmail to UserSelectInput
 
+### version 0.68.0
+*Released*: 9 June 2020
+* Remove `IUser` interface in favor of direct use of `@labkey/api` `User` and `UserWithPermissions` interfaces.
+* `PermissionsType` enum migrated to `@labkey/api`.
+
 ### version 0.67.2
 *Released*: 8 June 2020
 * Add `naturalSortByProperty<T>(property: string)`

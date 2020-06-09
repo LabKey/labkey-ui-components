@@ -15,10 +15,10 @@
  */
 
 import { List, Map } from 'immutable';
+import { User } from '@labkey/api';
 
 import { LookupStore, EditorModel } from '../models';
 import { QueryGridModel } from '../components/base/models/model';
-import { IUser } from '../components/forms/model';
 import { NotificationItemModel } from '../components/notifications/model';
 
 // Typescript helper definition of global state for reactn
@@ -30,7 +30,7 @@ declare module 'reactn/default' {
         QueryGrid_metadata: Map<string, any>;
         QueryGrid_models: Map<string, QueryGridModel>;
         QueryGrid_columnrenderers: Map<string, any>;
-        QueryGrid_users: Map<string, List<IUser>>;
+        QueryGrid_users: Map<string, List<User>>;
 
         // src/util/global.ts
         BrowserHistory: any; // TODO what type to use here?

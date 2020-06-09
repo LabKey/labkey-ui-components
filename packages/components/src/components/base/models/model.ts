@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
-import { ActionURL, Filter, Query, Utils } from '@labkey/api';
+import {
+    ActionURL,
+    Container as IContainer,
+    Filter,
+    PermissionTypes,
+    Query,
+    UserWithPermissions,
+    Utils,
+} from '@labkey/api';
 
 import {
     getSchemaQuery,
@@ -27,7 +35,7 @@ import {
 import { AppURL } from '../../../url/AppURL';
 import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, PermissionTypes } from './constants';
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
 import { QueryInfo } from './QueryInfo';
 import { QuerySort } from './QuerySort';
 
@@ -46,11 +54,8 @@ export enum MessageLevel {
     error,
 }
 
-/**
- * Model for org.labkey.api.data.Container as returned by Container.toJSON()
- */
-export class Container extends Record({
-    activeModules: List<string>(),
+const defaultContainer: Partial<IContainer> = {
+    activeModules: [],
     folderType: '',
     hasRestrictedActiveModule: false,
     id: '',
@@ -63,8 +68,13 @@ export class Container extends Record({
     sortOrder: 0,
     title: '',
     type: '',
-}) {
-    activeModules: List<string>;
+};
+
+/**
+ * Model for org.labkey.api.data.Container as returned by Container.toJSON()
+ */
+export class Container extends Record(defaultContainer) implements Partial<IContainer> {
+    activeModules: string[];
     folderType: string;
     hasRestrictedActiveModule: boolean;
     id: string;
@@ -83,25 +93,7 @@ export class Container extends Record({
     }
 }
 
-interface IUserProps {
-    id: number;
-
-    canDelete: boolean;
-    canDeleteOwn: boolean;
-    canInsert: boolean;
-    canUpdate: boolean;
-    canUpdateOwn: boolean;
-
-    displayName: string;
-    email: string;
-    phone: string;
-    avatar: string;
-
-    isAdmin: boolean;
-    isGuest: boolean;
-    isSignedIn: boolean;
-    isSystemAdmin: boolean;
-
+interface IUserProps extends Partial<UserWithPermissions> {
     permissionsList: List<string>;
 }
 

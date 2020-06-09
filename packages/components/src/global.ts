@@ -15,10 +15,10 @@
  */
 import { getGlobal, setGlobal } from 'reactn';
 import { List, Map } from 'immutable';
+import { User } from '@labkey/api';
 
 import { initBrowserHistoryState } from './util/global';
 import { EditorModel, LookupStore } from './models';
-import { IUser } from './components/forms/model';
 import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
 import { naturalSort, resolveSchemaQuery } from './util/utils';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
@@ -53,7 +53,7 @@ export function resetQueryGridState(): void {
         QueryGrid_metadata: Map<string, any>(),
         QueryGrid_models: Map<string, QueryGridModel>(),
         QueryGrid_columnrenderers: Map<string, any>(),
-        QueryGrid_users: Map<string, List<IUser>>(),
+        QueryGrid_users: Map<string, List<User>>(),
     });
 }
 
@@ -320,7 +320,7 @@ function getPermissionsKey(permissions?: string | string[]): string {
 /**
  * Get the users list from the global QueryGrid state
  */
-export function getUsers(permissions?: string | string[]): List<IUser> {
+export function getUsers(permissions?: string | string[]): List<User> {
     return getGlobalState('users').get(getPermissionsKey(permissions));
 }
 
@@ -328,7 +328,7 @@ export function getUsers(permissions?: string | string[]): List<IUser> {
  * Sets the users list to be used for this application in the global QueryGrid state
  * @param users List of users
  */
-export function setUsers(users: List<IUser>, permissions?: string | string[]): void {
+export function setUsers(users: List<User>, permissions?: string | string[]): void {
     setGlobal({
         QueryGrid_users: getGlobalState('users').set(getPermissionsKey(permissions), users),
     });
@@ -339,6 +339,6 @@ export function setUsers(users: List<IUser>, permissions?: string | string[]): v
  */
 export function invalidateUsers(): void {
     setGlobal({
-        QueryGrid_users: Map<string, List<IUser>>(),
+        QueryGrid_users: Map<string, List<User>>(),
     });
 }

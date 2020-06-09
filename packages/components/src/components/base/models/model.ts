@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
-import { ActionURL, Filter, PermissionTypes, Query, UserWithPermissions, Utils } from '@labkey/api';
+import {
+    ActionURL,
+    Container as IContainer,
+    Filter,
+    PermissionTypes,
+    Query,
+    UserWithPermissions,
+    Utils,
+} from '@labkey/api';
 
 import {
     getSchemaQuery,
@@ -46,11 +54,8 @@ export enum MessageLevel {
     error,
 }
 
-/**
- * Model for org.labkey.api.data.Container as returned by Container.toJSON()
- */
-export class Container extends Record({
-    activeModules: List<string>(),
+const defaultContainer: Partial<IContainer> = {
+    activeModules: [],
     folderType: '',
     hasRestrictedActiveModule: false,
     id: '',
@@ -63,8 +68,13 @@ export class Container extends Record({
     sortOrder: 0,
     title: '',
     type: '',
-}) {
-    activeModules: List<string>;
+};
+
+/**
+ * Model for org.labkey.api.data.Container as returned by Container.toJSON()
+ */
+export class Container extends Record(defaultContainer) implements Partial<IContainer> {
+    activeModules: string[];
     folderType: string;
     hasRestrictedActiveModule: boolean;
     id: string;

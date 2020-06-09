@@ -3,9 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import React from 'reactn';
-import { List } from 'immutable';
 
-import { IUser } from '../model';
 import { getUsersWithPermissions } from '../actions';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
@@ -24,7 +22,7 @@ export class UserSelectInput extends React.Component<UserSelectInputProps, any> 
 
     loadOptions(value, cb) {
         getUsersWithPermissions(this.props.permissions)
-            .then((users: List<IUser>) => {
+            .then(users => {
                 cb(null, {
                     complete: true,
                     options: users

@@ -15,17 +15,15 @@
  */
 import { fromJS, List, Map } from 'immutable';
 import { Option } from 'react-select';
-import { Ajax, Filter, Utils } from '@labkey/api';
+import { Filter, Security, PermissionTypes, User, Utils } from '@labkey/api';
 
 import { getQueryDetails, ISelectRowsResult, searchRows, selectRows } from '../../query/api';
 
 import { getUsers, setUsers } from '../../global';
-import { similaritySortFactory } from '../../util/utils';
-import { buildURL } from '../../url/ActionURL';
-import { PermissionTypes } from '../base/models/constants';
+import { naturalSort, similaritySortFactory } from '../../util/utils';
 import { QueryInfo } from '../base/models/QueryInfo';
 
-import { IUser, QuerySelectModel, QuerySelectModelProps } from './model';
+import { QuerySelectModel, QuerySelectModelProps } from './model';
 import { QuerySelectOwnProps } from './QuerySelect';
 import { FOCUS_FLAG } from './constants';
 
@@ -360,42 +358,27 @@ export function handleTabKeyOnTextArea(evt: ITargetElementEvent): void {
  * Retrieve users in current container with a given set of permissions.  If no permission is specified, defaults to Read permission
  * @param permissions the PermissionType or array of PermissionType values that all users must have.
  */
-export function getUsersWithPermissions(permissions: string | string[] = PermissionTypes.Read): Promise<List<IUser>> {
-    const users = getUsers(permissions);
-    if (users) {
-        return Promise.resolve(users);
+export function getUsersWithPermissions(permissions: string | string[] = PermissionTypes.Read): Promise<List<User>> {
+    const cachedUsers = getUsers(permissions);
+    if (cachedUsers) {
+        return Promise.resolve(cachedUsers);
     }
 
     return new Promise((resolve, reject) => {
-        const params = Array.isArray(permissions) ? { permissions } : { permissions: [permissions] };
-
-        return Ajax.request({
-            url: buildURL('user', 'getUsersWithPermissions.api'),
-            method: 'GET',
-            params,
-            success: Utils.getCallbackWrapper(response => {
-                const users = List<IUser>(response.users);
-
-                // sort by displayName
-                const sortedUsers = users
-                    .sort((a, b) => {
-                        const _a = a.displayName.toLowerCase();
-                        const _b = b.displayName.toLowerCase();
-
-                        if (_a === _b) {
-                            return 0;
-                        }
-                        return _a > _b ? 1 : -1;
-                    })
+        return Security.getUsersWithPermissions({
+            permissions,
+            success: ({ users }) => {
+                const sortedUsers = List<User>(users)
+                    .sortBy(u => u.displayName, naturalSort)
                     .toList();
 
                 setUsers(sortedUsers, permissions);
                 resolve(sortedUsers);
-            }),
-            failure: Utils.getCallbackWrapper(response => {
+            },
+            failure: response => {
                 console.error('There was a problem retrieving users with permissions ', permissions, response);
                 reject('There was a problem retrieving users with the given permissions');
-            }),
+            },
         });
     });
 }

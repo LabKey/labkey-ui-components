@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { fromJS, List, Map } from 'immutable';
+import { PermissionTypes } from '@labkey/api';
 
 import { SchemaQuery } from '../components/base/models/model';
 
-import { PermissionTypes } from '../components/base/models/constants';
 import { APP_ADMIN, ASSAYDESIGNER, AUTHOR, EDITOR, FOLDER_ADMIN, READER } from '../test/data/users';
 
 import {

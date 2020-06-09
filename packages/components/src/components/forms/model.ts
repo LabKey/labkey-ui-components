@@ -133,9 +133,3 @@ export interface ISelectInitData {
     type: string;
     getSelectComponentId(): string;
 }
-
-export interface IUser {
-    displayName: string;
-    email: string;
-    userId: number;
-}

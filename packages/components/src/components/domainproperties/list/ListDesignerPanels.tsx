@@ -211,7 +211,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle="Fields"
-                    headerIconHelpMsg={'This section does not contain any user defined fields and requires a selection for the Key Field Name property.'}
+                    headerIconHelpMsg="This section does not contain any user defined fields and requires a selection for the Key Field Name property."
                     helpNoun="list"
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}

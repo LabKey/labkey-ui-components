@@ -86,7 +86,7 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
 
         const view = model?.showViewSelector ? <ViewSelector model={model} /> : null;
 
-        let leftContent = undefined;
+        let leftContent;
         if (buttons || chart) {
             leftContent = (
                 <>

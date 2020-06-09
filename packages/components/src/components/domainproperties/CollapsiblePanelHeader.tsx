@@ -45,7 +45,9 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
         }
 
         if (panelStatus === 'TODO') {
-            return headerIconHelpMsg || 'This section does not contain any user defined fields. You may want to review.';
+            return (
+                headerIconHelpMsg || 'This section does not contain any user defined fields. You may want to review.'
+            );
         }
 
         return undefined;

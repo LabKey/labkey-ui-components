@@ -484,6 +484,10 @@ export class DomainDesign
         const currentContainer = getServerContext().container.id;
         return this.getDomainContainer() !== currentContainer;
     }
+
+    findFieldIndexByName(fieldName: string): number {
+        return this.fields.findIndex((field: DomainField) => fieldName && field.name === fieldName);
+    }
 }
 
 interface IDomainIndex {

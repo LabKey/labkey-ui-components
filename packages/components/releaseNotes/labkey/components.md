@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 39935: QueryGridPanel button bar / paging component layout fixes for narrow windows
 * Issue 39935: List designer fields icon help text should mention the need for a Key Field Name selection
 * Issue 39934: DomainForm field type text update from "Decimal" to "Decimal (floating point)"
+* Issue 40262: List designer titleColumn (default display field) update when the name or row index of selected field is updated in domain fields panel
 
 ### version 0.68.0
 *Released*: 9 June 2020

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 39935: QueryGridPanel button bar / paging component layout fixes for narrow windows
+
 ### version 0.67.2
 *Released*: 8 June 2020
 * Add `naturalSortByProperty<T>(property: string)`

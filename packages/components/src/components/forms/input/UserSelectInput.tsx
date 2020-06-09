@@ -22,7 +22,7 @@ export class UserSelectInput extends React.Component<UserSelectInputProps, any> 
 
     loadOptions(value, cb) {
         getUsersWithPermissions(this.props.permissions)
-            .then((users) => {
+            .then(users => {
                 cb(null, {
                     complete: true,
                     options: users

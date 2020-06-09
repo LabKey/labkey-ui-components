@@ -5,12 +5,7 @@
  */
 import { Filter } from '@labkey/api';
 
-import { IDataViewInfo } from '../models';
 import { naturalSort, QuerySort } from '..';
-
-export function dataViewInfoSorter(a: IDataViewInfo, b: IDataViewInfo): number {
-    return naturalSort(a.name, b.name);
-}
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;

@@ -44,13 +44,13 @@ describe('ProductMenuModel', () => {
     });
 
     test('hasSectionItems not loaded', () => {
-        const model = new ProductMenuModel({ productId: 'hasSectionItems' });
+        const model = new ProductMenuModel({ productIds: ['hasSectionItems'] });
         expect(model.hasSectionItems(testSectionKey)).toBeFalsy();
         expect(model.hasSectionItems(emptySectionKey)).toBeFalsy();
     });
 
     test('hasSectionItems key match', () => {
-        let model = new ProductMenuModel({ productId: 'hasSectionItems' });
+        let model = new ProductMenuModel({ productIds: ['hasSectionItems'] });
         model = model.setLoadedSections(
             List<MenuSectionModel>([testSection, emptySection])
         );
@@ -59,7 +59,7 @@ describe('ProductMenuModel', () => {
     });
 
     test('hasSectionItems empty section', () => {
-        let model = new ProductMenuModel({ productId: 'hasSectionItems' });
+        let model = new ProductMenuModel({ productIds: ['hasSectionItems'] });
         model = model.setLoadedSections(
             List<MenuSectionModel>([testSection, emptySection])
         );

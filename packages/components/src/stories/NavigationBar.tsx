@@ -67,14 +67,14 @@ storiesOf('NavigationBar', module)
         const isLoaded = boolean('isLoaded', false);
         const isError = boolean('isError', false);
         const message = text('error message', 'There was an error loading the menu items.');
-        const productId = 'testProduct';
+        const productIds = ['testProduct'];
 
         const model = new ProductMenuModel({
             isLoading: isLoading || !isError,
             isLoaded: isLoaded || isError,
             isError,
             message,
-            productId,
+            productIds,
         });
 
         const brandIcon = text('brand icon', ICON_URL);
@@ -109,7 +109,7 @@ storiesOf('NavigationBar', module)
             isLoading: false,
             isLoaded: true,
             isError: false,
-            productId: 'emptySection',
+            productIds: ['emptySection'],
             sections,
         });
 
@@ -224,7 +224,7 @@ storiesOf('NavigationBar', module)
             isLoading: false,
             isLoaded: true,
             isError: false,
-            productId: 'multipleSections',
+            productIds: ['multipleSections'],
             sections,
         });
 

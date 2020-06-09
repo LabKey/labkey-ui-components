@@ -349,7 +349,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                             {helpLinkNode(
                                 DATASET_PROPERTIES_TOPIC,
-                                'Learn more about using datasets',
+                                'Get help with dataset settings',
                                 'domain-adv-footer domain-adv-link'
                             )}
 

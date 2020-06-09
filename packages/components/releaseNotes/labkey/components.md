@@ -8,6 +8,23 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Added emptyResultDisplay, hideHeader and hidePanelFrame props to SearchResultsPanel
 - Add useEmail to UserSelectInput
 
+### version 0.67.2
+*Released*: 8 June 2020
+* Add `naturalSortByProperty<T>(property: string)`
+* `naturalSort` is now typed to accept any, which was always the case, so this is backwards compatible
+
+### version 0.67.1
+*Released*: 8 June 2020
+* Issue 40541: Dataset Designer/Field Editor tooltip and help link fixes
+
+## version 0.67.0
+*Released*: 8 June 2020
+* Support handling of multiple applications in product menu
+  - Update type parameter for getting product menu to List of productIds instead of productId
+  - Update MenuItemModel to account for linking to a different application (based on productId)
+  - Add utility method for getting application URL based on productIds
+  - Modify menu models to carry through productIds
+
 ### version 0.66.0
 *Released*: 5 June 2020
 * Item 7373: Move InsufficientPermissionsPage and BasePermissionsCheckPage from Sample Manager

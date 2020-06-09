@@ -81,7 +81,7 @@ describe('ProductMenu render', () => {
 
     test('loading', () => {
         const model = new ProductMenuModel({
-            productId: 'testProduct',
+            productIds: ['testProduct'],
         });
         const tree = renderer.create(<ProductMenu model={model} />).toJSON();
         expect(tree).toMatchSnapshot();
@@ -89,7 +89,7 @@ describe('ProductMenu render', () => {
 
     test('error display', () => {
         const model = new ProductMenuModel({
-            productId: 'testProduct',
+            productIds: ['testProduct'],
             isLoaded: true,
             isLoading: false,
             isError: true,
@@ -101,10 +101,10 @@ describe('ProductMenu render', () => {
     });
 
     test('no sections', () => {
-        const productId = 'testNoSections';
+        const productIds = ['testNoSections'];
 
         const model = new ProductMenuModel({
-            productId,
+            productIds,
             isLoaded: true,
             isLoading: false,
             sections: List<MenuSectionModel>(),
@@ -115,7 +115,7 @@ describe('ProductMenu render', () => {
     });
 
     test('multiple sections no sectionConfigs', () => {
-        const productId = 'testProduct3Columns';
+        const productIds = ['testProduct3Columns'];
 
         const sections = List<MenuSectionModel>().asMutable();
         sections.push(
@@ -136,7 +136,7 @@ describe('ProductMenu render', () => {
         );
         sections.push(yourItemsSection);
         const model = new ProductMenuModel({
-            productId,
+            productIds,
             isLoaded: true,
             isLoading: false,
             sections: sections.asImmutable(),
@@ -149,7 +149,7 @@ describe('ProductMenu render', () => {
     });
 
     test('multiple sections with sectionConfigs', () => {
-        const productId = 'testProduct2Columns';
+        const productIds = ['testProduct2Columns'];
 
         const sections = List<MenuSectionModel>().asMutable();
         sections.push(
@@ -170,7 +170,7 @@ describe('ProductMenu render', () => {
         );
         sections.push(yourItemsSection);
         const model = new ProductMenuModel({
-            productId,
+            productIds,
             isLoaded: true,
             isLoading: false,
             sections: sections.asImmutable(),

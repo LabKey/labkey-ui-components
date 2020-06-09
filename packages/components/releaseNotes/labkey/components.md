@@ -7,6 +7,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 39935: List designer fields icon help text should mention the need for a Key Field Name selection
 * Issue 39934: DomainForm field type text update from "Decimal" to "Decimal (floating point)"
 
+### version 0.68.0
+*Released*: 9 June 2020
+* Remove `IUser` interface in favor of direct use of `@labkey/api` `User` and `UserWithPermissions` interfaces.
+* `PermissionsType` enum migrated to `@labkey/api`.
+
 ### version 0.67.2
 *Released*: 8 June 2020
 * Add `naturalSortByProperty<T>(property: string)`

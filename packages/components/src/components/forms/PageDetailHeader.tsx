@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import React, { PureComponent, ReactNode } from 'react';
+import { PermissionTypes } from '@labkey/api';
 
 import { hasAllPermissions } from '../../util/utils';
 import { User } from '../base/models/model';
-import { PermissionTypes } from '../base/models/constants';
 import { SVGIcon } from '../base/SVGIcon';
 
 import { FieldEditTrigger, FieldEditTriggerProps } from './FieldEditTrigger';

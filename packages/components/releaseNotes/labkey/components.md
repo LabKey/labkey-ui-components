@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-## version XXX
-*Released*: XXX
+## version 0.69.0
+*Released*: 9 June 2020
 * Improve search experience
 - Move search results filtering and cardData processing from SearchResultsPanel to searchUsingIndex action.
 - Added emptyResultDisplay, hideHeader and hidePanelFrame props to SearchResultsPanel

@@ -9,7 +9,10 @@ import { SCHEMAS } from '../..';
 
 import { SearchIdData, SearchResultCardData } from './models';
 
-export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
+export function searchUsingIndex(
+    userConfig,
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
+): Promise<{}> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('search', 'json.api'),
@@ -18,7 +21,9 @@ export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
             success: Utils.getCallbackWrapper(json => {
                 addDataObjects(json);
                 const urlResolver = new URLResolver();
-                resolve(urlResolver.resolveSearchUsingIndex(json));
+                urlResolver.resolveSearchUsingIndex(json).then(results => {
+                    resolve({ ...results, hits: getProcessedSearchHits(results['hits'], getCardDataFn) });
+                });
             }),
             failure: Utils.getCallbackWrapper(
                 json => {
@@ -36,9 +41,12 @@ export function searchUsingIndex(userConfig): Promise<List<Map<any, any>>> {
 // data element
 function addDataObjects(jsonResults) {
     jsonResults.hits.forEach(hit => {
-        if (hit.data === undefined) {
+        if (hit.data === undefined || !hit.data.id) {
             const data = parseSearchIdToData(hit.id);
-            if (data.type && RELEVANT_SEARCH_RESULT_TYPES.indexOf(data.type) >= 0) hit.data = data;
+            if (data.type && RELEVANT_SEARCH_RESULT_TYPES.indexOf(data.type) >= 0) {
+                if (!hit.data) hit.data = data;
+                else hit.data = { ...data, ...hit.data };
+            }
         }
     });
 }
@@ -57,27 +65,27 @@ function parseSearchIdToData(idString): SearchIdData {
     return idData;
 }
 
-function resolveTypeName(data: Map<string, any>) {
+function resolveTypeName(data: any) {
     let typeName;
     if (data) {
-        if (data.getIn(['dataClass', 'name'])) {
-            typeName = data.getIn(['dataClass', 'name']);
-        } else if (data.getIn(['sampleSet', 'name'])) {
-            typeName = data.getIn(['sampleSet', 'name']);
+        if (data.dataClass?.name) {
+            typeName = data.dataClass.name;
+        } else if (data.sampleSet?.name) {
+            typeName = data.sampleSet.name;
         }
     }
     return typeName;
 }
 
-function resolveIconSrc(data: Map<string, any>, category: string): string {
+function resolveIconSrc(data: any, category: string): string {
     let iconSrc = '';
     if (data) {
-        if (data.hasIn(['dataClass', 'name'])) {
-            iconSrc = data.getIn(['dataClass', 'name']).toLowerCase();
-        } else if (data.hasIn(['sampleSet', 'name'])) {
+        if (data.dataClass?.name) {
+            iconSrc = data.dataClass.name.toLowerCase();
+        } else if (data.sampleSet?.name) {
             iconSrc = 'samples';
-        } else if (data.has('type')) {
-            const lcType = data.get('type').toLowerCase();
+        } else if (data.type) {
+            const lcType = data.type.toLowerCase();
             if (lcType === 'sampleset') {
                 iconSrc = 'sample_set';
             } else if (lcType.indexOf('dataclass') === 0) {
@@ -95,10 +103,49 @@ function resolveIconSrc(data: Map<string, any>, category: string): string {
     return iconSrc;
 }
 
-export function getSearchResultCardData(data: Map<any, any>, category: string, title: string): SearchResultCardData {
+export function getSearchResultCardData(data: any, category: string, title: string): SearchResultCardData {
     return {
         title,
         iconSrc: resolveIconSrc(data, category),
         typeName: resolveTypeName(data),
     };
+}
+
+function getCardData(
+    category: string,
+    data: any,
+    title: string,
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
+): SearchResultCardData {
+    let cardData = getSearchResultCardData(data, category, title);
+    if (getCardDataFn) {
+        cardData = { ...cardData, ...getCardDataFn(data, category) };
+    }
+    return cardData;
+}
+
+// TODO: add categories for other search results so the result['data'] check could be removed.
+export function getProcessedSearchHits(
+    results: any,
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
+): {} {
+    return results
+        ? results
+              .filter(result => {
+                  const category = result['category'];
+                  return (
+                      category == 'data' ||
+                      category == 'material' ||
+                      category == 'workflowJob' ||
+                      category == 'file workflowJob' ||
+                      result['data']
+                  );
+              })
+              .map(result => {
+                  return {
+                      ...result,
+                      cardData: getCardData(result['category'], result['data'], result['title'], getCardDataFn),
+                  };
+              })
+        : undefined;
 }

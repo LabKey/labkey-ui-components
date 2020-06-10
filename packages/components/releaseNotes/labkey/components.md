@@ -8,6 +8,13 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 39934: DomainForm field type text update from "Decimal" to "Decimal (floating point)"
 * Issue 40262: List designer titleColumn (default display field) update when the name or row index of selected field is updated in domain fields panel
 
+## version 0.69.0
+*Released*: 9 June 2020
+* Improve search experience
+- Move search results filtering and cardData processing from SearchResultsPanel to searchUsingIndex action.
+- Added emptyResultDisplay, hideHeader and hidePanelFrame props to SearchResultsPanel
+- Add useEmail to UserSelectInput
+
 ### version 0.68.0
 *Released*: 9 June 2020
 * Remove `IUser` interface in favor of direct use of `@labkey/api` `User` and `UserWithPermissions` interfaces.

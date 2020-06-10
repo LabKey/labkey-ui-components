@@ -461,7 +461,7 @@ export class URLResolver {
     }
 
     // ToDo: this is rather fragile and data specific. this should be reworked with the mappers and rest of the resolvers to provide for more thorough coverage of our incoming URLs
-    resolveSearchUsingIndex(json): Promise<List<Map<any, any>>> {
+    resolveSearchUsingIndex(json): Promise<{}> {
         return new Promise(resolve => {
             let resolved = fromJS(JSON.parse(JSON.stringify(json)));
 

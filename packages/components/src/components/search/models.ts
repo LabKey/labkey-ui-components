@@ -50,5 +50,6 @@ export interface SearchResultCardData {
     iconSrc?: string;
     altText?: string;
     title?: string;
+    category?: string;
     typeName?: string;
 }

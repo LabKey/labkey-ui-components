@@ -228,6 +228,17 @@ describe('DomainDesign', () => {
         });
         expect(domain.getFirstFieldError()).toBe(FieldErrors.MISSING_FIELD_NAME);
     });
+
+    test('findFieldIndexByName', () => {
+        const domain = DomainDesign.create({ name: 'Test Fields', fields: [{ name: 'abc' }, { name: 'def' }] });
+        expect(domain.findFieldIndexByName(undefined)).toBe(-1);
+        expect(domain.findFieldIndexByName(null)).toBe(-1);
+        expect(domain.findFieldIndexByName('')).toBe(-1);
+        expect(domain.findFieldIndexByName('ABC')).toBe(-1);
+        expect(domain.findFieldIndexByName('abc')).toBe(0);
+        expect(domain.findFieldIndexByName('defdef')).toBe(-1);
+        expect(domain.findFieldIndexByName('def')).toBe(1);
+    });
 });
 
 describe('DomainField', () => {

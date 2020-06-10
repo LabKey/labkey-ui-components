@@ -134,6 +134,7 @@ describe('<CollapsiblePanelHeader/>', () => {
                 isValid={true}
                 togglePanel={jest.fn()}
                 panelStatus="TODO"
+                todoIconHelpMsg="Some other TODO message goes here."
             >
                 <div>Test help tip message</div>
             </CollapsiblePanelHeader>

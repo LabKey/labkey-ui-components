@@ -115,7 +115,7 @@ exports[`DomainRow Sample Field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Decimal",
+                      "display": "Decimal (floating point)",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
@@ -2293,7 +2293,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Decimal",
+                      "display": "Decimal (floating point)",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
@@ -2902,7 +2902,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             key="4"
                                             value="double"
                                           >
-                                            Decimal
+                                            Decimal (floating point)
                                           </option>
                                           <option
                                             key="5"
@@ -4375,7 +4375,7 @@ exports[`DomainRow date time field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Decimal",
+                      "display": "Decimal (floating point)",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
@@ -6705,7 +6705,7 @@ exports[`DomainRow decimal field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Decimal",
+                      "display": "Decimal (floating point)",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
@@ -6859,7 +6859,7 @@ exports[`DomainRow decimal field 1`] = `
                     "visible": true,
                     "dataType": Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Decimal",
+                      "display": "Decimal (floating point)",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
@@ -6882,7 +6882,7 @@ exports[`DomainRow decimal field 1`] = `
                       "conceptURI": undefined,
                       "dataType": Immutable.Record {
                         "conceptURI": undefined,
-                        "display": "Decimal",
+                        "display": "Decimal (floating point)",
                         "name": "double",
                         "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                         "alternateRangeURI": "xsd:double",
@@ -7034,7 +7034,7 @@ exports[`DomainRow decimal field 1`] = `
                                 "visible": true,
                                 "dataType": Immutable.Record {
                                   "conceptURI": undefined,
-                                  "display": "Decimal",
+                                  "display": "Decimal (floating point)",
                                   "name": "double",
                                   "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                   "alternateRangeURI": "xsd:double",
@@ -7057,7 +7057,7 @@ exports[`DomainRow decimal field 1`] = `
                                   "conceptURI": undefined,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Decimal",
+                                    "display": "Decimal (floating point)",
                                     "name": "double",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                     "alternateRangeURI": "xsd:double",
@@ -7278,7 +7278,7 @@ exports[`DomainRow decimal field 1`] = `
                                             key="0"
                                             value="double"
                                           >
-                                            Decimal
+                                            Decimal (floating point)
                                           </option>
                                         </select>
                                       </FormControl>
@@ -7562,7 +7562,7 @@ exports[`DomainRow decimal field 1`] = `
                                   "visible": true,
                                   "dataType": Immutable.Record {
                                     "conceptURI": undefined,
-                                    "display": "Decimal",
+                                    "display": "Decimal (floating point)",
                                     "name": "double",
                                     "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                     "alternateRangeURI": "xsd:double",
@@ -7585,7 +7585,7 @@ exports[`DomainRow decimal field 1`] = `
                                     "conceptURI": undefined,
                                     "dataType": Immutable.Record {
                                       "conceptURI": undefined,
-                                      "display": "Decimal",
+                                      "display": "Decimal (floating point)",
                                       "name": "double",
                                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                       "alternateRangeURI": "xsd:double",
@@ -7963,7 +7963,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "visible": true,
                                             "dataType": Immutable.Record {
                                               "conceptURI": undefined,
-                                              "display": "Decimal",
+                                              "display": "Decimal (floating point)",
                                               "name": "double",
                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                               "alternateRangeURI": "xsd:double",
@@ -7986,7 +7986,7 @@ exports[`DomainRow decimal field 1`] = `
                                               "conceptURI": undefined,
                                               "dataType": Immutable.Record {
                                                 "conceptURI": undefined,
-                                                "display": "Decimal",
+                                                "display": "Decimal (floating point)",
                                                 "name": "double",
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                 "alternateRangeURI": "xsd:double",
@@ -8501,7 +8501,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "visible": true,
                                             "dataType": Immutable.Record {
                                               "conceptURI": undefined,
-                                              "display": "Decimal",
+                                              "display": "Decimal (floating point)",
                                               "name": "double",
                                               "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                               "alternateRangeURI": "xsd:double",
@@ -8524,7 +8524,7 @@ exports[`DomainRow decimal field 1`] = `
                                               "conceptURI": undefined,
                                               "dataType": Immutable.Record {
                                                 "conceptURI": undefined,
-                                                "display": "Decimal",
+                                                "display": "Decimal (floating point)",
                                                 "name": "double",
                                                 "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                 "alternateRangeURI": "xsd:double",
@@ -9070,7 +9070,7 @@ exports[`DomainRow participant id field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Decimal",
+                      "display": "Decimal (floating point)",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
@@ -11172,7 +11172,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Decimal",
+                      "display": "Decimal (floating point)",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
@@ -11781,7 +11781,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             key="4"
                                             value="double"
                                           >
-                                            Decimal
+                                            Decimal (floating point)
                                           </option>
                                           <option
                                             key="5"
@@ -13177,7 +13177,7 @@ exports[`DomainRow string field test 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Decimal",
+                      "display": "Decimal (floating point)",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
@@ -15584,7 +15584,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": undefined,
-                      "display": "Decimal",
+                      "display": "Decimal (floating point)",
                       "name": "double",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": "xsd:double",
@@ -16180,7 +16180,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             key="4"
                                             value="double"
                                           >
-                                            Decimal
+                                            Decimal (floating point)
                                           </option>
                                           <option
                                             key="5"

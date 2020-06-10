@@ -83,6 +83,7 @@ interface IDomainFormInput {
     panelStatus?: DomainPanelStatus;
     headerPrefix?: string; // used as a string to remove from the heading when using the domain.name
     headerTitle?: string;
+    todoIconHelpMsg?: string;
     showInferFromFile?: boolean;
     useTheme?: boolean;
     appDomainHeaderRenderer?: HeaderRenderer;
@@ -879,6 +880,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             setFileImportData,
             fieldsAdditionalRenderer,
             domainFormDisplayOptions,
+            todoIconHelpMsg,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -903,6 +905,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             collapsible={collapsible}
                             controlledCollapse={controlledCollapse}
                             headerDetails={headerDetails}
+                            todoIconHelpMsg={todoIconHelpMsg}
                             panelStatus={panelStatus}
                             togglePanel={this.togglePanel}
                             useTheme={useTheme}

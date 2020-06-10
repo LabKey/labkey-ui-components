@@ -225,7 +225,7 @@ export const INTEGER_TYPE = new PropDescType({
 });
 export const DOUBLE_TYPE = new PropDescType({
     name: 'double',
-    display: 'Decimal',
+    display: 'Decimal (floating point)',
     rangeURI: DOUBLE_RANGE_URI,
     alternateRangeURI: 'xsd:double',
 });
@@ -269,7 +269,11 @@ export const SAMPLE_TYPE = new PropDescType({
 
 export const BINARY_TYPE = new PropDescType({ name: 'binary', display: 'Byte Buffer', rangeURI: BINARY_RANGE_URI });
 export const DATE_TYPE = new PropDescType({ name: 'date', display: 'Date', rangeURI: DATE_RANGE_URI });
-export const DECIMAL_TYPE = new PropDescType({ name: 'decimal', display: 'Decimal', rangeURI: DECIMAL_RANGE_URI });
+export const DECIMAL_TYPE = new PropDescType({
+    name: 'decimal',
+    display: 'Decimal (fixed point)',
+    rangeURI: DECIMAL_RANGE_URI,
+});
 export const FLOAT_TYPE = new PropDescType({ name: 'float', display: 'Float', rangeURI: FLOAT_RANGE_URI });
 export const LONG_TYPE = new PropDescType({ name: 'long', display: 'Long Integer', rangeURI: LONG_RANGE_URI });
 export const TIME_TYPE = new PropDescType({ name: 'time', display: 'Time', rangeURI: TIME_RANGE_URI });
@@ -483,6 +487,10 @@ export class DomainDesign
     isSharedDomain(): boolean {
         const currentContainer = getServerContext().container.id;
         return this.getDomainContainer() !== currentContainer;
+    }
+
+    findFieldIndexByName(fieldName: string): number {
+        return this.fields.findIndex((field: DomainField) => fieldName && field.name === fieldName);
     }
 }
 

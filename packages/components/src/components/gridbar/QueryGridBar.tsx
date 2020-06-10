@@ -86,34 +86,32 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
 
         const view = model?.showViewSelector ? <ViewSelector model={model} /> : null;
 
-        let leftContent = <div className="col-md-6 col-sm-6 col-xs-12" />;
-
+        let leftContent;
         if (buttons || chart) {
             leftContent = (
-                <div className="col-md-6 col-sm-6 col-xs-12">
+                <>
                     {buttonsNode}
                     {chart}
-                </div>
+                </>
             );
         }
 
         const rightContent = (
-            <div className="col-md-6 col-sm-6 col-xs-12">
-                <div className="paging pull-right text-nowrap">
-                    {paging}
-                    {pageSizeBtn}
-                    {exportBtn}
-                    {view}
-                </div>
-            </div>
+            <span className="paging pull-right text-nowrap">
+                {paging}
+                {pageSizeBtn}
+                {exportBtn}
+                {view}
+            </span>
         );
 
         return (
             <div className="query-grid-bar">
                 <div className="row QueryGrid-bottom-spacing">
-                    {leftContent}
-
-                    {rightContent}
+                    <div className="col-xs-12">
+                        {leftContent}
+                        {rightContent}
+                    </div>
                 </div>
 
                 <div className="row QueryGrid-bottom-spacing">

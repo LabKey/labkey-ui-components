@@ -14,7 +14,7 @@ exports[`QueryGridPanel render loading 1`] = `
         className="row QueryGrid-bottom-spacing"
       >
         <div
-          className="col-md-6 col-sm-6 col-xs-12"
+          className="col-xs-12"
         >
           <span>
             <div
@@ -46,11 +46,7 @@ exports[`QueryGridPanel render loading 1`] = `
               />
             </div>
           </span>
-        </div>
-        <div
-          className="col-md-6 col-sm-6 col-xs-12"
-        >
-          <div
+          <span
             className="paging pull-right text-nowrap"
           >
             <span
@@ -175,7 +171,7 @@ exports[`QueryGridPanel render loading 1`] = `
                 />
               </div>
             </span>
-          </div>
+          </span>
         </div>
       </div>
       <div
@@ -344,7 +340,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
         className="row QueryGrid-bottom-spacing"
       >
         <div
-          className="col-md-6 col-sm-6 col-xs-12"
+          className="col-xs-12"
         >
           <span>
             <div
@@ -536,11 +532,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
               </ul>
             </div>
           </span>
-        </div>
-        <div
-          className="col-md-6 col-sm-6 col-xs-12"
-        >
-          <div
+          <span
             className="paging pull-right text-nowrap"
           >
             <span
@@ -665,7 +657,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
                 />
               </div>
             </span>
-          </div>
+          </span>
         </div>
       </div>
       <div
@@ -778,7 +770,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
         className="row QueryGrid-bottom-spacing"
       >
         <div
-          className="col-md-6 col-sm-6 col-xs-12"
+          className="col-xs-12"
         >
           <span>
             <div
@@ -810,11 +802,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
               />
             </div>
           </span>
-        </div>
-        <div
-          className="col-md-6 col-sm-6 col-xs-12"
-        >
-          <div
+          <span
             className="paging pull-right text-nowrap"
           >
             <span
@@ -939,7 +927,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
                 />
               </div>
             </span>
-          </div>
+          </span>
         </div>
       </div>
       <div
@@ -1094,7 +1082,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
         className="row QueryGrid-bottom-spacing"
       >
         <div
-          className="col-md-6 col-sm-6 col-xs-12"
+          className="col-xs-12"
         >
           <span>
             <div
@@ -1126,11 +1114,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
               />
             </div>
           </span>
-        </div>
-        <div
-          className="col-md-6 col-sm-6 col-xs-12"
-        >
-          <div
+          <span
             className="paging pull-right text-nowrap"
           >
             <span
@@ -1255,7 +1239,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
                 />
               </div>
             </span>
-          </div>
+          </span>
         </div>
       </div>
       <div
@@ -1407,7 +1391,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
         className="row QueryGrid-bottom-spacing"
       >
         <div
-          className="col-md-6 col-sm-6 col-xs-12"
+          className="col-xs-12"
         >
           <span>
             <div
@@ -1439,11 +1423,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
               />
             </div>
           </span>
-        </div>
-        <div
-          className="col-md-6 col-sm-6 col-xs-12"
-        >
-          <div
+          <span
             className="paging pull-right text-nowrap"
           >
             <span
@@ -1568,7 +1548,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
                 />
               </div>
             </span>
-          </div>
+          </span>
         </div>
       </div>
       <div
@@ -1748,7 +1728,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
         className="row QueryGrid-bottom-spacing"
       >
         <div
-          className="col-md-6 col-sm-6 col-xs-12"
+          className="col-xs-12"
         >
           <span>
             <div
@@ -1940,11 +1920,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
               </ul>
             </div>
           </span>
-        </div>
-        <div
-          className="col-md-6 col-sm-6 col-xs-12"
-        >
-          <div
+          <span
             className="paging pull-right text-nowrap"
           >
             <span
@@ -2084,7 +2060,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                 </ul>
               </div>
             </span>
-          </div>
+          </span>
         </div>
       </div>
       <div

@@ -112,7 +112,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     }
 
     findFieldIndexByName(domain: DomainDesign, fieldName: string): number {
-        const index = domain.fields.findIndex((field: DomainField) => fieldName && field.name === fieldName);
+        const index = domain.findFieldIndexByName(fieldName);
         return index > -1 ? index : undefined;
     }
 

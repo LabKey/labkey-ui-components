@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
-import { DomainDesign, IAppDomainHeader } from '../models';
+import { DomainDesign, DomainFieldIndexChange, IAppDomainHeader } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import { importData } from '../../../query/api';
@@ -56,12 +56,20 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         );
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean) => {
+    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange) => {
         const { onChange } = this.props;
+        const { model } = this.state;
+
+        // Issue 40262: If we have a titleColumn selected and the name changes (not the row index), update the titleColumn
+        let titleColumn = model.titleColumn;
+        if (titleColumn && !rowIndexChange) {
+            const index = model.domain.findFieldIndexByName(titleColumn);
+            titleColumn = index > -1 ? domain.fields.get(index).name : undefined;
+        }
 
         this.setState(
             state => ({
-                model: state.model.merge({ domain }) as ListModel,
+                model: state.model.merge({ domain, titleColumn }) as ListModel,
             }),
             () => {
                 // Issue 39918: use the dirty property that DomainForm onChange passes
@@ -203,6 +211,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle="Fields"
+                    todoIconHelpMsg="This section does not contain any user-defined fields and requires a selection for the Key Field Name property."
                     helpNoun="list"
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}

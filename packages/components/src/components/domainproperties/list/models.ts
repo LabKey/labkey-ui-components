@@ -73,7 +73,7 @@ export class ListModel extends Record({
     description: string;
     lastIndexed: any;
     keyName: string;
-    titleColumn: null;
+    titleColumn: string;
     domainId: number;
     keyType: string;
     discussionSetting: number;

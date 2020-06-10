@@ -3245,7 +3245,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           },
                                                           Immutable.Record {
                                                             "conceptURI": undefined,
-                                                            "display": "Decimal",
+                                                            "display": "Decimal (floating point)",
                                                             "name": "double",
                                                             "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                                                             "alternateRangeURI": "xsd:double",
@@ -3812,7 +3812,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   key="4"
                                                                                   value="double"
                                                                                 >
-                                                                                  Decimal
+                                                                                  Decimal (floating point)
                                                                                 </option>
                                                                                 <option
                                                                                   key="5"

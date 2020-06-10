@@ -8,7 +8,7 @@ exports[`<QueryGridBar/> default props 1`] = `
     className="row QueryGrid-bottom-spacing"
   >
     <div
-      className="col-md-6 col-sm-6 col-xs-12"
+      className="col-xs-12"
     >
       <span>
         <div
@@ -40,11 +40,7 @@ exports[`<QueryGridBar/> default props 1`] = `
           />
         </div>
       </span>
-    </div>
-    <div
-      className="col-md-6 col-sm-6 col-xs-12"
-    >
-      <div
+      <span
         className="paging pull-right text-nowrap"
       >
         <span
@@ -184,7 +180,7 @@ exports[`<QueryGridBar/> default props 1`] = `
             </ul>
           </div>
         </span>
-      </div>
+      </span>
     </div>
   </div>
   <div
@@ -287,7 +283,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
     className="row QueryGrid-bottom-spacing"
   >
     <div
-      className="col-md-6 col-sm-6 col-xs-12"
+      className="col-xs-12"
     >
       <span>
         <div
@@ -319,11 +315,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
           />
         </div>
       </span>
-    </div>
-    <div
-      className="col-md-6 col-sm-6 col-xs-12"
-    >
-      <div
+      <span
         className="paging pull-right text-nowrap"
       >
         <span
@@ -692,7 +684,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
             </ul>
           </div>
         </span>
-      </div>
+      </span>
     </div>
   </div>
   <div
@@ -795,12 +787,9 @@ exports[`<QueryGridBar/> without charts and views 1`] = `
     className="row QueryGrid-bottom-spacing"
   >
     <div
-      className="col-md-6 col-sm-6 col-xs-12"
-    />
-    <div
-      className="col-md-6 col-sm-6 col-xs-12"
+      className="col-xs-12"
     >
-      <div
+      <span
         className="paging pull-right text-nowrap"
       >
         <span
@@ -895,7 +884,7 @@ exports[`<QueryGridBar/> without charts and views 1`] = `
             </ul>
           </div>
         </span>
-      </div>
+      </span>
     </div>
   </div>
   <div
@@ -998,7 +987,7 @@ exports[`<QueryGridBar/> without omnibox 1`] = `
     className="row QueryGrid-bottom-spacing"
   >
     <div
-      className="col-md-6 col-sm-6 col-xs-12"
+      className="col-xs-12"
     >
       <span>
         <div
@@ -1030,11 +1019,7 @@ exports[`<QueryGridBar/> without omnibox 1`] = `
           />
         </div>
       </span>
-    </div>
-    <div
-      className="col-md-6 col-sm-6 col-xs-12"
-    >
-      <div
+      <span
         className="paging pull-right text-nowrap"
       >
         <span
@@ -1174,7 +1159,7 @@ exports[`<QueryGridBar/> without omnibox 1`] = `
             </ul>
           </div>
         </span>
-      </div>
+      </span>
     </div>
   </div>
   <div

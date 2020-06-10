@@ -34,9 +34,8 @@ interface Props {
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
-
     static defaultProps = {
-        maxHitSize: 1000
+        maxHitSize: 1000,
     };
 
     isLoading(): boolean {
@@ -74,10 +73,10 @@ export class SearchResultsPanel extends React.Component<Props, any> {
         const data = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (data && data.size > 0) {
-
             const totalHit = model.getIn(['entities', 'totalHits']);
             const msg = data.size.toLocaleString() + ' Result' + (data.size !== 1 ? 's' : '');
-            const headerMsg = totalHit > maxHitSize ? `${data.size.toLocaleString()} of ${totalHit.toLocaleString()} Results` : msg;
+            const headerMsg =
+                totalHit > maxHitSize ? `${data.size.toLocaleString()} of ${totalHit.toLocaleString()} Results` : msg;
 
             return (
                 <div>

@@ -23,9 +23,10 @@ import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
 import { SearchResultCardData, SearchResultsModel } from '../components/search/models';
 import entitiesJSON from '../test/data/searchResults.json';
 
+import { getProcessedSearchHits } from '../components/search/actions';
+
 import { ICON_URL } from './mock';
 import './stories.scss';
-import {getProcessedSearchHits} from "../components/search/actions";
 
 storiesOf('SearchResults', module)
     .addDecorator(withKnobs)
@@ -33,7 +34,7 @@ storiesOf('SearchResults', module)
         const cardData = {
             title: 'Sample - 20190101.123',
             typeName: 'Sample Type 1',
-            category: 'Samples'
+            category: 'Samples',
         };
         return (
             <SearchResultCard
@@ -45,33 +46,35 @@ storiesOf('SearchResults', module)
         );
     })
     .add('search result panel', () => {
-        const hits = getProcessedSearchHits(entitiesJSON['hits'])
+        const hits = getProcessedSearchHits(entitiesJSON['hits']);
         const model = SearchResultsModel.create({
             isLoading: boolean('isLoading', false),
             error: text('error', ''),
-            entities: Map(fromJS({...entitiesJSON, hits})),
+            entities: Map(fromJS({ ...entitiesJSON, hits })),
         });
 
         return <SearchResultsPanel iconUrl={ICON_URL} model={model} />;
     })
     .add('search result panel with custom card data', () => {
-        const hits = getProcessedSearchHits(entitiesJSON['hits'], (data, category): SearchResultCardData => {
-            if (data && data['name'] === 'M-1')
-                return {
-                    iconSrc: 'test-IconSrc',
-                    altText: 'test-alt-text',
-                    title: 'Test title',
-                    typeName: 'other',
-                };
+        const hits = getProcessedSearchHits(
+            entitiesJSON['hits'],
+            (data, category): SearchResultCardData => {
+                if (data && data['name'] === 'M-1')
+                    return {
+                        iconSrc: 'test-IconSrc',
+                        altText: 'test-alt-text',
+                        title: 'Test title',
+                        typeName: 'other',
+                    };
 
-            return {};
-        });
+                return {};
+            }
+        );
         const model = SearchResultsModel.create({
             isLoading: boolean('isLoading', false),
             error: text('error', ''),
-            entities: Map(fromJS({...entitiesJSON, hits})),
+            entities: Map(fromJS({ ...entitiesJSON, hits })),
         });
 
         return <SearchResultsPanel iconUrl={ICON_URL} model={model} />;
-    })
-;
+    });

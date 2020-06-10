@@ -45,7 +45,7 @@ describe('<SearchResultCard/>', () => {
             title: 'my title',
             iconSrc: 'testSource',
             typeName: 'Test Source',
-            category: 'sourcecategory'
+            category: 'sourcecategory',
         };
         const component = <SearchResultCard cardData={cardData} summary="Card Summary" url="#card" />;
 

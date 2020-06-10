@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 import React from 'react';
-import {fromJS, Map} from 'immutable';
+import { fromJS, Map } from 'immutable';
 import { mount } from 'enzyme';
+
+import { boolean, text } from '@storybook/addon-knobs';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -26,8 +28,7 @@ import entitiesJSON from '../../test/data/searchResults.json';
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsPanel } from './SearchResultsPanel';
 import { SearchResultsModel } from './models';
-import {getProcessedSearchHits} from "./actions";
-import {boolean, text} from "@storybook/addon-knobs";
+import { getProcessedSearchHits } from './actions';
 
 describe('<SearchResultsPanel/>', () => {
     test('loading', () => {
@@ -64,9 +65,9 @@ describe('<SearchResultsPanel/>', () => {
     });
 
     test('with search hits', () => {
-        const hits = getProcessedSearchHits(entitiesJSON['hits'])
+        const hits = getProcessedSearchHits(entitiesJSON['hits']);
         const model = SearchResultsModel.create({
-            entities: Map(fromJS({...entitiesJSON, hits})),
+            entities: Map(fromJS({ ...entitiesJSON, hits })),
         });
 
         const component = <SearchResultsPanel model={model} />;

@@ -373,8 +373,22 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
         this.setState({ distinctValuesLoading: true, distinctValuesFieldKey: fieldKey });
 
+        const options = getSelectDistinctOptions(fieldKey);
+
+        // 39206: Remove filters on the specified fieldKey so that the distinct results are not overly
+        // restricted by previous filtering.
+        if (options.filterArray?.length > 0) {
+            const lowerFieldKey = fieldKey.toLowerCase();
+            options.filterArray = options.filterArray.reduce((filterArray, filter) => {
+                if (filter.getColumnName().toLowerCase() !== lowerFieldKey) {
+                    filterArray.push(filter);
+                }
+                return filterArray;
+            }, []);
+        }
+
         Query.selectDistinctRows({
-            ...getSelectDistinctOptions(fieldKey),
+            ...options,
             success: result => {
                 if (!this.state.activeAction) {
                     // The user closed the action menu, do nothing.

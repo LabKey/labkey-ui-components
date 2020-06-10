@@ -379,12 +379,9 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         // restricted by previous filtering.
         if (options.filterArray?.length > 0) {
             const lowerFieldKey = fieldKey.toLowerCase();
-            options.filterArray = options.filterArray.reduce((filterArray, filter) => {
-                if (filter.getColumnName().toLowerCase() !== lowerFieldKey) {
-                    filterArray.push(filter);
-                }
-                return filterArray;
-            }, []);
+            options.filterArray = options.filterArray.filter(
+                filter => filter.getColumnName().toLowerCase() !== lowerFieldKey
+            );
         }
 
         Query.selectDistinctRows({

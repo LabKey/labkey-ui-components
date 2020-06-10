@@ -23,45 +23,57 @@ import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
 import { SearchResultCardData, SearchResultsModel } from '../components/search/models';
 import entitiesJSON from '../test/data/searchResults.json';
 
+import { getProcessedSearchHits } from '../components/search/actions';
+
 import { ICON_URL } from './mock';
 import './stories.scss';
 
 storiesOf('SearchResults', module)
     .addDecorator(withKnobs)
     .add('search result card', () => {
+        const cardData = {
+            title: 'Sample - 20190101.123',
+            typeName: 'Sample Type 1',
+            category: 'Samples',
+        };
         return (
             <SearchResultCard
                 iconUrl={ICON_URL}
-                title={text('title', 'Sample - 20190101.123')}
                 summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
                 url={text('url', '#samples')}
-                data={Map(fromJS({ sampleSet: { name: 'Sample Type 1' } }))}
-            />
-        );
-    })
-    .add('search result card with custom card data', () => {
-        return (
-            <SearchResultCard
-                getCardData={(data, category): SearchResultCardData => {
-                    return {
-                        iconSrc: 'test',
-                        altText: 'test-alt-text',
-                        title: 'Test title',
-                        typeName: 'other',
-                    };
-                }}
-                title={text('title', 'Sample - 20190101.123')}
-                summary={text('summary', 'This sample is from the lineage of some important samples for sure.')}
-                url={text('url', '#samples')}
-                data={Map(fromJS({ sampleSet: { name: 'Sample Type 1' } }))}
+                cardData={cardData}
             />
         );
     })
     .add('search result panel', () => {
+        const hits = getProcessedSearchHits(entitiesJSON['hits']);
         const model = SearchResultsModel.create({
             isLoading: boolean('isLoading', false),
             error: text('error', ''),
-            entities: Map(fromJS(entitiesJSON)),
+            entities: Map(fromJS({ ...entitiesJSON, hits })),
+        });
+
+        return <SearchResultsPanel iconUrl={ICON_URL} model={model} />;
+    })
+    .add('search result panel with custom card data', () => {
+        const hits = getProcessedSearchHits(
+            entitiesJSON['hits'],
+            (data, category): SearchResultCardData => {
+                if (data && data['name'] === 'M-1')
+                    return {
+                        iconSrc: 'test-IconSrc',
+                        altText: 'test-alt-text',
+                        title: 'Test title',
+                        typeName: 'other',
+                    };
+
+                return {};
+            }
+        );
+        const model = SearchResultsModel.create({
+            isLoading: boolean('isLoading', false),
+            error: text('error', ''),
+            entities: Map(fromJS({ ...entitiesJSON, hits })),
         });
 
         return <SearchResultsPanel iconUrl={ICON_URL} model={model} />;

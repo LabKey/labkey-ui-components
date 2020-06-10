@@ -22,15 +22,22 @@ import { Alert } from '../base/Alert';
 import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
 import { SearchResultCard } from './SearchResultCard';
-import { SearchResultCardData, SearchResultsModel } from './models';
+import { SearchResultsModel } from './models';
 
 interface Props {
     model: SearchResultsModel;
+    emptyResultDisplay?: React.ReactNode;
     iconUrl?: string;
-    getCardData?: (data: Map<any, any>, category?: string) => SearchResultCardData; // allows for customization of mappings from search results to icons, altText and titles.
+    hideHeader?: boolean;
+    hidePanelFrame?: boolean;
+    maxHitSize?: number;
 }
 
 export class SearchResultsPanel extends React.Component<Props, any> {
+    static defaultProps = {
+        maxHitSize: 1000,
+    };
+
     isLoading(): boolean {
         const { model } = this.props;
         return model ? model.get('isLoading') : false;
@@ -59,59 +66,59 @@ export class SearchResultsPanel extends React.Component<Props, any> {
     }
 
     renderResults() {
-        const { model, iconUrl, getCardData } = this.props;
+        const { model, iconUrl, emptyResultDisplay, hideHeader, maxHitSize } = this.props;
 
         if (this.isLoading()) return;
 
-        const results = model ? model.getIn(['entities', 'hits']) : undefined;
-
-        // result.has('data') is <=20.1 compatible way to check for sample search results TODO remove post 20.1
-        const data = results
-            ? results.filter(result => {
-                  const category = result.get('category');
-                  return (
-                      category == 'data' ||
-                      category == 'material' ||
-                      category == 'workflowJob' ||
-                      category == 'file workflowJob' ||
-                      result.has('data')
-                  );
-              })
-            : undefined;
+        const data = model ? model.getIn(['entities', 'hits']) : undefined;
 
         if (data && data.size > 0) {
+            const totalHit = model.getIn(['entities', 'totalHits']);
+            const msg = data.size.toLocaleString() + ' Result' + (data.size !== 1 ? 's' : '');
+            const headerMsg =
+                totalHit > maxHitSize ? `${data.size.toLocaleString()} of ${totalHit.toLocaleString()} Results` : msg;
+
             return (
                 <div>
-                    <h3 className="no-margin-top search-results__amount">{data.size} Results</h3>
+                    {!hideHeader && <h3 className="no-margin-top search-results__amount">{headerMsg}</h3>}
                     {data.size > 0 &&
                         data.map((item, i) => (
                             <div key={i} className="col-md-6 col-sm-12 search-results__margin-top">
                                 <SearchResultCard
-                                    title={item.get('title')}
                                     summary={item.get('summary')}
                                     url={item.get('url')}
-                                    category={item.get('category')}
-                                    data={item.get('data')}
                                     iconUrl={iconUrl}
-                                    getCardData={getCardData}
+                                    cardData={item.get('cardData').toJS()}
                                 />
                             </div>
                         ))}
                 </div>
             );
         } else {
-            return <div className="search-results__margin-top">No Results Found</div>;
+            return emptyResultDisplay ? (
+                emptyResultDisplay
+            ) : (
+                <div className="search-results__margin-top">No Results Found</div>
+            );
         }
     }
 
     render() {
+        const { hidePanelFrame } = this.props;
+
+        const body = (
+            <>
+                {this.renderLoading()}
+                {this.renderError()}
+                {this.renderResults()}
+            </>
+        );
+
+        if (hidePanelFrame) return body;
+
         return (
             <Panel>
-                <Panel.Body>
-                    {this.renderLoading()}
-                    {this.renderError()}
-                    {this.renderResults()}
-                </Panel.Body>
+                <Panel.Body>{body}</Panel.Body>
             </Panel>
         );
     }

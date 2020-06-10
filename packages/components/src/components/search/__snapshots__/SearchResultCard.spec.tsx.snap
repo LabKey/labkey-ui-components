@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SearchResultCard/> default props 1`] = `
+exports[`<SearchResultCard/> with category 1`] = `
 <a
   href="#card"
 >
@@ -11,10 +11,10 @@ exports[`<SearchResultCard/> default props 1`] = `
       className="col-md-2 hidden-sm hidden-xs search-result__card-icon__container"
     >
       <img
-        alt="-icon"
+        alt="testSource-icon"
         className="search-result__card-icon"
         height="100%"
-        src="/labkey/_images/default.svg"
+        src="/labkey/_images/testsource.svg"
         width="100%"
       />
     </div>
@@ -25,8 +25,71 @@ exports[`<SearchResultCard/> default props 1`] = `
         <h4
           className="text-capitalize"
         >
-          Card Title
+          my title
         </h4>
+      </div>
+      <div>
+        <strong>
+          Category
+          : 
+        </strong>
+        sourcecategory
+      </div>
+      <div>
+        <strong>
+          Type
+          : 
+        </strong>
+        Test Source
+      </div>
+      <div
+        title="Card Summary"
+      >
+        <strong>
+          Summary: 
+        </strong>
+         
+        Card Summary
+      </div>
+    </div>
+  </div>
+</a>
+`;
+
+exports[`<SearchResultCard/> without category 1`] = `
+<a
+  href="#card"
+>
+  <div
+    className="row search-result__card-container"
+  >
+    <div
+      className="col-md-2 hidden-sm hidden-xs search-result__card-icon__container"
+    >
+      <img
+        alt="testsource-icon"
+        className="search-result__card-icon"
+        height="100%"
+        src="/labkey/_images/testsource.svg"
+        width="100%"
+      />
+    </div>
+    <div
+      className="col-md-10 col-sm-12"
+    >
+      <div>
+        <h4
+          className="text-capitalize"
+        >
+          my title
+        </h4>
+      </div>
+      <div>
+        <strong>
+          Type
+          : 
+        </strong>
+        Test Source
       </div>
       <div
         title="Card Summary"

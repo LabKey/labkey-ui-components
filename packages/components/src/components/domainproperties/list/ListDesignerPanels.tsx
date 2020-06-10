@@ -60,7 +60,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         const { onChange } = this.props;
         const { model } = this.state;
 
-        // Issue 40262: If we have a titleColumn selected and the name change (not the row index), update the titleColumn
+        // Issue 40262: If we have a titleColumn selected and the name changes (not the row index), update the titleColumn
         let titleColumn = model.titleColumn;
         if (titleColumn && !rowIndexChange) {
             const index = model.domain.findFieldIndexByName(titleColumn);
@@ -211,7 +211,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle="Fields"
-                    headerIconHelpMsg="This section does not contain any user defined fields and requires a selection for the Key Field Name property."
+                    todoIconHelpMsg="This section does not contain any user-defined fields and requires a selection for the Key Field Name property."
                     helpNoun="list"
                     helpTopic={null} // null so that we don't show the "learn more about this tool" link for this domains
                     onChange={this.onDomainChange}

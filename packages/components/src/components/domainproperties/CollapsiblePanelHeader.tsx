@@ -16,7 +16,7 @@ interface Props {
     collapsible: boolean;
     controlledCollapse: boolean;
     headerDetails?: string;
-    headerIconHelpMsg?: string;
+    todoIconHelpMsg?: string;
     iconHelpMsg?: string;
     panelStatus: DomainPanelStatus;
     togglePanel: (evt: any, collapsed?: boolean) => any;
@@ -38,7 +38,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
     }
 
     getHeaderIconHelpMsg(): string {
-        const { isValid, panelStatus, iconHelpMsg, headerIconHelpMsg } = this.props;
+        const { isValid, panelStatus, iconHelpMsg, todoIconHelpMsg } = this.props;
 
         if (!isValid) {
             return iconHelpMsg;
@@ -46,7 +46,7 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
 
         if (panelStatus === 'TODO') {
             return (
-                headerIconHelpMsg || 'This section does not contain any user defined fields. You may want to review.'
+                todoIconHelpMsg || 'This section does not contain any user-defined fields. You may want to review.'
             );
         }
 

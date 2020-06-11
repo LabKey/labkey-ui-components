@@ -202,7 +202,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
     componentWillReceiveProps(nextProps: OmniBoxProps) {
         this.setState({
-            actionValues: nextProps.values ? [ ...nextProps.values ] : [],
+            actionValues: nextProps.values ? [...nextProps.values] : [],
         });
     }
 
@@ -259,7 +259,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         let actionValue: ActionValue;
 
         if (value && action) {
-            let newActionValues = [ ...actionValues ];
+            let newActionValues = [...actionValues];
             const newInputValue = OmniBox.stripKeyword(value, action).trim();
             const tokenize = this.resolveTokenizer(action);
 
@@ -325,10 +325,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
 
                 if (changeType !== ChangeType.none) {
                     // Only fire the change handler if the user changed the omnibox values.
-                    this.fireOnChange(
-                        newActionValues,
-                        { type: changeType, index: activeValueIndex }
-                    );
+                    this.fireOnChange(newActionValues, { type: changeType, index: activeValueIndex });
                 }
 
                 if (!this.props.closeOnComplete) {
@@ -658,10 +655,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         });
 
         if (requireOnChange) {
-            this.fireOnChange(
-                this.state.actionValues,
-                { type: ChangeType.remove, index: activeValueIndex }
-            );
+            this.fireOnChange(this.state.actionValues, { type: ChangeType.remove, index: activeValueIndex });
         }
 
         this.fetchOptions(matches.matchingActions, newInputValue);
@@ -818,10 +812,7 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
                 actionValues: newActionValues,
             });
 
-            this.fireOnChange(
-                newActionValues,
-                { type: ChangeType.remove, index: actionValueIndex }
-            );
+            this.fireOnChange(newActionValues, { type: ChangeType.remove, index: actionValueIndex });
         }
     };
 

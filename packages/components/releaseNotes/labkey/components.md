@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.69.3
+*Released*: 11 June 2020
+* Expose QueryConfig type
+
 ### version 0.69.2
 *Released*: 10 June 2020
 * Issue 39206: OmniBox should not restrict results with filters against target column

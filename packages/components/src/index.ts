@@ -338,7 +338,7 @@ import { SampleTypeDataType, DataClassDataType } from './components/entities/con
 import { SampleTypeModel } from './components/domainproperties/samples/models';
 import { SampleTypeDesigner } from './components/domainproperties/samples/SampleTypeDesigner';
 
-import { QueryModel } from './QueryModel/QueryModel';
+import { QueryConfig, QueryModel } from './QueryModel/QueryModel';
 import { QueryModelLoader } from './QueryModel/QueryModelLoader';
 import {
     withQueryModels,
@@ -743,6 +743,7 @@ export {
     IGridResponse,
     // QueryModel
     QueryModel,
+    QueryConfig,
     QueryConfigMap,
     QueryModelMap,
     QueryModelLoader,

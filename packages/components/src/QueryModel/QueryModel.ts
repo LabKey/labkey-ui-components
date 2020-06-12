@@ -1,4 +1,4 @@
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 import { Draft, immerable, produce } from 'immer';
 import { Filter, Query } from '@labkey/api';
 
@@ -275,6 +275,14 @@ export class QueryModel {
 
             return row;
         });
+    }
+
+    getRow(key?: string): any {
+        if (key === undefined && this.rows) {
+            key = Object.keys(this.rows)[0];
+        }
+
+        return this.rows[key];
     }
 
     get pageCount(): number {

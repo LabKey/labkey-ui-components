@@ -277,6 +277,11 @@ export class QueryModel {
         });
     }
 
+    /**
+     * Returns the data for the specified key parameter on the QueryModel.rows object.
+     * If no key parameter is provided, the first data row will be returned.
+     * @param key
+     */
     getRow(key?: string): any {
         if (key === undefined && this.rows) {
             key = Object.keys(this.rows)[0];

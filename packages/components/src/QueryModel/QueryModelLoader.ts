@@ -93,7 +93,7 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
             columns: model.columnString,
             maxRows: model.maxRows,
             offset: model.offset,
-            queryParameters: model.queryParameters,
+            parameters: model.queryParameters,
             includeDetailsColumn: model.includeDetailsColumn,
             includeUpdateColumn: model.includeUpdateColumn,
         });

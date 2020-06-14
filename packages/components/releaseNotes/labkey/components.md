@@ -23,6 +23,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Added emptyResultDisplay, hideHeader and hidePanelFrame props to SearchResultsPanel
 - Add useEmail to UserSelectInput
 
+### version XXX
+*Released*: XXX
+* correct QueryModelLoader queryParameters to parameters
+
 ### version 0.68.0
 *Released*: 9 June 2020
 * Remove `IUser` interface in favor of direct use of `@labkey/api` `User` and `UserWithPermissions` interfaces.

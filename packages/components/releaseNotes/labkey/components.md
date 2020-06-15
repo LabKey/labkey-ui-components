@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.69.4
+*Released*: 15 June 2020
 * Item 7417: QueryModel - add getRow() helper for getting first row of QueryModel.rows object
 
 ### version 0.69.3

@@ -283,7 +283,11 @@ export class QueryModel {
      * @param key
      */
     getRow(key?: string): any {
-        if (key === undefined && this.rows) {
+        if (!this.rows) {
+            return undefined;
+        }
+
+        if (key === undefined) {
             key = Object.keys(this.rows)[0];
         }
 

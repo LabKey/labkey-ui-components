@@ -103,8 +103,8 @@ describe('QueryModel', () => {
             rows: ROWS,
         });
         expect(model.getRow().RowId.value).toBe(0);
-        expect(model.getRow("0").RowId.value).toBe(0);
-        expect(model.getRow("1").RowId.value).toBe(1);
+        expect(model.getRow('0').RowId.value).toBe(0);
+        expect(model.getRow('1').RowId.value).toBe(1);
     });
 
     test('Sorts', () => {

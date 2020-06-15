@@ -154,7 +154,7 @@ export class SortAction implements Action {
     }
 
     matchParam(paramKey: string, paramValue: any): boolean {
-        return paramKey && paramKey.toLowerCase() === this.param;
+        return paramKey && paramKey === this.param;
     }
 
     parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): string[] | Value[] {

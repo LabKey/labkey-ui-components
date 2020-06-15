@@ -277,6 +277,23 @@ export class QueryModel {
         });
     }
 
+    /**
+     * Returns the data for the specified key parameter on the QueryModel.rows object.
+     * If no key parameter is provided, the first data row will be returned.
+     * @param key
+     */
+    getRow(key?: string): any {
+        if (!this.rows) {
+            return undefined;
+        }
+
+        if (key === undefined) {
+            key = Object.keys(this.rows)[0];
+        }
+
+        return this.rows[key];
+    }
+
     get pageCount(): number {
         const { maxRows, rowCount } = this;
         return maxRows > 0 ? Math.ceil(rowCount / maxRows) : 1;

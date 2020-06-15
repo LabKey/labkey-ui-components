@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 0.69.??
 *Released*: ?? June 2020
-* Issue 39947 - Omnibox doesn't show sorts when URLPrefix is used
+* Issue 39947 - Omnibox doesn't show sorts or views when URLPrefix is used
 
 ### version 0.69.4
 *Released*: 15 June 2020

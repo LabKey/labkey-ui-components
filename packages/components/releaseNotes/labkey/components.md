@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* correct QueryModelLoader queryParameters to parameters
+* add onClick prop for ExpandableContainer
+
+
 ### version 0.69.3
 *Released*: 11 June 2020
 * Expose QueryConfig type
@@ -22,10 +28,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 - Move search results filtering and cardData processing from SearchResultsPanel to searchUsingIndex action.
 - Added emptyResultDisplay, hideHeader and hidePanelFrame props to SearchResultsPanel
 - Add useEmail to UserSelectInput
-
-### version XXX
-*Released*: XXX
-* correct QueryModelLoader queryParameters to parameters
 
 ### version 0.68.0
 *Released*: 9 June 2020

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.69.4",
+  "version": "0.69.4-fb-fmFreezerCreation2.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

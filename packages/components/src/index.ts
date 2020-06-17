@@ -612,7 +612,7 @@ export {
     IFieldChange,
     IBannerMessage, // TODO remove usages of this in platform and remove from export list here
     IAppDomainHeader,
-    BasePropertiesPanel, // TODO this should probably be renamed as it can be used for non "properties" panels
+    BasePropertiesPanel,
     AssayPropertiesPanel,
     AssayDesignerPanels,
     saveAssayDesign,

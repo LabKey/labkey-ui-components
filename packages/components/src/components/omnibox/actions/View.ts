@@ -33,7 +33,10 @@ export class ViewAction implements Action {
 
     constructor(urlPrefix: string, getColumns: () => List<QueryColumn>, getQueryInfo: () => QueryInfo) {
         this.getQueryInfo = getQueryInfo;
-        this.urlPrefix = urlPrefix;
+
+        if (urlPrefix) {
+            this.param = [urlPrefix, this.param].join('.');
+        }
     }
 
     completeAction(tokens: string[]): Promise<Value> {
@@ -48,7 +51,7 @@ export class ViewAction implements Action {
                     found = true;
                     resolve({
                         isValid: true,
-                        param: this.getParamPrefix() + '=' + view.name,
+                        param: this.param + '=' + view.name,
                         value: view.name,
                     });
                 });
@@ -97,14 +100,6 @@ export class ViewAction implements Action {
         });
     }
 
-    getParamPrefix(): string {
-        if (this.urlPrefix) {
-            return [this.urlPrefix, this.param].join('.');
-        }
-
-        return this.param;
-    }
-
     buildParams(actionValues: ActionValue[]): Array<{ paramKey: string; paramValue: string }> {
         return actionValues.map(actionValue => {
             const [paramKey, paramValue] = actionValue.param.split('=');
@@ -117,7 +112,7 @@ export class ViewAction implements Action {
     }
 
     matchParam(paramKey: string, paramValue: any): boolean {
-        return paramKey && paramKey.toLowerCase() === this.param;
+        return paramKey && paramKey === this.param;
     }
 
     parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): string[] | Value[] {

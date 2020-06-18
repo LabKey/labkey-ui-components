@@ -45,3 +45,15 @@ export function sortArraysEqual(a: QuerySort[], b: QuerySort[]): boolean {
         .join(';');
     return aStr === bStr;
 }
+
+export function flattenValuesFromRow(row: any, keys: string[]): {[key:string]: any} {
+    let values = {};
+    if (row && keys) {
+        keys.forEach((key: string) => {
+            if (row[key]) {
+                values[key] = row[key].value;
+            }
+        });
+    }
+    return values;
+}

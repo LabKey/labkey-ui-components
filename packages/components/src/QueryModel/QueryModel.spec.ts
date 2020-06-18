@@ -97,6 +97,16 @@ describe('QueryModel', () => {
         expect(model.hasData).toEqual(true);
     });
 
+    test('Data getRow', () => {
+        const model = new QueryModel({ schemaQuery: SCHEMA_QUERY }).mutate({
+            orderedRows: ORDERED_ROWS,
+            rows: ROWS,
+        });
+        expect(model.getRow().RowId.value).toBe(0);
+        expect(model.getRow('0').RowId.value).toBe(0);
+        expect(model.getRow('1').RowId.value).toBe(1);
+    });
+
     test('Sorts', () => {
         const sorts = [new QuerySort({ fieldKey: 'RowId', dir: '-' }), new QuerySort({ fieldKey: 'Data', dir: '+' })];
         let model = new QueryModel({ schemaQuery: SCHEMA_QUERY, sorts });

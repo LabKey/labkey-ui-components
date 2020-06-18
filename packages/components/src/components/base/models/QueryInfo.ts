@@ -342,4 +342,20 @@ export class QueryInfo extends Record({
     getIconURL(): string {
         return this.iconURL;
     }
+
+    /**
+     * Get an array of fieldKeys for the column keys provided.
+     * Default to getting all column fieldKeys if no parameter provided
+     * @param keys The column keys to filter by
+     */
+    getColumnFieldKeys(keys?: string[]): string[] {
+        if (this.columns) {
+            return this.columns
+                .filter((col, key) => !keys || keys.indexOf(key) > -1)
+                .map((col) => col.fieldKey)
+                .toArray();
+        }
+
+        return [];
+    }
 }

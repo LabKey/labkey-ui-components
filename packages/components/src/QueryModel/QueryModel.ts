@@ -14,7 +14,8 @@ import {
     ViewInfo,
 } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
-import { flattenValuesFromRow } from "./utils";
+
+import { flattenValuesFromRow } from './utils';
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as

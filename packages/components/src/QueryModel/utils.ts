@@ -46,7 +46,7 @@ export function sortArraysEqual(a: QuerySort[], b: QuerySort[]): boolean {
     return aStr === bStr;
 }
 
-export function flattenValuesFromRow(row: any, keys: string[]): {[key:string]: any} {
+export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]: any } {
     let values = {};
     if (row && keys) {
         keys.forEach((key: string) => {

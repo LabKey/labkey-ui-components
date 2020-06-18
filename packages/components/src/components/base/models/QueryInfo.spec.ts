@@ -15,21 +15,17 @@
  */
 import { QueryInfo } from './QueryInfo';
 
-describe("getColumnFieldKeys", () => {
-    test("missing params", () => {
+describe('getColumnFieldKeys', () => {
+    test('missing params', () => {
         const queryInfo = QueryInfo.create({});
 
         expect(JSON.stringify(queryInfo.getColumnFieldKeys(undefined))).toBe('[]');
         expect(JSON.stringify(queryInfo.getColumnFieldKeys(['test']))).toBe('[]');
     });
 
-    test("queryInfo with columns", () => {
+    test('queryInfo with columns', () => {
         const queryInfo = QueryInfo.fromJSON({
-            columns: [
-                {fieldKey: 'test1'},
-                {fieldKey: 'test2'},
-                {fieldKey: 'test3'},
-            ]
+            columns: [{ fieldKey: 'test1' }, { fieldKey: 'test2' }, { fieldKey: 'test3' }],
         });
 
         expect(JSON.stringify(queryInfo.getColumnFieldKeys(undefined))).toBe('["test1","test2","test3"]');

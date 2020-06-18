@@ -1,20 +1,19 @@
-import { flattenValuesFromRow } from "./utils";
+import { flattenValuesFromRow } from './utils';
 
-describe("flattenValuesFromRow", () => {
-    test("missing params", () => {
+describe('flattenValuesFromRow', () => {
+    test('missing params', () => {
         expect(JSON.stringify(flattenValuesFromRow(undefined, undefined))).toBe('{}');
-        expect(JSON.stringify(flattenValuesFromRow({test: {value: 123}}, undefined))).toBe('{}');
+        expect(JSON.stringify(flattenValuesFromRow({ test: { value: 123 } }, undefined))).toBe('{}');
         expect(JSON.stringify(flattenValuesFromRow(undefined, ['test']))).toBe('{}');
     });
 
-    test("with values", () => {
+    test('with values', () => {
         const data = {
-            test1: {value: 123, displayValue: 'TEST123'},
-            test2: {value: 456},
-            test3: {value: null},
-            test4: undefined
+            test1: { value: 123, displayValue: 'TEST123' },
+            test2: { value: 456 },
+            test3: { value: null },
+            test4: undefined,
         };
-
 
         expect(flattenValuesFromRow(data, Object.keys(data)).test0).toBe(undefined);
         expect(flattenValuesFromRow(data, Object.keys(data)).test1).toBe(123);

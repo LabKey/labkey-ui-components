@@ -33,10 +33,12 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
     }
 
     handleClick = () => {
-        if (this.props.onClick)
-            this.props.onClick(!this.state.visible);
-
-        this.setState(state => ({ visible: !state.visible }));
+        this.setState(state => ({ 
+             visible: !state.visible 
+        }), () = > {
+            if (this.props.onClick)
+                this.props.onClick(this.state.visible);        
+        });
     };
 
     handleMouseEnter = () => {

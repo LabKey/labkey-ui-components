@@ -15,6 +15,8 @@ import {
 } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 
+import { flattenValuesFromRow } from './utils';
+
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
  * schemaName-queryName-viewName or schemaName-queryName if viewName is undefined.
@@ -281,8 +283,9 @@ export class QueryModel {
      * Returns the data for the specified key parameter on the QueryModel.rows object.
      * If no key parameter is provided, the first data row will be returned.
      * @param key
+     * @param flattenValues True to flatten the row object to just the key: value pairs
      */
-    getRow(key?: string): any {
+    getRow(key?: string, flattenValues = false): any {
         if (!this.rows) {
             return undefined;
         }
@@ -291,7 +294,8 @@ export class QueryModel {
             key = Object.keys(this.rows)[0];
         }
 
-        return this.rows[key];
+        const row = this.rows[key];
+        return flattenValues ? flattenValuesFromRow(row, this.queryInfo.getColumnFieldKeys()) : row;
     }
 
     get pageCount(): number {

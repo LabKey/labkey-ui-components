@@ -304,6 +304,7 @@ import {
     SAMPLE_TYPE,
 } from './components/domainproperties/models';
 import DomainForm from './components/domainproperties/DomainForm';
+import { BasePropertiesPanel } from './components/domainproperties/BasePropertiesPanel';
 import { DomainFieldsDisplay } from './components/domainproperties/DomainFieldsDisplay';
 import { fetchProtocol, saveAssayDesign } from './components/domainproperties/assay/actions';
 import { AssayProtocolModel } from './components/domainproperties/assay/models';
@@ -611,6 +612,7 @@ export {
     IFieldChange,
     IBannerMessage, // TODO remove usages of this in platform and remove from export list here
     IAppDomainHeader,
+    BasePropertiesPanel,
     AssayPropertiesPanel,
     AssayDesignerPanels,
     saveAssayDesign,

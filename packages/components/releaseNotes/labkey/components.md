@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Expose createApplicationUrl utility method
 
+### version 0.70.0
+*Released*: 19 June 2020
+* Item 7417: BasePropertiesPanel - add to index.ts for use in Freezer Manager app
+* QueryInfo - add getColumnFieldKeys helper method to get fieldKeys for select columns
+* QueryModel - add parameter to getRow method to allow for a flattened key/value pair response object
+
 ### version 0.69.5
 *Released*: 15 June 2020
 * Issue 39947 - Omnibox doesn't show sorts or views when URLPrefix is used

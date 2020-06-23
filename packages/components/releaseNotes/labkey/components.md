@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.70.2
+*Released*: 23 June 2020
 * Expose createApplicationUrl utility method
 
 ### version 0.70.1

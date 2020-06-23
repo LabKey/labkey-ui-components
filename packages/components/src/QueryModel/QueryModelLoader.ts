@@ -15,8 +15,9 @@ import { bindColumnRenderers } from '../renderers';
 import { clearSelected, fetchCharts, ISelectResponse, selectAll } from '../actions';
 import { VISUALIZATION_REPORTS } from '../constants';
 
-import { GridMessage, QueryModel } from './QueryModel';
 import { DataViewInfo } from '../models';
+
+import { GridMessage, QueryModel } from './QueryModel';
 
 export interface RowsResponse {
     messages: GridMessage[];

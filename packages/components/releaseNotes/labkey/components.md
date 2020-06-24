@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.70.3-fb-Issue40555-decodeFilters.0
+*Released*: TBD June 2020
+* Issue 40555: QC state conditional formats work but are not viewable/editable in Query Metadata editor
+* Filters - decode correct part of Filter string
+
 ### version 0.70.2
 *Released*: 23 June 2020
 * Expose createApplicationUrl utility method

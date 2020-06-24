@@ -174,7 +174,7 @@ export class Filters extends React.PureComponent<FiltersProps, FiltersState> {
         const returnVal = { type: undefined, value: undefined };
 
         if (parts.length > 0 && parts[0].length > 0) {
-            returnVal.type = decodeURIComponent(parts[0].substring(1 + (prefix ? prefix.length : 0))); // remove ~
+            returnVal.type = decodeURIComponent(parts[0]).substring(1 + (prefix ? prefix.length : 0)); // remove ~
         }
 
         if (parts.length > 1) {

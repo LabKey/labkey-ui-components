@@ -311,6 +311,11 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideAddFieldsButton: false,
     disableMvEnabled: false,
     hideImportData: false,
+    hideDeleteIcon: false,
+};
+
+export const DEFAULT_DOMAIN_FORM_LOCK_OPTIONS = {
+    lockName: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -1628,6 +1633,11 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
+    hideDeleteIcon?: boolean;
+}
+
+export interface IDomainFormLockOptions {
+    lockName?: boolean;
 }
 
 /**

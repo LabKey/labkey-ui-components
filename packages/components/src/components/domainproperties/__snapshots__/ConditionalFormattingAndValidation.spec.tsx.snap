@@ -6,6 +6,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
     Object {
       "disableMvEnabled": false,
       "hideAddFieldsButton": false,
+      "hideDeleteIcon": false,
       "hideImportData": false,
       "hideRequired": false,
       "hideTextOptions": false,
@@ -783,6 +784,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
     Object {
       "disableMvEnabled": false,
       "hideAddFieldsButton": false,
+      "hideDeleteIcon": false,
       "hideImportData": false,
       "hideRequired": false,
       "hideTextOptions": false,

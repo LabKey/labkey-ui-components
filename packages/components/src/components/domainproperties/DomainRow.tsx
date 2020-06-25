@@ -49,9 +49,11 @@ import {
 } from './constants';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    DEFAULT_DOMAIN_FORM_LOCK_OPTIONS,
     DomainField,
     DomainFieldError,
     IDomainFormDisplayOptions,
+    IDomainFormLockOptions,
     IFieldChange,
     PropDescType,
     resolveAvailableTypes,
@@ -83,6 +85,7 @@ interface IDomainRowProps {
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    domainFormLockOptions?: IDomainFormLockOptions;
 }
 
 interface IDomainRowState {
@@ -98,6 +101,7 @@ interface IDomainRowState {
 export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowState> {
     static defaultProps = {
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+        domainFormLockOptions: DEFAULT_DOMAIN_FORM_LOCK_OPTIONS,
     };
 
     constructor(props) {
@@ -355,6 +359,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             showFilePropertyType,
             domainIndex,
             domainFormDisplayOptions,
+            domainFormLockOptions,
         } = this.props;
         const lockNameForPK = !field.isNew() && isPrimaryKeyFieldLocked(field.lockType);
 
@@ -371,7 +376,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         disabled={
                             isFieldPartiallyLocked(field.lockType) ||
                             isFieldFullyLocked(field.lockType) ||
-                            lockNameForPK
+                            lockNameForPK ||
+                            domainFormLockOptions.lockName
                         }
                     />
                 </Col>
@@ -421,7 +427,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderButtons() {
-        const { expanded, index, field, appPropertiesOnly, domainIndex } = this.props;
+        const { expanded, index, field, appPropertiesOnly, domainIndex, domainFormDisplayOptions } = this.props;
         const { closing } = this.state;
 
         return (
@@ -441,14 +447,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     isFieldFullyLocked(field.lockType) ||
                     isFieldPartiallyLocked(field.lockType) ||
                     isPrimaryKeyFieldLocked(field.lockType)
-                ) && (
-                    <DeleteIcon
-                        id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
-                        title="Remove field"
-                        iconCls="domain-field-delete-icon"
-                        onDelete={this.onDelete}
-                    />
-                )}
+                ) &&
+                    !domainFormDisplayOptions.hideDeleteIcon && (
+                        <DeleteIcon
+                            id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
+                            title="Remove field"
+                            iconCls="domain-field-delete-icon"
+                            onDelete={this.onDelete}
+                        />
+                    )}
                 <FieldExpansionToggle
                     cls="domain-field-expand-icon"
                     expanded={expanded}

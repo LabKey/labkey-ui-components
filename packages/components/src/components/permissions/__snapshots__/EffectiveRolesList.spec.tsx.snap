@@ -57,4 +57,42 @@ Array [
 ]
 `;
 
+exports[`<EffectiveRolesList/> with root policy 1`] = `
+Array [
+  <hr
+    className="principal-hr"
+  />,
+  <div
+    className="principal-detail-label"
+  >
+    Effective Roles:
+  </div>,
+  <ul
+    className="permissions-ul"
+  >
+    <li>
+      Editor
+    </li>
+    <li>
+      Folder Administrator
+    </li>
+    <li>
+      Project Administrator
+    </li>
+    <li>
+      Reader
+    </li>
+    <li>
+      Restricted Reader
+    </li>
+    <li>
+      Submitter
+    </li>
+    <li>
+      Application Admin
+    </li>
+  </ul>,
+]
+`;
+
 exports[`<EffectiveRolesList/> without policy 1`] = `null`;

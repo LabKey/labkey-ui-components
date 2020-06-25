@@ -1,0 +1,18 @@
+{
+  "relevantRoles" : [ "org.labkey.api.security.roles.SiteAdminRole", "org.labkey.api.security.roles.ApplicationAdminRole", "org.labkey.api.security.roles.TroubleshooterRole", "org.labkey.api.security.roles.SeeUserAndGroupDetailsRole", "org.labkey.api.security.roles.CanSeeAuditLogRole", "org.labkey.api.security.roles.EmailNonUsersRole", "org.labkey.api.security.roles.SeeFilePathsRole", "org.labkey.api.security.roles.CanUseSendMessageApi", "org.labkey.api.security.roles.PlatformDeveloperRole", "org.labkey.api.security.roles.TrustedAnalystRole", "org.labkey.api.security.roles.AnalystRole" ],
+  "policy" : {
+    "resourceId" : "3BCE26D4-1622-1035-AF26-843B99F37724",
+    "assignments" : [ {
+      "role" : "org.labkey.api.security.roles.ApplicationAdminRole",
+      "userId" : 1004
+    }, {
+      "role" : "org.labkey.api.security.roles.TroubleshooterRole",
+      "userId" : 2300
+    }, {
+      "role" : "org.labkey.api.security.roles.SeeUserAndGroupDetailsRole",
+      "userId" : 4971
+    } ],
+    "modifiedMillis" : 1593118537147,
+    "modified" : "2020-06-25 15:55:37.147"
+  }
+}

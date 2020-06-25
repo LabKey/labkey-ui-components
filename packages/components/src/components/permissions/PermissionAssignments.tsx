@@ -5,7 +5,7 @@
 import React from 'react';
 import { Button, Col, Panel, Row } from 'react-bootstrap';
 import { List } from 'immutable';
-import { Security } from '@labkey/api';
+import { getServerContext, Security } from '@labkey/api';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
@@ -16,6 +16,7 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
+import { fetchContainerSecurityPolicy } from "./actions";
 
 interface Props extends PermissionsProviderProps {
     title?: string;
@@ -34,6 +35,7 @@ interface State {
     dirty: boolean;
     submitting: boolean;
     saveErrorMsg: string;
+    rootPolicy: SecurityPolicy;
 }
 
 export class PermissionAssignments extends React.PureComponent<Props, State> {
@@ -50,7 +52,18 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
             dirty: false,
             submitting: false,
             saveErrorMsg: undefined,
+            rootPolicy: undefined,
         };
+    }
+
+    componentDidMount(): void {
+        const rootId = getServerContext().project.rootId;
+        if (this.props.containerId !== rootId) {
+            fetchContainerSecurityPolicy(rootId, this.props.principalsById, this.props.inactiveUsersById)
+                .then((rootPolicy) => {
+                    this.setState(() => ({ rootPolicy }));
+                });
+        }
     }
 
     addAssignment = (principal: Principal, role: SecurityRole) => {
@@ -122,7 +135,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
             disabledId,
             principalsById,
         } = this.props;
-        const { selectedUserId, saveErrorMsg, dirty } = this.state;
+        const { selectedUserId, saveErrorMsg, dirty, rootPolicy } = this.state;
         const selectedPrincipal = principalsById ? principalsById.get(selectedUserId) : undefined;
         const isLoading = (!policy || !roles || !principals) && !error;
         const isEditable = policy && !policy.isInheritFromParent();
@@ -193,6 +206,7 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
                             <UserDetailsPanel
                                 userId={selectedUserId}
                                 policy={policy}
+                                rootPolicy={rootPolicy}
                                 rolesByUniqueName={rolesByUniqueName}
                             />
                         )}

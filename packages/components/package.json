@@ -148,6 +148,9 @@
         "container": {
           "path": ""
         },
+        "project": {
+          "rootId": "ROOTID"
+        },
         "user": {
           "id": 1004
         },

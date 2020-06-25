@@ -10,16 +10,20 @@ import { SecurityAssignment, SecurityPolicy, SecurityRole } from './models';
 interface Props {
     userId: number;
     policy?: SecurityPolicy;
+    rootPolicy?: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
 }
 
 export class EffectiveRolesList extends React.PureComponent<Props, any> {
     render() {
-        const { userId, policy, rolesByUniqueName } = this.props;
-        const assignments =
-            policy && rolesByUniqueName
+        const { userId, policy, rootPolicy, rolesByUniqueName } = this.props;
+        let assignments = policy && rolesByUniqueName
                 ? policy.assignments.filter(assignment => assignment.userId === userId).toList()
                 : List<SecurityAssignment>();
+
+        if (rootPolicy && rolesByUniqueName) {
+            assignments = assignments.concat(rootPolicy.assignments.filter(assignment => assignment.userId === userId)).toList();
+        }
 
         if (assignments.size === 0) {
             return null;

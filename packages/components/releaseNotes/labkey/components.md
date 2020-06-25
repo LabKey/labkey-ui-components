@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 39263 - PermissionAssignments.tsx update to include display of root assignments in Effective Roles listing
+
 ### version 0.70.3
 *Released*: 24 June 2020
 * Issue 40555: QC state conditional formats work but are not viewable/editable in Query Metadata editor

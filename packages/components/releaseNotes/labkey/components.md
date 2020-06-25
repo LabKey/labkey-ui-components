@@ -1,7 +1,21 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.70.0
+### version 0.70.3
+*Released*: 24 June 2020
+* Issue 40555: QC state conditional formats work but are not viewable/editable in Query Metadata editor
+* Filters - decode correct part of Filter string
+
+### version 0.70.2
+*Released*: 23 June 2020
+* Expose createApplicationUrl utility method
+
+### version 0.70.1
+*Released*: 23 June 2020
+* correct QueryModelLoader queryParameters to parameters
+* add onClick prop for ExpandableContainer
+
+## version 0.70.0
 *Released*: 19 June 2020
 * Item 7417: BasePropertiesPanel - add to index.ts for use in Freezer Manager app
 * QueryInfo - add getColumnFieldKeys helper method to get fieldKeys for select columns

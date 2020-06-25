@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.70.4
+*Released*: 25 June 2020
 * Issue 39263 - PermissionAssignments.tsx update to include display of root assignments in Effective Roles listing
 
 ### version 0.70.3

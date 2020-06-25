@@ -16,7 +16,7 @@ import { UserDetailsPanel } from '../user/UserDetailsPanel';
 import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './models';
 import { PermissionsRole } from './PermissionsRole';
 import { GroupDetailsPanel } from './GroupDetailsPanel';
-import { fetchContainerSecurityPolicy } from "./actions";
+import { fetchContainerSecurityPolicy } from './actions';
 
 interface Props extends PermissionsProviderProps {
     title?: string;
@@ -59,10 +59,11 @@ export class PermissionAssignments extends React.PureComponent<Props, State> {
     componentDidMount(): void {
         const rootId = getServerContext().project.rootId;
         if (this.props.containerId !== rootId) {
-            fetchContainerSecurityPolicy(rootId, this.props.principalsById, this.props.inactiveUsersById)
-                .then((rootPolicy) => {
+            fetchContainerSecurityPolicy(rootId, this.props.principalsById, this.props.inactiveUsersById).then(
+                rootPolicy => {
                     this.setState(() => ({ rootPolicy }));
-                });
+                }
+            );
         }
     }
 

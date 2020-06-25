@@ -17,12 +17,15 @@ interface Props {
 export class EffectiveRolesList extends React.PureComponent<Props, any> {
     render() {
         const { userId, policy, rootPolicy, rolesByUniqueName } = this.props;
-        let assignments = policy && rolesByUniqueName
+        let assignments =
+            policy && rolesByUniqueName
                 ? policy.assignments.filter(assignment => assignment.userId === userId).toList()
                 : List<SecurityAssignment>();
 
         if (rootPolicy && rolesByUniqueName) {
-            assignments = assignments.concat(rootPolicy.assignments.filter(assignment => assignment.userId === userId)).toList();
+            assignments = assignments
+                .concat(rootPolicy.assignments.filter(assignment => assignment.userId === userId))
+                .toList();
         }
 
         if (assignments.size === 0) {

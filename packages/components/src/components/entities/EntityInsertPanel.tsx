@@ -109,6 +109,7 @@ interface OwnProps {
     parentDataTypes?: List<EntityDataType>;
     importHelpLinkNode: React.ReactNode;
     auditBehavior?: AuditBehaviorTypes;
+    importOnly?: boolean;   // Biologics has a different sample create form so don't use create from grid tab
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -177,6 +178,9 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     getTabs(): string[] {
+        if (this.props.importOnly) {
+            return ['Import ' + this.capNounPlural + ' from File'];
+        }
         return ['Create ' + this.capNounPlural + ' from Grid', 'Import ' + this.capNounPlural + ' from File'];
     }
 
@@ -207,8 +211,8 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const tab =
             props.location && props.location.query && props.location.query.tab
                 ? props.location.query.tab
-                : EntityInsertPanelTabs.Grid;
-        if (selectTab && tab != EntityInsertPanelTabs.Grid) this.props.selectStep(parseInt(tab));
+                : EntityInsertPanelTabs.First;
+        if (selectTab && tab != EntityInsertPanelTabs.First) this.props.selectStep(parseInt(tab));
 
         let { insertModel } = this.state;
 
@@ -998,16 +1002,18 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         );
     }
 
+    isGridStep = (): boolean => {
+        return this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly;
+    };
+
     renderButtons() {
-        const { currentStep } = this.props;
-        return currentStep === EntityInsertPanelTabs.Grid ? this.renderGridButtons() : this.renderFileButtons();
+        return this.isGridStep() ? this.renderGridButtons() : this.renderFileButtons();
     }
 
     renderProgress() {
-        const { currentStep } = this.props;
         const { insertModel, isSubmitting, file } = this.state;
 
-        return currentStep === EntityInsertPanelTabs.Grid ? (
+        return this.isGridStep() ? (
             <Progress
                 estimate={insertModel.entityCount * 20}
                 modal={true}
@@ -1025,7 +1031,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     render() {
-        const { canEditEntityTypeDetails } = this.props;
+        const { canEditEntityTypeDetails, importOnly } = this.props;
         const { insertModel, error } = this.state;
 
         if (!insertModel) {
@@ -1059,10 +1065,12 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                         </div>
                         <div className="row">
                             <div className="col-sm-12">
-                                <FormStep stepIndex={EntityInsertPanelTabs.Grid}>
-                                    {this.renderCreateFromGrid()}
-                                </FormStep>
-                                <FormStep stepIndex={EntityInsertPanelTabs.File}>
+                                {!importOnly &&
+                                    <FormStep stepIndex={EntityInsertPanelTabs.First}>
+                                        {this.renderCreateFromGrid()}
+                                    </FormStep>
+                                }
+                                <FormStep stepIndex={importOnly ? EntityInsertPanelTabs.First : EntityInsertPanelTabs.Second}>
                                     {this.renderImportEntitiesFromFile()}
                                 </FormStep>
                             </div>
@@ -1078,7 +1086,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 }
 
 export const EntityInsertPanel = withFormSteps(EntityInsertPanelImpl, {
-    currentStep: EntityInsertPanelTabs.Grid,
-    furthestStep: EntityInsertPanelTabs.File,
+    currentStep: EntityInsertPanelTabs.First,
+    furthestStep: EntityInsertPanelTabs.Second,
     hasDependentSteps: false,
 });

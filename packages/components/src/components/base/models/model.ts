@@ -695,11 +695,6 @@ export class QueryGridModel
         }
     }
 
-    canImport() {
-        // TODO: Remove this. It Looks to be unused in this repo and consuming applications.
-        return this.showImportDataButton().get('canImport');
-    }
-
     createParam(param: string, useDefault?: string): string {
         return this.urlPrefix ? [this.urlPrefix, param].join('.') : useDefault ? [useDefault, param].join('.') : param;
     }
@@ -984,39 +979,16 @@ export class QueryGridModel
         return this.data.getIn([dataId, col.fieldKey, part ? part : 'value']);
     }
 
-    showImportDataButton(): Map<any, any> {
-        // TODO: Make this just return the canInsert boolean. The only usages of this in Biologics/SampleManager only
-        //  use the boolean and not the url.
+    showImportDataButton(): boolean {
         const query = this.queryInfo;
 
-        if (query) {
-            return Map({
-                canImport: query.showInsertNewButton && query.importUrl && !query.importUrlDisabled,
-                importUrl: query.importUrl,
-            });
-        }
-
-        return Map({
-            canImport: false,
-            importUrl: undefined,
-        });
+        return query && query.showInsertNewButton && query.importUrl && !query.importUrlDisabled;
     }
 
-    showInsertNewButton(): Map<any, any> {
-        // TODO: Make this just return the canInsert boolean. The only usages of this in Biologics/SampleManager only
-        //  use the boolean and not the url.
+    showInsertNewButton(): boolean {
         const query = this.queryInfo;
 
-        if (query) {
-            return Map({
-                canInsert: query.showInsertNewButton && query.insertUrl && !query.insertUrlDisabled,
-                insertUrl: query.insertUrl,
-            });
-        }
-        return Map({
-            canInsert: false,
-            insertUrl: false,
-        });
+        return query && query.showInsertNewButton && query.insertUrl && !query.insertUrlDisabled;
     }
 
     getDataEdit(): List<Map<string, any>> {

@@ -4,7 +4,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.70.4-fb-Issue40591-LockOptions.4
 *Released*: TBD June 2020
 * Issue 40591: Query metadata editor should allow editing type of field in user defined query
-* Add lockName in IDomainFormDisplayOptions
+* Add disableNameInput in IDomainFormDisplayOptions
+
+### version 0.70.4
+*Released*: 25 June 2020
+* Issue 39263 - PermissionAssignments.tsx update to include display of root assignments in Effective Roles listing
 
 ### version 0.70.3
 *Released*: 24 June 2020

@@ -22,6 +22,7 @@ import { UserResetPasswordConfirmModal } from './UserResetPasswordConfirmModal';
 interface Props {
     userId: number;
     policy?: SecurityPolicy;
+    rootPolicy?: SecurityPolicy;
     rolesByUniqueName?: Map<string, SecurityRole>;
     allowDelete?: boolean;
     allowResetPassword?: boolean;

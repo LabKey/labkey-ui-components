@@ -4664,6 +4664,7 @@ exports[`DataClassDesigner initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
                 "hideDeleteIcon": false,
                 "hideImportData": false,
@@ -4671,7 +4672,6 @@ exports[`DataClassDesigner initModel 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
-                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -5256,6 +5256,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
                                                           "hideDeleteIcon": false,
                                                           "hideImportData": false,
@@ -5263,7 +5264,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
-                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -5448,6 +5448,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
                                                                       "hideDeleteIcon": false,
                                                                       "hideImportData": false,
@@ -5455,7 +5456,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
-                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -6016,6 +6016,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
                                                                         "hideDeleteIcon": false,
                                                                         "hideImportData": false,
@@ -6023,7 +6024,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
-                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -6998,6 +6998,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
                                                                                   "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
@@ -7005,7 +7006,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
-                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -7640,6 +7640,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
                                                           "hideDeleteIcon": false,
                                                           "hideImportData": false,
@@ -7647,7 +7648,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
-                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -7821,6 +7821,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
                                                                       "hideDeleteIcon": false,
                                                                       "hideImportData": false,
@@ -7828,7 +7829,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
-                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -8372,6 +8372,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
                                                                         "hideDeleteIcon": false,
                                                                         "hideImportData": false,
@@ -8379,7 +8380,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
-                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -9318,6 +9318,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
                                                                                   "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
@@ -9325,7 +9326,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
-                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -9949,6 +9949,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
                                                           "hideDeleteIcon": false,
                                                           "hideImportData": false,
@@ -9956,7 +9957,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
-                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -10130,6 +10130,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
                                                                       "hideDeleteIcon": false,
                                                                       "hideImportData": false,
@@ -10137,7 +10138,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
-                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -10663,6 +10663,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
                                                                         "hideDeleteIcon": false,
                                                                         "hideImportData": false,
@@ -10670,7 +10671,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
-                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -11571,6 +11571,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
                                                                                   "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
@@ -11578,7 +11579,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
-                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }

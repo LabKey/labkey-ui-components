@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.70.4-fb-Issue40591-LockOptions.3
+### version 0.70.4-fb-Issue40591-LockOptions.4
 *Released*: TBD June 2020
 * Issue 40591: Query metadata editor should allow editing type of field in user defined query
 * Add lockName in IDomainFormDisplayOptions

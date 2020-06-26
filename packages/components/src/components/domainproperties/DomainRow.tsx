@@ -372,7 +372,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                             isFieldPartiallyLocked(field.lockType) ||
                             isFieldFullyLocked(field.lockType) ||
                             lockNameForPK ||
-                            domainFormDisplayOptions.lockName
+                            domainFormDisplayOptions.disableNameInput
                         }
                     />
                 </Col>
@@ -421,6 +421,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         );
     }
 
+    showDeleteIcon(field: DomainField): boolean {
+        const { domainFormDisplayOptions } = this.props;
+
+        return (
+            !isFieldFullyLocked(field.lockType) &&
+            !isFieldPartiallyLocked(field.lockType) &&
+            !isPrimaryKeyFieldLocked(field.lockType) &&
+            !domainFormDisplayOptions.hideDeleteIcon
+        );
+    }
+
     renderButtons() {
         const { expanded, index, field, appPropertiesOnly, domainIndex, domainFormDisplayOptions } = this.props;
         const { closing } = this.state;
@@ -438,19 +449,14 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         Advanced Settings
                     </Button>
                 )}
-                {!(
-                    isFieldFullyLocked(field.lockType) ||
-                    isFieldPartiallyLocked(field.lockType) ||
-                    isPrimaryKeyFieldLocked(field.lockType)
-                ) &&
-                    !domainFormDisplayOptions.hideDeleteIcon && (
-                        <DeleteIcon
-                            id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
-                            title="Remove field"
-                            iconCls="domain-field-delete-icon"
-                            onDelete={this.onDelete}
-                        />
-                    )}
+                {this.showDeleteIcon(field) && (
+                    <DeleteIcon
+                        id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
+                        title="Remove field"
+                        iconCls="domain-field-delete-icon"
+                        onDelete={this.onDelete}
+                    />
+                )}
                 <FieldExpansionToggle
                     cls="domain-field-expand-icon"
                     expanded={expanded}

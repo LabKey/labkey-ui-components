@@ -5278,19 +5278,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
-                                                      domainFormLockOptions={
-                                                        Object {
-                                                          "disableMvEnabled": false,
-                                                          "hideAddFieldsButton": false,
-                                                          "hideDeleteIcon": false,
-                                                          "hideImportData": false,
-                                                          "hideRequired": false,
-                                                          "hideTextOptions": false,
-                                                          "hideValidators": false,
-                                                          "isDragDisabled": false,
-                                                          "phiLevelDisabled": false,
-                                                        }
-                                                      }
                                                       domainId={58021}
                                                       domainIndex={0}
                                                       dragging={false}
@@ -7669,19 +7656,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
-                                                      domainFormLockOptions={
-                                                        Object {
-                                                          "disableMvEnabled": false,
-                                                          "hideAddFieldsButton": false,
-                                                          "hideDeleteIcon": false,
-                                                          "hideImportData": false,
-                                                          "hideRequired": false,
-                                                          "hideTextOptions": false,
-                                                          "hideValidators": false,
-                                                          "isDragDisabled": false,
-                                                          "phiLevelDisabled": false,
-                                                        }
-                                                      }
                                                       domainId={58021}
                                                       domainIndex={0}
                                                       dragging={false}
@@ -9973,19 +9947,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         ]
                                                       }
                                                       domainFormDisplayOptions={
-                                                        Object {
-                                                          "disableMvEnabled": false,
-                                                          "hideAddFieldsButton": false,
-                                                          "hideDeleteIcon": false,
-                                                          "hideImportData": false,
-                                                          "hideRequired": false,
-                                                          "hideTextOptions": false,
-                                                          "hideValidators": false,
-                                                          "isDragDisabled": false,
-                                                          "phiLevelDisabled": false,
-                                                        }
-                                                      }
-                                                      domainFormLockOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
                                                           "hideAddFieldsButton": false,

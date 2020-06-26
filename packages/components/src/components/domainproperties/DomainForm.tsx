@@ -64,7 +64,6 @@ import {
     PROP_DESC_TYPES,
     PropDescType,
     DomainFieldIndexChange,
-    IDomainFormLockOptions,
 } from './models';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
@@ -97,7 +96,6 @@ interface IDomainFormInput {
     successBsStyle?: string;
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    domainFormLockOptions?: IDomainFormLockOptions;
     fieldsAdditionalRenderer?: () => any;
 }
 
@@ -798,7 +796,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
-            domainFormLockOptions,
         } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
 
@@ -850,9 +847,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                             ...domainFormDisplayOptions,
                                                             isDragDisabled:
                                                                 filtered || domainFormDisplayOptions.isDragDisabled,
-                                                        }}
-                                                        domainFormLockOptions={{
-                                                            ...domainFormLockOptions,
                                                         }}
                                                     />
                                                 );

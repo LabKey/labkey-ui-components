@@ -226,11 +226,6 @@ exports[`DomainRow Sample Field 1`] = `
                     "phiLevelDisabled": false,
                   }
                 }
-                domainFormLockOptions={
-                  Object {
-                    "lockName": false,
-                  }
-                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -647,7 +642,6 @@ exports[`DomainRow Sample Field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
-                                        disabled={false}
                                         id="domainpropertiesrow-name-1-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -656,7 +650,6 @@ exports[`DomainRow Sample Field 1`] = `
                                       >
                                         <input
                                           className="form-control"
-                                          disabled={false}
                                           id="domainpropertiesrow-name-1-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -2413,11 +2406,6 @@ exports[`DomainRow client side warning on field 1`] = `
                     "phiLevelDisabled": false,
                   }
                 }
-                domainFormLockOptions={
-                  Object {
-                    "lockName": false,
-                  }
-                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -2846,7 +2834,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
-                                        disabled={false}
                                         id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -2855,7 +2842,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                       >
                                         <input
                                           className="form-control"
-                                          disabled={false}
                                           id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -4504,11 +4490,6 @@ exports[`DomainRow date time field 1`] = `
                     "phiLevelDisabled": false,
                   }
                 }
-                domainFormLockOptions={
-                  Object {
-                    "lockName": false,
-                  }
-                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -4925,7 +4906,6 @@ exports[`DomainRow date time field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
-                                        disabled={false}
                                         id="domainpropertiesrow-name-1-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -4934,7 +4914,6 @@ exports[`DomainRow date time field 1`] = `
                                       >
                                         <input
                                           className="form-control"
-                                          disabled={false}
                                           id="domainpropertiesrow-name-1-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -6843,11 +6822,6 @@ exports[`DomainRow decimal field 1`] = `
                     "phiLevelDisabled": false,
                   }
                 }
-                domainFormLockOptions={
-                  Object {
-                    "lockName": false,
-                  }
-                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -7264,7 +7238,6 @@ exports[`DomainRow decimal field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
-                                        disabled={false}
                                         id="domainpropertiesrow-name-1-2"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -7273,7 +7246,6 @@ exports[`DomainRow decimal field 1`] = `
                                       >
                                         <input
                                           className="form-control"
-                                          disabled={false}
                                           id="domainpropertiesrow-name-1-2"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -9217,11 +9189,6 @@ exports[`DomainRow participant id field 1`] = `
                     "phiLevelDisabled": false,
                   }
                 }
-                domainFormLockOptions={
-                  Object {
-                    "lockName": false,
-                  }
-                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -9638,7 +9605,6 @@ exports[`DomainRow participant id field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
-                                        disabled={false}
                                         id="domainpropertiesrow-name-1-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -9647,7 +9613,6 @@ exports[`DomainRow participant id field 1`] = `
                                       >
                                         <input
                                           className="form-control"
-                                          disabled={false}
                                           id="domainpropertiesrow-name-1-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -11328,11 +11293,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "phiLevelDisabled": false,
                   }
                 }
-                domainFormLockOptions={
-                  Object {
-                    "lockName": false,
-                  }
-                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -11761,7 +11721,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
-                                        disabled={false}
                                         id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -11770,7 +11729,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       >
                                         <input
                                           className="form-control"
-                                          disabled={false}
                                           id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -13342,11 +13300,6 @@ exports[`DomainRow string field test 1`] = `
                     "phiLevelDisabled": false,
                   }
                 }
-                domainFormLockOptions={
-                  Object {
-                    "lockName": false,
-                  }
-                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -13763,7 +13716,6 @@ exports[`DomainRow string field test 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
-                                        disabled={false}
                                         id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -13772,7 +13724,6 @@ exports[`DomainRow string field test 1`] = `
                                       >
                                         <input
                                           className="form-control"
-                                          disabled={false}
                                           id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -15758,11 +15709,6 @@ exports[`DomainRow with empty domain form 1`] = `
                     "phiLevelDisabled": false,
                   }
                 }
-                domainFormLockOptions={
-                  Object {
-                    "lockName": false,
-                  }
-                }
                 domainIndex={1}
                 dragging={false}
                 expandTransition={300}
@@ -16178,7 +16124,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
-                                        disabled={false}
                                         id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -16187,7 +16132,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                       >
                                         <input
                                           className="form-control"
-                                          disabled={false}
                                           id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}

@@ -314,10 +314,6 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideDeleteIcon: false,
 };
 
-export const DEFAULT_DOMAIN_FORM_LOCK_OPTIONS = {
-    lockName: false,
-};
-
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
 
 interface IDomainDesign {
@@ -1634,9 +1630,6 @@ export interface IDomainFormDisplayOptions {
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
     hideDeleteIcon?: boolean;
-}
-
-export interface IDomainFormLockOptions {
     lockName?: boolean;
 }
 

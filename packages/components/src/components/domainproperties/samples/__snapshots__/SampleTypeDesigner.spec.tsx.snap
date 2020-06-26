@@ -3343,19 +3343,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
-                                                      domainFormLockOptions={
-                                                        Object {
-                                                          "disableMvEnabled": false,
-                                                          "hideAddFieldsButton": false,
-                                                          "hideDeleteIcon": false,
-                                                          "hideImportData": false,
-                                                          "hideRequired": false,
-                                                          "hideTextOptions": false,
-                                                          "hideValidators": false,
-                                                          "isDragDisabled": false,
-                                                          "phiLevelDisabled": false,
-                                                        }
-                                                      }
                                                       domainId={null}
                                                       domainIndex={0}
                                                       dragging={false}

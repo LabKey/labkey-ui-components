@@ -49,11 +49,9 @@ import {
 } from './constants';
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
-    DEFAULT_DOMAIN_FORM_LOCK_OPTIONS,
     DomainField,
     DomainFieldError,
     IDomainFormDisplayOptions,
-    IDomainFormLockOptions,
     IFieldChange,
     PropDescType,
     resolveAvailableTypes,
@@ -85,7 +83,6 @@ interface IDomainRowProps {
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    domainFormLockOptions?: IDomainFormLockOptions;
 }
 
 interface IDomainRowState {
@@ -101,7 +98,6 @@ interface IDomainRowState {
 export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowState> {
     static defaultProps = {
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
-        domainFormLockOptions: DEFAULT_DOMAIN_FORM_LOCK_OPTIONS,
     };
 
     constructor(props) {
@@ -359,7 +355,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             showFilePropertyType,
             domainIndex,
             domainFormDisplayOptions,
-            domainFormLockOptions,
         } = this.props;
         const lockNameForPK = !field.isNew() && isPrimaryKeyFieldLocked(field.lockType);
 
@@ -377,7 +372,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                             isFieldPartiallyLocked(field.lockType) ||
                             isFieldFullyLocked(field.lockType) ||
                             lockNameForPK ||
-                            domainFormLockOptions.lockName
+                            domainFormDisplayOptions.lockName
                         }
                     />
                 </Col>

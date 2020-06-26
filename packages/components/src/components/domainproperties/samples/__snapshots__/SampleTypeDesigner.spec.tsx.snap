@@ -2706,6 +2706,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -3327,6 +3328,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -3501,6 +3503,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -3743,6 +3746,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-0-0"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -3751,6 +3755,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-0-0"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -4075,6 +4080,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -5034,6 +5040,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }

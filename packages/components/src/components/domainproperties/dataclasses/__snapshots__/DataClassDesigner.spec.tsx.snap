@@ -4671,6 +4671,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -5262,6 +5263,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -5453,6 +5455,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -5706,6 +5709,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-0-0"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -5714,6 +5718,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-0-0"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -6018,6 +6023,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -6999,6 +7005,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -7640,6 +7647,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -7820,6 +7828,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -8062,6 +8071,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-0-1"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -8070,6 +8080,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-0-1"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -8368,6 +8379,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -9313,6 +9325,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -9943,6 +9956,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -10123,6 +10137,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -10365,6 +10380,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-0-2"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -10373,6 +10389,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-0-2"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -10653,6 +10670,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -11560,6 +11578,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }

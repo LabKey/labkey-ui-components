@@ -1810,6 +1810,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -2522,6 +2523,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -3234,6 +3236,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -8429,6 +8432,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -9964,6 +9968,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -10955,6 +10960,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -11130,6 +11136,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -11372,6 +11379,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-1-0"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -11380,6 +11388,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-1-0"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -11704,6 +11713,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -12663,6 +12673,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -13111,6 +13122,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -13286,6 +13298,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -13528,6 +13541,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-1-1"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -13536,6 +13550,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-1-1"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -13860,6 +13875,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -14801,6 +14817,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -15249,6 +15266,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -15424,6 +15442,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -15666,6 +15685,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-1-2"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -15674,6 +15694,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-1-2"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -15998,6 +16019,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -16904,6 +16926,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -19442,6 +19465,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -20153,6 +20177,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -20864,6 +20889,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -23657,6 +23683,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -24368,6 +24395,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -31026,6 +31054,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -32017,6 +32046,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -32192,6 +32222,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -32434,6 +32465,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-1-0"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -32442,6 +32474,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-1-0"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -32784,6 +32817,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -33743,6 +33777,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -34357,6 +34392,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -34532,6 +34568,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -34774,6 +34811,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-1-1"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -34782,6 +34820,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-1-1"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -35124,6 +35163,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -36065,6 +36105,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -36679,6 +36720,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -36854,6 +36896,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -37096,6 +37139,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-1-2"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -37104,6 +37148,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-1-2"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -37446,6 +37491,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -38352,6 +38398,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -44451,6 +44498,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -45985,6 +46033,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -46976,6 +47025,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -47151,6 +47201,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -47393,6 +47444,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-1-0"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -47401,6 +47453,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-1-0"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -47743,6 +47796,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -48702,6 +48756,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -49316,6 +49371,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -49491,6 +49547,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -49733,6 +49790,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-1-1"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -49741,6 +49799,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-1-1"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -50083,6 +50142,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -51024,6 +51084,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }
@@ -51638,6 +51699,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           "hideTextOptions": false,
                                                           "hideValidators": false,
                                                           "isDragDisabled": false,
+                                                          "lockName": false,
                                                           "phiLevelDisabled": false,
                                                         }
                                                       }
@@ -51813,6 +51875,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                       "hideTextOptions": false,
                                                                       "hideValidators": false,
                                                                       "isDragDisabled": false,
+                                                                      "lockName": false,
                                                                       "phiLevelDisabled": false,
                                                                     }
                                                                   }
@@ -52055,6 +52118,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             <FormControl
                                                                               bsClass="form-control"
                                                                               componentClass="input"
+                                                                              disabled={false}
                                                                               id="domainpropertiesrow-name-1-2"
                                                                               name="domainpropertiesrow-name"
                                                                               onChange={[Function]}
@@ -52063,6 +52127,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             >
                                                                               <input
                                                                                 className="form-control"
+                                                                                disabled={false}
                                                                                 id="domainpropertiesrow-name-1-2"
                                                                                 name="domainpropertiesrow-name"
                                                                                 onChange={[Function]}
@@ -52405,6 +52470,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         "hideTextOptions": false,
                                                                         "hideValidators": false,
                                                                         "isDragDisabled": false,
+                                                                        "lockName": false,
                                                                         "phiLevelDisabled": false,
                                                                       }
                                                                     }
@@ -53311,6 +53377,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   "hideTextOptions": false,
                                                                                   "hideValidators": false,
                                                                                   "isDragDisabled": false,
+                                                                                  "lockName": false,
                                                                                   "phiLevelDisabled": false,
                                                                                 }
                                                                               }

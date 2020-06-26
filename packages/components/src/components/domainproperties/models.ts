@@ -312,6 +312,7 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     disableMvEnabled: false,
     hideImportData: false,
     hideDeleteIcon: false,
+    lockName: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;

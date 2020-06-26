@@ -885,6 +885,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -2103,6 +2104,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -4651,6 +4653,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }
@@ -5783,6 +5786,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 "hideTextOptions": false,
                 "hideValidators": false,
                 "isDragDisabled": false,
+                "lockName": false,
                 "phiLevelDisabled": false,
               }
             }

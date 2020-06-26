@@ -223,6 +223,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "hideTextOptions": false,
                     "hideValidators": false,
                     "isDragDisabled": false,
+                    "lockName": false,
                     "phiLevelDisabled": false,
                   }
                 }
@@ -402,6 +403,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 "hideTextOptions": false,
                                 "hideValidators": false,
                                 "isDragDisabled": false,
+                                "lockName": false,
                                 "phiLevelDisabled": false,
                               }
                             }
@@ -642,6 +644,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -650,6 +653,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       >
                                         <input
                                           className="form-control"
+                                          disabled={false}
                                           id="domainpropertiesrow-name-1-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -949,6 +953,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   "hideTextOptions": false,
                                   "hideValidators": false,
                                   "isDragDisabled": false,
+                                  "lockName": false,
                                   "phiLevelDisabled": false,
                                 }
                               }
@@ -1848,6 +1853,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "hideTextOptions": false,
                                             "hideValidators": false,
                                             "isDragDisabled": false,
+                                            "lockName": false,
                                             "phiLevelDisabled": false,
                                           }
                                         }
@@ -2403,6 +2409,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "hideTextOptions": false,
                     "hideValidators": false,
                     "isDragDisabled": false,
+                    "lockName": false,
                     "phiLevelDisabled": false,
                   }
                 }
@@ -2594,6 +2601,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 "hideTextOptions": false,
                                 "hideValidators": false,
                                 "isDragDisabled": false,
+                                "lockName": false,
                                 "phiLevelDisabled": false,
                               }
                             }
@@ -2834,6 +2842,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -2842,6 +2851,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       >
                                         <input
                                           className="form-control"
+                                          disabled={false}
                                           id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -3279,6 +3289,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   "hideTextOptions": false,
                                   "hideValidators": false,
                                   "isDragDisabled": false,
+                                  "lockName": false,
                                   "phiLevelDisabled": false,
                                 }
                               }
@@ -3932,6 +3943,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "hideTextOptions": false,
                                             "hideValidators": false,
                                             "isDragDisabled": false,
+                                            "lockName": false,
                                             "phiLevelDisabled": false,
                                           }
                                         }
@@ -4487,6 +4499,7 @@ exports[`DomainRow date time field 1`] = `
                     "hideTextOptions": false,
                     "hideValidators": false,
                     "isDragDisabled": false,
+                    "lockName": false,
                     "phiLevelDisabled": false,
                   }
                 }
@@ -4666,6 +4679,7 @@ exports[`DomainRow date time field 1`] = `
                                 "hideTextOptions": false,
                                 "hideValidators": false,
                                 "isDragDisabled": false,
+                                "lockName": false,
                                 "phiLevelDisabled": false,
                               }
                             }
@@ -4906,6 +4920,7 @@ exports[`DomainRow date time field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -4914,6 +4929,7 @@ exports[`DomainRow date time field 1`] = `
                                       >
                                         <input
                                           className="form-control"
+                                          disabled={false}
                                           id="domainpropertiesrow-name-1-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -5193,6 +5209,7 @@ exports[`DomainRow date time field 1`] = `
                                   "hideTextOptions": false,
                                   "hideValidators": false,
                                   "isDragDisabled": false,
+                                  "lockName": false,
                                   "phiLevelDisabled": false,
                                 }
                               }
@@ -6098,6 +6115,7 @@ exports[`DomainRow date time field 1`] = `
                                             "hideTextOptions": false,
                                             "hideValidators": false,
                                             "isDragDisabled": false,
+                                            "lockName": false,
                                             "phiLevelDisabled": false,
                                           }
                                         }
@@ -6819,6 +6837,7 @@ exports[`DomainRow decimal field 1`] = `
                     "hideTextOptions": false,
                     "hideValidators": false,
                     "isDragDisabled": false,
+                    "lockName": false,
                     "phiLevelDisabled": false,
                   }
                 }
@@ -6998,6 +7017,7 @@ exports[`DomainRow decimal field 1`] = `
                                 "hideTextOptions": false,
                                 "hideValidators": false,
                                 "isDragDisabled": false,
+                                "lockName": false,
                                 "phiLevelDisabled": false,
                               }
                             }
@@ -7238,6 +7258,7 @@ exports[`DomainRow decimal field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1-2"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -7246,6 +7267,7 @@ exports[`DomainRow decimal field 1`] = `
                                       >
                                         <input
                                           className="form-control"
+                                          disabled={false}
                                           id="domainpropertiesrow-name-1-2"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -7525,6 +7547,7 @@ exports[`DomainRow decimal field 1`] = `
                                   "hideTextOptions": false,
                                   "hideValidators": false,
                                   "isDragDisabled": false,
+                                  "lockName": false,
                                   "phiLevelDisabled": false,
                                 }
                               }
@@ -8465,6 +8488,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "hideTextOptions": false,
                                             "hideValidators": false,
                                             "isDragDisabled": false,
+                                            "lockName": false,
                                             "phiLevelDisabled": false,
                                           }
                                         }
@@ -9186,6 +9210,7 @@ exports[`DomainRow participant id field 1`] = `
                     "hideTextOptions": false,
                     "hideValidators": false,
                     "isDragDisabled": false,
+                    "lockName": false,
                     "phiLevelDisabled": false,
                   }
                 }
@@ -9365,6 +9390,7 @@ exports[`DomainRow participant id field 1`] = `
                                 "hideTextOptions": false,
                                 "hideValidators": false,
                                 "isDragDisabled": false,
+                                "lockName": false,
                                 "phiLevelDisabled": false,
                               }
                             }
@@ -9605,6 +9631,7 @@ exports[`DomainRow participant id field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1-0"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -9613,6 +9640,7 @@ exports[`DomainRow participant id field 1`] = `
                                       >
                                         <input
                                           className="form-control"
+                                          disabled={false}
                                           id="domainpropertiesrow-name-1-0"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -9916,6 +9944,7 @@ exports[`DomainRow participant id field 1`] = `
                                   "hideTextOptions": false,
                                   "hideValidators": false,
                                   "isDragDisabled": false,
+                                  "lockName": false,
                                   "phiLevelDisabled": false,
                                 }
                               }
@@ -10569,6 +10598,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "hideTextOptions": false,
                                             "hideValidators": false,
                                             "isDragDisabled": false,
+                                            "lockName": false,
                                             "phiLevelDisabled": false,
                                           }
                                         }
@@ -11290,6 +11320,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "hideTextOptions": false,
                     "hideValidators": false,
                     "isDragDisabled": false,
+                    "lockName": false,
                     "phiLevelDisabled": false,
                   }
                 }
@@ -11481,6 +11512,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 "hideTextOptions": false,
                                 "hideValidators": false,
                                 "isDragDisabled": false,
+                                "lockName": false,
                                 "phiLevelDisabled": false,
                               }
                             }
@@ -11721,6 +11753,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -11729,6 +11762,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       >
                                         <input
                                           className="form-control"
+                                          disabled={false}
                                           id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -12089,6 +12123,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   "hideTextOptions": false,
                                   "hideValidators": false,
                                   "isDragDisabled": false,
+                                  "lockName": false,
                                   "phiLevelDisabled": false,
                                 }
                               }
@@ -12742,6 +12777,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "hideTextOptions": false,
                                             "hideValidators": false,
                                             "isDragDisabled": false,
+                                            "lockName": false,
                                             "phiLevelDisabled": false,
                                           }
                                         }
@@ -13297,6 +13333,7 @@ exports[`DomainRow string field test 1`] = `
                     "hideTextOptions": false,
                     "hideValidators": false,
                     "isDragDisabled": false,
+                    "lockName": false,
                     "phiLevelDisabled": false,
                   }
                 }
@@ -13476,6 +13513,7 @@ exports[`DomainRow string field test 1`] = `
                                 "hideTextOptions": false,
                                 "hideValidators": false,
                                 "isDragDisabled": false,
+                                "lockName": false,
                                 "phiLevelDisabled": false,
                               }
                             }
@@ -13716,6 +13754,7 @@ exports[`DomainRow string field test 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -13724,6 +13763,7 @@ exports[`DomainRow string field test 1`] = `
                                       >
                                         <input
                                           className="form-control"
+                                          disabled={false}
                                           id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -14027,6 +14067,7 @@ exports[`DomainRow string field test 1`] = `
                                   "hideTextOptions": false,
                                   "hideValidators": false,
                                   "isDragDisabled": false,
+                                  "lockName": false,
                                   "phiLevelDisabled": false,
                                 }
                               }
@@ -14985,6 +15026,7 @@ exports[`DomainRow string field test 1`] = `
                                             "hideTextOptions": false,
                                             "hideValidators": false,
                                             "isDragDisabled": false,
+                                            "lockName": false,
                                             "phiLevelDisabled": false,
                                           }
                                         }
@@ -15706,6 +15748,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "hideTextOptions": false,
                     "hideValidators": false,
                     "isDragDisabled": false,
+                    "lockName": false,
                     "phiLevelDisabled": false,
                   }
                 }
@@ -15885,6 +15928,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "hideTextOptions": false,
                                 "hideValidators": false,
                                 "isDragDisabled": false,
+                                "lockName": false,
                                 "phiLevelDisabled": false,
                               }
                             }
@@ -16124,6 +16168,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       <FormControl
                                         bsClass="form-control"
                                         componentClass="input"
+                                        disabled={false}
                                         id="domainpropertiesrow-name-1-1"
                                         name="domainpropertiesrow-name"
                                         onChange={[Function]}
@@ -16132,6 +16177,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       >
                                         <input
                                           className="form-control"
+                                          disabled={false}
                                           id="domainpropertiesrow-name-1-1"
                                           name="domainpropertiesrow-name"
                                           onChange={[Function]}
@@ -16485,6 +16531,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   "hideTextOptions": false,
                                   "hideValidators": false,
                                   "isDragDisabled": false,
+                                  "lockName": false,
                                   "phiLevelDisabled": false,
                                 }
                               }
@@ -17443,6 +17490,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "hideTextOptions": false,
                                             "hideValidators": false,
                                             "isDragDisabled": false,
+                                            "lockName": false,
                                             "phiLevelDisabled": false,
                                           }
                                         }

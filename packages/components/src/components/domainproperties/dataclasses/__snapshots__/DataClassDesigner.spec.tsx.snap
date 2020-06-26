@@ -4674,19 +4674,6 @@ exports[`DataClassDesigner initModel 1`] = `
                 "phiLevelDisabled": false,
               }
             }
-            domainFormLockOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
             domainIndex={0}
             headerTitle="Fields"
             helpNoun="field designer"

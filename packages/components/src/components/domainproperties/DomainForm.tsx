@@ -137,7 +137,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         domainIndex: 0,
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
-        domainFormLockOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add lock options to DomainForm through this object
     };
 
     constructor(props) {

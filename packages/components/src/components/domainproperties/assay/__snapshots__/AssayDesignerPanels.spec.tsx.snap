@@ -1813,19 +1813,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "phiLevelDisabled": false,
               }
             }
-            domainFormLockOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
             domainIndex={0}
             helpNoun="field designer"
             helpTopic={null}
@@ -2538,19 +2525,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                 "phiLevelDisabled": false,
               }
             }
-            domainFormLockOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
             domainIndex={1}
             helpNoun="field designer"
             helpTopic={null}
@@ -3251,19 +3225,6 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
               }
             }
             domainFormDisplayOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
-            domainFormLockOptions={
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
@@ -8471,19 +8432,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "phiLevelDisabled": false,
               }
             }
-            domainFormLockOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
             domainIndex={0}
             headerPrefix="Test Assay Protocol"
             helpNoun="field designer"
@@ -10007,19 +9955,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               }
             }
             domainFormDisplayOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
-            domainFormLockOptions={
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
@@ -19510,19 +19445,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "phiLevelDisabled": false,
               }
             }
-            domainFormLockOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
             domainIndex={0}
             helpNoun="field designer"
             helpTopic={null}
@@ -20234,19 +20156,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
                 "phiLevelDisabled": false,
               }
             }
-            domainFormLockOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
             domainIndex={1}
             helpNoun="field designer"
             helpTopic={null}
@@ -20946,19 +20855,6 @@ exports[`AssayDesignerPanels default properties 1`] = `
               }
             }
             domainFormDisplayOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
-            domainFormLockOptions={
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
@@ -23764,19 +23660,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                 "phiLevelDisabled": false,
               }
             }
-            domainFormLockOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
             domainIndex={1}
             helpNoun="field designer"
             helpTopic={null}
@@ -24476,19 +24359,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
               }
             }
             domainFormDisplayOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
-            domainFormLockOptions={
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
@@ -31147,19 +31017,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               }
             }
             domainFormDisplayOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
-            domainFormLockOptions={
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,
@@ -44597,19 +44454,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "phiLevelDisabled": false,
               }
             }
-            domainFormLockOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
             domainIndex={0}
             headerPrefix="Test Assay Protocol"
             helpNoun="field designer"
@@ -46132,19 +45976,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
               }
             }
             domainFormDisplayOptions={
-              Object {
-                "disableMvEnabled": false,
-                "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
-                "hideImportData": false,
-                "hideRequired": false,
-                "hideTextOptions": false,
-                "hideValidators": false,
-                "isDragDisabled": false,
-                "phiLevelDisabled": false,
-              }
-            }
-            domainFormLockOptions={
               Object {
                 "disableMvEnabled": false,
                 "hideAddFieldsButton": false,

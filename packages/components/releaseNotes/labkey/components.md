@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.71.0
+*Released*: ?? June 2020
+* Refactor Pagination to be generic (no longer coupled to QueryModel), export Pagination component.
+
 ### version 0.70.6
 *Released*: 29 June 2020
 * Add `initModelOnMount` prop to `QueryGridModel`. Defaults to `true` so the behavior is unchanged for all current usages.

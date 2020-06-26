@@ -12,7 +12,7 @@ import { SearchAction } from '../components/omnibox/actions/Search';
 import { SortAction } from '../components/omnibox/actions/Sort';
 import { ViewAction } from '../components/omnibox/actions/View';
 import { Change, ChangeType, OmniBox } from '../components/omnibox/OmniBox';
-import { Pagination } from '../components/Pagination/Pagination';
+import { Pagination } from '../components/pagination/Pagination';
 
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ViewMenu } from './ViewMenu';

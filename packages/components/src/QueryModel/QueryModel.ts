@@ -14,7 +14,7 @@ import {
     ViewInfo,
 } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
-import { PaginationData } from '../components/Pagination/Pagination';
+import { PaginationData } from '../components/pagination/Pagination';
 
 import { flattenValuesFromRow } from './utils';
 

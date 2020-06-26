@@ -20,7 +20,7 @@ import { loadPage } from '../../actions';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
 import { blurActiveElement } from '../../util/utils';
-import { PaginationButton } from '../Pagination/PaginationButton';
+import { PaginationButton } from '../pagination/PaginationButton';
 
 interface Props {
     model: QueryGridModel;

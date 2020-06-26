@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
+import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { loadPage } from '../../actions';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
 import { blurActiveElement } from '../../util/utils';
+import { PaginationButton } from '../Pagination/PaginationButton';
 
 interface Props {
     model: QueryGridModel;
@@ -99,7 +100,7 @@ export class QueryGridPaging extends React.Component<Props, any> {
                 ) : null}
                 {showButtons ? (
                     <div className="btn-group">
-                        <PagingButton
+                        <PaginationButton
                             disabled={currentPage <= 1}
                             tooltip="Previous Page"
                             onClick={this.prevPage}
@@ -127,7 +128,7 @@ export class QueryGridPaging extends React.Component<Props, any> {
                             </DropdownButton>
                         </Tip>
 
-                        <PagingButton
+                        <PaginationButton
                             disabled={max === total}
                             tooltip="Next Page"
                             onClick={this.nextPage}
@@ -136,28 +137,6 @@ export class QueryGridPaging extends React.Component<Props, any> {
                     </div>
                 ) : null}
             </>
-        );
-    }
-}
-
-interface PagingButtonProps {
-    disabled: boolean;
-    iconClass: string;
-    tooltip: string;
-    onClick: () => any;
-}
-
-export class PagingButton extends React.PureComponent<PagingButtonProps> {
-    render() {
-        const { disabled, iconClass, tooltip, onClick } = this.props;
-        const className = disabled ? 'disabled-button-with-tooltip' : '';
-
-        return (
-            <Tip caption={tooltip}>
-                <Button onClick={onClick} disabled={disabled} className={className}>
-                    <i className={`fa ${iconClass}`} />
-                </Button>
-            </Tip>
         );
     }
 }

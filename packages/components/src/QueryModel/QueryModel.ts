@@ -14,6 +14,7 @@ import {
     ViewInfo,
 } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
+import { PaginationData } from '../components/Pagination/Pagination';
 
 import { flattenValuesFromRow } from './utils';
 
@@ -380,6 +381,23 @@ export class QueryModel {
      */
     get isPaged(): boolean {
         return this.hasData && this.pageCount > 1;
+    }
+
+    /**
+     * Returns the data needed for pagination by the Pagination component.
+     */
+    get paginationData(): PaginationData {
+        return {
+            currentPage: this.currentPage,
+            disabled: this.isLoading,
+            id: this.id,
+            isFirstPage: this.isFirstPage,
+            isLastPage: this.isLastPage,
+            offset: this.offset,
+            pageCount: this.pageCount,
+            pageSize: this.maxRows,
+            rowCount: this.rowCount,
+        };
     }
 
     /**

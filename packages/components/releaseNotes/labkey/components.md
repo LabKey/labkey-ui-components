@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.70.5
+*Released*: 26 June 2020
+* Issue 40591: Query metadata editor should allow editing type of field in user defined query
+* Add disableNameInput in IDomainFormDisplayOptions
+
 ### version 0.70.4
 *Released*: 25 June 2020
 * Issue 39263 - PermissionAssignments.tsx update to include display of root assignments in Effective Roles listing

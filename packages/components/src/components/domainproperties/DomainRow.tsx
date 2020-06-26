@@ -371,7 +371,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         disabled={
                             isFieldPartiallyLocked(field.lockType) ||
                             isFieldFullyLocked(field.lockType) ||
-                            lockNameForPK
+                            lockNameForPK ||
+                            domainFormDisplayOptions.disableNameInput
                         }
                     />
                 </Col>
@@ -420,8 +421,19 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         );
     }
 
+    showDeleteIcon(field: DomainField): boolean {
+        const { domainFormDisplayOptions } = this.props;
+
+        return (
+            !isFieldFullyLocked(field.lockType) &&
+            !isFieldPartiallyLocked(field.lockType) &&
+            !isPrimaryKeyFieldLocked(field.lockType) &&
+            !domainFormDisplayOptions.hideDeleteIcon
+        );
+    }
+
     renderButtons() {
-        const { expanded, index, field, appPropertiesOnly, domainIndex } = this.props;
+        const { expanded, index, field, appPropertiesOnly, domainIndex, domainFormDisplayOptions } = this.props;
         const { closing } = this.state;
 
         return (
@@ -437,11 +449,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         Advanced Settings
                     </Button>
                 )}
-                {!(
-                    isFieldFullyLocked(field.lockType) ||
-                    isFieldPartiallyLocked(field.lockType) ||
-                    isPrimaryKeyFieldLocked(field.lockType)
-                ) && (
+                {this.showDeleteIcon(field) && (
                     <DeleteIcon
                         id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
                         title="Remove field"

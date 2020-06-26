@@ -216,7 +216,9 @@ exports[`DomainRow Sample Field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
+                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
+                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -394,7 +396,9 @@ exports[`DomainRow Sample Field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
+                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
+                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -942,7 +946,9 @@ exports[`DomainRow Sample Field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
+                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
+                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -1840,7 +1846,9 @@ exports[`DomainRow Sample Field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
+                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
+                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -2394,7 +2402,9 @@ exports[`DomainRow client side warning on field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
+                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
+                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -2584,7 +2594,9 @@ exports[`DomainRow client side warning on field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
+                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
+                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -3270,7 +3282,9 @@ exports[`DomainRow client side warning on field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
+                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
+                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -3922,7 +3936,9 @@ exports[`DomainRow client side warning on field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
+                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
+                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -4476,7 +4492,9 @@ exports[`DomainRow date time field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
+                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
+                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -4654,7 +4672,9 @@ exports[`DomainRow date time field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
+                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
+                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -5182,7 +5202,9 @@ exports[`DomainRow date time field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
+                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
+                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -6086,7 +6108,9 @@ exports[`DomainRow date time field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
+                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
+                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -6806,7 +6830,9 @@ exports[`DomainRow decimal field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
+                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
+                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -6984,7 +7010,9 @@ exports[`DomainRow decimal field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
+                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
+                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -7512,7 +7540,9 @@ exports[`DomainRow decimal field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
+                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
+                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -8451,7 +8481,9 @@ exports[`DomainRow decimal field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
+                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
+                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -9171,7 +9203,9 @@ exports[`DomainRow participant id field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
+                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
+                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -9349,7 +9383,9 @@ exports[`DomainRow participant id field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
+                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
+                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -9901,7 +9937,9 @@ exports[`DomainRow participant id field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
+                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
+                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -10553,7 +10591,9 @@ exports[`DomainRow participant id field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
+                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
+                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -11273,7 +11313,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
+                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
+                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -11463,7 +11505,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
+                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
+                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -12072,7 +12116,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
+                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
+                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -12724,7 +12770,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
+                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
+                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -13278,7 +13326,9 @@ exports[`DomainRow string field test 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
+                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
+                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -13456,7 +13506,9 @@ exports[`DomainRow string field test 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
+                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
+                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -14008,7 +14060,9 @@ exports[`DomainRow string field test 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
+                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
+                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -14965,7 +15019,9 @@ exports[`DomainRow string field test 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
+                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
+                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -15685,7 +15741,9 @@ exports[`DomainRow with empty domain form 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
+                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
+                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -15863,7 +15921,9 @@ exports[`DomainRow with empty domain form 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
+                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
+                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -16464,7 +16524,9 @@ exports[`DomainRow with empty domain form 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
+                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
+                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -17421,7 +17483,9 @@ exports[`DomainRow with empty domain form 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
+                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
+                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,

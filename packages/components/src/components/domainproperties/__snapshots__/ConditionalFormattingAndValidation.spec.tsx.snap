@@ -5,7 +5,9 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
   domainFormDisplayOptions={
     Object {
       "disableMvEnabled": false,
+      "disableNameInput": false,
       "hideAddFieldsButton": false,
+      "hideDeleteIcon": false,
       "hideImportData": false,
       "hideRequired": false,
       "hideTextOptions": false,
@@ -782,7 +784,9 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
   domainFormDisplayOptions={
     Object {
       "disableMvEnabled": false,
+      "disableNameInput": false,
       "hideAddFieldsButton": false,
+      "hideDeleteIcon": false,
       "hideImportData": false,
       "hideRequired": false,
       "hideTextOptions": false,

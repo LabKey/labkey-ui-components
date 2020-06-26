@@ -311,6 +311,8 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideAddFieldsButton: false,
     disableMvEnabled: false,
     hideImportData: false,
+    hideDeleteIcon: false,
+    disableNameInput: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -1628,6 +1630,8 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
+    hideDeleteIcon?: boolean;
+    disableNameInput?: boolean;
 }
 
 /**

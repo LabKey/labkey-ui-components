@@ -18,7 +18,7 @@ import { ActionURL, Ajax, Utils, QueryKey } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { buildURL } from '../../url/ActionURL';
-import { createApplicationUrl } from './utils';
+import { createApplicationUrl, createApplicationUrlFromParts } from './utils';
 
 export class MenuSectionModel extends Record({
     label: undefined,
@@ -81,6 +81,8 @@ export class MenuItemModel extends Record({
 
     static create(rawData, sectionKey: string, currentProductId?: string): MenuItemModel {
         if (rawData) {
+            const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
+
             if (rawData.key && sectionKey !== 'user') {
                 const parts = rawData.key.split('?');
 
@@ -94,7 +96,6 @@ export class MenuItemModel extends Record({
                 const decodedPart = subParts.join('/');
                 const decodedKey = rawData.key.replace(parts[0], decodedPart);
 
-                const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
                 let params;
                 if (parts.length > 1 && parts[1]) {
                     params = ActionURL.getParameters(rawData.key);
@@ -102,12 +103,16 @@ export class MenuItemModel extends Record({
 
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
-                        url: createApplicationUrl(dataProductId, currentProductId, params, sectionKey, ...subParts),
+                        url: createApplicationUrlFromParts(dataProductId, currentProductId, params, sectionKey, ...subParts),
                         key: decodedKey,
                     })
                 );
             } else {
-                return new MenuItemModel(rawData);
+                return new MenuItemModel(
+                    Object.assign({}, rawData, {
+                        url: createApplicationUrl(dataProductId, currentProductId, rawData.url),
+                    })
+                );
             }
         }
         return new MenuItemModel();

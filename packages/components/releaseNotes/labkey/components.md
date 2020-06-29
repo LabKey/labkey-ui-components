@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Item 7458: ProductMenuModel update to add property for userMenuProductId
+* Item 7458: Shared application refactor for Sample Manager and Freezer Manager
+    - ProductMenuModel update to add property for userMenuProductId
+    - MenuItemModel.create update to use menu section productId in user menu URLs
 
 ### version 0.70.5
 *Released*: 26 June 2020

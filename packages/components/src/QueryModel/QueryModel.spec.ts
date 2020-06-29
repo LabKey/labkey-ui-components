@@ -65,10 +65,8 @@ describe('QueryModel', () => {
             offset: 0,
             rowCount: 661,
         });
-        expect(model.isPaged).toEqual(false);
 
         model = model.mutate({ rows: {} });
-        expect(model.isPaged).toEqual(true);
         expect(model.pageCount).toEqual(34);
         expect(model.lastPageOffset).toEqual(660);
         expect(model.currentPage).toEqual(1);

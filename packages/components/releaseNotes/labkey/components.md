@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.70.6
+### version TBD
 *Released*: ?? June 2020
 * Issue 40729: Renaming, Sample Set to Sample Type: SampleSet in parent aliases
 * Issue 40734: Renaming, Sample Set to Sample Type: SampleSet in DataClass

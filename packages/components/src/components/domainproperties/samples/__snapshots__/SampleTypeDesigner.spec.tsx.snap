@@ -2699,7 +2699,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -3319,7 +3321,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -3492,7 +3496,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -4067,7 +4073,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -5025,7 +5033,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,

@@ -64,7 +64,7 @@ export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeD
 export function getSampleSet(config: IEntityTypeDetails): Promise<any> {
     return new Promise<any>((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('experiment', 'getSampleSetApi.api'),
+            url: buildURL('experiment', 'getSampleTypeApi.api'),
             method: 'GET',
             params: config,
             success: Utils.getCallbackWrapper(response => {
@@ -98,11 +98,11 @@ export function getSampleTypeDetails(query?: SchemaQuery, domainId?: number): Pr
 }
 
 export function deleteSampleSet(rowId: number): Promise<any> {
-    return deleteEntityType('deleteMaterialSource', rowId);
+    return deleteEntityType('deleteSampleTypes', rowId);
 }
 
 /**
- * Fetches an OrderedMap of Sample Set rows specified by a schemaQuery and collection of filters. This data
+ * Fetches an OrderedMap of Sample Type rows specified by a schemaQuery and collection of filters. This data
  * is mapped via the sampleColumn to make it compatible with editable grid data.
  * @param schemaQuery SchemaQuery which sources the request for rows
  * @param sampleColumn A QueryColumn used to map fieldKey, displayColumn, and keyColumn data

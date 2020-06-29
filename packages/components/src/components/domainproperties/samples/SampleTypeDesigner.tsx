@@ -144,7 +144,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             const isDataClass = results.key === DATA_CLASS_SCHEMA_KEY;
 
             const prefix = isDataClass ? DATA_CLASS_IMPORT_PREFIX : SAMPLE_SET_IMPORT_PREFIX;
-            const labelPrefix = isDataClass ? 'Data Class' : 'Sample Set';
+            const labelPrefix = isDataClass ? 'Data Class' : 'Sample Type';
 
             domain.forEach(row => {
                 if (isValidParentOptionFn) {

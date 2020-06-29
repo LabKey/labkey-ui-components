@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.70.0-fb-migrate-sample-import.4",
+  "version": "0.71.0-fb-migrate-sample-import.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -147,6 +147,9 @@
         "contextPath": "/labkey",
         "container": {
           "path": ""
+        },
+        "project": {
+          "rootId": "ROOTID"
         },
         "user": {
           "id": 1004

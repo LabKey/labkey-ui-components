@@ -14,6 +14,7 @@ import {
     ViewInfo,
 } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
+import { PaginationData } from '../components/pagination/Pagination';
 
 import { flattenValuesFromRow } from './utils';
 
@@ -375,11 +376,20 @@ export class QueryModel {
     }
 
     /**
-     * Indicates whether pagination can be rendered based on if the model has data, and if it has enough data. Different
-     * than the GridPanel isPaged setting.
+     * Returns the data needed for pagination by the Pagination component.
      */
-    get isPaged(): boolean {
-        return this.hasData && this.pageCount > 1;
+    get paginationData(): PaginationData {
+        return {
+            currentPage: this.currentPage,
+            disabled: this.isLoading,
+            id: this.id,
+            isFirstPage: this.isFirstPage,
+            isLastPage: this.isLastPage,
+            offset: this.offset,
+            pageCount: this.pageCount,
+            pageSize: this.maxRows,
+            rowCount: this.rowCount,
+        };
     }
 
     /**

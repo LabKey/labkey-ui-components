@@ -34,6 +34,7 @@ interface Props {
     model: QueryGridModel | List<QueryGridModel>;
     buttons?: QueryGridBarButtons;
     header?: React.ReactNode;
+    initModelOnMount?: boolean;
     message?: any;
     asPanel?: boolean;
     showTabs?: boolean;
@@ -57,6 +58,7 @@ interface State {
 export class QueryGridPanel extends React.Component<Props, State> {
     static defaultProps = {
         asPanel: true,
+        initModelOnMount: true,
         showGridBar: true,
         showSampleComparisonReports: false,
     };
@@ -70,9 +72,11 @@ export class QueryGridPanel extends React.Component<Props, State> {
         };
     }
 
-    componentDidMount() {
-        this.initModel(this.props);
-    }
+    componentDidMount = (): void => {
+        if (this.props.initModelOnMount) {
+            this.initModel(this.props);
+        }
+    };
 
     componentWillReceiveProps(nextProps: Props) {
         this.initModel(nextProps);

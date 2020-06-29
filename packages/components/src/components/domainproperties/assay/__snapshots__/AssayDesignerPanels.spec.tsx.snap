@@ -1803,7 +1803,9 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -2514,7 +2516,9 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -3225,7 +3229,9 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -8419,7 +8425,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -9953,7 +9961,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -10943,7 +10953,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -11117,7 +11129,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -11692,7 +11706,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -12650,7 +12666,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -13097,7 +13115,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -13271,7 +13291,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -13846,7 +13868,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -14786,7 +14810,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -15233,7 +15259,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -15407,7 +15435,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -15982,7 +16012,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -16887,7 +16919,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -19424,7 +19458,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -20134,7 +20170,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -20844,7 +20882,9 @@ exports[`AssayDesignerPanels default properties 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -23636,7 +23676,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -24346,7 +24388,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -31003,7 +31047,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -31993,7 +32039,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -32167,7 +32215,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -32760,7 +32810,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -33718,7 +33770,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -34331,7 +34385,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -34505,7 +34561,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -35098,7 +35156,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -36038,7 +36098,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -36651,7 +36713,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -36825,7 +36889,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -37418,7 +37484,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -38323,7 +38391,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -44421,7 +44491,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -45954,7 +46026,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "disableNameInput": false,
                 "hideAddFieldsButton": false,
+                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -46944,7 +47018,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -47118,7 +47194,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -47711,7 +47789,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -48669,7 +48749,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -49282,7 +49364,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -49456,7 +49540,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -50049,7 +50135,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -50989,7 +51077,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -51602,7 +51692,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
+                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
+                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -51776,7 +51868,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
+                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
+                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -52369,7 +52463,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
+                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
+                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -53274,7 +53370,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
+                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
+                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,

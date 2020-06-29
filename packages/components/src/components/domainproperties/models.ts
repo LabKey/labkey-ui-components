@@ -311,6 +311,8 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideAddFieldsButton: false,
     disableMvEnabled: false,
     hideImportData: false,
+    hideDeleteIcon: false,
+    disableNameInput: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -1347,7 +1349,7 @@ export class QueryInfoLite
                 : this.getPkColumns();
 
         if (pkCols.size === 1) {
-            // Sample Set hack (ported from DomainEditorServiceBase.java)
+            // Sample Type hack (ported from DomainEditorServiceBase.java)
             if (this.schemaName.toLowerCase() === 'samples') {
                 const nameCol = this.columns.find(c => c.name.toLowerCase() === 'name');
 
@@ -1628,6 +1630,8 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
+    hideDeleteIcon?: boolean;
+    disableNameInput?: boolean;
 }
 
 /**

@@ -1,6 +1,32 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.71.1
+*Released*: 29 June 2020
+* Issue 40729: Renaming, Sample Set to Sample Type: SampleSet in parent aliases
+* Issue 40734: Renaming, Sample Set to Sample Type: SampleSet in DataClass
+* Add URLResolver mapping for experiment-showSampleType.view
+* Migrate deleteMaterialSource.api → deleteSampleTypes.api
+* Migrate getSampleSetApi.api → getSampleTypeApi.api
+
+### version 0.71.0
+*Released*: 29 June 2020
+* Refactor Pagination to be generic (no longer coupled to QueryModel)
+* Export Pagination component and PaginationData interface
+
+### version 0.70.6
+*Released*: 29 June 2020
+* Add `initModelOnMount` prop to `QueryGridModel`. Defaults to `true` so the behavior is unchanged for all current usages.
+
+### version 0.70.5
+*Released*: 26 June 2020
+* Issue 40591: Query metadata editor should allow editing type of field in user defined query
+* Add disableNameInput in IDomainFormDisplayOptions
+
+### version 0.70.4
+*Released*: 25 June 2020
+* Issue 39263 - PermissionAssignments.tsx update to include display of root assignments in Effective Roles listing
+
 ### version 0.70.3
 *Released*: 24 June 2020
 * Issue 40555: QC state conditional formats work but are not viewable/editable in Query Metadata editor

@@ -24,7 +24,7 @@ describe('<EntityTypeDeleteConfirmModal/>', () => {
             <EntityTypeDeleteConfirmModal
                 rowId={0}
                 noun="sample"
-                deleteConfirmationActionName="deleteMaterialSource"
+                deleteConfirmationActionName="deleteSampleTypes"
                 showDependenciesLink={true}
                 onCancel={jest.fn()}
                 onConfirm={jest.fn()}
@@ -43,7 +43,7 @@ describe('<EntityTypeDeleteConfirmModal/>', () => {
             <EntityTypeDeleteConfirmModal
                 rowId={0}
                 noun="sample"
-                deleteConfirmationActionName="deleteMaterialSource"
+                deleteConfirmationActionName="deleteSampleTypes"
                 onCancel={onCancelFn}
                 onConfirm={onConfirmFn}
             />

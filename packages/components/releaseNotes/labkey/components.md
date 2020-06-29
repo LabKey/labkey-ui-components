@@ -2,8 +2,9 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 0.71.0
-*Released*: ?? June 2020
-* Refactor Pagination to be generic (no longer coupled to QueryModel), export Pagination component.
+*Released*: 29 June 2020
+* Refactor Pagination to be generic (no longer coupled to QueryModel)
+* Export Pagination component and PaginationData interface
 
 ### version 0.70.6
 *Released*: 29 June 2020

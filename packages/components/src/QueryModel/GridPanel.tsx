@@ -12,10 +12,9 @@ import { SearchAction } from '../components/omnibox/actions/Search';
 import { SortAction } from '../components/omnibox/actions/Sort';
 import { ViewAction } from '../components/omnibox/actions/View';
 import { Change, ChangeType, OmniBox } from '../components/omnibox/OmniBox';
+import { Pagination } from '../components/pagination/Pagination';
 
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
-import { PaginationButtons, PaginationInfo } from './Pagination';
-import { PageSizeMenu } from './PageSizeMenu';
 import { ViewMenu } from './ViewMenu';
 import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
@@ -48,6 +47,31 @@ interface GridBarProps extends Props {
 }
 
 class ButtonBar extends PureComponent<GridBarProps> {
+    loadFirstPage = (): void => {
+        const { model, actions } = this.props;
+        actions.loadFirstPage(model.id);
+    };
+
+    loadLastPage = (): void => {
+        const { model, actions } = this.props;
+        actions.loadLastPage(model.id);
+    };
+
+    loadNextPage = (): void => {
+        const { model, actions } = this.props;
+        actions.loadNextPage(model.id);
+    };
+
+    loadPreviousPage = (): void => {
+        const { model, actions } = this.props;
+        actions.loadPreviousPage(model.id);
+    };
+
+    setPageSize = (pageSize: number): void => {
+        const { model, actions } = this.props;
+        actions.setMaxRows(model.id, pageSize);
+    };
+
     render(): ReactNode {
         const {
             model,
@@ -63,9 +87,10 @@ class ButtonBar extends PureComponent<GridBarProps> {
             showSampleComparisonReports,
             showViewMenu,
         } = this.props;
-        const { hasData, isPaged, queryInfo, queryInfoError, rowsError, selectionsError } = model;
+
+        const { hasData, queryInfo, queryInfoError, rowsError, selectionsError } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
-        const paginate = showPagination && isPaged && hasData && !hasError;
+        const paginate = showPagination && hasData && !hasError;
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewMenu && queryInfo !== undefined;
@@ -88,10 +113,20 @@ class ButtonBar extends PureComponent<GridBarProps> {
 
                 <div className="grid-panel__button-bar-right">
                     <div className="button-bar__section">
-                        {paginate && <PaginationInfo model={model} />}
-                        {paginate && <PaginationButtons model={model} actions={actions} />}
-                        {paginate && <PageSizeMenu model={model} actions={actions} pageSizes={pageSizes} />}
+                        {paginate && (
+                            <Pagination
+                                {...model.paginationData}
+                                loadNextPage={this.loadNextPage}
+                                loadFirstPage={this.loadFirstPage}
+                                loadPreviousPage={this.loadPreviousPage}
+                                loadLastPage={this.loadLastPage}
+                                pageSizes={pageSizes}
+                                setPageSize={this.setPageSize}
+                            />
+                        )}
+
                         {canExport && <ExportMenu model={model} advancedOptions={advancedExportOptions} />}
+
                         {canSelectView && (
                             <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />
                         )}

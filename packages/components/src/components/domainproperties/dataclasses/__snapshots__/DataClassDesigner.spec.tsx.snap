@@ -729,7 +729,7 @@ Array [
             <span
               className="domain-no-wrap"
             >
-              Set
+              Type
               <span
                 className="label-help-target"
                 onMouseOut={[Function]}
@@ -3784,19 +3784,19 @@ exports[`DataClassDesigner initModel 1`] = `
                                     >
                                       <DomainFieldLabel
                                         helpTipBody={[Function]}
-                                        label="Sample Set"
+                                        label="Sample Type"
                                       >
                                         Sample 
                                         <span
                                           className="domain-no-wrap"
                                         >
-                                          Set
+                                          Type
                                           <LabelHelpTip
                                             body={[Function]}
                                             customStyle={Object {}}
                                             id="tooltip"
                                             size="1x"
-                                            title="Sample Set"
+                                            title="Sample Type"
                                           >
                                             <span
                                               className="label-help-target"

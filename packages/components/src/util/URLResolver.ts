@@ -59,7 +59,35 @@ export class URLResolver {
                 }
             }),
 
+            // @deprecated: showSampleType is the action we're using going forward. Remove this mapping.
             new ActionMapper('experiment', 'showMaterialSource', (row, column) => {
+                let identifier: string;
+
+                if (row.has('data')) {
+                    // search link doesn't use the same url
+                    identifier = row.getIn(['data', 'name']);
+                } else if (column.has('lookup')) {
+                    identifier = row.get('displayValue').toString();
+                } else {
+                    identifier = row.get('value').toString();
+                }
+
+                if (identifier !== undefined) {
+                    let url: string[];
+
+                    if (isNaN(parseInt(identifier))) {
+                        // string -- assume sample set name
+                        url = ['samples', identifier];
+                    } else {
+                        // numeric -- assume rowId and use resolver
+                        url = ['rd', 'samples', identifier];
+                    }
+
+                    return AppURL.create(...url);
+                }
+            }),
+
+            new ActionMapper('experiment', 'showSampleType', (row, column) => {
                 let identifier: string;
 
                 if (row.has('data')) {

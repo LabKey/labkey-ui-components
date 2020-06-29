@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 7458: ProductMenuModel update to add property for userMenuProductId
+
 ### version 0.70.5
 *Released*: 26 June 2020
 * Issue 40591: Query metadata editor should allow editing type of field in user defined query

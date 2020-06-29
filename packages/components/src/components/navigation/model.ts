@@ -125,6 +125,7 @@ export class ProductMenuModel extends Record({
     sections: List<MenuSectionModel>(),
     message: undefined,
     currentProductId: undefined,
+    userMenuProductId: undefined,
     productIds: undefined,
 }) {
     isError: boolean;
@@ -133,6 +134,7 @@ export class ProductMenuModel extends Record({
     message: string;
     sections: List<MenuSectionModel>;
     currentProductId: string; // the current product's id
+    userMenuProductId: string; // the product's id for the user menu items
     productIds: List<string>; // the list of all product ids to be included in the menu; leave undefined for all products in the container
 
     constructor(values?: { [key: string]: any }) {
@@ -164,6 +166,7 @@ export class ProductMenuModel extends Record({
                 method: 'GET',
                 params: Object.assign({
                     currentProductId: this.currentProductId,
+                    userMenuProductId: this.userMenuProductId,
                     productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
                 }),
                 success: Utils.getCallbackWrapper(response => {

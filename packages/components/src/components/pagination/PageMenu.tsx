@@ -4,7 +4,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { blurActiveElement } from '../../util/utils';
 import { Tip } from '../..';
 
-interface PageSelectorProps {
+interface Props {
     currentPage: number;
     disabled: boolean;
     id: string;
@@ -15,7 +15,7 @@ interface PageSelectorProps {
     pageCount: number;
 }
 
-export class PageMenu extends PureComponent<PageSelectorProps> {
+export class PageMenu extends PureComponent<Props> {
     loadFirstPage = (): void => {
         this.props.loadFirstPage();
         blurActiveElement();
@@ -42,7 +42,7 @@ export class PageMenu extends PureComponent<PageSelectorProps> {
                         Last Page
                     </MenuItem>
 
-                    <MenuItem header>{disabled ? '...' : pageCount} Total Pages</MenuItem>
+                    <MenuItem header>{disabled ? '...' : `${pageCount} Total Pages`}</MenuItem>
                 </DropdownButton>
             </Tip>
         );

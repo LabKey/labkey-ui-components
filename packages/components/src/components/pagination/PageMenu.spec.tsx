@@ -1,8 +1,9 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 
 import { PageMenu } from './PageMenu';
+
+type PageMenuWrapper = ReactWrapper<Readonly<PageMenu['props']>, Readonly<PageMenu['state']>, PageMenu>;
 
 describe('PageMenu', () => {
     let props;
@@ -19,25 +20,35 @@ describe('PageMenu', () => {
         };
     });
 
+    const expectMenuItems = (
+        wrapper: PageMenuWrapper,
+        menuDisabled: boolean,
+        firstDisabled: boolean,
+        lastDisabled: boolean,
+        page: string,
+        pageCount: string
+    ): void => {
+        const menuButton = wrapper.find('button.dropdown-toggle');
+        expect(menuButton.props().disabled).toEqual(menuDisabled);
+        expect(menuButton.text()).toEqual(page + ' '); // there is a space then a caret
+        const menuItems = wrapper.find('li');
+        expect(menuItems.at(1).hasClass('disabled')).toEqual(firstDisabled);
+        expect(menuItems.at(2).hasClass('disabled')).toEqual(lastDisabled);
+        expect(menuItems.at(3).text()).toEqual(pageCount);
+    };
+
     test('render', () => {
-        // Should render with page count 34
-        let tree = renderer.create(<PageMenu {...props} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        const wrapper = mount<PageMenu>(<PageMenu {...props} />);
+        expectMenuItems(wrapper, false, false, false, '2', '34 Total Pages');
 
-        // Should render '...' for pageCount, disabled first/last page MenuItems.
-        props.disabled = true;
-        tree = renderer.create(<PageMenu {...props} />);
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper.setProps({ disabled: true });
+        expectMenuItems(wrapper, true, true, true, '2', '...');
 
-        // First page should be disabled.
-        props.disabled = false;
-        props.isFirstPage = true;
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper.setProps({ disabled: false, currentPage: 1, isFirstPage: true });
+        expectMenuItems(wrapper, false, true, false, '1', '34 Total Pages');
 
-        // Last page should be disabled
-        props.isFirstPage = false;
-        props.isLastPage = true;
-        expect(tree.toJSON()).toMatchSnapshot();
+        wrapper.setProps({ disabled: false, currentPage: 34, isFirstPage: false, isLastPage: true });
+        expectMenuItems(wrapper, false, false, true, '34', '34 Total Pages');
     });
 
     test('interactions', () => {

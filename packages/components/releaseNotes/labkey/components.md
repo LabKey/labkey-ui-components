@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.70.6
+*Released*: ?? June 2020
+* Issue 40729: Renaming, Sample Set to Sample Type: SampleSet in parent aliases
+* Issue 40734: Renaming, Sample Set to Sample Type: SampleSet in DataClass
+* Add URLResolver mapping for experiment-showSampleType.view
+* Migrate deleteMaterialSource.api → deleteSampleTypes.api
+* Migrate getSampleSetApi.api → getSampleTypeApi.api
+
 ### version 0.70.5
 *Released*: 26 June 2020
 * Issue 40591: Query metadata editor should allow editing type of field in user defined query

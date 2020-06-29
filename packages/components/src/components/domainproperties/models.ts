@@ -1349,7 +1349,7 @@ export class QueryInfoLite
                 : this.getPkColumns();
 
         if (pkCols.size === 1) {
-            // Sample Set hack (ported from DomainEditorServiceBase.java)
+            // Sample Type hack (ported from DomainEditorServiceBase.java)
             if (this.schemaName.toLowerCase() === 'samples') {
                 const nameCol = this.columns.find(c => c.name.toLowerCase() === 'name');
 

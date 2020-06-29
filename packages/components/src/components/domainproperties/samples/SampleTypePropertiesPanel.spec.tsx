@@ -80,7 +80,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
 
     test('Load existing SampleTypeModel', () => {
         const nameExpVal = 'S-${genId}';
-        const descVal = 'My sample set description.';
+        const descVal = 'My sample type description.';
         const data = DomainDetails.create(
             fromJS({
                 options: Map<string, any>({

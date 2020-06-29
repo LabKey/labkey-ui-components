@@ -376,14 +376,6 @@ export class QueryModel {
     }
 
     /**
-     * Indicates whether pagination can be rendered based on if the model has data, and if it has enough data. Different
-     * than the GridPanel isPaged setting.
-     */
-    get isPaged(): boolean {
-        return this.hasData && this.pageCount > 1;
-    }
-
-    /**
      * Returns the data needed for pagination by the Pagination component.
      */
     get paginationData(): PaginationData {

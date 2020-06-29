@@ -31,7 +31,7 @@ export class PageMenu extends PureComponent<PageSelectorProps> {
 
         return (
             <Tip caption="Current Page" trigger={['hover']}>
-                <DropdownButton id={`current-page-drop-${id}`} pullRight title={currentPage}>
+                <DropdownButton disabled={disabled} id={`current-page-drop-${id}`} pullRight title={currentPage}>
                     <MenuItem header>Jump To</MenuItem>
 
                     <MenuItem disabled={disabled || isFirstPage} onClick={this.loadFirstPage}>

@@ -86,7 +86,7 @@ export class Pagination extends PureComponent<PaginationProps> {
 
                     <PageMenu
                         currentPage={currentPage}
-                        disabled={disabled}
+                        disabled={disabled || (isFirstPage && isLastPage)}
                         id={id}
                         isFirstPage={isFirstPage}
                         isLastPage={isLastPage}

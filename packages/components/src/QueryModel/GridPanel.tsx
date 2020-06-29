@@ -87,9 +87,10 @@ class ButtonBar extends PureComponent<GridBarProps> {
             showSampleComparisonReports,
             showViewMenu,
         } = this.props;
-        const { hasData, isPaged, queryInfo, queryInfoError, rowsError, selectionsError } = model;
+
+        const { hasData, queryInfo, queryInfoError, rowsError, selectionsError } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
-        const paginate = showPagination && isPaged && hasData && !hasError;
+        const paginate = showPagination && hasData && !hasError;
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewMenu && queryInfo !== undefined;

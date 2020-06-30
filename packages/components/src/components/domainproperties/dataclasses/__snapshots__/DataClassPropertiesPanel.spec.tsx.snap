@@ -503,7 +503,7 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
         <span
           className="domain-no-wrap"
         >
-          Set
+          Type
           <span
             className="label-help-target"
             onMouseOut={[Function]}

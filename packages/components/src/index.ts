@@ -352,7 +352,7 @@ import {
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanelWithModel } from './QueryModel/DetailPanel';
-
+import { Pagination, PaginationData } from './components/pagination/Pagination';
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
 enablePatches();
@@ -758,4 +758,6 @@ export {
     GridPanel,
     GridPanelWithModel,
     DetailPanelWithModel,
+    Pagination,
+    PaginationData,
 };

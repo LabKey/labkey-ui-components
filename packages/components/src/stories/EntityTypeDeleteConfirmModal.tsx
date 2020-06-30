@@ -28,7 +28,7 @@ storiesOf('EntityTypeDeleteConfirmModal', module)
             <EntityTypeDeleteConfirmModal
                 rowId={0}
                 noun={text('noun', 'sample')}
-                deleteConfirmationActionName={text('lkDeleteAction', 'deleteMaterialSource')}
+                deleteConfirmationActionName={text('lkDeleteAction', 'deleteSampleTypes')}
                 showDependenciesLink={boolean('showDependenciesLink', false)}
                 onConfirm={() => console.log('confirm')}
                 onCancel={() => console.log('cancel')}

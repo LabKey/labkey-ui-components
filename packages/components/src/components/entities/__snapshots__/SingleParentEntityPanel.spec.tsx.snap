@@ -627,6 +627,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
     </table>
     <QueryGridPanel
       asPanel={false}
+      initModelOnMount={true}
       model={
         Immutable.Record {
           "id": "dataclasses-parent-data|exp$pdata/second source",

@@ -512,8 +512,8 @@ export interface IEntityTypeDetails extends IEntityDetails {
 }
 
 export const enum EntityInsertPanelTabs {
-    Grid = 1,
-    File = 2,
+    First = 1,
+    Second = 2,
 }
 
 export interface EntityDataType {

@@ -285,7 +285,7 @@ import { ITab, SubNav } from './components/navigation/SubNav';
 import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './components/navigation/model';
-import { confirmLeaveWhenDirty, createApplicationUrlFromParts } from './components/navigation/utils';
+import { confirmLeaveWhenDirty, createProductUrlFromParts } from './components/navigation/utils';
 import { UserSelectInput } from './components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
@@ -422,7 +422,7 @@ export {
     imageURL,
     spliceURL,
     WHERE_FILTER_TYPE,
-    createApplicationUrlFromParts,
+    createProductUrlFromParts,
     // renderers
     AliasRenderer,
     AppendUnits,

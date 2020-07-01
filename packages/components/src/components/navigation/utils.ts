@@ -33,13 +33,13 @@ export function getHref(url : AppURL | string) : string {
     return typeof url == 'string' ? url : url.toHref();
 }
 
-export function createApplicationUrlFromParts(urlProductId: string, currentProductId: string, params: { [key: string]: any }, ...parts) : string | AppURL {
+export function createProductUrlFromParts(urlProductId: string, currentProductId: string, params: { [key: string]: any }, ...parts) : string | AppURL {
     let appUrl = AppURL.create(...parts);
     appUrl = appUrl.addParams(params);
-    return createApplicationUrl(urlProductId, currentProductId, appUrl);
+    return createProductUrl(urlProductId, currentProductId, appUrl);
 }
 
-export function createApplicationUrl(urlProductId: string, currentProductId: string, appUrl: string | AppURL) : string | AppURL {
+export function createProductUrl(urlProductId: string, currentProductId: string, appUrl: string | AppURL) : string | AppURL {
     if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
         const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
         return buildURL(urlProductId.toLowerCase(), "app.view", undefined, {returnURL: false}) + href;

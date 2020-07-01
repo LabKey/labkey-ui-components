@@ -18,7 +18,7 @@ import { ActionURL, Ajax, Utils, QueryKey } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { buildURL } from '../../url/ActionURL';
-import { createApplicationUrl, createApplicationUrlFromParts } from './utils';
+import { createProductUrl, createProductUrlFromParts } from './utils';
 
 export class MenuSectionModel extends Record({
     label: undefined,
@@ -103,14 +103,14 @@ export class MenuItemModel extends Record({
 
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
-                        url: createApplicationUrlFromParts(dataProductId, currentProductId, params, sectionKey, ...subParts),
+                        url: createProductUrlFromParts(dataProductId, currentProductId, params, sectionKey, ...subParts),
                         key: decodedKey,
                     })
                 );
             } else {
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
-                        url: createApplicationUrl(dataProductId, currentProductId, rawData.url),
+                        url: createProductUrl(dataProductId, currentProductId, rawData.url),
                     })
                 );
             }

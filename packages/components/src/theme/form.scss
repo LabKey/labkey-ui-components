@@ -202,3 +202,31 @@ div.react-datepicker__current-month {
     resize: none;
     padding-bottom: 2%;
 }
+
+.color-picker {
+    position: relative;
+};
+.color-picker__button > i {
+    display: inline-block;
+    margin-left: 0.5em;
+}
+.color-picker__chip {
+    display: inline-block;
+    height: 32px;
+    margin-left: 2em;
+    border-radius: 4px;
+    width: 32px;
+    vertical-align: middle;
+}
+.color-picker__picker {
+    position: absolute;
+    top: 48px;
+    left: 0;
+}
+.color-picker__mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

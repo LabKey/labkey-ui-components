@@ -1,6 +1,18 @@
+.filetree-resource-row{
+    display: flex;
+    align-items: center;
+}
 
 .filetree-folder-icon {
     margin-right: 10px;
+}
+
+.filetree-file-name {
+    margin-right: 15px;
+}
+
+.filetree-directory-name {
+    max-width: 200px;
 }
 
 .filetree-leaf-node {
@@ -9,6 +21,7 @@
 
 .filetree-checkbox-container {
     display: inline-flex;
+    //float: left;
 
     & > .checkbox {
         margin: 3px;

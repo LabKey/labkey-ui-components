@@ -5,6 +5,7 @@ import classNames from 'classnames';
 interface Props {
     name?: string;
     onChange: (name: string, value: string) => void;
+    text: string;
     value: string;
 }
 
@@ -27,14 +28,14 @@ export class ColorPickerInput extends PureComponent<Props, State> {
     };
 
     render(): ReactNode {
-        const { value } = this.props;
+        const { text, value } = this.props;
         const { showPicker } = this.state;
         const iconClassName = classNames('fa', { 'fa-caret-up': showPicker, 'fa-caret-down': !showPicker });
 
         return (
             <div className="color-picker">
                 <button type="button" className="color-picker__button btn btn-default" onClick={this.togglePicker}>
-                    Set project color
+                    {text}
                     <i className={iconClassName} />
                 </button>
 

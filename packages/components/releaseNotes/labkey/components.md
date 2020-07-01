@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.73.0
+*Released*: 1 July 2020
+* Item 7458: Update Sample Manager and Freezer Manager app product menus to respect isSampleManagerEnabled
+    - ProductMenuModel update to add property for userMenuProductId
+    - MenuItemModel.create update to use menu section productId in user menu URLs
+    - rename createApplicationUrl -> createProductUrlFromParts, and add new implementation for createProductUrl
+
 ### version 0.72.0
 *Released*: 1 July 2020
 * Add ColorPickerInput

@@ -20,7 +20,7 @@ import { AppURL } from '../../url/AppURL';
 import { naturalSort } from '../../util/utils';
 
 import { MenuSectionModel } from './model';
-import { createApplicationUrl, getHref } from './utils';
+import { createProductUrlFromParts, getHref } from './utils';
 
 export class MenuSectionConfig extends Record({
     emptyText: undefined,
@@ -104,8 +104,9 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
     render() {
         const { config, section } = this.props;
         let icon;
-        if (!section)
+        if (!section) {
             return null;
+        }
 
         if (config.iconURL) {
             icon = (
@@ -131,7 +132,12 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
         let headerURL = config.headerURL;
         if (headerURL === undefined) {
             if (section.url) {
-                headerURL = createApplicationUrl(section.productId, this.props.currentProductId, undefined, section.key);
+                headerURL = createProductUrlFromParts(
+                    section.productId,
+                    this.props.currentProductId,
+                    undefined,
+                    section.key
+                );
             }
         }
         const header = (

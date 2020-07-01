@@ -15,7 +15,7 @@
  */
 import { List } from 'immutable';
 
-import { MenuSectionModel, ProductMenuModel } from './model';
+import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './model';
 
 describe('ProductMenuModel', () => {
     const testSectionKey = 'test';
@@ -64,5 +64,33 @@ describe('ProductMenuModel', () => {
             List<MenuSectionModel>([testSection, emptySection])
         );
         expect(model.hasSectionItems(emptySectionKey)).toBeFalsy();
+    });
+});
+
+describe('MenuItemModel', () => {
+    test('currentProductId param match', () => {
+        const model = MenuItemModel.create(
+            {
+                productId: 'product1',
+                url: '#/menuItem',
+            },
+            'sectionKey',
+            'product1'
+        );
+
+        expect(model.url).toBe('#/menuItem');
+    });
+
+    test('currentProductId param mismatch', () => {
+        const model = MenuItemModel.create(
+            {
+                productId: 'product2',
+                url: '#/menuItem',
+            },
+            'sectionKey',
+            'product1'
+        );
+
+        expect(model.url).toBe('/labkey/product2/app.view#/menuItem');
     });
 });

@@ -18,7 +18,8 @@ import { ActionURL, Ajax, Utils, QueryKey } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { buildURL } from '../../url/ActionURL';
-import { createApplicationUrl } from './utils';
+
+import { createProductUrl, createProductUrlFromParts } from './utils';
 
 export class MenuSectionModel extends Record({
     label: undefined,
@@ -81,6 +82,8 @@ export class MenuItemModel extends Record({
 
     static create(rawData, sectionKey: string, currentProductId?: string): MenuItemModel {
         if (rawData) {
+            const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
+
             if (rawData.key && sectionKey !== 'user') {
                 const parts = rawData.key.split('?');
 
@@ -94,7 +97,6 @@ export class MenuItemModel extends Record({
                 const decodedPart = subParts.join('/');
                 const decodedKey = rawData.key.replace(parts[0], decodedPart);
 
-                const dataProductId = rawData.productId ? rawData.productId.toLowerCase() : undefined;
                 let params;
                 if (parts.length > 1 && parts[1]) {
                     params = ActionURL.getParameters(rawData.key);
@@ -102,12 +104,22 @@ export class MenuItemModel extends Record({
 
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
-                        url: createApplicationUrl(dataProductId, currentProductId, params, sectionKey, ...subParts),
+                        url: createProductUrlFromParts(
+                            dataProductId,
+                            currentProductId,
+                            params,
+                            sectionKey,
+                            ...subParts
+                        ),
                         key: decodedKey,
                     })
                 );
             } else {
-                return new MenuItemModel(rawData);
+                return new MenuItemModel(
+                    Object.assign({}, rawData, {
+                        url: createProductUrl(dataProductId, currentProductId, rawData.url),
+                    })
+                );
             }
         }
         return new MenuItemModel();
@@ -125,6 +137,7 @@ export class ProductMenuModel extends Record({
     sections: List<MenuSectionModel>(),
     message: undefined,
     currentProductId: undefined,
+    userMenuProductId: undefined,
     productIds: undefined,
 }) {
     isError: boolean;
@@ -133,6 +146,7 @@ export class ProductMenuModel extends Record({
     message: string;
     sections: List<MenuSectionModel>;
     currentProductId: string; // the current product's id
+    userMenuProductId: string; // the product's id for the user menu items
     productIds: List<string>; // the list of all product ids to be included in the menu; leave undefined for all products in the container
 
     constructor(values?: { [key: string]: any }) {
@@ -164,6 +178,7 @@ export class ProductMenuModel extends Record({
                 method: 'GET',
                 params: Object.assign({
                     currentProductId: this.currentProductId,
+                    userMenuProductId: this.userMenuProductId,
                     productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
                 }),
                 success: Utils.getCallbackWrapper(response => {

@@ -1,7 +1,9 @@
-import { AppURL, buildURL } from '../..';
-import { Location } from "history";
+import { Location } from 'history';
 
-export const ON_LEAVE_DIRTY_STATE_MESSAGE = 'You have unsaved changes that will be lost. Are you sure you want to continue?';
+import { AppURL, buildURL } from '../..';
+
+export const ON_LEAVE_DIRTY_STATE_MESSAGE =
+    'You have unsaved changes that will be lost. Are you sure you want to continue?';
 
 /**
  * This function can be used as the callback for react-router's setRouteLeaveHook.  It should be preferred
@@ -13,7 +15,7 @@ export const ON_LEAVE_DIRTY_STATE_MESSAGE = 'You have unsaved changes that will 
  *
  * @param currentLocation the location of the current page
  */
-export function confirmLeaveWhenDirty(currentLocation: Location) : boolean {
+export function confirmLeaveWhenDirty(currentLocation: Location): boolean {
     const result = confirm(ON_LEAVE_DIRTY_STATE_MESSAGE);
     if (result) {
         // navigation confirmed
@@ -21,28 +23,42 @@ export function confirmLeaveWhenDirty(currentLocation: Location) : boolean {
     } else {
         // navigation canceled, pushing the previous path
         if (currentLocation) {
-            let appURL = AppURL.create(...currentLocation.pathname.substring(1).split("/").map((part) => (decodeURIComponent(part))));
-            window.history.replaceState(null, null,  appURL.toHref() + currentLocation.search);
+            const appURL = AppURL.create(
+                ...currentLocation.pathname
+                    .substring(1)
+                    .split('/')
+                    .map(part => decodeURIComponent(part))
+            );
+            window.history.replaceState(null, null, appURL.toHref() + currentLocation.search);
         }
 
         return false;
     }
 }
 
-export function getHref(url : AppURL | string) : string {
-    return typeof url == 'string' ? url : url.toHref();
+export function getHref(url: AppURL | string): string {
+    return typeof url === 'string' ? url : url.toHref();
 }
 
-export function createProductUrlFromParts(urlProductId: string, currentProductId: string, params: { [key: string]: any }, ...parts) : string | AppURL {
+export function createProductUrlFromParts(
+    urlProductId: string,
+    currentProductId: string,
+    params: { [key: string]: any },
+    ...parts
+): string | AppURL {
     let appUrl = AppURL.create(...parts);
     appUrl = appUrl.addParams(params);
     return createProductUrl(urlProductId, currentProductId, appUrl);
 }
 
-export function createProductUrl(urlProductId: string, currentProductId: string, appUrl: string | AppURL) : string | AppURL {
+export function createProductUrl(
+    urlProductId: string,
+    currentProductId: string,
+    appUrl: string | AppURL
+): string | AppURL {
     if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
         const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
-        return buildURL(urlProductId.toLowerCase(), "app.view", undefined, {returnURL: false}) + href;
+        return buildURL(urlProductId.toLowerCase(), 'app.view', undefined, { returnURL: false }) + href;
     } else {
         return appUrl;
     }

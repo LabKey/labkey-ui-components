@@ -18,6 +18,7 @@ import { ActionURL, Ajax, Utils, QueryKey } from '@labkey/api';
 
 import { AppURL } from '../../url/AppURL';
 import { buildURL } from '../../url/ActionURL';
+
 import { createProductUrl, createProductUrlFromParts } from './utils';
 
 export class MenuSectionModel extends Record({
@@ -103,7 +104,13 @@ export class MenuItemModel extends Record({
 
                 return new MenuItemModel(
                     Object.assign({}, rawData, {
-                        url: createProductUrlFromParts(dataProductId, currentProductId, params, sectionKey, ...subParts),
+                        url: createProductUrlFromParts(
+                            dataProductId,
+                            currentProductId,
+                            params,
+                            sectionKey,
+                            ...subParts
+                        ),
                         key: decodedKey,
                     })
                 );

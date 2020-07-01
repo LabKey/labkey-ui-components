@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 0.72.0
-*Released*: ?? July 2020
+*Released*: 1 July 2020
 * Add ColorPickerInput
 
 ### version 0.71.2

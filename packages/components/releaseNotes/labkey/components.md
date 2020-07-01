@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - MenuItemModel.create update to use menu section productId in user menu URLs
     - rename createApplicationUrl -> createProductUrlFromParts, and add new implementation for createProductUrl
 
+### version 0.72.0
+*Released*: 1 July 2020
+* Add ColorPickerInput
+
 ### version 0.71.2
 *Released*: 30 June 2020
 * Update EntityInsertPanel to only show import tab

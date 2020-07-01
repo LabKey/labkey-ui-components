@@ -198,6 +198,7 @@ import { FileInput } from './components/forms/input/FileInput';
 import { TextInput } from './components/forms/input/TextInput';
 import { TextAreaInput } from './components/forms/input/TextAreaInput';
 import { FieldEditForm, FieldEditProps } from './components/forms/input/FieldEditInput';
+import { ColorPickerInput } from './components/forms/input/ColorPickerInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
@@ -445,6 +446,7 @@ export {
     FileInput,
     TextAreaInput,
     TextInput,
+    ColorPickerInput,
     FieldEditForm,
     FieldEditProps,
     QuerySelect,

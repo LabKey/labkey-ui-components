@@ -1,5 +1,6 @@
+import { AppURL } from '../..';
+
 import { createProductUrlFromParts, createProductUrl } from './utils';
-import { AppURL } from "../..";
 
 describe('createProductUrlFromParts', () => {
     test('no productId', () => {
@@ -45,22 +46,38 @@ describe('createProductUrl', () => {
     });
 
     test('not currentProductId', () => {
-        const url = createProductUrl('urlProduct', 'currentProduct', AppURL.create('destination').addParam('rowId', 123));
+        const url = createProductUrl(
+            'urlProduct',
+            'currentProduct',
+            AppURL.create('destination').addParam('rowId', 123)
+        );
         expect(url).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
     });
 
     test('is current product', () => {
-        const url = createProductUrl('currentProduct', 'currentProduct', AppURL.create('destination').addParam('rowId', 123));
+        const url = createProductUrl(
+            'currentProduct',
+            'currentProduct',
+            AppURL.create('destination').addParam('rowId', 123)
+        );
         expect(url.toString()).toEqual('/destination?rowId=123');
     });
 
     test('with multiple params', () => {
-        const url = createProductUrl(undefined, 'currentProduct', AppURL.create('destination').addParam('rowId', 123).addParam('view', 'grid'));
+        const url = createProductUrl(
+            undefined,
+            'currentProduct',
+            AppURL.create('destination').addParam('rowId', 123).addParam('view', 'grid')
+        );
         expect(url.toString()).toEqual('/destination?rowId=123&view=grid');
     });
 
     test('with multiple parts', () => {
-        const url = createProductUrl(undefined, 'currentProduct', AppURL.create('destination', 'mars').addParam('rowId', 42));
+        const url = createProductUrl(
+            undefined,
+            'currentProduct',
+            AppURL.create('destination', 'mars').addParam('rowId', 42)
+        );
         expect(url.toString()).toEqual('/destination/mars?rowId=42');
     });
 

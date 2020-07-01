@@ -44,13 +44,13 @@ describe('ProductMenuModel', () => {
     });
 
     test('hasSectionItems not loaded', () => {
-        const model = new ProductMenuModel({productIds: ['hasSectionItems']});
+        const model = new ProductMenuModel({ productIds: ['hasSectionItems'] });
         expect(model.hasSectionItems(testSectionKey)).toBeFalsy();
         expect(model.hasSectionItems(emptySectionKey)).toBeFalsy();
     });
 
     test('hasSectionItems key match', () => {
-        let model = new ProductMenuModel({productIds: ['hasSectionItems']});
+        let model = new ProductMenuModel({ productIds: ['hasSectionItems'] });
         model = model.setLoadedSections(
             List<MenuSectionModel>([testSection, emptySection])
         );
@@ -59,7 +59,7 @@ describe('ProductMenuModel', () => {
     });
 
     test('hasSectionItems empty section', () => {
-        let model = new ProductMenuModel({productIds: ['hasSectionItems']});
+        let model = new ProductMenuModel({ productIds: ['hasSectionItems'] });
         model = model.setLoadedSections(
             List<MenuSectionModel>([testSection, emptySection])
         );
@@ -69,19 +69,27 @@ describe('ProductMenuModel', () => {
 
 describe('MenuItemModel', () => {
     test('currentProductId param match', () => {
-        const model = MenuItemModel.create({
-            productId: 'product1',
-            url: '#/menuItem'
-        }, 'sectionKey', 'product1');
+        const model = MenuItemModel.create(
+            {
+                productId: 'product1',
+                url: '#/menuItem',
+            },
+            'sectionKey',
+            'product1'
+        );
 
         expect(model.url).toBe('#/menuItem');
     });
 
     test('currentProductId param mismatch', () => {
-        const model = MenuItemModel.create({
-            productId: 'product2',
-            url: '#/menuItem'
-        }, 'sectionKey', 'product1');
+        const model = MenuItemModel.create(
+            {
+                productId: 'product2',
+                url: '#/menuItem',
+            },
+            'sectionKey',
+            'product1'
+        );
 
         expect(model.url).toBe('/labkey/product2/app.view#/menuItem');
     });

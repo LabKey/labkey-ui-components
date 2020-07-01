@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.71.2
+*Released*: 30 June 2020
+* Update EntityInsertPanel to only show import tab
+* Simplify showImportDataButton and showInsertNewButton
+
 ### version 0.71.1
 *Released*: 29 June 2020
 * Issue 40729: Renaming, Sample Set to Sample Type: SampleSet in parent aliases

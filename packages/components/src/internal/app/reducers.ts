@@ -2,8 +2,8 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { fromJS, Map } from 'immutable';
 import { handleActions } from 'redux-actions';
-import { fromJS } from 'immutable';
 import { AppModel, LogoutReason } from "./models";
 import {
     SECURITY_LOGOUT,
@@ -13,7 +13,9 @@ import {
     UPDATE_USER_DISPLAY_NAME,
     USER_PERMISSIONS_REQUEST,
     USER_PERMISSIONS_SUCCESS,
+    ADD_TABLE_ROUTE, MENU_INVALIDATE, MENU_LOADING_START, MENU_LOADING_ERROR, MENU_LOADING_END,
 } from "./constants";
+import { ProductMenuModel } from "../../components/navigation/model";
 
 export type AppReducerState = AppModel;
 
@@ -60,3 +62,45 @@ export const AppReducers = handleActions<AppReducerState, any>({
         });
     }
 }, new AppModel());
+
+export type RoutingTableState = Map<string, string | boolean>;
+
+export const RoutingTableReducers = handleActions<RoutingTableState, any>({
+
+    [ADD_TABLE_ROUTE]: (state: any, action: any) => {
+        const { fromRoute, toRoute } = action;
+
+        return state.set(fromRoute, toRoute) as RoutingTableState;
+    }
+
+}, Map<string, string | boolean>());
+
+export type ProductMenuState = ProductMenuModel;
+
+export const ProductMenuReducers = handleActions<ProductMenuState, any>({
+
+    [MENU_INVALIDATE]: (state: ProductMenuState, action: any) => {
+        return new ProductMenuModel();
+    },
+
+    [MENU_LOADING_START]: (state: ProductMenuState, action: any) => {
+        const { currentProductId, userMenuProductId, productIds } = action;
+
+        return state.merge({
+            currentProductId,
+            userMenuProductId,
+            productIds,
+            isLoading: true
+        });
+    },
+
+    [MENU_LOADING_ERROR]: (state: ProductMenuState, action: any) => {
+        const { message } = action;
+        return state.setError(message);
+    },
+
+    [MENU_LOADING_END]: (state: ProductMenuState, action: any) => {
+        const { sections } = action;
+        return state.setLoadedSections(sections);
+    }
+}, new ProductMenuModel());

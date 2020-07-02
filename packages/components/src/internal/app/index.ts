@@ -2,7 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { getUserPermissions, setReloadRequired, updateUserDisplayName } from './actions';
+import { getUserPermissions, setReloadRequired, updateUserDisplayName, menuInit, menuInvalidate } from './actions';
 import {
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
@@ -33,7 +33,7 @@ import {
     NOTIFICATION_TIMEOUT,
 } from './constants';
 import { AppModel, LogoutReason } from './models';
-import { AppReducers, AppReducerState } from './reducers';
+import { AppReducers, AppReducerState, RoutingTableState, RoutingTableReducers, ProductMenuState, ProductMenuReducers } from './reducers';
 import { initWebSocketListeners, userCanDesignLocations, userCanDesignSourceTypes, isSampleManagerEnabled, isFreezerManagementEnabled, getDateFormat, getMenuSectionConfigs } from './utils';
 
 export {
@@ -41,12 +41,18 @@ export {
     AppReducerState,
     AppReducers,
     LogoutReason,
+    ProductMenuState,
+    ProductMenuReducers,
+    RoutingTableState,
+    RoutingTableReducers,
     initWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
     getDateFormat,
     getMenuSectionConfigs,
     getUserPermissions,
+    menuInit,
+    menuInvalidate,
     setReloadRequired,
     updateUserDisplayName,
     userCanDesignLocations,

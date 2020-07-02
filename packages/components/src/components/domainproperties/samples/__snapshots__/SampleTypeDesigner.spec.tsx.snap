@@ -935,6 +935,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "lockType": "NotLocked",
             "wrappedColumnName": undefined,
             "disablePhiLevel": false,
+            "lockExistingField": false,
           },
         ],
         "indices": Immutable.List [],
@@ -1077,6 +1078,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
               "disablePhiLevel": false,
+              "lockExistingField": false,
             },
           ],
           "indices": Immutable.List [],
@@ -1194,6 +1196,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               },
             ],
             "indices": Immutable.List [],
@@ -1317,6 +1320,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
                   "disablePhiLevel": false,
+                  "lockExistingField": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -1449,6 +1453,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -1589,6 +1594,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
                       "disablePhiLevel": false,
+                      "lockExistingField": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -1911,6 +1917,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                           "lockType": "NotLocked",
                                           "wrappedColumnName": undefined,
                                           "disablePhiLevel": false,
+                                          "lockExistingField": false,
                                         },
                                       ],
                                       "indices": Immutable.List [],
@@ -2569,6 +2576,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               },
             ],
             "indices": Immutable.List [],
@@ -2686,6 +2694,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -2699,9 +2708,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
-                "disableNameInput": false,
                 "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -3321,9 +3328,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
-                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
-                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -3415,6 +3420,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
                                                           "disablePhiLevel": false,
+                                                          "lockExistingField": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -3496,9 +3502,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
-                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
-                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -3587,6 +3591,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
                                                                       "disablePhiLevel": false,
+                                                                      "lockExistingField": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -4073,9 +4078,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
-                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
-                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -4163,6 +4166,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
                                                                         "disablePhiLevel": false,
+                                                                        "lockExistingField": false,
                                                                       }
                                                                     }
                                                                     index={0}
@@ -4583,6 +4587,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
                                                                                   "disablePhiLevel": false,
+                                                                                  "lockExistingField": false,
                                                                                 }
                                                                               }
                                                                               index={0}
@@ -5033,9 +5038,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
-                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
-                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -5123,6 +5126,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
                                                                                   "disablePhiLevel": false,
+                                                                                  "lockExistingField": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={true}

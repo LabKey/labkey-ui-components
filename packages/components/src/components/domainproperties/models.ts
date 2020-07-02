@@ -311,8 +311,6 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideAddFieldsButton: false,
     disableMvEnabled: false,
     hideImportData: false,
-    hideDeleteIcon: false,
-    disableNameInput: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -735,6 +733,7 @@ export interface IDomainField {
     isPrimaryKey: boolean;
     lockType: string;
     disablePhiLevel?: boolean;
+    lockExistingField?: boolean;
 }
 
 export class DomainField
@@ -784,6 +783,7 @@ export class DomainField
         lockType: DOMAIN_FIELD_NOT_LOCKED,
         wrappedColumnName: undefined,
         disablePhiLevel: false,
+        lockExistingField: false,
     })
     implements IDomainField {
     conceptURI?: string;
@@ -831,6 +831,7 @@ export class DomainField
     lockType: string;
     wrappedColumnName?: string;
     disablePhiLevel?: boolean;
+    lockExistingField?: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         const baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -1137,7 +1138,7 @@ export function resolveAvailableTypes(
     showFilePropertyType?: boolean
 ): List<PropDescType> {
     // field has not been saved -- display all property types allowed by app
-    if (field.isNew()) {
+    if (field.isNew() && field.wrappedColumnName == undefined) {
         return appPropertiesOnly
             ? (availableTypes.filter(type => isPropertyTypeAllowed(type, showFilePropertyType)) as List<PropDescType>)
             : availableTypes;
@@ -1630,8 +1631,6 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
-    hideDeleteIcon?: boolean;
-    disableNameInput?: boolean;
 }
 
 /**

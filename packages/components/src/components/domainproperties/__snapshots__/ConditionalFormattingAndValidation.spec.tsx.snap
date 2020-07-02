@@ -5,9 +5,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
   domainFormDisplayOptions={
     Object {
       "disableMvEnabled": false,
-      "disableNameInput": false,
       "hideAddFieldsButton": false,
-      "hideDeleteIcon": false,
       "hideImportData": false,
       "hideRequired": false,
       "hideTextOptions": false,
@@ -112,6 +110,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}
@@ -551,6 +550,7 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}
@@ -784,9 +784,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
   domainFormDisplayOptions={
     Object {
       "disableMvEnabled": false,
-      "disableNameInput": false,
       "hideAddFieldsButton": false,
-      "hideDeleteIcon": false,
       "hideImportData": false,
       "hideRequired": false,
       "hideTextOptions": false,
@@ -874,6 +872,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}

@@ -81,6 +81,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}
@@ -428,6 +429,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}
@@ -878,9 +880,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
-                "disableNameInput": false,
                 "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -968,6 +968,7 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}
@@ -1281,6 +1282,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}
@@ -1647,6 +1649,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}
@@ -2097,9 +2100,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
-                "disableNameInput": false,
                 "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -2187,6 +2188,7 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}
@@ -2671,6 +2673,7 @@ exports[`DomainExpandedOptions No text options 1`] = `
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}
@@ -2785,6 +2788,7 @@ exports[`DomainExpandedOptions No text options 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}
@@ -3316,6 +3320,7 @@ exports[`DomainExpandedOptions No text options 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}
@@ -3795,6 +3800,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}
@@ -4196,6 +4202,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}
@@ -4646,9 +4653,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
-                "disableNameInput": false,
                 "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -4736,6 +4741,7 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}
@@ -5215,6 +5221,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}
@@ -5329,6 +5336,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}
@@ -5779,9 +5787,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
-                "disableNameInput": false,
                 "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -5869,6 +5875,7 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               }
             }
             index={1}

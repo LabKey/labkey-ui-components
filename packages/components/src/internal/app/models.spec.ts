@@ -3,25 +3,25 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { AppModel, LogoutReason } from "./models";
-import { GUEST, READER } from "../../test/data/users";
+import { TEST_USER_GUEST, TEST_USER_READER } from "../../test/data/users";
 
 describe('AppModel', () => {
 
     test('hasUserChanged', () => {
-        let model = new AppModel({initialUserId: 1, user: GUEST});
+        let model = new AppModel({initialUserId: 1, user: TEST_USER_GUEST});
         expect(model.hasUserChanged()).toBeTruthy();
-        model = new AppModel({initialUserId: 1, user: READER});
+        model = new AppModel({initialUserId: 1, user: TEST_USER_READER});
         expect(model.hasUserChanged()).toBeTruthy();
-        model = new AppModel({initialUserId: READER.id, user: READER});
+        model = new AppModel({initialUserId: TEST_USER_READER.id, user: TEST_USER_READER});
         expect(model.hasUserChanged()).toBeFalsy();
     });
 
     test('shouldReload', () => {
-        let model = new AppModel({reloadRequired: false, initialUserId: 1, user: READER});
+        let model = new AppModel({reloadRequired: false, initialUserId: 1, user: TEST_USER_READER});
         expect(model.shouldReload()).toBeTruthy();
-        model = new AppModel({reloadRequired: false, initialUserId: READER.id, user: READER});
+        model = new AppModel({reloadRequired: false, initialUserId: TEST_USER_READER.id, user: TEST_USER_READER});
         expect(model.shouldReload()).toBeFalsy();
-        model = new AppModel({reloadRequired: true, initialUserId: READER.id, user: READER});
+        model = new AppModel({reloadRequired: true, initialUserId: TEST_USER_READER.id, user: TEST_USER_READER});
         expect(model.shouldReload()).toBeTruthy();
     });
 

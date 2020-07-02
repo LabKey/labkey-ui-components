@@ -3,7 +3,7 @@ import { fromJS } from 'immutable';
 import { mount } from 'enzyme';
 import { Button } from 'react-bootstrap';
 
-import { READER } from '../../test/data/users';
+import { TEST_USER_READER } from '../../test/data/users';
 import { FileInput } from '../forms/input/FileInput';
 import { TextInput } from '../forms/input/TextInput';
 import { getQueryDetails } from '../../query/api';
@@ -20,7 +20,7 @@ describe('<UserProfile/>', () => {
     test('without state, except queryInfo', () => {
         return getQueryDetails(SCHEMAS.CORE_TABLES.USERS).then(queryInfo => {
             const wrapper = mount(
-                <UserProfile user={READER} userProperties={fromJS({})} onSuccess={jest.fn()} onCancel={jest.fn()} />
+                <UserProfile user={TEST_USER_READER} userProperties={fromJS({})} onSuccess={jest.fn()} onCancel={jest.fn()} />
             );
 
             wrapper.setState({ queryInfo });

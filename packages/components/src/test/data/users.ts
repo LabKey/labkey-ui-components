@@ -2,7 +2,7 @@ import { List } from 'immutable';
 
 import { User } from '../../components/base/models/model';
 
-export const GUEST = new User({
+export const TEST_USER_GUEST = new User({
     canDelete: false,
     canDeleteOwn: false,
     canInsert: false,
@@ -19,7 +19,7 @@ export const GUEST = new User({
     permissionsList: List<string>(['org.labkey.api.security.permissions.ReadPermission']),
 });
 
-export const READER = new User({
+export const TEST_USER_READER = new User({
     id: 1200,
     canDelete: false,
     canDeleteOwn: false,
@@ -37,7 +37,7 @@ export const READER = new User({
     permissionsList: List<string>(['org.labkey.api.security.permissions.ReadPermission']),
 });
 
-export const AUTHOR = new User({
+export const TEST_USER_AUTHOR = new User({
     id: 1300,
     canDelete: false,
     canDeleteOwn: false,
@@ -58,7 +58,7 @@ export const AUTHOR = new User({
     ]),
 });
 
-export const EDITOR = new User({
+export const TEST_USER_EDITOR = new User({
     id: 1100,
     canDelete: true,
     canDeleteOwn: true,
@@ -81,7 +81,7 @@ export const EDITOR = new User({
     ]),
 });
 
-export const ASSAYDESIGNER = new User({
+export const TEST_USER_ASSAY_DESIGNER = new User({
     id: 1400,
     canDelete: false,
     canDeleteOwn: false,
@@ -102,7 +102,7 @@ export const ASSAYDESIGNER = new User({
     ]),
 });
 
-export const FOLDER_ADMIN = new User({
+export const TEST_USER_FOLDER_ADMIN = new User({
     id: 1005,
     canDelete: true,
     canDeleteOwn: true,
@@ -129,7 +129,7 @@ export const FOLDER_ADMIN = new User({
     ]),
 });
 
-export const APP_ADMIN = new User({
+export const TEST_USER_APP_ADMIN = new User({
     id: 1005,
     canDelete: true,
     canDeleteOwn: true,

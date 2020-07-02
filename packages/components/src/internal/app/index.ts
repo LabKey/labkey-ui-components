@@ -35,6 +35,7 @@ import {
 import { AppModel, LogoutReason } from './models';
 import { AppReducers, AppReducerState, RoutingTableState, RoutingTableReducers, ProductMenuState, ProductMenuReducers } from './reducers';
 import { initWebSocketListeners, userCanDesignLocations, userCanDesignSourceTypes, isSampleManagerEnabled, isFreezerManagementEnabled, getDateFormat, getMenuSectionConfigs } from './utils';
+import { TEST_USER_APP_ADMIN, TEST_USER_ASSAY_DESIGNER, TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from "../../test/data/users";
 
 export {
     AppModel,
@@ -84,4 +85,11 @@ export {
     NEW_FREEZER_DESIGN_HREF,
     NOTIFICATION_TIMEOUT,
     STICKY_HEADER_HEIGHT,
+    TEST_USER_GUEST,
+    TEST_USER_READER,
+    TEST_USER_AUTHOR,
+    TEST_USER_EDITOR,
+    TEST_USER_ASSAY_DESIGNER,
+    TEST_USER_FOLDER_ADMIN,
+    TEST_USER_APP_ADMIN,
 };

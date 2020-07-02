@@ -6,7 +6,7 @@ import {
     userCanDesignLocations,
     userCanDesignSourceTypes,
 } from './utils';
-import { APP_ADMIN, ASSAYDESIGNER, AUTHOR, EDITOR, FOLDER_ADMIN, GUEST, READER } from "../../test/data/users";
+import { TEST_USER_APP_ADMIN, TEST_USER_ASSAY_DESIGNER, TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from "../../test/data/users";
 
 describe("getMenuSectionConfigs", () => {
     test("sampleManager enabled", () => {
@@ -131,23 +131,23 @@ describe('utils', () => {
     };
 
     test('userCanDesignSourceTypes', () => {
-        expect(userCanDesignSourceTypes(GUEST)).toBeFalsy();
-        expect(userCanDesignSourceTypes(READER)).toBeFalsy();
-        expect(userCanDesignSourceTypes(AUTHOR)).toBeFalsy();
-        expect(userCanDesignSourceTypes(EDITOR)).toBeFalsy();
-        expect(userCanDesignSourceTypes(ASSAYDESIGNER)).toBeFalsy();
-        expect(userCanDesignSourceTypes(FOLDER_ADMIN)).toBeTruthy();
-        expect(userCanDesignSourceTypes(APP_ADMIN)).toBeTruthy();
+        expect(userCanDesignSourceTypes(TEST_USER_GUEST)).toBeFalsy();
+        expect(userCanDesignSourceTypes(TEST_USER_READER)).toBeFalsy();
+        expect(userCanDesignSourceTypes(TEST_USER_AUTHOR)).toBeFalsy();
+        expect(userCanDesignSourceTypes(TEST_USER_EDITOR)).toBeFalsy();
+        expect(userCanDesignSourceTypes(TEST_USER_ASSAY_DESIGNER)).toBeFalsy();
+        expect(userCanDesignSourceTypes(TEST_USER_FOLDER_ADMIN)).toBeTruthy();
+        expect(userCanDesignSourceTypes(TEST_USER_APP_ADMIN)).toBeTruthy();
     });
 
     test('userCanDesignLocations', () => {
-        expect(userCanDesignLocations(GUEST)).toBeFalsy();
-        expect(userCanDesignLocations(READER)).toBeFalsy();
-        expect(userCanDesignLocations(AUTHOR)).toBeFalsy();
-        expect(userCanDesignLocations(EDITOR)).toBeFalsy();
-        expect(userCanDesignLocations(ASSAYDESIGNER)).toBeFalsy();
-        expect(userCanDesignLocations(FOLDER_ADMIN)).toBeTruthy();
-        expect(userCanDesignLocations(APP_ADMIN)).toBeTruthy();
+        expect(userCanDesignLocations(TEST_USER_GUEST)).toBeFalsy();
+        expect(userCanDesignLocations(TEST_USER_READER)).toBeFalsy();
+        expect(userCanDesignLocations(TEST_USER_AUTHOR)).toBeFalsy();
+        expect(userCanDesignLocations(TEST_USER_EDITOR)).toBeFalsy();
+        expect(userCanDesignLocations(TEST_USER_ASSAY_DESIGNER)).toBeFalsy();
+        expect(userCanDesignLocations(TEST_USER_FOLDER_ADMIN)).toBeTruthy();
+        expect(userCanDesignLocations(TEST_USER_APP_ADMIN)).toBeTruthy();
     });
 
     test('isSampleManagerEnabled', () => {

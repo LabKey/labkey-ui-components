@@ -4,43 +4,43 @@
  */
 import { fromJS } from 'immutable';
 
-import { FOLDER_ADMIN, ASSAYDESIGNER, AUTHOR, EDITOR, GUEST, READER } from '../../test/data/users';
+import { TEST_USER_FOLDER_ADMIN, TEST_USER_ASSAY_DESIGNER, TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_GUEST, TEST_USER_READER } from '../../test/data/users';
 
 import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
 
 describe('User actions', () => {
     test('getUserPermissionsDisplay guest', () => {
-        const displayStrs = getUserPermissionsDisplay(GUEST);
+        const displayStrs = getUserPermissionsDisplay(TEST_USER_GUEST);
         expect(displayStrs.join(', ')).toBe('Reader');
     });
 
     test('getUserPermissionsDisplay reader', () => {
-        const displayStrs = getUserPermissionsDisplay(READER);
+        const displayStrs = getUserPermissionsDisplay(TEST_USER_READER);
         expect(displayStrs.join(', ')).toBe('Reader');
     });
 
     test('getUserPermissionsDisplay author', () => {
-        const displayStrs = getUserPermissionsDisplay(AUTHOR);
+        const displayStrs = getUserPermissionsDisplay(TEST_USER_AUTHOR);
         expect(displayStrs.join(', ')).toBe('Author');
     });
 
     test('getUserPermissionsDisplay editor', () => {
-        const displayStrs = getUserPermissionsDisplay(EDITOR);
+        const displayStrs = getUserPermissionsDisplay(TEST_USER_EDITOR);
         expect(displayStrs.join(', ')).toBe('Editor');
     });
 
     test('getUserPermissionsDisplay assaydesigner', () => {
-        const displayStrs = getUserPermissionsDisplay(ASSAYDESIGNER);
+        const displayStrs = getUserPermissionsDisplay(TEST_USER_ASSAY_DESIGNER);
         expect(displayStrs.join(', ')).toBe('Assay Designer, Reader');
     });
 
     test('getUserPermissionsDisplay folder admin', () => {
-        const displayStrs = getUserPermissionsDisplay(FOLDER_ADMIN);
+        const displayStrs = getUserPermissionsDisplay(TEST_USER_FOLDER_ADMIN);
         expect(displayStrs.join(', ')).toBe('Administrator');
     });
 
     test('getUserPermissionsDisplay app admin', () => {
-        const displayStrs = getUserPermissionsDisplay(FOLDER_ADMIN);
+        const displayStrs = getUserPermissionsDisplay(TEST_USER_FOLDER_ADMIN);
         expect(displayStrs.join(', ')).toBe('Administrator');
     });
 

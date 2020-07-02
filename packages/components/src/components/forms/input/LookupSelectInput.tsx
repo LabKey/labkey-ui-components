@@ -59,6 +59,7 @@ function formatLookupSelectInputOptions(
 }
 
 interface StateProps {
+    isLoading: boolean;
     options: LookupSelectOption[];
 }
 
@@ -79,12 +80,13 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
         this._id = generateId('select-');
 
         this.state = {
+            isLoading: false,
             options: this.getOptionsFromSelectedRows(props, props.selectedRows),
         };
     }
 
     componentWillMount() {
-        if (!this.state.options) {
+        if (!this.state.options && !this.state.isLoading) {
             this.getOptions();
         }
     }
@@ -92,6 +94,7 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
     componentWillReceiveProps(nextProps: OwnProps) {
         if (nextProps.selectedRows) {
             this.setState(() => ({
+                isLoading: false,
                 options: this.getOptionsFromSelectedRows(nextProps, nextProps.selectedRows),
             }));
         }
@@ -121,17 +124,19 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
                 'querygrid forms/input/<LookupSelectInput> received lookup column that is explicitly set displayAsLookup = false'
             );
         }
+        this.setState(() => ({isLoading: true}));
 
         const { schemaName, queryName } = queryColumn.lookup;
         selectRows({ schemaName, queryName, filterArray, sort })
             .then(response => {
                 this.setState(() => ({
+                    isLoading: false,
                     options: this.getOptionsFromSelectedRows(this.props, response),
                 }));
             })
             .catch(reason => {
                 console.error(reason);
-                this.setState(() => ({ options: [] }));
+                this.setState(() => ({ isLoading: false, options: [] }));
             });
     }
 

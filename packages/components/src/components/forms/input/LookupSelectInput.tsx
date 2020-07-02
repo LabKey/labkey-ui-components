@@ -124,7 +124,7 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
                 'querygrid forms/input/<LookupSelectInput> received lookup column that is explicitly set displayAsLookup = false'
             );
         }
-        this.setState(() => ({isLoading: true}));
+        this.setState(() => ({ isLoading: true }));
 
         const { schemaName, queryName } = queryColumn.lookup;
         selectRows({ schemaName, queryName, filterArray, sort })

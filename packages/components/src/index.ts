@@ -354,11 +354,15 @@ import {
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanelWithModel } from './QueryModel/DetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
+import * as App from './internal/app/index';
+
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
 enablePatches();
 
 export {
+    // internal application
+    App,
     // global state functions
     initQueryGridState,
     initNotificationsState,

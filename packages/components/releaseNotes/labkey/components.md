@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.71.3-20.7-fb-Issue40795.0
+### version 0.71.3-20.7-fb-Issue40795.1
 *Released*: TBD July 2020
 * Issue 40795: Query metadata editor should allow editing type of field in built in table
 

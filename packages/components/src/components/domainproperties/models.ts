@@ -843,7 +843,12 @@ export class DomainField
                 original: {
                     dataType,
                     conceptURI: rawField.conceptURI,
-                    rangeURI: rawField.propertyId !== undefined ? rawField.rangeURI : undefined, // Issue 38366: only need to use rangeURI filtering for already saved field/property
+                    rangeURI:
+                        rawField.propertyId !== undefined
+                            ? rawField.rangeURI
+                            : rawField.wrappedColumnName !== undefined
+                            ? rawField.rangeURI // Issue 40795: need rangURI for alias field (query metadata) to get other available types in the datatype dropdown
+                            : undefined, // Issue 38366: only need to use rangeURI filtering for already saved field/property
                 },
             })
         );

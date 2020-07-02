@@ -33,11 +33,12 @@ import {
     NOTIFICATION_TIMEOUT,
 } from './constants';
 import { AppModel, LogoutReason } from './models';
-import { AppReducers } from './reducers';
+import { AppReducers, AppReducerState } from './reducers';
 import { initWebSocketListeners, userCanDesignLocations, userCanDesignSourceTypes, isSampleManagerEnabled, isFreezerManagementEnabled, getDateFormat, getMenuSectionConfigs } from './utils';
 
 export {
     AppModel,
+    AppReducerState,
     AppReducers,
     LogoutReason,
     initWebSocketListeners,

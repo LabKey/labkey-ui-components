@@ -2,10 +2,10 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import { AppModel, LogoutReason } from "./model";
+import { AppModel, LogoutReason } from "./models";
 import { GUEST, READER } from "../../test/data/users";
 
-describe('App models', () => {
+describe('AppModel', () => {
 
     test('hasUserChanged', () => {
         let model = new AppModel({initialUserId: 1, user: GUEST});

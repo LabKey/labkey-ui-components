@@ -4,7 +4,7 @@
  */
 import { Record } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
-import { Container, User } from "../..";
+import { Container, User } from "../../components/base/models/model";
 
 export class AppModel extends Record({
     container: new Container(getServerContext().container),

@@ -306,6 +306,10 @@ number (then do the regular `npm install` for that module, build, etc. and push 
 changes to github as well).
 1. Remove any of the alpha package versions from [Artifactory](https://artifactory.labkey.com/artifactory/webapp/#/home)
 that you had published during development for this feature branch.
+    1. Navigate to the `@labkey/components` [tree node](https://artifactory.labkey.com/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local/@labkey/components/-/@labkey)
+    of the `libs-client-local` artifact.
+    1. Right click on the name of the alpha package version in the tree on the left and choose `delete` (or use the
+    `Actions > Delete` in the upper right), note that you must be logged in to see this option.
 1. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status.
 1. Merge the pull requests for `labkey-ui-components` and any of your related LabKey modules / repos.
 1. Message the Frontend dev room chat that the merge is complete.
@@ -316,19 +320,22 @@ Occasionally we will need to patch a version of the `@labkey/components` package
 LabKey server. There are a few extra steps in this process, described below:
 
 1. Find the `@labkey/components` package version number to patch by looking at the package versions that are used
- in the `package.json` files of the LabKey module that you plan to update.
+ in the `package.json` files of the LabKey module that you plan to update. The version number to branch from needs to
+ be the latest bug fix version greater than the version in use by the package where the update is required.
+ That is, if the module uses `0.41.2`, but we have already produced `0.41.3` and `0.41.4`, you need to use `0.41.4` as the
+ branch starting point since you'll presumably be making another bug fix release and can't use the versions already published.
 1. Once you know that package version number, track down the commit hash for it in
  the [github commit list](https://github.com/LabKey/labkey-ui-components/commits/master) off of the master branch.
 1. Create the release branch using that commit hash, `git checkout -b release20.3-SNAPSHOT <commit hash>`, and
  push that release branch to github.
-1. Create a new hotfix branch off of that newly release branch, `git checkout -b 20.3_fb_myFeatureBranchWithFixes`.
+1. Create a new hotfix branch off of that new release branch, `git checkout -b 20.3_fb_myFeatureBranchWithFixes`.
 1. Use the regular process to develop and test your changes and push those changes up to github.
 1. Create the pull request from your new hotfix feature branch and set the target of the pull request to the release branch.
 1. After all code review and triage is complete and you are ready to merge, do the regular merge steps for
  `labkey-ui-components` (see the steps in the section above). Note that the new release version you will use for your changes
  will be the next patch version off of the target package version for that release. For example if the veresion was at
   `0.31.3` then you will publish version `0.31.4`.
-1. After any related platform changes have been merged from their repo's release branch forward to develop,
+1. After any related LabKey module changes have been merged from their repo's release branch to develop,
  create a new branch in `labkey-ui-components` off of master in order to merge forward your hotfix changes:
     1. Get the latest from the hotfix branch:
         1. `git checkout release20.3-SNAPSHOT`

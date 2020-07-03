@@ -4,13 +4,17 @@
  */
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
+
 import {
-    MENU_INVALIDATE, MENU_LOADING_END, MENU_LOADING_ERROR, MENU_LOADING_START,
+    MENU_INVALIDATE,
+    MENU_LOADING_END,
+    MENU_LOADING_ERROR,
+    MENU_LOADING_START,
     SET_RELOAD_REQUIRED,
     UPDATE_USER_DISPLAY_NAME,
     USER_PERMISSIONS_REQUEST,
     USER_PERMISSIONS_SUCCESS,
-} from "./constants";
+} from './constants';
 
 function successUserPermissions(response) {
     return {
@@ -22,41 +26,43 @@ function successUserPermissions(response) {
 function fetchUserPermissions() {
     return new Promise((resolve, reject) => {
         Security.getUserPermissions({
-            success: (data) => {
+            success: data => {
                 resolve(data);
             },
-            failure: (error) => {
+            failure: error => {
                 reject(error);
-            }
+            },
         });
     });
 }
 
 export function getUserPermissions() {
-    return (dispatch) => {
+    return dispatch => {
         dispatch({
-            type: USER_PERMISSIONS_REQUEST
+            type: USER_PERMISSIONS_REQUEST,
         });
 
-        return fetchUserPermissions().then( (response) => {
-            dispatch(successUserPermissions(response))
-        }).catch( error => {
-            console.error(error);
-        })
-    }
+        return fetchUserPermissions()
+            .then(response => {
+                dispatch(successUserPermissions(response));
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
 }
 
 export function updateUserDisplayName(displayName: string) {
     return {
         type: UPDATE_USER_DISPLAY_NAME,
-        displayName
-    }
+        displayName,
+    };
 }
 
 export function setReloadRequired() {
     return {
-        type: SET_RELOAD_REQUIRED
-    }
+        type: SET_RELOAD_REQUIRED,
+    };
 }
 
 export function menuInit(currentProductId: string, userMenuProductId: string, productIds?: List<string>) {
@@ -74,23 +80,22 @@ export function menuInit(currentProductId: string, userMenuProductId: string, pr
                 .then(sections => {
                     dispatch({
                         type: MENU_LOADING_END,
-                        sections
+                        sections,
                     });
                 })
                 .catch(reason => {
-                    console.error("Problem retrieving product menu data.", reason);
+                    console.error('Problem retrieving product menu data.', reason);
                     dispatch({
                         type: MENU_LOADING_ERROR,
-                        message: 'Error in retrieving product menu data. Please contact your site administrator.'
+                        message: 'Error in retrieving product menu data. Please contact your site administrator.',
                     });
                 });
-
         }
-    }
+    };
 }
 
 export function menuInvalidate() {
     return (dispatch, getState) => {
-        dispatch({type: MENU_INVALIDATE})
-    }
+        dispatch({ type: MENU_INVALIDATE });
+    };
 }

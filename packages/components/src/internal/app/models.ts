@@ -4,7 +4,8 @@
  */
 import { Record } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
-import { Container, User } from "../../components/base/models/model";
+
+import { Container, User } from '../../components/base/models/model';
 
 export class AppModel extends Record({
     container: new Container(getServerContext().container),
@@ -13,7 +14,7 @@ export class AppModel extends Record({
     logoutReason: undefined,
     reloadRequired: false,
     requestPermissions: true,
-    user: new User(getServerContext().user)
+    user: new User(getServerContext().user),
 }) {
     container: Container;
     contextPath: string;
@@ -23,7 +24,7 @@ export class AppModel extends Record({
     requestPermissions: boolean;
     user: User;
 
-    constructor(values?: {[key:string]: any}) {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -71,5 +72,5 @@ export class AppModel extends Record({
 export enum LogoutReason {
     SERVER_LOGOUT,
     SESSION_EXPIRED,
-    SERVER_UNAVAILABLE
+    SERVER_UNAVAILABLE,
 }

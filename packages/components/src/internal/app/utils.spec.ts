@@ -1,4 +1,15 @@
 import { User } from '../../components/base/models/model';
+
+import {
+    TEST_USER_APP_ADMIN,
+    TEST_USER_ASSAY_DESIGNER,
+    TEST_USER_AUTHOR,
+    TEST_USER_EDITOR,
+    TEST_USER_FOLDER_ADMIN,
+    TEST_USER_GUEST,
+    TEST_USER_READER,
+} from '../../test/data/users';
+
 import {
     getMenuSectionConfigs,
     isFreezerManagementEnabled,
@@ -6,115 +17,118 @@ import {
     userCanDesignLocations,
     userCanDesignSourceTypes,
 } from './utils';
-import { TEST_USER_APP_ADMIN, TEST_USER_ASSAY_DESIGNER, TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from "../../test/data/users";
 
-describe("getMenuSectionConfigs", () => {
-    test("sampleManager enabled", () => {
+describe('getMenuSectionConfigs', () => {
+    test('sampleManager enabled', () => {
         LABKEY.moduleContext = {
             samplemanagement: {
                 hasFreezerManagementEnabled: true,
                 hasPremiumModule: true,
                 hasStudyModule: true,
-                productId: "SampleManager"
-            }
+                productId: 'SampleManager',
+            },
         };
-        const configs = getMenuSectionConfigs(new User(), "sampleManager");
+        const configs = getMenuSectionConfigs(new User(), 'sampleManager');
 
         expect(configs.size).toBe(4);
         expect(configs.hasIn([0, 'sources'])).toBeTruthy();
-        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual("#/sources?viewAs=grid");
+        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
 
         expect(configs.hasIn([1, 'samples'])).toBeTruthy();
-        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual("#/samples?viewAs=cards");
+        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
 
         expect(configs.hasIn([2, 'assays'])).toBeTruthy();
-        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual("#/assays?viewAs=grid");
+        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
 
         expect(configs.hasIn([3, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([3, 'workflow', 'seeAllURL'])).toEqual("#/workflow?viewAs=heatmap");
+        expect(configs.getIn([3, 'workflow', 'seeAllURL'])).toEqual('#/workflow?viewAs=heatmap');
 
         expect(configs.hasIn([3, 'user'])).toBeTruthy();
     });
 
-    test("freezerManager enabled", () => {
+    test('freezerManager enabled', () => {
         LABKEY.moduleContext = {
             inventory: {
-                productId: "freezerManager"
-            }
+                productId: 'freezerManager',
+            },
         };
-        const configs = getMenuSectionConfigs(new User(), "freezerManager");
+        const configs = getMenuSectionConfigs(new User(), 'freezerManager');
 
         expect(configs.size).toBe(2);
         expect(configs.hasIn([0, 'locations'])).toBeTruthy();
-        expect(configs.getIn([0, 'locations', 'seeAllURL'])).toEqual("#/home");
+        expect(configs.getIn([0, 'locations', 'seeAllURL'])).toEqual('#/home');
 
         expect(configs.hasIn([1, 'user'])).toBeTruthy();
     });
 
-    test("SM and FM enabled, SM current app", () => {
+    test('SM and FM enabled, SM current app', () => {
         LABKEY.moduleContext = {
             samplemanagement: {
                 hasFreezerManagementEnabled: true,
                 hasPremiumModule: true,
                 hasStudyModule: true,
-                productId: "SampleManager"
+                productId: 'SampleManager',
             },
             inventory: {
-                productId: "freezerManager"
+                productId: 'freezerManager',
             },
         };
 
-        const configs = getMenuSectionConfigs(new User(), "sampleManager");
+        const configs = getMenuSectionConfigs(new User(), 'sampleManager');
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, 'sources'])).toBeTruthy();
-        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual("#/sources?viewAs=grid");
+        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual('#/sources?viewAs=grid');
 
         expect(configs.hasIn([1, 'samples'])).toBeTruthy();
-        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual("#/samples?viewAs=cards");
+        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual('#/samples?viewAs=cards');
 
         expect(configs.hasIn([2, 'assays'])).toBeTruthy();
-        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual("#/assays?viewAs=grid");
+        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
 
         expect(configs.hasIn([3, 'locations'])).toBeTruthy();
-        expect(configs.getIn([3, 'locations', 'seeAllURL'])).toEqual("/labkey/freezermanager/app.view#/home");
+        expect(configs.getIn([3, 'locations', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
 
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual("#/workflow?viewAs=heatmap");
+        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow?viewAs=heatmap');
 
         expect(configs.hasIn([4, 'user'])).toBeTruthy();
     });
 
-    test("SM and FM enabled, FM current app", () => {
+    test('SM and FM enabled, FM current app', () => {
         LABKEY.moduleContext = {
             samplemanagement: {
                 hasFreezerManagementEnabled: true,
                 hasPremiumModule: true,
                 hasStudyModule: true,
-                productId: "SampleManager"
+                productId: 'SampleManager',
             },
             inventory: {
-                productId: "freezerManager"
+                productId: 'freezerManager',
             },
         };
 
-
-        const configs = getMenuSectionConfigs(new User(), "freezerManager");
+        const configs = getMenuSectionConfigs(new User(), 'freezerManager');
         expect(configs.size).toBe(5);
         expect(configs.hasIn([0, 'sources'])).toBeTruthy();
-        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual("/labkey/samplemanager/app.view#/sources?viewAs=grid");
+        expect(configs.getIn([0, 'sources', 'seeAllURL'])).toEqual(
+            '/labkey/samplemanager/app.view#/sources?viewAs=grid'
+        );
 
         expect(configs.hasIn([1, 'samples'])).toBeTruthy();
-        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual("/labkey/samplemanager/app.view#/samples?viewAs=cards");
+        expect(configs.getIn([1, 'samples', 'seeAllURL'])).toEqual(
+            '/labkey/samplemanager/app.view#/samples?viewAs=cards'
+        );
 
         expect(configs.hasIn([2, 'assays'])).toBeTruthy();
-        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual("/labkey/samplemanager/app.view#/assays?viewAs=grid");
+        expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/assays?viewAs=grid');
 
         expect(configs.hasIn([3, 'locations'])).toBeTruthy();
-        expect(configs.getIn([3, 'locations', 'seeAllURL'])).toEqual("#/home");
-
+        expect(configs.getIn([3, 'locations', 'seeAllURL'])).toEqual('#/home');
 
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
-        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual("/labkey/samplemanager/app.view#/workflow?viewAs=heatmap");
+        expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual(
+            '/labkey/samplemanager/app.view#/workflow?viewAs=heatmap'
+        );
 
         expect(configs.hasIn([4, 'user'])).toBeTruthy();
     });
@@ -126,8 +140,8 @@ describe('utils', () => {
             hasFreezerManagementEnabled: true,
             hasPremiumModule: true,
             hasStudyModule: true,
-            productId: "SampleManager"
-        }
+            productId: 'SampleManager',
+        },
     };
 
     test('userCanDesignSourceTypes', () => {
@@ -155,36 +169,36 @@ describe('utils', () => {
         expect(isSampleManagerEnabled()).toBeFalsy();
 
         LABKEY.moduleContext = {
-            inventory: {}
+            inventory: {},
         };
         expect(isSampleManagerEnabled()).toBeFalsy();
 
         LABKEY.moduleContext = {
             inventory: {},
-            samplemanagement: {}
+            samplemanagement: {},
         };
         expect(isSampleManagerEnabled()).toBeTruthy();
 
         LABKEY.moduleContext = {
             inventory: {},
             samplemanagement: {
-                hasFreezerManagementEnabled: false
-            }
+                hasFreezerManagementEnabled: false,
+            },
         };
         expect(isSampleManagerEnabled()).toBeTruthy();
 
         LABKEY.moduleContext = {
             inventory: {},
             samplemanagement: {
-                hasFreezerManagementEnabled: true
-            }
+                hasFreezerManagementEnabled: true,
+            },
         };
         expect(isSampleManagerEnabled()).toBeTruthy();
 
         LABKEY.moduleContext = {
             samplemanagement: {
-                hasFreezerManagementEnabled: true
-            }
+                hasFreezerManagementEnabled: true,
+            },
         };
         expect(isSampleManagerEnabled()).toBeTruthy();
     });
@@ -194,36 +208,36 @@ describe('utils', () => {
         expect(isFreezerManagementEnabled()).toBeFalsy();
 
         LABKEY.moduleContext = {
-            inventory: {}
+            inventory: {},
         };
         expect(isFreezerManagementEnabled()).toBeTruthy();
 
         LABKEY.moduleContext = {
             inventory: {},
-            samplemanagement: {}
+            samplemanagement: {},
         };
         expect(isFreezerManagementEnabled()).toBeFalsy();
 
         LABKEY.moduleContext = {
             inventory: {},
             samplemanagement: {
-                hasFreezerManagementEnabled: false
-            }
+                hasFreezerManagementEnabled: false,
+            },
         };
         expect(isFreezerManagementEnabled()).toBeFalsy();
 
         LABKEY.moduleContext = {
             inventory: {},
             samplemanagement: {
-                hasFreezerManagementEnabled: true
-            }
+                hasFreezerManagementEnabled: true,
+            },
         };
         expect(isFreezerManagementEnabled()).toBeTruthy();
 
         LABKEY.moduleContext = {
             samplemanagement: {
-                hasFreezerManagementEnabled: true
-            }
+                hasFreezerManagementEnabled: true,
+            },
         };
         expect(isFreezerManagementEnabled()).toBeFalsy();
     });

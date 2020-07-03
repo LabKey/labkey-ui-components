@@ -2,6 +2,16 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import {
+    TEST_USER_APP_ADMIN,
+    TEST_USER_ASSAY_DESIGNER,
+    TEST_USER_AUTHOR,
+    TEST_USER_EDITOR,
+    TEST_USER_FOLDER_ADMIN,
+    TEST_USER_GUEST,
+    TEST_USER_READER,
+} from '../../test/data/users';
+
 import { getUserPermissions, setReloadRequired, updateUserDisplayName, menuInit, menuInvalidate } from './actions';
 import {
     SECURITY_LOGOUT,
@@ -33,9 +43,23 @@ import {
     NOTIFICATION_TIMEOUT,
 } from './constants';
 import { AppModel, LogoutReason } from './models';
-import { AppReducers, AppReducerState, RoutingTableState, RoutingTableReducers, ProductMenuState, ProductMenuReducers } from './reducers';
-import { initWebSocketListeners, userCanDesignLocations, userCanDesignSourceTypes, isSampleManagerEnabled, isFreezerManagementEnabled, getDateFormat, getMenuSectionConfigs } from './utils';
-import { TEST_USER_APP_ADMIN, TEST_USER_ASSAY_DESIGNER, TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN, TEST_USER_GUEST, TEST_USER_READER } from "../../test/data/users";
+import {
+    AppReducers,
+    AppReducerState,
+    RoutingTableState,
+    RoutingTableReducers,
+    ProductMenuState,
+    ProductMenuReducers,
+} from './reducers';
+import {
+    initWebSocketListeners,
+    userCanDesignLocations,
+    userCanDesignSourceTypes,
+    isSampleManagerEnabled,
+    isFreezerManagementEnabled,
+    getDateFormat,
+    getMenuSectionConfigs,
+} from './utils';
 
 export {
     AppModel,

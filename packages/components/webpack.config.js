@@ -5,6 +5,7 @@
  */
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/index.ts',
@@ -72,6 +73,15 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: 'components.css'
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    // copy static scss files into the dist dir to be used by LabKey module apps
+                    from: 'src/internal/app/scss',
+                    to: 'assets/scss'
+                }
+            ]
         })
     ],
     externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery']

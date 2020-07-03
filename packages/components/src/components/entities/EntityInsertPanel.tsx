@@ -234,14 +234,13 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             auditBehavior,
         });
 
-        let schemaQueries = Map<string, EntityDataType>();
-        schemaQueries = schemaQueries.set(entityDataType.instanceSchemaName, entityDataType);
+        let parentSchemaQueries = Map<string, EntityDataType>();
         if (this.props.parentDataTypes) {
             this.props.parentDataTypes.forEach(dataType => {
-                schemaQueries = schemaQueries.set(dataType.instanceSchemaName, dataType);
+                parentSchemaQueries = parentSchemaQueries.set(dataType.instanceSchemaName, dataType);
             });
         }
-        getEntityTypeData(insertModel, schemaQueries, entityDataType.typeListingSchemaQuery.queryName, allowParents)
+        getEntityTypeData(insertModel, entityDataType, parentSchemaQueries, entityDataType.typeListingSchemaQuery.queryName, allowParents)
             .then(partialModel => {
                 const updatedModel = insertModel.merge(partialModel) as EntityIdCreationModel;
                 this.gridInit(updatedModel);
@@ -824,7 +823,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             <>
                 {this.renderHeader(true)}
                 <hr className="bottom-spacing" />
-                <div className="top-spacing">
+                <div className="top-spacing bottom-spacing">
                     {queryGridModel && queryGridModel.isLoaded ? (
                         <EditableGridPanel
                             addControlProps={addControlProps}

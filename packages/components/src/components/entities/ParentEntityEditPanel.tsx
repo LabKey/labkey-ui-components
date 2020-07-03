@@ -90,9 +90,9 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
 
     init() {
         const { parentDataType } = this.props;
-        const { typeListingSchemaQuery, instanceSchemaName, filterArray } = parentDataType;
+        const { typeListingSchemaQuery } = parentDataType;
 
-        getEntityTypeOptions(typeListingSchemaQuery, instanceSchemaName, filterArray)
+        getEntityTypeOptions(parentDataType)
             .then(optionsMap => {
                 const parentTypeOptions = optionsMap.get(typeListingSchemaQuery.queryName);
                 const originalParents = getInitialParentChoices(

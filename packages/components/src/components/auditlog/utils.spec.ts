@@ -3,7 +3,7 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 
-import { getAuditQueries } from "./utils";
+import { getAuditQueries } from './utils';
 
 describe('utils', () => {
     test('getAuditQueries', () => {
@@ -15,8 +15,7 @@ describe('utils', () => {
         };
         let auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(13);
-        expect(auditQueries.findIndex((entry) => entry.value === 'inventoryauditevent')).toBe(12);
-
+        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(12);
 
         LABKEY.moduleContext = {
             samplemanagement: {
@@ -26,8 +25,7 @@ describe('utils', () => {
         };
         auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(12);
-        expect(auditQueries.findIndex((entry) => entry.value === 'inventoryauditevent')).toBe(-1);
-
+        expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(-1);
 
         LABKEY.moduleContext = {};
         auditQueries = getAuditQueries();

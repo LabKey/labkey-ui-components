@@ -4,16 +4,14 @@
  */
 import { fromJS, Map, Record } from 'immutable';
 
-export class AuditDetailsModel extends Record( {
+export class AuditDetailsModel extends Record({
     rowId: undefined,
     comment: undefined,
     eventUserId: undefined,
     eventDateFormatted: undefined,
     oldData: undefined,
-    newData: undefined
-
-})
-{
+    newData: undefined,
+}) {
     rowId?: number;
     comment?: string;
     eventUserId?: number;
@@ -21,8 +19,7 @@ export class AuditDetailsModel extends Record( {
     oldData?: Map<string, string>;
     newData?: Map<string, string>;
 
-    constructor(values?: { [key: string]: any })
-    {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -30,7 +27,7 @@ export class AuditDetailsModel extends Record( {
         return new AuditDetailsModel({
             ...raw,
             oldData: raw.oldData ? fromJS(raw.oldData) : undefined,
-            newData: raw.newData ? fromJS(raw.newData) : undefined
+            newData: raw.newData ? fromJS(raw.newData) : undefined,
         });
     }
 
@@ -47,14 +44,9 @@ export class AuditDetailsModel extends Record( {
     }
 
     getActionLabel() {
-        if (this.isUpdate())
-            return "Updated";
-        else if (this.isInsert())
-            return "Created";
-        else if (this.isDelete())
-            return "Deleted";
-        else
-            return "Updated";
+        if (this.isUpdate()) return 'Updated';
+        else if (this.isInsert()) return 'Created';
+        else if (this.isDelete()) return 'Deleted';
+        else return 'Updated';
     }
-
 }

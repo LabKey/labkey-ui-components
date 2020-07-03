@@ -141,7 +141,7 @@ export class AuditDetails extends React.Component<Props, State> {
         return (
             <Row className="margin-bottom" key={field}>
                 <Col className="left-spacing right-spacing">
-                    <span className="audit-detail-row-label job-field-label right-spacing">
+                    <span className="audit-detail-row-label right-spacing">
                         {capitalizeFirstChar(field)}:
                     </span>
                 </Col>

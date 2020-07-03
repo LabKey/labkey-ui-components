@@ -95,6 +95,13 @@ export function getAuditQueries(): Array<{ [key: string]: any }> {
             { value: 'domainauditevent', label: 'Domain Events' },
             { value: 'domainpropertyauditevent', label: 'Domain Property Events' },
             { value: 'queryupdateauditevent', label: 'Data Update Events', hasDetail: true },
+        );
+    }
+    if (isFreezerManagementEnabled()) {
+        auditQueries.push({ value: 'inventoryauditevent', label: 'Freezer Management Events', hasDetail: true });
+    }
+    if (isSampleManagerEnabled()) {
+        auditQueries.push(
             { value: 'listauditevent', label: 'List Events' },
             {
                 value: 'groupauditevent',
@@ -107,9 +114,6 @@ export function getAuditQueries(): Array<{ [key: string]: any }> {
             { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true },
             { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders }
         );
-    }
-    if (isFreezerManagementEnabled()) {
-        auditQueries.push({ value: 'inventoryauditevent', label: 'Freezer Management Events', hasDetail: true });
     }
 
     return auditQueries;

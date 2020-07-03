@@ -6,7 +6,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 7458: Move shared application models, actions, etc. for Sample Manager and Freezer Manager
     - export all of the new application related items as a single "App" item
     - includes moving of AppModel, some reducers (product and routing), and related functions and constants
-    - includes moving of AuditLog related components, models, actions, and utils
+    - move AuditLog related components, models, actions, and utils from Sample Manager
+    - move SchemaListingPage, QueriesListingPage, QueryListingPage, and QueryDetailPage from Sample Manager
 
 ### version 0.73.1
 *Released*: 2 July 2020

@@ -214,6 +214,10 @@ import { ISelectInitData } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
+import { QueriesListingPage } from './components/listing/pages/QueriesListingPage';
+import { QueryDetailPage } from './components/listing/pages/QueryDetailPage';
+import { QueryListingPage } from './components/listing/pages/QueryListingPage';
+import { SchemaListingPage } from './components/listing/pages/SchemaListingPage';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
@@ -704,7 +708,11 @@ export {
     ErrorBoundary,
     BeforeUnload,
     SchemaListing,
+    SchemaListingPage,
     QueriesListing,
+    QueriesListingPage,
+    QueryListingPage,
+    QueryDetailPage,
     Theme,
     SVGIcon,
     // general components

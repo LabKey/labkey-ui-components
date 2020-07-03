@@ -13,7 +13,11 @@ import {
     SECURITY_SESSION_TIMEOUT,
     SOURCES_KEY, USER_KEY, WORKFLOW_HOME_HREF, WORKFLOW_KEY
 } from "./constants";
-import { AppURL, buildURL, hasAllPermissions, imageURL, MenuSectionConfig, User } from "../..";
+import { AppURL } from "../../url/AppURL";
+import { buildURL, imageURL } from "../../url/ActionURL";
+import { hasAllPermissions } from "../../util/utils";
+import { MenuSectionConfig } from "../../components/navigation/ProductMenuSection";
+import { User } from "../../components/base/models/model";
 
 export function initWebSocketListeners(store): void {
     // register websocket listener for the case where a user logs out in another tab

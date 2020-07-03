@@ -8,6 +8,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - includes moving of AppModel, some reducers (product and routing), and related functions and constants
     - includes moving of AuditLog related components, models, actions, and utils
 
+### version 0.73.1
+*Released*: 2 July 2020
+* Adjust LookupSelectInput to protect against loading the options more than once
+
 ### version 0.73.0
 *Released*: 1 July 2020
 * Item 7458: Update Sample Manager and Freezer Manager app product menus to respect isSampleManagerEnabled

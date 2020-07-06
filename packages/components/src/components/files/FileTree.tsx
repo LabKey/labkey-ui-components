@@ -104,8 +104,7 @@ const nodeIsEmpty = (id: string): boolean => {
 };
 
 const Header = props => {
-    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, unsetActiveNode } = props;
-    const [allowActive, setAllowActive] = useState(true);
+    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls } = props;
     const isDirectory = node.children !== undefined;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
 
@@ -241,7 +240,6 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                     useFileIconCls={useFileIconCls}
                     checked={checked.contains(props.node.id)}
                     handleCheckbox={this.handleCheckbox}
-                    unsetActiveNode={this.unsetActiveNode}
                 />
             );
         } else {
@@ -436,19 +434,9 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         }
     };
 
-    // In progress
-    unsetActiveNode = (fnCall) => {
-        console.log("before", this.state);
-        // this.setState({allowActive: false});
-        // fnCall();
-        // this.setState((state) => ({ ...state, cursor: { ...state.cursor, active: false }}), () => {console.log("after", this.state)});
-    }
-
     reload = (selectedNode, successCallback, failureCallback) => {
-        // console.log("reload", this.state.data);
         const { loadData } = this.props;
         const parentDir = this.getPathFromId(selectedNode.id, true);
-        console.log("Step 2: in reload, accsing parent", parentDir);
 
         loadData(parentDir)
             .then(children => {
@@ -459,13 +447,6 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                     child.id = dataNode.id + '|' + child.name; // generate Id from path
                     return child;
                 });
-                console.log("wtd", children);
-                console.log("wtf", selectedNode);
-
-                children = children.map(child => {
-
-                    }
-                );
 
                 dataNode.children = children; // This is not immutable so this is updating the data object
             })

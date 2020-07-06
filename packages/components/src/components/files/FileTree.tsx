@@ -434,27 +434,6 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         }
     };
 
-    reload = (selectedNode, successCallback, failureCallback) => {
-        const { loadData } = this.props;
-        const parentDir = this.getPathFromId(selectedNode.id, true);
-
-        loadData(parentDir)
-            .then(children => {
-                const { data } = this.state;
-                const dataNode = this.getDataNode(parentDir.replace('/', '|'), data);
-
-                children = children.map(child => {
-                    child.id = dataNode.id + '|' + child.name; // generate Id from path
-                    return child;
-                });
-
-                dataNode.children = children; // This is not immutable so this is updating the data object
-            })
-            .catch((reason: any) => {
-                failureCallback(reason);
-            });
-    }
-
     render(): React.ReactNode {
         const { data, error } = this.state;
 

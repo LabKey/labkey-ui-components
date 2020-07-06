@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - includes moving of AppModel, some reducers (product and routing), and related functions and constants
     - move AuditLog related components, models, actions, and utils from Sample Manager
     - move SchemaListingPage, QueriesListingPage, QueryListingPage, and QueryDetailPage from Sample Manager
+    - move app scss assets from Sample Manager, and have them copied into dist/assets/scss for module app usage
 
 ### version 0.73.1
 *Released*: 2 July 2020

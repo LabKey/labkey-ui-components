@@ -277,12 +277,17 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         return undefined;
     };
 
-    getPathFromId = (id: string): string => {
+    getPathFromId = (id: string, excludeLeaf = false): string => {
         let path = id;
 
         // strip off default root id if exists
         if (path.startsWith(DEFAULT_ROOT_PREFIX)) {
             path = path.substring(DEFAULT_ROOT_PREFIX.length);
+        }
+
+        if (excludeLeaf) {
+            const finalSlash = path.lastIndexOf('|');
+            path = path.slice(0, finalSlash);
         }
 
         return path.replace(/\|/g, '/');
@@ -368,8 +373,6 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         this.setState(() => ({ loading: true }));
         loadData(this.getPathFromId(nodeId))
             .then(children => {
-                console.log("loadDirectory", children);
-
                 const { data } = this.state;
                 const dataNode = this.getDataNode(nodeId, data);
 
@@ -418,7 +421,6 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         }
         node.active = true;
         node.toggled = toggled;
-        console.log("onToggle", this.state);
 
         // load data in directory if not already loaded
         if (node.children && node.children.length === 0) {
@@ -434,11 +436,42 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         }
     };
 
+    // In progress
     unsetActiveNode = (fnCall) => {
         console.log("before", this.state);
         // this.setState({allowActive: false});
-        fnCall();
+        // fnCall();
         // this.setState((state) => ({ ...state, cursor: { ...state.cursor, active: false }}), () => {console.log("after", this.state)});
+    }
+
+    reload = (selectedNode, successCallback, failureCallback) => {
+        // console.log("reload", this.state.data);
+        const { loadData } = this.props;
+        const parentDir = this.getPathFromId(selectedNode.id, true);
+        console.log("Step 2: in reload, accsing parent", parentDir);
+
+        loadData(parentDir)
+            .then(children => {
+                const { data } = this.state;
+                const dataNode = this.getDataNode(parentDir.replace('/', '|'), data);
+
+                children = children.map(child => {
+                    child.id = dataNode.id + '|' + child.name; // generate Id from path
+                    return child;
+                });
+                console.log("wtd", children);
+                console.log("wtf", selectedNode);
+
+                children = children.map(child => {
+
+                    }
+                );
+
+                dataNode.children = children; // This is not immutable so this is updating the data object
+            })
+            .catch((reason: any) => {
+                failureCallback(reason);
+            });
     }
 
     render(): React.ReactNode {

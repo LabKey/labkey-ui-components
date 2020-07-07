@@ -14,7 +14,7 @@ import { User } from '../../components/base/models/model';
 import {
     ASSAYS_KEY,
     HOME_KEY,
-    LOCATIONS_KEY,
+    FREEZERS_KEY,
     NEW_ASSAY_DESIGN_HREF,
     NEW_FREEZER_DESIGN_HREF,
     NEW_SAMPLE_TYPE_HREF,
@@ -135,10 +135,10 @@ export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<
         if (userCanDesignLocations(user)) {
             locationsMenuConfig = locationsMenuConfig.merge({
                 emptyURL: NEW_FREEZER_DESIGN_HREF,
-                emptyURLText: 'Create a location',
+                emptyURLText: 'Create a freezer',
             }) as MenuSectionConfig;
         }
-        sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(LOCATIONS_KEY, locationsMenuConfig));
+        sectionConfigs = sectionConfigs.push(Map<string, MenuSectionConfig>().set(FREEZERS_KEY, locationsMenuConfig));
     }
 
     if (isSampleManagerEnabled()) {

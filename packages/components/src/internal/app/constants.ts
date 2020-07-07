@@ -14,7 +14,8 @@ export const SAMPLE_TYPE_KEY = 'sampleSet';
 export const SOURCES_KEY = 'sources';
 export const SOURCE_TYPE_KEY = 'sourceType';
 export const WORKFLOW_KEY = 'workflow';
-export const LOCATIONS_KEY = 'locations';
+export const FREEZERS_KEY = "freezers";
+export const BOXES_KEY = "boxes";
 export const HOME_KEY = 'home';
 export const USER_KEY = 'user';
 
@@ -25,7 +26,7 @@ export const NEW_ASSAY_DESIGN_HREF = AppURL.create(ASSAY_DESIGN_KEY, 'new');
 export const WORKFLOW_HOME_HREF = AppURL.create(WORKFLOW_KEY)
     .addParam('mine.sort', 'DueDate')
     .addParam('active.sort', 'DueDate');
-export const NEW_FREEZER_DESIGN_HREF = AppURL.create(LOCATIONS_KEY, 'freezer', 'new');
+export const NEW_FREEZER_DESIGN_HREF = AppURL.create(FREEZERS_KEY, 'new');
 
 export const USER_PERMISSIONS_REQUEST = '/app/USER_PERMISSIONS_REQUEST';
 export const USER_PERMISSIONS_SUCCESS = '/app/USER_PERMISSIONS_SUCCESS';

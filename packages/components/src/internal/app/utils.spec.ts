@@ -55,8 +55,8 @@ describe('getMenuSectionConfigs', () => {
         const configs = getMenuSectionConfigs(new User(), 'freezerManager');
 
         expect(configs.size).toBe(2);
-        expect(configs.hasIn([0, 'locations'])).toBeTruthy();
-        expect(configs.getIn([0, 'locations', 'seeAllURL'])).toEqual('#/home');
+        expect(configs.hasIn([0, 'freezers'])).toBeTruthy();
+        expect(configs.getIn([0, 'freezers', 'seeAllURL'])).toEqual('#/home');
 
         expect(configs.hasIn([1, 'user'])).toBeTruthy();
     });
@@ -85,8 +85,8 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([2, 'assays'])).toBeTruthy();
         expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('#/assays?viewAs=grid');
 
-        expect(configs.hasIn([3, 'locations'])).toBeTruthy();
-        expect(configs.getIn([3, 'locations', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
+        expect(configs.hasIn([3, 'freezers'])).toBeTruthy();
+        expect(configs.getIn([3, 'freezers', 'seeAllURL'])).toEqual('/labkey/freezermanager/app.view#/home');
 
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
         expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual('#/workflow?viewAs=heatmap');
@@ -122,8 +122,8 @@ describe('getMenuSectionConfigs', () => {
         expect(configs.hasIn([2, 'assays'])).toBeTruthy();
         expect(configs.getIn([2, 'assays', 'seeAllURL'])).toEqual('/labkey/samplemanager/app.view#/assays?viewAs=grid');
 
-        expect(configs.hasIn([3, 'locations'])).toBeTruthy();
-        expect(configs.getIn([3, 'locations', 'seeAllURL'])).toEqual('#/home');
+        expect(configs.hasIn([3, 'freezers'])).toBeTruthy();
+        expect(configs.getIn([3, 'freezers', 'seeAllURL'])).toEqual('#/home');
 
         expect(configs.hasIn([4, 'workflow'])).toBeTruthy();
         expect(configs.getIn([4, 'workflow', 'seeAllURL'])).toEqual(

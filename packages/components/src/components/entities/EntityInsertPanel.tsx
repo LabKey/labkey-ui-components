@@ -473,6 +473,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                             label={capNounSingular + ' ' + index + ' Type'}
                             labelClass="col-sm-3 entity-insert--parent-label"
                             name={'parent-re-select-' + index}
+                            id={'parent-re-select-' + index}
                             onChange={this.changeParent.bind(this, index, queryName)}
                             options={insertModel.getParentOptions(query, queryName, combineParentTypes)}
                             value={query}
@@ -568,6 +569,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                         label={this.capTypeTextSingular}
                         labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
                         name="targetEntityType"
+                        id="targetEntityType"
                         placeholder={'Select a ' + this.capTypeTextSingular + '...'}
                         onChange={this.changeTargetEntityType}
                         options={insertModel.entityTypeOptions.toArray()}

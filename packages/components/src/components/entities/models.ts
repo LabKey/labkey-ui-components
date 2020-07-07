@@ -431,10 +431,19 @@ export class EntityIdCreationModel extends Record({
         };
     }
 
-    getParentOptions(currentSelection: string, queryName: string): any[] {
+    getParentOptions(currentSelection: string, queryName: string, combineParentTypes: boolean): any[] {
+
+        let allOptions = this.parentOptions.get(queryName);
+        if (combineParentTypes) {
+            allOptions = this.parentOptions.valueSeq().reduce((accum, val) => {
+                accum = accum.concat(val) as List<IParentOption>;
+                return accum;
+            }, List<IParentOption>());
+
+        }
+
         // exclude options that have already been selected, except the current selection for this input
-        return this.parentOptions
-            .get(queryName)
+        return allOptions
             .filter(o =>
                 this.entityParents.get(queryName).every(parent => {
                     const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);

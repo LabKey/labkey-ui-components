@@ -109,7 +109,8 @@ interface OwnProps {
     parentDataTypes?: List<EntityDataType>;
     importHelpLinkNode: React.ReactNode;
     auditBehavior?: AuditBehaviorTypes;
-    importOnly?: boolean; // Biologics has a different sample create form so don't use create from grid tab
+    importOnly?: boolean;
+    combineParentTypes?: boolean;
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -455,8 +456,10 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
     renderParentTypes(entityDataType: EntityDataType): React.ReactNode {
         const { insertModel } = this.state;
+        const { combineParentTypes } = this.props;
         const queryName = entityDataType.typeListingSchemaQuery.queryName;
         const entityParents = insertModel.entityParents.get(queryName);
+
         return entityParents
             .map(parent => {
                 const { index, key, query } = parent;
@@ -471,7 +474,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                             labelClass="col-sm-3 entity-insert--parent-label"
                             name={'parent-re-select-' + index}
                             onChange={this.changeParent.bind(this, index, queryName)}
-                            options={insertModel.getParentOptions(query, queryName)}
+                            options={insertModel.getParentOptions(query, queryName, combineParentTypes)}
                             value={query}
                         />
 
@@ -517,7 +520,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
     renderParentTypesAndButtons(): React.ReactNode {
         const { insertModel } = this.state;
-        const { parentDataTypes } = this.props;
+        const { parentDataTypes, combineParentTypes } = this.props;
 
         if (insertModel) {
             const { isInit, targetEntityType } = insertModel;
@@ -529,9 +532,13 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                             return this.renderParentTypes(dataType);
                         })}
                         <div className="entity-insert--header">
-                            {parentDataTypes.map(dataType => {
+                            {!combineParentTypes && parentDataTypes.map(dataType => {
                                 return this.renderAddEntityButton(dataType);
                             })}
+                            {combineParentTypes &&
+                                // Just grabbing first parent type for the name
+                                this.renderAddEntityButton(parentDataTypes.get(0))
+                            }
                         </div>
                     </>
                 );

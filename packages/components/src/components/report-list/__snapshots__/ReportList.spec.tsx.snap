@@ -994,7 +994,7 @@ exports[`<ReportListItem /> ReportListItem renders 1`] = `
       className="report-list-item__name media-heading"
     >
       <a
-        href="/q/assay.general.sec/data"
+        href="/q/assay.General.SEC/Data"
         onClick={[Function]}
         style={Object {}}
       >

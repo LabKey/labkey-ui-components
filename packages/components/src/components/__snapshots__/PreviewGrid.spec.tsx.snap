@@ -113,7 +113,7 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
             }
           >
             <a
-              href="#/q/lists/mixturetypes/2"
+              href="#/q/lists/MixtureTypes/2"
             >
               Solution
             </a>
@@ -159,7 +159,7 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
             }
           >
             <a
-              href="#/q/lists/mixturetypes/2"
+              href="#/q/lists/MixtureTypes/2"
             >
               Solution
             </a>
@@ -205,7 +205,7 @@ exports[`PreviewGrid render PreviewGrid with data 1`] = `
             }
           >
             <a
-              href="#/q/lists/mixturetypes/2"
+              href="#/q/lists/MixtureTypes/2"
             >
               Solution
             </a>

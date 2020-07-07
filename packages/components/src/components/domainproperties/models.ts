@@ -844,9 +844,7 @@ export class DomainField
                     dataType,
                     conceptURI: rawField.conceptURI,
                     rangeURI:
-                        rawField.propertyId !== undefined
-                            ? rawField.rangeURI
-                            : rawField.wrappedColumnName !== undefined
+                        rawField.propertyId !== undefined || rawField.wrappedColumnName !== undefined
                             ? rawField.rangeURI // Issue 40795: need rangURI for alias field (query metadata) to get other available types in the datatype dropdown
                             : undefined, // Issue 38366: only need to use rangeURI filtering for already saved field/property
                 },
@@ -1143,6 +1141,7 @@ export function resolveAvailableTypes(
     showFilePropertyType?: boolean
 ): List<PropDescType> {
     // field has not been saved -- display all property types allowed by app
+    // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
     if (field.isNew() && field.wrappedColumnName == undefined) {
         return appPropertiesOnly
             ? (availableTypes.filter(type => isPropertyTypeAllowed(type, showFilePropertyType)) as List<PropDescType>)

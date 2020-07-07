@@ -22,8 +22,7 @@ exports[`<PermissionAssignments/> custom props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -41,6 +40,7 @@ exports[`<PermissionAssignments/> custom props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -63,11 +63,9 @@ exports[`<PermissionAssignments/> custom props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      2
-                       member
-                      s
-                    </a>
+                    2
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -78,8 +76,7 @@ exports[`<PermissionAssignments/> custom props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -97,6 +94,7 @@ exports[`<PermissionAssignments/> custom props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -119,11 +117,9 @@ exports[`<PermissionAssignments/> custom props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      5
-                       member
-                      s
-                    </a>
+                    5
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -167,8 +163,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -186,6 +181,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -208,11 +204,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      1
-                       member
-                      
-                    </a>
+                    1
+                     member
+                    
                   </span>
                 </span>
               </div>
@@ -223,8 +217,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -242,6 +235,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -264,11 +258,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      2
-                       member
-                      s
-                    </a>
+                    2
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -279,8 +271,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -298,6 +289,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -320,11 +312,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      3
-                       member
-                      s
-                    </a>
+                    3
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -335,8 +325,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -354,6 +343,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -376,11 +366,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -391,8 +379,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -410,6 +397,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -432,11 +420,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      5
-                       member
-                      s
-                    </a>
+                    5
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -447,8 +433,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -466,6 +451,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -488,11 +474,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      1
-                       member
-                      
-                    </a>
+                    1
+                     member
+                    
                   </span>
                 </span>
               </div>
@@ -503,8 +487,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -522,6 +505,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -544,11 +528,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      1
-                       member
-                      
-                    </a>
+                    1
+                     member
+                    
                   </span>
                 </span>
               </div>
@@ -559,8 +541,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -578,6 +559,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -600,11 +582,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -615,8 +595,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -634,6 +613,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -656,11 +636,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -671,8 +649,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -690,6 +667,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -712,11 +690,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -727,8 +703,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -746,6 +721,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -768,11 +744,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -783,8 +757,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -802,6 +775,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -824,11 +798,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -839,8 +811,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -858,6 +829,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -880,11 +852,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -895,8 +865,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -914,6 +883,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -936,11 +906,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      1
-                       member
-                      
-                    </a>
+                    1
+                     member
+                    
                   </span>
                 </span>
               </div>
@@ -951,8 +919,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -970,6 +937,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -992,11 +960,9 @@ exports[`<PermissionAssignments/> default props 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1070,8 +1036,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1089,6 +1054,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1111,11 +1077,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      1
-                       member
-                      
-                    </a>
+                    1
+                     member
+                    
                   </span>
                 </span>
               </div>
@@ -1126,8 +1090,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1145,6 +1108,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1167,11 +1131,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      2
-                       member
-                      s
-                    </a>
+                    2
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1182,8 +1144,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1201,6 +1162,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1223,11 +1185,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      3
-                       member
-                      s
-                    </a>
+                    3
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1238,8 +1198,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1257,6 +1216,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1279,11 +1239,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1294,8 +1252,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1313,6 +1270,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1335,11 +1293,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      5
-                       member
-                      s
-                    </a>
+                    5
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1350,8 +1306,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1369,6 +1324,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1391,11 +1347,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      1
-                       member
-                      
-                    </a>
+                    1
+                     member
+                    
                   </span>
                 </span>
               </div>
@@ -1406,8 +1360,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1425,6 +1378,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1447,11 +1401,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      1
-                       member
-                      
-                    </a>
+                    1
+                     member
+                    
                   </span>
                 </span>
               </div>
@@ -1462,8 +1414,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1481,6 +1432,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1503,11 +1455,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1518,8 +1468,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1537,6 +1486,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1559,11 +1509,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1574,8 +1522,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1593,6 +1540,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1615,11 +1563,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1630,8 +1576,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1649,6 +1594,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1671,11 +1617,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1686,8 +1630,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1705,6 +1648,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1727,11 +1671,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1742,8 +1684,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1761,6 +1702,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1783,11 +1725,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>
@@ -1798,8 +1738,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1817,6 +1756,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1839,11 +1779,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      1
-                       member
-                      
-                    </a>
+                    1
+                     member
+                    
                   </span>
                 </span>
               </div>
@@ -1854,8 +1792,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
           className="row container-expandable"
         >
           <div
-            className="container-expandable-detail container-expandable-detail__inactive"
-            onClick={[Function]}
+            className="container-expandable-icononly container-expandable__inactive"
             onMouseEnter={[Function]}
             onMouseLeave={[Function]}
           >
@@ -1873,6 +1810,7 @@ exports[`<PermissionAssignments/> not editable 1`] = `
             </i>
             <div
               className="pull-right container-expandable-child__chevron"
+              onClick={[Function]}
             >
               <i
                 className="fa fa-chevron-right"
@@ -1895,11 +1833,9 @@ exports[`<PermissionAssignments/> not editable 1`] = `
                   className="container-expandable-heading"
                 >
                   <span>
-                    <a>
-                      0
-                       member
-                      s
-                    </a>
+                    0
+                     member
+                    s
                   </span>
                 </span>
               </div>

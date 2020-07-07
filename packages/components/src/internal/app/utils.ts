@@ -134,7 +134,7 @@ export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<
         });
         if (userCanDesignLocations(user)) {
             locationsMenuConfig = locationsMenuConfig.merge({
-                emptyURL: NEW_FREEZER_DESIGN_HREF,
+                emptyURL: fmAppBase + NEW_FREEZER_DESIGN_HREF.toHref(),
                 emptyURLText: 'Create a freezer',
             }) as MenuSectionConfig;
         }

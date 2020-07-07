@@ -37,6 +37,21 @@
   }
 }
 
+.container-expandable-icononly {
+    padding: 15px 20px 15px 5px;
+    max-width: 100%;
+    position: relative;
+
+    h4 {
+        display: inline;
+        color: $brand-primary;
+    }
+
+    &:hover, &.container-expandable__active {
+        background: $gray-lighter;
+    }
+}
+
 .container-expandable-child__img {
   float: left;
 }
@@ -47,6 +62,7 @@
 
 .container-expandable-child__chevron {
   margin-top: 17px;
+  cursor: pointer;
 
   & i {
     width: 14px;

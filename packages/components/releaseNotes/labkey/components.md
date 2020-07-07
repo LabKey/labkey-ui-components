@@ -9,6 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - move AuditLog related components, models, actions, and utils from Sample Manager
     - move SchemaListingPage, QueriesListingPage, QueryListingPage, and QueryDetailPage from Sample Manager
     - move app scss assets from Sample Manager, and have them copied into dist/assets/scss for module app usage
+    - ExpandableContainer component prop to only allow expand/collapse via icon instead of header click
 
 ### version 0.73.1
 *Released*: 2 July 2020

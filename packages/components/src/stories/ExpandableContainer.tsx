@@ -31,6 +31,7 @@ storiesOf('ExpandableContainer', module)
                     </div>
                 }
                 isExpandable={boolean('isExpandable', true)}
+                iconClickOnly={boolean('iconClickOnly', false)}
             >
                 <div style={{ padding: '20px' }}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore

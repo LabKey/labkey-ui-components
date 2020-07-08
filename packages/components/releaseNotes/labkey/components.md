@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.74.0
+*Released*: 8 July 2020
 * Item 7458: Move shared application models, actions, etc. for Sample Manager and Freezer Manager
     - export all of the new application related items as a single "App" item
     - includes moving of AppModel, some reducers (product and routing), and related functions and constants

@@ -1,6 +1,9 @@
 <script>
     // This is necessary for some of the components that have a dependency on @labkey/api
     var LABKEY = {
+        project: {
+            rootId: "ROOTID"
+        },
         container: {
             path: "testContainer",
             formats: {
@@ -12,6 +15,7 @@
         user: {
             id: 1004
         },
+        moduleContext: {},
         contextPath: 'labkey',
         helpLinkPrefix: 'https://www.labkey.org/Documentation/wiki-page.view?name='
     };

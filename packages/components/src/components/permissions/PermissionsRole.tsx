@@ -50,9 +50,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
             <div>
                 <span className="container-expandable-heading">
                     <span>
-                        <a>
-                            {count} member{count !== 1 ? 's' : ''}
-                        </a>
+                        {count} member{count !== 1 ? 's' : ''}
                     </span>
                 </span>
             </div>
@@ -92,6 +90,7 @@ export class PermissionsRole extends React.PureComponent<Props, any> {
                 clause={this.generateClause()}
                 links={this.generateLinks()}
                 iconFaCls="users fa-3x"
+                iconClickOnly={true}
                 isExpandable={true}
                 initExpanded={initExpanded}
             >

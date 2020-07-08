@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.73.1",
+  "version": "0.74.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -78,6 +78,7 @@
     "react-sticky": "6.0.3",
     "react-treebeard": "3.2.4",
     "reactn": "2.2.6",
+    "redux-actions": "2.3.2",
     "vis-network": "6.5.2"
   },
   "devDependencies": {
@@ -104,6 +105,7 @@
     "@types/react-test-renderer": "16.9.1",
     "babel-loader": "8.1.0",
     "bootstrap-sass": "3.4.1",
+    "copy-webpack-plugin": "6.0.3",
     "cross-env": "7.0.2",
     "css-loader": "3.4.2",
     "enzyme": "3.11.0",

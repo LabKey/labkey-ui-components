@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { Button, FormControl, Modal } from 'react-bootstrap';
 
-import { READER } from '../../test/data/users';
+import { TEST_USER_READER } from '../../test/data/users';
 import { LabelHelpTip } from '../base/LabelHelpTip';
 import { Alert } from '../base/Alert';
 
@@ -11,7 +11,7 @@ import { ChangePasswordModal } from './ChangePasswordModal';
 
 describe('<ChangePasswordModal/>', () => {
     test('without state', () => {
-        const wrapper = mount(<ChangePasswordModal user={READER} onSuccess={jest.fn()} onHide={jest.fn()} />);
+        const wrapper = mount(<ChangePasswordModal user={TEST_USER_READER} onSuccess={jest.fn()} onHide={jest.fn()} />);
 
         const modal = wrapper.find(Modal);
         expect(modal.text()).toBe('Change PasswordOld Password New Password Retype New Password CancelSubmit');
@@ -25,7 +25,7 @@ describe('<ChangePasswordModal/>', () => {
     });
 
     test('with state', () => {
-        const wrapper = mount(<ChangePasswordModal user={READER} onSuccess={jest.fn()} onHide={jest.fn()} />);
+        const wrapper = mount(<ChangePasswordModal user={TEST_USER_READER} onSuccess={jest.fn()} onHide={jest.fn()} />);
 
         wrapper.setState({
             model: new ChangePasswordModel({ oldPassword: 'old', password: 'new', password2: 'new2' }),

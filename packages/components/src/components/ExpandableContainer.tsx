@@ -15,6 +15,7 @@ interface Props {
     isExpandable: boolean;
     initExpanded?: boolean;
     onClick?: (show: boolean) => any;
+    iconClickOnly?: boolean;
 }
 
 interface State {
@@ -23,6 +24,10 @@ interface State {
 }
 
 export class ExpandableContainer extends React.PureComponent<Props, State> {
+    static defaultProps = {
+        iconClickOnly: false,
+    };
+
     constructor(props: Props) {
         super(props);
 
@@ -52,20 +57,21 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { children, iconSrc, iconFaCls, isExpandable, clause, links } = this.props;
+        const { children, iconSrc, iconFaCls, isExpandable, clause, links, iconClickOnly } = this.props;
         const { visible, isHover } = this.state;
+        const containerCls = iconClickOnly ? 'container-expandable-icononly' : 'container-expandable-detail';
 
         return (
             <div className={classNames('row', 'container-expandable', { disabled: !isExpandable })}>
                 <div
-                    onClick={isExpandable ? this.handleClick : undefined}
+                    onClick={isExpandable && !iconClickOnly ? this.handleClick : undefined}
                     onMouseEnter={isExpandable ? this.handleMouseEnter : undefined}
                     onMouseLeave={isExpandable ? this.handleMouseLeave : undefined}
                     className={classNames(
-                        'container-expandable-detail',
+                        containerCls,
                         { 'container-expandable-child__inactive': visible },
-                        { 'container-expandable-detail__active': isHover || visible },
-                        { 'container-expandable-detail__inactive': !isHover && !visible }
+                        { 'container-expandable__active': isHover || visible },
+                        { 'container-expandable__inactive': !isHover && !visible }
                     )}
                 >
                     <i className="container-expandable-child__img">
@@ -82,6 +88,7 @@ export class ExpandableContainer extends React.PureComponent<Props, State> {
                         )}
                     </i>
                     <div
+                        onClick={isExpandable && iconClickOnly ? this.handleClick : undefined}
                         className={classNames('pull-right', 'container-expandable-child__chevron', {
                             'text-muted': !isExpandable,
                         })}

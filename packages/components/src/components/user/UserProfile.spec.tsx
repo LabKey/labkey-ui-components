@@ -20,7 +20,12 @@ describe('<UserProfile/>', () => {
     test('without state, except queryInfo', () => {
         return getQueryDetails(SCHEMAS.CORE_TABLES.USERS).then(queryInfo => {
             const wrapper = mount(
-                <UserProfile user={TEST_USER_READER} userProperties={fromJS({})} onSuccess={jest.fn()} onCancel={jest.fn()} />
+                <UserProfile
+                    user={TEST_USER_READER}
+                    userProperties={fromJS({})}
+                    onSuccess={jest.fn()}
+                    onCancel={jest.fn()}
+                />
             );
 
             wrapper.setState({ queryInfo });

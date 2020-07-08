@@ -11,7 +11,12 @@ import { UserDetailHeader } from './UserDetailHeader';
 describe('<UserDetailHeader/>', () => {
     test('default properties', () => {
         const component = (
-            <UserDetailHeader title="Title" user={TEST_USER_READER} userProperties={fromJS({})} dateFormat={undefined} />
+            <UserDetailHeader
+                title="Title"
+                user={TEST_USER_READER}
+                userProperties={fromJS({})}
+                dateFormat={undefined}
+            />
         );
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();

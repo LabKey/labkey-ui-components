@@ -14,8 +14,8 @@ export const SAMPLE_TYPE_KEY = 'sampleSet';
 export const SOURCES_KEY = 'sources';
 export const SOURCE_TYPE_KEY = 'sourceType';
 export const WORKFLOW_KEY = 'workflow';
-export const FREEZERS_KEY = "freezers";
-export const BOXES_KEY = "boxes";
+export const FREEZERS_KEY = 'freezers';
+export const BOXES_KEY = 'boxes';
 export const HOME_KEY = 'home';
 export const USER_KEY = 'user';
 

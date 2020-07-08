@@ -94,7 +94,7 @@ export function getAuditQueries(): Array<{ [key: string]: any }> {
             { value: 'experimentauditevent', label: 'Assay Events' },
             { value: 'domainauditevent', label: 'Domain Events' },
             { value: 'domainpropertyauditevent', label: 'Domain Property Events' },
-            { value: 'queryupdateauditevent', label: 'Data Update Events', hasDetail: true },
+            { value: 'queryupdateauditevent', label: 'Data Update Events', hasDetail: true }
         );
     }
     if (isFreezerManagementEnabled()) {

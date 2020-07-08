@@ -21,7 +21,15 @@ import sampleSetQueryInfo from '../../../test/data/sampleSet-getQueryDetails.jso
 import nameExpSetQueryColumn from '../../../test/data/NameExprParent-QueryColumn.json';
 import sampleSet3QueryColumn from '../../../test/data/SampleSet3Parent-QueryColumn.json';
 
-import { TEST_USER_GUEST, TEST_USER_READER, TEST_USER_AUTHOR, TEST_USER_EDITOR, TEST_USER_ASSAY_DESIGNER, TEST_USER_FOLDER_ADMIN, TEST_USER_APP_ADMIN } from '../../../test/data/users';
+import {
+    TEST_USER_GUEST,
+    TEST_USER_READER,
+    TEST_USER_AUTHOR,
+    TEST_USER_EDITOR,
+    TEST_USER_ASSAY_DESIGNER,
+    TEST_USER_FOLDER_ADMIN,
+    TEST_USER_APP_ADMIN,
+} from '../../../test/data/users';
 
 import { AssayDefinitionModel, AssayDomainTypes, QueryColumn, QueryGridModel, SchemaQuery } from './model';
 import { QueryInfo } from './QueryInfo';

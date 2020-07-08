@@ -33,7 +33,7 @@ export const DataClassDataType: EntityDataType = {
     nounSingular: 'data',
     nounPlural: 'data',
     typeNounSingular: 'Data Type',
-    nounAsParentSingular: 'Source',
+    nounAsParentSingular: 'Parent',
     descriptionSingular: 'parent type',
     descriptionPlural: 'parent types',
     uniqueFieldKey: 'Name',

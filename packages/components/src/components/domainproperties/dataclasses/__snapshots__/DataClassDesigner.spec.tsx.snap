@@ -1129,6 +1129,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "lockType": "NotLocked",
             "wrappedColumnName": undefined,
             "disablePhiLevel": false,
+            "lockExistingField": false,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1207,6 +1208,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "lockType": "NotLocked",
             "wrappedColumnName": undefined,
             "disablePhiLevel": false,
+            "lockExistingField": false,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1285,6 +1287,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "lockType": "NotLocked",
             "wrappedColumnName": undefined,
             "disablePhiLevel": false,
+            "lockExistingField": false,
           },
         ],
         "indices": Immutable.List [],
@@ -1417,6 +1420,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
               "disablePhiLevel": false,
+              "lockExistingField": false,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1495,6 +1499,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
               "disablePhiLevel": false,
+              "lockExistingField": false,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1573,6 +1578,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "lockType": "NotLocked",
               "wrappedColumnName": undefined,
               "disablePhiLevel": false,
+              "lockExistingField": false,
             },
           ],
           "indices": Immutable.List [],
@@ -1708,6 +1714,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -1786,6 +1793,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -1864,6 +1872,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               },
             ],
             "indices": Immutable.List [],
@@ -1994,6 +2003,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
                   "disablePhiLevel": false,
+                  "lockExistingField": false,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2072,6 +2082,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
                   "disablePhiLevel": false,
+                  "lockExistingField": false,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2150,6 +2161,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "lockType": "NotLocked",
                   "wrappedColumnName": undefined,
                   "disablePhiLevel": false,
+                  "lockExistingField": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -2288,6 +2300,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2366,6 +2379,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2444,6 +2458,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -2586,6 +2601,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
                       "disablePhiLevel": false,
+                      "lockExistingField": false,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -2664,6 +2680,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
                       "disablePhiLevel": false,
+                      "lockExistingField": false,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -2742,6 +2759,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "lockType": "NotLocked",
                       "wrappedColumnName": undefined,
                       "disablePhiLevel": false,
+                      "lockExistingField": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -4209,6 +4227,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -4287,6 +4306,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -4365,6 +4385,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "lockType": "NotLocked",
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
+                "lockExistingField": false,
               },
             ],
             "indices": Immutable.List [],
@@ -4495,6 +4516,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -4573,6 +4595,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -4651,6 +4674,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -4664,9 +4688,7 @@ exports[`DataClassDesigner initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
-                "disableNameInput": false,
                 "hideAddFieldsButton": false,
-                "hideDeleteIcon": false,
                 "hideImportData": false,
                 "hideRequired": false,
                 "hideTextOptions": false,
@@ -5256,9 +5278,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
-                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
-                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -5361,6 +5381,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
                                                           "disablePhiLevel": false,
+                                                          "lockExistingField": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -5448,9 +5469,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
-                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
-                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -5550,6 +5569,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
                                                                       "disablePhiLevel": false,
+                                                                      "lockExistingField": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -6016,9 +6036,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
-                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
-                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -6117,6 +6135,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
                                                                         "disablePhiLevel": false,
+                                                                        "lockExistingField": false,
                                                                       }
                                                                     }
                                                                     index={0}
@@ -6548,6 +6567,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
                                                                                   "disablePhiLevel": false,
+                                                                                  "lockExistingField": false,
                                                                                 }
                                                                               }
                                                                               index={0}
@@ -6998,9 +7018,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
-                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
-                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -7099,6 +7117,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
                                                                                   "disablePhiLevel": false,
+                                                                                  "lockExistingField": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}
@@ -7640,9 +7659,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
-                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
-                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -7734,6 +7751,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
                                                           "disablePhiLevel": false,
+                                                          "lockExistingField": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -7821,9 +7839,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
-                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
-                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -7912,6 +7928,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
                                                                       "disablePhiLevel": false,
+                                                                      "lockExistingField": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -8372,9 +8389,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
-                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
-                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -8462,6 +8477,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
                                                                         "disablePhiLevel": false,
+                                                                        "lockExistingField": false,
                                                                       }
                                                                     }
                                                                     index={1}
@@ -8868,6 +8884,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
                                                                                   "disablePhiLevel": false,
+                                                                                  "lockExistingField": false,
                                                                                 }
                                                                               }
                                                                               index={1}
@@ -9318,9 +9335,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
-                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
-                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -9408,6 +9423,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
                                                                                   "disablePhiLevel": false,
+                                                                                  "lockExistingField": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}
@@ -9949,9 +9965,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       domainFormDisplayOptions={
                                                         Object {
                                                           "disableMvEnabled": false,
-                                                          "disableNameInput": false,
                                                           "hideAddFieldsButton": false,
-                                                          "hideDeleteIcon": false,
                                                           "hideImportData": false,
                                                           "hideRequired": false,
                                                           "hideTextOptions": false,
@@ -10043,6 +10057,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           "lockType": "NotLocked",
                                                           "wrappedColumnName": undefined,
                                                           "disablePhiLevel": false,
+                                                          "lockExistingField": false,
                                                         }
                                                       }
                                                       helpNoun="field designer"
@@ -10130,9 +10145,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                   domainFormDisplayOptions={
                                                                     Object {
                                                                       "disableMvEnabled": false,
-                                                                      "disableNameInput": false,
                                                                       "hideAddFieldsButton": false,
-                                                                      "hideDeleteIcon": false,
                                                                       "hideImportData": false,
                                                                       "hideRequired": false,
                                                                       "hideTextOptions": false,
@@ -10221,6 +10234,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                       "lockType": "NotLocked",
                                                                       "wrappedColumnName": undefined,
                                                                       "disablePhiLevel": false,
+                                                                      "lockExistingField": false,
                                                                     }
                                                                   }
                                                                   helpNoun="field designer"
@@ -10663,9 +10677,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                     domainFormDisplayOptions={
                                                                       Object {
                                                                         "disableMvEnabled": false,
-                                                                        "disableNameInput": false,
                                                                         "hideAddFieldsButton": false,
-                                                                        "hideDeleteIcon": false,
                                                                         "hideImportData": false,
                                                                         "hideRequired": false,
                                                                         "hideTextOptions": false,
@@ -10753,6 +10765,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         "lockType": "NotLocked",
                                                                         "wrappedColumnName": undefined,
                                                                         "disablePhiLevel": false,
+                                                                        "lockExistingField": false,
                                                                       }
                                                                     }
                                                                     index={2}
@@ -11121,6 +11134,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
                                                                                   "disablePhiLevel": false,
+                                                                                  "lockExistingField": false,
                                                                                 }
                                                                               }
                                                                               index={2}
@@ -11571,9 +11585,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               domainFormDisplayOptions={
                                                                                 Object {
                                                                                   "disableMvEnabled": false,
-                                                                                  "disableNameInput": false,
                                                                                   "hideAddFieldsButton": false,
-                                                                                  "hideDeleteIcon": false,
                                                                                   "hideImportData": false,
                                                                                   "hideRequired": false,
                                                                                   "hideTextOptions": false,
@@ -11661,6 +11673,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   "lockType": "NotLocked",
                                                                                   "wrappedColumnName": undefined,
                                                                                   "disablePhiLevel": false,
+                                                                                  "lockExistingField": false,
                                                                                 }
                                                                               }
                                                                               hideConditionalFormatting={false}

@@ -284,7 +284,6 @@ import { EntityTypeDeleteConfirmModal } from './components/entities/EntityTypeDe
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
-import { NavItem } from './components/navigation/NavItem';
 import { MenuSectionConfig } from './components/navigation/ProductMenuSection';
 import { ITab, SubNav } from './components/navigation/SubNav';
 import { Breadcrumb } from './components/navigation/Breadcrumb';
@@ -593,7 +592,6 @@ export {
     MenuItemModel,
     HeaderWrapper,
     ITab,
-    NavItem,
     NavigationBar,
     SubNav,
     Breadcrumb,

@@ -21,7 +21,7 @@ import $ from 'jquery';
 
 import { AppURL } from '../..';
 
-import { NavItem, ParentNavItem } from './NavItem';
+import NavItem, { ParentNavItem } from './NavItem';
 
 interface Props {
     params?: any;
@@ -36,7 +36,7 @@ interface State {
 export interface ITab {
     text: string;
     tooltip?: ReactNode;
-    url: string | AppURL; // will be used to match router.isActive()
+    url: string | AppURL;
 }
 
 let activateTimer;
@@ -147,7 +147,7 @@ export class SubNav extends Component<Props, State> {
                     <div className="tab-scroll-ct" ref={this.scrollable}>
                         <ul className="nav navbar-nav">
                             {tabs.map((tab, i) => (
-                                <NavItem key={i} to={tab.url} onActive={this.state.isScrollable && this.onItemActivate}>
+                                <NavItem key={i} to={tab.url} onActive={this.onItemActivate}>
                                     {tab.text}
                                 </NavItem>
                             ))}

@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { createRef, PureComponent, ReactNode, RefObject } from 'react';
-import * as PropTypes from 'prop-types';
-import { InjectedRouter, Link } from 'react-router';
+import React, { FC, memo, useEffect, useRef, useState } from 'react';
+import { Link, withRouter, WithRouterProps } from 'react-router';
 
 import { AppURL } from '../..';
 
@@ -24,64 +23,45 @@ interface NavItemProps {
     to: string | AppURL;
 }
 
-export class NavItem extends PureComponent<NavItemProps> {
-    // required for react-router to display active links properly
-    static contextTypes = {
-        router: PropTypes.object.isRequired,
-    };
+const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, location, onActive, to }) => {
+    const itemRef = useRef<HTMLLIElement>();
+    const [active, setActive] = useState<boolean>(false);
 
-    context: {
-        router: InjectedRouter;
-    };
+    useEffect(() => {
+        if (to && location) {
+            const isActive = location.pathname.toLowerCase() === to.toString().toLowerCase();
+            setActive(isActive);
 
-    itemRef: RefObject<HTMLLIElement>;
-
-    constructor(props: NavItemProps) {
-        super(props);
-
-        this.itemRef = createRef();
-    }
-
-    componentDidUpdate = (): void => {
-        if (this.props.onActive && this.isActive()) {
-            this.props.onActive(this.itemRef.current);
+            if (isActive) {
+                onActive?.(itemRef.current);
+            }
+        } else {
+            setActive(false);
         }
-    };
+    }, [location, to]);
 
-    isActive = (): boolean => {
-        if (this.props.to && this.context.router) {
-            // Formerly, we used this.context.router.isActive(to.toString()), however,
-            // it is case-sensitive. See https://github.com/ReactTraining/react-router/issues/3472
-            const { pathname } = (this.context.router as any).getCurrentLocation();
-            return pathname.toLowerCase() === this.props.to.toString().toLowerCase();
-        }
+    return (
+        <li className={active ? 'active' : null} ref={itemRef}>
+            <Link to={to.toString()}>{children}</Link>
+        </li>
+    );
+});
 
-        return false;
-    };
+// Export as "default" to avoid erroneous type warning use of withRouter()
+export default withRouter<NavItemProps>(NavItemImpl);
 
-    render = (): ReactNode => {
-        return (
-            <li className={this.isActive() ? 'active' : null} ref={this.itemRef}>
-                <Link to={this.props.to.toString()}>{this.props.children}</Link>
-            </li>
-        );
-    };
-}
-
-export class ParentNavItem extends PureComponent<NavItemProps> {
-    render = (): ReactNode => {
-        return (
-            <div className="parent-nav">
-                <ul className="nav navbar-nav">
-                    <li>
-                        <Link to={this.props.to.toString()}>
-                            <i className="fa fa-chevron-left" />
-                            &nbsp;
-                            {this.props.children}
-                        </Link>
-                    </li>
-                </ul>
-            </div>
-        );
-    };
-}
+export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
+    return (
+        <div className="parent-nav">
+            <ul className="nav navbar-nav">
+                <li>
+                    <Link to={to.toString()}>
+                        <i className="fa fa-chevron-left" />
+                        &nbsp;
+                        {children}
+                    </Link>
+                </li>
+            </ul>
+        </div>
+    );
+});

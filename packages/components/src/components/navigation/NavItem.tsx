@@ -13,77 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import * as PropTypes from 'prop-types';
 import { InjectedRouter, Link } from 'react-router';
 
-import { AppURL } from '../../url/AppURL';
+import { AppURL } from '../..';
 
 interface NavItemProps {
-    onlyActiveOnIndex?: boolean;
-    onActive?: Function;
+    onActive?: (activeEl: HTMLElement) => void;
     to: string | AppURL;
 }
 
-export class NavItem extends React.Component<NavItemProps, any> {
+export class NavItem extends PureComponent<NavItemProps> {
     // required for react-router to display active links properly
     static contextTypes = {
         router: PropTypes.object.isRequired,
-    };
-
-    static defaultProps = {
-        onlyActiveOnIndex: false,
     };
 
     context: {
         router: InjectedRouter;
     };
 
-    private item: React.RefObject<HTMLLIElement>;
+    itemRef: RefObject<HTMLLIElement>;
 
     constructor(props: NavItemProps) {
         super(props);
 
-        this.item = React.createRef();
+        this.itemRef = createRef();
     }
 
-    componentWillReceiveProps(nextProps: NavItemProps) {
-        if (nextProps.onActive && this.isActive(nextProps)) {
-            nextProps.onActive(this.item.current);
+    componentDidUpdate = (): void => {
+        if (this.props.onActive && this.isActive()) {
+            this.props.onActive(this.itemRef.current);
         }
-    }
+    };
 
-    isActive(props: NavItemProps) {
-        const { onlyActiveOnIndex, to } = props;
-
-        // This is using the same pattern as <Link> to determine if the route is active
-        if (to && this.context.router) {
-            return this.context.router.isActive(to.toString(), onlyActiveOnIndex);
+    isActive = (): boolean => {
+        if (this.props.to && this.context.router) {
+            // Formerly, we used this.context.router.isActive(to.toString()), however,
+            // it is case-sensitive. See https://github.com/ReactTraining/react-router/issues/3472
+            const { pathname } = (this.context.router as any).getCurrentLocation();
+            return pathname.toLowerCase() === this.props.to.toString().toLowerCase();
         }
 
         return false;
-    }
+    };
 
-    render() {
-        const { to } = this.props;
-
+    render = (): ReactNode => {
         return (
-            <li className={this.isActive(this.props) ? 'active' : null} ref={this.item}>
-                <Link to={to.toString()}>{this.props.children}</Link>
+            <li className={this.isActive() ? 'active' : null} ref={this.itemRef}>
+                <Link to={this.props.to.toString()}>{this.props.children}</Link>
             </li>
         );
-    }
+    };
 }
 
-export class ParentNavItem extends React.Component<NavItemProps, any> {
-    render() {
-        const { to } = this.props;
-
+export class ParentNavItem extends PureComponent<NavItemProps> {
+    render = (): ReactNode => {
         return (
             <div className="parent-nav">
                 <ul className="nav navbar-nav">
                     <li>
-                        <Link to={to.toString()}>
+                        <Link to={this.props.to.toString()}>
                             <i className="fa fa-chevron-left" />
                             &nbsp;
                             {this.props.children}
@@ -92,5 +83,5 @@ export class ParentNavItem extends React.Component<NavItemProps, any> {
                 </ul>
             </div>
         );
-    }
+    };
 }

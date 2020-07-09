@@ -1,6 +1,6 @@
 import { Treebeard, decorators } from 'react-treebeard';
 
-import React, {PureComponent, useState} from 'react';
+import React, {PureComponent} from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
@@ -171,7 +171,7 @@ interface FileTreeProps {
 interface FileTreeState {
     cursor: any;
     checked: List<string>;
-    data: any[];
+    data: any;
     error?: string;
     loading: boolean; // Only used for testing
 }
@@ -256,6 +256,18 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         return undefined;
     };
 
+    getNodeFromId = (id, name) => {
+        let path = id.split('|').slice(0, -1)
+        path.push(name);
+        let level = this.state.data;
+        for (const step in path) {
+            if (level.children){
+                level = level.children.find(children => children.name === path[step]);
+            }
+        }
+        return level;
+    };
+
     getDataNode = (id: string, node: any): any => {
         if (node.id === id) {
             return node;
@@ -297,14 +309,13 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     };
 
     // Callback to parent with actual path of selected file
-    // TODO: I think this should also return a false value in the else case
+    // Return value determines whether file selection should proceed, or be halted
     onFileSelect = (id: string, checked: boolean, isDirectory: boolean, node: any): boolean => {
         const { onFileSelect } = this.props;
 
         if (!nodeIsEmpty(id)) {
             return onFileSelect(this.getNameFromId(id), this.getPathFromId(id), checked, isDirectory, node);
         }
-        
         return false;
     };
 
@@ -433,6 +444,27 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             this.setState(() => ({ cursor: node, data: { ...data }, error: undefined }), callback);
         }
     };
+
+    reload = (selectedNode, successCallback, failureCallback) => {
+        const { loadData } = this.props;
+        const parentDir = this.getPathFromId(selectedNode.id, true);
+
+        loadData(parentDir)
+            .then(children => {
+                const { data } = this.state;
+                const dataNode = this.getDataNode(parentDir.replace('/', '|'), data);
+
+                children = children.map(child => {
+                    child.id = dataNode.id + '|' + child.name; // generate Id from path
+                    return child;
+                });
+
+                dataNode.children = children; // This is not immutable so this is updating the data object
+            })
+            .catch((reason: any) => {
+                failureCallback(reason);
+            });
+    }
 
     render(): React.ReactNode {
         const { data, error } = this.state;

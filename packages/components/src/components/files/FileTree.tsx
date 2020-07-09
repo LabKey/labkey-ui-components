@@ -304,6 +304,8 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         if (!nodeIsEmpty(id)) {
             return onFileSelect(this.getNameFromId(id), this.getPathFromId(id), checked, isDirectory, node);
         }
+        
+        return false;
     };
 
     setCheckedValue = (node: any, checked: boolean): void => {

@@ -41,11 +41,11 @@ describe('<ExpandableContainer/>', () => {
         );
 
         // test the isHover state, should change some css classes
-        expect(wrapper.find('.container-expandable-detail__active')).toHaveLength(0);
-        expect(wrapper.find('.container-expandable-detail__inactive')).toHaveLength(1);
+        expect(wrapper.find('.container-expandable__active')).toHaveLength(0);
+        expect(wrapper.find('.container-expandable__inactive')).toHaveLength(1);
         wrapper.setState({ isHover: true });
-        expect(wrapper.find('.container-expandable-detail__active')).toHaveLength(1);
-        expect(wrapper.find('.container-expandable-detail__inactive')).toHaveLength(0);
+        expect(wrapper.find('.container-expandable__active')).toHaveLength(1);
+        expect(wrapper.find('.container-expandable__inactive')).toHaveLength(0);
         wrapper.setState({ isHover: false });
 
         // test the expanded/visible state, should show body div

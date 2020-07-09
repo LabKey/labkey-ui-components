@@ -21,7 +21,15 @@ import sampleSetQueryInfo from '../../../test/data/sampleSet-getQueryDetails.jso
 import nameExpSetQueryColumn from '../../../test/data/NameExprParent-QueryColumn.json';
 import sampleSet3QueryColumn from '../../../test/data/SampleSet3Parent-QueryColumn.json';
 
-import { GUEST, READER, AUTHOR, EDITOR, ASSAYDESIGNER, FOLDER_ADMIN, APP_ADMIN } from '../../../test/data/users';
+import {
+    TEST_USER_GUEST,
+    TEST_USER_READER,
+    TEST_USER_AUTHOR,
+    TEST_USER_EDITOR,
+    TEST_USER_ASSAY_DESIGNER,
+    TEST_USER_FOLDER_ADMIN,
+    TEST_USER_APP_ADMIN,
+} from '../../../test/data/users';
 
 import { AssayDefinitionModel, AssayDomainTypes, QueryColumn, QueryGridModel, SchemaQuery } from './model';
 import { QueryInfo } from './QueryInfo';
@@ -453,72 +461,72 @@ describe('Sample Lookup', () => {
 
 describe('User permissions', () => {
     test('hasInsertPermission', () => {
-        expect(GUEST.hasInsertPermission()).toBeFalsy();
-        expect(READER.hasInsertPermission()).toBeFalsy();
-        expect(AUTHOR.hasInsertPermission()).toBeTruthy();
-        expect(EDITOR.hasInsertPermission()).toBeTruthy();
-        expect(ASSAYDESIGNER.hasInsertPermission()).toBeFalsy();
-        expect(FOLDER_ADMIN.hasInsertPermission()).toBeTruthy();
-        expect(APP_ADMIN.hasInsertPermission()).toBeTruthy();
+        expect(TEST_USER_GUEST.hasInsertPermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasInsertPermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasInsertPermission()).toBeTruthy();
+        expect(TEST_USER_EDITOR.hasInsertPermission()).toBeTruthy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasInsertPermission()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.hasInsertPermission()).toBeTruthy();
+        expect(TEST_USER_APP_ADMIN.hasInsertPermission()).toBeTruthy();
     });
 
     test('hasUpdatePermission', () => {
-        expect(GUEST.hasUpdatePermission()).toBeFalsy();
-        expect(READER.hasUpdatePermission()).toBeFalsy();
-        expect(AUTHOR.hasUpdatePermission()).toBeFalsy();
-        expect(EDITOR.hasUpdatePermission()).toBeTruthy();
-        expect(ASSAYDESIGNER.hasUpdatePermission()).toBeFalsy();
-        expect(FOLDER_ADMIN.hasUpdatePermission()).toBeTruthy();
-        expect(APP_ADMIN.hasUpdatePermission()).toBeTruthy();
+        expect(TEST_USER_GUEST.hasUpdatePermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasUpdatePermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasUpdatePermission()).toBeFalsy();
+        expect(TEST_USER_EDITOR.hasUpdatePermission()).toBeTruthy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasUpdatePermission()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.hasUpdatePermission()).toBeTruthy();
+        expect(TEST_USER_APP_ADMIN.hasUpdatePermission()).toBeTruthy();
     });
 
     test('hasDeletePermission', () => {
-        expect(GUEST.hasDeletePermission()).toBeFalsy();
-        expect(READER.hasDeletePermission()).toBeFalsy();
-        expect(AUTHOR.hasDeletePermission()).toBeFalsy();
-        expect(EDITOR.hasDeletePermission()).toBeTruthy();
-        expect(ASSAYDESIGNER.hasDeletePermission()).toBeFalsy();
-        expect(FOLDER_ADMIN.hasDeletePermission()).toBeTruthy();
-        expect(APP_ADMIN.hasDeletePermission()).toBeTruthy();
+        expect(TEST_USER_GUEST.hasDeletePermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasDeletePermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasDeletePermission()).toBeFalsy();
+        expect(TEST_USER_EDITOR.hasDeletePermission()).toBeTruthy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasDeletePermission()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.hasDeletePermission()).toBeTruthy();
+        expect(TEST_USER_APP_ADMIN.hasDeletePermission()).toBeTruthy();
     });
 
     test('hasDesignAssaysPermission', () => {
-        expect(GUEST.hasDesignAssaysPermission()).toBeFalsy();
-        expect(READER.hasDesignAssaysPermission()).toBeFalsy();
-        expect(AUTHOR.hasDesignAssaysPermission()).toBeFalsy();
-        expect(EDITOR.hasDesignAssaysPermission()).toBeFalsy();
-        expect(ASSAYDESIGNER.hasDesignAssaysPermission()).toBeTruthy();
-        expect(FOLDER_ADMIN.hasDesignAssaysPermission()).toBeTruthy();
-        expect(APP_ADMIN.hasDesignAssaysPermission()).toBeTruthy();
+        expect(TEST_USER_GUEST.hasDesignAssaysPermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasDesignAssaysPermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasDesignAssaysPermission()).toBeFalsy();
+        expect(TEST_USER_EDITOR.hasDesignAssaysPermission()).toBeFalsy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasDesignAssaysPermission()).toBeTruthy();
+        expect(TEST_USER_FOLDER_ADMIN.hasDesignAssaysPermission()).toBeTruthy();
+        expect(TEST_USER_APP_ADMIN.hasDesignAssaysPermission()).toBeTruthy();
     });
 
     test('hasDesignSampleSetsPermission', () => {
-        expect(GUEST.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(READER.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(AUTHOR.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(EDITOR.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(ASSAYDESIGNER.hasDesignSampleSetsPermission()).toBeFalsy();
-        expect(FOLDER_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
-        expect(APP_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
+        expect(TEST_USER_GUEST.hasDesignSampleSetsPermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasDesignSampleSetsPermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasDesignSampleSetsPermission()).toBeFalsy();
+        expect(TEST_USER_EDITOR.hasDesignSampleSetsPermission()).toBeFalsy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasDesignSampleSetsPermission()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
+        expect(TEST_USER_APP_ADMIN.hasDesignSampleSetsPermission()).toBeTruthy();
     });
 
     test('hasManageUsersPermission', () => {
-        expect(GUEST.hasManageUsersPermission()).toBeFalsy();
-        expect(READER.hasManageUsersPermission()).toBeFalsy();
-        expect(AUTHOR.hasManageUsersPermission()).toBeFalsy();
-        expect(EDITOR.hasManageUsersPermission()).toBeFalsy();
-        expect(ASSAYDESIGNER.hasManageUsersPermission()).toBeFalsy();
-        expect(FOLDER_ADMIN.hasManageUsersPermission()).toBeFalsy();
-        expect(APP_ADMIN.hasManageUsersPermission()).toBeTruthy();
+        expect(TEST_USER_GUEST.hasManageUsersPermission()).toBeFalsy();
+        expect(TEST_USER_READER.hasManageUsersPermission()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.hasManageUsersPermission()).toBeFalsy();
+        expect(TEST_USER_EDITOR.hasManageUsersPermission()).toBeFalsy();
+        expect(TEST_USER_ASSAY_DESIGNER.hasManageUsersPermission()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.hasManageUsersPermission()).toBeFalsy();
+        expect(TEST_USER_APP_ADMIN.hasManageUsersPermission()).toBeTruthy();
     });
 
     test('isAppAdmin', () => {
-        expect(GUEST.isAppAdmin()).toBeFalsy();
-        expect(READER.isAppAdmin()).toBeFalsy();
-        expect(AUTHOR.isAppAdmin()).toBeFalsy();
-        expect(EDITOR.isAppAdmin()).toBeFalsy();
-        expect(ASSAYDESIGNER.isAppAdmin()).toBeFalsy();
-        expect(FOLDER_ADMIN.isAppAdmin()).toBeFalsy();
-        expect(APP_ADMIN.isAppAdmin()).toBeTruthy();
+        expect(TEST_USER_GUEST.isAppAdmin()).toBeFalsy();
+        expect(TEST_USER_READER.isAppAdmin()).toBeFalsy();
+        expect(TEST_USER_AUTHOR.isAppAdmin()).toBeFalsy();
+        expect(TEST_USER_EDITOR.isAppAdmin()).toBeFalsy();
+        expect(TEST_USER_ASSAY_DESIGNER.isAppAdmin()).toBeFalsy();
+        expect(TEST_USER_FOLDER_ADMIN.isAppAdmin()).toBeFalsy();
+        expect(TEST_USER_APP_ADMIN.isAppAdmin()).toBeTruthy();
     });
 });

@@ -214,6 +214,10 @@ import { ISelectInitData } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
+import { QueriesListingPage } from './components/listing/pages/QueriesListingPage';
+import { QueryDetailPage } from './components/listing/pages/QueryDetailPage';
+import { QueryListingPage } from './components/listing/pages/QueryListingPage';
+import { SchemaListingPage } from './components/listing/pages/SchemaListingPage';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
@@ -354,11 +358,19 @@ import {
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanelWithModel } from './QueryModel/DetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
+import * as App from './internal/app/index';
+import { AuditDetailsModel } from './components/auditlog/models';
+import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
+import { AuditDetails } from './components/auditlog/AuditDetails';
+import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
+
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
 enablePatches();
 
 export {
+    // internal application
+    App,
     // global state functions
     initQueryGridState,
     initNotificationsState,
@@ -696,7 +708,11 @@ export {
     ErrorBoundary,
     BeforeUnload,
     SchemaListing,
+    SchemaListingPage,
     QueriesListing,
+    QueriesListingPage,
+    QueryListingPage,
+    QueryDetailPage,
     Theme,
     SVGIcon,
     // general components
@@ -762,4 +778,10 @@ export {
     DetailPanelWithModel,
     Pagination,
     PaginationData,
+    // AuditLog
+    AuditDetailsModel,
+    AuditQueriesListingPage,
+    AuditDetails,
+    getEventDataValueDisplay,
+    getTimelineEntityUrl,
 };

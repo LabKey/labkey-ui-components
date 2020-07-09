@@ -5,8 +5,7 @@ exports[`<PermissionsRole/> not editable 1`] = `
   className="row container-expandable"
 >
   <div
-    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
-    onClick={[Function]}
+    className="container-expandable-icononly container-expandable-child__inactive container-expandable__active"
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
@@ -24,6 +23,7 @@ exports[`<PermissionsRole/> not editable 1`] = `
     </i>
     <div
       className="pull-right container-expandable-child__chevron"
+      onClick={[Function]}
     >
       <i
         className="fa fa-chevron-down"
@@ -46,11 +46,9 @@ exports[`<PermissionsRole/> not editable 1`] = `
           className="container-expandable-heading"
         >
           <span>
-            <a>
-              3
-               member
-              s
-            </a>
+            3
+             member
+            s
           </span>
         </span>
       </div>
@@ -133,8 +131,7 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
   className="row container-expandable"
 >
   <div
-    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
-    onClick={[Function]}
+    className="container-expandable-icononly container-expandable-child__inactive container-expandable__active"
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
@@ -152,6 +149,7 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
     </i>
     <div
       className="pull-right container-expandable-child__chevron"
+      onClick={[Function]}
     >
       <i
         className="fa fa-chevron-down"
@@ -174,11 +172,9 @@ exports[`<PermissionsRole/> showing only a single type and a selected and disabl
           className="container-expandable-heading"
         >
           <span>
-            <a>
-              2
-               member
-              s
-            </a>
+            2
+             member
+            s
           </span>
         </span>
       </div>
@@ -354,8 +350,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
   className="row container-expandable"
 >
   <div
-    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
-    onClick={[Function]}
+    className="container-expandable-icononly container-expandable-child__inactive container-expandable__active"
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
@@ -373,6 +368,7 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
     </i>
     <div
       className="pull-right container-expandable-child__chevron"
+      onClick={[Function]}
     >
       <i
         className="fa fa-chevron-down"
@@ -395,11 +391,9 @@ exports[`<PermissionsRole/> with both group and user assignments 1`] = `
           className="container-expandable-heading"
         >
           <span>
-            <a>
-              3
-               member
-              s
-            </a>
+            3
+             member
+            s
           </span>
         </span>
       </div>
@@ -607,8 +601,7 @@ exports[`<PermissionsRole/> without assignments 1`] = `
   className="row container-expandable"
 >
   <div
-    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
-    onClick={[Function]}
+    className="container-expandable-icononly container-expandable-child__inactive container-expandable__active"
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
@@ -626,6 +619,7 @@ exports[`<PermissionsRole/> without assignments 1`] = `
     </i>
     <div
       className="pull-right container-expandable-child__chevron"
+      onClick={[Function]}
     >
       <i
         className="fa fa-chevron-down"
@@ -648,11 +642,9 @@ exports[`<PermissionsRole/> without assignments 1`] = `
           className="container-expandable-heading"
         >
           <span>
-            <a>
-              0
-               member
-              s
-            </a>
+            0
+             member
+            s
           </span>
         </span>
       </div>

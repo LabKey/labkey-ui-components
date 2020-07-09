@@ -408,9 +408,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         const { cursor, data } = this.state;
 
         if (!allowMultiSelect) {
-            const proceedWithToggle = this.onFileSelect(node.id, true, !!node.children, node);
-
-            if (!proceedWithToggle) {
+            if (!this.onFileSelect(node.id, true, !!node.children, node)) {
                 return;
             }
         }

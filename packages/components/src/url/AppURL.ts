@@ -25,10 +25,6 @@ export class AppURL extends Record({
     _filters: List<Filter.IFilter>;
     _params: Map<string, any>;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(...parts): AppURL {
         let baseUrl = '';
         for (let i = 0; i < parts.length; i++) {
@@ -48,7 +44,7 @@ export class AppURL extends Record({
             const stringPart = parts[i].toString();
             const newPart = encodeURIComponent(stringPart);
 
-            if (i == 0) {
+            if (i === 0) {
                 if (stringPart.indexOf('/') === 0) {
                     baseUrl += newPart;
                 } else {
@@ -59,10 +55,7 @@ export class AppURL extends Record({
             }
         }
 
-        // TODO: Stop toLowerCase as it can break case-sensitive keys (e.g. /q/lists/someList/myKeyField)
-        return new AppURL({
-            _baseUrl: baseUrl.toLowerCase(),
-        });
+        return new AppURL({ _baseUrl: baseUrl });
     }
 
     addFilters(...filters: Filter.IFilter[]): AppURL {

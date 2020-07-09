@@ -617,7 +617,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           </td>
           <td>
             <a
-              href="#/sources/second%20source"
+              href="#/sources/Second%20Source"
             >
               Second Source
             </a>

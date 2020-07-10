@@ -470,6 +470,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     }
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     onToggle={(collapsed, callback) => onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
+                    appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                 />
                 <DomainForm

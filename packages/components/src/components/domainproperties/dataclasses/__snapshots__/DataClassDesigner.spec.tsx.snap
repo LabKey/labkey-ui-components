@@ -80,7 +80,7 @@ Array [
           className=""
         >
           <div
-            className="margin-bottom row"
+            className="margin-bottom margin-top row"
           >
             <div
               className="col-xs-2"
@@ -496,7 +496,7 @@ Array [
           className=""
         >
           <div
-            className="margin-bottom row"
+            className="margin-bottom margin-top row"
           >
             <div
               className="col-xs-2"
@@ -3039,11 +3039,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                   >
                                     <Row
                                       bsClass="row"
-                                      className="margin-bottom"
+                                      className="margin-bottom margin-top"
                                       componentClass="div"
                                     >
                                       <div
-                                        className="margin-bottom row"
+                                        className="margin-bottom margin-top row"
                                       >
                                         <Col
                                           bsClass="col"

@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 7563: SampleTypeDesigner update to add "Label Color" property to Sample Manager
+    - ColorPickerInput updates to support showing color chip within dropdown button when label text not provided
+    - ColorPickerInput update to handle value=#ffffff (display as white background with black border)
+    - SampleTypePropertiesPanel addition of ColorPickerInput, conditional based on appPropertiesOnly prop
+    - SampleTypeModel addition of labelColor prop
+
 ### version 0.75.0
 *Released*: 9 July 2020
 * [Issue 36916](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=36916): Remove `toLowerCase()` when constructing `AppURL`s base parts.

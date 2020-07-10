@@ -46,7 +46,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
 
         return (
             <Form>
-                <Row className="margin-bottom">
+                <Row className="margin-bottom margin-top">
                     <Col xs={2}>
                         <DomainFieldLabel
                             label="Name"

@@ -45,7 +45,7 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
       className=""
     >
       <div
-        className="margin-bottom row"
+        className="margin-bottom margin-top row"
       >
         <div
           className="col-xs-2"
@@ -293,7 +293,7 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
       className=""
     >
       <div
-        className="margin-bottom row"
+        className="margin-bottom margin-top row"
       >
         <div
           className="col-xs-2"
@@ -593,7 +593,7 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
       className=""
     >
       <div
-        className="margin-bottom row"
+        className="margin-bottom margin-top row"
       >
         <div
           className="col-xs-2"

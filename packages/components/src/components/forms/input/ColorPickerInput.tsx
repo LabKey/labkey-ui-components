@@ -5,7 +5,7 @@ import classNames from 'classnames';
 interface Props {
     name?: string;
     onChange: (name: string, value: string) => void;
-    text: string;
+    text?: string;
     value: string;
 }
 
@@ -31,15 +31,16 @@ export class ColorPickerInput extends PureComponent<Props, State> {
         const { text, value } = this.props;
         const { showPicker } = this.state;
         const iconClassName = classNames('fa', { 'fa-caret-up': showPicker, 'fa-caret-down': !showPicker });
+        const showChip = text !== undefined;
 
         return (
             <div className="color-picker">
                 <button type="button" className="color-picker__button btn btn-default" onClick={this.togglePicker}>
-                    {text}
+                    {text ? text : value ? <ColorChip cls="color-picker__chip-small" value={value} /> : 'None'}
                     <i className={iconClassName} />
                 </button>
 
-                <i className="color-picker__chip" style={{ backgroundColor: value }} />
+                {showChip && <ColorChip cls="color-picker__chip" value={value} />}
 
                 <div className="color-picker__picker">
                     {showPicker && (
@@ -51,5 +52,19 @@ export class ColorPickerInput extends PureComponent<Props, State> {
                 </div>
             </div>
         );
+    }
+}
+
+interface ColorChipProps {
+    cls: string;
+    value: string;
+}
+
+class ColorChip extends PureComponent<ColorChipProps> {
+    render(): ReactNode {
+        const { cls, value } = this.props;
+        const border = value?.toLowerCase() === '#ffffff' ? 'solid 1px #000000' : undefined;
+
+        return <i className={cls} style={{ backgroundColor: value, border }} />;
     }
 }

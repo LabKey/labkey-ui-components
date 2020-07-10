@@ -1,12 +1,11 @@
 import React from 'react';
 import { OrderedMap } from 'immutable';
-
 import { Col, Row } from 'react-bootstrap';
 
 import { getFormNameFromId } from '../entities/actions';
 import { IParentOption } from '../../entities/models';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
-import { AddEntityButton, generateId, getHelpLink, helpLinkNode, SCHEMAS } from '../../..';
+import { AddEntityButton, ColorPickerInput, generateId, getHelpLink, helpLinkNode, SCHEMAS } from '../../..';
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { DERIVE_SAMPLES_ALIAS_TOPIC, DEFINE_SAMPLE_TYPE_TOPIC } from '../../../util/helpLinks';
 import { SampleSetParentAliasRow } from '../../samples/SampleSetParentAliasRow';
@@ -16,8 +15,9 @@ import {
 } from '../DomainPropertiesPanelCollapse';
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import { HelpTopicURL } from '../HelpTopicURL';
-
 import { IParentAlias, SampleTypeModel } from './models';
+import { DomainFieldLabel } from "../DomainFieldLabel";
+import { SectionHeading } from "../SectionHeading";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
@@ -114,10 +114,14 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
     };
 
     onFormChange = (evt: any): void => {
-        const { model } = this.props;
         const id = evt.target.id;
         const value = evt.target.value;
-        const newModel = model.set(getFormNameFromId(id), value) as SampleTypeModel;
+        this.onFieldChange(getFormNameFromId(id), value);
+    };
+
+    onFieldChange = (key: string, value: any): void => {
+        const { model } = this.props;
+        const newModel = model.set(key, value) as SampleTypeModel;
         this.updateValidStatus(newModel);
     };
 
@@ -220,14 +224,14 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         this.updateValidStatus();
     };
 
-    containsDataClassOptions = () => {
+    containsDataClassOptions() {
         const { parentOptions } = this.props;
         if (!parentOptions || parentOptions.length === 0) return false;
 
         return parentOptions.filter(dataClassOptionFilterFn).length > 0;
-    };
+    }
 
-    render = () => {
+    render() {
         const {
             model,
             parentOptions,
@@ -242,6 +246,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             dataClassAliasCaption,
             sampleAliasCaption,
             dataClassParentageLabel,
+            appPropertiesOnly,
         } = this.props;
         const { isValid } = this.state;
 
@@ -265,6 +270,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         <HelpTopicURL helpTopic={helpTopic} nounPlural={nounPlural} />
                     </Col>
                 </Row>
+                {appPropertiesOnly && <SectionHeading title="General Properties" />}
                 <EntityDetailsForm
                     noun={nounSingular}
                     onFormChange={this.onFormChange}
@@ -307,9 +313,29 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         </Col>
                     </Row>
                 )}
+                {appPropertiesOnly &&
+                    <>
+                        <SectionHeading title="Appearance Settings" />
+                        <Row className="margin-top">
+                            <Col xs={2}>
+                                <DomainFieldLabel
+                                    label="Label Color"
+                                    helpTipBody={() => `TODO: put text here...`}
+                                />
+                            </Col>
+                            <Col xs={10}>
+                                <ColorPickerInput
+                                    name={'labelColor'}
+                                    value={model.labelColor}
+                                    onChange={this.onFieldChange}
+                                />
+                            </Col>
+                        </Row>
+                    </>
+                }
             </BasePropertiesPanel>
         );
-    };
+    }
 }
 
 export const SampleTypePropertiesPanel = withDomainPropertiesPanelCollapse<Props>(SampleTypePropertiesPanelImpl);

@@ -218,6 +218,14 @@ div.react-datepicker__current-month {
     width: 32px;
     vertical-align: middle;
 }
+.color-picker__chip-small {
+    display: inline-block;
+    height: 16px;
+    margin-left: 1em;
+    border-radius: 2px;
+    width: 16px;
+    vertical-align: middle;
+}
 .color-picker__picker {
     position: absolute;
     top: 48px;

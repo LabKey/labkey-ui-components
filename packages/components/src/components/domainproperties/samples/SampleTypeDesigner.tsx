@@ -349,7 +349,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     saveDomain = () => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
-        const { name, domain, description, nameExpression } = model;
+        const { name, domain, description, nameExpression, labelColor } = model;
 
         if (beforeFinish) {
             beforeFinish(model);
@@ -363,6 +363,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const details = {
             name,
             nameExpression,
+            labelColor,
             importAliases: this.getImportAliasesAsMap(model).toJS(),
         };
 

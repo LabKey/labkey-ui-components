@@ -460,7 +460,7 @@ export class EntityIdCreationModel extends Record({
         // exclude options that have already been selected, except the current selection for this input
         return allOptions
             .filter(o =>
-                this.entityParents.get(queryName).every(parent => {
+                this.getParentEntities(queryName, combineParentTypes).every(parent => {
                     const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
                     const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
                     return notParentMatch || matchesCurrent;

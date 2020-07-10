@@ -1,6 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { ColorResult, CompactPicker } from 'react-color';
 import classNames from 'classnames';
+import { ColorIcon } from "../../../components/base/ColorIcon";
 
 interface Props {
     name?: string;
@@ -36,11 +37,11 @@ export class ColorPickerInput extends PureComponent<Props, State> {
         return (
             <div className="color-picker">
                 <button type="button" className="color-picker__button btn btn-default" onClick={this.togglePicker}>
-                    {text ? text : value ? <ColorChip cls="color-picker__chip-small" value={value} /> : 'None'}
+                    {text ? text : value ? <ColorIcon cls="color-picker__chip-small" asSquare={true} value={value} /> : 'None'}
                     <i className={iconClassName} />
                 </button>
 
-                {showChip && <ColorChip cls="color-picker__chip" value={value} />}
+                {showChip && <ColorIcon cls="color-picker__chip" asSquare={true} value={value} />}
 
                 <div className="color-picker__picker">
                     {showPicker && (
@@ -52,19 +53,5 @@ export class ColorPickerInput extends PureComponent<Props, State> {
                 </div>
             </div>
         );
-    }
-}
-
-interface ColorChipProps {
-    cls: string;
-    value: string;
-}
-
-class ColorChip extends PureComponent<ColorChipProps> {
-    render(): ReactNode {
-        const { cls, value } = this.props;
-        const border = value?.toLowerCase() === '#ffffff' ? 'solid 1px #000000' : undefined;
-
-        return <i className={cls} style={{ backgroundColor: value, border }} />;
     }
 }

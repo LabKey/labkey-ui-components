@@ -49,6 +49,7 @@ export class SampleTypeModel extends Record({
             name,
             nameReadOnly: raw.nameReadOnly,
             importAliases,
+            labelColor: options.get('labelColor') || undefined, // helps to convert null to undefined
             domain,
         });
     }

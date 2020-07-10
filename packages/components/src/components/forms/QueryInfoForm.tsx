@@ -445,7 +445,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
 
         if (asModal) {
             return (
-                <Modal bsSize="large" show={this.state.show} onHide={this.onHide}>
+                <Modal bsSize="large" dialogClassName="form-modal" show={this.state.show} onHide={this.onHide}>
                     {title && (
                         <Modal.Header>
                             <Modal.Title>{title}</Modal.Title>

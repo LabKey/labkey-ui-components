@@ -386,6 +386,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     }
 
     changeParent(index: number, queryName: string, fieldName: string, formValue: any, parent: IParentOption): void {
+        const { combineParentTypes } = this.props;
         const queryGridModel = this.getQueryGridModel();
         if (queryGridModel) {
             const { insertModel } = this.state;
@@ -415,8 +416,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                             let fieldKey;
                             if (existingParent.index === 1) fieldKey = entityDataType.uniqueFieldKey;
                             else {
-                                const definedParents = updatedModel.entityParents
-                                    .get(queryName)
+                                const definedParents = updatedModel.getParentEntities(queryName, combineParentTypes)
                                     .filter(parent => parent.query !== undefined);
                                 if (definedParents.size === 0) fieldKey = entityDataType.uniqueFieldKey;
                                 else {
@@ -458,7 +458,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         const { insertModel } = this.state;
         const { combineParentTypes } = this.props;
         const queryName = entityDataType.typeListingSchemaQuery.queryName;
-        const entityParents = insertModel.entityParents.get(queryName);
+        const entityParents = insertModel.getParentEntities(queryName, combineParentTypes);
 
         return entityParents
             .map(parent => {
@@ -493,9 +493,10 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
 
     renderAddEntityButton(entityDataType: EntityDataType) {
         const { insertModel } = this.state;
+        const { combineParentTypes } = this.props;
         const queryName = entityDataType.typeListingSchemaQuery.queryName;
         const parentOptions = insertModel.parentOptions.get(queryName);
-        const entityParents = insertModel.entityParents.get(queryName);
+        const entityParents = insertModel.getParentEntities(queryName, combineParentTypes);
         if (parentOptions.size === 0) return null;
         else {
             const disabled = parentOptions.size <= entityParents.size;
@@ -529,9 +530,13 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             if (isInit && targetEntityType && parentDataTypes) {
                 return (
                     <>
-                        {parentDataTypes.map(dataType => {
+                        {!combineParentTypes && parentDataTypes.map(dataType => {
                             return this.renderParentTypes(dataType);
                         })}
+                        {combineParentTypes &&
+                            // Just grabbing first parent type for the name
+                            this.renderParentTypes(parentDataTypes.get(0))
+                        }
                         <div className="entity-insert--header">
                             {!combineParentTypes && parentDataTypes.map(dataType => {
                                 return this.renderAddEntityButton(dataType);

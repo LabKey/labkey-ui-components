@@ -431,6 +431,21 @@ export class EntityIdCreationModel extends Record({
         };
     }
 
+    getParentEntities(queryName: string, combineParentTypes: boolean): List<EntityParentType> {
+        if (combineParentTypes) {
+            return this.entityParents.reduce((reduction, parentType) => {
+                let index = reduction.size + 1;
+                let types = parentType.map((type) => {
+                    return type.set("index", index++)
+                });
+                return reduction.concat(types) as List<EntityParentType>;
+            }, List<EntityParentType>());
+        }
+        else {
+            return this.entityParents.get(queryName);
+        }
+    }
+
     getParentOptions(currentSelection: string, queryName: string, combineParentTypes: boolean): any[] {
 
         let allOptions = this.parentOptions.get(queryName);

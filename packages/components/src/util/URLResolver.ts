@@ -18,6 +18,7 @@ import { ActionURL, Experiment, Filter } from '@labkey/api';
 
 import { AppURL } from '../url/AppURL';
 import { LineageLinkMetadata } from '../components/lineage/types';
+import { createProductUrl } from '../components/navigation/utils';
 
 interface MapURLOptions {
     column: any;
@@ -327,6 +328,17 @@ export class URLResolver {
                 }
             }),
 
+            new ActionMapper('query', 'executeQuery', row => {
+                const url = row.get('url');
+                if (url) {
+                    const params = ActionURL.getParameters(url);
+                    if (params.schemaName && params.schemaName.toLowerCase() == 'inventory'
+                        && params.queryName && params.queryName.toLowerCase() == 'item') {
+                        return createProductUrl("freezerManager", undefined, AppURL.create("rd", "sampleItem", params['query.MaterialId~eq']))
+                    }
+                }
+            }),
+
             new ActionMapper('user', 'details', (row, column, schema, query) => {
                 const url = row.get('url');
                 if (url) {
@@ -373,6 +385,10 @@ export class URLResolver {
 
         if (_url instanceof AppURL) {
             return _url.toHref();
+        }
+
+        if (typeof _url === 'string') {
+            return _url;
         }
 
         if (_url !== false && LABKEY.devMode) {
@@ -542,21 +558,21 @@ export class URLResolver {
 }
 
 interface URLMapper {
-    resolve(url, row, column, schema, query): AppURL | boolean;
+    resolve(url, row, column, schema, query): AppURL | string | boolean;
 }
 
 class ActionMapper implements URLMapper {
     controller: string;
     action: string;
-    resolver: (row, column, schema, query) => AppURL | boolean;
+    resolver: (row, column, schema, query) => AppURL | string | boolean;
 
-    constructor(controller: string, action: string, resolver: (row?, column?, schema?, query?) => AppURL | boolean) {
+    constructor(controller: string, action: string, resolver: (row?, column?, schema?, query?) => AppURL | string | boolean) {
         this.controller = controller.toLowerCase();
         this.action = action.toLowerCase();
         this.resolver = resolver;
     }
 
-    resolve(url, row, column, schema, query): AppURL | boolean {
+    resolve(url, row, column, schema, query): AppURL | string | boolean {
         if (url) {
             const parsed = parsePathName(url);
 

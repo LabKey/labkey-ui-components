@@ -1,5 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* Update URLResolvers to handle URLs that may go to a separate application
+* Add StorageStatusRenderer for showing the storage status of a sample
 
 ### version 0.75.0
 *Released*: 9 July 2020

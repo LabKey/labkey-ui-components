@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.75.0
+*Released*: 9 July 2020
+* [Issue 36916](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=36916): Remove `toLowerCase()` when constructing `AppURL`s base parts.
+* No longer export `<NavItem/>` as it is always utilized by `<SubNav/>`.
+* Update `react-router` and `@types/react-router` to latest v3.x versions.
+
 ### version 0.74.0
 *Released*: 8 July 2020
 * Item 7458: Move shared application models, actions, etc. for Sample Manager and Freezer Manager

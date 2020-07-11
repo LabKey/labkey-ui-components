@@ -13,7 +13,7 @@ describe('resolveSearchUsingIndex', () => {
         return resolver.resolveSearchUsingIndex(testJson).then(resolved => {
             expect(resolved).toHaveProperty(['hits']);
             expect(resolved).toHaveProperty(['hits', 0]);
-            expect(resolved).toHaveProperty(['hits', 0, 'url'], '#/samples/molecule');
+            expect(resolved).toHaveProperty(['hits', 0, 'url'], '#/samples/Molecule');
             expect(resolved).toHaveProperty(['hits', 0, 'data', 'name'], 'Molecule'); // not sure if this is best place to check this...
         });
     });
@@ -69,7 +69,7 @@ describe('resolveLineage', () => {
             lineageResult.nodes.get('urn:lsid:labkey.com:Data.Folder-252:f34174d2-2678-1038-9c2a-d1b4d4df18c4')
         );
 
-        expect(resolvedLinks.list).toEqual('#/rd/dataclass/source%201');
+        expect(resolvedLinks.list).toEqual('#/rd/dataclass/Source%201');
         expect(resolvedLinks.overview).toEqual('#/rd/expdata/6648');
     });
 
@@ -79,7 +79,7 @@ describe('resolveLineage', () => {
             lineageResult.nodes.get('urn:lsid:labkey.com:Sample.61.Hemoglobin:Hgb3.3')
         );
         // test a sample type
-        expect(resolvedLinks.list).toEqual('#/samples/hemoglobin');
+        expect(resolvedLinks.list).toEqual('#/samples/Hemoglobin');
         expect(resolvedLinks.overview).toEqual('#/rd/samples/6814');
 
         // TODO test that the run node doesn't show up

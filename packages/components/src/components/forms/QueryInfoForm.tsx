@@ -277,7 +277,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         this.setState(() => ({ count: value }));
     };
 
-    onFieldsEnabledChange = (fieldEnabledCount: number) => {
+    onFieldsEnabledChange = (fieldEnabledCount: number): void => {
         this.setState(() => ({ fieldEnabledCount }));
     };
 

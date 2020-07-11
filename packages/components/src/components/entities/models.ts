@@ -431,7 +431,7 @@ export class EntityIdCreationModel extends Record({
         };
     }
 
-    getParentEntities(queryName: string, combineParentTypes: boolean): List<EntityParentType> {
+    getParentEntities(combineParentTypes: boolean, queryName?: string): List<EntityParentType> {
         if (combineParentTypes) {
             return this.entityParents.reduce((reduction, parentType) => {
                 let index = reduction.size + 1;
@@ -441,8 +441,11 @@ export class EntityIdCreationModel extends Record({
                 return reduction.concat(types) as List<EntityParentType>;
             }, List<EntityParentType>());
         }
-        else {
+        else if (queryName !== undefined) {
             return this.entityParents.get(queryName);
+        }
+        else {
+            return List<EntityParentType>();
         }
     }
 
@@ -460,7 +463,7 @@ export class EntityIdCreationModel extends Record({
         // exclude options that have already been selected, except the current selection for this input
         return allOptions
             .filter(o =>
-                this.getParentEntities(queryName, combineParentTypes).every(parent => {
+                this.getParentEntities(combineParentTypes, queryName).every(parent => {
                     const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
                     const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
                     return notParentMatch || matchesCurrent;

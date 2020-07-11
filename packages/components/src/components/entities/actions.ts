@@ -1,10 +1,7 @@
-import { Ajax, AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
+import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
 import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
-
-import { QueryGridModel } from '../base/models/model';
-import { deleteRows } from '../../query/api';
 
 import {
     DisplayObject,
@@ -264,7 +261,8 @@ export function getEntityTypeOptions(entityDataType: EntityDataType): Promise<Ma
 
 /**
  * @param model
- * @param entityDataTypes a map between the type schema name (e.g., "samples") and the EntityDataType
+ * @param entityDataType main data type to resolve
+ * @param parentSchemaQueries map of the possible parents to the entityDataType
  * @param targetQueryName the name of the listing schema query that represents the initial target for creation.
  * @param allowParents are parents of this entity type allowed or not
  */
@@ -276,17 +274,13 @@ export function getEntityTypeData(
     allowParents: boolean
 ): Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
-        const promises = [];
 
-        promises.push(getEntityTypeOptions(entityDataType));
-
-        // get all the parent schemaQuery data
-        promises.push(getChosenParentData(model, parentSchemaQueries, allowParents));
-        parentSchemaQueries.forEach((entity: EntityDataType) => {
-            promises.push(
-                getEntityTypeOptions(entity)
-            );
-        });
+        const promises: Promise<any>[] = [
+            getEntityTypeOptions(entityDataType),
+            // get all the parent schemaQuery data
+            getChosenParentData(model, parentSchemaQueries, allowParents),
+            ...parentSchemaQueries.map(getEntityTypeOptions).toArray(),
+        ];
 
         let partial: Partial<EntityIdCreationModel> = {};
         Promise.all(promises)
@@ -301,7 +295,7 @@ export function getEntityTypeData(
                 // Set possible parents
                 partial.parentOptions = parentOptions;
 
-                // Set possibley types
+                // Set possible types
                 partial.entityTypeOptions = results[0].first();
 
                 // and populate the targetEntityType if one is provided

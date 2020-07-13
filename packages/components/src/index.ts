@@ -185,6 +185,7 @@ import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
+import { LabelColorRenderer } from './renderers/LabelColorRenderer';
 import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
@@ -441,6 +442,7 @@ export {
     AppendUnits,
     DefaultRenderer,
     FileColumnRenderer,
+    LabelColorRenderer,
     MultiValueRenderer,
     resolveDetailEditRenderer,
     resolveDetailRenderer,

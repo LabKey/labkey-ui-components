@@ -30,6 +30,7 @@ import { QueryColumn } from '../../base/models/model';
 import { getUnFormattedNumber } from '../../../util/Date';
 
 import { _defaultRenderer } from './DetailDisplay';
+import { LabelColorRenderer } from "../../../renderers/LabelColorRenderer";
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is
@@ -173,6 +174,9 @@ export function resolveDetailRenderer(column: QueryColumn) {
                 break;
             case 'assayrunreference':
                 renderer = d => <AssayRunReferenceRenderer data={d} />;
+                break;
+            case 'labelcolorrenderer':
+                renderer = d => <LabelColorRenderer data={d} />;
                 break;
             default:
                 break;

@@ -320,7 +320,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Label Color"
-                                    helpTipBody={() => `TODO: put text here...`}
+                                    helpTipBody={() => 'The label color will be used to distinguish this sample type in various views in the application.'}
                                 />
                             </Col>
                             <Col xs={10}>

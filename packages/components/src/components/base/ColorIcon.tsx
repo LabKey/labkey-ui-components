@@ -8,7 +8,7 @@ interface Props {
 }
 
 export class ColorIcon extends PureComponent<Props> {
-    private defaultProps = {
+    static defaultProps = {
         cls: 'color-picker__chip',
     };
 
@@ -19,13 +19,11 @@ export class ColorIcon extends PureComponent<Props> {
 
         let icon;
         if (value) {
-            icon = <i className="fa fa-circle" style={{ color: value }} />;
-        } else if (isWhite) {
-            icon = <i className="fa fa-circle-thin" />;
-        }
-
-        if (value && asSquare) {
-            icon = <i className={cls} style={{ backgroundColor: value, border }} />;
+            if (asSquare) {
+                icon = <i className={cls} style={{ backgroundColor: value, border }} />;
+            } else {
+                icon = <i className="fa fa-circle" style={{ color: value }} />;
+            }
         }
 
         return (

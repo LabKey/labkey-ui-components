@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LabelColorRenderer empty data 1`] = `null`;
+
+exports[`LabelColorRenderer undefined data 1`] = `null`;
+
+exports[`LabelColorRenderer with data 1`] = `
+<i
+  className="fa fa-circle"
+  style={
+    Object {
+      "color": "#000000",
+    }
+  }
+/>
+`;

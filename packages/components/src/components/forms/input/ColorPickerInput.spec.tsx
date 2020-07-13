@@ -27,4 +27,10 @@ describe('ColorPickerInput', () => {
         component.setState({showPicker: true});
         expect(component).toMatchSnapshot();
     });
+
+    test('allowRemove', () => {
+        const component = <ColorPickerInput value={'#000000'} onChange={jest.fn} allowRemove={true}/>;
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 });

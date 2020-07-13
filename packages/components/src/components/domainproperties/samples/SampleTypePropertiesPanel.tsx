@@ -328,6 +328,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                     name={'labelColor'}
                                     value={model.labelColor}
                                     onChange={this.onFieldChange}
+                                    allowRemove={true}
                                 />
                             </Col>
                         </Row>

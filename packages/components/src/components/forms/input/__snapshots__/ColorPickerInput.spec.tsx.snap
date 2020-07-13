@@ -1,5 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ColorPickerInput allowRemove 1`] = `
+<div
+  className="color-picker"
+>
+  <button
+    className="color-picker__button btn btn-default"
+    onClick={[Function]}
+    type="button"
+  >
+    <i
+      className="color-picker__chip-small"
+      style={
+        Object {
+          "backgroundColor": "#000000",
+          "border": undefined,
+        }
+      }
+    />
+    <i
+      className="fa fa-caret-down"
+    />
+  </button>
+  <div
+    className="color-picker__remove"
+  >
+    <span
+      className="container--action-button"
+      onClick={[Function]}
+    >
+      <i
+        className="fa fa-times container--removal-icon"
+      />
+      
+    </span>
+  </div>
+  <div
+    className="color-picker__picker"
+  />
+</div>
+`;
+
 exports[`ColorPickerInput default props 1`] = `
 <div
   className="color-picker"

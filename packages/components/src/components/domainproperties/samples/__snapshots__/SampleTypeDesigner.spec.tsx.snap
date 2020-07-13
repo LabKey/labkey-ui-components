@@ -2711,6 +2711,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       className="col-xs-10"
                                     >
                                       <ColorPickerInput
+                                        allowRemove={true}
                                         name="labelColor"
                                         onChange={[Function]}
                                       >

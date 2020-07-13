@@ -334,11 +334,18 @@ export class URLResolver {
                 if (url) {
                     const materialIdKey = 'query.MaterialId~eq';
                     const params = ActionURL.getParameters(url);
-                    if (params.schemaName && params.schemaName.toLowerCase() == 'inventory'
-                        && params.queryName && params.queryName.toLowerCase() == 'item'
-                        && params[materialIdKey] !== undefined
+                    if (
+                        params.schemaName &&
+                        params.schemaName.toLowerCase() == 'inventory' &&
+                        params.queryName &&
+                        params.queryName.toLowerCase() == 'item' &&
+                        params[materialIdKey] !== undefined
                     ) {
-                        return createProductUrl(FREEZER_MANAGER_PRODUCT_ID, undefined, AppURL.create("rd", "sampleItem", params[materialIdKey]))
+                        return createProductUrl(
+                            FREEZER_MANAGER_PRODUCT_ID,
+                            undefined,
+                            AppURL.create('rd', 'sampleItem', params[materialIdKey])
+                        );
                     }
                 }
             }),
@@ -570,7 +577,11 @@ class ActionMapper implements URLMapper {
     action: string;
     resolver: (row, column, schema, query) => AppURL | string | boolean;
 
-    constructor(controller: string, action: string, resolver: (row?, column?, schema?, query?) => AppURL | string | boolean) {
+    constructor(
+        controller: string,
+        action: string,
+        resolver: (row?, column?, schema?, query?) => AppURL | string | boolean
+    ) {
         this.controller = controller.toLowerCase();
         this.action = action.toLowerCase();
         this.resolver = resolver;

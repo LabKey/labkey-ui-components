@@ -6,7 +6,6 @@ interface StorageStatusProps {
 }
 
 export class StorageStatusRenderer extends React.PureComponent<StorageStatusProps, any> {
-
     render() {
         const { data } = this.props;
 
@@ -14,9 +13,8 @@ export class StorageStatusRenderer extends React.PureComponent<StorageStatusProp
 
         if (value?.toLowerCase() === 'not in storage') {
             return value;
-        }
-        else {
-            return <a href={data.get('url')}>{value}</a>
+        } else {
+            return <a href={data.get('url')}>{value}</a>;
         }
     }
 }

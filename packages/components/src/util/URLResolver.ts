@@ -348,6 +348,7 @@ export class URLResolver {
                         );
                     }
                 }
+                return false;
             }),
 
             new ActionMapper('user', 'details', (row, column, schema, query) => {

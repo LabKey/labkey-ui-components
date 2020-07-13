@@ -19,6 +19,7 @@ import { ActionURL, Experiment, Filter } from '@labkey/api';
 import { AppURL } from '../url/AppURL';
 import { LineageLinkMetadata } from '../components/lineage/types';
 import { createProductUrl } from '../components/navigation/utils';
+import { FREEZER_MANAGER_PRODUCT_ID } from '../internal/app';
 
 interface MapURLOptions {
     column: any;
@@ -331,10 +332,13 @@ export class URLResolver {
             new ActionMapper('query', 'executeQuery', row => {
                 const url = row.get('url');
                 if (url) {
+                    const materialIdKey = 'query.MaterialId~eq';
                     const params = ActionURL.getParameters(url);
                     if (params.schemaName && params.schemaName.toLowerCase() == 'inventory'
-                        && params.queryName && params.queryName.toLowerCase() == 'item') {
-                        return createProductUrl("freezerManager", undefined, AppURL.create("rd", "sampleItem", params['query.MaterialId~eq']))
+                        && params.queryName && params.queryName.toLowerCase() == 'item'
+                        && params[materialIdKey] !== undefined
+                    ) {
+                        return createProductUrl(FREEZER_MANAGER_PRODUCT_ID, undefined, AppURL.create("rd", "sampleItem", params[materialIdKey]))
                     }
                 }
             }),

@@ -198,6 +198,7 @@ import { FileInput } from './components/forms/input/FileInput';
 import { TextInput } from './components/forms/input/TextInput';
 import { TextAreaInput } from './components/forms/input/TextAreaInput';
 import { FieldEditForm, FieldEditProps } from './components/forms/input/FieldEditInput';
+import { ColorPickerInput } from './components/forms/input/ColorPickerInput';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
@@ -213,6 +214,10 @@ import { ISelectInitData } from './components/forms/model';
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
 import { SchemaListing } from './components/listing/SchemaListing';
 import { QueriesListing } from './components/listing/QueriesListing';
+import { QueriesListingPage } from './components/listing/pages/QueriesListingPage';
+import { QueryDetailPage } from './components/listing/pages/QueryDetailPage';
+import { QueryListingPage } from './components/listing/pages/QueryListingPage';
+import { SchemaListingPage } from './components/listing/pages/SchemaListingPage';
 import { HeatMap } from './components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
 import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
@@ -279,13 +284,12 @@ import { EntityTypeDeleteConfirmModal } from './components/entities/EntityTypeDe
 import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './components/navigation/HeaderWrapper';
 import { NavigationBar } from './components/navigation/NavigationBar';
-import { NavItem } from './components/navigation/NavItem';
 import { MenuSectionConfig } from './components/navigation/ProductMenuSection';
 import { ITab, SubNav } from './components/navigation/SubNav';
 import { Breadcrumb } from './components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './components/navigation/model';
-import { confirmLeaveWhenDirty, createApplicationUrl } from './components/navigation/utils';
+import { confirmLeaveWhenDirty, createProductUrlFromParts } from './components/navigation/utils';
 import { UserSelectInput } from './components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
@@ -353,11 +357,19 @@ import {
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanelWithModel } from './QueryModel/DetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
+import * as App from './internal/app/index';
+import { AuditDetailsModel } from './components/auditlog/models';
+import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
+import { AuditDetails } from './components/auditlog/AuditDetails';
+import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
+
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
 enablePatches();
 
 export {
+    // internal application
+    App,
     // global state functions
     initQueryGridState,
     initNotificationsState,
@@ -422,7 +434,7 @@ export {
     imageURL,
     spliceURL,
     WHERE_FILTER_TYPE,
-    createApplicationUrl,
+    createProductUrlFromParts,
     // renderers
     AliasRenderer,
     AppendUnits,
@@ -445,6 +457,7 @@ export {
     FileInput,
     TextAreaInput,
     TextInput,
+    ColorPickerInput,
     FieldEditForm,
     FieldEditProps,
     QuerySelect,
@@ -579,7 +592,6 @@ export {
     MenuItemModel,
     HeaderWrapper,
     ITab,
-    NavItem,
     NavigationBar,
     SubNav,
     Breadcrumb,
@@ -694,7 +706,11 @@ export {
     ErrorBoundary,
     BeforeUnload,
     SchemaListing,
+    SchemaListingPage,
     QueriesListing,
+    QueriesListingPage,
+    QueryListingPage,
+    QueryDetailPage,
     Theme,
     SVGIcon,
     // general components
@@ -760,4 +776,10 @@ export {
     DetailPanelWithModel,
     Pagination,
     PaginationData,
+    // AuditLog
+    AuditDetailsModel,
+    AuditQueriesListingPage,
+    AuditDetails,
+    getEventDataValueDisplay,
+    getTimelineEntityUrl,
 };

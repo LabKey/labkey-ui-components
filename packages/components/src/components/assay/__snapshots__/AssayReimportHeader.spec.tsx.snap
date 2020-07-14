@@ -16,7 +16,7 @@ exports[`<AssayReimportHeader/> has batch properties 1`] = `
       <strong>
         Replacing Run: 
         <a
-          href="#/assays/general/gpat%201/runs/10"
+          href="#/assays/General/GPAT%201/runs/10"
         >
           Test Name
         </a>
@@ -47,7 +47,7 @@ exports[`<AssayReimportHeader/> no batch properties 1`] = `
       <strong>
         Replacing Run: 
         <a
-          href="#/assays/general/gpat%201/runs/10"
+          href="#/assays/General/GPAT%201/runs/10"
         >
           Test Name
         </a>

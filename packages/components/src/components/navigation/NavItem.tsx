@@ -13,84 +13,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import * as PropTypes from 'prop-types';
-import { InjectedRouter, Link } from 'react-router';
+import React, { FC, memo, useEffect, useRef, useState } from 'react';
+import { Link, withRouter, WithRouterProps } from 'react-router';
 
-import { AppURL } from '../../url/AppURL';
+import { AppURL } from '../..';
 
 interface NavItemProps {
-    onlyActiveOnIndex?: boolean;
-    onActive?: Function;
+    onActive?: (activeEl: HTMLElement) => void;
     to: string | AppURL;
 }
 
-export class NavItem extends React.Component<NavItemProps, any> {
-    // required for react-router to display active links properly
-    static contextTypes = {
-        router: PropTypes.object.isRequired,
-    };
+const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, location, onActive, to }) => {
+    const itemRef = useRef<HTMLLIElement>();
+    const [active, setActive] = useState<boolean>(false);
 
-    static defaultProps = {
-        onlyActiveOnIndex: false,
-    };
+    useEffect(() => {
+        if (to && location) {
+            const isActive = location.pathname.toLowerCase() === to.toString().toLowerCase();
+            setActive(isActive);
 
-    context: {
-        router: InjectedRouter;
-    };
-
-    private item: React.RefObject<HTMLLIElement>;
-
-    constructor(props: NavItemProps) {
-        super(props);
-
-        this.item = React.createRef();
-    }
-
-    componentWillReceiveProps(nextProps: NavItemProps) {
-        if (nextProps.onActive && this.isActive(nextProps)) {
-            nextProps.onActive(this.item.current);
+            if (isActive) {
+                onActive?.(itemRef.current);
+            }
+        } else {
+            setActive(false);
         }
-    }
+    }, [location, to]);
 
-    isActive(props: NavItemProps) {
-        const { onlyActiveOnIndex, to } = props;
+    return (
+        <li className={active ? 'active' : null} ref={itemRef}>
+            <Link to={to.toString()}>{children}</Link>
+        </li>
+    );
+});
 
-        // This is using the same pattern as <Link> to determine if the route is active
-        if (to && this.context.router) {
-            return this.context.router.isActive(to.toString(), onlyActiveOnIndex);
-        }
+// Export as "default" to avoid erroneous type warning use of withRouter()
+export default withRouter<NavItemProps>(NavItemImpl);
 
-        return false;
-    }
-
-    render() {
-        const { to } = this.props;
-
-        return (
-            <li className={this.isActive(this.props) ? 'active' : null} ref={this.item}>
-                <Link to={to.toString()}>{this.props.children}</Link>
-            </li>
-        );
-    }
-}
-
-export class ParentNavItem extends React.Component<NavItemProps, any> {
-    render() {
-        const { to } = this.props;
-
-        return (
-            <div className="parent-nav">
-                <ul className="nav navbar-nav">
-                    <li>
-                        <Link to={to.toString()}>
-                            <i className="fa fa-chevron-left" />
-                            &nbsp;
-                            {this.props.children}
-                        </Link>
-                    </li>
-                </ul>
-            </div>
-        );
-    }
-}
+export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
+    return (
+        <div className="parent-nav">
+            <ul className="nav navbar-nav">
+                <li>
+                    <Link to={to.toString()}>
+                        <i className="fa fa-chevron-left" />
+                        &nbsp;
+                        {children}
+                    </Link>
+                </li>
+            </ul>
+        </div>
+    );
+});

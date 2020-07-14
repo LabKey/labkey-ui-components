@@ -47,8 +47,12 @@ yarn install
 ```
 
 This will install all dependencies for the component packages.
-Once this is complete you can utilize yarn to run builds for a package.
+Once this is complete you can utilize yarn to build and test the package.
 
+```sh
+yarn build
+yarn test
+```
 
 ### Technologies
 For doing development of LabKey UI Components, you should be familiar with the following technologies:
@@ -81,13 +85,15 @@ Generally, when doing development, you should:
 
 ### Local Development
 
-When making modifications to an existing package, you should:
-* Update the version number for the package to be `X.Y.Z-fb-my-branch-name.0`, where `X.Y.Z` is your best guess at the
+When making modifications to the existing package, you should:
+* Use an alpha version number for the package of the form `X.Y.Z-fb-my-branch-name.0`, where `X.Y.Z` is your best guess at the
 next [SemVer](https://semver.org/) version that will include your changes, `fb-my-branch-name` is the name of your
-feature branch with underscores replaced by hyphens and the `.0` is just a starting point for the prerelease versioning.
-You can do this editing manually within the `package.json` file or when running `yarn publish`.  See [below](#version-numbering) for
+feature branch with underscores replaced by hyphens and the `.0` is just a starting point for the prerelease versioning. This `.0`
+version will be incremented with each alpha package version you want to publish and test in your LabKey module.
+Note that the version number within the `package.json` file will be set while running the  `yarn publish` command.  See [below](#version-numbering) for
  more on version numbering.
-* Update the `releaseNotes/labkey/components.md` file to document what is changing in this version.
+* Update the `releaseNotes/labkey/components.md` file to document what is changing in this version. Note that the final release
+version number and date will be set just before you merge your feature branch.
 * Write [jest](https://jestjs.io/docs/en/getting-started.html) tests together with [enzyme](https://airbnb.io/enzyme/) to test
 non-rendering functions and rendering of components with different sets of parameters.  Jest
 tests should be preferred over other types of tests since they are quick to run and small enough to be easily understood,
@@ -98,7 +104,7 @@ for reading in realistic data that can be captured from the server.
 * Write or update [storybook stories](#storybook) that illustrate the functionality.  This is the easiest way to do the bulk of manual
 testing and iteration on display updates.  Again, we have several examples of stories that use actual data captured
 from the server for various Ajax calls that are required.
-* Test within the application once display and functionality are as expected from within storybook.
+* Test within the application, using a published alpha package version, once display and functionality are as expected from within storybook.
 
 #### Getting @labkey/components packages to the application
 
@@ -111,11 +117,12 @@ we currently recommend using `yarn watch` together with a copy command from the 
 directory of your application. The `watch` command will automatically build a package when the source code changes.  If you have hot reloading started for your application, after you copy the `dist` directory, changes made in the components
 will then get loaded into the application.
 
-For example, for the querygrid package, you could do:
+For example, to test changes in `@labkey/components` within the `my_app` module, you could do:
 * ``yarn watch``
-* edit files
+* edit files within the `package/components` dir
 * wait for recompile triggered by the `watch` to happen
-* ``cp -r dist /path/to/my_app/node_modules/\@labkey/components``
+* ``cp -r dist /path/to/my_app/node_modules/\@labkey/components/dist``
+* use [hot module reload mode](https://github.com/LabKey/platform/tree/develop/webpack#developing-with-hot-module-reloading-hmr) in your module to test changes
 
 
 We do not currently recommend using [`npm link`](https://docs.npmjs.com/cli/link.html) (or [`yarn link`](https://yarnpkg.com/lang/en/docs/cli/link/)).  It seems promising,
@@ -274,7 +281,7 @@ package.json for this new version number (if that applies).
 1. Once merged and the "release" version has been pushed to Artifactory, you can then go to Artifactory and delete your
 alpha versions of that package for this feature branch.
 
-## Publishing commands
+### Publishing commands
 
 From the package root (not the repository root!) of the package you want to update (e.g. `packages/components`) run:
 
@@ -283,5 +290,62 @@ yarn publish
 ```
 
 This will prompt you for the new version.  Choose a version increment in accordance with [SemVer](https://semver.org/).  This command will
-update the `package.json` file and commit that change.  Then you can do a `git push` to get the update into the remote repository. (Note,
-you could instead use `npm publish`, but you will have to update the `package.json` file manually before using that command.)
+update the `package.json` file and commit that change.  Then you can do a `git push` to get the update into the remote repository.
+
+## Merging changes into master
+
+1. Message the Frontend dev room chat about starting the pull request merge. This is to make sure two people aren't
+merging at the same time which might result in conflicting package version numbers.
+1. Do one final merge of the `master` branch into your feature branch for `labkey-ui-components`.
+1. Run one final lint of your changes, `yarn run lint-branch-fix`, and review the changes applied.
+1. Update the `releaseNotes/labkey/components.md` file with what will be your release version number and release date.
+1. Run the commands to build, test, and publish: `yarn build`, `yarn test`, `yarn publish`.
+1. Push your final set of commits from `labkey-ui-components` to github so that TeamCity can do a final run of the jest tests.
+1. Update any LabKey module `package.json` files where you are using / applying these changes with this final release version
+number (then do the regular `npm install` for that module, build, etc. and push those `package.json` and `package-lock.json` file
+changes to github as well).
+1. Remove any of the alpha package versions from [Artifactory](https://artifactory.labkey.com/artifactory/webapp/#/home)
+that you had published during development for this feature branch.
+    1. Navigate to the `@labkey/components` [tree node](https://artifactory.labkey.com/artifactory/webapp/#/artifacts/browse/tree/General/libs-client-local/@labkey/components/-/@labkey)
+    of the `libs-client-local` artifact.
+    1. Right click on the name of the alpha package version in the tree on the left and choose `delete` (or use the
+    `Actions > Delete` in the upper right), note that you must be logged in to see this option.
+1. Check on the [TeamCity](https://teamcity.labkey.org) build status and jest test status.
+1. Merge the pull requests for `labkey-ui-components` and any of your related LabKey modules / repos.
+1. Message the Frontend dev room chat that the merge is complete.
+
+## Making hotfix patches to a release branch
+
+Occasionally we will need to patch a version of the `@labkey/components` package to fix a bug in a previous release of
+LabKey server. There are a few extra steps in this process, described below:
+
+1. Find the `@labkey/components` package version number to patch by looking at the package versions that are used
+ in the `package.json` files of the LabKey module that you plan to update. The version number to branch from needs to
+ be the latest bug fix version greater than the version in use by the package where the update is required.
+ That is, if the module uses `0.41.2`, but we have already produced `0.41.3` and `0.41.4`, you need to use `0.41.4` as the
+ branch starting point since you'll presumably be making another bug fix release and can't use the versions already published.
+1. Once you know that package version number, track down the commit hash for it in
+ the [github commit list](https://github.com/LabKey/labkey-ui-components/commits/master) off of the master branch.
+1. Create the release branch using that commit hash, `git checkout -b release20.3-SNAPSHOT <commit hash>`, and
+ push that release branch to github.
+1. Create a new hotfix branch off of that new release branch, `git checkout -b 20.3_fb_myFeatureBranchWithFixes`.
+1. Use the regular process to develop and test your changes and push those changes up to github.
+1. Create the pull request from your new hotfix feature branch and set the target of the pull request to the release branch.
+1. After all code review and triage is complete and you are ready to merge, do the regular merge steps for
+ `labkey-ui-components` (see the steps in the section above). Note that the new release version you will use for your changes
+ will be the next patch version off of the target package version for that release. For example if the veresion was at
+  `0.31.3` then you will publish version `0.31.4`.
+1. After any related LabKey module changes have been merged from their repo's release branch to develop,
+ create a new branch in `labkey-ui-components` off of master in order to merge forward your hotfix changes:
+    1. Get the latest from the hotfix branch:
+        1. `git checkout release20.3-SNAPSHOT`
+        1. `git pull`
+    1. Checkout master so that you can branch off of it:
+        1. `git checkout master`
+        1. `git pull`
+    1. Create a new branch and merge in the hotfix changes:
+        1. `git checkout -b fb_mergeFrom203`
+        1. `git merge release20.3-SNAPSHOT`
+    1. Treat this new branch as a regular feature branch off of master (i.e. publish an alpha package to test in platform/etc.,
+        review TeamCity results, get code review, merge as usual using the steps in the section above).
+

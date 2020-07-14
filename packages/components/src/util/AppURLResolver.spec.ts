@@ -136,11 +136,11 @@ describe('URL Resolvers', () => {
 
             // validate ActionMapper('experiment', 'showDataClass') -- no lookup
             expect(newResult.getIn(['rows', 0, 'NonLookupExpShowDataClass', 'url'])).toBe(
-                '#/rd/dataclass/nolookupdataclass'
+                '#/rd/dataclass/NoLookupDataClass'
             );
 
             // validate ActionMapper('experiment', 'showDataClass') -- with lookup
-            expect(newResult.getIn(['rows', 0, 'LookupExpShowDataClass', 'url'])).toBe('#/rd/dataclass/beepboop');
+            expect(newResult.getIn(['rows', 0, 'LookupExpShowDataClass', 'url'])).toBe('#/rd/dataclass/BeepBoop');
 
             // validate ActionMapper('experiment', 'showData') -- no lookup
             expect(newResult.getIn(['rows', 0, 'NonLookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
@@ -149,10 +149,10 @@ describe('URL Resolvers', () => {
             expect(newResult.getIn(['rows', 0, 'LookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
 
             // validate LookupMapper('/q/')
-            expect(newResult.getIn(['rows', 0, 'LookupColumn', 'url'])).toBe('#/q/boomschema/powquery/101');
+            expect(newResult.getIn(['rows', 0, 'LookupColumn', 'url'])).toBe('#/q/BoomSchema/PowQuery/101');
 
             // validate LookupMapper('exp-dataclasses')
-            expect(newResult.getIn(['rows', 0, 'DataClassLookupColumn', 'url'])).toBe('#/rd/dataclass/mydataclass');
+            expect(newResult.getIn(['rows', 0, 'DataClassLookupColumn', 'url'])).toBe('#/rd/dataclass/MyDataClass');
 
             // validate LookupMapper('issues')
             expect(newResult.getIn(['rows', 0, 'LookupIssues', 'url'])).toBe(
@@ -248,13 +248,13 @@ describe('App Route Resolvers', () => {
                 expect(result).toBe(true);
             }),
             listResolver.fetch(['q', 'lists', 23]).then((url: AppURL) => {
-                expect(url.toString()).toBe('/q/lists/jordan');
+                expect(url.toString()).toBe('/q/lists/Jordan');
             }),
             listResolver.fetch(['q', 'lists', '8', 'mamba']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/q/lists/kobe/mamba');
+                expect(url.toString()).toBe('/q/lists/KObE/mamba');
             }),
             listResolver.fetch(['q', 'lists', '7', 17, '?']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/q/lists/pistolpete/17/%3f');
+                expect(url.toString()).toBe('/q/lists/PistolPete/17/%3F');
             }),
         ]);
     });
@@ -281,16 +281,16 @@ describe('App Route Resolvers', () => {
                 expect(result).toBe(true);
             }),
             samplesResolver.fetch(['rd', 'samples', 30]).then((url: AppURL) => {
-                expect(url.toString()).toBe('/samples/td/30');
+                expect(url.toString()).toBe('/samples/TD/30');
             }),
             samplesResolver.fetch(['rd', 'samples', '80', 'wideOut']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/samples/rodsmith/80/wideout');
+                expect(url.toString()).toBe('/samples/RodSmith/80/wideOut');
             }),
             samplesResolver.fetch(['rd', 'samples', '7', 77, '?']).then((url: AppURL) => {
-                expect(url.toString()).toBe('/samples/elway/7/77/%3f');
+                expect(url.toString()).toBe('/samples/Elway/7/77/%3F');
             }),
             samplesResolver.fetch(['rd', 'samples', 24]).then((url: AppURL) => {
-                expect(url.toString()).toBe('/media/woodson/24');
+                expect(url.toString()).toBe('/media/Woodson/24');
             }),
         ]);
     });

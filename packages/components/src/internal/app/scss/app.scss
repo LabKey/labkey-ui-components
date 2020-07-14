@@ -1,0 +1,27 @@
+.content-wrapper {
+  min-height: calc( 100vh - ( #{$header-height} + #{$footer-height} ) );
+  width: 100%;
+  padding: 0 20px;
+}
+
+.app-content-wrapper {
+  padding-top: $header-height;
+
+  &.with-sub-nav {
+    padding-top: $header-spacing-no-scroll;
+
+    & > .content-wrapper {
+      min-height: calc( 100vh - ( #{$header-spacing-no-scroll} + #{$footer-height} ) );
+    }
+  }
+}
+
+.page-header {
+  margin: 0 0 15px 0;
+  padding: 0;
+  border: 0;
+}
+
+.menu-section-icon {
+  color:  lighten($brand-primary, 10%);
+}

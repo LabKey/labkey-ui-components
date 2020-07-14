@@ -5,6 +5,42 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Updates FileTree to support new Module Editor functionality.
 
+### version 0.75.0
+*Released*: 9 July 2020
+* [Issue 36916](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=36916): Remove `toLowerCase()` when constructing `AppURL`s base parts.
+* No longer export `<NavItem/>` as it is always utilized by `<SubNav/>`.
+* Update `react-router` and `@types/react-router` to latest v3.x versions.
+
+### version 0.74.0
+*Released*: 8 July 2020
+* Item 7458: Move shared application models, actions, etc. for Sample Manager and Freezer Manager
+    - export all of the new application related items as a single "App" item
+    - includes moving of AppModel, some reducers (product and routing), and related functions and constants
+    - move AuditLog related components, models, actions, and utils from Sample Manager
+    - move SchemaListingPage, QueriesListingPage, QueryListingPage, and QueryDetailPage from Sample Manager
+    - move app scss assets from Sample Manager, and have them copied into dist/assets/scss for module app usage
+    - ExpandableContainer component prop to only allow expand/collapse via icon instead of header click
+
+### version 0.73.1
+*Released*: 2 July 2020
+* Adjust LookupSelectInput to protect against loading the options more than once
+
+### version 0.73.0
+*Released*: 1 July 2020
+* Item 7458: Update Sample Manager and Freezer Manager app product menus to respect isSampleManagerEnabled
+    - ProductMenuModel update to add property for userMenuProductId
+    - MenuItemModel.create update to use menu section productId in user menu URLs
+    - rename createApplicationUrl -> createProductUrlFromParts, and add new implementation for createProductUrl
+
+### version 0.72.0
+*Released*: 1 July 2020
+* Add ColorPickerInput
+
+### version 0.71.2
+*Released*: 30 June 2020
+* Update EntityInsertPanel to only show import tab
+* Simplify showImportDataButton and showInsertNewButton
+
 ### version 0.71.1
 *Released*: 29 June 2020
 * Issue 40729: Renaming, Sample Set to Sample Type: SampleSet in parent aliases

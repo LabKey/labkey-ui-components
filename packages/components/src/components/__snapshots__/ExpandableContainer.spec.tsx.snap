@@ -5,7 +5,7 @@ exports[`<ExpandableContainer/> custom props 1`] = `
   className="row container-expandable disabled"
 >
   <div
-    className="container-expandable-detail container-expandable-child__inactive container-expandable-detail__active"
+    className="container-expandable-detail container-expandable-child__inactive container-expandable__active"
   >
     <i
       className="container-expandable-child__img"
@@ -48,7 +48,7 @@ exports[`<ExpandableContainer/> default props 1`] = `
   className="row container-expandable"
 >
   <div
-    className="container-expandable-detail container-expandable-detail__inactive"
+    className="container-expandable-detail container-expandable__inactive"
     onClick={[Function]}
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}

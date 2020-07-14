@@ -1,0 +1,91 @@
+/**
+ * Override any styles that you can't modify via variables here.
+ *
+ */
+
+.text-center {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  &:hover {
+    overflow: visible;
+  }
+}
+
+.content-wrapper {
+  .container,
+  .container-fluid {
+    padding: 16px;
+  }
+}
+
+.row-margin {
+  margin: 20px 0;
+}
+
+// Remove :focus browser outline for nav-tabs
+.nav-tabs li a:focus {
+  outline: none;
+}
+
+// resolve issue 32093
+// bootstrap attempts to make room to the right of an input for an error icon,
+// however we don't use those icons in Biologics react-bootstrap inputs
+// especially within an editable grid, make sure the content doesn't justify weird
+.edit-grid-container.has-feedback .form-control {
+  padding-right: 12px;
+}
+
+.has-feedback .form-control {
+  padding-right: 12px;
+}
+
+.navbar {
+  margin-bottom: 0;
+  min-height: 0;
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  // Keeps sub nav from wrapping at sm breakpoint
+  .navbar.sub-nav {
+    min-height: 0;
+
+    .navbar-nav {
+      margin: 0;
+    }
+  }
+
+  .navbar .navbar-nav .open .dropdown-menu {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  }
+}
+
+.breadcrumb {
+  margin-bottom: $breadcrumb-margin-bottom;
+}
+
+// _buttons.scss
+.btn {
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    cursor: $cursor-disabled;
+    @include opacity($btn-disabled-opacity);
+    @include box-shadow(none);
+  }
+}
+
+.col-wide {
+  padding-left: 5px;
+  padding-right: 5px;
+}

@@ -18,6 +18,7 @@ const WrappedColorPickerInput: FC<any> = (props) => {
         <ColorPickerInput
             name={'color-input-value'}
             text={showLabel ? text('text', 'Select color') : undefined}
+            allowRemove={boolean('allowRemove', true)}
             value={selected}
             onChange={(name, value) => setSelected(value)}
         />

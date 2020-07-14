@@ -10,6 +10,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - SampleTypeModel addition of labelColor prop
     - Add ColorIcon display component and LabelColorRenderer to use in Sample Manager and Freezer Manager
 
+### version 0.76.0
+*Released*: 14 July 2020
+* Updates FileTree to support new Module Editor functionality.
+
 ### version 0.75.0
 *Released*: 9 July 2020
 * [Issue 36916](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=36916): Remove `toLowerCase()` when constructing `AppURL`s base parts.

@@ -359,11 +359,11 @@ import {
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanelWithModel } from './QueryModel/DetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
-import * as App from './internal/app/index';
 import { AuditDetailsModel } from './components/auditlog/models';
 import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './components/auditlog/AuditDetails';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
+import * as App from './internal/app';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();

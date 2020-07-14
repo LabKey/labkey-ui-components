@@ -32,8 +32,7 @@ const customStyle = {
                 display: 'block',
             },
             activeLink: {
-                background: '#d3d3d3',
-                borderRadius: '5px'
+                background: 'white',
             },
             toggle: {
                 base: {
@@ -388,13 +387,13 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                 const { data } = this.state;
                 const dataNode = this.getDataNode(nodeId, data);
 
+                children = children.map(child => {
+                    child.id = dataNode.id + '|' + child.name; // generate Id from path
+                    return child;
+                });
+
                 if (children.length < 1) {
                     children = [{ id: dataNode.id + '|' + EMPTY_FILE_NAME, active: false, name: 'empty' }];
-                } else {
-                    children = children.map(child => {
-                        child.id = dataNode.id + '|' + child.name; // generate Id from path
-                        return child;
-                    });
                 }
 
                 dataNode.children = children; // This is not immutable so this is updating the data object

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.76.0
+*Released*: 14 July 2020
 * Updates FileTree to support new Module Editor functionality.
 
 ### version 0.75.0

@@ -27,16 +27,22 @@ export class AuditDetailsModel extends Record({
         });
     }
 
-    getActionLabel = (): string => {
+    getActionLabel(): string {
         if (this.isUpdate()) return 'Updated';
         else if (this.isInsert()) return 'Created';
         else if (this.isDelete()) return 'Deleted';
         else return 'Updated';
-    };
+    }
 
-    isDelete = (): boolean => this.oldData && this.newData && this.oldData.size > 0 && this.newData.size === 0;
+    isUpdate(): boolean {
+        return this.oldData && this.newData && this.oldData.size > 0 && this.newData.size > 0;
+    }
 
-    isInsert = (): boolean => this.oldData && this.newData && this.oldData.size === 0 && this.newData.size > 0;
+    isInsert(): boolean {
+        return this.oldData && this.newData && this.oldData.size === 0 && this.newData.size > 0;
+    }
 
-    isUpdate = (): boolean => this.oldData && this.newData && this.oldData.size > 0 && this.newData.size > 0;
+    isDelete(): boolean {
+        return this.oldData && this.newData && this.oldData.size > 0 && this.newData.size === 0;
+    }
 }

@@ -26,8 +26,10 @@ export class QueryDetailPage extends Component<WithRouterProps> {
         this.initModel();
     };
 
-    componentDidUpdate = (): void => {
-        this.initModel();
+    componentDidUpdate = (prevProps: Readonly<WithRouterProps>): void => {
+        if (prevProps.location?.pathname !== this.props.location?.pathname) {
+            this.initModel();
+        }
     };
 
     initModel = (): void => {

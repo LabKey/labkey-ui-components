@@ -29,8 +29,9 @@ import { LookupSelectInput } from '../input/LookupSelectInput';
 import { QueryColumn } from '../../base/models/model';
 import { getUnFormattedNumber } from '../../../util/Date';
 
+import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
+
 import { _defaultRenderer } from './DetailDisplay';
-import { LabelColorRenderer } from "../../../renderers/LabelColorRenderer";
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is

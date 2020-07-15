@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Map } from 'immutable';
-import { ColorIcon } from "../components/base/ColorIcon";
+
+import { ColorIcon } from '../components/base/ColorIcon';
 
 interface Props {
     data: Map<any, any>;
 }
 
 export class LabelColorRenderer extends PureComponent<Props> {
-    render() {
+    render(): ReactNode {
         const { data } = this.props;
-        return <ColorIcon value={data?.get('value')}/>;
+        return <ColorIcon value={data?.get('value')} />;
     }
 }

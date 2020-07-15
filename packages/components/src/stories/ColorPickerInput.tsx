@@ -7,16 +7,16 @@ import React, { FC, useState } from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 
-import { ColorPickerInput } from "..";
+import { ColorPickerInput } from '..';
 import './stories.scss';
 
-const WrappedColorPickerInput: FC<any> = (props) => {
+const WrappedColorPickerInput: FC<any> = props => {
     const [selected, setSelected] = useState<string>('#009ce0');
     const showLabel = boolean('showLabel', true);
 
     return (
         <ColorPickerInput
-            name={'color-input-value'}
+            name="color-input-value"
             text={showLabel ? text('text', 'Select color') : undefined}
             allowRemove={boolean('allowRemove', true)}
             value={selected}
@@ -28,5 +28,5 @@ const WrappedColorPickerInput: FC<any> = (props) => {
 storiesOf('ColorPickerInput', module)
     .addDecorator(withKnobs)
     .add('with knobs', () => {
-        return <WrappedColorPickerInput/>;
+        return <WrappedColorPickerInput />;
     });

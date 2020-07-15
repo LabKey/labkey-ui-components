@@ -89,9 +89,17 @@ describe('SampleTypeModel', () => {
 
     test('labelColor value', () => {
         expect(SampleTypeModel.create({ options: fromJS({}) } as DomainDetails, undefined).labelColor).toBe(undefined);
-        expect(SampleTypeModel.create({ options: fromJS({labelColor: undefined}) } as DomainDetails, undefined).labelColor).toBe(undefined);
-        expect(SampleTypeModel.create({ options: fromJS({labelColor: null}) } as DomainDetails, undefined).labelColor).toBe(undefined);
-        expect(SampleTypeModel.create({ options: fromJS({labelColor: '#000000'}) } as DomainDetails, undefined).labelColor).toBe('#000000');
+        expect(
+            SampleTypeModel.create({ options: fromJS({ labelColor: undefined }) } as DomainDetails, undefined)
+                .labelColor
+        ).toBe(undefined);
+        expect(
+            SampleTypeModel.create({ options: fromJS({ labelColor: null }) } as DomainDetails, undefined).labelColor
+        ).toBe(undefined);
+        expect(
+            SampleTypeModel.create({ options: fromJS({ labelColor: '#000000' }) } as DomainDetails, undefined)
+                .labelColor
+        ).toBe('#000000');
     });
 
     // TODO add tests for getDuplicateAlias

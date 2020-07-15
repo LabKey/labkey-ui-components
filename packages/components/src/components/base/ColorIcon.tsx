@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactNode } from "react";
+import React, { PureComponent, ReactNode } from 'react';
 
 interface Props {
     cls?: string;

@@ -1,6 +1,7 @@
 import React from 'react';
-import { mount } from "enzyme";
-import { ColorIcon } from "./ColorIcon";
+import { mount } from 'enzyme';
+
+import { ColorIcon } from './ColorIcon';
 
 describe('ColorIcon', () => {
     function verifyIconDisplay(wrapper: any, color: string, asSquare = false, label?: string): void {
@@ -24,11 +25,11 @@ describe('ColorIcon', () => {
     }
 
     test('value prop', () => {
-        const wrapper = mount(<ColorIcon value={undefined}/>);
+        const wrapper = mount(<ColorIcon value={undefined} />);
         expect(wrapper.find('i')).toHaveLength(0);
 
         const color = '#000000';
-        wrapper.setProps({value: color});
+        wrapper.setProps({ value: color });
         verifyIconDisplay(wrapper, color);
 
         wrapper.unmount();
@@ -36,12 +37,12 @@ describe('ColorIcon', () => {
 
     test('asSquare prop', () => {
         let color = '#000000';
-        const wrapper = mount(<ColorIcon value={color} asSquare={true}/>);
+        const wrapper = mount(<ColorIcon value={color} asSquare={true} />);
         verifyIconDisplay(wrapper, color, true);
 
         // handling of color white
         color = '#ffffff';
-        wrapper.setProps({value: color});
+        wrapper.setProps({ value: color });
         verifyIconDisplay(wrapper, color, true);
 
         wrapper.unmount();
@@ -50,11 +51,11 @@ describe('ColorIcon', () => {
     test('with label prop', () => {
         let color = '#000000';
         const label = 'Color Label';
-        const wrapper = mount(<ColorIcon value={color} label={label}/>);
+        const wrapper = mount(<ColorIcon value={color} label={label} />);
         verifyIconDisplay(wrapper, color, false, label);
 
         color = '#ffffff';
-        wrapper.setProps({asSquare: true, value: color});
+        wrapper.setProps({ asSquare: true, value: color });
         verifyIconDisplay(wrapper, color, true, label);
     });
 });

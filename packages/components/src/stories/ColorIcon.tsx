@@ -7,15 +7,17 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, text, boolean } from '@storybook/addon-knobs';
 
-import { ColorIcon } from "..";
+import { ColorIcon } from '..';
 import './stories.scss';
 
 storiesOf('ColorIcon', module)
     .addDecorator(withKnobs)
     .add('with knobs', () => {
-        return <ColorIcon
-            label={text('label', 'Color Label')}
-            value={text('value', '#009ce0')}
-            asSquare={boolean('asSquare', false)}
-        />;
+        return (
+            <ColorIcon
+                label={text('label', 'Color Label')}
+                value={text('value', '#009ce0')}
+                asSquare={boolean('asSquare', false)}
+            />
+        );
     });

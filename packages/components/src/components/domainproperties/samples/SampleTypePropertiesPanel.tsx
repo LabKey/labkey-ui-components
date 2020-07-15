@@ -15,9 +15,11 @@ import {
 } from '../DomainPropertiesPanelCollapse';
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import { HelpTopicURL } from '../HelpTopicURL';
+
+import { DomainFieldLabel } from '../DomainFieldLabel';
+import { SectionHeading } from '../SectionHeading';
+
 import { IParentAlias, SampleTypeModel } from './models';
-import { DomainFieldLabel } from "../DomainFieldLabel";
-import { SectionHeading } from "../SectionHeading";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
@@ -313,19 +315,21 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         </Col>
                     </Row>
                 )}
-                {appPropertiesOnly &&
+                {appPropertiesOnly && (
                     <>
                         <SectionHeading title="Appearance Settings" />
                         <Row className="margin-top">
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Label Color"
-                                    helpTipBody={() => 'The label color will be used to distinguish this sample type in various views in the application.'}
+                                    helpTipBody={() =>
+                                        'The label color will be used to distinguish this sample type in various views in the application.'
+                                    }
                                 />
                             </Col>
                             <Col xs={10}>
                                 <ColorPickerInput
-                                    name={'labelColor'}
+                                    name="labelColor"
                                     value={model.labelColor}
                                     onChange={this.onFieldChange}
                                     allowRemove={true}
@@ -333,7 +337,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                             </Col>
                         </Row>
                     </>
-                }
+                )}
             </BasePropertiesPanel>
         );
     }

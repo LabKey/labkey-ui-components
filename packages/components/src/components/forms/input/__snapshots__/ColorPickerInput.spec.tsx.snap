@@ -14,7 +14,6 @@ exports[`ColorPickerInput allowRemove 1`] = `
       style={
         Object {
           "backgroundColor": "#000000",
-          "border": undefined,
         }
       }
     />
@@ -55,7 +54,6 @@ exports[`ColorPickerInput default props 1`] = `
       style={
         Object {
           "backgroundColor": "#000000",
-          "border": undefined,
         }
       }
     />
@@ -162,7 +160,6 @@ exports[`ColorPickerInput with button text 1`] = `
     style={
       Object {
         "backgroundColor": "#000000",
-        "border": undefined,
       }
     }
   />

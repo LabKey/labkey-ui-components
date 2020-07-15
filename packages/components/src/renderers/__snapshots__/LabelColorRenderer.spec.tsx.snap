@@ -6,10 +6,10 @@ exports[`LabelColorRenderer undefined data 1`] = `null`;
 
 exports[`LabelColorRenderer with data 1`] = `
 <i
-  className="fa fa-circle"
+  className="color-icon__circle"
   style={
     Object {
-      "color": "#000000",
+      "backgroundColor": "#000000",
     }
   }
 />

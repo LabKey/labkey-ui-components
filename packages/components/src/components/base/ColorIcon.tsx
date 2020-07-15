@@ -14,15 +14,13 @@ export class ColorIcon extends PureComponent<Props> {
 
     render(): ReactNode {
         const { cls, value, asSquare, label } = this.props;
-        const isWhite = value?.toLowerCase() === '#ffffff';
-        const border = isWhite ? 'solid 1px #000000' : undefined;
 
         let icon;
         if (value) {
             if (asSquare) {
-                icon = <i className={cls} style={{ backgroundColor: value, border }} />;
+                icon = <i className={cls} style={{ backgroundColor: value }} />;
             } else {
-                icon = <i className="fa fa-circle" style={{ color: value }} />;
+                icon = <i className="color-icon__circle" style={{ backgroundColor: value }} />;
             }
         }
 

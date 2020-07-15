@@ -181,6 +181,7 @@ import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { CollapsiblePanel } from './components/CollapsiblePanel';
 import { ErrorBoundary } from './components/error/ErrorBoundary';
 import { AliasRenderer } from './renderers/AliasRenderer';
+import { StorageStatusRenderer } from './renderers/StorageStatusRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
@@ -441,6 +442,7 @@ export {
     DefaultRenderer,
     FileColumnRenderer,
     MultiValueRenderer,
+    StorageStatusRenderer,
     resolveDetailEditRenderer,
     resolveDetailRenderer,
     titleRenderer,

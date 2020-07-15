@@ -19,10 +19,6 @@ export class AuditDetailsModel extends Record({
     oldData?: Map<string, string>;
     newData?: Map<string, string>;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(raw: any): AuditDetailsModel {
         return new AuditDetailsModel({
             ...raw,
@@ -31,22 +27,16 @@ export class AuditDetailsModel extends Record({
         });
     }
 
-    isUpdate() {
-        return this.oldData && this.newData && this.oldData.size > 0 && this.newData.size > 0;
-    }
-
-    isInsert() {
-        return this.oldData && this.newData && this.oldData.size === 0 && this.newData.size > 0;
-    }
-
-    isDelete() {
-        return this.oldData && this.newData && this.oldData.size > 0 && this.newData.size === 0;
-    }
-
-    getActionLabel() {
+    getActionLabel = (): string => {
         if (this.isUpdate()) return 'Updated';
         else if (this.isInsert()) return 'Created';
         else if (this.isDelete()) return 'Deleted';
         else return 'Updated';
-    }
+    };
+
+    isDelete = (): boolean => this.oldData && this.newData && this.oldData.size > 0 && this.newData.size === 0;
+
+    isInsert = (): boolean => this.oldData && this.newData && this.oldData.size === 0 && this.newData.size > 0;
+
+    isUpdate = (): boolean => this.oldData && this.newData && this.oldData.size > 0 && this.newData.size > 0;
 }

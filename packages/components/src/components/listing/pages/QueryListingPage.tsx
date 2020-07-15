@@ -2,8 +2,8 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react';
-import { Link } from 'react-router';
+import React, { Component, ReactNode } from 'react';
+import { Link, WithRouterProps } from 'react-router';
 import { Query } from '@labkey/api';
 
 import {
@@ -17,41 +17,34 @@ import {
     PageHeader,
     AppURL,
     QueryGridPanel,
-    Location,
 } from '../../..';
 
-interface OwnProps {
-    params: any;
-    location: Location;
-}
+export class QueryListingPage extends Component<WithRouterProps> {
+    componentDidMount = (): void => {
+        this.initModel();
+    };
 
-export class QueryListingPage extends React.Component<OwnProps, any> {
-    componentWillMount() {
-        this.initModel(this.props);
-    }
+    componentDidUpdate = (): void => {
+        this.initModel();
+    };
 
-    componentWillReceiveProps(nextProps: OwnProps) {
-        this.initModel(nextProps);
-    }
+    initModel = (): void => {
+        gridInit(this.getQueryGridModel(), true, this);
+    };
 
-    initModel(props: OwnProps) {
-        const model = this.getQueryGridModel(props);
-        gridInit(model, true, this);
-    }
+    getQueryGridModel = (): QueryGridModel => {
+        const { location, params } = this.props;
+        const { schema, query } = params;
 
-    getQueryGridModel(props: OwnProps): QueryGridModel {
-        const { schema, query } = props.params;
-        const { containerFilter } = props.location.query;
-
-        const model = getStateQueryGridModel('querylisting', SchemaQuery.create(schema, query), {
-            containerFilter: Query.ContainerFilter[containerFilter],
+        const model = getStateQueryGridModel('querylisting', SchemaQuery.create(schema, query), () => ({
+            containerFilter: Query.ContainerFilter[location.query.containerFilter as string],
             isPaged: true,
-        });
+        }));
         return getQueryGridModel(model.getId()) || model;
-    }
+    };
 
-    render() {
-        const model = this.getQueryGridModel(this.props);
+    render = (): ReactNode => {
+        const model = this.getQueryGridModel();
         const queryInfo = model.queryInfo;
 
         const schemaTitle = queryInfo ? queryInfo.schemaLabel : model.schema;
@@ -69,5 +62,5 @@ export class QueryListingPage extends React.Component<OwnProps, any> {
                 <QueryGridPanel model={model} />
             </Page>
         );
-    }
+    };
 }

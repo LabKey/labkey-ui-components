@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { Query } from '@labkey/api';
@@ -26,7 +26,7 @@ import {
 import { AuditDetails } from './AuditDetails';
 import { AuditDetailsModel } from './models';
 import { getAuditDetail } from './actions';
-import { getAuditQueries } from './utils';
+import { AuditQuery, getAuditQueries } from './utils';
 
 const AUDIT_QUERIES = getAuditQueries();
 
@@ -39,10 +39,10 @@ interface State {
     selected: string;
     selectedRowId: number;
     detail?: AuditDetailsModel;
-    error?: React.ReactNode;
+    error?: ReactNode;
 }
 
-export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
+export class AuditQueriesListingPage extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -52,24 +52,25 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount = (): void => {
         this.setLastSelectedId();
-    }
+    };
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
-        if (this.props.params.query !== undefined && prevProps.params.query !== this.props.params.query) {
-            this.onSelectionChange(null, this.props.params.query);
+    componentDidUpdate = (prevProps: Readonly<Props>): void => {
+        const { query } = this.props.params;
+        if (query !== undefined && query !== prevProps.params.query) {
+            this.onSelectionChange(null, query);
         }
 
         this.setLastSelectedId();
-    }
+    };
 
-    onSelectionChange = (id, selected) => {
+    onSelectionChange = (_: any, selected: string): void => {
         resetParameters(); // get rid of filtering parameters that are likely not applicable to this new audit log
         this.setState(() => ({ selected, selectedRowId: undefined }));
     };
 
-    setLastSelectedId() {
+    setLastSelectedId = async (): Promise<void> => {
         if (!this.hasDetailView()) return;
 
         const model = this.getQueryGridModel();
@@ -79,23 +80,25 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
         if (model.selectedLoaded) {
             this.updateSelectedRowId(this.getLastSelectedId());
         } else {
-            getSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath).then(
-                response => {
-                    const selectedId =
-                        response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;
-                    this.updateSelectedRowId(selectedId);
-                }
+            const response = await getSelected(
+                model.getId(),
+                model.schema,
+                model.query,
+                model.getFilters(),
+                model.containerPath
             );
+            const selectedId = response.selected.length > 0 ? parseInt(response.selected.slice(-1)[0], 10) : undefined;
+            this.updateSelectedRowId(selectedId);
         }
-    }
+    };
 
-    getLastSelectedId(): number {
+    getLastSelectedId = (): number => {
         const model = this.getQueryGridModel();
         const selectedIds = model.selectedIds;
         return selectedIds.size > 0 ? parseInt(selectedIds.last()) : undefined;
-    }
+    };
 
-    onRowSelectionChange = (model, row, checked) => {
+    onRowSelectionChange = (model, row, checked): void => {
         let selectedRowId;
 
         if (checked) {
@@ -105,62 +108,54 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
         this.updateSelectedRowId(selectedRowId);
     };
 
-    updateSelectedRowId(selectedRowId: number) {
+    updateSelectedRowId = (selectedRowId: number): void => {
+        const { selected } = this.state;
+
         if (this.state.selectedRowId !== selectedRowId) {
-            this.setState(
-                () => ({ selectedRowId, detail: undefined }),
-                () => {
-                    if (selectedRowId) {
-                        getAuditDetail(
-                            selectedRowId,
-                            this.state.selected === 'sourcesauditevent' ? 'queryupdateauditevent' : this.state.selected
-                        )
-                            .then(detail => {
-                                detail = detail.merge({ rowId: selectedRowId }) as AuditDetailsModel;
-                                this.setState(() => ({
-                                    detail,
-                                }));
-                            })
-                            .catch(error => {
-                                console.error(error);
-                                this.setState(() => ({
-                                    error,
-                                }));
-                            });
+            this.setState({ selectedRowId, detail: undefined }, async () => {
+                if (selectedRowId) {
+                    try {
+                        const auditEventType = selected === 'sourcesauditevent' ? 'queryupdateauditevent' : selected;
+                        const detail = await getAuditDetail(selectedRowId, auditEventType);
+
+                        this.setState({
+                            detail: detail.merge({ rowId: selectedRowId }) as AuditDetailsModel,
+                        });
+                    } catch (error) {
+                        console.error(error);
+                        this.setState({ error });
                     }
                 }
-            );
+            });
         }
+    };
+
+    get selectedQuery(): AuditQuery {
+        return AUDIT_QUERIES.find(q => q.value === this.state.selected);
     }
 
-    getContainerFilter(): Query.ContainerFilter {
-        const selectedQuery = List.of(...AUDIT_QUERIES).find(query => query.value === this.state.selected);
-        return selectedQuery ? selectedQuery.containerFilter : undefined;
+    get containerFilter(): Query.ContainerFilter {
+        return this.selectedQuery?.containerFilter;
     }
 
     hasDetailView(): boolean {
-        const { selected } = this.state;
-        if (!selected) {
-            return false;
-        }
-        const selectedQuery = List.of(...AUDIT_QUERIES).find(query => query.value === selected);
-        return selectedQuery && selectedQuery.hasDetail === true;
+        return this.state.selected && this.selectedQuery?.hasDetail === true;
     }
 
-    getQueryGridModel(): QueryGridModel {
+    getQueryGridModel = (): QueryGridModel => {
         const { selected } = this.state;
         if (!selected) {
             return null;
         }
 
-        const model = getStateQueryGridModel('audit-log-' + selected, SchemaQuery.create('auditLog', selected), {
-            containerFilter: this.getContainerFilter(),
+        const model = getStateQueryGridModel('audit-log-' + selected, SchemaQuery.create('auditLog', selected), () => ({
+            containerFilter: this.containerFilter,
             isPaged: true,
-        });
+        }));
         return getQueryGridModel(model.getId()) || model;
-    }
+    };
 
-    renderSingleGrid() {
+    renderSingleGrid = (): ReactNode => {
         const { selected } = this.state;
         if (!selected) {
             return null;
@@ -170,9 +165,9 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
         if (!model) return null;
 
         return <QueryGridPanel model={model} />;
-    }
+    };
 
-    renderDetailsPanel() {
+    renderDetailsPanel = (): ReactNode => {
         const { user } = this.props;
         const { detail, error, selectedRowId } = this.state;
 
@@ -192,9 +187,9 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
                 changeDetails={detail}
             />
         );
-    }
+    };
 
-    renderMasterDetailGrid() {
+    renderMasterDetailGrid = (): ReactNode => {
         const { selected } = this.state;
         if (!selected) {
             return null;
@@ -204,24 +199,22 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
         if (!model) return null;
 
         return (
-            <>
-                <Row>
-                    <Col xs={12} md={8}>
-                        <QueryGridPanel
-                            onSelectionChange={this.onRowSelectionChange}
-                            highlightLastSelectedRow={true}
-                            model={model}
-                        />
-                    </Col>
-                    <Col xs={12} md={4}>
-                        {this.renderDetailsPanel()}
-                    </Col>
-                </Row>
-            </>
+            <Row>
+                <Col xs={12} md={8}>
+                    <QueryGridPanel
+                        onSelectionChange={this.onRowSelectionChange}
+                        highlightLastSelectedRow={true}
+                        model={model}
+                    />
+                </Col>
+                <Col xs={12} md={4}>
+                    {this.renderDetailsPanel()}
+                </Col>
+            </Row>
         );
-    }
+    };
 
-    getDetailsGridData(): List<Map<string, any>> {
+    getDetailsGridData = (): List<Map<string, any>> => {
         const { detail } = this.state;
         if (!detail) return null;
 
@@ -237,9 +230,9 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
         }
 
         return fromJS(rows);
-    }
+    };
 
-    render() {
+    render = (): ReactNode => {
         const title = 'Audit Log';
 
         return (
@@ -263,5 +256,5 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
                 {this.hasDetailView() ? this.renderMasterDetailGrid() : this.renderSingleGrid()}
             </Page>
         );
-    }
+    };
 }

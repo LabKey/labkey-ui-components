@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Audit and schema browser component linting and misc cleanup after move from Sample Manager app
+
 ### version 0.76.0
 *Released*: 14 July 2020
 * Updates FileTree to support new Module Editor functionality.

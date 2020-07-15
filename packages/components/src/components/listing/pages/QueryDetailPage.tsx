@@ -2,8 +2,8 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react';
-import { Link } from 'react-router';
+import React, { Component, ReactNode } from 'react';
+import { Link, WithRouterProps } from 'react-router';
 
 import {
     getStateQueryGridModel,
@@ -21,26 +21,22 @@ import {
     LoadingSpinner,
 } from '../../..';
 
-interface OwnProps {
-    params?: any;
-}
+export class QueryDetailPage extends Component<WithRouterProps> {
+    componentDidMount = (): void => {
+        this.initModel();
+    };
 
-export class QueryDetailPage extends React.Component<OwnProps, any> {
-    componentWillMount() {
-        this.initModel(this.props);
-    }
+    componentDidUpdate = (): void => {
+        this.initModel();
+    };
 
-    componentWillReceiveProps(nextProps: OwnProps) {
-        this.initModel(nextProps);
-    }
+    initModel = (): void => {
+        gridInit(this.getQueryGridModel(), true, this);
+    };
 
-    initModel(props: OwnProps) {
-        const model = this.getQueryGridModel(props);
-        gridInit(model, true, this);
-    }
-
-    getQueryGridModel(props: OwnProps): QueryGridModel {
-        const { schema, query, id } = props.params;
+    getQueryGridModel = (): QueryGridModel => {
+        const { params } = this.props;
+        const { schema, query, id } = params;
         const model = getStateQueryGridModel(
             'querydetail',
             SchemaQuery.create(schema, query),
@@ -52,10 +48,10 @@ export class QueryDetailPage extends React.Component<OwnProps, any> {
         );
 
         return getQueryGridModel(model.getId()) || model;
-    }
+    };
 
-    title(row: any): string {
-        const model = this.getQueryGridModel(this.props);
+    title = (row: any): string => {
+        const model = this.getQueryGridModel();
         const queryInfo = model.queryInfo;
         let title: string;
 
@@ -83,10 +79,10 @@ export class QueryDetailPage extends React.Component<OwnProps, any> {
         }
 
         return title;
-    }
+    };
 
-    render() {
-        const model = this.getQueryGridModel(this.props);
+    render = (): ReactNode => {
+        const model = this.getQueryGridModel();
 
         if (model && model.isLoaded) {
             const queryInfo = model.queryInfo;
@@ -110,5 +106,5 @@ export class QueryDetailPage extends React.Component<OwnProps, any> {
         }
 
         return <LoadingSpinner />;
-    }
+    };
 }

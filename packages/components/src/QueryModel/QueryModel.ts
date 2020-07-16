@@ -5,7 +5,6 @@ import { Filter, Query } from '@labkey/api';
 import {
     GRID_CHECKBOX_OPTIONS,
     LoadingState,
-    IDataViewInfo,
     naturalSort,
     QueryColumn,
     QueryInfo,
@@ -15,6 +14,7 @@ import {
 } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { PaginationData } from '../components/pagination/Pagination';
+import { DataViewInfo } from '../models';
 
 import { flattenValuesFromRow } from './utils';
 
@@ -99,10 +99,11 @@ export class QueryModel {
     readonly rowCount?: number;
     readonly rowsError?: string;
     readonly rowsLoadingState: LoadingState;
+    readonly selectedReportId: string;
     readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set
     readonly selectionsError?: string;
     readonly selectionsLoadingState: LoadingState;
-    readonly charts: IDataViewInfo[];
+    readonly charts: DataViewInfo[];
     readonly chartsError: string;
     readonly chartsLoadingState: LoadingState;
 
@@ -141,6 +142,7 @@ export class QueryModel {
         this.rowCount = undefined;
         this.rowsError = undefined;
         this.rowsLoadingState = LoadingState.INITIALIZED;
+        this.selectedReportId = undefined;
         this.selections = undefined;
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;
@@ -293,7 +295,7 @@ export class QueryModel {
      * true.
      */
     get urlQueryParams(): { [key: string]: string } {
-        const { currentPage, urlPrefix, filterArray, sortString, viewName } = this;
+        const { currentPage, urlPrefix, filterArray, selectedReportId, sortString, viewName } = this;
         const filters = filterArray.filter(f => f.getColumnName() !== '*');
         const searches = filterArray.filter(f => f.getColumnName() === '*').map(f => f.getValue()).join(';')
         // ReactRouter location.query is typed as any.
@@ -315,7 +317,9 @@ export class QueryModel {
             modelParams[`${urlPrefix}.q`] = searches;
         }
 
-        // TODO: reportId for Chart Modal
+        if (selectedReportId) {
+            modelParams[`${urlPrefix}.reportId`] = selectedReportId;
+        }
 
         filters.forEach((filter): void => {
             modelParams[filter.getURLParameterName(urlPrefix)] = filter.getURLParameterValue();

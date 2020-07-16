@@ -26,14 +26,13 @@ export interface Actions {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectRow: (id: string, checked, row: { [key: string]: any }) => void;
     selectPage: (id: string, checked) => void;
+    selectReport: (id: string, reportId: string) => void;
     setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
     setMaxRows: (id: string, maxRows: number) => void;
     setOffset: (id: string, offset: number) => void;
     setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
     setSorts: (id: string, sorts: QuerySort[]) => void;
     setView: (id: string, viewName: string, loadSelections?: boolean) => void;
-    // TODO: add setSelectedReportId, make sure to call bindURL when it is set, even though we don't issue a new
-    // request.
 }
 
 export interface RequiresModelAndActions {
@@ -127,15 +126,13 @@ const searchFiltersFromString = (searchStr: string): Filter.IFilter[] => {
     return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q));
 };
 
-type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'sorts'>;
+type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'>;
 
 const urlParamsForModel = (queryParams, model: QueryModel | Draft<QueryModel>): QueryModelURLState => {
     const prefix = model.urlPrefix;
     const viewName = queryParams[`${prefix}.view`] ?? model.viewName;
     let filterArray = Filter.getFiltersFromParameters(queryParams, prefix) || model.filterArray;
     const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]);
-
-    // TODO: reportId URL Param for ChartMenu
 
     if (searchFilters !== undefined) {
         filterArray = filterArray.concat(searchFilters);
@@ -146,6 +143,7 @@ const urlParamsForModel = (queryParams, model: QueryModel | Draft<QueryModel>): 
         offset: offsetFromString(model.maxRows, queryParams[`${prefix}.p`]) ?? model.offset,
         schemaQuery: SchemaQuery.create(model.schemaName, model.queryName, viewName),
         sorts: querySortsFromString(queryParams[`${prefix}.sort`]) ?? model.sorts,
+        selectedReportId: queryParams[`${prefix}.reportId`] ?? model.selectedReportId,
     };
 };
 
@@ -213,6 +211,7 @@ export function withQueryModels<Props>(
                 selectAllRows: this.selectAllRows,
                 selectRow: this.selectRow,
                 selectPage: this.selectPage,
+                selectReport: this.selectReport,
                 setFilters: this.setFilters,
                 setOffset: this.setOffset,
                 setMaxRows: this.setMaxRows,
@@ -423,6 +422,16 @@ export function withQueryModels<Props>(
 
         selectPage = (id: string, checked: boolean): void => {
             this.setSelections(id, checked, this.state.queryModels[id].orderedRows);
+        };
+
+        selectReport = (id: string, reportId: string): void => {
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    model.selectedReportId = reportId;
+                }),
+                () => this.bindURL(id)
+            );
         };
 
         loadRows = async (id: string): Promise<void> => {

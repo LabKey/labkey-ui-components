@@ -9,7 +9,7 @@ import { Chart } from './Chart';
 interface ChartModalProps {
     selectedChart: DataViewInfo;
     filters: Filter.IFilter[];
-    onHide: Function;
+    onHide: () => void;
 }
 
 export class ChartModal extends PureComponent<ChartModalProps> {
@@ -27,9 +27,9 @@ export class ChartModal extends PureComponent<ChartModalProps> {
         }
 
         return (
-            <Modal bsSize="large" show={selectedChart !== undefined} keyboard={true} onHide={onHide}>
+            <Modal bsSize="large" show keyboard onHide={onHide}>
                 <Modal.Header closeButton={true} closeLabel="Close">
-                    <Modal.Title>{selectedChart.getLabel()}</Modal.Title>
+                    <Modal.Title>{selectedChart.name}</Modal.Title>
 
                     {description}
                 </Modal.Header>

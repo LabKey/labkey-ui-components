@@ -285,8 +285,7 @@ export function withQueryModels<Props>(
                     loadSelections = model.hasSelections || model.selectionsError !== undefined;
                 }),
                 () => {
-                    // load selections?
-                    this.maybeLoad(id, false, true, false);
+                    this.maybeLoad(id, false, true, loadSelections);
                 }
             );
         };

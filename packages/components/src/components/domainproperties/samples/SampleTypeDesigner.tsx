@@ -349,7 +349,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     saveDomain = () => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
-        const { name, domain, description, nameExpression } = model;
+        const { name, domain, description, nameExpression, labelColor } = model;
 
         if (beforeFinish) {
             beforeFinish(model);
@@ -363,6 +363,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const details = {
             name,
             nameExpression,
+            labelColor,
             importAliases: this.getImportAliasesAsMap(model).toJS(),
         };
 
@@ -470,6 +471,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     }
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
                     onToggle={(collapsed, callback) => onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
+                    appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                 />
                 <DomainForm

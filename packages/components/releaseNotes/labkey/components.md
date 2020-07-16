@@ -1,5 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version 0.78.0
+*Released*: 16 July 2020
+* Item 7563: SampleTypeDesigner update to add "Label Color" property to Sample Manager
+    - ColorPickerInput updates to support showing color chip within dropdown button when label text not provided
+    - ColorPickerInput update to handle value=#ffffff (display as white background with black border)
+    - SampleTypePropertiesPanel addition of ColorPickerInput, conditional based on appPropertiesOnly prop
+    - SampleTypeModel addition of labelColor prop
+    - Add ColorIcon display component and LabelColorRenderer to use in Sample Manager and Freezer Manager
+
 ### version 0.77.0
 *Released*: 15 July 2020
 * Update URLResolvers to handle URLs that may go to a separate application

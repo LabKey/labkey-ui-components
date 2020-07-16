@@ -9,6 +9,7 @@ export class SampleTypeModel extends Record({
     nameReadOnly: false,
     nameExpression: undefined,
     description: undefined,
+    labelColor: undefined,
     parentAliases: undefined,
     importAliases: undefined,
     domainId: undefined,
@@ -20,6 +21,7 @@ export class SampleTypeModel extends Record({
     nameReadOnly?: boolean;
     nameExpression: string;
     description: string;
+    labelColor: string;
     parentAliases?: OrderedMap<string, IParentAlias>;
     importAliases?: Map<string, string>;
     domainId?: number;
@@ -47,6 +49,7 @@ export class SampleTypeModel extends Record({
             name,
             nameReadOnly: raw.nameReadOnly,
             importAliases,
+            labelColor: options.get('labelColor') || undefined, // helps to convert null to undefined
             domain,
         });
     }

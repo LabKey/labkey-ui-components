@@ -58,6 +58,26 @@ describe('<SampleTypePropertiesPanel/>', () => {
         });
     });
 
+    test('appPropertiesOnly', done => {
+        const tree = renderer.create(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                appPropertiesOnly={true}
+                model={SampleTypeModel.create()}
+                updateModel={jest.fn}
+                onAddParentAlias={jest.fn}
+                onRemoveParentAlias={jest.fn}
+                onParentAliasChange={jest.fn}
+                parentOptions={[]}
+            />
+        );
+
+        setTimeout(() => {
+            expect(tree.toJSON()).toMatchSnapshot();
+            done();
+        });
+    });
+
     test('nameExpressionInfoUrl', done => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel

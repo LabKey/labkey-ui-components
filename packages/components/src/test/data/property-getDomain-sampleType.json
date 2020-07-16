@@ -4,6 +4,7 @@
     "name": "Sample Set 2",
     "nameExpression": "S-${now:date}-${dailySampleCount}",
     "description": "tacocat",
+    "labelColor": "#009ce0",
     "importAliases": {
       "a": "materialInputs/Fruits",
       "b": "dataInputs/Source 1",

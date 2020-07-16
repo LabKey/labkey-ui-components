@@ -1,11 +1,12 @@
 import { Treebeard, decorators } from 'react-treebeard';
 
-import React, { PureComponent } from 'react';
+import React, {PureComponent} from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import { Checkbox, Alert } from 'react-bootstrap';
 import { List } from 'immutable';
+import classNames from 'classnames';
 
 import { LoadingSpinner } from '../..';
 
@@ -141,13 +142,19 @@ const Header = props => {
                 />
             )}
             <div style={style.base} onClick={onSelect}>
-                <div style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}>
+                <div
+                    className='filetree-resource-row'
+                    style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
+                    title={node.name}
+                >
                     {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls ? (
                         <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
                     ) : (
                         <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
                     )}
-                    {node.name}
+                    <div className={classNames({'filetree-file-name': !isDirectory, 'filetree-directory-name': isDirectory })}>
+                        {node.name}
+                    </div>
                 </div>
             </div>
         </span>
@@ -156,7 +163,7 @@ const Header = props => {
 
 interface FileTreeProps {
     loadData: (directory?: string) => Promise<any>;
-    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => void;
+    onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => boolean;
     allowMultiSelect?: boolean;
     useFileIconCls?: boolean;
 }
@@ -164,7 +171,7 @@ interface FileTreeProps {
 interface FileTreeState {
     cursor: any;
     checked: List<string>;
-    data: any[];
+    data: any;
     error?: string;
     loading: boolean; // Only used for testing
 }
@@ -249,6 +256,18 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         return undefined;
     };
 
+    getNodeFromId = (id, name) => {
+        let path = id.split('|').slice(0, -1)
+        path.push(name);
+        let level = this.state.data;
+        for (const step in path) {
+            if (level.children){
+                level = level.children.find(children => children.name === path[step]);
+            }
+        }
+        return level;
+    };
+
     getDataNode = (id: string, node: any): any => {
         if (node.id === id) {
             return node;
@@ -268,12 +287,17 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         return undefined;
     };
 
-    getPathFromId = (id: string): string => {
+    getPathFromId = (id: string, excludeLeaf = false): string => {
         let path = id;
 
         // strip off default root id if exists
         if (path.startsWith(DEFAULT_ROOT_PREFIX)) {
             path = path.substring(DEFAULT_ROOT_PREFIX.length);
+        }
+
+        if (excludeLeaf) {
+            const finalSlash = path.lastIndexOf('|');
+            path = path.slice(0, finalSlash);
         }
 
         return path.replace(/\|/g, '/');
@@ -285,12 +309,14 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     };
 
     // Callback to parent with actual path of selected file
-    onFileSelect = (id: string, checked: boolean, isDirectory: boolean, node: any): void => {
+    // Return value determines whether file selection should proceed, or be halted
+    onFileSelect = (id: string, checked: boolean, isDirectory: boolean, node: any): boolean => {
         const { onFileSelect } = this.props;
 
         if (!nodeIsEmpty(id)) {
-            onFileSelect(this.getNameFromId(id), this.getPathFromId(id), checked, isDirectory, node);
+            return onFileSelect(this.getNameFromId(id), this.getPathFromId(id), checked, isDirectory, node);
         }
+        return false;
     };
 
     setCheckedValue = (node: any, checked: boolean): void => {
@@ -392,6 +418,12 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         const { allowMultiSelect } = this.props;
         const { cursor, data } = this.state;
 
+        if (!allowMultiSelect) {
+            if (!this.onFileSelect(node.id, true, !!node.children, node)) {
+                return;
+            }
+        }
+
         if (cursor) {
             cursor.active = false;
             this.setState(() => ({ cursor, data: { ...data } }));
@@ -399,7 +431,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         node.active = true;
         node.toggled = toggled;
 
-        // load data if not already loaded
+        // load data in directory if not already loaded
         if (node.children && node.children.length === 0) {
             node.children = [{ id: node.id + '|' + LOADING_FILE_NAME }];
             this.setState(
@@ -411,11 +443,28 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         } else {
             this.setState(() => ({ cursor: node, data: { ...data }, error: undefined }), callback);
         }
-
-        if (!allowMultiSelect) {
-            this.onFileSelect(node.id, true, !!node.children, node);
-        }
     };
+
+    reload = (selectedNode, successCallback, failureCallback) => {
+        const { loadData } = this.props;
+        const parentDir = this.getPathFromId(selectedNode.id, true);
+
+        loadData(parentDir)
+            .then(children => {
+                const { data } = this.state;
+                const dataNode = this.getDataNode(parentDir.replace('/', '|'), data);
+
+                children = children.map(child => {
+                    child.id = dataNode.id + '|' + child.name; // generate Id from path
+                    return child;
+                });
+
+                dataNode.children = children; // This is not immutable so this is updating the data object
+            })
+            .catch((reason: any) => {
+                failureCallback(reason);
+            });
+    }
 
     render(): React.ReactNode {
         const { data, error } = this.state;

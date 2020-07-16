@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Map } from 'immutable';
+import { Map } from 'immutable';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 import toJson from 'enzyme-to-json';

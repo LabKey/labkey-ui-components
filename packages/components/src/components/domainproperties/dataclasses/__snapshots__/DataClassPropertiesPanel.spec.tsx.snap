@@ -75,7 +75,7 @@ exports[`DataClassPropertiesPanel custom properties 1`] = `
       className=""
     >
       <div
-        className="margin-bottom row"
+        className="margin-bottom margin-top row"
       >
         <div
           className="col-xs-2"
@@ -270,7 +270,7 @@ exports[`DataClassPropertiesPanel default properties 1`] = `
       className=""
     >
       <div
-        className="margin-bottom row"
+        className="margin-bottom margin-top row"
       >
         <div
           className="col-xs-2"

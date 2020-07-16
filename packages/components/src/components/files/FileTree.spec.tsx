@@ -27,7 +27,7 @@ describe('FileTree', () => {
     });
 
     test('with data allowMultiSelect false', () => {
-        const component = <FileTree allowMultiSelect={false} loadData={fetchFileTestTree} onFileSelect={jest.fn()} />;
+        const component = <FileTree allowMultiSelect={false} loadData={fetchFileTestTree} onFileSelect={jest.fn(() => true)} />;
         const tree = shallow(component);
 
         return waitForLoad(tree).then(() => {

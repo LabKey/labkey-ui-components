@@ -68,12 +68,14 @@ exports[`FileTree with data 1`] = `
             }
           >
             <div
+              className="filetree-resource-row"
               style={
                 Object {
                   "lineHeight": "24px",
                   "verticalAlign": "middle",
                 }
               }
+              title="root"
             >
               <svg
                 aria-hidden="true"
@@ -92,7 +94,11 @@ exports[`FileTree with data 1`] = `
                   style={Object {}}
                 />
               </svg>
-              root
+              <div
+                className="filetree-directory-name"
+              >
+                root
+              </div>
             </div>
           </div>
         </span>
@@ -161,12 +167,14 @@ exports[`FileTree with data 1`] = `
                   }
                 >
                   <div
+                    className="filetree-resource-row"
                     style={
                       Object {
                         "lineHeight": "24px",
                         "verticalAlign": "middle",
                       }
                     }
+                    title="parent1"
                   >
                     <svg
                       aria-hidden="true"
@@ -185,7 +193,11 @@ exports[`FileTree with data 1`] = `
                         style={Object {}}
                       />
                     </svg>
-                    parent1
+                    <div
+                      className="filetree-directory-name"
+                    >
+                      parent1
+                    </div>
                   </div>
                 </div>
               </span>
@@ -252,12 +264,14 @@ exports[`FileTree with data 1`] = `
                   }
                 >
                   <div
+                    className="filetree-resource-row"
                     style={
                       Object {
                         "lineHeight": "24px",
                         "verticalAlign": "middle",
                       }
                     }
+                    title="loading parent"
                   >
                     <svg
                       aria-hidden="true"
@@ -276,7 +290,11 @@ exports[`FileTree with data 1`] = `
                         style={Object {}}
                       />
                     </svg>
-                    loading parent
+                    <div
+                      className="filetree-directory-name"
+                    >
+                      loading parent
+                    </div>
                   </div>
                 </div>
               </span>
@@ -343,12 +361,14 @@ exports[`FileTree with data 1`] = `
                   }
                 >
                   <div
+                    className="filetree-resource-row"
                     style={
                       Object {
                         "lineHeight": "24px",
                         "verticalAlign": "middle",
                       }
                     }
+                    title="parent2"
                   >
                     <svg
                       aria-hidden="true"
@@ -367,7 +387,11 @@ exports[`FileTree with data 1`] = `
                         style={Object {}}
                       />
                     </svg>
-                    parent2
+                    <div
+                      className="filetree-directory-name"
+                    >
+                      parent2
+                    </div>
                   </div>
                 </div>
               </span>
@@ -434,12 +458,14 @@ exports[`FileTree with data 1`] = `
                   }
                 >
                   <div
+                    className="filetree-resource-row"
                     style={
                       Object {
                         "lineHeight": "24px",
                         "verticalAlign": "middle",
                       }
                     }
+                    title="empty directory"
                   >
                     <svg
                       aria-hidden="true"
@@ -458,7 +484,11 @@ exports[`FileTree with data 1`] = `
                         style={Object {}}
                       />
                     </svg>
-                    empty directory
+                    <div
+                      className="filetree-directory-name"
+                    >
+                      empty directory
+                    </div>
                   </div>
                 </div>
               </span>
@@ -524,12 +554,14 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
             }
           >
             <div
+              className="filetree-resource-row"
               style={
                 Object {
                   "lineHeight": "24px",
                   "verticalAlign": "middle",
                 }
               }
+              title="root"
             >
               <svg
                 aria-hidden="true"
@@ -548,7 +580,11 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                   style={Object {}}
                 />
               </svg>
-              root
+              <div
+                className="filetree-directory-name"
+              >
+                root
+              </div>
             </div>
           </div>
         </span>
@@ -601,12 +637,14 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                   }
                 >
                   <div
+                    className="filetree-resource-row"
                     style={
                       Object {
                         "lineHeight": "24px",
                         "verticalAlign": "middle",
                       }
                     }
+                    title="parent1"
                   >
                     <svg
                       aria-hidden="true"
@@ -625,7 +663,11 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                         style={Object {}}
                       />
                     </svg>
-                    parent1
+                    <div
+                      className="filetree-directory-name"
+                    >
+                      parent1
+                    </div>
                   </div>
                 </div>
               </span>
@@ -676,12 +718,14 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                   }
                 >
                   <div
+                    className="filetree-resource-row"
                     style={
                       Object {
                         "lineHeight": "24px",
                         "verticalAlign": "middle",
                       }
                     }
+                    title="loading parent"
                   >
                     <svg
                       aria-hidden="true"
@@ -700,7 +744,11 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                         style={Object {}}
                       />
                     </svg>
-                    loading parent
+                    <div
+                      className="filetree-directory-name"
+                    >
+                      loading parent
+                    </div>
                   </div>
                 </div>
               </span>
@@ -751,12 +799,14 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                   }
                 >
                   <div
+                    className="filetree-resource-row"
                     style={
                       Object {
                         "lineHeight": "24px",
                         "verticalAlign": "middle",
                       }
                     }
+                    title="parent2"
                   >
                     <svg
                       aria-hidden="true"
@@ -775,7 +825,11 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                         style={Object {}}
                       />
                     </svg>
-                    parent2
+                    <div
+                      className="filetree-directory-name"
+                    >
+                      parent2
+                    </div>
                   </div>
                 </div>
               </span>
@@ -826,12 +880,14 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                   }
                 >
                   <div
+                    className="filetree-resource-row"
                     style={
                       Object {
                         "lineHeight": "24px",
                         "verticalAlign": "middle",
                       }
                     }
+                    title="empty directory"
                   >
                     <svg
                       aria-hidden="true"
@@ -850,7 +906,11 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
                         style={Object {}}
                       />
                     </svg>
-                    empty directory
+                    <div
+                      className="filetree-directory-name"
+                    >
+                      empty directory
+                    </div>
                   </div>
                 </div>
               </span>

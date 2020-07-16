@@ -29,6 +29,8 @@ import { LookupSelectInput } from '../input/LookupSelectInput';
 import { QueryColumn } from '../../base/models/model';
 import { getUnFormattedNumber } from '../../../util/Date';
 
+import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
+
 import { _defaultRenderer } from './DetailDisplay';
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
@@ -173,6 +175,9 @@ export function resolveDetailRenderer(column: QueryColumn) {
                 break;
             case 'assayrunreference':
                 renderer = d => <AssayRunReferenceRenderer data={d} />;
+                break;
+            case 'labelcolorrenderer':
+                renderer = d => <LabelColorRenderer data={d} />;
                 break;
             default:
                 break;

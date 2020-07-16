@@ -225,10 +225,8 @@ export function withQueryModels<Props>(
         componentDidUpdate(prevProps: Readonly<Props & MakeQueryModels & WithRouterProps>): void {
             const curLoc = this.props.location;
             const prevLoc = prevProps.location;
-            if (curLoc !== prevLoc) {
-                // iterate through all models, if any params changed (make a method to test this?) then call
-                // urlParamsForModel.
-                console.log('Location changed');
+
+            if (curLoc !== undefined && prevLoc !== undefined && curLoc !== prevLoc) {
                 const query = curLoc.query;
                 Object.values(this.state.queryModels).forEach(model => {
                     const modelParamsFromURL = Object.keys(query).reduce((result, key) => {
@@ -237,8 +235,6 @@ export function withQueryModels<Props>(
                         }
                         return result;
                     }, {});
-
-                    console.log(model.id, paramsEqual(modelParamsFromURL, model.urlQueryParams));
 
                     if (!paramsEqual(modelParamsFromURL, model.urlQueryParams)) {
                         // The params for the model have changed on the URL, so update the model.

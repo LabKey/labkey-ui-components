@@ -6,7 +6,7 @@ import { Query } from '@labkey/api';
 import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner, QueryColumn, QueryInfo, QuerySort } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { headerCell, headerSelectionCell } from '../renderers';
-import { Action, ActionValue } from '../components/omnibox/actions/Action';
+import { ActionValue } from '../components/omnibox/actions/Action';
 import { FilterAction } from '../components/omnibox/actions/Filter';
 import { SearchAction } from '../components/omnibox/actions/Search';
 import { SortAction } from '../components/omnibox/actions/Sort';
@@ -184,9 +184,64 @@ export class GridPanel extends PureComponent<Props, State> {
         actions.loadModel(model.id, allowSelections);
     }
 
-    omniBoxActions: { [name: string]: Action };
+    componentDidUpdate(prevProps: Readonly<Props>): void {
+        if (prevProps.model.queryInfo === undefined && this.props.model.queryInfo !== undefined) {
+            // We now have a queryInfo and can populate the Omnibox.
+            this.populateOmnibox();
+        }
+
+        // TODO: check if the model state produces a different omnibox result than this.state. If so, call
+        //  populateOmniBox. We'll need to be able to compare omnibox state without assuming the order of actions
+    }
+
+    omniBoxActions: {
+        filter: FilterAction;
+        search: SearchAction;
+        sort: SortAction;
+        view: ViewAction;
+    };
 
     omniBoxChangeHandlers: { [name: string]: (actionValues: ActionValue[], change: Change) => void };
+
+    /**
+     * Populates the Omnibox with ActionValues based on the current model state. Requires that the model has a QueryInfo
+     * so we can properly render Column and View labels.
+     */
+    populateOmnibox = (): void => {
+        const { model } = this.props;
+        const { filterArray, queryInfo, sorts, viewName } = model;
+        const actionValues = [];
+
+        if (model.viewName) {
+            const viewLabel = queryInfo.views.get(viewName.toLowerCase())?.label ?? viewName;
+            actionValues.push({ value: viewLabel, action: this.omniBoxActions.view });
+        }
+
+        sorts.forEach((sort): void => {
+            const column = model.getColumn(sort.fieldKey);
+            actionValues.push({
+                value: column?.shortCaption ?? sort.fieldKey,
+                valueObject: sort,
+                action: this.omniBoxActions.sort,
+            });
+        });
+
+        filterArray.forEach((filter): void => {
+            const column = model.getColumn(filter.getColumnName());
+
+            if (filter.getColumnName() === '*') {
+                actionValues.push({
+                    value: filter.getValue(),
+                    valueObject: filter,
+                    action: this.omniBoxActions.search,
+                });
+            } else {
+                actionValues.push(this.omniBoxActions.filter.actionValueFromFilter(filter, column?.shortCaption));
+            }
+        });
+
+        this.setState({ actionValues });
+    };
 
     selectRow = (row, event): void => {
         const { model, actions } = this.props;

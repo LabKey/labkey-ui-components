@@ -39,6 +39,7 @@ export interface GridMessage {
 
 export interface QueryConfig {
     baseFilters?: Filter.IFilter[];
+    bindURL?: boolean;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     id?: string;
@@ -50,10 +51,11 @@ export interface QueryConfig {
     offset?: number;
     omittedColumns?: string[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    queryParameters?: { [key: string]: any };
+    queryParameters?: { [key: string]: any }; // These are the parameters used as input to a parameterized query
     requiredColumns?: string[];
     schemaQuery: SchemaQuery;
     sorts?: QuerySort[];
+    urlPrefix?: string;
 }
 
 const DEFAULT_OFFSET = 0;
@@ -65,6 +67,9 @@ export class QueryModel {
     // Fields from QueryConfig
     // Some of the fields we have in common with QueryConfig are not optional because we give them default values.
     readonly baseFilters: Filter.IFilter[];
+    // bindURL is a flag used to indicate whether or not filters/sorts/etc. should be persisted on the URL. It is a
+    // client-only flag.
+    readonly bindURL: boolean;
     readonly containerFilter?: Query.ContainerFilter;
     readonly containerPath?: string;
     readonly id: string;
@@ -80,6 +85,7 @@ export class QueryModel {
     readonly requiredColumns: string[];
     readonly schemaQuery: SchemaQuery;
     readonly sorts: QuerySort[];
+    readonly urlPrefix?: string;
 
     // QueryModel only fields
     readonly filterArray: Filter.IFilter[];
@@ -102,6 +108,7 @@ export class QueryModel {
 
     constructor(queryConfig: QueryConfig) {
         this.baseFilters = queryConfig.baseFilters ?? [];
+        this.bindURL = queryConfig.bindURL ?? false;
         this.containerFilter = queryConfig.containerFilter;
         this.containerPath = queryConfig.containerPath;
         this.schemaQuery = queryConfig.schemaQuery;
@@ -137,6 +144,7 @@ export class QueryModel {
         this.selections = undefined;
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;
+        this.urlPrefix = queryConfig.urlPrefix ?? 'query'; // match Data Region defaults
         this.charts = undefined;
         this.chartsError = undefined;
         this.chartsLoadingState = LoadingState.INITIALIZED;
@@ -277,6 +285,72 @@ export class QueryModel {
             }
 
             return row;
+        });
+    }
+
+    /**
+     * Returns an object representing the query params of the model. Used when updating the URL when bindURL is set to
+     * true.
+     */
+    get urlQueryParams(): { [key: string]: string } {
+        const { currentPage, urlPrefix, filterArray, sortString, viewName } = this;
+        const filters = filterArray.filter(f => f.getColumnName() !== '*');
+        const searches = filterArray.filter(f => f.getColumnName() === '*').map(f => f.getValue()).join(';')
+        // ReactRouter location.query is typed as any.
+        const modelParams: { [key: string]: any } = {};
+
+        if (currentPage !== 1) {
+            modelParams[`${urlPrefix}.p`] = currentPage.toString(10);
+        }
+
+        if (viewName !== undefined) {
+            modelParams[`${urlPrefix}.view`] = viewName;
+        }
+
+        if (sortString !== '') {
+            modelParams[`${urlPrefix}.sort`] = sortString;
+        }
+
+        if (searches.length > 0) {
+            modelParams[`${urlPrefix}.q`] = searches;
+        }
+
+        // TODO: reportId for Chart Modal
+
+        filters.forEach((filter): void => {
+            modelParams[filter.getURLParameterName(urlPrefix)] = filter.getURLParameterValue();
+        });
+
+        return modelParams;
+    }
+
+    /**
+     * Gets a column by name. Implementation adapted from parseColumns in components/omnibox/utils.ts.
+     * @param name: string
+     */
+    getColumn(name: string): QueryColumn {
+        const lowered = name.toLowerCase();
+        const isLookup = lowered.indexOf('/') > -1;
+        const allColumns = this.allColumns;
+
+        // First attempt to find by name/lookup
+        const column = allColumns.find((queryColumn) => {
+            if (isLookup && queryColumn.isLookup()) {
+                return lowered.split('/')[0] === queryColumn.name.toLowerCase();
+            } else if (isLookup && !queryColumn.isLookup()) {
+                return false;
+            }
+
+            return queryColumn.name.toLowerCase() === lowered;
+        });
+
+        if (column !== undefined) {
+            return column;
+        }
+
+        // Fallback to finding by shortCaption
+        return allColumns.find((column) => {
+            return column.shortCaption.toLowerCase() === lowered;
         });
     }
 

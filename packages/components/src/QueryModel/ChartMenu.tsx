@@ -24,6 +24,7 @@ export class ChartMenu extends PureComponent<Props, State> {
     constructor(props) {
         super(props);
 
+        // TODO: move this state to QueryModel for URL Binding purposes.
         this.state = { selectedChart: undefined };
     }
     componentDidMount(): void {

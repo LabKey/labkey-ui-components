@@ -1,4 +1,9 @@
-import React, { ChangeEvent, FunctionComponent, PureComponent, ReactElement, ReactNode } from 'react';
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    PureComponent,
+    ReactElement,
+} from 'react';
 import { storiesOf } from '@storybook/react';
 import { Button, MenuItem } from 'react-bootstrap';
 
@@ -13,7 +18,7 @@ import {
     withQueryModels,
 } from '..';
 import './QueryModel.scss';
-import { createMemoryHistory, Route, RouteComponent, Router, WithRouterProps } from 'react-router';
+import { createMemoryHistory, Route, Router, WithRouterProps } from 'react-router';
 
 class GridPanelButtonsExample extends PureComponent<RequiresModelAndActions> {
     render() {
@@ -124,7 +129,6 @@ storiesOf('QueryModel', module)
                 .map(key => {
                     const value = location.query[key];
                     return key + '=' + value;
-                    // return encodeURIComponent(key) + '=' + encodeURIComponent(value);
                 })
                 .join('&');
             const queryConfigs: QueryConfigMap = {
@@ -147,6 +151,7 @@ storiesOf('QueryModel', module)
             return (
                 <div className="query-model-example">
                     <div>
+                        <label>URL Query Params: </label>
                         <input style={{ width: '800px' }} value={queryString} onChange={onQueryChange} />
                     </div>
                     <GridPanelWithModel

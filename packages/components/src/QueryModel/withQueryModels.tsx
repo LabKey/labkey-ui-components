@@ -123,7 +123,9 @@ const searchFiltersFromString = (searchStr: string): Filter.IFilter[] => {
     return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q)) ?? [];
 };
 
-const urlParamsForModel = (queryParams, model: QueryModel | Draft<QueryModel>): QueryModel => {
+type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'sorts'>;
+
+const urlParamsForModel = (queryParams, model: QueryModel | Draft<QueryModel>): QueryModelURLState => {
     const prefix = model.urlPrefix;
     const viewName = queryParams[`${prefix}.view`] ?? model.viewName;
     let filterArray = Filter.getFiltersFromParameters(queryParams, prefix) || model.filterArray;
@@ -135,12 +137,12 @@ const urlParamsForModel = (queryParams, model: QueryModel | Draft<QueryModel>): 
         filterArray = filterArray.concat(searchFilters);
     }
 
-    return model.mutate({
+    return {
         filterArray,
         offset: offsetFromString(model.maxRows, queryParams[`${prefix}.p`]) || model.offset,
         schemaQuery: SchemaQuery.create(model.schemaName, model.queryName, viewName),
         sorts: querySortsFromString(queryParams[`${prefix}.sort`]) || model.sorts,
-    });
+    };
 };
 
 /**
@@ -278,7 +280,6 @@ export function withQueryModels<Props>(
                 produce((draft: Draft<State>) => {
                     const model = draft.queryModels[id];
                     Object.assign(model, urlParamsForModel(query, model));
-                    draft.queryModels[id] = urlParamsForModel(query, model);
                     // If we have selections or previously attempted to load them we'll want to reload them when the
                     // model is updated from the URL because it can affect selections.
                     loadSelections = model.hasSelections || model.selectionsError !== undefined;

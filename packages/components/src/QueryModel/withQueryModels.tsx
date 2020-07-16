@@ -97,6 +97,10 @@ const resetSelectionState = (model: Draft<QueryModel>): void => {
 };
 
 const offsetFromString = (rowsPerPage, pageStr: string): number => {
+    if (pageStr === undefined) {
+        return undefined;
+    }
+
     let offset = 0;
     const page = parseInt(pageStr, 10);
 
@@ -116,11 +120,11 @@ const querySortFromString = (sortStr: string): QuerySort => {
 };
 
 const querySortsFromString = (sortsStr: string): QuerySort[] => {
-    return sortsStr?.split(',').map(querySortFromString) ?? [];
+    return sortsStr?.split(',').map(querySortFromString);
 };
 
 const searchFiltersFromString = (searchStr: string): Filter.IFilter[] => {
-    return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q)) ?? [];
+    return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q));
 };
 
 type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'sorts'>;
@@ -139,9 +143,9 @@ const urlParamsForModel = (queryParams, model: QueryModel | Draft<QueryModel>): 
 
     return {
         filterArray,
-        offset: offsetFromString(model.maxRows, queryParams[`${prefix}.p`]) || model.offset,
+        offset: offsetFromString(model.maxRows, queryParams[`${prefix}.p`]) ?? model.offset,
         schemaQuery: SchemaQuery.create(model.schemaName, model.queryName, viewName),
-        sorts: querySortsFromString(queryParams[`${prefix}.sort`]) || model.sorts,
+        sorts: querySortsFromString(queryParams[`${prefix}.sort`]) ?? model.sorts,
     };
 };
 

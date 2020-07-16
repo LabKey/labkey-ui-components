@@ -6,6 +6,7 @@
 import { Filter } from '@labkey/api';
 
 import { naturalSort, QuerySort } from '..';
+import { ActionValue } from '../components/omnibox/actions/Action';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -56,4 +57,11 @@ export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]:
         });
     }
     return values;
+}
+
+export function actionValuesToString(actionValues: ActionValue[]): string {
+    return actionValues
+        .map(actionValue => actionValue.value.toString())
+        .sort(naturalSort)
+        .join(';');
 }

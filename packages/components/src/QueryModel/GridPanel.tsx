@@ -20,7 +20,7 @@ import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 
-import { filtersEqual, sortsEqual } from './utils';
+import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 
 interface GridPanelProps {
     allowSelections?: boolean;
@@ -185,13 +185,9 @@ export class GridPanel extends PureComponent<Props, State> {
     }
 
     componentDidUpdate(prevProps: Readonly<Props>): void {
-        if (prevProps.model.queryInfo === undefined && this.props.model.queryInfo !== undefined) {
-            // We now have a queryInfo and can populate the Omnibox.
+        if (this.props.model.queryInfo !== undefined && this.props.model !== prevProps.model) {
             this.populateOmnibox();
         }
-
-        // TODO: check if the model state produces a different omnibox result than this.state. If so, call
-        //  populateOmniBox. We'll need to be able to compare omnibox state without assuming the order of actions
     }
 
     omniBoxActions: {
@@ -203,11 +199,7 @@ export class GridPanel extends PureComponent<Props, State> {
 
     omniBoxChangeHandlers: { [name: string]: (actionValues: ActionValue[], change: Change) => void };
 
-    /**
-     * Populates the Omnibox with ActionValues based on the current model state. Requires that the model has a QueryInfo
-     * so we can properly render Column and View labels.
-     */
-    populateOmnibox = (): void => {
+    createOmniboxValues = (): ActionValue[] => {
         const { model } = this.props;
         const { filterArray, queryInfo, sorts, viewName } = model;
         const actionValues = [];
@@ -240,7 +232,23 @@ export class GridPanel extends PureComponent<Props, State> {
             }
         });
 
-        this.setState({ actionValues });
+        return actionValues;
+    };
+
+    /**
+     * Populates the Omnibox with ActionValues based on the current model state. Requires that the model has a QueryInfo
+     * so we can properly render Column and View labels.
+     */
+    populateOmnibox = (): void => {
+        const modelActionValues = this.createOmniboxValues();
+        const modelActionValuesStr = actionValuesToString(modelActionValues);
+        const currentActionValuesStr = actionValuesToString(this.state.actionValues);
+
+        if (modelActionValuesStr !== currentActionValuesStr) {
+            // The action values have changed due to external model changes (likely URL changes), so we need to
+            // update the Omnibox with the newest values.
+            this.setState({ actionValues: modelActionValues });
+        }
     };
 
     selectRow = (row, event): void => {

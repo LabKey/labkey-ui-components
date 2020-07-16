@@ -1,6 +1,22 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.??.0
+*Released*: ?? July 2020
+* Add option to Bind QueryModels to URL
+    * When a model is configured with bindURL set to true we will persist some model state to the URL, and read model
+    state from the URL. This allows users to share pages with filters/sorts/etc.
+        * For this feature to work your usage of withQueryModels must be a child of a configured React Router (see
+        packages/components/src/stories/QueryModel.tsx for an example)
+    * QueryModel: charts has been changed from IDataViewInfo to DataViewInfo
+        * QueryModelLoader has been updated to support this
+    * Fixed an issue in DefaultQueryModelLoader where loadCharts was returning unsupported charts.
+    * QueryModel: Added fields
+        * bindURL
+        * selectedReportId
+    * QueryModel: Added urlQueryParams getter
+    * Removed unused getter methods from DataViewInfo
+
 ### version 0.78.3
 *Released*: 22 July 2020
 * AppModel: initialUserId set from `User` model instead of directly from `getServerContext()`.

@@ -356,6 +356,9 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
     changeTargetEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption): void => {
         const { insertModel } = this.state;
 
+        // Clear previous selection model
+        this.removeQueryGridModel();
+
         let updatedModel = insertModel.merge({
             targetEntityType: new EntityTypeOption(selectedOption),
             isError: false,

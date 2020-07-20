@@ -22,6 +22,7 @@ interface Props {
     gridData?: List<Map<string, any>>;
     changeDetails?: AuditDetailsModel;
     fieldValueRenderer?: (label, value, displayValue) => any;
+    gridColumnRenderer?: (data: any, row: any, displayValue: any) => any;
 }
 
 interface State {
@@ -211,7 +212,7 @@ export class AuditDetails extends React.Component<Props, State> {
     }
 
     getGridColumns(): List<GridColumn> {
-        const { user } = this.props;
+        const { user, gridColumnRenderer } = this.props;
         return List<GridColumn>([
             new GridColumn({
                 index: 'field',
@@ -223,11 +224,13 @@ export class AuditDetails extends React.Component<Props, State> {
                 title: 'Value',
                 showHeader: false,
                 cell: (data, row) => {
-                    if (row.get('isUser')) {
-                        return this.getUserDisplay(data, user.isAdmin);
-                    }
+                    let display;
+                    if (row.get('isUser')) display = this.getUserDisplay(data, user.isAdmin);
+                    else display = getEventDataValueDisplay(data, user.isAdmin);
 
-                    return getEventDataValueDisplay(data, user.isAdmin);
+                    if (gridColumnRenderer) display = gridColumnRenderer(data, row, display);
+
+                    return display;
                 },
             }),
         ]);

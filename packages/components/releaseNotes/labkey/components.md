@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.78.1
+*Released*: 20 July 2020
+* Support custom gridColumnRenderer for AuditDetails
+
 ### version 0.78.0
 *Released*: 16 July 2020
 * Item 7563: SampleTypeDesigner update to add "Label Color" property to Sample Manager

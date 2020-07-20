@@ -256,11 +256,9 @@ export function withQueryModels<Props>(
 
                     if (currConfig === undefined) {
                         // The queryConfig was removed, so remove the model.
-                        console.log('config for', id, 'was removed, removing model');
                         modelsToRemove.push(id);
                     } else if (prevConfig === undefined || !queryConfigsEqual(prevConfig, currConfig)) {
                         // New or changed config, need to instantiate model.
-                        console.log('new/changed config for', id, 'adding/updating model');
                         modelsToUpdate[id] = initModel(id, currQueryConfigs[id], this.props.location);
                     }
                 });

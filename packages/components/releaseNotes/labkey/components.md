@@ -14,6 +14,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * selectedReportId
 * QueryModel: Added urlQueryParams getter
 * Removed unused getter methods from DataViewInfo
+* Added toString() to SchemaQuery class
 
 ### version 0.78.3
 *Released*: 22 July 2020

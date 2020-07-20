@@ -225,13 +225,10 @@ export class AuditDetails extends React.Component<Props, State> {
                 showHeader: false,
                 cell: (data, row) => {
                     let display;
-                    if (row.get('isUser'))
-                        display = this.getUserDisplay(data, user.isAdmin);
-                    else
-                        display = getEventDataValueDisplay(data, user.isAdmin);
+                    if (row.get('isUser')) display = this.getUserDisplay(data, user.isAdmin);
+                    else display = getEventDataValueDisplay(data, user.isAdmin);
 
-                    if (gridColumnRenderer)
-                        display = gridColumnRenderer(data, row, display);
+                    if (gridColumnRenderer) display = gridColumnRenderer(data, row, display);
 
                     return display;
                 },

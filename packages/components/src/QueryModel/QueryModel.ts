@@ -37,6 +37,7 @@ export interface GridMessage {
     content: string;
 }
 
+// Note: if you add/remove fields on QueryConfig make sure to update utils.hashQueryConfig
 export interface QueryConfig {
     baseFilters?: Filter.IFilter[];
     bindURL?: boolean;

@@ -5,7 +5,7 @@
  */
 import { Filter } from '@labkey/api';
 
-import { naturalSort, QuerySort } from '..';
+import { QueryConfig, QuerySort } from '..';
 import { ActionValue } from '../components/omnibox/actions/Action';
 
 export function filterToString(filter: Filter.IFilter): string {
@@ -21,8 +21,8 @@ export function filterArraysEqual(a: Filter.IFilter[], b: Filter.IFilter[]): boo
         return false;
     }
 
-    const aStr = a.map(filterToString).sort(naturalSort).join(';');
-    const bStr = b.map(filterToString).sort(naturalSort).join(';');
+    const aStr = a.map(filterToString).sort().join(';');
+    const bStr = b.map(filterToString).sort().join(';');
 
     return aStr === bStr;
 }
@@ -38,11 +38,11 @@ export function sortArraysEqual(a: QuerySort[], b: QuerySort[]): boolean {
 
     const aStr = a
         .map(qs => qs.toRequestString())
-        .sort(naturalSort)
+        .sort()
         .join(';');
     const bStr = b
         .map(qs => qs.toRequestString())
-        .sort(naturalSort)
+        .sort()
         .join(';');
     return aStr === bStr;
 }
@@ -62,6 +62,35 @@ export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]:
 export function actionValuesToString(actionValues: ActionValue[]): string {
     return actionValues
         .map(actionValue => actionValue.value.toString())
-        .sort(naturalSort)
+        .sort()
         .join(';');
+}
+
+// Produces a stable string representation of an object.
+export function recordToString(record: Record<string, any>): string {
+    return Object.keys(record)
+        .sort()
+        .map(key => `${key}=${record[key]}`)
+        .join('_');
+}
+
+export function hashQueryConfig(config: QueryConfig): string {
+    return [
+        config.baseFilters?.map(filterToString).join('_'),
+        config.containerFilter,
+        config.containerPath,
+        config.id,
+        config.includeDetailsColumn,
+        config.includeUpdateColumn,
+        config.keyValue,
+        config.omittedColumns?.join('_'),
+        recordToString(config.queryParameters ?? {}),
+        config.requiredColumns?.join('_'),
+        config.schemaQuery.toString(),
+        config.sorts?.map(sort => sort.toRequestString()).join('_'),
+    ].join(';');
+}
+
+export function queryConfigsEqual(a: QueryConfig, b: QueryConfig): boolean {
+    return hashQueryConfig(a) === hashQueryConfig(b);
 }

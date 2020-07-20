@@ -4,12 +4,14 @@ import { Filter } from '@labkey/api';
 // eslint-disable-next-line import/named
 import { Draft, produce } from 'immer';
 
+import { Location } from 'history';
+import { withRouter, WithRouterProps } from 'react-router';
+
 import { LoadingState, naturalSort, QuerySort, resolveErrorMessage, SchemaQuery } from '..';
 
 import { QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
-import { filterArraysEqual, sortArraysEqual } from './utils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { filterArraysEqual, hashQueryConfig, queryConfigsEqual, sortArraysEqual } from './utils';
 
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
@@ -95,7 +97,7 @@ const resetSelectionState = (model: Draft<QueryModel>): void => {
     model.selectionsLoadingState = LoadingState.INITIALIZED;
 };
 
-const offsetFromString = (rowsPerPage, pageStr: string): number => {
+const offsetFromString = (rowsPerPage: number, pageStr: string): number => {
     if (pageStr === undefined) {
         return undefined;
     }
@@ -159,7 +161,7 @@ const paramsEqual = (oldParams, newParams): boolean => {
 
     if (oldKeyStr === newKeyStr) {
         // If the keys are the same we need to do a deep comparison
-        for (const key of Object.values(keys)) {
+        for (const key of Object.keys(oldParams)) {
             if (oldParams[key] !== newParams[key]) {
                 return false;
             }
@@ -175,23 +177,31 @@ const paramsEqual = (oldParams, newParams): boolean => {
 export function withQueryModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedQueryModels>
 ): ComponentType<Props & MakeQueryModels> {
-    class ComponentWithQueryModels extends PureComponent<Props & MakeQueryModels & WithRouterProps, State> {
+    type WrappedProps = Props & MakeQueryModels & WithRouterProps;
+
+    // No type hint for location because the typings in history are wrong and do not list query as a valid
+    // attribute of location.
+    const initModel = (id: string, config: QueryConfig, location?): QueryModel => {
+        let model = new QueryModel({ id, ...config });
+
+        if (model.bindURL && location) {
+            model = model.mutate(urlParamsForModel(location.query, model));
+        }
+
+        return model;
+    };
+
+    class ComponentWithQueryModels extends PureComponent<WrappedProps, State> {
         static defaultProps;
 
-        constructor(props: Props & MakeQueryModels & WithRouterProps) {
+        constructor(props: WrappedProps) {
             super(props);
             const { queryConfigs, location } = props;
             const queryModels = Object.keys(props.queryConfigs).reduce((models, id) => {
                 // We expect the key value for each QueryConfig to be the id. If a user were to mistakenly set the id
                 // to something different on the QueryConfig then actions would break
                 // e.g. actions.loadNextPage(model.id) would not work.
-                let model = new QueryModel({ id, ...queryConfigs[id] });
-
-                if (model.bindURL && location !== undefined) {
-                    model = model.mutate(urlParamsForModel(location.query, model));
-                }
-
-                models[id] = model;
+                models[id] = initModel(id, queryConfigs[id], location);
                 return models;
             }, {});
 
@@ -227,25 +237,75 @@ export function withQueryModels<Props>(
             }
         }
 
-        componentDidUpdate(prevProps: Readonly<Props & MakeQueryModels & WithRouterProps>): void {
-            const curLoc = this.props.location;
+        componentDidUpdate(prevProps: Readonly<WrappedProps>, prevState: Readonly<State>): void {
+            const prevQueryConfigs = prevProps.queryConfigs;
+            const currQueryConfigs = this.props.queryConfigs;
             const prevLoc = prevProps.location;
+            const currLoc = this.props.location;
+            const modelsToRemove: string[] = [];
+            const modelsToUpdate: { [key: string]: QueryModel } = {};
 
-            if (curLoc !== undefined && prevLoc !== undefined && curLoc !== prevLoc) {
-                const query = curLoc.query;
-                Object.values(this.state.queryModels).forEach(model => {
-                    const modelParamsFromURL = Object.keys(query).reduce((result, key) => {
-                        if (key.startsWith(model.urlPrefix + '.')) {
-                            result[key] = query[key];
-                        }
-                        return result;
-                    }, {});
+            // If queryConfigs has changed then re-initialize the model for each config that has changed and add any
+            // new models.
+            if (prevQueryConfigs !== currQueryConfigs) {
+                const allIds = new Set(Object.keys(prevQueryConfigs).concat(Object.keys(currQueryConfigs)));
 
-                    if (!paramsEqual(modelParamsFromURL, model.urlQueryParams)) {
-                        // The params for the model have changed on the URL, so update the model.
-                        this.updateModelFromURL(model.id);
+                allIds.forEach((id: string) => {
+                    const prevConfig = prevQueryConfigs[id];
+                    const currConfig = currQueryConfigs[id];
+
+                    if (currConfig === undefined) {
+                        // The queryConfig was removed, so remove the model.
+                        console.log('config for', id, 'was removed, removing model');
+                        modelsToRemove.push(id);
+                    } else if (prevConfig === undefined || !queryConfigsEqual(prevConfig, currConfig)) {
+                        // New or changed config, need to instantiate model.
+                        console.log('new/changed config for', id, 'adding/updating model');
+                        modelsToUpdate[id] = initModel(id, currQueryConfigs[id], this.props.location);
                     }
                 });
+
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        Object.assign(draft.queryModels, modelsToUpdate);
+                        modelsToRemove.forEach(id => delete draft.queryModels[id]);
+                    }),
+                    () => {
+                        Object.keys(modelsToUpdate).forEach(id => {
+                            const prevModel = prevState.queryModels[id];
+                            const hadData = prevModel && (prevModel.hasData || prevModel.rowsError || prevModel.queryInfoError);
+                            // We want to reload any models that were previously loaded or if autoLoad is true.
+                            const shouldLoad = this.props.autoLoad || hadData;
+
+                            if (shouldLoad) {
+                                this.loadModel(id);
+                            }
+                        });
+                    }
+                );
+            }
+
+            if (prevLoc !== undefined && currLoc !== undefined && prevLoc !== currLoc) {
+                const query = currLoc.query;
+                Object.values(this.state.queryModels)
+                    .filter(model => {
+                        const { bindURL, id } = model;
+                        // Don't bind any models that were updated or removed via query config changes above
+                        return (bindURL && modelsToRemove.includes(id) === false && modelsToUpdate[id] === undefined);
+                    })
+                    .forEach(model => {
+                        const modelParamsFromURL = Object.keys(query).reduce((result, key) => {
+                            if (key.startsWith(model.urlPrefix + '.')) {
+                                result[key] = query[key];
+                            }
+                            return result;
+                        }, {});
+
+                        if (!paramsEqual(modelParamsFromURL, model.urlQueryParams)) {
+                            // The params for the model have changed on the URL, so update the model.
+                            this.updateModelFromURL(model.id);
+                        }
+                    });
             }
         }
 

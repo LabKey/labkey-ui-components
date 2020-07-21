@@ -1,10 +1,7 @@
-import { Ajax, AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
+import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
 import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../..';
-
-import { QueryGridModel } from '../base/models/model';
-import { deleteRows } from '../../query/api';
 
 import {
     DisplayObject,
@@ -227,15 +224,13 @@ function getChosenParentData(
 
 // get back a map from the typeListQueryName (e.g., 'SampleSet') and the list of options for that query
 // where the schema field for those options is the typeSchemaName (e.g., 'samples')
-export function getEntityTypeOptions(
-    typeListSchemaQuery: SchemaQuery,
-    typeSchemaName: string,
-    filterArray?: Filter.IFilter[]
-): Promise<Map<string, List<any>>> {
+export function getEntityTypeOptions(entityDataType: EntityDataType): Promise<Map<string, List<any>>> {
+    const { typeListingSchemaQuery, filterArray, instanceSchemaName } = entityDataType;
+
     return new Promise((resolve, reject) => {
         selectRows({
-            schemaName: typeListSchemaQuery.schemaName,
-            queryName: typeListSchemaQuery.queryName,
+            schemaName: typeListingSchemaQuery.schemaName,
+            queryName: typeListingSchemaQuery.queryName,
             columns: 'LSID,Name,RowId',
             filterArray,
         })
@@ -243,12 +238,12 @@ export function getEntityTypeOptions(
                 const rows = fromJS(result.models[result.key]);
                 let optionMap = Map<string, List<any>>();
                 optionMap = optionMap.set(
-                    typeListSchemaQuery.queryName,
+                    typeListingSchemaQuery.queryName,
                     rows
                         .map(row => {
                             return {
                                 ...extractEntityTypeOptionFromRow(row),
-                                schema: typeSchemaName, // e.g. "samples" or "dataclasses"
+                                schema: instanceSchemaName, // e.g. "samples" or "dataclasses"
                             };
                         })
                         .sortBy(r => r.label, naturalSort)
@@ -265,41 +260,42 @@ export function getEntityTypeOptions(
 
 /**
  * @param model
- * @param entityDataTypes a map between the type schema name (e.g., "samples") and the EntityDataType
+ * @param entityDataType main data type to resolve
+ * @param parentSchemaQueries map of the possible parents to the entityDataType
  * @param targetQueryName the name of the listing schema query that represents the initial target for creation.
  * @param allowParents are parents of this entity type allowed or not
  */
 export function getEntityTypeData(
     model: EntityIdCreationModel,
-    entityDataTypes: Map<string, EntityDataType>,
+    entityDataType: EntityDataType,
+    parentSchemaQueries: Map<string, EntityDataType>,
     targetQueryName: string,
     allowParents: boolean
 ): Promise<Partial<EntityIdCreationModel>> {
     return new Promise((resolve, reject) => {
-        const promises = [];
-
-        promises.push(getChosenParentData(model, entityDataTypes, allowParents));
-
-        // get all the schemaQuery data
-        entityDataTypes.forEach((entityDataType: EntityDataType, typeSchemaName: string) => {
-            promises.push(
-                getEntityTypeOptions(entityDataType.typeListingSchemaQuery, typeSchemaName, entityDataType.filterArray)
-            );
-        });
+        const promises: Array<Promise<any>> = [
+            getEntityTypeOptions(entityDataType),
+            // get all the parent schemaQuery data
+            getChosenParentData(model, parentSchemaQueries, allowParents),
+            ...parentSchemaQueries.map(getEntityTypeOptions).toArray(),
+        ];
 
         let partial: Partial<EntityIdCreationModel> = {};
         Promise.all(promises)
             .then(results => {
-                partial = { ...results[0] }; // incorporate the chosen parent data results including entityCount and entityParents
+                partial = { ...results[1] }; // incorporate the chosen parent data results including entityCount and entityParents
                 let parentOptions = Map<string, List<IParentOption>>();
-                if (results.length > 1) {
-                    results.slice(1).forEach(typeOptionsMap => {
+                if (results.length > 2) {
+                    results.slice(2).forEach(typeOptionsMap => {
                         parentOptions = parentOptions.merge(typeOptionsMap);
                     });
                 }
+                // Set possible parents
                 partial.parentOptions = parentOptions;
-                // now we have a full set of options.  Get the one for the targetSchemaName
-                partial.entityTypeOptions = partial.parentOptions.get(targetQueryName) as List<IEntityTypeOption>;
+
+                // Set possible types
+                partial.entityTypeOptions = results[0].first();
+
                 // and populate the targetEntityType if one is provided
                 if (model.initialEntityType && partial.entityTypeOptions) {
                     const initialTargetTypeName = model.initialEntityType;

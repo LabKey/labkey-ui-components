@@ -396,8 +396,18 @@ export class QueryModel {
         return this.queryInfo?.views.sortBy(v => v.label, naturalSort).toArray() || [];
     }
 
+    /**
+     * True if data has been loaded, even if no rows were returned.
+     */
     get hasData(): boolean {
         return this.rows !== undefined;
+    }
+
+    /**
+     * True if the model has > 0 rows.
+     */
+    get hasRows(): boolean {
+        return this.hasData && Object.keys(this.rows).length > 0;
     }
 
     get hasCharts(): boolean {

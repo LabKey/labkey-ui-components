@@ -88,9 +88,9 @@ class ButtonBar extends PureComponent<GridBarProps> {
             showViewMenu,
         } = this.props;
 
-        const { hasData, queryInfo, queryInfoError, rowsError, selectionsError } = model;
+        const { hasRows, queryInfo, queryInfoError, rowsError, selectionsError } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
-        const paginate = showPagination && hasData && !hasError;
+        const paginate = showPagination && hasRows && !hasError;
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewMenu && queryInfo !== undefined;
@@ -498,8 +498,8 @@ export class GridPanel extends PureComponent<Props, State> {
 
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
         const { allowSelections, allowSorting, model } = this.props;
-        const { isLoading, isLoadingSelections, hasData, rowCount } = model;
-        const disabled = isLoadingSelections || isLoading || (hasData && rowCount === 0);
+        const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
+        const disabled = isLoadingSelections || isLoading || (hasRows && rowCount === 0);
 
         if (column.index === GRID_SELECTION_INDEX) {
             return headerSelectionCell(this.selectPage, model.selectedState, disabled, 'grid-panel__page-checkbox');

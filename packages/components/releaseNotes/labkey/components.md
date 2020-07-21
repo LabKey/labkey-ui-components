@@ -12,7 +12,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * QueryModel: Added fields
     * bindURL
     * selectedReportId
-* QueryModel: Added urlQueryParams getter
+* QueryModel: Added urlQueryParams and hasRows getters
 * Removed unused getter methods from DataViewInfo
 * Added toString() to SchemaQuery class
 

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.78.2
+*Released*: 20 July 2020
+* EntityInsertPanel: Ability to filter Sample Type Options without filtering Parent Options
+* EntityInsertPanel: Option to combine all parent entity types into one button and one select input
+
 ### version 0.78.1
 *Released*: 20 July 2020
 * Support custom gridColumnRenderer for AuditDetails

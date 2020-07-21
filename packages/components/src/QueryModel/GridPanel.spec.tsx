@@ -225,6 +225,8 @@ describe('GridPanel', () => {
         expectError(wrapper, selectionsError);
     });
 
+    const omniBoxTextMapper = (av): string => av.displayValue ?? av.value;
+
     const expectFilterState = (
         wrapper: GridPanelWrapper,
         actionValue: ActionValue,
@@ -238,7 +240,7 @@ describe('GridPanel', () => {
             .filter(
                 av => av.valueObject === valueObject || av.valueObject.getColumnName() !== valueObject.getColumnName()
             )
-            .map(av => av.value)
+            .map(omniBoxTextMapper)
             .join('');
         expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
         expect(actions.setFilters).toHaveBeenCalledWith(model.id, expectedFilters, grid.props.allowSelections);
@@ -258,7 +260,7 @@ describe('GridPanel', () => {
         const { valueObject } = actionValue;
         const expectedOmniText = actionValues
             .filter(av => av.valueObject === valueObject || av.valueObject.fieldKey !== valueObject.fieldKey)
-            .map(av => av.value)
+            .map(omniBoxTextMapper)
             .join('');
         expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(expectedOmniText);
         expect(actions.setSorts).toHaveBeenCalledWith(model.id, expectedSorts);
@@ -342,7 +344,7 @@ describe('GridPanel', () => {
         // Omnibox filters out existing view actions for us because they are singletons.
         let values = grid.state.actionValues.filter(v => v.action.keyword !== 'view');
         // GridPanel converts viewName to label
-        const expectedOmniText = values.map(v => v.value).join('') + viewLabel;
+        const expectedOmniText = values.map(v => v.displayValue ?? v.value).join('') + viewLabel;
         values = values.concat([
             {
                 action: grid.omniBoxActions.view,
@@ -363,31 +365,31 @@ describe('GridPanel', () => {
         const filter1 = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
         const filterAction1 = {
             action: grid.omniBoxActions.filter,
-            value: 'Name=DMXP',
+            value: '"Name" = DMXP',
             valueObject: filter1,
         };
         const filter2 = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
         const filterAction2 = {
             action: grid.omniBoxActions.filter,
-            value: 'expirationTime=1',
+            value: '"Expiration Time" = 1',
             valueObject: filter2,
         };
         const filter3 = Filter.create('expirationTime', '2', Filter.Types.EQUAL);
         const filterAction3 = {
             action: grid.omniBoxActions.filter,
-            value: 'expirationTime=2',
+            value: '"Expiration Time" = 2',
             valueObject: filter3,
         };
         const filter4 = Filter.create('expirationTime', '10', Filter.Types.EQUAL);
         const filterAction4 = {
             action: grid.omniBoxActions.filter,
-            value: 'expirationTime=10',
+            value: '"Expiration Time" = 10',
             valueObject: filter4,
         };
         const filter5 = Filter.create('Name', 'PBS', Filter.Types.EQUAL);
         const filterAction5 = {
             action: grid.omniBoxActions.filter,
-            value: 'Name=PBS',
+            value: '"Name" = PBS',
             valueObject: filter5,
         };
         const search1 = Filter.create('*', 'foo', Filter.Types.Q);
@@ -411,19 +413,22 @@ describe('GridPanel', () => {
         const sort1 = new QuerySort({ fieldKey: 'Name' });
         const sortAction1 = {
             action: grid.omniBoxActions.sort,
-            value: 'Name',
+            displayValue: 'Name',
+            value: 'Name ASC',
             valueObject: sort1,
         };
         const sort2 = new QuerySort({ fieldKey: 'expirationTime' });
         const sortAction2 = {
             action: grid.omniBoxActions.sort,
-            value: 'expirationTime',
+            displayValue: 'Expiration Time',
+            value: 'expirationTime ASC',
             valueObject: sort2,
         };
         const sort3 = new QuerySort({ fieldKey: 'Name', dir: '-' });
         const sortAction3 = {
             action: grid.omniBoxActions.sort,
-            value: '-Name',
+            displayValue: 'Name',
+            value: 'Name DESC',
             valueObject: sort3,
         };
 
@@ -469,7 +474,7 @@ describe('GridPanel', () => {
         // Emulate remove view
         const values = grid.state.actionValues.filter(v => v.action.keyword !== 'view');
         grid.omniBoxChange(values, { type: ChangeType.remove, index: grid.state.actionValues.length - 1 });
-        expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(values.map(v => v.value).join(''));
+        expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(values.map(omniBoxTextMapper).join(''));
         expect(actions.setView).toHaveBeenCalledWith('model', undefined, false);
     });
 

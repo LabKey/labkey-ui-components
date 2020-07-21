@@ -210,9 +210,11 @@ export class GridPanel extends PureComponent<Props, State> {
         }
 
         sorts.forEach((sort): void => {
-            const column = model.getColumn(sort.fieldKey);
+            const { dir, fieldKey } = sort;
+            const column = model.getColumn(fieldKey);
             actionValues.push({
-                value: column?.shortCaption ?? sort.fieldKey,
+                value: `${fieldKey} ${dir === '-' ? 'DESC' : 'ASC'}`,
+                displayValue: column?.shortCaption ?? sort.fieldKey,
                 valueObject: sort,
                 action: this.omniBoxActions.sort,
             });
@@ -318,17 +320,18 @@ export class GridPanel extends PureComponent<Props, State> {
             });
         }
 
-        actions.setFilters(model.id, newFilters, allowSelections);
-        this.setState({ actionValues });
+        // Defer model updates after localState is updated so we don't unnecessarily repopulate the omnibox.
+        this.setState({ actionValues }, () => actions.setFilters(model.id, newFilters, allowSelections));
     };
 
     handleSortChange = (actionValues: ActionValue[], change: Change): void => {
         const { model, actions } = this.props;
+        let updateSortsCallback: () => void;
 
         if (change.type === ChangeType.remove) {
             const value = this.state.actionValues[change.index].valueObject;
             const newSorts = model.sorts.filter(sort => !sortsEqual(sort, value));
-            actions.setSorts(model.id, newSorts);
+            updateSortsCallback = () => actions.setSorts(model.id, newSorts);
         } else {
             const newActionValue = actionValues[actionValues.length - 1];
             const oldActionValue = this.state.actionValues[change.index];
@@ -355,11 +358,12 @@ export class GridPanel extends PureComponent<Props, State> {
                     return keepSort;
                 });
 
-                actions.setSorts(model.id, newSorts);
+                updateSortsCallback = () => actions.setSorts(model.id, newSorts);
             }
         }
 
-        this.setState({ actionValues });
+        // Defer sorts update to after setState is complete so we dont unnecessarily repopulate the omnibox.
+        this.setState({ actionValues }, updateSortsCallback);
     };
 
     handleSearchChange = (actionValues: ActionValue[], change: Change): void => {
@@ -378,15 +382,16 @@ export class GridPanel extends PureComponent<Props, State> {
             newFilters = newFilters.concat(newValue);
         }
 
-        actions.setFilters(model.id, newFilters, allowSelections);
-        this.setState({ actionValues });
+        // Defer search update to after setState so we don't unnecessarily repopulate the omnibox.
+        this.setState({ actionValues }, () => actions.setFilters(model.id, newFilters, allowSelections));
     };
 
     handleViewChange = (actionValues: ActionValue[], change: Change): void => {
         const { model, actions, allowSelections } = this.props;
+        let updateViewCallback: () => void;
 
         if (change.type === ChangeType.remove) {
-            actions.setView(model.id, undefined, allowSelections);
+            updateViewCallback = () => actions.setView(model.id, undefined, allowSelections);
         } else {
             const newActionValue = actionValues[actionValues.length - 1];
             const newValue = newActionValue.value;
@@ -396,13 +401,13 @@ export class GridPanel extends PureComponent<Props, State> {
             if (newValue !== model.viewName) {
                 // Only trigger view change if the viewName has changed, OmniBox triggers modified event even if the
                 // user keeps the value the same.
-                actions.setView(model.id, newValue, allowSelections);
+                updateViewCallback = () => actions.setView(model.id, newValue, allowSelections);
             }
 
             actionValues = [...actionValues.slice(0, actionValues.length - 1), { ...newActionValue, value: viewLabel }];
         }
-
-        this.setState({ actionValues });
+        // Defer view update to after setState so we don't unnecessarily repopulate the omnibox.
+        this.setState({ actionValues }, updateViewCallback);
     };
 
     /**

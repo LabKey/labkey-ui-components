@@ -496,7 +496,7 @@ export class FilterAction implements Action {
             action: this,
             displayValue,
             isReadOnly,
-            value: [columnName, operator, value].join(' '),
+            value: `"${label ?? columnName}" ${operator} ${value}`,
             valueObject: filter,
         };
     }

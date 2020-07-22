@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.78.3
+*Released*: 22 July 2020
+* AppModel: initialUserId set from `User` model instead of directly from `getServerContext()`.
+
 ### version 0.78.2
 *Released*: 20 July 2020
 * EntityInsertPanel: Ability to filter Sample Type Options without filtering Parent Options

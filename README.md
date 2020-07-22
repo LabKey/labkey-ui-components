@@ -1,4 +1,4 @@
-# LabKey NPM Packages (@labkey)
+# LabKey NPM Packages (@labkey) [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)
 
 This repository defines all of the npm packages available in the @labkey scope.
 

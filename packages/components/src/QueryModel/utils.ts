@@ -65,32 +65,3 @@ export function actionValuesToString(actionValues: ActionValue[]): string {
         .sort()
         .join(';');
 }
-
-// Produces a stable string representation of an object.
-export function recordToString(record: Record<string, any>): string {
-    return Object.keys(record)
-        .sort()
-        .map(key => `${key}=${record[key]}`)
-        .join('_');
-}
-
-export function hashQueryConfig(config: QueryConfig): string {
-    return [
-        config.baseFilters?.map(filterToString).join('_'),
-        config.containerFilter,
-        config.containerPath,
-        config.id,
-        config.includeDetailsColumn,
-        config.includeUpdateColumn,
-        config.keyValue,
-        config.omittedColumns?.join('_'),
-        recordToString(config.queryParameters ?? {}),
-        config.requiredColumns?.join('_'),
-        config.schemaQuery.toString(),
-        config.sorts?.map(sort => sort.toRequestString()).join('_'),
-    ].join(';');
-}
-
-export function queryConfigsEqual(a: QueryConfig, b: QueryConfig): boolean {
-    return hashQueryConfig(a) === hashQueryConfig(b);
-}

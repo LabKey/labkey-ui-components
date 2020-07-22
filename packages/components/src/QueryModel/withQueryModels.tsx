@@ -4,14 +4,13 @@ import { Filter } from '@labkey/api';
 // eslint-disable-next-line import/named
 import { Draft, produce } from 'immer';
 
-import { Location } from 'history';
 import { withRouter, WithRouterProps } from 'react-router';
 
 import { LoadingState, naturalSort, QuerySort, resolveErrorMessage, SchemaQuery } from '..';
 
 import { QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
-import { filterArraysEqual, hashQueryConfig, queryConfigsEqual, sortArraysEqual } from './utils';
+import { filterArraysEqual, sortArraysEqual } from './utils';
 
 export interface Actions {
     addModel: (queryConfig: QueryConfig, load?: boolean, loadSelections?: boolean) => void;
@@ -237,60 +236,33 @@ export function withQueryModels<Props>(
             }
         }
 
+        /**
+         * componentDidUpdate only checks for changes to props.location so it can update models when there are changes
+         * to the URL (only for models with bindURL set to true).
+         *
+         * Currently we do not listen for changes to props.queryConfigs. You may be tempted to try to diff queryConfigs
+         * in the future and add/update/remove models as you see changes, but this introduces a bunch of other problems
+         * for child components, so don't do this. Problems include:
+         *  - Child components will no longer be guaranteed that there will always be a model, so they'll have to check
+         *  if model is undefined before accessing any properties on it. This annoying.
+         *  - Child components will need to listen for when models are re-instantiated, and potentially re-initialize
+         *  their state. For example, GridPanel will need to call loadSelections and ChartMenu will need to call
+         *  loadCharts
+         *
+         * If you expect changes to props.queryConfigs to create new models you can pass a key prop to your wrapped
+         * component. For Example:
+         *      <GridPanelWithModel key={`grid.${schemaName}.${queryName}`} queryConfigs={queryConfigs} />
+         * If you pass a unique key to the component then React will unmount and remount the component when the key
+         * changes.
+         */
         componentDidUpdate(prevProps: Readonly<WrappedProps>, prevState: Readonly<State>): void {
-            const prevQueryConfigs = prevProps.queryConfigs;
-            const currQueryConfigs = this.props.queryConfigs;
             const prevLoc = prevProps.location;
             const currLoc = this.props.location;
-            const modelsToRemove: string[] = [];
-            const modelsToUpdate: { [key: string]: QueryModel } = {};
-
-            // If queryConfigs has changed then re-initialize the model for each config that has changed and add any
-            // new models.
-            if (prevQueryConfigs !== currQueryConfigs) {
-                const allIds = new Set(Object.keys(prevQueryConfigs).concat(Object.keys(currQueryConfigs)));
-
-                allIds.forEach((id: string) => {
-                    const prevConfig = prevQueryConfigs[id];
-                    const currConfig = currQueryConfigs[id];
-
-                    if (currConfig === undefined) {
-                        // The queryConfig was removed, so remove the model.
-                        modelsToRemove.push(id);
-                    } else if (prevConfig === undefined || !queryConfigsEqual(prevConfig, currConfig)) {
-                        // New or changed config, need to instantiate model.
-                        modelsToUpdate[id] = initModel(id, currQueryConfigs[id], this.props.location);
-                    }
-                });
-
-                this.setState(
-                    produce((draft: Draft<State>) => {
-                        Object.assign(draft.queryModels, modelsToUpdate);
-                        modelsToRemove.forEach(id => delete draft.queryModels[id]);
-                    }),
-                    () => {
-                        Object.keys(modelsToUpdate).forEach(id => {
-                            const prevModel = prevState.queryModels[id];
-                            const hadData = prevModel && (prevModel.hasData || prevModel.rowsError || prevModel.queryInfoError);
-                            // We want to reload any models that were previously loaded or if autoLoad is true.
-                            const shouldLoad = this.props.autoLoad || hadData;
-
-                            if (shouldLoad) {
-                                this.loadModel(id);
-                            }
-                        });
-                    }
-                );
-            }
 
             if (prevLoc !== undefined && currLoc !== undefined && prevLoc !== currLoc) {
                 const query = currLoc.query;
                 Object.values(this.state.queryModels)
-                    .filter(model => {
-                        const { bindURL, id } = model;
-                        // Don't bind any models that were updated or removed via query config changes above
-                        return (bindURL && modelsToRemove.includes(id) === false && modelsToUpdate[id] === undefined);
-                    })
+                    .filter(model => model.bindURL)
                     .forEach(model => {
                         const modelParamsFromURL = Object.keys(query).reduce((result, key) => {
                             if (key.startsWith(model.urlPrefix + '.')) {

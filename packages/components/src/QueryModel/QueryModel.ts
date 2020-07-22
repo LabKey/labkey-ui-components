@@ -16,7 +16,7 @@ import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { PaginationData } from '../components/pagination/Pagination';
 import { DataViewInfo } from '../models';
 
-import { flattenValuesFromRow } from './utils';
+import { flattenValuesFromRow, offsetFromString, querySortsFromString, searchFiltersFromString } from './utils';
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
@@ -492,6 +492,29 @@ export class QueryModel {
     }
 
     /**
+     * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
+     * @param queryParams: The query attribute from a ReactRouter Location object.
+     */
+    attributesForURLQueryParams(queryParams): QueryModelURLState {
+        const prefix = this.urlPrefix;
+        const viewName = queryParams[`${prefix}.view`] ?? this.viewName;
+        let filterArray = Filter.getFiltersFromParameters(queryParams, prefix) || this.filterArray;
+        const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]);
+
+        if (searchFilters !== undefined) {
+            filterArray = filterArray.concat(searchFilters);
+        }
+
+        return {
+            filterArray,
+            offset: offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? this.offset,
+            schemaQuery: SchemaQuery.create(this.schemaName, this.queryName, viewName),
+            sorts: querySortsFromString(queryParams[`${prefix}.sort`]) ?? this.sorts,
+            selectedReportId: queryParams[`${prefix}.reportId`] ?? this.selectedReportId,
+        };
+    }
+
+    /**
      * Returns a deep copy of this model with props applied iff props is not empty/null/undefined else
      * returns this.
      * @param props
@@ -502,3 +525,5 @@ export class QueryModel {
         });
     }
 }
+
+type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'>;

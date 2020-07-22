@@ -96,58 +96,6 @@ const resetSelectionState = (model: Draft<QueryModel>): void => {
     model.selectionsLoadingState = LoadingState.INITIALIZED;
 };
 
-const offsetFromString = (rowsPerPage: number, pageStr: string): number => {
-    if (pageStr === undefined) {
-        return undefined;
-    }
-
-    let offset = 0;
-    const page = parseInt(pageStr, 10);
-
-    if (!isNaN(page)) {
-        offset = (page - 1) * rowsPerPage;
-    }
-
-    return offset >= 0 ? offset : 0;
-};
-
-const querySortFromString = (sortStr: string): QuerySort => {
-    if (sortStr.startsWith('-')) {
-        return new QuerySort({ dir: '-', fieldKey: sortStr.slice(1) });
-    } else {
-        return new QuerySort({ fieldKey: sortStr });
-    }
-};
-
-const querySortsFromString = (sortsStr: string): QuerySort[] => {
-    return sortsStr?.split(',').map(querySortFromString);
-};
-
-const searchFiltersFromString = (searchStr: string): Filter.IFilter[] => {
-    return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q));
-};
-
-type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'>;
-
-const urlParamsForModel = (queryParams, model: QueryModel | Draft<QueryModel>): QueryModelURLState => {
-    const prefix = model.urlPrefix;
-    const viewName = queryParams[`${prefix}.view`] ?? model.viewName;
-    let filterArray = Filter.getFiltersFromParameters(queryParams, prefix) || model.filterArray;
-    const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]);
-
-    if (searchFilters !== undefined) {
-        filterArray = filterArray.concat(searchFilters);
-    }
-
-    return {
-        filterArray,
-        offset: offsetFromString(model.maxRows, queryParams[`${prefix}.p`]) ?? model.offset,
-        schemaQuery: SchemaQuery.create(model.schemaName, model.queryName, viewName),
-        sorts: querySortsFromString(queryParams[`${prefix}.sort`]) ?? model.sorts,
-        selectedReportId: queryParams[`${prefix}.reportId`] ?? model.selectedReportId,
-    };
-};
-
 /**
  * Compares two query params objects, returns true if they are equal, false otherwise.
  * @param oldParams
@@ -178,16 +126,21 @@ export function withQueryModels<Props>(
 ): ComponentType<Props & MakeQueryModels> {
     type WrappedProps = Props & MakeQueryModels & WithRouterProps;
 
-    // No type hint for location because the typings in history are wrong and do not list query as a valid
-    // attribute of location.
-    const initModel = (id: string, config: QueryConfig, location?): QueryModel => {
-        let model = new QueryModel({ id, ...config });
+    const initModels = (props: WrappedProps): QueryModelMap => {
+        const { location, queryConfigs } = props;
+        return Object.keys(queryConfigs).reduce((models, id) => {
+            // We expect the key value for each QueryConfig to be the id. If a user were to mistakenly set the id
+            // to something different on the QueryConfig then actions would break
+            // e.g. actions.loadNextPage(model.id) would not work.
+            let model = new QueryModel({ id, ...queryConfigs[id] });
 
-        if (model.bindURL && location) {
-            model = model.mutate(urlParamsForModel(location.query, model));
-        }
+            if (model.bindURL && location) {
+                model = model.mutate(model.attributesForURLQueryParams(location.query));
+            }
 
-        return model;
+            models[id] = model;
+            return models;
+        }, {});
     };
 
     class ComponentWithQueryModels extends PureComponent<WrappedProps, State> {
@@ -195,16 +148,8 @@ export function withQueryModels<Props>(
 
         constructor(props: WrappedProps) {
             super(props);
-            const { queryConfigs, location } = props;
-            const queryModels = Object.keys(props.queryConfigs).reduce((models, id) => {
-                // We expect the key value for each QueryConfig to be the id. If a user were to mistakenly set the id
-                // to something different on the QueryConfig then actions would break
-                // e.g. actions.loadNextPage(model.id) would not work.
-                models[id] = initModel(id, queryConfigs[id], location);
-                return models;
-            }, {});
 
-            this.state = produce({}, () => ({ queryModels }));
+            this.state = produce({}, () => ({ queryModels: initModels(props) }));
 
             this.actions = {
                 addModel: this.addModel,
@@ -312,7 +257,7 @@ export function withQueryModels<Props>(
             this.setState(
                 produce((draft: Draft<State>) => {
                     const model = draft.queryModels[id];
-                    Object.assign(model, urlParamsForModel(query, model));
+                    Object.assign(model, model.attributesForURLQueryParams(query));
                     // If we have selections or previously attempted to load them we'll want to reload them when the
                     // model is updated from the URL because it can affect selections.
                     loadSelections = model.hasSelections || model.selectionsError !== undefined;

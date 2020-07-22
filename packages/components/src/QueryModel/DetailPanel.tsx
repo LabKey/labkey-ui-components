@@ -55,19 +55,13 @@ interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
 }
 
 class DetailPanelWithModelBodyImpl extends PureComponent<DetailPanelWithModelProps & InjectedQueryModels> {
-    componentDidMount(): void {
-        const { actions, queryModels } = this.props;
-        actions.loadModel(queryModels.model.id);
-    }
-
     render(): ReactNode {
         const { queryModels, ...rest } = this.props;
-
         return <DetailPanel {...rest} model={queryModels.model} />;
     }
 }
 
-export const DetailPanelWithModelBody = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelBodyImpl);
+const DetailPanelWithModelBody = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelBodyImpl);
 
 export class DetailPanelWithModel extends PureComponent<QueryConfig & DetailDisplaySharedProps> {
     render(): ReactNode {
@@ -80,6 +74,7 @@ export class DetailPanelWithModel extends PureComponent<QueryConfig & DetailDisp
         return (
             <DetailPanelWithModelBody
                 asPanel={asPanel}
+                autoLoad
                 detailRenderer={detailRenderer}
                 editingMode={editingMode}
                 key={key}

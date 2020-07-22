@@ -82,4 +82,12 @@ export class SearchAction implements Action {
     parseParam(paramKey: string, paramValue: any, columns: List<QueryColumn>): string[] | Value[] {
         return paramValue.split(';');
     }
+
+    actionValueFromFilter(filter: Filter.IFilter): ActionValue {
+        return {
+            value: filter.getValue(),
+            valueObject: filter,
+            action: this,
+        };
+    }
 }

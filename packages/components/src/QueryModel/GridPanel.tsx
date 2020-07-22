@@ -205,30 +205,20 @@ export class GridPanel extends PureComponent<Props, State> {
         const actionValues = [];
 
         if (model.viewName) {
-            const viewLabel = queryInfo.views.get(viewName.toLowerCase())?.label ?? viewName;
-            actionValues.push({ value: viewLabel, action: this.omniBoxActions.view });
+            const view = queryInfo.views.get(viewName.toLowerCase())?.label ?? viewName;
+            actionValues.push(this.omniBoxActions.view.actionValueFromView(view));
         }
 
         sorts.forEach((sort): void => {
-            const { dir, fieldKey } = sort;
-            const column = model.getColumn(fieldKey);
-            actionValues.push({
-                value: `${fieldKey} ${dir === '-' ? 'DESC' : 'ASC'}`,
-                displayValue: column?.shortCaption ?? sort.fieldKey,
-                valueObject: sort,
-                action: this.omniBoxActions.sort,
-            });
+            const column = model.getColumn(sort.fieldKey);
+            actionValues.push(this.omniBoxActions.sort.actionValueFromSort(sort, column?.shortCaption));
         });
 
         filterArray.forEach((filter): void => {
             const column = model.getColumn(filter.getColumnName());
 
             if (filter.getColumnName() === '*') {
-                actionValues.push({
-                    value: filter.getValue(),
-                    valueObject: filter,
-                    action: this.omniBoxActions.search,
-                });
+                actionValues.push(this.omniBoxActions.search.actionValueFromFilter(filter));
             } else {
                 actionValues.push(this.omniBoxActions.filter.actionValueFromFilter(filter, column?.shortCaption));
             }

@@ -1,7 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Experiment, Filter } from '@labkey/api';
 
-import { DetailPanelWithModel, QueryConfig, QueryConfigMap, SchemaQuery } from '../../..';
+import { DetailPanelWithModel, SchemaQuery } from '../../..';
 
 export interface LineageDetailProps {
     item: Experiment.LineageItemBase;

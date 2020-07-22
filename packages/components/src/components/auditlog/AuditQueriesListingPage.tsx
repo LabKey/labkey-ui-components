@@ -79,7 +79,7 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
         if (model.selectedLoaded) {
             this.updateSelectedRowId(this.getLastSelectedId());
         } else {
-            getSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath).then(
+            getSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath, model.queryParameters).then(
                 response => {
                     const selectedId =
                         response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;

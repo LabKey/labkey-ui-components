@@ -171,7 +171,8 @@ export function selectAll(
     schemaName: string,
     queryName: string,
     filterList: List<Filter.IFilter>,
-    containerPath?: string
+    containerPath?: string,
+    queryParameters?: { [key: string]: any }
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -179,7 +180,7 @@ export function selectAll(
                 container: containerPath,
             }),
             method: 'POST',
-            params: getQueryParams(key, schemaName, queryName, filterList),
+            params: getQueryParams(key, schemaName, queryName, filterList, queryParameters),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
@@ -203,7 +204,7 @@ export function gridSelectAll(
 
     selectAll(id, model.schema, model.query, model.getFilters(), model.containerPath).then(data => {
         if (data && data.count > 0) {
-            return getSelected(id, model.schema, model.query, model.getFilters(), model.containerPath)
+            return getSelected(id, model.schema, model.query, model.getFilters(), model.containerPath, model.queryParameters)
                 .then(response => {
                     const updatedModel = updateSelections(model, { selectedIds: List(response.selected) });
 
@@ -922,10 +923,10 @@ function getFilteredQueryParams(
     key: string,
     schemaName: string,
     queryName: string,
-    filterList: List<Filter.IFilter>
-): any {
+    filterList: List<Filter.IFilter>,
+    queryParameters?: { [key: string]: any }): any {
     if (schemaName && queryName && filterList && !filterList.isEmpty()) {
-        return getQueryParams(key, schemaName, queryName, filterList);
+        return getQueryParams(key, schemaName, queryName, filterList, queryParameters);
     } else {
         return {
             key,
@@ -933,17 +934,25 @@ function getFilteredQueryParams(
     }
 }
 
-function getQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>): any {
+function getQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>, queryParameters?: { [key: string]: any }): any {
     const filters = filterList.reduce((prev, next) => {
         return Object.assign(prev, { [next.getURLParameterName()]: next.getURLParameterValue() });
     }, {});
 
+    let params = {
+        schemaName,
+        queryName,
+        'query.selectionKey': key,
+    };
+    if (queryParameters) {
+        for (let propName in queryParameters) {
+            if (queryParameters.hasOwnProperty(propName)) {
+                params['query.param.' + propName] = queryParameters[propName];
+            }
+        }
+    }
     return {
-        ...{
-            schemaName,
-            queryName,
-            'query.selectionKey': key,
-        },
+        ...params,
         ...filters,
     };
 }
@@ -951,25 +960,26 @@ function getQueryParams(key: string, schemaName: string, queryName: string, filt
 /**
  * Gets selected ids from a particular query view, optionally using the provided query parameters
  * @param key the selection key associated with the grid
- * @param schemaName name of the schema for the query grid
- * @param queryName name of the query
- * @param filterList list of filters to use
- * @param containerPath the container path to use for this API call
+ * @param schemaName? name of the schema for the query grid
+ * @param queryName? name of the query
+ * @param filterList? list of filters to use
+ * @param containerPath? the container path to use for this API call
+ * @param queryParameters? the parameters to the underlying query
  */
 export function getSelected(
     key: string,
     schemaName?: string,
     queryName?: string,
     filterList?: List<Filter.IFilter>,
-    containerPath?: string
-): Promise<IGetSelectedResponse> {
+    containerPath?: string,
+    queryParameters?: { [key: string]: any }): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'getSelected.api', undefined, {
                 container: containerPath,
             }),
             method: 'POST',
-            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList),
+            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList, queryParameters),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),
@@ -1161,12 +1171,7 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
                 });
             }
 
-            return getSelected(
-                key,
-                schemaQuery.schemaName,
-                schemaQuery.queryName,
-                getFilterListFromQuery(location)
-            ).then(response => {
+            return getSelected(key, schemaQuery.schemaName, schemaQuery.queryName, getFilterListFromQuery(location), undefined, undefined).then(response => {
                 resolve({
                     resolved: true,
                     schemaQuery,

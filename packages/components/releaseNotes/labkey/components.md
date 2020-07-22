@@ -13,6 +13,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * bindURL
     * selectedReportId
 * QueryModel: Added urlQueryParams and hasRows getters
+* QueryModel: Default to Details View if keyValue is set
 * Removed unused getter methods from DataViewInfo
 * Added toString() to SchemaQuery class
 

@@ -109,17 +109,27 @@ export class QueryModel {
     readonly chartsLoadingState: LoadingState;
 
     constructor(queryConfig: QueryConfig) {
+        const { schemaQuery, keyValue } = queryConfig;
         this.baseFilters = queryConfig.baseFilters ?? [];
-        this.bindURL = queryConfig.bindURL ?? false;
         this.containerFilter = queryConfig.containerFilter;
         this.containerPath = queryConfig.containerPath;
-        this.schemaQuery = queryConfig.schemaQuery;
 
         // Even though this is a situation that we shouldn't be in due to the type annotations it's still possible
         // due to conversion from any, and it's best to have a specific error than an error due to undefined later
         // when we try to use the model during an API request.
-        if (this.schemaQuery === undefined) {
+        if (schemaQuery === undefined) {
             throw new Error('schemaQuery is required to instantiate a QueryModel');
+        }
+
+        // Default to the Details view if we have a keyValue and the user hasn't specified a view.
+        // Note: this default may not be appropriate outside of Biologics/SM
+        if (keyValue !== undefined && schemaQuery.viewName === undefined) {
+            const { schemaName, queryName } = schemaQuery;
+            this.schemaQuery = SchemaQuery.create(schemaName, queryName, ViewInfo.DETAIL_NAME);
+            this.bindURL = false;
+        } else {
+            this.schemaQuery = schemaQuery;
+            this.bindURL = queryConfig.bindURL ?? false;
         }
 
         this.id = queryConfig.id ?? createQueryModelId(this.schemaQuery);

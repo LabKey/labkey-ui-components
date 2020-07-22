@@ -1,4 +1,4 @@
-# LabKey NPM Packages (@labkey) [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)
+# LabKey NPM Packages (@labkey)
 
 This repository defines all of the npm packages available in the @labkey scope.
 
@@ -10,11 +10,11 @@ Once they're ready, we'll officially push the components as version 1.0.0.
 ## Package listing
 
 <!--- keep these alphabetical --->
-| Package | Description |
-| --- | --- |
-| [@labkey/components](packages/components/README.md) | All components, models, actions, and utility functions for LabKey applications and pages
-| [@labkey/eslint-config-base](packages/eslint-config-base/README.md) | Base ESLint configuration with TypeScript and Prettier support.
-| [@labkey/eslint-config-react](packages/eslint-config-react/README.md) | Extends the base configuration with React support.
+| Package | Status | Description |
+| --- | --- | --- |
+| [@labkey/components](packages/components/README.md) |  [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest) | All components, models, actions, and utility functions for LabKey applications and pages
+| [@labkey/eslint-config-base](packages/eslint-config-base/README.md) | | Base ESLint configuration with TypeScript and Prettier support.
+| [@labkey/eslint-config-react](packages/eslint-config-react/README.md) | | Extends the base configuration with React support.
 
 
 ## Using @labkey npm packages

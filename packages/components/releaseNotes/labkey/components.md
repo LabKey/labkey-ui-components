@@ -16,6 +16,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 * QueryModel: Default to Details View if keyValue is set
 * Removed unused getter methods from DataViewInfo
 * Added toString() to SchemaQuery class
+* Added (and exported) DetailPanel component
+    - Same as DetailPanelWithModel except it is not wrapped in withQueryModels
 
 ### version 0.78.3
 *Released*: 22 July 2020

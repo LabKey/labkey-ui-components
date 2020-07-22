@@ -69,7 +69,7 @@ import {
 } from './components/base/models/model';
 import { buildURL, getSortFromUrl } from './url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
-import { intersect, naturalSort, not } from './util/utils';
+import { intersect, naturalSort, not, resolveKey } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 
 const EMPTY_ROW = Map<string, any>();
@@ -1187,27 +1187,31 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
     });
 }
 
-export function getSelectedData(model: QueryGridModel, columns?: List<QueryColumn>): Promise<IGridResponse> {
-    let filters = model.getFilters();
-    filters = filters.push(Filter.create('RowId', model.selectedIds.toArray(), Filter.Types.IN));
-
-    // If columns defined use those for the query columns else use the display columns
-    const columnString = columns ? columns.map(c => c.fieldKey).join(',') : model.getRequestColumnsString();
+export function getSelectedData(schemaName?: string,
+                                queryName?: string,
+                                selections?: string[],
+                                columns?: string,
+                                sorts?: string,
+                                queryParameters?: { [key: string]: any }): Promise<IGridResponse>  {
+    let filterArray = [];
+    filterArray.push(Filter.create('RowId', selections, Filter.Types.IN));
 
     return new Promise((resolve, reject) =>
         selectRows({
-            schemaName: model.schema,
-            queryName: model.query,
-            filterArray: filters.toJS(),
-            sort: model.getSorts() || '-RowId',
-            columns: columnString,
+            schemaName,
+            queryName,
+            filterArray,
+            parameters: queryParameters,
+            sort: sorts || '-RowId',
+            columns,
             offset: 0,
         })
             .then(response => {
                 const { models, orderedModels, totalRows } = response;
+                const dataKey = resolveKey(schemaName, queryName);
                 resolve({
-                    data: fromJS(models[model.getModelName()]),
-                    dataIds: List(orderedModels[model.getModelName()]),
+                    data: fromJS(models[dataKey]),
+                    dataIds: List(orderedModels[dataKey]),
                     totalRows,
                 });
             })
@@ -1216,6 +1220,13 @@ export function getSelectedData(model: QueryGridModel, columns?: List<QueryColum
                 reject(resolveErrorMessage(reason));
             })
     );
+}
+
+export function getSelectedDataWithQueryGridModel(model: QueryGridModel, columns?: List<QueryColumn>): Promise<IGridResponse> {
+    // If columns defined use those for the query columns else use the display columns
+    const columnString = columns ? columns.map(c => c.fieldKey).join(',') : model.getRequestColumnsString();
+
+    return getSelectedData(model.schema, model.query, model.selectedIds.toArray(), columnString, model.getSorts() || '-RowId', model.queryParameters);
 }
 
 function getFilterParameters(filters: List<any>, remove = false): Map<string, string> {

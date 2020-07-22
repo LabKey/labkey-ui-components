@@ -119,6 +119,7 @@ import { EditorModel, getStateQueryGridModel, getStateModelId, IDataViewInfo } f
 import {
     createQueryGridModelFilteredBySample,
     getSelected,
+    getSelectedData,
     getSelection,
     gridIdInvalidate,
     gridInit,
@@ -389,6 +390,7 @@ export {
     schemaGridInvalidate,
     // grid functions
     getSelected,
+    getSelectedData,
     getSelection,
     gridInit,
     gridShowError,

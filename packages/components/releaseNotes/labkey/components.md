@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add support for parameterized queries when getting and setting selections on a grid
+* Export getSelectedData method
 
 ### version 0.78.3
 *Released*: 22 July 2020

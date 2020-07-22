@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add support for parameterized queries when getting and setting selections on a grid
+
 ### version 0.78.2
 *Released*: 20 July 2020
 * EntityInsertPanel: Ability to filter Sample Type Options without filtering Parent Options

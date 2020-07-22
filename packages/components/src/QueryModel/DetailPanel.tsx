@@ -17,7 +17,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { LoadingSpinner, QueryColumn, QueryModel, RequiresModelAndActions } from '..';
+import { LoadingSpinner, QueryColumn, QueryConfig, RequiresModelAndActions } from '..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../components/forms/detail/DetailDisplay';
 
@@ -54,22 +54,39 @@ interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
     queryColumns?: List<QueryColumn>;
 }
 
-class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps & InjectedQueryModels> {
+class DetailPanelWithModelBodyImpl extends PureComponent<DetailPanelWithModelProps & InjectedQueryModels> {
     componentDidMount(): void {
-        const { actions } = this.props;
-        actions.loadModel(this.model.id);
-    }
-
-    get model(): QueryModel {
-        return this.props.queryModels[Object.keys(this.props.queryModels)[0]]
+        const { actions, queryModels } = this.props;
+        actions.loadModel(queryModels.model.id);
     }
 
     render(): ReactNode {
-        // Don't pass QueryModels to DetailPanel.
         const { queryModels, ...rest } = this.props;
 
-        return <DetailPanel {...rest} model={this.model} />;
+        return <DetailPanel {...rest} model={queryModels.model} />;
     }
 }
 
-export const DetailPanelWithModel = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelImpl);
+export const DetailPanelWithModelBody = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelBodyImpl);
+
+export class DetailPanelWithModel extends PureComponent<QueryConfig & DetailDisplaySharedProps> {
+    render(): ReactNode {
+        const { asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, ...queryConfig } = this.props;
+        const queryConfigs = { model: queryConfig };
+        const { keyValue, schemaQuery } = queryConfig;
+        // Key is used here to ensure we re-mount the DetailPanel when the queryConfig changes
+        const key = `${schemaQuery.schemaName}.${schemaQuery.queryName}.${keyValue}`;
+
+        return (
+            <DetailPanelWithModelBody
+                asPanel={asPanel}
+                detailRenderer={detailRenderer}
+                editingMode={editingMode}
+                key={key}
+                queryConfigs={queryConfigs}
+                titleRenderer={titleRenderer}
+                useDatePicker={useDatePicker}
+            />
+        );
+    }
+}

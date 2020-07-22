@@ -18,6 +18,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Added toString() to SchemaQuery class
 * Added (and exported) DetailPanel component
     - Same as DetailPanelWithModel except it is not wrapped in withQueryModels
+* DetailPanelWithModel: changed props signature. Props are now `QueryConfig & DetailDisplaySharedProps`
 
 ### version 0.78.3
 *Released*: 22 July 2020

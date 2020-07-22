@@ -488,7 +488,11 @@ export function withQueryModels<Props>(
                     const model = draft.queryModels[id];
                     model.selectedReportId = reportId;
                 }),
-                () => this.bindURL(id)
+                () => {
+                    if (this.state.queryModels[id].bindURL) {
+                        this.bindURL(id);
+                    }
+                }
             );
         };
 

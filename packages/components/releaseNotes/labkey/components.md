@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.??.0
-*Released*: ?? July 2020
+### version 0.79.0
+*Released*: 23 July 2020
 * Implement URL Binding for QueryModel/withQueryModels
     * For this feature to work your usage of withQueryModels must be a child of a configured React Router (see
     packages/components/src/stories/QueryModel.tsx for an example)

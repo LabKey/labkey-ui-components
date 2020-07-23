@@ -204,7 +204,14 @@ export function gridSelectAll(
 
     selectAll(id, model.schema, model.query, model.getFilters(), model.containerPath).then(data => {
         if (data && data.count > 0) {
-            return getSelected(id, model.schema, model.query, model.getFilters(), model.containerPath, model.queryParameters)
+            return getSelected(
+                id,
+                model.schema,
+                model.query,
+                model.getFilters(),
+                model.containerPath,
+                model.queryParameters
+            )
                 .then(response => {
                     const updatedModel = updateSelections(model, { selectedIds: List(response.selected) });
 
@@ -924,7 +931,8 @@ function getFilteredQueryParams(
     schemaName: string,
     queryName: string,
     filterList: List<Filter.IFilter>,
-    queryParameters?: { [key: string]: any }): any {
+    queryParameters?: { [key: string]: any }
+): any {
     if (schemaName && queryName && filterList && !filterList.isEmpty()) {
         return getQueryParams(key, schemaName, queryName, filterList, queryParameters);
     } else {
@@ -934,18 +942,24 @@ function getFilteredQueryParams(
     }
 }
 
-function getQueryParams(key: string, schemaName: string, queryName: string, filterList: List<Filter.IFilter>, queryParameters?: { [key: string]: any }): any {
+function getQueryParams(
+    key: string,
+    schemaName: string,
+    queryName: string,
+    filterList: List<Filter.IFilter>,
+    queryParameters?: { [key: string]: any }
+): any {
     const filters = filterList.reduce((prev, next) => {
         return Object.assign(prev, { [next.getURLParameterName()]: next.getURLParameterValue() });
     }, {});
 
-    let params = {
+    const params = {
         schemaName,
         queryName,
         'query.selectionKey': key,
     };
     if (queryParameters) {
-        for (let propName in queryParameters) {
+        for (const propName in queryParameters) {
             if (queryParameters.hasOwnProperty(propName)) {
                 params['query.param.' + propName] = queryParameters[propName];
             }
@@ -972,7 +986,8 @@ export function getSelected(
     queryName?: string,
     filterList?: List<Filter.IFilter>,
     containerPath?: string,
-    queryParameters?: { [key: string]: any }): Promise<IGetSelectedResponse> {
+    queryParameters?: { [key: string]: any }
+): Promise<IGetSelectedResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'getSelected.api', undefined, {
@@ -1171,7 +1186,14 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
                 });
             }
 
-            return getSelected(key, schemaQuery.schemaName, schemaQuery.queryName, getFilterListFromQuery(location), undefined, undefined).then(response => {
+            return getSelected(
+                key,
+                schemaQuery.schemaName,
+                schemaQuery.queryName,
+                getFilterListFromQuery(location),
+                undefined,
+                undefined
+            ).then(response => {
                 resolve({
                     resolved: true,
                     schemaQuery,
@@ -1187,13 +1209,15 @@ export function getSelection(location: any): Promise<ISelectionResponse> {
     });
 }
 
-export function getSelectedData(schemaName?: string,
-                                queryName?: string,
-                                selections?: string[],
-                                columns?: string,
-                                sorts?: string,
-                                queryParameters?: { [key: string]: any }): Promise<IGridResponse>  {
-    let filterArray = [];
+export function getSelectedData(
+    schemaName?: string,
+    queryName?: string,
+    selections?: string[],
+    columns?: string,
+    sorts?: string,
+    queryParameters?: { [key: string]: any }
+): Promise<IGridResponse> {
+    const filterArray = [];
     filterArray.push(Filter.create('RowId', selections, Filter.Types.IN));
 
     return new Promise((resolve, reject) =>
@@ -1222,11 +1246,21 @@ export function getSelectedData(schemaName?: string,
     );
 }
 
-export function getSelectedDataWithQueryGridModel(model: QueryGridModel, columns?: List<QueryColumn>): Promise<IGridResponse> {
+export function getSelectedDataWithQueryGridModel(
+    model: QueryGridModel,
+    columns?: List<QueryColumn>
+): Promise<IGridResponse> {
     // If columns defined use those for the query columns else use the display columns
     const columnString = columns ? columns.map(c => c.fieldKey).join(',') : model.getRequestColumnsString();
 
-    return getSelectedData(model.schema, model.query, model.selectedIds.toArray(), columnString, model.getSorts() || '-RowId', model.queryParameters);
+    return getSelectedData(
+        model.schema,
+        model.query,
+        model.selectedIds.toArray(),
+        columnString,
+        model.getSorts() || '-RowId',
+        model.queryParameters
+    );
 }
 
 function getFilterParameters(filters: List<any>, remove = false): Map<string, string> {

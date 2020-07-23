@@ -22,6 +22,14 @@ import aminoAcidsQuery from '../test/data/assayAminoAcidsData-getQuery.json';
 
 import { RowsResponse } from './QueryModelLoader';
 
+/**
+ * Note: All of the tests in this file look a tad weird. We create a component that resets local variables on render
+ * instead of grabbing props or state from the wrapper variable. This is because no matter what I tried I could not
+ * get the wrapper to return the updated model via props(), but for some reason the weird render hack works. It also
+ * works consistently, and lets us have fine grained control over the lifecycle via calls to sleep. If you have a
+ * better idea by all means try it.
+ */
+
 const MIXTURES_SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let MIXTURES_QUERY_INFO: QueryInfo;
 let MIXTURES_DATA: RowsResponse;

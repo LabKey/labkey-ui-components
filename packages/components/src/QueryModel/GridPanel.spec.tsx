@@ -1,9 +1,9 @@
-import React, { PureComponent, ReactNode, HTMLAttributes } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { Filter } from '@labkey/api';
 
-import { GRID_CHECKBOX_OPTIONS, GridPanel, LoadingState, QueryInfo, QuerySort, SchemaQuery } from '..';
+import { GRID_CHECKBOX_OPTIONS, GridPanel, LoadingState, QueryInfo, QueryModel, QuerySort, SchemaQuery } from '..';
 
 import { initUnitTests, makeQueryInfo, makeTestData } from '../testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
@@ -476,6 +476,50 @@ describe('GridPanel', () => {
         grid.omniBoxChange(values, { type: ChangeType.remove, index: grid.state.actionValues.length - 1 });
         expect(wrapper.find(OMNIBOX_SELECTOR).text()).toEqual(values.map(omniBoxTextMapper).join(''));
         expect(actions.setView).toHaveBeenCalledWith('model', undefined, false);
+    });
+
+    const expectBoundState = (
+        wrapper: GridPanelWrapper,
+        attrs: Partial<QueryModel>,
+        expectedLen: number,
+        expectedValues: any[]
+    ): void => {
+        const model = wrapper.props().model;
+        wrapper.setProps({ model: model.mutate(attrs) });
+        expect(wrapper.state().actionValues.length).toEqual(expectedLen);
+
+        expectedValues.forEach((value): void => {
+            const findByValue = (av: ActionValue): boolean => av.valueObject === value || av.value === value;
+            expect(wrapper.state().actionValues.find(findByValue)).not.toEqual(undefined);
+        });
+    };
+
+    test('Omnibox Model Binding', () => {
+        // This test ensures that the Omnibox updates when there are exernal changes to the model, typically this
+        // happens when bindURL is true and there is a URL change.
+        const { rows, orderedRows, rowCount } = DATA;
+        const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
+        const nameSort = new QuerySort({ fieldKey: 'Name' });
+        const nameFilter = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
+        const expirFilter = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
+        const viewName = 'noMixtures';
+        const viewLabel = 'No Mixtures or Extra';
+        const noMixtursSQ = SchemaQuery.create(SCHEMA_QUERY.schemaName, SCHEMA_QUERY.queryName, viewName);
+        const search = Filter.create('*', 'foobar', Filter.Types.Q);
+
+        expectBoundState(wrapper, {}, 0, []);
+        expectBoundState(wrapper, { sorts: [nameSort] }, 1, [nameSort]);
+        expectBoundState(wrapper, { filterArray: [nameFilter] }, 2, [nameSort, nameFilter]);
+        expectBoundState(wrapper, { filterArray: [expirFilter] }, 2, [nameSort, expirFilter]);
+        expectBoundState(wrapper, { schemaQuery: noMixtursSQ }, 3, [nameSort, expirFilter, viewLabel]);
+        expectBoundState(wrapper, { filterArray: [expirFilter, search] }, 4, [
+            nameSort,
+            expirFilter,
+            viewLabel,
+            search,
+        ]);
+        expectBoundState(wrapper, { sorts: [], filterArray: [], schemaQuery: SCHEMA_QUERY }, 0, []);
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

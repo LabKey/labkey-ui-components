@@ -10,6 +10,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 * EntityInsertPanel: Ability to filter Sample Type Options without filtering Parent Options
 * EntityInsertPanel: Option to combine all parent entity types into one button and one select input
 
+### version XXX
+*Released*: XXX
+* Add headerCls prop to GridColumn
+* Add useSmall prop to ColorIcon to show small sized icon
+
 ### version 0.78.1
 *Released*: 20 July 2020
 * Support custom gridColumnRenderer for AuditDetails

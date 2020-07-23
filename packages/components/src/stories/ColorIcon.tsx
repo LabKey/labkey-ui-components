@@ -18,6 +18,7 @@ storiesOf('ColorIcon', module)
                 label={text('label', 'Color Label')}
                 value={text('value', '#009ce0')}
                 asSquare={boolean('asSquare', false)}
+                useSmall={boolean('useSmall', false)}
             />
         );
     });

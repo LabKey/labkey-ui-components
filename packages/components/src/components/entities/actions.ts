@@ -105,7 +105,7 @@ function initParents(initialParents: string[], selectionKey: string): Promise<Li
                     .then(response => resolve(response))
                     .catch(reason => reject(reason));
             } else {
-                return getSelected(selectionKey, undefined, undefined, undefined, undefined, undefined)
+                return getSelected(selectionKey)
                     .then(selectionResponse => {
                         return getSelectedParents(schemaQuery, [
                             Filter.create('RowId', selectionResponse.selected, Filter.Types.IN),

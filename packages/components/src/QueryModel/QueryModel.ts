@@ -5,7 +5,6 @@ import { Filter, Query } from '@labkey/api';
 import {
     GRID_CHECKBOX_OPTIONS,
     LoadingState,
-    IDataViewInfo,
     naturalSort,
     QueryColumn,
     QueryInfo,
@@ -15,8 +14,9 @@ import {
 } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { PaginationData } from '../components/pagination/Pagination';
+import { DataViewInfo } from '../models';
 
-import { flattenValuesFromRow } from './utils';
+import { flattenValuesFromRow, offsetFromString, querySortsFromString, searchFiltersFromString } from './utils';
 
 /**
  * Creates a QueryModel ID for a given SchemaQuery. The id is just the SchemaQuery snake-cased as
@@ -37,8 +37,10 @@ export interface GridMessage {
     content: string;
 }
 
+// Note: if you add/remove fields on QueryConfig make sure to update utils.hashQueryConfig
 export interface QueryConfig {
     baseFilters?: Filter.IFilter[];
+    bindURL?: boolean;
     containerFilter?: Query.ContainerFilter;
     containerPath?: string;
     id?: string;
@@ -50,10 +52,11 @@ export interface QueryConfig {
     offset?: number;
     omittedColumns?: string[];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    queryParameters?: { [key: string]: any };
+    queryParameters?: { [key: string]: any }; // These are the parameters used as input to a parameterized query
     requiredColumns?: string[];
     schemaQuery: SchemaQuery;
     sorts?: QuerySort[];
+    urlPrefix?: string;
 }
 
 const DEFAULT_OFFSET = 0;
@@ -65,6 +68,9 @@ export class QueryModel {
     // Fields from QueryConfig
     // Some of the fields we have in common with QueryConfig are not optional because we give them default values.
     readonly baseFilters: Filter.IFilter[];
+    // bindURL is a flag used to indicate whether or not filters/sorts/etc. should be persisted on the URL. It is a
+    // client-only flag.
+    readonly bindURL: boolean;
     readonly containerFilter?: Query.ContainerFilter;
     readonly containerPath?: string;
     readonly id: string;
@@ -80,6 +86,7 @@ export class QueryModel {
     readonly requiredColumns: string[];
     readonly schemaQuery: SchemaQuery;
     readonly sorts: QuerySort[];
+    readonly urlPrefix?: string;
 
     // QueryModel only fields
     readonly filterArray: Filter.IFilter[];
@@ -93,24 +100,36 @@ export class QueryModel {
     readonly rowCount?: number;
     readonly rowsError?: string;
     readonly rowsLoadingState: LoadingState;
+    readonly selectedReportId: string;
     readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set
     readonly selectionsError?: string;
     readonly selectionsLoadingState: LoadingState;
-    readonly charts: IDataViewInfo[];
+    readonly charts: DataViewInfo[];
     readonly chartsError: string;
     readonly chartsLoadingState: LoadingState;
 
     constructor(queryConfig: QueryConfig) {
+        const { schemaQuery, keyValue } = queryConfig;
         this.baseFilters = queryConfig.baseFilters ?? [];
         this.containerFilter = queryConfig.containerFilter;
         this.containerPath = queryConfig.containerPath;
-        this.schemaQuery = queryConfig.schemaQuery;
 
         // Even though this is a situation that we shouldn't be in due to the type annotations it's still possible
         // due to conversion from any, and it's best to have a specific error than an error due to undefined later
         // when we try to use the model during an API request.
-        if (this.schemaQuery === undefined) {
+        if (schemaQuery === undefined) {
             throw new Error('schemaQuery is required to instantiate a QueryModel');
+        }
+
+        // Default to the Details view if we have a keyValue and the user hasn't specified a view.
+        // Note: this default may not be appropriate outside of Biologics/SM
+        if (keyValue !== undefined && schemaQuery.viewName === undefined) {
+            const { schemaName, queryName } = schemaQuery;
+            this.schemaQuery = SchemaQuery.create(schemaName, queryName, ViewInfo.DETAIL_NAME);
+            this.bindURL = false;
+        } else {
+            this.schemaQuery = schemaQuery;
+            this.bindURL = queryConfig.bindURL ?? false;
         }
 
         this.id = queryConfig.id ?? createQueryModelId(this.schemaQuery);
@@ -134,9 +153,11 @@ export class QueryModel {
         this.rowCount = undefined;
         this.rowsError = undefined;
         this.rowsLoadingState = LoadingState.INITIALIZED;
+        this.selectedReportId = undefined;
         this.selections = undefined;
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;
+        this.urlPrefix = queryConfig.urlPrefix ?? 'query'; // match Data Region defaults
         this.charts = undefined;
         this.chartsError = undefined;
         this.chartsLoadingState = LoadingState.INITIALIZED;
@@ -281,6 +302,74 @@ export class QueryModel {
     }
 
     /**
+     * Returns an object representing the query params of the model. Used when updating the URL when bindURL is set to
+     * true.
+     */
+    get urlQueryParams(): { [key: string]: string } {
+        const { currentPage, urlPrefix, filterArray, selectedReportId, sortString, viewName } = this;
+        const filters = filterArray.filter(f => f.getColumnName() !== '*');
+        const searches = filterArray.filter(f => f.getColumnName() === '*').map(f => f.getValue()).join(';')
+        // ReactRouter location.query is typed as any.
+        const modelParams: { [key: string]: any } = {};
+
+        if (currentPage !== 1) {
+            modelParams[`${urlPrefix}.p`] = currentPage.toString(10);
+        }
+
+        if (viewName !== undefined) {
+            modelParams[`${urlPrefix}.view`] = viewName;
+        }
+
+        if (sortString !== '') {
+            modelParams[`${urlPrefix}.sort`] = sortString;
+        }
+
+        if (searches.length > 0) {
+            modelParams[`${urlPrefix}.q`] = searches;
+        }
+
+        if (selectedReportId) {
+            modelParams[`${urlPrefix}.reportId`] = selectedReportId;
+        }
+
+        filters.forEach((filter): void => {
+            modelParams[filter.getURLParameterName(urlPrefix)] = filter.getURLParameterValue();
+        });
+
+        return modelParams;
+    }
+
+    /**
+     * Gets a column by name. Implementation adapted from parseColumns in components/omnibox/utils.ts.
+     * @param name: string
+     */
+    getColumn(name: string): QueryColumn {
+        const lowered = name.toLowerCase();
+        const isLookup = lowered.indexOf('/') > -1;
+        const allColumns = this.allColumns;
+
+        // First attempt to find by name/lookup
+        const column = allColumns.find((queryColumn) => {
+            if (isLookup && queryColumn.isLookup()) {
+                return lowered.split('/')[0] === queryColumn.name.toLowerCase();
+            } else if (isLookup && !queryColumn.isLookup()) {
+                return false;
+            }
+
+            return queryColumn.name.toLowerCase() === lowered;
+        });
+
+        if (column !== undefined) {
+            return column;
+        }
+
+        // Fallback to finding by shortCaption
+        return allColumns.find((column) => {
+            return column.shortCaption.toLowerCase() === lowered;
+        });
+    }
+
+    /**
      * Returns the data for the specified key parameter on the QueryModel.rows object.
      * If no key parameter is provided, the first data row will be returned.
      * @param key
@@ -317,8 +406,18 @@ export class QueryModel {
         return this.queryInfo?.views.sortBy(v => v.label, naturalSort).toArray() || [];
     }
 
+    /**
+     * True if data has been loaded, even if no rows were returned.
+     */
     get hasData(): boolean {
         return this.rows !== undefined;
+    }
+
+    /**
+     * True if the model has > 0 rows.
+     */
+    get hasRows(): boolean {
+        return this.hasData && Object.keys(this.rows).length > 0;
     }
 
     get hasCharts(): boolean {
@@ -393,6 +492,29 @@ export class QueryModel {
     }
 
     /**
+     * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
+     * @param queryParams: The query attribute from a ReactRouter Location object.
+     */
+    attributesForURLQueryParams(queryParams): QueryModelURLState {
+        const prefix = this.urlPrefix;
+        const viewName = queryParams[`${prefix}.view`] ?? this.viewName;
+        let filterArray = Filter.getFiltersFromParameters(queryParams, prefix) || this.filterArray;
+        const searchFilters = searchFiltersFromString(queryParams[`${prefix}.q`]);
+
+        if (searchFilters !== undefined) {
+            filterArray = filterArray.concat(searchFilters);
+        }
+
+        return {
+            filterArray,
+            offset: offsetFromString(this.maxRows, queryParams[`${prefix}.p`]) ?? this.offset,
+            schemaQuery: SchemaQuery.create(this.schemaName, this.queryName, viewName),
+            sorts: querySortsFromString(queryParams[`${prefix}.sort`]) ?? this.sorts,
+            selectedReportId: queryParams[`${prefix}.reportId`] ?? this.selectedReportId,
+        };
+    }
+
+    /**
      * Returns a deep copy of this model with props applied iff props is not empty/null/undefined else
      * returns this.
      * @param props
@@ -403,3 +525,5 @@ export class QueryModel {
         });
     }
 }
+
+type QueryModelURLState = Pick<QueryModel, 'filterArray' | 'offset' | 'schemaQuery' | 'selectedReportId' | 'sorts'>;

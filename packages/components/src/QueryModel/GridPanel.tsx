@@ -6,7 +6,7 @@ import { Query } from '@labkey/api';
 import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner, QueryColumn, QueryInfo, QuerySort } from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { headerCell, headerSelectionCell } from '../renderers';
-import { Action, ActionValue } from '../components/omnibox/actions/Action';
+import { ActionValue } from '../components/omnibox/actions/Action';
 import { FilterAction } from '../components/omnibox/actions/Filter';
 import { SearchAction } from '../components/omnibox/actions/Search';
 import { SortAction } from '../components/omnibox/actions/Sort';
@@ -20,7 +20,7 @@ import { ExportMenu } from './ExportMenu';
 import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 
-import { filtersEqual, sortsEqual } from './utils';
+import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 
 interface GridPanelProps {
     allowSelections?: boolean;
@@ -88,9 +88,9 @@ class ButtonBar extends PureComponent<GridBarProps> {
             showViewMenu,
         } = this.props;
 
-        const { hasData, queryInfo, queryInfoError, rowsError, selectionsError } = model;
+        const { hasRows, queryInfo, queryInfoError, rowsError, selectionsError } = model;
         const hasError = queryInfoError !== undefined || rowsError !== undefined || selectionsError !== undefined;
-        const paginate = showPagination && hasData && !hasError;
+        const paginate = showPagination && hasRows && !hasError;
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewMenu && queryInfo !== undefined;
@@ -184,9 +184,64 @@ export class GridPanel extends PureComponent<Props, State> {
         actions.loadModel(model.id, allowSelections);
     }
 
-    omniBoxActions: { [name: string]: Action };
+    componentDidUpdate(prevProps: Readonly<Props>): void {
+        if (this.props.model.queryInfo !== undefined && this.props.model !== prevProps.model) {
+            this.populateOmnibox();
+        }
+    }
+
+    omniBoxActions: {
+        filter: FilterAction;
+        search: SearchAction;
+        sort: SortAction;
+        view: ViewAction;
+    };
 
     omniBoxChangeHandlers: { [name: string]: (actionValues: ActionValue[], change: Change) => void };
+
+    createOmniboxValues = (): ActionValue[] => {
+        const { model } = this.props;
+        const { filterArray, queryInfo, sorts, viewName } = model;
+        const actionValues = [];
+
+        if (model.viewName) {
+            const view = queryInfo.views.get(viewName.toLowerCase())?.label ?? viewName;
+            actionValues.push(this.omniBoxActions.view.actionValueFromView(view));
+        }
+
+        sorts.forEach((sort): void => {
+            const column = model.getColumn(sort.fieldKey);
+            actionValues.push(this.omniBoxActions.sort.actionValueFromSort(sort, column?.shortCaption));
+        });
+
+        filterArray.forEach((filter): void => {
+            const column = model.getColumn(filter.getColumnName());
+
+            if (filter.getColumnName() === '*') {
+                actionValues.push(this.omniBoxActions.search.actionValueFromFilter(filter));
+            } else {
+                actionValues.push(this.omniBoxActions.filter.actionValueFromFilter(filter, column?.shortCaption));
+            }
+        });
+
+        return actionValues;
+    };
+
+    /**
+     * Populates the Omnibox with ActionValues based on the current model state. Requires that the model has a QueryInfo
+     * so we can properly render Column and View labels.
+     */
+    populateOmnibox = (): void => {
+        const modelActionValues = this.createOmniboxValues();
+        const modelActionValuesStr = actionValuesToString(modelActionValues);
+        const currentActionValuesStr = actionValuesToString(this.state.actionValues);
+
+        if (modelActionValuesStr !== currentActionValuesStr) {
+            // The action values have changed due to external model changes (likely URL changes), so we need to
+            // update the Omnibox with the newest values.
+            this.setState({ actionValues: modelActionValues });
+        }
+    };
 
     selectRow = (row, event): void => {
         const { model, actions } = this.props;
@@ -255,17 +310,18 @@ export class GridPanel extends PureComponent<Props, State> {
             });
         }
 
-        actions.setFilters(model.id, newFilters, allowSelections);
-        this.setState({ actionValues });
+        // Defer model updates after localState is updated so we don't unnecessarily repopulate the omnibox.
+        this.setState({ actionValues }, () => actions.setFilters(model.id, newFilters, allowSelections));
     };
 
     handleSortChange = (actionValues: ActionValue[], change: Change): void => {
         const { model, actions } = this.props;
+        let updateSortsCallback: () => void;
 
         if (change.type === ChangeType.remove) {
             const value = this.state.actionValues[change.index].valueObject;
             const newSorts = model.sorts.filter(sort => !sortsEqual(sort, value));
-            actions.setSorts(model.id, newSorts);
+            updateSortsCallback = () => actions.setSorts(model.id, newSorts);
         } else {
             const newActionValue = actionValues[actionValues.length - 1];
             const oldActionValue = this.state.actionValues[change.index];
@@ -292,11 +348,12 @@ export class GridPanel extends PureComponent<Props, State> {
                     return keepSort;
                 });
 
-                actions.setSorts(model.id, newSorts);
+                updateSortsCallback = () => actions.setSorts(model.id, newSorts);
             }
         }
 
-        this.setState({ actionValues });
+        // Defer sorts update to after setState is complete so we dont unnecessarily repopulate the omnibox.
+        this.setState({ actionValues }, updateSortsCallback);
     };
 
     handleSearchChange = (actionValues: ActionValue[], change: Change): void => {
@@ -315,15 +372,16 @@ export class GridPanel extends PureComponent<Props, State> {
             newFilters = newFilters.concat(newValue);
         }
 
-        actions.setFilters(model.id, newFilters, allowSelections);
-        this.setState({ actionValues });
+        // Defer search update to after setState so we don't unnecessarily repopulate the omnibox.
+        this.setState({ actionValues }, () => actions.setFilters(model.id, newFilters, allowSelections));
     };
 
     handleViewChange = (actionValues: ActionValue[], change: Change): void => {
         const { model, actions, allowSelections } = this.props;
+        let updateViewCallback: () => void;
 
         if (change.type === ChangeType.remove) {
-            actions.setView(model.id, undefined, allowSelections);
+            updateViewCallback = () => actions.setView(model.id, undefined, allowSelections);
         } else {
             const newActionValue = actionValues[actionValues.length - 1];
             const newValue = newActionValue.value;
@@ -333,13 +391,13 @@ export class GridPanel extends PureComponent<Props, State> {
             if (newValue !== model.viewName) {
                 // Only trigger view change if the viewName has changed, OmniBox triggers modified event even if the
                 // user keeps the value the same.
-                actions.setView(model.id, newValue, allowSelections);
+                updateViewCallback = () => actions.setView(model.id, newValue, allowSelections);
             }
 
             actionValues = [...actionValues.slice(0, actionValues.length - 1), { ...newActionValue, value: viewLabel }];
         }
-
-        this.setState({ actionValues });
+        // Defer view update to after setState so we don't unnecessarily repopulate the omnibox.
+        this.setState({ actionValues }, updateViewCallback);
     };
 
     /**
@@ -430,8 +488,8 @@ export class GridPanel extends PureComponent<Props, State> {
 
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
         const { allowSelections, allowSorting, model } = this.props;
-        const { isLoading, isLoadingSelections, hasData, rowCount } = model;
-        const disabled = isLoadingSelections || isLoading || (hasData && rowCount === 0);
+        const { isLoading, isLoadingSelections, hasRows, rowCount } = model;
+        const disabled = isLoadingSelections || isLoading || (hasRows && rowCount === 0);
 
         if (column.index === GRID_SELECTION_INDEX) {
             return headerSelectionCell(this.selectPage, model.selectedState, disabled, 'grid-panel__page-checkbox');

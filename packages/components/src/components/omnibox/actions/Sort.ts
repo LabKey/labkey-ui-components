@@ -180,4 +180,14 @@ export class SortAction implements Action {
             }
         });
     }
+
+    actionValueFromSort(sort: QuerySort, label: string): ActionValue {
+        const { dir, fieldKey } = sort;
+        return {
+            value: `${fieldKey} ${dir === '-' ? 'DESC' : 'ASC'}`,
+            displayValue: label ?? fieldKey,
+            valueObject: sort,
+            action: this,
+        };
+    }
 }

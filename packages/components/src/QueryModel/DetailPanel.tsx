@@ -17,38 +17,21 @@ import React, { PureComponent, ReactNode } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { LoadingSpinner, QueryColumn } from '..';
+import { LoadingSpinner, QueryColumn, QueryConfig, RequiresModelAndActions } from '..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../components/forms/detail/DetailDisplay';
 
-import { QueryModel } from './QueryModel';
 import { InjectedQueryModels, withQueryModels } from './withQueryModels';
 
-interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
+interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
     queryColumns?: List<QueryColumn>;
 }
 
-class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps & InjectedQueryModels> {
-    componentDidMount(): void {
-        const { actions } = this.props;
-        actions.loadModel(this.getModel().id);
-    }
-
-    getModel(): QueryModel {
-        const { queryModels } = this.props;
-        return queryModels[Object.keys(queryModels)[0]];
-    }
-
-    get detailDisplayProps(): DetailDisplaySharedProps {
-        // Purposely not using queryColumns, queryModels, do not want to pass to DetailDisplay
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { queryColumns, queryModels, ...detailDisplayProps } = this.props;
-        return detailDisplayProps;
-    }
-
+export class DetailPanel extends PureComponent<DetailPanelProps> {
     render(): ReactNode {
-        const { editingMode, queryColumns } = this.props;
-        const model = this.getModel();
+        // ignoring actions so we don't pass to DetailDisplay
+        const { actions, model, queryColumns, ...detailDisplayProps } = this.props;
+        const { editingMode } = detailDisplayProps;
         const error = model.queryInfoError ?? model.rowsError;
 
         if (error !== undefined) {
@@ -59,7 +42,7 @@ class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps &
 
         return (
             <DetailDisplay
-                {...this.detailDisplayProps}
+                {...detailDisplayProps}
                 data={fromJS(model.gridData)}
                 displayColumns={queryColumns ?? List(editingMode ? model.updateColumns : model.detailColumns)}
             />
@@ -67,4 +50,38 @@ class DetailPanelWithModelImpl extends PureComponent<DetailPanelWithModelProps &
     }
 }
 
-export const DetailPanelWithModel = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelImpl);
+interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
+    queryColumns?: List<QueryColumn>;
+}
+
+class DetailPanelWithModelBodyImpl extends PureComponent<DetailPanelWithModelProps & InjectedQueryModels> {
+    render(): ReactNode {
+        const { queryModels, ...rest } = this.props;
+        return <DetailPanel {...rest} model={queryModels.model} />;
+    }
+}
+
+const DetailPanelWithModelBody = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelBodyImpl);
+
+export class DetailPanelWithModel extends PureComponent<QueryConfig & DetailDisplaySharedProps> {
+    render(): ReactNode {
+        const { asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, ...queryConfig } = this.props;
+        const queryConfigs = { model: queryConfig };
+        const { keyValue, schemaQuery } = queryConfig;
+        // Key is used here to ensure we re-mount the DetailPanel when the queryConfig changes
+        const key = `${schemaQuery.schemaName}.${schemaQuery.queryName}.${keyValue}`;
+
+        return (
+            <DetailPanelWithModelBody
+                asPanel={asPanel}
+                autoLoad
+                detailRenderer={detailRenderer}
+                editingMode={editingMode}
+                key={key}
+                queryConfigs={queryConfigs}
+                titleRenderer={titleRenderer}
+                useDatePicker={useDatePicker}
+            />
+        );
+    }
+}

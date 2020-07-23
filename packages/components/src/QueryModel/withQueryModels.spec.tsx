@@ -1,7 +1,17 @@
 import React, { ReactElement } from 'react';
 import { mount } from 'enzyme';
+import { createMemoryHistory, InjectedRouter, Route, Router } from 'react-router';
+import { Filter } from '@labkey/api';
 
-import { Actions, LoadingState, QueryInfo, QueryModel, QueryModelMap, SchemaQuery, withQueryModels } from '..';
+import {
+    Actions,
+    LoadingState,
+    QueryInfo,
+    QueryModel,
+    QueryModelMap, QuerySort,
+    SchemaQuery,
+    withQueryModels,
+} from '..';
 
 import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../testHelpers';
 import { MockQueryModelLoader } from '../test/MockQueryModelLoader';
@@ -11,6 +21,14 @@ import aminoAcidsQueryInfo from '../test/data/assayAminoAcidsData-getQueryDetail
 import aminoAcidsQuery from '../test/data/assayAminoAcidsData-getQuery.json';
 
 import { RowsResponse } from './QueryModelLoader';
+
+/**
+ * Note: All of the tests in this file look a tad weird. We create a component that resets local variables on render
+ * instead of grabbing props or state from the wrapper variable. This is because no matter what I tried I could not
+ * get the wrapper to return the updated model via props(), but for some reason the weird render hack works. It also
+ * works consistently, and lets us have fine grained control over the lifecycle via calls to sleep. If you have a
+ * better idea by all means try it.
+ */
 
 const MIXTURES_SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let MIXTURES_QUERY_INFO: QueryInfo;
@@ -238,6 +256,156 @@ describe('withQueryModels', () => {
         expect(model3.rowsLoadingState).toEqual(LoadingState.LOADED);
 
         // Due to the async nature of this test we need to call done() to ensure the test does not fail due to timeout.
+        done();
+    });
+
+    test('Bind from URL', async done => {
+        const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
+        const history = createMemoryHistory();
+        const queryConfigs = { model: { schemaQuery: MIXTURES_SCHEMA_QUERY, bindURL: true } };
+        const queryParams: Record<string, string> = {};
+        let injectedModel: QueryModel;
+        let injectedRouter: InjectedRouter;
+        let injectedLocation;
+        const TestComponentImpl = ({ actions, location, queryModels, router }): ReactElement => {
+            injectedModel = queryModels.model;
+            injectedRouter = router;
+            injectedLocation = location;
+            return <div />;
+        };
+        const WrappedComponent = withQueryModels<{}>(TestComponentImpl);
+        const wrapper = mount(
+            <Router history={history}>
+                <Route
+                    path="/"
+                    component={() => (
+                        <WrappedComponent autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />
+                    )}
+                />
+            </Router>
+        );
+        await sleep(); // Sleep so QueryInfo gets loaded.
+        await sleep(); // Sleep so Rows get loaded.
+
+        queryParams['query.p'] = '2';
+        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.offset).toEqual(20);
+        await sleep(); // Load Rows
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
+
+        queryParams['query.view'] = 'noMixtures';
+        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.schemaQuery.viewName).toEqual('noMixtures');
+        await sleep(); // Load Rows
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
+
+        queryParams['query.Name~eq'] = 'DMXP';
+        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.filterArray.length).toEqual(1);
+        const filter = injectedModel.filterArray[0];
+        expect(filter.getColumnName()).toEqual('Name');
+        expect(filter.getValue()).toEqual('DMXP');
+        expect(filter.getFilterType()).toEqual(Filter.Types.EQUAL);
+        await sleep(); // Load Rows
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
+
+        queryParams['query.sort'] = 'Name';
+        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.sorts.length).toEqual(1);
+        let sort = injectedModel.sorts[0];
+        expect(sort.fieldKey).toEqual('Name');
+        expect(sort.dir).toEqual('');
+        await sleep(); // Load Rows
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
+
+        queryParams['query.sort'] = 'Name,-expirationTime';
+        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.sorts.length).toEqual(2);
+        sort = injectedModel.sorts[1];
+        expect(sort.fieldKey).toEqual('expirationTime');
+        expect(sort.dir).toEqual('-');
+        await sleep(); // Load Rows
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADED);
+
+        queryParams['query.reportId'] = 'db:1';
+        injectedRouter.replace({ ...injectedLocation, query: { ...queryParams } });
+        // Selecting a report doesn't trigger loading rows.
+        expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
+        expect(injectedModel.selectedReportId).toEqual('db:1');
+
+        done();
+    });
+
+    test('Bind to URL', async done => {
+        const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
+        const history = createMemoryHistory();
+        const queryConfigs = { model: { schemaQuery: MIXTURES_SCHEMA_QUERY, bindURL: true } };
+        let injectedModel: QueryModel;
+        let injectedActions: Actions;
+        let injectedLocation;
+        const TestComponentImpl = ({ actions, location, queryModels, router }): ReactElement => {
+            injectedModel = queryModels.model;
+            injectedActions = actions;
+            injectedLocation = location;
+            return <div />;
+        };
+        const WrappedComponent = withQueryModels<{}>(TestComponentImpl);
+        const wrapper = mount(
+            <Router history={history}>
+                <Route
+                    path="/"
+                    component={() => (
+                        <WrappedComponent autoLoad modelLoader={modelLoader} queryConfigs={queryConfigs} />
+                    )}
+                />
+            </Router>
+        );
+        await sleep(); // Sleep so QueryInfo gets loaded.
+        await sleep(); // Sleep so Rows get loaded.
+
+        let expectedQuery: Record<string, string> = { 'query.p': '34' };
+        injectedActions.loadLastPage(injectedModel.id);
+        await sleep();
+        expect(injectedLocation.query).toEqual(expectedQuery);
+
+        injectedActions.loadFirstPage(injectedModel.id);
+        await sleep();
+        // Setting the page to 1 removes the "p" param from the URL.
+        expect(injectedLocation.query).toEqual({});
+
+        expectedQuery['query.p'] = '2';
+        injectedActions.loadNextPage(injectedModel.id);
+        await sleep();
+        expect(injectedLocation.query).toEqual(expectedQuery);
+
+        // Setting a filter resets offset to 0, so we dont' expect "p" to stick around.
+        expectedQuery = { 'query.Name~eq': 'DMXP' };
+        injectedActions.setFilters(injectedModel.id, [Filter.create('Name', 'DMXP', Filter.Types.EQUAL)]);
+        await sleep();
+        expect(injectedLocation.query).toEqual(expectedQuery);
+
+        expectedQuery['query.sort'] = '-Name,expirationTime';
+        injectedActions.setSorts(injectedModel.id, [
+            new QuerySort({ fieldKey: 'Name', dir: '-' }),
+            new QuerySort({ fieldKey: 'expirationTime', dir: '' }),
+        ]);
+        await sleep();
+        expect(injectedLocation.query).toEqual(expectedQuery);
+
+        expectedQuery['query.view'] = 'noMixtures';
+        injectedActions.setView(injectedModel.id, 'noMixtures');
+        await sleep();
+        expect(injectedLocation.query).toEqual(expectedQuery);
+
+        expectedQuery['query.reportId'] = 'db:1';
+        injectedActions.selectReport(injectedModel.id, 'db:1');
+        expect(injectedLocation.query).toEqual(expectedQuery);
+
         done();
     });
 });

@@ -15,7 +15,7 @@ export class ChartMenuItem extends PureComponent<ChartMenuItemProps> {
         return (
             <MenuItem onSelect={() => showChart(chart)}>
                 <i className={`chart-menu-icon ${chart.iconCls}`} />
-                <span className="chart-menu-label">{chart.getLabel()}</span>
+                <span className="chart-menu-label">{chart.name}</span>
             </MenuItem>
         );
     }

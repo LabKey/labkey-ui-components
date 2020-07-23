@@ -32,7 +32,8 @@ const customStyle = {
                 display: 'block',
             },
             activeLink: {
-                background: 'white',
+                background: 'linear-gradient(90deg, rgba(211,211,211,1) 20%, rgba(255,255,255,1) 80%)',
+                borderRadius: '5px'
             },
             toggle: {
                 base: {
@@ -104,12 +105,13 @@ const nodeIsEmpty = (id: string): boolean => {
 };
 
 const Header = props => {
-    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls } = props;
+    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, mvDirMode } = props;
     const isDirectory = node.children !== undefined;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
 
+    const emptyDirectoryText = mvDirMode ? 'Move to this directory' : 'No Files Found';
     if (nodeIsEmpty(node.id)) {
-        return <div className="filetree-empty-directory">No Files Found</div>;
+        return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
     }
 
     if (nodeIsLoading(node.id)) {
@@ -166,6 +168,7 @@ interface FileTreeProps {
     onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => boolean;
     allowMultiSelect?: boolean;
     useFileIconCls?: boolean;
+    mvDirMode?: boolean;
 }
 
 interface FileTreeState {
@@ -182,6 +185,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     static defaultProps = {
         allowMultiSelect: true,
         useFileIconCls: false,
+        mvDirMode: false,
     };
 
     constructor(props: FileTreeProps) {
@@ -230,7 +234,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     }
 
     headerDecorator = props => {
-        const { allowMultiSelect, useFileIconCls } = this.props;
+        const { allowMultiSelect, useFileIconCls, mvDirMode } = this.props;
         const { checked } = this.state;
 
         if (allowMultiSelect) {
@@ -240,10 +244,11 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                     useFileIconCls={useFileIconCls}
                     checked={checked.contains(props.node.id)}
                     handleCheckbox={this.handleCheckbox}
+                    mvDirMode={mvDirMode}
                 />
             );
         } else {
-            return <Header {...props} useFileIconCls={useFileIconCls} />;
+            return <Header {...props} mvDirMode={mvDirMode} useFileIconCls={useFileIconCls} />;
         }
     };
 

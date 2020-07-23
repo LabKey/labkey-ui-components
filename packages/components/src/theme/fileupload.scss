@@ -5,6 +5,10 @@
   border-radius: 3px;
 }
 
+.file-upload--container--compact {
+  flex-grow: 2;
+}
+
 .file-upload--label {
   cursor: pointer;
   color: #116596;
@@ -23,6 +27,16 @@
     padding: 8px 0 8px 8px;
     text-align: center;
     margin-bottom: 0;
+}
+
+.file-upload--one-row {
+    display: flex;
+}
+
+.file-form-submit-btn--compact {
+    margin-left: 20px;
+    width: 90px;
+    height: 38px;
 }
 
 .file-upload__label__icon {

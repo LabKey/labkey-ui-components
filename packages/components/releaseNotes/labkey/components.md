@@ -6,6 +6,25 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add support for parameterized queries when getting and setting selections on a grid
 * Export getSelectedData method
 
+### version 0.79.0
+*Released*: 23 July 2020
+* Implement URL Binding for QueryModel/withQueryModels
+    * For this feature to work your usage of withQueryModels must be a child of a configured React Router (see
+    packages/components/src/stories/QueryModel.tsx for an example)
+* QueryModel: charts has been changed from IDataViewInfo to DataViewInfo
+    * QueryModelLoader has been updated to support this
+* Fixed an issue in DefaultQueryModelLoader where loadCharts was returning unsupported charts.
+* QueryModel: Added fields
+    * bindURL
+    * selectedReportId
+* QueryModel: Added urlQueryParams, attributesForURLQueryParams, and hasRows getters
+* QueryModel: Default to Details View if keyValue is set
+* Removed unused getter methods from DataViewInfo
+* Added toString() to SchemaQuery class
+* Added (and exported) DetailPanel component
+    - Same as DetailPanelWithModel except it is not wrapped in withQueryModels
+* DetailPanelWithModel: changed props signature. Props are now `QueryConfig & DetailDisplaySharedProps`
+
 ### version 0.78.3
 *Released*: 22 July 2020
 * AppModel: initialUserId set from `User` model instead of directly from `getServerContext()`.

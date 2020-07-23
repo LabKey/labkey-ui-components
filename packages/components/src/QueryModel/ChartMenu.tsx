@@ -16,16 +16,7 @@ interface Props extends RequiresModelAndActions {
     showSampleComparisonReports: boolean;
 }
 
-interface State {
-    selectedChart?: DataViewInfo;
-}
-
-export class ChartMenu extends PureComponent<Props, State> {
-    constructor(props) {
-        super(props);
-
-        this.state = { selectedChart: undefined };
-    }
+export class ChartMenu extends PureComponent<Props> {
     componentDidMount(): void {
         const { model, actions, showSampleComparisonReports } = this.props;
         actions.loadCharts(model.id, showSampleComparisonReports);
@@ -40,20 +31,21 @@ export class ChartMenu extends PureComponent<Props, State> {
         }
     };
 
-    chartClicked = (chart): void => {
-        const { onChartClicked } = this.props;
+    chartClicked = (chart: DataViewInfo): void => {
+        const { actions, onChartClicked, model } = this.props;
 
         blurActiveElement();
 
         // If the user supplies a click handler then we use the response from that to determine if we should render the
         // chart modal. This is needed so Biologics and redirect to Sample Comparison Reports.
         if (onChartClicked === undefined || onChartClicked(chart)) {
-            this.setState({ selectedChart: chart });
+            actions.selectReport(model.id, chart.reportId);
         }
     };
 
     clearChart = (): void => {
-        this.setState({ selectedChart: undefined });
+        const { actions, model } = this.props;
+        actions.selectReport(model.id, undefined);
     };
 
     chartMapper = (chart): ReactNode => (
@@ -62,14 +54,26 @@ export class ChartMenu extends PureComponent<Props, State> {
 
     render(): ReactNode {
         const { model, showSampleComparisonReports } = this.props;
-        const { charts, chartsError, hasCharts, id, isLoading, isLoadingCharts, rowsError, queryInfoError } = model;
+        const {
+            charts,
+            chartsError,
+            hasCharts,
+            id,
+            isLoading,
+            isLoadingCharts,
+            rowsError,
+            selectedReportId,
+            queryInfo,
+            queryInfoError,
+        } = model;
         const privateCharts = hasCharts ? charts.filter(chart => !chart.shared) : [];
         const publicCharts = hasCharts ? charts.filter(chart => chart.shared) : [];
         const title = isLoadingCharts ? <span className="fa fa-spinner fa-pulse" /> : 'Charts';
         const noCharts = hasCharts && charts.length === 0 && !showSampleComparisonReports;
         const hasError = queryInfoError !== undefined || rowsError !== undefined;
         const disabled = isLoading || isLoadingCharts || noCharts || hasError;
-        const { selectedChart } = this.state;
+        const selectedChart = charts?.find(chart => chart.reportId === selectedReportId);
+        const showChartModal = queryInfo !== undefined && selectedChart !== undefined;
 
         return (
             <div className="chart-menu">
@@ -98,7 +102,7 @@ export class ChartMenu extends PureComponent<Props, State> {
                     {publicCharts.length > 0 && publicCharts.map(this.chartMapper)}
                 </DropdownButton>
 
-                {selectedChart !== undefined && (
+                {showChartModal && (
                     <ChartModal selectedChart={selectedChart} filters={model.filters} onHide={this.clearChart} />
                 )}
             </div>

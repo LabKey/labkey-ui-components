@@ -4,7 +4,9 @@ import { Filter } from '@labkey/api';
 // eslint-disable-next-line import/named
 import { Draft, produce } from 'immer';
 
-import { LoadingState, QuerySort, resolveErrorMessage, SchemaQuery } from '..';
+import { withRouter, WithRouterProps } from 'react-router';
+
+import { LoadingState, naturalSort, QuerySort, resolveErrorMessage, SchemaQuery } from '..';
 
 import { QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';
@@ -25,6 +27,7 @@ export interface Actions {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectRow: (id: string, checked, row: { [key: string]: any }) => void;
     selectPage: (id: string, checked) => void;
+    selectReport: (id: string, reportId: string) => void;
     setFilters: (id: string, filters: Filter.IFilter[], loadSelections?: boolean) => void;
     setMaxRows: (id: string, maxRows: number) => void;
     setOffset: (id: string, offset: number) => void;
@@ -93,24 +96,60 @@ const resetSelectionState = (model: Draft<QueryModel>): void => {
     model.selectionsLoadingState = LoadingState.INITIALIZED;
 };
 
+/**
+ * Compares two query params objects, returns true if they are equal, false otherwise.
+ * @param oldParams
+ * @param newParams
+ */
+const paramsEqual = (oldParams, newParams): boolean => {
+    const keys = Object.keys(oldParams);
+    const oldKeyStr = keys.sort(naturalSort).join(';');
+    const newKeyStr = Object.keys(newParams).sort(naturalSort).join(';');
+
+    if (oldKeyStr === newKeyStr) {
+        // If the keys are the same we need to do a deep comparison
+        for (const key of Object.keys(oldParams)) {
+            if (oldParams[key] !== newParams[key]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // If the keys have changed we can assume the params are different.
+    return false;
+};
+
 export function withQueryModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedQueryModels>
 ): ComponentType<Props & MakeQueryModels> {
-    class ComponentWithQueryModels extends PureComponent<Props & MakeQueryModels, State> {
+    type WrappedProps = Props & MakeQueryModels & WithRouterProps;
+
+    const initModels = (props: WrappedProps): QueryModelMap => {
+        const { location, queryConfigs } = props;
+        return Object.keys(queryConfigs).reduce((models, id) => {
+            // We expect the key value for each QueryConfig to be the id. If a user were to mistakenly set the id
+            // to something different on the QueryConfig then actions would break
+            // e.g. actions.loadNextPage(model.id) would not work.
+            let model = new QueryModel({ id, ...queryConfigs[id] });
+
+            if (model.bindURL && location) {
+                model = model.mutate(model.attributesForURLQueryParams(location.query));
+            }
+
+            models[id] = model;
+            return models;
+        }, {});
+    };
+
+    class ComponentWithQueryModels extends PureComponent<WrappedProps, State> {
         static defaultProps;
 
-        constructor(props: Props & MakeQueryModels) {
+        constructor(props: WrappedProps) {
             super(props);
-            const { queryConfigs } = props;
-            const queryModels = Object.keys(props.queryConfigs).reduce((models, id) => {
-                // We expect the key value for each QueryConfig to be the id. If a user were to mistakenly set the id
-                // to something different on the QueryConfig then actions would break
-                // e.g. actions.loadNextPage(model.id) would not work.
-                models[id] = new QueryModel({ id, ...queryConfigs[id] });
-                return models;
-            }, {});
 
-            this.state = produce({}, () => ({ queryModels }));
+            this.state = produce({}, () => ({ queryModels: initModels(props) }));
 
             this.actions = {
                 addModel: this.addModel,
@@ -126,6 +165,7 @@ export function withQueryModels<Props>(
                 selectAllRows: this.selectAllRows,
                 selectRow: this.selectRow,
                 selectPage: this.selectPage,
+                selectReport: this.selectReport,
                 setFilters: this.setFilters,
                 setOffset: this.setOffset,
                 setMaxRows: this.setMaxRows,
@@ -141,7 +181,92 @@ export function withQueryModels<Props>(
             }
         }
 
+        /**
+         * componentDidUpdate only checks for changes to props.location so it can update models when there are changes
+         * to the URL (only for models with bindURL set to true).
+         *
+         * Currently we do not listen for changes to props.queryConfigs. You may be tempted to try to diff queryConfigs
+         * in the future and add/update/remove models as you see changes, but this introduces a bunch of other problems
+         * for child components, so don't do this. Problems include:
+         *  - Child components will no longer be guaranteed that there will always be a model, so they'll have to check
+         *  if model is undefined before accessing any properties on it. This annoying.
+         *  - Child components will need to listen for when models are re-instantiated, and potentially re-initialize
+         *  their state. For example, GridPanel will need to call loadSelections and ChartMenu will need to call
+         *  loadCharts
+         *
+         * If you expect changes to props.queryConfigs to create new models you can pass a key prop to your wrapped
+         * component. For Example:
+         *      <GridPanelWithModel key={`grid.${schemaName}.${queryName}`} queryConfigs={queryConfigs} />
+         * If you pass a unique key to the component then React will unmount and remount the component when the key
+         * changes.
+         */
+        componentDidUpdate(prevProps: Readonly<WrappedProps>, prevState: Readonly<State>): void {
+            const prevLoc = prevProps.location;
+            const currLoc = this.props.location;
+
+            if (prevLoc !== undefined && currLoc !== undefined && prevLoc !== currLoc) {
+                const query = currLoc.query;
+                Object.values(this.state.queryModels)
+                    .filter(model => model.bindURL)
+                    .forEach(model => {
+                        const modelParamsFromURL = Object.keys(query).reduce((result, key) => {
+                            if (key.startsWith(model.urlPrefix + '.')) {
+                                result[key] = query[key];
+                            }
+                            return result;
+                        }, {});
+
+                        if (!paramsEqual(modelParamsFromURL, model.urlQueryParams)) {
+                            // The params for the model have changed on the URL, so update the model.
+                            this.updateModelFromURL(model.id);
+                        }
+                    });
+            }
+        }
+
         actions: Actions;
+
+        bindURL = (id: string): void => {
+            const { router, location } = this.props;
+
+            if (location === undefined) {
+                // This happens when we're rendering a component outside of a router.
+                return;
+            }
+
+            const model = this.state.queryModels[id];
+            const { urlPrefix, urlQueryParams } = model;
+            const newParams = { ...location.query };
+
+            Object.keys(newParams).forEach(key => {
+                if (key.startsWith(urlPrefix + '.')) {
+                    delete newParams[key];
+                }
+            });
+            Object.assign(newParams, urlQueryParams);
+
+            if (!paramsEqual(location.query, newParams)) {
+                router.replace({ ...location, query: newParams });
+            }
+        };
+
+        updateModelFromURL = (id: string): void => {
+            const { query } = this.props.location;
+            let loadSelections = false;
+
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    Object.assign(model, model.attributesForURLQueryParams(query));
+                    // If we have selections or previously attempted to load them we'll want to reload them when the
+                    // model is updated from the URL because it can affect selections.
+                    loadSelections = model.hasSelections || model.selectionsError !== undefined;
+                }),
+                () => {
+                    this.maybeLoad(id, false, true, loadSelections);
+                }
+            );
+        };
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         setSelectionsError = (id: string, error: any, action: string): void => {
@@ -274,6 +399,20 @@ export function withQueryModels<Props>(
             this.setSelections(id, checked, this.state.queryModels[id].orderedRows);
         };
 
+        selectReport = (id: string, reportId: string): void => {
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    const model = draft.queryModels[id];
+                    model.selectedReportId = reportId;
+                }),
+                () => {
+                    if (this.state.queryModels[id].bindURL) {
+                        this.bindURL(id);
+                    }
+                }
+            );
+        };
+
         loadRows = async (id: string): Promise<void> => {
             const { loadRows } = this.props.modelLoader;
 
@@ -376,6 +515,10 @@ export function withQueryModels<Props>(
                 if (loadSelections) {
                     this.loadSelections(id);
                 }
+            }
+
+            if (this.state.queryModels[id].bindURL) {
+                this.bindURL(id);
             }
         };
 
@@ -577,6 +720,7 @@ export function withQueryModels<Props>(
                     if (!filterArraysEqual(model.filterArray, filters)) {
                         shouldLoad = true;
                         model.filterArray = filters;
+                        resetRowsState(model); // Changing filters affects row count so we need to reset rows state.
                     }
                 }),
                 // When filters change we need to reload selections.
@@ -618,5 +762,5 @@ export function withQueryModels<Props>(
         queryConfigs: {},
     };
 
-    return ComponentWithQueryModels;
+    return withRouter(ComponentWithQueryModels);
 }

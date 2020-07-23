@@ -221,10 +221,7 @@ export class SchemaQuery extends Record({
 
     isEqual(sq: SchemaQuery): boolean {
         if (!sq) return false;
-        return (
-            [this.schemaName, this.queryName, this.viewName].join('|').toLowerCase() ===
-            [sq.schemaName, sq.queryName, sq.viewName].join('|').toLowerCase()
-        );
+        return this.toString().toLowerCase() === sq.toString().toLowerCase();
     }
 
     hasSchema(schemaName: string): boolean {
@@ -246,6 +243,10 @@ export class SchemaQuery extends Record({
 
     static createAppSelectionKey(targetSQ: SchemaQuery, keys: any[]): string {
         return [APP_SELECTION_PREFIX, resolveSchemaQuery(targetSQ), keys.join(';')].join('|');
+    }
+
+    toString(): string {
+        return [this.schemaName, this.queryName, this.viewName].join('|');
     }
 }
 

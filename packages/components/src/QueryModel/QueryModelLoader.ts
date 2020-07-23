@@ -73,7 +73,7 @@ export interface QueryModelLoader {
      * reports in the results. If false loads DataViewInfos via getReportInfos and does not include SampleComparison
      * reports.
      */
-    loadCharts: (model: QueryModel, includeSampleComparison: boolean) => Promise<IDataViewInfo[]>;
+    loadCharts: (model: QueryModel, includeSampleComparison: boolean) => Promise<DataViewInfo[]>;
 }
 
 export const DefaultQueryModelLoader: QueryModelLoader = {
@@ -142,10 +142,14 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
                     const isSampleComparison = type === DataViewInfoTypes.SampleComparison;
                     return matchingSq && (isVisualization || isSampleComparison);
                 })
-                .sort(sortByName);
+                .sort(sortByName)
+                .map(obj => new DataViewInfo(obj));
         } else {
             const charts = await fetchCharts(schemaQuery, containerPath);
-            return charts.toArray().sort(sortByName);
+            return charts
+                .toArray()
+                .sort(sortByName)
+                .filter(report => VISUALIZATION_REPORTS.contains(report.type));
         }
     },
 };

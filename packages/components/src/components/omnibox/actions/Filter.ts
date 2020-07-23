@@ -484,4 +484,20 @@ export class FilterAction implements Action {
             param,
         };
     }
+
+    actionValueFromFilter(filter: Filter.IFilter, label: string): ActionValue {
+        const columnName = filter.getColumnName();
+        const filterType = filter.getFilterType();
+        const value = filter.getValue();
+        const operator = resolveSymbol(filter.getFilterType());
+        const { displayValue, isReadOnly } = this.getDisplayValue(label ?? columnName, filterType, value);
+
+        return {
+            action: this,
+            displayValue,
+            isReadOnly,
+            value: `"${label ?? columnName}" ${operator} ${value}`,
+            valueObject: filter,
+        };
+    }
 }

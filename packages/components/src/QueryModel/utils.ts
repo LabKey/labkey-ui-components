@@ -5,7 +5,8 @@
  */
 import { Filter } from '@labkey/api';
 
-import { naturalSort, QuerySort } from '..';
+import { QuerySort } from '..';
+import { ActionValue } from '../components/omnibox/actions/Action';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -20,8 +21,8 @@ export function filterArraysEqual(a: Filter.IFilter[], b: Filter.IFilter[]): boo
         return false;
     }
 
-    const aStr = a.map(filterToString).sort(naturalSort).join(';');
-    const bStr = b.map(filterToString).sort(naturalSort).join(';');
+    const aStr = a.map(filterToString).sort().join(';');
+    const bStr = b.map(filterToString).sort().join(';');
 
     return aStr === bStr;
 }
@@ -37,11 +38,11 @@ export function sortArraysEqual(a: QuerySort[], b: QuerySort[]): boolean {
 
     const aStr = a
         .map(qs => qs.toRequestString())
-        .sort(naturalSort)
+        .sort()
         .join(';');
     const bStr = b
         .map(qs => qs.toRequestString())
-        .sort(naturalSort)
+        .sort()
         .join(';');
     return aStr === bStr;
 }
@@ -56,4 +57,42 @@ export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]:
         });
     }
     return values;
+}
+
+export function actionValuesToString(actionValues: ActionValue[]): string {
+    return actionValues
+        .map(actionValue => actionValue.value.toString())
+        .sort()
+        .join(';');
+}
+
+export function offsetFromString(rowsPerPage: number, pageStr: string): number {
+    if (pageStr === undefined) {
+        return undefined;
+    }
+
+    let offset = 0;
+    const page = parseInt(pageStr, 10);
+
+    if (!isNaN(page)) {
+        offset = (page - 1) * rowsPerPage;
+    }
+
+    return offset >= 0 ? offset : 0;
+}
+
+export function querySortFromString(sortStr: string): QuerySort {
+    if (sortStr.startsWith('-')) {
+        return new QuerySort({ dir: '-', fieldKey: sortStr.slice(1) });
+    } else {
+        return new QuerySort({ fieldKey: sortStr });
+    }
+}
+
+export function querySortsFromString(sortsStr: string): QuerySort[] {
+    return sortsStr?.split(',').map(querySortFromString);
+}
+
+export function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
+    return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q));
 }

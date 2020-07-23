@@ -1018,7 +1018,8 @@ export function clearSelected(
     schemaName?: string,
     queryName?: string,
     filterList?: List<Filter.IFilter>,
-    containerPath?: string
+    containerPath?: string,
+    queryParameters?: { [key: string]: any }
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -1026,7 +1027,7 @@ export function clearSelected(
                 container: containerPath,
             }),
             method: 'POST',
-            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList),
+            jsonData: getFilteredQueryParams(key, schemaName, queryName, filterList, queryParameters),
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
             }),

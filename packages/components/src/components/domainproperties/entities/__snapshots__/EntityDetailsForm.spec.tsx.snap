@@ -5,7 +5,7 @@ exports[`<EntityDetailsForm/> default properties 1`] = `
   className=""
 >
   <div
-    className="margin-bottom row"
+    className="margin-bottom margin-top row"
   >
     <div
       className="col-xs-2"
@@ -157,7 +157,7 @@ exports[`<EntityDetailsForm/> initial data 1`] = `
   className=""
 >
   <div
-    className="margin-bottom row"
+    className="margin-bottom margin-top row"
   >
     <div
       className="col-xs-2"
@@ -310,7 +310,7 @@ exports[`<EntityDetailsForm/> nameExpression properties 1`] = `
   className=""
 >
   <div
-    className="margin-bottom row"
+    className="margin-bottom margin-top row"
   >
     <div
       className="col-xs-2"
@@ -463,7 +463,7 @@ exports[`<EntityDetailsForm/> with formValues 1`] = `
   className=""
 >
   <div
-    className="margin-bottom row"
+    className="margin-bottom margin-top row"
   >
     <div
       className="col-xs-2"

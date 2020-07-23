@@ -181,10 +181,12 @@ import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { CollapsiblePanel } from './components/CollapsiblePanel';
 import { ErrorBoundary } from './components/error/ErrorBoundary';
 import { AliasRenderer } from './renderers/AliasRenderer';
+import { StorageStatusRenderer } from './renderers/StorageStatusRenderer';
 import { AppendUnits } from './renderers/AppendUnits';
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { FileColumnRenderer } from './renderers/FileColumnRenderer';
 import { MultiValueRenderer } from './renderers/MultiValueRenderer';
+import { LabelColorRenderer } from './renderers/LabelColorRenderer';
 import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
 import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
 import { LabelOverlay } from './components/forms/LabelOverlay';
@@ -199,6 +201,7 @@ import { TextInput } from './components/forms/input/TextInput';
 import { TextAreaInput } from './components/forms/input/TextAreaInput';
 import { FieldEditForm, FieldEditProps } from './components/forms/input/FieldEditInput';
 import { ColorPickerInput } from './components/forms/input/ColorPickerInput';
+import { ColorIcon } from './components/base/ColorIcon';
 import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
 import { PageDetailHeader } from './components/forms/PageDetailHeader';
 import { DetailEditing } from './components/forms/detail/DetailEditing';
@@ -355,13 +358,13 @@ import {
     RequiresModelAndActions,
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
-import { DetailPanelWithModel } from './QueryModel/DetailPanel';
+import { DetailPanel, DetailPanelWithModel } from './QueryModel/DetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
-import * as App from './internal/app/index';
 import { AuditDetailsModel } from './components/auditlog/models';
 import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './components/auditlog/AuditDetails';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
+import * as App from './internal/app';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -440,7 +443,9 @@ export {
     AppendUnits,
     DefaultRenderer,
     FileColumnRenderer,
+    LabelColorRenderer,
     MultiValueRenderer,
+    StorageStatusRenderer,
     resolveDetailEditRenderer,
     resolveDetailRenderer,
     titleRenderer,
@@ -458,6 +463,7 @@ export {
     TextAreaInput,
     TextInput,
     ColorPickerInput,
+    ColorIcon,
     FieldEditForm,
     FieldEditProps,
     QuerySelect,
@@ -773,6 +779,7 @@ export {
     InjectedQueryModels,
     GridPanel,
     GridPanelWithModel,
+    DetailPanel,
     DetailPanelWithModel,
     Pagination,
     PaginationData,

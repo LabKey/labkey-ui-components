@@ -7,14 +7,16 @@ import { ActionURL, getServerContext } from '@labkey/api';
 
 import { Container, User } from '../../components/base/models/model';
 
+const user = new User(getServerContext().user);
+
 export class AppModel extends Record({
     container: new Container(getServerContext().container),
     contextPath: ActionURL.getContextPath(),
-    initialUserId: getServerContext().user.id,
+    initialUserId: user.id,
     logoutReason: undefined,
     reloadRequired: false,
     requestPermissions: true,
-    user: new User(getServerContext().user),
+    user,
 }) {
     container: Container;
     contextPath: string;

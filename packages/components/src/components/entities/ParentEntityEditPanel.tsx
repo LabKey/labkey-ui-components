@@ -65,7 +65,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         submitText: 'Save',
     };
 
-    constructor(props: Props) {
+    constructor() {
         super();
 
         this.state = {
@@ -88,11 +88,11 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
     }
 
-    init() {
+    init = (): void => {
         const { parentDataType } = this.props;
-        const { typeListingSchemaQuery, instanceSchemaName, filterArray } = parentDataType;
+        const { typeListingSchemaQuery } = parentDataType;
 
-        getEntityTypeOptions(typeListingSchemaQuery, instanceSchemaName, filterArray)
+        getEntityTypeOptions(parentDataType)
             .then(optionsMap => {
                 const parentTypeOptions = optionsMap.get(typeListingSchemaQuery.queryName);
                 const originalParents = getInitialParentChoices(
@@ -120,17 +120,17 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     ),
                 }));
             });
-    }
+    };
 
-    getChildModel() {
+    getChildModel = (): QueryGridModel => {
         return getQueryGridModel(this.props.childModel.getId());
-    }
+    };
 
-    hasParents(): boolean {
+    hasParents = (): boolean => {
         return this.state.currentParents && !this.state.currentParents.isEmpty();
-    }
+    };
 
-    toggleEdit = () => {
+    toggleEdit = (): void => {
         if (this.props.onEditToggle) {
             this.props.onEditToggle(!this.state.editing);
         }
@@ -150,15 +150,15 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         });
     };
 
-    onParentValueChange = (name: string, value: string | any[], index: number) => {
+    onParentValueChange = (name: string, value: string | any[], index: number): void => {
         this.updateParentValue(value, index, false);
     };
 
-    onInitialParentValue = (value: string, selectedValues: List<any>, index: number) => {
+    onInitialParentValue = (value: string, selectedValues: List<any>, index: number): void => {
         this.updateParentValue(value, index, true);
     };
 
-    updateParentValue(value: string | any[], index: number, updateOriginal: boolean) {
+    updateParentValue = (value: string | any[], index: number, updateOriginal: boolean): void => {
         this.setState(state => {
             const newChoice = state.currentParents.get(index);
             newChoice.value = Array.isArray(value) ? value.join(DELIMITER) : value;
@@ -173,9 +173,9 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                     : state.originalValueLoaded,
             };
         });
-    }
+    };
 
-    onCancel = () => {
+    onCancel = (): void => {
         this.setState(
             state => ({
                 currentParents: state.originalParents,
@@ -190,7 +190,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         );
     };
 
-    onSubmit = values => {
+    onSubmit = (): Promise<any> => {
         if (!this.canSubmit()) return;
 
         this.setState(() => ({ submitting: true }));
@@ -234,11 +234,11 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             });
     };
 
-    canSubmit() {
+    canSubmit = (): boolean => {
         return parentValuesDiffer(this.state.originalParents, this.state.currentParents);
-    }
+    };
 
-    renderProgress() {
+    renderProgress = (): React.ReactNode => {
         const { submitting } = this.state;
         const parentCount = this.state.currentParents.reduce((count, parent) => {
             const values = parent.value ? parent.value.split(',') : [];
@@ -252,9 +252,9 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 toggle={parentCount > 2 && submitting}
             />
         );
-    }
+    };
 
-    renderEditControls() {
+    renderEditControls = (): React.ReactNode => {
         const { cancelText, submitText } = this.props;
         const { submitting } = this.state;
 
@@ -274,9 +274,9 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 </Button>
             </div>
         );
-    }
+    };
 
-    getParentTypeOptions(currentIndex: number): List<IEntityTypeOption> {
+    getParentTypeOptions = (currentIndex: number): List<IEntityTypeOption> => {
         const { currentParents, parentTypeOptions } = this.state;
         // include the current parent type as a choice, but not the others already chosen
         let toRemove = List<string>();
@@ -286,9 +286,9 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             }
         });
         return parentTypeOptions.filter(option => !toRemove.contains(option.label)).toList();
-    }
+    };
 
-    onRemoveParentType = (index: number) => {
+    onRemoveParentType = (index: number): void => {
         this.setState(state => {
             return {
                 currentParents: state.currentParents.delete(index),
@@ -296,7 +296,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         });
     };
 
-    renderSingleParentPanels() {
+    renderSingleParentPanels = (): React.ReactNode => {
         const { parentDataType } = this.props;
 
         return this.state.currentParents
@@ -323,9 +323,9 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 );
             })
             .toArray();
-    }
+    };
 
-    renderParentData() {
+    renderParentData = (): React.ReactNode => {
         const { parentDataType, childNounSingular } = this.props;
         if (this.hasParents()) {
             return this.renderSingleParentPanels();
@@ -346,15 +346,15 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 </div>
             );
         }
-    }
+    };
 
-    onAddParent = () => {
+    onAddParent = (): void => {
         this.setState(state => ({
             currentParents: state.currentParents.push({ type: undefined, value: undefined, ids: undefined }),
         }));
     };
 
-    renderAddParentButton() {
+    renderAddParentButton = (): React.ReactNode => {
         const { parentTypeOptions } = this.state;
         if (!parentTypeOptions || parentTypeOptions.size === 0) return null;
         else {
@@ -382,7 +382,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
                 />
             );
         }
-    }
+    };
 
     render() {
         const { parentDataType, title, canUpdate, childName } = this.props;

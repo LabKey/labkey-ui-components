@@ -75,11 +75,7 @@ export class EntityParentType extends Record({
     schema: string;
     value: List<DisplayObject>;
 
-    constructor(values?: any) {
-        super(values);
-    }
-
-    static create(values: any) {
+    static create(values: any): EntityParentType {
         if (!values.key) values.key = generateId('parent-type-');
         return new EntityParentType(values);
     }
@@ -192,10 +188,6 @@ export class GenerateEntityResponse extends Record({
     message: string;
     success: boolean;
 
-    constructor(values?: any) {
-        super(values);
-    }
-
     // Get all of the rowIds of the newly generated entity Ids (or the runs)
     getFilter(): Filter.IFilter {
         let filterColumn: string, filterValue;
@@ -243,10 +235,6 @@ export class EntityIdCreationModel extends Record({
     entityCount: number; // how many rows are in the grid
     entityDataType: EntityDataType; // target entity data type
     auditBehavior: AuditBehaviorTypes;
-
-    constructor(values?: any) {
-        super(values);
-    }
 
     static revertParentInputSchema(inputColumn: QueryColumn): SchemaQuery {
         if (inputColumn.isExpInput()) {
@@ -386,7 +374,7 @@ export class EntityIdCreationModel extends Record({
         materialInputs: EntityInputProps[];
     } {
         const dataInputs: EntityInputProps[] = [];
-        this.entityParents.get(SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName).forEach((parent, index) => {
+        this.entityParents.get(SCHEMAS.EXP_TABLES.DATA_CLASSES.queryName).forEach(parent => {
             const role = 'data';
 
             parent.value.forEach(option => {
@@ -399,7 +387,7 @@ export class EntityIdCreationModel extends Record({
             });
         });
         const materialInputs: EntityInputProps[] = [];
-        this.entityParents.get(SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName).forEach((parent, index) => {
+        this.entityParents.get(SCHEMAS.EXP_TABLES.SAMPLE_SETS.queryName).forEach(parent => {
             const role = 'sample';
 
             parent.value.forEach(option => {
@@ -431,12 +419,35 @@ export class EntityIdCreationModel extends Record({
         };
     }
 
-    getParentOptions(currentSelection: string, queryName: string): any[] {
+    getParentEntities(combineParentTypes: boolean, queryName?: string): List<EntityParentType> {
+        if (combineParentTypes) {
+            return this.entityParents.reduce((reduction, parentType) => {
+                let index = reduction.size + 1;
+                const types = parentType.map(type => {
+                    return type.set('index', index++);
+                });
+                return reduction.concat(types) as List<EntityParentType>;
+            }, List<EntityParentType>());
+        } else if (queryName !== undefined) {
+            return this.entityParents.get(queryName);
+        } else {
+            return List<EntityParentType>();
+        }
+    }
+
+    getParentOptions(currentSelection: string, queryName: string, combineParentTypes: boolean): any[] {
+        let allOptions = this.parentOptions.get(queryName);
+        if (combineParentTypes) {
+            allOptions = this.parentOptions.valueSeq().reduce((accum, val) => {
+                accum = accum.concat(val) as List<IParentOption>;
+                return accum;
+            }, List<IParentOption>());
+        }
+
         // exclude options that have already been selected, except the current selection for this input
-        return this.parentOptions
-            .get(queryName)
+        return allOptions
             .filter(o =>
-                this.entityParents.get(queryName).every(parent => {
+                this.getParentEntities(combineParentTypes, queryName).every(parent => {
                     const notParentMatch = !parent.query || !Utils.caseInsensitiveEquals(parent.query, o.value);
                     const matchesCurrent = currentSelection && Utils.caseInsensitiveEquals(currentSelection, o.value);
                     return notParentMatch || matchesCurrent;
@@ -445,7 +456,7 @@ export class EntityIdCreationModel extends Record({
             .toArray();
     }
 
-    getSchemaQuery() {
+    getSchemaQuery(): SchemaQuery {
         const entityTypeName = this.getTargetEntityTypeName();
         return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }

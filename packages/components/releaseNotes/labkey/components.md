@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.80.0
+*Released*: 24 July 2020
 * Add support for parameterized queries when getting and setting selections on a grid
 * Export getSelectedData method
 

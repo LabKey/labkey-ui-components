@@ -2,7 +2,7 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { getSelectedData } from '../../actions';
+import { getSelectedDataWithQueryGridModel } from '../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
@@ -59,7 +59,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
             ? (model.getKeyColumns().concat(model.getUpdateColumns()) as List<QueryColumn>)
             : undefined;
 
-        getSelectedData(model, columns)
+        getSelectedDataWithQueryGridModel(model, columns)
             .then(response => {
                 const { data, dataIds } = response;
                 this.setState(() => ({

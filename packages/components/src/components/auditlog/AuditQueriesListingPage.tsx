@@ -79,13 +79,18 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
         if (model.selectedLoaded) {
             this.updateSelectedRowId(this.getLastSelectedId());
         } else {
-            getSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath).then(
-                response => {
-                    const selectedId =
-                        response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;
-                    this.updateSelectedRowId(selectedId);
-                }
-            );
+            getSelected(
+                model.getId(),
+                model.schema,
+                model.query,
+                model.getFilters(),
+                model.containerPath,
+                model.queryParameters
+            ).then(response => {
+                const selectedId =
+                    response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;
+                this.updateSelectedRowId(selectedId);
+            });
         }
     }
 
@@ -227,7 +232,7 @@ export class AuditQueriesListingPage extends React.PureComponent<Props, State> {
 
         const { eventUserId, eventDateFormatted } = detail;
 
-        let rows = [];
+        const rows = [];
         if (eventUserId) {
             rows.push({ field: detail.getActionLabel() + ' By', value: eventUserId, isUser: true });
         }

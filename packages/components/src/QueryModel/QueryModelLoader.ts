@@ -110,12 +110,12 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
     // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementations.
     clearSelections(model) {
-        const { id, schemaName, queryName, filters, containerPath } = model;
-        return clearSelected(id, schemaName, queryName, List(filters), containerPath);
+        const { id, schemaName, queryName, filters, containerPath, queryParameters } = model;
+        return clearSelected(id, schemaName, queryName, List(filters), containerPath, queryParameters);
     },
     async loadSelections(model) {
-        const { id, schemaName, queryName, filters, containerPath } = model;
-        const result = await getSelected(id, schemaName, queryName, List(filters), containerPath);
+        const { id, schemaName, queryName, filters, containerPath, queryParameters } = model;
+        const result = await getSelected(id, schemaName, queryName, List(filters), containerPath, queryParameters);
         return new Set(result.selected);
     },
     setSelections(model, checked: boolean, selections: string[]) {
@@ -123,8 +123,8 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         return setSelected(id, checked, selections, containerPath);
     },
     async selectAllRows(model) {
-        const { id, schemaName, queryName, filters, containerPath } = model;
-        await selectAll(id, schemaName, queryName, List(filters), containerPath);
+        const { id, schemaName, queryName, filters, containerPath, queryParameters } = model;
+        await selectAll(id, schemaName, queryName, List(filters), containerPath, queryParameters);
         return DefaultQueryModelLoader.loadSelections(model);
     },
     async loadCharts(model, includeSampleComparison) {

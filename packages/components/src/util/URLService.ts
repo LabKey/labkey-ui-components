@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { OrderedSet } from 'immutable';
+import { List, Map, OrderedSet } from 'immutable';
 
 import { AppURL } from '../url/AppURL';
 
 import { AppRouteResolver } from './AppURLResolver';
+import { ActionURL } from '@labkey/api';
+import { createProductUrl } from '../components/navigation/utils';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 
@@ -25,7 +27,15 @@ type RoutingTable = Map<string, string | boolean>;
 
 let resolvers = OrderedSet<AppRouteResolver>();
 
+export interface URLMapper {
+    resolve(url, row, column, schema, query): AppURL | string | boolean;
+}
+
 export namespace URLService {
+    export let urlMappers: List<URLMapper> = List<URLMapper>();
+
+    export let productURLMappings: Map<string, any> = Map<string, string>();
+
     export function registerAppRouteResolvers(...appRouteResolvers: AppRouteResolver[]): void {
         appRouteResolvers.forEach(resolver => {
             resolvers = resolvers.add(resolver);
@@ -91,5 +101,88 @@ export namespace URLService {
 
     export function getRouteTable(state): RoutingTable {
         return state.routing.table;
+    }
+
+    export function registerURLMappers(...mappers: URLMapper[]) : void {
+        URLService.urlMappers = URLService.urlMappers.concat(mappers) as List<URLMapper>;
+    }
+
+    // // key is a lowercase, hyphen-separated join of controller-action (e.g., experiment-showmaterial).
+    // // value is the id of the product a URL that matches that controller action should resolve to
+    // export function registerProductURLMappings(mappings: {[key: string]: string}) : void {
+    //     URLService.productURLMappings = Map<string, string>(mappings);
+    // }
+}
+
+// TODO: This is copied from LABKEY.ActionURL -- make public?
+export function parsePathName(path: string) {
+    const qMarkIdx = path.indexOf('?');
+    if (qMarkIdx > -1) {
+        path = path.substring(0, qMarkIdx);
+    }
+    const start = ActionURL.getContextPath().length;
+    const end = path.lastIndexOf('/');
+    let action = path.substring(end + 1);
+    path = path.substring(start, end);
+
+    let controller = null;
+
+    const dash = action.indexOf('-');
+    if (dash > 0) {
+        controller = action.substring(0, dash);
+        action = action.substring(dash + 1);
+    }
+    else {
+        const slash = path.indexOf('/', 1);
+        if (slash < 0)
+            // 21945: e.g. '/admin'
+            controller = path.substring(1);
+        else controller = path.substring(1, slash);
+        path = path.substring(slash);
+    }
+
+    const dot = action.indexOf('.');
+    if (dot > 0) {
+        action = action.substring(0, dot);
+    }
+
+    return {
+        controller: decodeURIComponent(controller).toLowerCase(),
+        action: decodeURIComponent(action).toLowerCase(),
+        containerPath: decodeURI(path),
+    };
+}
+
+export class ActionMapper implements URLMapper {
+    controller: string;
+    action: string;
+    resolver: (row, column, schema, query) => AppURL | string | boolean;
+    productId: string;
+
+    constructor(
+        controller: string,
+        action: string,
+        resolver: (row?, column?, schema?, query?) => AppURL | string | boolean,
+        productId?: string,
+    ) {
+        this.controller = controller.toLowerCase();
+        this.action = action.toLowerCase();
+        this.resolver = resolver;
+        this.productId = productId;
+    }
+
+    getProductUrl(url: AppURL): AppURL | string {
+        return createProductUrl(this.productId, undefined, url);
+    }
+
+    resolve(url, row, column, schema, query): AppURL | string | boolean {
+        if (url) {
+            const parsed = parsePathName(url);
+
+            if (parsed.action === this.action && parsed.controller === this.controller) {
+                const resolvedUrl = this.resolver(row, column, schema, query);
+                return resolvedUrl instanceof AppURL ? this.getProductUrl(resolvedUrl) : resolvedUrl;
+            }
+        }
     }
 }

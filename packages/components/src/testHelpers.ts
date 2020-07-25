@@ -8,6 +8,14 @@ import { QueryInfo } from './components/base/models/QueryInfo';
 import { applyQueryMetadata, handle132Response } from './query/api';
 import { bindColumnRenderers } from './renderers';
 import { RowsResponse } from './QueryModel/QueryModelLoader';
+import { URLService } from './util/URLService';
+import {
+    ASSAY_MAPPERS,
+    DATA_CLASS_MAPPERS,
+    LIST_MAPPERS,
+    LOOKUP_MAPPER,
+    SAMPLE_TYPE_MAPPERS, USER_DETAILS_MAPPER
+} from './util/URLResolver';
 
 declare let LABKEY: LabKey;
 
@@ -44,6 +52,17 @@ export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?:
     initLineageMocks();
     initUserPropsMocks();
     mock.use(proxy);
+}
+
+export function registerDefaultURLMappers() {
+    URLService.registerURLMappers(
+        ...ASSAY_MAPPERS,
+        ...DATA_CLASS_MAPPERS,
+        ...SAMPLE_TYPE_MAPPERS,
+        ...LIST_MAPPERS,
+        USER_DETAILS_MAPPER,
+        LOOKUP_MAPPER
+    );
 }
 
 /**

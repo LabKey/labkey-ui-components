@@ -4,37 +4,23 @@ import entitiesJSON from '../test/data/sampleSetSearchResult.json';
 import lineageJSON from '../test/data/experiment-lineage.json';
 import { LineageResult } from '../components/lineage/models';
 
-import { parsePathName, URLResolver } from './URLResolver';
+import { URLResolver } from './URLResolver';
+import { registerDefaultURLMappers } from '../testHelpers';
+
+beforeAll(() => {
+    registerDefaultURLMappers();
+});
 
 describe('resolveSearchUsingIndex', () => {
     test('resolve Sample Set url', () => {
         const resolver = new URLResolver();
+
         const testJson = fromJS(entitiesJSON);
         return resolver.resolveSearchUsingIndex(testJson).then(resolved => {
             expect(resolved).toHaveProperty(['hits']);
             expect(resolved).toHaveProperty(['hits', 0]);
             expect(resolved).toHaveProperty(['hits', 0, 'url'], '#/samples/Molecule');
             expect(resolved).toHaveProperty(['hits', 0, 'data', 'name'], 'Molecule'); // not sure if this is best place to check this...
-        });
-    });
-});
-
-describe('parsePathName', () => {
-    test('old style', () => {
-        const url = '/labkey/controller/my%20folder/my%20path/action.view?extra=123';
-        expect(parsePathName(url)).toEqual({
-            controller: 'controller',
-            action: 'action',
-            containerPath: '/my folder/my path',
-        });
-    });
-
-    test('new style', () => {
-        const url = '/labkey/my%20folder/my%20path/controller-action.view?extra=123';
-        expect(parsePathName(url)).toEqual({
-            controller: 'controller',
-            action: 'action',
-            containerPath: '/my folder/my path',
         });
     });
 });

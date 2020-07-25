@@ -20,13 +20,15 @@ import { List } from 'immutable';
 import { TESTS_ONLY_RESET_DOM_COUNT } from '../util/utils';
 
 import { getStateQueryGridModel } from '../models';
-import { initUnitTestMocks } from '../testHelpers';
+import { initUnitTestMocks, registerDefaultURLMappers } from '../testHelpers';
 
 import { QueryGridModel, SchemaQuery } from './base/models/model';
 import { QueryGridPanel } from './QueryGridPanel';
+import { ASSAY_MAPPERS, DATA_CLASS_MAPPERS, SAMPLE_TYPE_MAPPERS, URLService } from '..';
 
 beforeAll(() => {
     initUnitTestMocks();
+    registerDefaultURLMappers();
 });
 
 describe('QueryGridPanel render', () => {

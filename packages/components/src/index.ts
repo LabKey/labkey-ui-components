@@ -119,6 +119,7 @@ import { EditorModel, getStateQueryGridModel, getStateModelId, IDataViewInfo } f
 import {
     createQueryGridModelFilteredBySample,
     getSelected,
+    getSelectedData,
     getSelection,
     gridIdInvalidate,
     gridInit,
@@ -358,7 +359,7 @@ import {
     RequiresModelAndActions,
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
-import { DetailPanelWithModel } from './QueryModel/DetailPanel';
+import { DetailPanel, DetailPanelWithModel } from './QueryModel/DetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
 import { AuditDetailsModel } from './components/auditlog/models';
 import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
@@ -389,6 +390,7 @@ export {
     schemaGridInvalidate,
     // grid functions
     getSelected,
+    getSelectedData,
     getSelection,
     gridInit,
     gridShowError,
@@ -779,6 +781,7 @@ export {
     InjectedQueryModels,
     GridPanel,
     GridPanelWithModel,
+    DetailPanel,
     DetailPanelWithModel,
     Pagination,
     PaginationData,

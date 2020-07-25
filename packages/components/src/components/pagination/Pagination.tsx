@@ -70,38 +70,41 @@ export class Pagination extends PureComponent<PaginationProps> {
             setPageSize,
         } = this.props;
         const showPageSizeMenu = rowCount > pageSizes[0];
+        const showPaginationButtons = rowCount > pageSize;
 
         // Use lk-pagination so we don't conflict with bootstrap pagination class.
         return (
             <div className="lk-pagination">
                 <div className="pagination-info">{this.paginationInfo}</div>
 
-                <ButtonGroup className="pagination-button-group">
-                    <PaginationButton
-                        disabled={disabled || isFirstPage}
-                        iconClass="fa-chevron-left"
-                        tooltip="Previous Page"
-                        onClick={loadPreviousPage}
-                    />
+                {showPaginationButtons && (
+                    <ButtonGroup className="pagination-button-group">
+                        <PaginationButton
+                            disabled={disabled || isFirstPage}
+                            iconClass="fa-chevron-left"
+                            tooltip="Previous Page"
+                            onClick={loadPreviousPage}
+                        />
 
-                    <PageMenu
-                        currentPage={currentPage}
-                        disabled={disabled || (isFirstPage && isLastPage)}
-                        id={id}
-                        isFirstPage={isFirstPage}
-                        isLastPage={isLastPage}
-                        pageCount={pageCount}
-                        loadFirstPage={loadFirstPage}
-                        loadLastPage={loadLastPage}
-                    />
+                        <PageMenu
+                            currentPage={currentPage}
+                            disabled={disabled || (isFirstPage && isLastPage)}
+                            id={id}
+                            isFirstPage={isFirstPage}
+                            isLastPage={isLastPage}
+                            pageCount={pageCount}
+                            loadFirstPage={loadFirstPage}
+                            loadLastPage={loadLastPage}
+                        />
 
-                    <PaginationButton
-                        disabled={disabled || isLastPage}
-                        iconClass="fa-chevron-right"
-                        tooltip="Next Page"
-                        onClick={loadNextPage}
-                    />
-                </ButtonGroup>
+                        <PaginationButton
+                            disabled={disabled || isLastPage}
+                            iconClass="fa-chevron-right"
+                            tooltip="Next Page"
+                            onClick={loadNextPage}
+                        />
+                    </ButtonGroup>
+                )}
 
                 {showPageSizeMenu && (
                     <PageSizeMenu

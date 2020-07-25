@@ -1,4 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    PureComponent,
+    ReactElement,
+} from 'react';
 import { storiesOf } from '@storybook/react';
 import { Button, MenuItem } from 'react-bootstrap';
 
@@ -8,12 +13,12 @@ import {
     InjectedQueryModels,
     ManageDropdownButton,
     QueryConfigMap,
-    QueryModel,
     RequiresModelAndActions,
     SchemaQuery,
     withQueryModels,
 } from '..';
 import './QueryModel.scss';
+import { createMemoryHistory, Route, Router, WithRouterProps } from 'react-router';
 
 class GridPanelButtonsExample extends PureComponent<RequiresModelAndActions> {
     render() {
@@ -116,20 +121,52 @@ const ChangeableSchemaQuery = withQueryModels<{}>(ChangeableSchemaQueryImpl);
 
 storiesOf('QueryModel', module)
     .add('GridPanel', () => {
-        const queryConfigs: QueryConfigMap = {
-            mixtures: {
-                schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
-            },
+        const history = createMemoryHistory();
+
+        const ExampleGrid: FunctionComponent<WithRouterProps> = (props: WithRouterProps): ReactElement => {
+            const { location, router } = props;
+            const queryString = Object.keys(location.query)
+                .map(key => {
+                    const value = location.query[key];
+                    return key + '=' + value;
+                })
+                .join('&');
+            const queryConfigs: QueryConfigMap = {
+                mixtures: {
+                    bindURL: true,
+                    schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
+                    urlPrefix: 'mixtures',
+                },
+            };
+
+            const onQueryChange = (evt: ChangeEvent<HTMLInputElement>): void => {
+                const query = {};
+                evt.target.value.split('&').forEach(segment => {
+                    const [ key, value ] = segment.split('=');
+                    query[key] = value;
+                    router.replace({...location, query });
+                });
+            };
+
+            return (
+                <div className="query-model-example">
+                    <div>
+                        <label>URL Query Params: </label>
+                        <input style={{ width: '800px' }} value={queryString} onChange={onQueryChange} />
+                    </div>
+                    <GridPanelWithModel
+                        ButtonsComponent={GridPanelButtonsExample}
+                        title="Mixtures"
+                        queryConfigs={queryConfigs}
+                    />
+                </div>
+            );
         };
 
         return (
-            <div className="query-model-example">
-                <GridPanelWithModel
-                    ButtonsComponent={GridPanelButtonsExample}
-                    title="Mixtures"
-                    queryConfigs={queryConfigs}
-                />
-            </div>
+            <Router history={history}>
+                <Route path="/" component={ExampleGrid} />
+            </Router>
         );
     })
     .add('Minimal GridPanel', () => {

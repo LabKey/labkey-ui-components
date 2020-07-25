@@ -127,4 +127,8 @@ export class ViewAction implements Action {
 
         return results;
     }
+
+    actionValueFromView(view: string): ActionValue {
+        return { value: view, action: this };
+    }
 }

@@ -133,7 +133,7 @@ export interface IDataViewInfo {
     appUrl?: AppURL; // This is a client side only attribute. Used to navigate within a Single Page App.
 }
 
-interface DataViewClientMetadata extends IDataViewInfo {
+export interface DataViewClientMetadata extends IDataViewInfo {
     // The attributes here are all specific to the DataViewInfo class and are not useful as part of IDataViewInfo
     isLoading?: boolean;
     isLoaded?: boolean;
@@ -196,23 +196,6 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
 
     constructor(values?: DataViewClientMetadata) {
         super(values);
-    }
-
-    // TODO: remove the getters below, they're not necessary, consumers can safely access them via dot notation.
-    getLabel() {
-        return this.name;
-    }
-
-    isShared() {
-        return this.shared;
-    }
-
-    getIconCls() {
-        return this.iconCls;
-    }
-
-    isVisChartType() {
-        return VISUALIZATION_REPORTS.contains(this.type);
     }
 }
 

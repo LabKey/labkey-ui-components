@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Add headerCls prop to GridColumn
+* Add useSmall prop to ColorIcon to show small sized icon
+* Add setSelections and replaceSelections to QueryModel Actions
+
+
 ### version 0.80.0
 *Released*: 24 July 2020
 * Add support for parameterized queries when getting and setting selections on a grid
@@ -33,11 +40,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: 20 July 2020
 * EntityInsertPanel: Ability to filter Sample Type Options without filtering Parent Options
 * EntityInsertPanel: Option to combine all parent entity types into one button and one select input
-
-### version XXX
-*Released*: XXX
-* Add headerCls prop to GridColumn
-* Add useSmall prop to ColorIcon to show small sized icon
 
 ### version 0.78.1
 *Released*: 20 July 2020

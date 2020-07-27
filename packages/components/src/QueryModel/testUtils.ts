@@ -61,6 +61,7 @@ export const makeTestActions = (): Actions => {
         selectAllRows: jest.fn(),
         selectRow: jest.fn(),
         selectPage: jest.fn(),
+        selectReport: jest.fn(),
         setFilters: jest.fn(),
         setMaxRows: jest.fn(),
         setOffset: jest.fn(),

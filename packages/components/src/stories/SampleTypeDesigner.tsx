@@ -35,6 +35,7 @@ storiesOf('SampleTypeDesigner', module)
     .add('for create', () => {
         return (
             <SampleTypeDesigner
+                appPropertiesOnly={boolean('appPropertiesOnly', true)}
                 includeDataClasses={boolean('includeDataClasses', true)}
                 useSeparateDataClassesAliasMenu={boolean('useSeparateDataClasses', true)}
                 isValidParentOptionFn={isValidParentOption}
@@ -63,6 +64,7 @@ storiesOf('SampleTypeDesigner', module)
                 )}
                 onCancel={() => console.log('Cancel clicked')}
                 onComplete={() => console.log('Create clicked')}
+                appPropertiesOnly={boolean('appPropertiesOnly', false)}
                 nameExpressionInfoUrl={text('nameExpressionInfoUrl', 'https://wwDodomw.labkey.org')}
                 nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
                 helpTopic={text('helpTopic', undefined)}
@@ -77,6 +79,7 @@ storiesOf('SampleTypeDesigner', module)
                 initModel={design}
                 onCancel={() => console.log('Cancel clicked')}
                 onComplete={() => console.log('Create clicked')}
+                appPropertiesOnly={boolean('appPropertiesOnly', false)}
                 nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
                 nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
                 headerText="Sample types help you organize samples in your lab and allow you to add properties for easy tracking of data."
@@ -90,7 +93,8 @@ storiesOf('SampleTypeDesigner', module)
         return (
             <SampleTypeDesigner
                 initModel={design}
-                includeDataClasses={true}
+                appPropertiesOnly={boolean('appPropertiesOnly', true)}
+                includeDataClasses={boolean('includeDataClasses', true)}
                 useSeparateDataClassesAliasMenu={boolean('useSeparateDataClassesAliasMenu', true)}
                 isValidParentOptionFn={isValidParentOption}
                 sampleAliasCaption="Parent Alias"

@@ -5,6 +5,52 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Audit and schema browser component linting and misc cleanup after move from Sample Manager app
 
+### version 0.80.0
+*Released*: 24 July 2020
+* Add support for parameterized queries when getting and setting selections on a grid
+* Export getSelectedData method
+
+### version 0.79.0
+*Released*: 23 July 2020
+* Implement URL Binding for QueryModel/withQueryModels
+    * For this feature to work your usage of withQueryModels must be a child of a configured React Router (see
+    packages/components/src/stories/QueryModel.tsx for an example)
+* QueryModel: charts has been changed from IDataViewInfo to DataViewInfo
+    * QueryModelLoader has been updated to support this
+* Fixed an issue in DefaultQueryModelLoader where loadCharts was returning unsupported charts.
+* QueryModel: Added fields
+    * bindURL
+    * selectedReportId
+* QueryModel: Added urlQueryParams, attributesForURLQueryParams, and hasRows getters
+* QueryModel: Default to Details View if keyValue is set
+* Removed unused getter methods from DataViewInfo
+* Added toString() to SchemaQuery class
+* Added (and exported) DetailPanel component
+    - Same as DetailPanelWithModel except it is not wrapped in withQueryModels
+* DetailPanelWithModel: changed props signature. Props are now `QueryConfig & DetailDisplaySharedProps`
+
+### version 0.78.3
+*Released*: 22 July 2020
+* AppModel: initialUserId set from `User` model instead of directly from `getServerContext()`.
+
+### version 0.78.2
+*Released*: 20 July 2020
+* EntityInsertPanel: Ability to filter Sample Type Options without filtering Parent Options
+* EntityInsertPanel: Option to combine all parent entity types into one button and one select input
+
+### version 0.78.1
+*Released*: 20 July 2020
+* Support custom gridColumnRenderer for AuditDetails
+
+### version 0.78.0
+*Released*: 16 July 2020
+* Item 7563: SampleTypeDesigner update to add "Label Color" property to Sample Manager
+    - ColorPickerInput updates to support showing color chip within dropdown button when label text not provided
+    - ColorPickerInput update to handle value=#ffffff (display as white background with black border)
+    - SampleTypePropertiesPanel addition of ColorPickerInput, conditional based on appPropertiesOnly prop
+    - SampleTypeModel addition of labelColor prop
+    - Add ColorIcon display component and LabelColorRenderer to use in Sample Manager and Freezer Manager
+
 ### version 0.77.0
 *Released*: 15 July 2020
 * Update URLResolvers to handle URLs that may go to a separate application

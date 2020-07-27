@@ -73,7 +73,7 @@ export interface QueryModelLoader {
      * reports in the results. If false loads DataViewInfos via getReportInfos and does not include SampleComparison
      * reports.
      */
-    loadCharts: (model: QueryModel, includeSampleComparison: boolean) => Promise<IDataViewInfo[]>;
+    loadCharts: (model: QueryModel, includeSampleComparison: boolean) => Promise<DataViewInfo[]>;
 }
 
 export const DefaultQueryModelLoader: QueryModelLoader = {
@@ -110,12 +110,12 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     // The selection related methods may seem like overly simple passthroughs, but by putting them on QueryModelLoader,
     // instead of in withQueryModels, it allows us to easily mock them or provide alternate implementations.
     clearSelections(model) {
-        const { id, schemaName, queryName, filters, containerPath } = model;
-        return clearSelected(id, schemaName, queryName, List(filters), containerPath);
+        const { id, schemaName, queryName, filters, containerPath, queryParameters } = model;
+        return clearSelected(id, schemaName, queryName, List(filters), containerPath, queryParameters);
     },
     async loadSelections(model) {
-        const { id, schemaName, queryName, filters, containerPath } = model;
-        const result = await getSelected(id, schemaName, queryName, List(filters), containerPath);
+        const { id, schemaName, queryName, filters, containerPath, queryParameters } = model;
+        const result = await getSelected(id, schemaName, queryName, List(filters), containerPath, queryParameters);
         return new Set(result.selected);
     },
     setSelections(model, checked: boolean, selections: string[]) {
@@ -123,8 +123,8 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
         return setSelected(id, checked, selections, containerPath);
     },
     async selectAllRows(model) {
-        const { id, schemaName, queryName, filters, containerPath } = model;
-        await selectAll(id, schemaName, queryName, List(filters), containerPath);
+        const { id, schemaName, queryName, filters, containerPath, queryParameters } = model;
+        await selectAll(id, schemaName, queryName, List(filters), containerPath, queryParameters);
         return DefaultQueryModelLoader.loadSelections(model);
     },
     async loadCharts(model, includeSampleComparison) {
@@ -142,10 +142,14 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
                     const isSampleComparison = type === DataViewInfoTypes.SampleComparison;
                     return matchingSq && (isVisualization || isSampleComparison);
                 })
-                .sort(sortByName);
+                .sort(sortByName)
+                .map(obj => new DataViewInfo(obj));
         } else {
             const charts = await fetchCharts(schemaQuery, containerPath);
-            return charts.toArray().sort(sortByName);
+            return charts
+                .toArray()
+                .sort(sortByName)
+                .filter(report => VISUALIZATION_REPORTS.contains(report.type));
         }
     },
 };

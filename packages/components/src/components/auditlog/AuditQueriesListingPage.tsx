@@ -85,7 +85,8 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
                 model.schema,
                 model.query,
                 model.getFilters(),
-                model.containerPath
+                model.containerPath,
+                model.queryParameters
             );
             const selectedId = response.selected.length > 0 ? parseInt(response.selected.slice(-1)[0], 10) : undefined;
             this.updateSelectedRowId(selectedId);
@@ -220,7 +221,7 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
 
         const { eventUserId, eventDateFormatted } = detail;
 
-        let rows = [];
+        const rows = [];
         if (eventUserId) {
             rows.push({ field: detail.getActionLabel() + ' By', value: eventUserId, isUser: true });
         }

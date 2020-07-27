@@ -282,7 +282,7 @@ export const LOOKUP_MAPPER =
 
 export class URLResolver {
     private mapURL = (mapper: MapURLOptions): string => {
-        const _url = URLService.urlMappers
+        const _url = URLService.getUrlMappers()
             .toSeq()
             .map(m => m.resolve(mapper.url, mapper.row, mapper.column, mapper.schema, mapper.query))
             .filter(v => v !== undefined)

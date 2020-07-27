@@ -34,7 +34,9 @@ export interface URLMapper {
 export namespace URLService {
     export let urlMappers: List<URLMapper> = List<URLMapper>();
 
-    export let productURLMappings: Map<string, any> = Map<string, string>();
+    export function getUrlMappers() : List<URLMapper> {
+        return this.urlMappers;
+    }
 
     export function registerAppRouteResolvers(...appRouteResolvers: AppRouteResolver[]): void {
         appRouteResolvers.forEach(resolver => {

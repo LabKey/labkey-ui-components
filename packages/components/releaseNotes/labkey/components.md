@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add method for applications to register their URL Mappers so different applications can choose to route Server URLs differently.
 * Add a productId property to ActionMapper so it can be used to construct a URL to a separate application.
 
+### version 0.80.1
+*Released*: 27 July 2020
+* Audit and schema browser component linting and misc cleanup after move from Sample Manager app
+
 ### version 0.80.0
 *Released*: 24 July 2020
 * Add support for parameterized queries when getting and setting selections on a grid

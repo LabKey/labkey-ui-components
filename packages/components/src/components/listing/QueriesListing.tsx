@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { Component, ReactNode } from 'react';
 import { Link } from 'react-router';
 import { List } from 'immutable';
 
@@ -55,7 +55,11 @@ interface QueriesListingState {
     error: string;
 }
 
-export class QueriesListing extends React.Component<QueriesListingProps, QueriesListingState> {
+export class QueriesListing extends Component<QueriesListingProps, QueriesListingState> {
+    static defaultProps = {
+        title: 'Queries',
+    };
+
     constructor(props: QueriesListingProps) {
         super(props);
 
@@ -65,18 +69,18 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
         };
     }
 
-    componentWillMount() {
-        const { schemaName } = this.props;
-        this.loadQueries(schemaName);
-    }
+    componentDidMount = (): void => {
+        this.loadQueries();
+    };
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.schemaName !== nextProps.schemaName) {
-            this.loadQueries(nextProps.schemaName);
+    componentDidUpdate = (prevProps: Readonly<QueriesListingProps>): void => {
+        if (prevProps.schemaName !== this.props.schemaName) {
+            this.loadQueries();
         }
-    }
+    };
 
-    loadQueries(schemaName: string) {
+    loadQueries = (): void => {
+        const { schemaName } = this.props;
         fetchGetQueries(schemaName)
             .then(queries => {
                 this.setState(() => ({ queries }));
@@ -85,9 +89,9 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
                 console.error(error);
                 this.setState(() => ({ error: error.exception }));
             });
-    }
+    };
 
-    render() {
+    render = (): ReactNode => {
         const { schemaName, hideEmpty, asPanel, title } = this.props;
         const { queries, error } = this.state;
 
@@ -97,7 +101,7 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
                     <SchemaListing schemaName={schemaName} hideEmpty={true} asPanel={true} title="Nested Schemas" />
                     {hideEmpty && queries.count() === 0 ? null : asPanel ? (
                         <div className="panel panel-default">
-                            <div className="panel-heading">{title || 'Queries'}</div>
+                            <div className="panel-heading">{title}</div>
                             <div className="panel-body">
                                 <Grid data={queries} columns={columns} />
                             </div>
@@ -114,5 +118,5 @@ export class QueriesListing extends React.Component<QueriesListingProps, Queries
         }
 
         return <LoadingSpinner />;
-    }
+    };
 }

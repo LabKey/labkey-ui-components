@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.80.1
+*Released*: 27 July 2020
+* Audit and schema browser component linting and misc cleanup after move from Sample Manager app
+
 ### version 0.80.0
 *Released*: 24 July 2020
 * Add support for parameterized queries when getting and setting selections on a grid

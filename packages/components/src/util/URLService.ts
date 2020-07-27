@@ -106,12 +106,6 @@ export namespace URLService {
     export function registerURLMappers(...mappers: URLMapper[]) : void {
         URLService.urlMappers = URLService.urlMappers.concat(mappers) as List<URLMapper>;
     }
-
-    // // key is a lowercase, hyphen-separated join of controller-action (e.g., experiment-showmaterial).
-    // // value is the id of the product a URL that matches that controller action should resolve to
-    // export function registerProductURLMappings(mappings: {[key: string]: string}) : void {
-    //     URLService.productURLMappings = Map<string, string>(mappings);
-    // }
 }
 
 // TODO: This is copied from LABKEY.ActionURL -- make public?

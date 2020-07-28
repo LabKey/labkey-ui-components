@@ -18,6 +18,7 @@ import { ActionURL, Experiment, Filter } from '@labkey/api';
 
 import { AppURL } from '../url/AppURL';
 import { LineageLinkMetadata } from '../components/lineage/types';
+
 import { ActionMapper, URLMapper, URLService } from './URLService';
 
 interface MapURLOptions {
@@ -27,7 +28,6 @@ interface MapURLOptions {
     query?: string;
     schema?: string;
 }
-
 
 class LookupMapper implements URLMapper {
     defaultPrefix: string;
@@ -67,8 +67,7 @@ class LookupMapper implements URLMapper {
     }
 }
 
-export const ASSAY_MAPPERS = [
-
+const ASSAY_MAPPERS = [
     new ActionMapper('assay', 'assayDetailRedirect', row => {
         if (row.has('url')) {
             const rowURL = row.get('url');
@@ -133,7 +132,7 @@ export const ASSAY_MAPPERS = [
     }),
 ];
 
-export const DATA_CLASS_MAPPERS = [
+const DATA_CLASS_MAPPERS = [
     new ActionMapper('experiment', 'showDataClass', (row, column) => {
         let identifier: string;
 
@@ -160,10 +159,9 @@ export const DATA_CLASS_MAPPERS = [
             return AppURL.create(...url);
         }
     }),
-
 ];
 
-export const SAMPLE_TYPE_MAPPERS = [
+const SAMPLE_TYPE_MAPPERS = [
     new ActionMapper('experiment', 'showSampleType', (row, column) => {
         let identifier: string;
 
@@ -206,7 +204,7 @@ export const SAMPLE_TYPE_MAPPERS = [
     }),
 ];
 
-export const LIST_MAPPERS = [
+const LIST_MAPPERS = [
     new ActionMapper('list', 'details', (row, column) => {
         if (!column.has('lookup')) {
             const params = ActionURL.getParameters(row.get('url'));
@@ -228,57 +226,64 @@ export const LIST_MAPPERS = [
     }),
 ];
 
-export const DETAILS_QUERY_ROW_MAPPER =
-    new ActionMapper('query', 'detailsQueryRow', row => {
-        const url = row.get('url');
-        if (url) {
-            const params = ActionURL.getParameters(url);
-            const schemaName = params.schemaName;
-            const queryName = params['query.queryName'];
+const DETAILS_QUERY_ROW_MAPPER = new ActionMapper('query', 'detailsQueryRow', row => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        const schemaName = params.schemaName;
+        const queryName = params['query.queryName'];
 
-            if (schemaName && queryName) {
-                const key = params.keyValue ? params.keyValue : params.RowId;
+        if (schemaName && queryName) {
+            const key = params.keyValue ? params.keyValue : params.RowId;
 
-                if (key !== undefined) {
-                    const parts = ['q', schemaName, queryName, key];
+            if (key !== undefined) {
+                const parts = ['q', schemaName, queryName, key];
 
-                    return AppURL.create(...parts);
-                }
+                return AppURL.create(...parts);
             }
         }
-    });
+    }
+});
 
-export const EXECUTE_QUERY_MAPPER =
-    new ActionMapper('query', 'executeQuery', () => false);
+const EXECUTE_QUERY_MAPPER = new ActionMapper('query', 'executeQuery', () => false);
 
-export const USER_DETAILS_MAPPER =
-    new ActionMapper('user', 'details', (row, column, schema, query) => {
-        const url = row.get('url');
-        if (url) {
-            const params = ActionURL.getParameters(url);
-            return AppURL.create('q', 'core', 'siteusers', params.userId);
+const USER_DETAILS_MAPPER = new ActionMapper('user', 'details', (row, column, schema, query) => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        return AppURL.create('q', 'core', 'siteusers', params.userId);
+    }
+});
+
+const DOWNLOAD_FILE_LINK_MAPPER = new ActionMapper('core', 'downloadFileLink', () => false);
+
+const AUDIT_DETAILS_MAPPER = new ActionMapper('audit', 'detailedAuditChanges', () => false);
+
+const LOOKUP_MAPPER = new LookupMapper('q', {
+    'exp-dataclasses': row =>
+        row.get('displayValue') ? AppURL.create('rd', 'dataclass', row.get('displayValue')) : undefined,
+    'exp-runs': row => {
+        const runId = row.get('value');
+        if (!isNaN(parseInt(runId))) {
+            return AppURL.create('rd', 'assayrun', runId);
         }
-    });
+        return false;
+    },
+    issues: () => false, // 33680: Prevent remapping issues lookup
+});
 
-export const DOWNLOAD_FILE_LINK_MAPPER =
-    new ActionMapper('core', 'downloadFileLink', () => false);
-
-export const AUDIT_DETAILS_MAPPER =
-    new ActionMapper('audit', 'detailedAuditChanges', () => false);
-
-export const LOOKUP_MAPPER =
-    new LookupMapper('q', {
-                'exp-dataclasses': row =>
-                    row.get('displayValue') ? AppURL.create('rd', 'dataclass', row.get('displayValue')) : undefined,
-                'exp-runs': row => {
-                    const runId = row.get('value');
-                    if (!isNaN(parseInt(runId))) {
-                        return AppURL.create('rd', 'assayrun', runId);
-                    }
-                    return false;
-                },
-                issues: () => false, // 33680: Prevent remapping issues lookup
-            });
+export const URL_MAPPERS = {
+    ASSAY_MAPPERS,
+    DATA_CLASS_MAPPERS,
+    SAMPLE_TYPE_MAPPERS,
+    LIST_MAPPERS,
+    DETAILS_QUERY_ROW_MAPPER,
+    EXECUTE_QUERY_MAPPER,
+    USER_DETAILS_MAPPER,
+    DOWNLOAD_FILE_LINK_MAPPER,
+    AUDIT_DETAILS_MAPPER,
+    LOOKUP_MAPPER,
+};
 
 export class URLResolver {
     private mapURL = (mapper: MapURLOptions): string => {

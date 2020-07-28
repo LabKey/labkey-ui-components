@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Adds support for a directory-only view of FileTree
+* IFile interface now includes permissions data
+* Allows for clearing out attached files from FileAttachmentContainer from parent component
+* Adds button styling for a compact FileAttachmentContainer
+
 ### version 0.79.0
 *Released*: 23 July 2020
 * Implement URL Binding for QueryModel/withQueryModels

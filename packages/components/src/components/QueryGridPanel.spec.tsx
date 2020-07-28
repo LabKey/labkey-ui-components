@@ -24,7 +24,6 @@ import { initUnitTestMocks, registerDefaultURLMappers } from '../testHelpers';
 
 import { QueryGridModel, SchemaQuery } from './base/models/model';
 import { QueryGridPanel } from './QueryGridPanel';
-import { ASSAY_MAPPERS, DATA_CLASS_MAPPERS, SAMPLE_TYPE_MAPPERS, URLService } from '..';
 
 beforeAll(() => {
     initUnitTestMocks();

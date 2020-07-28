@@ -256,6 +256,7 @@ import { AssayProvider, AssayProviderProps, AssayContextConsumer } from './compo
 import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteConfirmModal } from './components/assay/AssayResultDeleteConfirmModal';
 import { AssayRunDeleteConfirmModal } from './components/assay/AssayRunDeleteConfirmModal';
+import { AssayRunDeleteModal } from './components/assay/AssayRunDeleteModal';
 import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './components/assay/AssayReimportRunButton';
 import { AssayUploadResultModel, AssayStateModel } from './components/assay/models';
@@ -547,6 +548,7 @@ export {
     AssayDesignDeleteConfirmModal,
     AssayResultDeleteConfirmModal,
     AssayRunDeleteConfirmModal,
+    AssayRunDeleteModal,
     AssayStateModel,
     AssayImportPanels,
     AssayProvider,

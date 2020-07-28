@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.81.0
+*Released*: 28 July 2020
+* Add runDetailsColumnsForQueryModel - convenience method for calculating the columns needed for an assay run details
+page, adapted from getRunDetailsQueryColumns.
+
 ### version 0.80.1
 *Released*: 27 July 2020
 * Audit and schema browser component linting and misc cleanup after move from Sample Manager app

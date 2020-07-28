@@ -15,11 +15,13 @@
  */
 import { List, Map, OrderedSet } from 'immutable';
 
+import { ActionURL } from '@labkey/api';
+
 import { AppURL } from '../url/AppURL';
 
-import { AppRouteResolver } from './AppURLResolver';
-import { ActionURL } from '@labkey/api';
 import { createProductUrl } from '../components/navigation/utils';
+
+import { AppRouteResolver } from './AppURLResolver';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
 
@@ -27,15 +29,16 @@ type RoutingTable = Map<string, string | boolean>;
 
 let resolvers = OrderedSet<AppRouteResolver>();
 
+let urlMappers: List<URLMapper> = List<URLMapper>();
+
 export interface URLMapper {
     resolve(url, row, column, schema, query): AppURL | string | boolean;
 }
 
 export namespace URLService {
-    export let urlMappers: List<URLMapper> = List<URLMapper>();
 
-    export function getUrlMappers() : List<URLMapper> {
-        return this.urlMappers;
+    export function getUrlMappers(): List<URLMapper> {
+        return urlMappers;
     }
 
     export function registerAppRouteResolvers(...appRouteResolvers: AppRouteResolver[]): void {
@@ -105,8 +108,8 @@ export namespace URLService {
         return state.routing.table;
     }
 
-    export function registerURLMappers(...mappers: URLMapper[]) : void {
-        URLService.urlMappers = URLService.urlMappers.concat(mappers) as List<URLMapper>;
+    export function registerURLMappers(...mappers: URLMapper[]): void {
+        urlMappers = urlMappers.concat(mappers) as List<URLMapper>;
     }
 }
 
@@ -127,8 +130,7 @@ export function parsePathName(path: string) {
     if (dash > 0) {
         controller = action.substring(0, dash);
         action = action.substring(dash + 1);
-    }
-    else {
+    } else {
         const slash = path.indexOf('/', 1);
         if (slash < 0)
             // 21945: e.g. '/admin'
@@ -159,7 +161,7 @@ export class ActionMapper implements URLMapper {
         controller: string,
         action: string,
         resolver: (row?, column?, schema?, query?) => AppURL | string | boolean,
-        productId?: string,
+        productId?: string
     ) {
         this.controller = controller.toLowerCase();
         this.action = action.toLowerCase();

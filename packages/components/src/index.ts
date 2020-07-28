@@ -162,19 +162,7 @@ import {
     NO_UPDATES_MESSAGE,
 } from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
-import {
-    ASSAY_MAPPERS,
-    AUDIT_DETAILS_MAPPER,
-    DATA_CLASS_MAPPERS,
-    DETAILS_QUERY_ROW_MAPPER,
-    DOWNLOAD_FILE_LINK_MAPPER,
-    EXECUTE_QUERY_MAPPER,
-    LIST_MAPPERS,
-    LOOKUP_MAPPER,
-    SAMPLE_TYPE_MAPPERS,
-    URLResolver,
-    USER_DETAILS_MAPPER
-} from './util/URLResolver';
+import { URL_MAPPERS, URLResolver } from './util/URLResolver';
 import { ActionMapper, URLService } from './util/URLService';
 import { DATA_IMPORT_TOPIC, DELETE_SAMPLES_TOPIC, getHelpLink, helpLinkNode } from './util/helpLinks';
 import {
@@ -435,16 +423,7 @@ export {
     AppURL,
     Location,
     ActionMapper,
-    ASSAY_MAPPERS,
-    AUDIT_DETAILS_MAPPER,
-    DATA_CLASS_MAPPERS,
-    EXECUTE_QUERY_MAPPER,
-    DOWNLOAD_FILE_LINK_MAPPER,
-    LIST_MAPPERS,
-    LOOKUP_MAPPER,
-    DETAILS_QUERY_ROW_MAPPER,
-    SAMPLE_TYPE_MAPPERS,
-    USER_DETAILS_MAPPER,
+    URL_MAPPERS,
     URLResolver,
     URLService,
     AppRouteResolver,

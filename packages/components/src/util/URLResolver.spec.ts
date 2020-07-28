@@ -4,8 +4,9 @@ import entitiesJSON from '../test/data/sampleSetSearchResult.json';
 import lineageJSON from '../test/data/experiment-lineage.json';
 import { LineageResult } from '../components/lineage/models';
 
-import { URLResolver } from './URLResolver';
 import { registerDefaultURLMappers } from '../testHelpers';
+
+import { URLResolver } from './URLResolver';
 
 beforeAll(() => {
     registerDefaultURLMappers();

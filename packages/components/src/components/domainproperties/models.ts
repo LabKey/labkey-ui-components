@@ -1001,6 +1001,7 @@ export class DomainField
         delete json.regexValidators;
         delete json.lookupValidator;
         delete json.disablePhiLevel;
+        delete json.lockExistingField;
 
         return json;
     }

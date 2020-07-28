@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 0.81.0
-*Released*: ?? July 2020
+*Released*: 28 July 2020
 * Add runDetailsColumnsForQueryModel - convenience method for calculating the columns needed for an assay run details
 page, adapted from getRunDetailsQueryColumns.
 

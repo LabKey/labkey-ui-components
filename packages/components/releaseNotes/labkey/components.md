@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.81.2
+*Released*: 29 July 2020
+* Add PaginationInfo component
+
 ### version 0.81.1
 *Released*: 29 July 2020
 * Merge forward changes from release20.7-SNAPSHOT branch

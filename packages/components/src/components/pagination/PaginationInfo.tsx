@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 
 interface PaginationInfoProps {
     offset: number;
     pageSize: number;
     rowCount: number;
 }
-export const PaginationInfo: FC<PaginationInfoProps> = ({ offset, pageSize, rowCount }) => {
+export const PaginationInfo: FC<PaginationInfoProps> = memo(({ offset, pageSize, rowCount }) => {
     const min = offset !== rowCount ? offset + 1 : offset;
     let max = offset + pageSize;
 
@@ -26,4 +26,4 @@ export const PaginationInfo: FC<PaginationInfoProps> = ({ offset, pageSize, rowC
             {text}
         </span>
     );
-};
+});

@@ -12,7 +12,7 @@ import {
 interface Props {
     model: QueryGridModel
     useSelected: boolean
-    beforeDelete: () => any
+    beforeDelete?: () => any
     afterDelete: () => any
     afterDeleteFailure: () => any
     onCancel: () => any
@@ -27,7 +27,7 @@ export function AssayRunDeleteModal(props: Props) {
 
     function onConfirm() {
         setShowProgress(true);
-        beforeDelete();
+        beforeDelete && beforeDelete();
 
         const selectionKey = useSelected ? model.getId(): undefined;
         const selectedRowId = useSelected ? undefined : model.getRow(0).getIn(['RowId', 'value']);

@@ -216,9 +216,7 @@ exports[`DomainRow Sample Field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -309,6 +307,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -396,9 +395,7 @@ exports[`DomainRow Sample Field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -486,6 +483,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -946,9 +944,7 @@ exports[`DomainRow Sample Field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -1036,6 +1032,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={0}
@@ -1396,6 +1393,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -1846,9 +1844,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -1936,6 +1932,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -2402,9 +2399,7 @@ exports[`DomainRow client side warning on field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -2495,6 +2490,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 fieldError={
@@ -2594,9 +2590,7 @@ exports[`DomainRow client side warning on field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -2684,6 +2678,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -3282,9 +3277,7 @@ exports[`DomainRow client side warning on field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -3372,6 +3365,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={1}
@@ -3486,6 +3480,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -3936,9 +3931,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -4026,6 +4019,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -4492,9 +4486,7 @@ exports[`DomainRow date time field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -4585,6 +4577,7 @@ exports[`DomainRow date time field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -4672,9 +4665,7 @@ exports[`DomainRow date time field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -4762,6 +4753,7 @@ exports[`DomainRow date time field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -5202,9 +5194,7 @@ exports[`DomainRow date time field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -5292,6 +5282,7 @@ exports[`DomainRow date time field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={0}
@@ -5658,6 +5649,7 @@ exports[`DomainRow date time field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -6108,9 +6100,7 @@ exports[`DomainRow date time field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -6198,6 +6188,7 @@ exports[`DomainRow date time field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -6830,9 +6821,7 @@ exports[`DomainRow decimal field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -6923,6 +6912,7 @@ exports[`DomainRow decimal field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -7010,9 +7000,7 @@ exports[`DomainRow decimal field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -7100,6 +7088,7 @@ exports[`DomainRow decimal field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -7540,9 +7529,7 @@ exports[`DomainRow decimal field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -7630,6 +7617,7 @@ exports[`DomainRow decimal field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={2}
@@ -8031,6 +8019,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={2}
@@ -8481,9 +8470,7 @@ exports[`DomainRow decimal field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -8571,6 +8558,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={2}
@@ -9203,9 +9191,7 @@ exports[`DomainRow participant id field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -9296,6 +9282,7 @@ exports[`DomainRow participant id field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -9383,9 +9370,7 @@ exports[`DomainRow participant id field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -9473,6 +9458,7 @@ exports[`DomainRow participant id field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -9937,9 +9923,7 @@ exports[`DomainRow participant id field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -10027,6 +10011,7 @@ exports[`DomainRow participant id field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={0}
@@ -10141,6 +10126,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -10591,9 +10577,7 @@ exports[`DomainRow participant id field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -10681,6 +10665,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -11313,9 +11298,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -11406,6 +11389,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 fieldError={
@@ -11505,9 +11489,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -11595,6 +11577,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -12116,9 +12099,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -12206,6 +12187,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={1}
@@ -12320,6 +12302,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -12770,9 +12753,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -12860,6 +12841,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -13326,9 +13308,7 @@ exports[`DomainRow string field test 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -13419,6 +13399,7 @@ exports[`DomainRow string field test 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -13506,9 +13487,7 @@ exports[`DomainRow string field test 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -13596,6 +13575,7 @@ exports[`DomainRow string field test 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -14060,9 +14040,7 @@ exports[`DomainRow string field test 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -14150,6 +14128,7 @@ exports[`DomainRow string field test 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={1}
@@ -14569,6 +14548,7 @@ exports[`DomainRow string field test 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -15019,9 +14999,7 @@ exports[`DomainRow string field test 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -15109,6 +15087,7 @@ exports[`DomainRow string field test 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -15741,9 +15720,7 @@ exports[`DomainRow with empty domain form 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -15834,6 +15811,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -15921,9 +15899,7 @@ exports[`DomainRow with empty domain form 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -16011,6 +15987,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -16524,9 +16501,7 @@ exports[`DomainRow with empty domain form 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -16614,6 +16589,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={1}
@@ -17033,6 +17009,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -17483,9 +17460,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -17573,6 +17548,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}

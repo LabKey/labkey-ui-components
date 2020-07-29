@@ -366,6 +366,7 @@ import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListi
 import { AuditDetails } from './components/auditlog/AuditDetails';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
 import * as App from './internal/app';
+import { runDetailsColumnsForQueryModel } from './QueryModel/utils';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -786,6 +787,7 @@ export {
     GridPanelWithModel,
     DetailPanel,
     DetailPanelWithModel,
+    runDetailsColumnsForQueryModel,
     Pagination,
     PaginationData,
     // AuditLog

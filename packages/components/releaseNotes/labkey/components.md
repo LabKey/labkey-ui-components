@@ -6,6 +6,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add method for applications to register their URL Mappers so different applications can choose to route Server URLs differently.
 * Add a productId property to ActionMapper so it can be used to construct a URL to a separate application.
 
+### version 0.81.1
+*Released*: 29 July 2020
+* Merge forward changes from release20.7-SNAPSHOT branch
+    - includes hotfix changes from version 0.71.3
+
+### version 0.81.0
+*Released*: 28 July 2020
+* Add runDetailsColumnsForQueryModel - convenience method for calculating the columns needed for an assay run details
+page, adapted from getRunDetailsQueryColumns.
+
 ### version 0.80.1
 *Released*: 27 July 2020
 * Audit and schema browser component linting and misc cleanup after move from Sample Manager app
@@ -95,6 +105,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.72.0
 *Released*: 1 July 2020
 * Add ColorPickerInput
+
+### version 0.71.3
+*Released*: 8 July 2020
+* Issue 40795: Query metadata editor should allow editing type of field in built in table
 
 ### version 0.71.2
 *Released*: 30 June 2020

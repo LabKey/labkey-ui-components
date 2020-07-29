@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.81.2-fb-pagination-info.0",
+  "version": "0.81.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

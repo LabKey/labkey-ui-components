@@ -247,13 +247,17 @@ const DETAILS_QUERY_ROW_MAPPER = new ActionMapper('query', 'detailsQueryRow', ro
 
 const EXECUTE_QUERY_MAPPER = new ActionMapper('query', 'executeQuery', () => false);
 
-const USER_DETAILS_MAPPER = new ActionMapper('user', 'details', (row, column, schema, query) => {
-    const url = row.get('url');
-    if (url) {
-        const params = ActionURL.getParameters(url);
-        return AppURL.create('q', 'core', 'siteusers', params.userId);
-    }
-});
+const USER_DETAILS_MAPPERS = [
+    new ActionMapper('user', 'details', (row, column, schema, query) => {
+        const url = row.get('url');
+        if (url) {
+            const params = ActionURL.getParameters(url);
+            return AppURL.create('q', 'core', 'siteusers', params.userId);
+        }
+    }),
+
+    new ActionMapper('user', 'attachmentDownload', () => false)
+];
 
 const DOWNLOAD_FILE_LINK_MAPPER = new ActionMapper('core', 'downloadFileLink', () => false);
 
@@ -279,7 +283,7 @@ export const URL_MAPPERS = {
     LIST_MAPPERS,
     DETAILS_QUERY_ROW_MAPPER,
     EXECUTE_QUERY_MAPPER,
-    USER_DETAILS_MAPPER,
+    USER_DETAILS_MAPPERS,
     DOWNLOAD_FILE_LINK_MAPPER,
     AUDIT_DETAILS_MAPPER,
     LOOKUP_MAPPER,

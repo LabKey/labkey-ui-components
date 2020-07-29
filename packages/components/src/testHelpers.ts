@@ -54,7 +54,7 @@ export function registerDefaultURLMappers() {
         ...URL_MAPPERS.DATA_CLASS_MAPPERS,
         ...URL_MAPPERS.SAMPLE_TYPE_MAPPERS,
         ...URL_MAPPERS.LIST_MAPPERS,
-        URL_MAPPERS.USER_DETAILS_MAPPER,
+        ...URL_MAPPERS.USER_DETAILS_MAPPERS,
         URL_MAPPERS.LOOKUP_MAPPER
     );
 }

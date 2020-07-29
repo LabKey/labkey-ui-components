@@ -423,6 +423,7 @@ export {
     EditableGridModal,
     EditableColumnMetadata,
     EditorModel,
+    cancelEvent,
     // url and location related items
     AppURL,
     Location,

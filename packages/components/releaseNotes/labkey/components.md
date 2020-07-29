@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add method for applications to register their URL Mappers so different applications can choose to route Server URLs differently.
 * Add a productId property to ActionMapper so it can be used to construct a URL to a separate application.
 
+### version 0.81.2
+*Released*: 29 July 2020
+* Add PaginationInfo component
+
 ### version 0.81.1
 *Released*: 29 July 2020
 * Merge forward changes from release20.7-SNAPSHOT branch

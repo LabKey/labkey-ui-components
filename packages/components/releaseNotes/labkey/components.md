@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add headerCls prop to GridColumn
 * Add useSmall prop to ColorIcon to show small sized icon
 * Add setSelections and replaceSelections to QueryModel Actions
+* Export cancelEvent method
 
 
 ### version 0.81.0

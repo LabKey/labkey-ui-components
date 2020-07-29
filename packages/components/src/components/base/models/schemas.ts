@@ -102,7 +102,7 @@ export function fetchSchemas(schemaName?: string): Promise<List<Map<string, Sche
         Query.getSchemas({
             apiVersion: 9.3,
             schemaName,
-            success: function (schemas) {
+            success: schemas => {
                 resolve(
                     processSchemas(schemas)
                         .filter(schema => {
@@ -113,7 +113,7 @@ export function fetchSchemas(schemaName?: string): Promise<List<Map<string, Sche
                         .toList()
                 );
             },
-            failure: function (error) {
+            failure: error => {
                 reject(error);
             },
         });

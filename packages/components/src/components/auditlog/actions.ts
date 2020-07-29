@@ -10,7 +10,6 @@ export function getAuditDetail(auditRowId: number, auditEventType: string): Prom
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('audit', 'GetDetailedAuditChanges.api'),
-            method: 'GET',
             params: { auditRowId, auditEventType },
             success: Utils.getCallbackWrapper(response => {
                 resolve(AuditDetailsModel.create(response));

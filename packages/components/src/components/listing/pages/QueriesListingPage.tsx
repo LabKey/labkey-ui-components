@@ -2,18 +2,14 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import * as React from 'react';
-import { Link } from 'react-router';
+import React, { Component, ReactNode } from 'react';
+import { Link, WithRouterProps } from 'react-router';
 
 import { AppURL, Breadcrumb, Page, PageHeader } from '../../..';
 import { QueriesListing } from '../QueriesListing';
 
-interface OwnProps {
-    params: any;
-}
-
-export class QueriesListingPage extends React.Component<OwnProps, any> {
-    render() {
+export class QueriesListingPage extends Component<WithRouterProps> {
+    render = (): ReactNode => {
         const { schema } = this.props.params;
 
         return (
@@ -25,5 +21,5 @@ export class QueriesListingPage extends React.Component<OwnProps, any> {
                 <QueriesListing schemaName={schema} asPanel={true} hideEmpty={true} />
             </Page>
         );
-    }
+    };
 }

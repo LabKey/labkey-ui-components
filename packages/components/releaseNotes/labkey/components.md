@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.81.3
+### version 0.82.1
 *Released*: 29 July 2020
 * Fix sorts issue with QueryModel.urlQueryParams
 

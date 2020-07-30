@@ -1,12 +1,13 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { initUnitTestMocks } from '../../../testHelpers';
+import { initUnitTestMocks, registerDefaultURLMappers } from '../../../testHelpers';
 
 import { LineageGrid } from './LineageGrid';
 
 beforeAll(() => {
     initUnitTestMocks();
+    registerDefaultURLMappers();
 });
 
 describe('<LineageGrid/>', () => {

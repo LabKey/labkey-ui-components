@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TDB
-*Release*: TBD
+### version 0.82.0
+*Release*: 30 July 2020
 * Add method for applications to register their URL Mappers so different applications can choose to route Server URLs differently.
 * Add a productId property to ActionMapper so it can be used to construct a URL to a separate application.
 

@@ -299,6 +299,7 @@ import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
 import { ChangePasswordModal } from './components/user/ChangePasswordModal';
 import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
+import { UserProvider, UserProviderProps } from './components/user/UserProvider';
 
 import { createFormInputId, fetchDomain, saveDomain, setDomainFields } from './components/domainproperties/actions';
 import {
@@ -509,6 +510,8 @@ export {
     SecurityPolicy,
     SecurityRole,
     Principal,
+    UserProvider,
+    UserProviderProps,
     // data class and sample type related items
     DataClassModel,
     deleteDataClass,

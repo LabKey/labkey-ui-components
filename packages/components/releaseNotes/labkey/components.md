@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Section component is now a PureComponent with css classes and more customizable styles
+* Add UserProvider for getting a user and user properties onto a page
+
 ### version 0.82.1
 *Released*: 29 July 2020
 * Fix sorts issue with QueryModel.urlQueryParams

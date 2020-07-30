@@ -306,9 +306,12 @@ export class QueryModel {
      * true.
      */
     get urlQueryParams(): { [key: string]: string } {
-        const { currentPage, urlPrefix, filterArray, selectedReportId, sortString, viewName } = this;
+        const { currentPage, urlPrefix, filterArray, selectedReportId, sorts, viewName } = this;
         const filters = filterArray.filter(f => f.getColumnName() !== '*');
-        const searches = filterArray.filter(f => f.getColumnName() === '*').map(f => f.getValue()).join(';')
+        const searches = filterArray
+            .filter(f => f.getColumnName() === '*')
+            .map(f => f.getValue())
+            .join(';');
         // ReactRouter location.query is typed as any.
         const modelParams: { [key: string]: any } = {};
 
@@ -320,8 +323,8 @@ export class QueryModel {
             modelParams[`${urlPrefix}.view`] = viewName;
         }
 
-        if (sortString !== '') {
-            modelParams[`${urlPrefix}.sort`] = sortString;
+        if (sorts.length > 0) {
+            modelParams[`${urlPrefix}.sort`] = sorts.map(sortStringMapper).join(',');
         }
 
         if (searches.length > 0) {

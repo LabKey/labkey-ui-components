@@ -5,6 +5,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Section component is now a PureComponent with css classes and more customizable styles
 * Add UserProvider for getting a user and user properties onto a page
+* Surface emptyText and showHeader properties of Grid through GridPanel
+* Update to StorageStatusRenderer for different text representing "not in storage"
 
 ### version 0.82.1
 *Released*: 29 July 2020

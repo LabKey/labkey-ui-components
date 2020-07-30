@@ -185,7 +185,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     static defaultProps = {
         allowMultiSelect: true,
         useFileIconCls: false,
-        mvDirMode: false,
+        emptyDirectoryText: 'No Files Found',
     };
 
     constructor(props: FileTreeProps) {

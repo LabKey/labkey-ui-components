@@ -105,11 +105,13 @@ const nodeIsEmpty = (id: string): boolean => {
 };
 
 const Header = props => {
-    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, mvDirMode } = props;
+    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, mvDirMode, emptyDirectoryText } = props;
     const isDirectory = node.children !== undefined;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
+    const activeColor = node.active ? '#2980b9' : '#777'; // $brand-primary and $gray-light
 
-    const emptyDirectoryText = mvDirMode ? 'Move to this directory' : 'No Files Found';
+    // const emptyDirectoryText = mvDirMode ? 'Move to this directory' : 'No Files Found';
+    console.log("header", emptyDirectoryText);
     if (nodeIsEmpty(node.id)) {
         return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
     }
@@ -144,18 +146,20 @@ const Header = props => {
                 />
             )}
             <div style={style.base} onClick={onSelect}>
-                <div
-                    className='filetree-resource-row'
-                    style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
-                    title={node.name}
-                >
-                    {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls ? (
-                        <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
-                    ) : (
-                        <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
-                    )}
-                    <div className={classNames({'filetree-file-name': !isDirectory, 'filetree-directory-name': isDirectory })}>
-                        {node.name}
+                <div style={{'color': activeColor}}>
+                    <div
+                        className='filetree-resource-row'
+                        style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}
+                        title={node.name}
+                    >
+                        {!isDirectory && useFileIconCls && node.data && node.data.iconFontCls ? (
+                            <i className={node.data.iconFontCls + ' filetree-folder-icon'} />
+                        ) : (
+                            <FontAwesomeIcon icon={icon} className="filetree-folder-icon" />
+                        )}
+                        <div className={classNames({'filetree-file-name': !isDirectory, 'filetree-directory-name': isDirectory })}>
+                            {node.name}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -169,6 +173,7 @@ interface FileTreeProps {
     allowMultiSelect?: boolean;
     useFileIconCls?: boolean;
     mvDirMode?: boolean;
+    emptyDirectoryText?: string;
 }
 
 interface FileTreeState {
@@ -207,11 +212,23 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         loadData()
             .then(data => {
                 let loadedData = data;
+                let permissions = {
+                    canDelete: false,
+                    canEdit: true,
+                    canRead: true,
+                    canRename: false,
+                    canUpload: false
+                };
 
                 // treebeard has bugs when there is not a single root node
                 if (Array.isArray(data)) {
                     if (data.length < 1) {
-                        data = [{ id: DEFAULT_ROOT_PREFIX + '|' + EMPTY_FILE_NAME, active: false, name: 'empty' }];
+                        data = [{
+                            id: DEFAULT_ROOT_PREFIX + '|' + EMPTY_FILE_NAME,
+                            active: false,
+                            name: 'empty',
+                            permissions
+                        }];
                     }
 
                     loadedData = {
@@ -219,6 +236,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                         id: DEFAULT_ROOT_PREFIX, // Special id
                         children: data,
                         toggled: true,
+                        permissions
                     };
                 }
 
@@ -234,7 +252,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     }
 
     headerDecorator = props => {
-        const { allowMultiSelect, useFileIconCls, mvDirMode } = this.props;
+        const { allowMultiSelect, useFileIconCls, mvDirMode, emptyDirectoryText } = this.props;
         const { checked } = this.state;
 
         if (allowMultiSelect) {
@@ -245,10 +263,11 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                     checked={checked.contains(props.node.id)}
                     handleCheckbox={this.handleCheckbox}
                     mvDirMode={mvDirMode}
+                    emptyDirectoryText={emptyDirectoryText}
                 />
             );
         } else {
-            return <Header {...props} mvDirMode={mvDirMode} useFileIconCls={useFileIconCls} />;
+            return <Header {...props} mvDirMode={mvDirMode} useFileIconCls={useFileIconCls} emptyDirectoryText={emptyDirectoryText} />;
         }
     };
 

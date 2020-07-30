@@ -86,6 +86,7 @@ export function getWebDavFiles(
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 // Filter directories and create webdav files
+                console.log("getWebDavFiles response", response);
                 const filteredFiles = response.files.reduce((filtered, file) => {
                     const filterCondition = (onlyPermittedDirectories) ? (file.collection && file.canUpload) : (includeDirectories || !file.collection);
                     if (filterCondition) {

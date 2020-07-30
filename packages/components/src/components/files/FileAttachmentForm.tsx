@@ -195,18 +195,20 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     renderButtons() {
         const { cancelText, onCancel, submitText, compact } = this.props;
 
+        const button =
+            <Button
+                className={classNames('file-form-submit-btn', {'file-form-submit-btn--compact': compact})}
+                onClick={this.handleSubmit}
+                bsStyle="success"
+                disabled={this.state.attachedFiles.size == 0}
+                title={submitText}
+            >
+                {submitText}
+            </Button>;
+
+
         if (compact) {
-            return (
-                <Button
-                    className={classNames('file-form-submit-btn', {'file-form-submit-btn--compact': compact})}
-                    onClick={this.handleSubmit}
-                    bsStyle="success"
-                    disabled={this.state.attachedFiles.size == 0}
-                    title={submitText}
-                >
-                    {submitText}
-                </Button>
-            )
+            return (button)
         } else {
             return (
                 <div className="row top-spacing bottom-spacing">
@@ -217,15 +219,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                     </div>
                     <div className="col-xs-6">
                         <div className="pull-right">
-                            <Button
-                                className="file-form-submit-btn"
-                                onClick={this.handleSubmit}
-                                bsStyle="success"
-                                disabled={this.state.attachedFiles.size == 0}
-                                title={submitText}
-                            >
-                                {submitText}
-                            </Button>
+                            {button}
                         </div>
                     </div>
                 </div>

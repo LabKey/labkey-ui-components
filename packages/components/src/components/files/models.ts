@@ -65,11 +65,11 @@ export const DEFAULT_FILE: IFile = {
     name: undefined,
     options: undefined,
     propertiesRowId: undefined,
-    canDelete: undefined,
-    canEdit: undefined,
-    canRead: undefined,
-    canRename: undefined,
-    canUpload: undefined,
+    canDelete: false,
+    canEdit: false,
+    canRead: false,
+    canRename: false,
+    canUpload: false,
 };
 
 export interface FileSizeLimitProps {

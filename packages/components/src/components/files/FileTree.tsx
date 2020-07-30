@@ -32,7 +32,6 @@ const customStyle = {
                 display: 'block',
             },
             activeLink: {
-                // background: 'white',
                 borderRadius: '5px'
             },
             toggle: {
@@ -105,13 +104,11 @@ const nodeIsEmpty = (id: string): boolean => {
 };
 
 const Header = props => {
-    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, mvDirMode, emptyDirectoryText } = props;
+    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, emptyDirectoryText } = props;
     const isDirectory = node.children !== undefined;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
-    const activeColor = node.active ? '#2980b9' : '#777'; // $brand-primary and $gray-light
+    const activeColor = (node.active && ! useFileIconCls) ? '#2980b9' : '#777'; // $brand-primary and $gray-light
 
-    // const emptyDirectoryText = mvDirMode ? 'Move to this directory' : 'No Files Found';
-    console.log("header", emptyDirectoryText);
     if (nodeIsEmpty(node.id)) {
         return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
     }
@@ -172,7 +169,6 @@ interface FileTreeProps {
     onFileSelect: (name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => boolean;
     allowMultiSelect?: boolean;
     useFileIconCls?: boolean;
-    mvDirMode?: boolean;
     emptyDirectoryText?: string;
 }
 
@@ -252,7 +248,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     }
 
     headerDecorator = props => {
-        const { allowMultiSelect, useFileIconCls, mvDirMode, emptyDirectoryText } = this.props;
+        const { allowMultiSelect, useFileIconCls, emptyDirectoryText } = this.props;
         const { checked } = this.state;
 
         if (allowMultiSelect) {
@@ -262,12 +258,11 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                     useFileIconCls={useFileIconCls}
                     checked={checked.contains(props.node.id)}
                     handleCheckbox={this.handleCheckbox}
-                    mvDirMode={mvDirMode}
                     emptyDirectoryText={emptyDirectoryText}
                 />
             );
         } else {
-            return <Header {...props} mvDirMode={mvDirMode} useFileIconCls={useFileIconCls} emptyDirectoryText={emptyDirectoryText} />;
+            return <Header {...props} useFileIconCls={useFileIconCls} emptyDirectoryText={emptyDirectoryText} />;
         }
     };
 

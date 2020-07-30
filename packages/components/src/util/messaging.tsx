@@ -38,7 +38,8 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
         const lcMessage = errorMsg.toLowerCase();
         if (
             lcMessage.indexOf('violates unique constraint') >= 0 ||
-            lcMessage.indexOf('violation of unique key constraint') >= 0
+            lcMessage.indexOf('violation of unique key constraint') >= 0 ||
+            lcMessage.indexOf('cannot insert duplicate key row') >= 0
         ) {
             return `There was a problem ${verb || 'creating'} your ${noun}.  Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${nounPlural || noun} are still valid.`;
         } else if (lcMessage.indexOf('bad sql grammar') >= 0) {

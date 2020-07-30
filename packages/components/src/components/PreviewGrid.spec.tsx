@@ -1,13 +1,14 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { initUnitTestMocks } from '../testHelpers';
+import { initUnitTestMocks, registerDefaultURLMappers } from '../testHelpers';
 
 import { PreviewGrid } from './PreviewGrid';
 import { SchemaQuery } from './base/models/model';
 
 beforeAll(() => {
     initUnitTestMocks();
+    registerDefaultURLMappers();
 });
 
 const SQ = SchemaQuery.create('exp.data', 'mixtures', '~~default~~');

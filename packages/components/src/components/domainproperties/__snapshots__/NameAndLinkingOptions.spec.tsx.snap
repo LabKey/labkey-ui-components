@@ -81,6 +81,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}

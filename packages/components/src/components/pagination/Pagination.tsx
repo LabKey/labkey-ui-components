@@ -1,9 +1,10 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, PureComponent, ReactNode } from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 
 import { PaginationButton } from './PaginationButton';
 import { PageMenu } from './PageMenu';
 import { PageSizeMenu } from './PageSizeMenu';
+import { PaginationInfo } from './PaginationInfo';
 
 export interface PaginationData {
     currentPage: number;
@@ -32,26 +33,6 @@ export class Pagination extends PureComponent<PaginationProps> {
         pageSizes: [20, 40, 100, 250, 400],
     };
 
-    get paginationInfo(): string {
-        const { offset, pageSize, rowCount } = this.props;
-        const min = offset !== rowCount ? offset + 1 : offset;
-        let max = offset + pageSize;
-
-        let text = `${min} - `;
-
-        if (max > rowCount) {
-            max = rowCount;
-        }
-
-        text += `${max}`;
-
-        if (max !== rowCount) {
-            text += ` of ${rowCount}`;
-        }
-
-        return text;
-    }
-
     render(): ReactNode {
         const {
             currentPage,
@@ -63,6 +44,7 @@ export class Pagination extends PureComponent<PaginationProps> {
             loadLastPage,
             loadPreviousPage,
             loadNextPage,
+            offset,
             pageSize,
             pageCount,
             pageSizes,
@@ -75,7 +57,7 @@ export class Pagination extends PureComponent<PaginationProps> {
         // Use lk-pagination so we don't conflict with bootstrap pagination class.
         return (
             <div className="lk-pagination">
-                <div className="pagination-info">{this.paginationInfo}</div>
+                <PaginationInfo offset={offset} pageSize={pageSize} rowCount={rowCount} />
 
                 {showPaginationButtons && (
                     <ButtonGroup className="pagination-button-group">

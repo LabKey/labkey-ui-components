@@ -32,7 +32,7 @@ const customStyle = {
                 display: 'block',
             },
             activeLink: {
-                background: 'linear-gradient(90deg, rgba(211,211,211,1) 20%, rgba(255,255,255,1) 80%)',
+                // background: 'white',
                 borderRadius: '5px'
             },
             toggle: {

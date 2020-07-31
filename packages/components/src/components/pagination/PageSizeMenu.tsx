@@ -1,5 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
+
 import { blurActiveElement } from '../../util/utils';
 import { Tip } from '../..';
 

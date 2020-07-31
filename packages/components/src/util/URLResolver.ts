@@ -18,8 +18,8 @@ import { ActionURL, Experiment, Filter } from '@labkey/api';
 
 import { AppURL } from '../url/AppURL';
 import { LineageLinkMetadata } from '../components/lineage/types';
-import { createProductUrl } from '../components/navigation/utils';
-import { FREEZER_MANAGER_PRODUCT_ID } from '../internal/app';
+
+import { ActionMapper, URLMapper, URLService } from './URLService';
 
 interface MapURLOptions {
     column: any;
@@ -29,367 +29,269 @@ interface MapURLOptions {
     schema?: string;
 }
 
-export class URLResolver {
-    mappers: List<URLMapper>;
+class LookupMapper implements URLMapper {
+    defaultPrefix: string;
+    lookupResolvers: any;
 
-    constructor() {
-        this.mappers = List<URLMapper>([
-            new ActionMapper('experiment', 'showDataClass', (row, column) => {
-                let identifier: string;
-
-                // TODO: Deal with junction lookup
-                if (row.has('data')) {
-                    // search link doesn't use the same url
-                    identifier = row.getIn(['data', 'name']);
-                } else if (column.has('lookup')) {
-                    identifier = row.get('displayValue').toString();
-                } else {
-                    identifier = row.get('value').toString();
-                }
-                if (identifier !== undefined) {
-                    return AppURL.create('rd', 'dataclass', identifier);
-                }
-            }),
-
-            new ActionMapper('experiment', 'showData', row => {
-                const targetURL = row.get('url');
-                if (targetURL) {
-                    const params = ActionURL.getParameters(targetURL);
-
-                    const url = ['rd', 'expdata', params.rowId];
-                    return AppURL.create(...url);
-                }
-            }),
-
-            // @deprecated: showSampleType is the action we're using going forward. Remove this mapping.
-            new ActionMapper('experiment', 'showMaterialSource', (row, column) => {
-                let identifier: string;
-
-                if (row.has('data')) {
-                    // search link doesn't use the same url
-                    identifier = row.getIn(['data', 'name']);
-                } else if (column.has('lookup')) {
-                    identifier = row.get('displayValue').toString();
-                } else {
-                    identifier = row.get('value').toString();
-                }
-
-                if (identifier !== undefined) {
-                    let url: string[];
-
-                    if (isNaN(parseInt(identifier))) {
-                        // string -- assume sample set name
-                        url = ['samples', identifier];
-                    } else {
-                        // numeric -- assume rowId and use resolver
-                        url = ['rd', 'samples', identifier];
-                    }
-
-                    return AppURL.create(...url);
-                }
-            }),
-
-            new ActionMapper('experiment', 'showSampleType', (row, column) => {
-                let identifier: string;
-
-                if (row.has('data')) {
-                    // search link doesn't use the same url
-                    identifier = row.getIn(['data', 'name']);
-                } else if (column.has('lookup')) {
-                    identifier = row.get('displayValue').toString();
-                } else {
-                    identifier = row.get('value').toString();
-                }
-
-                if (identifier !== undefined) {
-                    let url: string[];
-
-                    if (isNaN(parseInt(identifier))) {
-                        // string -- assume sample set name
-                        url = ['samples', identifier];
-                    } else {
-                        // numeric -- assume rowId and use resolver
-                        url = ['rd', 'samples', identifier];
-                    }
-
-                    return AppURL.create(...url);
-                }
-            }),
-
-            new ActionMapper('experiment', 'showMaterial', row => {
-                const targetURL = row.get('url');
-                if (targetURL) {
-                    const params = ActionURL.getParameters(targetURL);
-                    const rowId = params.rowId;
-
-                    const url = ['rd', 'samples', rowId];
-
-                    if (rowId !== undefined) {
-                        return AppURL.create(...url);
-                    }
-                }
-            }),
-
-            new ActionMapper('experiment', 'showRunText', row => {
-                const targetURL = row.get('url');
-                if (targetURL) {
-                    const params = ActionURL.getParameters(targetURL);
-                    const rowId = params.rowId;
-                    const url = ['workflow', rowId];
-                    if (rowId !== undefined) {
-                        return AppURL.create(...url);
-                    }
-                }
-            }),
-
-            // http://localhost:8080/labkey/Sam%20Man/experiment-protocolDetails.view?rowId=1424
-            new ActionMapper('experiment', 'protocolDetails', row => {
-                const targetURL = row.get('url');
-                if (targetURL) {
-                    const params = ActionURL.getParameters(targetURL);
-                    const rowId = params.rowId;
-                    const url = ['workflow', 'template', rowId];
-                    if (rowId !== undefined) {
-                        return AppURL.create(...url);
-                    }
-                }
-            }),
-
-            // Fixme.  This is really sketchy since there is no corresponding URL in LKS
-            new ActionMapper('samplesworkflow', 'samples', row => {
-                const targetURL = row.get('url');
-                if (targetURL) {
-                    const params = ActionURL.getParameters(targetURL);
-                    const jobId = params.jobId;
-                    const url = ['workflow', jobId, 'samples'];
-                    if (jobId !== undefined) {
-                        return AppURL.create(...url);
-                    }
-                }
-            }),
-
-            new ActionMapper('samplesworkflow', 'tasks', row => {
-                const targetURL = row.get('url');
-                if (targetURL) {
-                    const params = ActionURL.getParameters(targetURL);
-                    const jobId = params.jobId;
-                    const url = ['workflow', jobId, 'tasks'];
-                    if (jobId !== undefined) {
-                        return AppURL.create(...url);
-                    }
-                }
-            }),
-
-            new ActionMapper('samplesworkflow', 'templateJobs', row => {
-                const targetURL = row.get('url');
-                if (targetURL) {
-                    const params = ActionURL.getParameters(targetURL);
-                    const templateId = params.templateId;
-                    const url = ['workflow', 'template', templateId, 'jobs'];
-                    if (templateId !== undefined) {
-                        return AppURL.create(...url).addParam('tab', 'all');
-                    }
-                }
-            }),
-
-            new ActionMapper('samplemanager', 'downloadAttachments', row => {
-                const targetURL = row.get('url');
-                if (targetURL) {
-                    const params = ActionURL.getParameters(targetURL);
-                    const jobId = params.jobId;
-                    const url = ['workflow', jobId, 'files'];
-                    if (jobId !== undefined) {
-                        return AppURL.create(...url);
-                    }
-                }
-            }),
-
-            new ActionMapper('assay', 'assayDetailRedirect', row => {
-                if (row.has('url')) {
-                    const rowURL = row.get('url');
-                    const params = ActionURL.getParameters(rowURL);
-
-                    // expecting a parameter of runId=<runId>
-                    if (params.hasOwnProperty('runId')) {
-                        const runId = params['runId'];
-
-                        const url = ['rd', 'assayrun', runId];
-                        return AppURL.create(...url);
-                    }
-                }
-            }),
-
-            new ActionMapper('assay', 'assayRuns', (row, column, schema) => {
-                if (row.has('url')) {
-                    const url = row.get('url');
-
-                    // expecting a filter on Batch/RowId~eq=<rowId>
-                    const filters = Filter.getFiltersFromUrl(url, 'Runs');
-                    if (filters.length > 0) {
-                        for (let i = 0; i < filters.length; i++) {
-                            if (filters[i].getColumnName().toLowerCase() === 'batch/rowid') {
-                                const rowId = filters[i].getValue();
-
-                                // expecting a schema of assay.<provider>.<protocol>
-                                if (schema.indexOf('assay.') === 0) {
-                                    const url = ['assays'].concat(schema.replace('assay.', '').split('.'));
-                                    url.push('batches', rowId);
-
-                                    return AppURL.create(...url);
-                                }
-                            }
-                        }
-                    }
-                }
-            }),
-
-            new ActionMapper('assay', 'assayBegin', row => {
-                const url = row.get('url');
-                if (url) {
-                    const params = ActionURL.getParameters(url);
-
-                    if (params.rowId) {
-                        return AppURL.create('assays', params.rowId);
-                    }
-                }
-            }),
-
-            new ActionMapper('assay', 'assayResults', row => {
-                const url = row.get('url');
-                if (url) {
-                    const params = ActionURL.getParameters(url);
-                    const rowId = params.rowId;
-
-                    if (rowId) {
-                        delete params.rowId; // strip the rowId and pass through the remaining params
-                        return AppURL.create('assays', rowId, 'data').addParams(params);
-                    }
-                }
-            }),
-
-            // 33680: Prevent remapping issues-details
-            new ActionMapper('issues', 'details', () => false),
-
-            new ActionMapper('issues', 'list', row => {
-                const url = row.get('url');
-                if (url) {
-                    const params = ActionURL.getParameters(url);
-                    if (params.issueDefName) {
-                        return AppURL.create('workflow', params.issueDefName);
-                    }
-                }
-            }),
-
-            new ActionMapper('list', 'details', (row, column) => {
-                if (!column.has('lookup')) {
-                    const params = ActionURL.getParameters(row.get('url'));
-
-                    const parts = ['q', 'lists', params.listId, params.pk];
-
-                    return AppURL.create(...parts);
-                }
-            }),
-
-            new ActionMapper('list', 'grid', (row, column) => {
-                if (!column.has('lookup')) {
-                    const params = ActionURL.getParameters(row.get('url'));
-
-                    const parts = ['q', 'lists', params.listId];
-
-                    return AppURL.create(...parts);
-                }
-            }),
-
-            new ActionMapper('query', 'detailsQueryRow', row => {
-                const url = row.get('url');
-                if (url) {
-                    const params = ActionURL.getParameters(url);
-                    const schemaName = params.schemaName;
-                    const queryName = params['query.queryName'];
-
-                    if (schemaName && queryName) {
-                        if (
-                            schemaName === 'labbook' &&
-                            queryName === 'LabBookExperiment' &&
-                            params.RowId !== undefined
-                        ) {
-                            const parts = ['experiments', params.RowId];
-
-                            return AppURL.create(...parts);
-                        }
-
-                        const key = params.keyValue ? params.keyValue : params.RowId;
-
-                        if (key !== undefined) {
-                            const parts = ['q', schemaName, queryName, key];
-
-                            return AppURL.create(...parts);
-                        }
-                    }
-                }
-            }),
-
-            new ActionMapper('query', 'executeQuery', row => {
-                const url = row.get('url');
-                if (url) {
-                    const materialIdKey = 'query.MaterialId~eq';
-                    const params = ActionURL.getParameters(url);
-                    if (
-                        params.schemaName &&
-                        params.schemaName.toLowerCase() == 'inventory' &&
-                        params.queryName &&
-                        params.queryName.toLowerCase() == 'item' &&
-                        params[materialIdKey] !== undefined
-                    ) {
-                        return createProductUrl(
-                            FREEZER_MANAGER_PRODUCT_ID,
-                            undefined,
-                            AppURL.create('rd', 'sampleItem', params[materialIdKey])
-                        );
-                    }
-                }
-                return false;
-            }),
-
-            new ActionMapper('user', 'details', (row, column, schema, query) => {
-                const url = row.get('url');
-                if (url) {
-                    const params = ActionURL.getParameters(url);
-                    return AppURL.create('q', 'core', 'siteusers', params.userId);
-                }
-            }),
-
-            new ActionMapper('labbook', 'experiment', row => {
-                const url = row.get('url');
-                if (url) {
-                    const params = ActionURL.getParameters(url);
-                    if (params.labBookId) {
-                        return AppURL.create('experiments', params.labBookId);
-                    }
-                }
-            }),
-
-            new ActionMapper('core', 'downloadFileLink', () => false),
-
-            new ActionMapper('audit', 'detailedAuditChanges', () => false),
-
-            new LookupMapper('q', {
-                'exp-dataclasses': row =>
-                    row.get('displayValue') ? AppURL.create('rd', 'dataclass', row.get('displayValue')) : undefined,
-                'exp-runs': row => {
-                    const runId = row.get('value');
-                    if (!isNaN(parseInt(runId))) {
-                        return AppURL.create('rd', 'assayrun', runId);
-                    }
-                    return false;
-                },
-                issues: () => false, // 33680: Prevent remapping issues lookup
-            }),
-        ]);
+    constructor(defaultPrefix: string, lookupResolvers) {
+        this.defaultPrefix = defaultPrefix;
+        this.lookupResolvers = lookupResolvers;
     }
 
+    resolve(url, row, column, schema, query): AppURL {
+        if (column.has('lookup')) {
+            var lookup = column.get('lookup'),
+                schema = lookup.get('schemaName'),
+                query = lookup.get('queryName'),
+                queryKey = [schema, query].join('-').toLowerCase(),
+                schemaKey = schema.toLowerCase();
+
+            if (this.lookupResolvers) {
+                if (this.lookupResolvers[queryKey]) {
+                    return this.lookupResolvers[queryKey](row, column, schema, query);
+                }
+                if (this.lookupResolvers[schemaKey]) {
+                    return this.lookupResolvers[schemaKey](row, column, schema, query);
+                }
+            }
+
+            const parts = [
+                this.defaultPrefix,
+                lookup.get('schemaName'),
+                lookup.get('queryName'),
+                row.get('value').toString(),
+            ];
+
+            return AppURL.create(...parts);
+        }
+    }
+}
+
+const ASSAY_MAPPERS = [
+    new ActionMapper('assay', 'assayDetailRedirect', row => {
+        if (row.has('url')) {
+            const rowURL = row.get('url');
+            const params = ActionURL.getParameters(rowURL);
+
+            // expecting a parameter of runId=<runId>
+            if (params.hasOwnProperty('runId')) {
+                const runId = params['runId'];
+
+                const url = ['rd', 'assayrun', runId];
+                return AppURL.create(...url);
+            }
+        }
+    }),
+
+    new ActionMapper('assay', 'assayRuns', (row, column, schema) => {
+        if (row.has('url')) {
+            const url = row.get('url');
+
+            // expecting a filter on Batch/RowId~eq=<rowId>
+            const filters = Filter.getFiltersFromUrl(url, 'Runs');
+            if (filters.length > 0) {
+                for (let i = 0; i < filters.length; i++) {
+                    if (filters[i].getColumnName().toLowerCase() === 'batch/rowid') {
+                        const rowId = filters[i].getValue();
+
+                        // expecting a schema of assay.<provider>.<protocol>
+                        if (schema.indexOf('assay.') === 0) {
+                            const url = ['assays'].concat(schema.replace('assay.', '').split('.'));
+                            url.push('batches', rowId);
+
+                            return AppURL.create(...url);
+                        }
+                    }
+                }
+            }
+        }
+    }),
+
+    new ActionMapper('assay', 'assayBegin', row => {
+        const url = row.get('url');
+        if (url) {
+            const params = ActionURL.getParameters(url);
+
+            if (params.rowId) {
+                return AppURL.create('assays', params.rowId);
+            }
+        }
+    }),
+
+    new ActionMapper('assay', 'assayResults', row => {
+        const url = row.get('url');
+        if (url) {
+            const params = ActionURL.getParameters(url);
+            const rowId = params.rowId;
+
+            if (rowId) {
+                delete params.rowId; // strip the rowId and pass through the remaining params
+                return AppURL.create('assays', rowId, 'data').addParams(params);
+            }
+        }
+    }),
+];
+
+const DATA_CLASS_MAPPERS = [
+    new ActionMapper('experiment', 'showDataClass', (row, column) => {
+        let identifier: string;
+
+        // TODO: Deal with junction lookup
+        if (row.has('data')) {
+            // search link doesn't use the same url
+            identifier = row.getIn(['data', 'name']);
+        } else if (column.has('lookup')) {
+            identifier = row.get('displayValue').toString();
+        } else {
+            identifier = row.get('value').toString();
+        }
+        if (identifier !== undefined) {
+            return AppURL.create('rd', 'dataclass', identifier);
+        }
+    }),
+
+    new ActionMapper('experiment', 'showData', row => {
+        const targetURL = row.get('url');
+        if (targetURL) {
+            const params = ActionURL.getParameters(targetURL);
+
+            const url = ['rd', 'expdata', params.rowId];
+            return AppURL.create(...url);
+        }
+    }),
+];
+
+const SAMPLE_TYPE_MAPPERS = [
+    new ActionMapper('experiment', 'showSampleType', (row, column) => {
+        let identifier: string;
+
+        if (row.has('data')) {
+            // search link doesn't use the same url
+            identifier = row.getIn(['data', 'name']);
+        } else if (column.has('lookup')) {
+            identifier = row.get('displayValue').toString();
+        } else {
+            identifier = row.get('value').toString();
+        }
+
+        if (identifier !== undefined) {
+            let url: string[];
+
+            if (isNaN(parseInt(identifier))) {
+                // string -- assume sample set name
+                url = ['samples', identifier];
+            } else {
+                // numeric -- assume rowId and use resolver
+                url = ['rd', 'samples', identifier];
+            }
+
+            return AppURL.create(...url);
+        }
+    }),
+
+    new ActionMapper('experiment', 'showMaterial', row => {
+        const targetURL = row.get('url');
+        if (targetURL) {
+            const params = ActionURL.getParameters(targetURL);
+            const rowId = params.rowId;
+
+            const url = ['rd', 'samples', rowId];
+
+            if (rowId !== undefined) {
+                return AppURL.create(...url);
+            }
+        }
+    }),
+];
+
+const LIST_MAPPERS = [
+    new ActionMapper('list', 'details', (row, column) => {
+        if (!column.has('lookup')) {
+            const params = ActionURL.getParameters(row.get('url'));
+
+            const parts = ['q', 'lists', params.listId, params.pk];
+
+            return AppURL.create(...parts);
+        }
+    }),
+
+    new ActionMapper('list', 'grid', (row, column) => {
+        if (!column.has('lookup')) {
+            const params = ActionURL.getParameters(row.get('url'));
+
+            const parts = ['q', 'lists', params.listId];
+
+            return AppURL.create(...parts);
+        }
+    }),
+];
+
+const DETAILS_QUERY_ROW_MAPPER = new ActionMapper('query', 'detailsQueryRow', row => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        const schemaName = params.schemaName;
+        const queryName = params['query.queryName'];
+
+        if (schemaName && queryName) {
+            const key = params.keyValue ? params.keyValue : params.RowId;
+
+            if (key !== undefined) {
+                const parts = ['q', schemaName, queryName, key];
+
+                return AppURL.create(...parts);
+            }
+        }
+    }
+});
+
+const EXECUTE_QUERY_MAPPER = new ActionMapper('query', 'executeQuery', () => false);
+
+const USER_DETAILS_MAPPERS = [
+    new ActionMapper('user', 'details', (row, column, schema, query) => {
+        const url = row.get('url');
+        if (url) {
+            const params = ActionURL.getParameters(url);
+            return AppURL.create('q', 'core', 'siteusers', params.userId);
+        }
+    }),
+
+    new ActionMapper('user', 'attachmentDownload', () => false)
+];
+
+const DOWNLOAD_FILE_LINK_MAPPER = new ActionMapper('core', 'downloadFileLink', () => false);
+
+const AUDIT_DETAILS_MAPPER = new ActionMapper('audit', 'detailedAuditChanges', () => false);
+
+const LOOKUP_MAPPER = new LookupMapper('q', {
+    'exp-dataclasses': row =>
+        row.get('displayValue') ? AppURL.create('rd', 'dataclass', row.get('displayValue')) : undefined,
+    'exp-runs': row => {
+        const runId = row.get('value');
+        if (!isNaN(parseInt(runId))) {
+            return AppURL.create('rd', 'assayrun', runId);
+        }
+        return false;
+    },
+    issues: () => false, // 33680: Prevent remapping issues lookup
+});
+
+export const URL_MAPPERS = {
+    ASSAY_MAPPERS,
+    DATA_CLASS_MAPPERS,
+    SAMPLE_TYPE_MAPPERS,
+    LIST_MAPPERS,
+    DETAILS_QUERY_ROW_MAPPER,
+    EXECUTE_QUERY_MAPPER,
+    USER_DETAILS_MAPPERS,
+    DOWNLOAD_FILE_LINK_MAPPER,
+    AUDIT_DETAILS_MAPPER,
+    LOOKUP_MAPPER,
+};
+
+export class URLResolver {
     private mapURL = (mapper: MapURLOptions): string => {
-        const _url = this.mappers
+        const _url = URLService.getUrlMappers()
             .toSeq()
             .map(m => m.resolve(mapper.url, mapper.row, mapper.column, mapper.schema, mapper.query))
             .filter(v => v !== undefined)
@@ -567,110 +469,4 @@ export class URLResolver {
             resolve(resolved.toJS());
         });
     }
-}
-
-interface URLMapper {
-    resolve(url, row, column, schema, query): AppURL | string | boolean;
-}
-
-class ActionMapper implements URLMapper {
-    controller: string;
-    action: string;
-    resolver: (row, column, schema, query) => AppURL | string | boolean;
-
-    constructor(
-        controller: string,
-        action: string,
-        resolver: (row?, column?, schema?, query?) => AppURL | string | boolean
-    ) {
-        this.controller = controller.toLowerCase();
-        this.action = action.toLowerCase();
-        this.resolver = resolver;
-    }
-
-    resolve(url, row, column, schema, query): AppURL | string | boolean {
-        if (url) {
-            const parsed = parsePathName(url);
-
-            if (parsed.action === this.action && parsed.controller === this.controller) {
-                return this.resolver(row, column, schema, query);
-            }
-        }
-    }
-}
-
-class LookupMapper implements URLMapper {
-    defaultPrefix: string;
-    lookupResolvers: any;
-
-    constructor(defaultPrefix: string, lookupResolvers) {
-        this.defaultPrefix = defaultPrefix;
-        this.lookupResolvers = lookupResolvers;
-    }
-
-    resolve(url, row, column, schema, query): AppURL {
-        if (column.has('lookup')) {
-            var lookup = column.get('lookup'),
-                schema = lookup.get('schemaName'),
-                query = lookup.get('queryName'),
-                queryKey = [schema, query].join('-').toLowerCase(),
-                schemaKey = schema.toLowerCase();
-
-            if (this.lookupResolvers) {
-                if (this.lookupResolvers[queryKey]) {
-                    return this.lookupResolvers[queryKey](row, column, schema, query);
-                }
-                if (this.lookupResolvers[schemaKey]) {
-                    return this.lookupResolvers[schemaKey](row, column, schema, query);
-                }
-            }
-
-            const parts = [
-                this.defaultPrefix,
-                lookup.get('schemaName'),
-                lookup.get('queryName'),
-                row.get('value').toString(),
-            ];
-
-            return AppURL.create(...parts);
-        }
-    }
-}
-
-// TODO: This is copied from LABKEY.ActionURL -- make public?
-export function parsePathName(path: string) {
-    const qMarkIdx = path.indexOf('?');
-    if (qMarkIdx > -1) {
-        path = path.substring(0, qMarkIdx);
-    }
-    const start = ActionURL.getContextPath().length;
-    const end = path.lastIndexOf('/');
-    let action = path.substring(end + 1);
-    path = path.substring(start, end);
-
-    let controller = null;
-
-    const dash = action.indexOf('-');
-    if (dash > 0) {
-        controller = action.substring(0, dash);
-        action = action.substring(dash + 1);
-    } else {
-        const slash = path.indexOf('/', 1);
-        if (slash < 0)
-            // 21945: e.g. '/admin'
-            controller = path.substring(1);
-        else controller = path.substring(1, slash);
-        path = path.substring(slash);
-    }
-
-    const dot = action.indexOf('.');
-    if (dot > 0) {
-        action = action.substring(0, dot);
-    }
-
-    return {
-        controller: decodeURIComponent(controller).toLowerCase(),
-        action: decodeURIComponent(action).toLowerCase(),
-        containerPath: decodeURI(path),
-    };
 }

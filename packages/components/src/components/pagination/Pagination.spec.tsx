@@ -33,7 +33,7 @@ describe('Pagination', () => {
         expect(wrapper.find('button.btn').at(2).props().disabled).toEqual(false);
 
         // Next page button should be disabled
-        wrapper.setProps({isFirstPage: false, isLastPage: true});
+        wrapper.setProps({ isFirstPage: false, isLastPage: true });
         expect(wrapper.find('button.btn').first().props().disabled).toEqual(false);
         expect(wrapper.find('button.btn').at(2).props().disabled).toEqual(true);
 

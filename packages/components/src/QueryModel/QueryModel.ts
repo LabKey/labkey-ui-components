@@ -251,7 +251,7 @@ export class QueryModel {
 
         if (omittedColumns.length) {
             const lowerOmit = new Set(omittedColumns.map(c => c.toLowerCase()));
-            fieldKeys = fieldKeys.filter(fieldKey => lowerOmit.has(fieldKey.toLowerCase()));
+            fieldKeys = fieldKeys.filter(fieldKey => !lowerOmit.has(fieldKey.toLowerCase()));
         }
 
         return fieldKeys.join(',');

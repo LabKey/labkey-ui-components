@@ -104,10 +104,10 @@ const nodeIsEmpty = (id: string): boolean => {
 };
 
 const Header = props => {
-    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, emptyDirectoryText } = props;
+    const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, emptyDirectoryText, allowMultiSelect } = props;
     const isDirectory = node.children !== undefined;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
-    const activeColor = (node.active && ! useFileIconCls) ? '#2980b9' : '#777'; // $brand-primary and $gray-light
+    const activeColor = (node.active && !allowMultiSelect) ? '#2980b9' : '#777'; // $brand-primary and $gray-light
 
     if (nodeIsEmpty(node.id)) {
         return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
@@ -259,10 +259,11 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                     checked={checked.contains(props.node.id)}
                     handleCheckbox={this.handleCheckbox}
                     emptyDirectoryText={emptyDirectoryText}
+                    allowMultiSelect={allowMultiSelect}
                 />
             );
         } else {
-            return <Header {...props} useFileIconCls={useFileIconCls} emptyDirectoryText={emptyDirectoryText} />;
+            return <Header {...props} useFileIconCls={useFileIconCls} emptyDirectoryText={emptyDirectoryText} allowMultiSelect={allowMultiSelect} />;
         }
     };
 

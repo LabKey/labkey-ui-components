@@ -76,8 +76,7 @@ export function getWebDavFiles(
     directory?: string,
     includeDirectories?: boolean,
     skipAtFiles?: boolean,
-    // filterCondition?: any, // ToDo, pending question
-    onlyPermittedDirectories?: boolean // Will return only uploadable directories
+    alternateFilterCondition?: (file: any) => boolean,
 ): Promise<Map<string, WebDavFile>> {
     return new Promise((resolve, reject) => {
         const url = getWebDavUrl(containerPath, directory, false, skipAtFiles);
@@ -88,7 +87,7 @@ export function getWebDavFiles(
             success: Utils.getCallbackWrapper(response => {
                 // Filter directories and create webdav files
                 const filteredFiles = response.files.reduce((filtered, file) => {
-                    const filterCondition = (onlyPermittedDirectories) ? (file.collection && file.canUpload) : (includeDirectories || !file.collection);
+                    const filterCondition = alternateFilterCondition ? alternateFilterCondition(file) : (includeDirectories || !file.collection);
                     if (filterCondition) {
                         return filtered.set(file.text, WebDavFile.create(file));
                     } else {

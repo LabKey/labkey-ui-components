@@ -272,6 +272,8 @@ import {
     importAssayRun,
 } from './components/assay/actions';
 import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './components/assay/constants';
+import { BaseBarChart } from './components/chart/BaseBarChart';
+import { processChartData } from './components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { invalidateLineageResults } from './components/lineage/actions';
 import {
@@ -582,6 +584,8 @@ export {
     last12Months,
     monthSort,
     // report / chart related items
+    BaseBarChart,
+    processChartData,
     DataViewInfoTypes,
     IDataViewInfo,
     loadReports,

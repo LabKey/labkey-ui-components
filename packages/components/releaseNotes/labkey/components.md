@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add UserProvider for getting a user and user properties onto a page
 * Surface emptyText and showHeader properties of Grid through GridPanel
 * Update to StorageStatusRenderer for different text representing "not in storage"
+* Move BaseBarChart and utility method from sampleManagement
 
 ### version 0.82.1
 *Released*: 29 July 2020

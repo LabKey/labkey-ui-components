@@ -107,7 +107,7 @@ const Header = props => {
     const { style, onSelect, node, customStyles, checked, handleCheckbox, useFileIconCls, emptyDirectoryText, allowMultiSelect } = props;
     const isDirectory = node.children !== undefined;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
-    const activeColor = (node.active && !allowMultiSelect) ? '#2980b9' : '#777'; // $brand-primary and $gray-light
+    const activeColor = (node.active && !allowMultiSelect) ? 'lk-text-theme-dark' : undefined; // $brand-primary and $gray-light
 
     if (nodeIsEmpty(node.id)) {
         return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;
@@ -143,7 +143,7 @@ const Header = props => {
                 />
             )}
             <div style={style.base} onClick={onSelect}>
-                <div style={{'color': activeColor}}>
+                <div className={activeColor}>
                     <div
                         className='filetree-resource-row'
                         style={node.selected ? { ...style.title, ...customStyles.header.title } : style.title}

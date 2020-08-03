@@ -5,6 +5,7 @@ import React from 'react';
 
 import { FileTree } from '../components/files/FileTree';
 import { fetchFileTestTree } from '../components/files/FileTreeTest';
+import './FileTree.scss';
 
 storiesOf('FileTree', module)
     .addDecorator(withKnobs)

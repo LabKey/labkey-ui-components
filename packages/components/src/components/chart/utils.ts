@@ -1,7 +1,7 @@
 import { ISelectRowsResult, naturalSort } from '../..';
-import { fromJS, OrderedMap } from 'immutable';
+import { fromJS } from 'immutable';
 
-export function processChartData(response: ISelectRowsResult, countPath: string[] = ['count', 'value'], namePath: string[] = ['Name', 'value']): OrderedMap<string, any> {
+export function processChartData(response: ISelectRowsResult, countPath: string[] = ['count', 'value'], namePath: string[] = ['Name', 'value']): any[] {
     const rows = fromJS(response.models[response.key]);
 
     return rows
@@ -10,5 +10,6 @@ export function processChartData(response: ISelectRowsResult, countPath: string[
             label: row.getIn(namePath),
             count: row.getIn(countPath)
         }))
-        .sortBy(row => row.label, naturalSort);
+        .sortBy(row => row.label, naturalSort)
+        .toArray();
 }

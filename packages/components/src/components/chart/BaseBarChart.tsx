@@ -1,11 +1,10 @@
 import * as React from 'react'
 import $ from 'jquery'
-import { OrderedMap } from 'immutable'
 import { debounce, generateId } from '../..';
 
 interface Props {
     title: string
-    data: OrderedMap<string, any>
+    data: any[]
     onClick: (evt: any, row: Object) => any
 }
 
@@ -83,7 +82,7 @@ export class BaseBarChart extends React.Component<Props, State> {
                     }
                 }
             },
-            data: data.toArray()
+            data
         };
     }
 

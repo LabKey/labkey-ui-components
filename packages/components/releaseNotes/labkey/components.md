@@ -3,6 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
+* Fix bug in QueryModel.getColumnString when omittedColumns is present.
 * Section component is now a PureComponent with css classes and more customizable styles
 * Add UserProvider for getting a user and user properties onto a page
 * Surface emptyText and showHeader properties of Grid through GridPanel

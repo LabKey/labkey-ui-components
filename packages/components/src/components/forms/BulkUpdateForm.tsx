@@ -24,6 +24,7 @@ interface Props {
     onSubmitForEdit: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
     shownInUpdateColumns?: boolean;
+    readOnlyColumns?: List<string>;
 }
 
 interface State {
@@ -52,11 +53,11 @@ export class BulkUpdateForm extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        const { model, onCancel, pluralNoun, shownInUpdateColumns } = this.props;
+        const { model, onCancel, pluralNoun, shownInUpdateColumns, readOnlyColumns } = this.props;
 
         // Get all shownInUpdateView columns or undefined
         const columns = shownInUpdateColumns
-            ? (model.getKeyColumns().concat(model.getUpdateColumns()) as List<QueryColumn>)
+            ? (model.getKeyColumns().concat(model.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
             : undefined;
 
         getSelectedDataWithQueryGridModel(model, columns)

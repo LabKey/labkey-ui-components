@@ -27,6 +27,7 @@ interface ColumnProps {
     tableCell?: boolean;
     title: string;
     width?: any;
+    headerCls?: string;
 }
 
 export class GridColumn implements ColumnProps {
@@ -39,6 +40,7 @@ export class GridColumn implements ColumnProps {
     tableCell: boolean;
     title: string;
     width: any;
+    headerCls: string;
 
     constructor(config: ColumnProps) {
         this.align = config.align;
@@ -46,6 +48,7 @@ export class GridColumn implements ColumnProps {
         this.format = config.format;
         this.raw = config.raw;
         this.width = config.width;
+        this.headerCls = config.headerCls;
 
         // react render displays '&nbsp', see: https://facebook.github.io/react/docs/jsx-gotchas.html
         if (config.title && config.title == '&nbsp;') {
@@ -177,9 +180,10 @@ class GridHeader extends React.PureComponent<GridHeaderProps, any> {
                         }
 
                         if (column.showHeader) {
+                            const headerCls = column.headerCls ? column.headerCls : 'grid-header-cell';
                             return (
                                 <th
-                                    className="grid-header-cell"
+                                    className={headerCls}
                                     key={i}
                                     onClick={this._handleClick.bind(this, column)}
                                     style={{ minWidth }}

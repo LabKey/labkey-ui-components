@@ -34,6 +34,8 @@ export interface Actions {
     setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
     setSorts: (id: string, sorts: QuerySort[]) => void;
     setView: (id: string, viewName: string, loadSelections?: boolean) => void;
+    setSelections: (id: string, checked: boolean, selections: string[]) => void;
+    replaceSelections: (id: string, selections: string[]) => void;
 }
 
 export interface RequiresModelAndActions {
@@ -162,6 +164,7 @@ export function withQueryModels<Props>(
                 loadFirstPage: this.loadFirstPage,
                 loadLastPage: this.loadLastPage,
                 loadCharts: this.loadCharts,
+                replaceSelections: this.replaceSelections,
                 selectAllRows: this.selectAllRows,
                 selectRow: this.selectRow,
                 selectPage: this.selectPage,
@@ -172,6 +175,7 @@ export function withQueryModels<Props>(
                 setSchemaQuery: this.setSchemaQuery,
                 setSorts: this.setSorts,
                 setView: this.setView,
+                setSelections: this.setSelections,
             };
         }
 
@@ -348,6 +352,24 @@ export function withQueryModels<Props>(
                 );
             } catch (error) {
                 this.setSelectionsError(id, error, 'setting');
+            }
+        };
+
+        replaceSelections = async (id: string, selections: string[]): Promise<void> => {
+            const { modelLoader } = this.props;
+
+            try {
+                await modelLoader.clearSelections(this.state.queryModels[id]);
+                await modelLoader.setSelections(this.state.queryModels[id], true, selections);
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        const model = draft.queryModels[id];
+                        model.selections = new Set(selections);
+                        model.selectionsError = undefined;
+                    })
+                );
+            } catch (error) {
+                this.setSelectionsError(id, error, 'replace');
             }
         };
 

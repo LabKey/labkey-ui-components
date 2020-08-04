@@ -130,6 +130,7 @@ import {
     setSelected,
     unselectAll,
 } from './actions';
+import { cancelEvent } from './events';
 import {
     getEditorModel,
     getQueryGridModel,
@@ -420,6 +421,7 @@ export {
     EditableGridModal,
     EditableColumnMetadata,
     EditorModel,
+    cancelEvent,
     // url and location related items
     AppURL,
     Location,

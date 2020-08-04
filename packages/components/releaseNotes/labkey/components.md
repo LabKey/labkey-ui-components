@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.82.2
+*Released*: 4 August 2020
+* Add headerCls prop to GridColumn
+* Add useSmall prop to ColorIcon to show small sized icon
+* Add setSelections and replaceSelections to QueryModel Actions
+* Export cancelEvent method
+
 ### version 0.82.1
 *Released*: 29 July 2020
 * Fix sorts issue with QueryModel.urlQueryParams

@@ -7,6 +7,7 @@ interface Props {
     title: string;
     data: any[];
     onClick: (evt: any, row: any) => any;
+    chartHeight: number
 }
 
 interface State {
@@ -14,6 +15,10 @@ interface State {
 }
 
 export class BaseBarChart extends React.Component<Props, State> {
+    static defaultProps  = {
+        chartHeight: 350
+    }
+
     constructor(props: Props) {
         super(props);
 
@@ -47,13 +52,13 @@ export class BaseBarChart extends React.Component<Props, State> {
     }
 
     getPlotConfig(props: Props): Object {
-        const { title, data, onClick } = props;
+        const { title, data, onClick, chartHeight } = props;
 
         return {
             renderTo: this.state.plotId,
             rendererType: 'd3',
             width: this.getPlotElement().width() + 50,
-            height: 350,
+            height: chartHeight,
             labels: {
                 main: { value: title, visibility: 'hidden' },
                 yLeft: { value: 'Count' },

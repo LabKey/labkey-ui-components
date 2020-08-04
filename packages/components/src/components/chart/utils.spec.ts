@@ -20,4 +20,10 @@ describe("processChartData", () => {
         const data = processChartData(response, ['TodayCount', 'value']);
         expect(data.length).toBe(0);
     });
+
+    test ('with alternate label field', () => {
+        const data = processChartData(response, ['TotalCount', 'value'], ['RowId', 'value']);
+        expect(data.length).toBe(4);
+        expect(data[0].label).toBe(5051);
+    })
 })

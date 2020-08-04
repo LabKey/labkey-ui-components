@@ -68,5 +68,7 @@ export const makeTestActions = (): Actions => {
         setSchemaQuery: jest.fn(),
         setSorts: jest.fn(),
         setView: jest.fn(),
+        setSelections: jest.fn(),
+        replaceSelections: jest.fn(),
     };
 };

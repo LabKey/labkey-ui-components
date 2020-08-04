@@ -156,7 +156,7 @@ export class GridPanel extends PureComponent<Props, State> {
         showOmniBox: true,
         showSampleComparisonReports: false,
         showViewMenu: true,
-        showHeader: true
+        showHeader: true,
     };
 
     constructor(props) {
@@ -502,7 +502,17 @@ export class GridPanel extends PureComponent<Props, State> {
     };
 
     render(): ReactNode {
-        const { actions, allowSelections, asPanel, emptyText, model, showButtonBar, showOmniBox, showHeader, title } = this.props;
+        const {
+            actions,
+            allowSelections,
+            asPanel,
+            emptyText,
+            model,
+            showButtonBar,
+            showOmniBox,
+            showHeader,
+            title,
+        } = this.props;
         const {
             hasData,
             id,
@@ -552,8 +562,8 @@ export class GridPanel extends PureComponent<Props, State> {
 
                     {(loadingMessage || allowSelections) && (
                         <div className="grid-panel__info">
-                            {loadingMessage && <LoadingSpinner msg={loadingMessage}/>}
-                            {allowSelections && <SelectionStatus model={model} actions={actions}/>}
+                            {loadingMessage && <LoadingSpinner msg={loadingMessage} />}
+                            {allowSelections && <SelectionStatus model={model} actions={actions} />}
                         </div>
                     )}
 

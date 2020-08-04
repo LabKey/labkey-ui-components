@@ -1,10 +1,10 @@
 import { ISelectRowsResult, processChartData } from '../..';
-import AssayRunCountsRowsJson from "../../test/data/AssayRunCounts-getQueryRows.json";
+import AssayRunCountsRowsJson from '../../test/data/AssayRunCounts-getQueryRows.json';
 
-describe("processChartData", () => {
+describe('processChartData', () => {
     const response = {
         key: '0',
-        models: {0: AssayRunCountsRowsJson}
+        models: { 0: AssayRunCountsRowsJson },
     } as ISelectRowsResult;
 
     test('with data', () => {
@@ -21,9 +21,9 @@ describe("processChartData", () => {
         expect(data.length).toBe(0);
     });
 
-    test ('with alternate label field', () => {
+    test('with alternate label field', () => {
         const data = processChartData(response, ['TotalCount', 'value'], ['RowId', 'value']);
         expect(data.length).toBe(4);
         expect(data[0].label).toBe(5051);
-    })
-})
+    });
+});

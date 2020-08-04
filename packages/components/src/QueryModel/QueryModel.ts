@@ -352,7 +352,7 @@ export class QueryModel {
         const allColumns = this.allColumns;
 
         // First attempt to find by name/lookup
-        const column = allColumns.find((queryColumn) => {
+        const column = allColumns.find(queryColumn => {
             if (isLookup && queryColumn.isLookup()) {
                 return lowered.split('/')[0] === queryColumn.name.toLowerCase();
             } else if (isLookup && !queryColumn.isLookup()) {
@@ -367,7 +367,7 @@ export class QueryModel {
         }
 
         // Fallback to finding by shortCaption
-        return allColumns.find((column) => {
+        return allColumns.find(column => {
             return column.shortCaption.toLowerCase() === lowered;
         });
     }

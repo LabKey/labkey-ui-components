@@ -22,35 +22,41 @@ interface SectionProps {
     titleClassName?: string;
     titleContainerClassName?: string;
     title?: string;
-    titleSize?: string
+    titleSize?: string;
 }
 
 export class Section extends React.PureComponent<SectionProps> {
     static defaultProps = {
-        titleSize: 'large'
-    }
+        titleSize: 'large',
+    };
 
     render() {
-        const { panelClassName, titleClassName, titleContainerClassName, title, titleSize, context, caption, children }  = this.props;
-        let titleContainerCls = titleContainerClassName || 'section-panel--title-container-' + titleSize ;
+        const {
+            panelClassName,
+            titleClassName,
+            titleContainerClassName,
+            title,
+            titleSize,
+            context,
+            caption,
+            children,
+        } = this.props;
+        const titleContainerCls = titleContainerClassName || 'section-panel--title-container-' + titleSize;
         return (
             <div className="g-section">
                 <div className={`panel panel-default ${panelClassName ? panelClassName : ''}`}>
                     <div className="panel-body">
                         <div className={title ? titleContainerCls : ''}>
                             {title && (
-                                <div className={titleClassName || "section-panel--title-" + titleSize}>
-                                    {title}
-                                </div>
+                                <div className={titleClassName || 'section-panel--title-' + titleSize}>{title}</div>
                             )}
                             {context && <div className="pull-right">{context}</div>}
-                            {caption &&
-                            <div className={"section-panel--title-caption-" + titleSize}>{caption}</div>}
+                            {caption && <div className={'section-panel--title-caption-' + titleSize}>{caption}</div>}
                         </div>
                         {children}
                     </div>
                 </div>
             </div>
-        )
+        );
     }
 }

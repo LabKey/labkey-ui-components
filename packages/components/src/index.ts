@@ -130,9 +130,7 @@ import {
     setSelected,
     unselectAll,
 } from './actions';
-import {
-    cancelEvent,
-} from './events';
+import { cancelEvent } from './events';
 import {
     getEditorModel,
     getQueryGridModel,

@@ -180,7 +180,7 @@ class GridHeader extends React.PureComponent<GridHeaderProps, any> {
                         }
 
                         if (column.showHeader) {
-                            const headerCls = column.headerCls ? column.headerCls : "grid-header-cell";
+                            const headerCls = column.headerCls ? column.headerCls : 'grid-header-cell';
                             return (
                                 <th
                                     className={headerCls}

@@ -5,7 +5,7 @@ interface Props {
     value: string;
     asSquare?: boolean;
     label?: string;
-    useSmall?: boolean
+    useSmall?: boolean;
 }
 
 export class ColorIcon extends PureComponent<Props> {
@@ -15,8 +15,7 @@ export class ColorIcon extends PureComponent<Props> {
         let iconCls = cls;
         if (!iconCls) {
             iconCls = asSquare ? 'color-picker__chip' : 'color-icon__circle';
-            if (useSmall)
-                iconCls += '-small';
+            if (useSmall) iconCls += '-small';
         }
 
         let icon;

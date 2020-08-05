@@ -82,10 +82,6 @@ export class AssayProtocolModel extends Record({
     selectedPlateTemplate: string;
     qcEnabled: boolean;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(raw: any): AssayProtocolModel {
         let domains = raw.domains || List<DomainDesign>();
         if (raw.domains && Utils.isArray(raw.domains)) {

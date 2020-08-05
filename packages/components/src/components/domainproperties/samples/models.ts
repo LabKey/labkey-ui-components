@@ -28,10 +28,6 @@ export class SampleTypeModel extends Record({
     domain?: DomainDesign;
     exception: string;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {
         if (!raw) return new SampleTypeModel();
 

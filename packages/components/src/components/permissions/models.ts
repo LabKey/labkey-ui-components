@@ -17,10 +17,6 @@ export class Principal extends Record({
     type: string;
     active: boolean;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(raw: any): Principal {
         return new Principal({ ...raw });
     }
@@ -71,10 +67,6 @@ export class SecurityRole extends Record({
     sourceModule: string;
     uniqueName: string;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(raw: any): SecurityRole {
         let excludedPrincipals = List<number>();
         if (raw.excludedPrincipals) {
@@ -118,10 +110,6 @@ export class SecurityAssignment extends Record({
     type: string;
     isNew: boolean;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static isTypeMatch(assignmentType: string, typeToMatch: string): boolean {
         // inactive users will return type of undefined
         if (typeToMatch === 'u' && assignmentType === undefined) {
@@ -155,10 +143,6 @@ export class SecurityPolicy extends Record({
     resourceId: string;
     relevantRoles: List<string>;
     containerId: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 
     static create(raw: any): SecurityPolicy {
         let assignments = List<SecurityAssignment>();

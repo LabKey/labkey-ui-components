@@ -8,7 +8,7 @@ describe('processChartData', () => {
     } as ISelectRowsResult;
 
     test('with data', () => {
-        const data = processChartData(response, ['TotalCount', 'value']);
+        const data = processChartData(response, ['TotalCount', 'value']).data;
         expect(data.length).toBe(4);
         expect(data[0].label).toBe('GPAT 1');
         expect(data[0].count).toBe(6);
@@ -17,12 +17,12 @@ describe('processChartData', () => {
     });
 
     test('without data', () => {
-        const data = processChartData(response, ['TodayCount', 'value']);
+        const data = processChartData(response, ['TodayCount', 'value']).data;
         expect(data.length).toBe(0);
     });
 
     test('with alternate label field', () => {
-        const data = processChartData(response, ['TotalCount', 'value'], ['RowId', 'value']);
+        const data = processChartData(response, ['TotalCount', 'value'], ['RowId', 'value']).data;
         expect(data.length).toBe(4);
         expect(data[0].label).toBe(5051);
     });

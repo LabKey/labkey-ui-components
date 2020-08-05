@@ -28,6 +28,7 @@ interface GridPanelProps {
     asPanel?: boolean;
     advancedExportOptions?: { [key: string]: string };
     ButtonsComponent?: ComponentType<RequiresModelAndActions>;
+    emptyText?: string;
     hideEmptyViewMenu?: boolean;
     pageSizes?: number[];
     title?: string;
@@ -38,6 +39,7 @@ interface GridPanelProps {
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
     showViewMenu?: boolean;
+    showHeader?: boolean;
 }
 
 type Props = GridPanelProps & RequiresModelAndActions;
@@ -154,6 +156,7 @@ export class GridPanel extends PureComponent<Props, State> {
         showOmniBox: true,
         showSampleComparisonReports: false,
         showViewMenu: true,
+        showHeader: true,
     };
 
     constructor(props) {
@@ -499,7 +502,17 @@ export class GridPanel extends PureComponent<Props, State> {
     };
 
     render(): ReactNode {
-        const { actions, allowSelections, asPanel, model, showButtonBar, showOmniBox, title } = this.props;
+        const {
+            actions,
+            allowSelections,
+            asPanel,
+            emptyText,
+            model,
+            showButtonBar,
+            showOmniBox,
+            showHeader,
+            title,
+        } = this.props;
         const {
             hasData,
             id,
@@ -547,10 +560,12 @@ export class GridPanel extends PureComponent<Props, State> {
                         </div>
                     )}
 
-                    <div className="grid-panel__info">
-                        {loadingMessage && <LoadingSpinner msg={loadingMessage} />}
-                        {allowSelections && <SelectionStatus model={model} actions={actions} />}
-                    </div>
+                    {(loadingMessage || allowSelections) && (
+                        <div className="grid-panel__info">
+                            {loadingMessage && <LoadingSpinner msg={loadingMessage} />}
+                            {allowSelections && <SelectionStatus model={model} actions={actions} />}
+                        </div>
+                    )}
 
                     <div className="grid-panel__grid">
                         {hasError && <Alert>{queryInfoError || rowsError || selectionsError}</Alert>}
@@ -558,8 +573,10 @@ export class GridPanel extends PureComponent<Props, State> {
                         {!hasGridError && hasData && (
                             <Grid
                                 headerCell={this.headerCell}
+                                showHeader={showHeader}
                                 calcWidths
                                 condensed
+                                emptyText={emptyText}
                                 gridId={id}
                                 messages={fromJS(messages)}
                                 columns={this.getGridColumns()}

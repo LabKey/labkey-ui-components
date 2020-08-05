@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Move Timeline related component and model from Sample Manager
+
 ### version 0.82.2
 *Released*: 4 August 2020
 * Add headerCls prop to GridColumn

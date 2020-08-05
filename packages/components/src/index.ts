@@ -362,9 +362,10 @@ import {
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanel, DetailPanelWithModel } from './QueryModel/DetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
-import { AuditDetailsModel } from './components/auditlog/models';
+import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './components/auditlog/models';
 import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './components/auditlog/AuditDetails';
+import { TimelineView } from './components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
 import * as App from './internal/app';
 import { runDetailsColumnsForQueryModel } from './QueryModel/utils';
@@ -792,10 +793,13 @@ export {
     runDetailsColumnsForQueryModel,
     Pagination,
     PaginationData,
-    // AuditLog
+    // AuditLog and Timeline
     AuditDetailsModel,
     AuditQueriesListingPage,
     AuditDetails,
     getEventDataValueDisplay,
     getTimelineEntityUrl,
+    TimelineEventModel,
+    TimelineGroupedEventInfo,
+    TimelineView,
 };

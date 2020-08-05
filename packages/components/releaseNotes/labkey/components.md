@@ -3,8 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 0.??.??
 *Released*: ?? August 2020
-* SelectionMenuItem: add support for QueryModel and QueryGridModel
- * We need to support this while we transition away from QueryGridModel to QueryModel
+* Refactor several components/classes to not depend on QueryGridModel
+    * This allows them to more easily be used by QueryModel and QueryGridModel based components while we transition
+    away from QueryGridModel
+    * Affected Components: SelectionMenuItem, BulkUpdateModel
+    * Affected Classes: EditableGridLoaderFromSelection
 
 ### version 0.84.0
 *Released*: 7 August 2020

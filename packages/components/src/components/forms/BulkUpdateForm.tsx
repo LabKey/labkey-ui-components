@@ -7,7 +7,7 @@ import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
 import { QueryInfo } from '../base/models/QueryInfo';
-import { QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
+import { QueryColumn, SchemaQuery } from '../base/models/model';
 
 import { QueryInfoForm } from './QueryInfoForm';
 
@@ -24,6 +24,8 @@ interface Props {
     selectedIds: string[];
     shownInUpdateColumns?: boolean;
     singularNoun?: string;
+    // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
+    sortString?: string;
     uniqueFieldKey?: string;
     updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
 }
@@ -54,15 +56,22 @@ export class BulkUpdateForm extends React.Component<Props, State> {
     }
 
     UNSAFE_componentWillMount(): void {
-        const { onCancel, pluralNoun, queryInfo, selectedIds, shownInUpdateColumns, readOnlyColumns } = this.props;
-
+        const {
+            onCancel,
+            pluralNoun,
+            queryInfo,
+            readOnlyColumns,
+            selectedIds,
+            shownInUpdateColumns,
+            sortString
+        } = this.props;
         // Get all shownInUpdateView columns or undefined
         const columns = shownInUpdateColumns
             ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
             : undefined;
         const columnString = columns?.map(c => c.fieldKey).join(',');
         const { schemaName, name } = queryInfo;
-        getSelectedData(schemaName, name, selectedIds, columnString)
+        getSelectedData(schemaName, name, selectedIds, columnString, sortString)
             .then(response => {
                 const { data, dataIds } = response;
                 this.setState(() => ({

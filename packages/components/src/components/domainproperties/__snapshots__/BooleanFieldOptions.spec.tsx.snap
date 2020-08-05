@@ -106,6 +106,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
                         size="1x"
                         spin={false}
                         style={Object {}}
+                        swapOpacity={false}
                         symbol={false}
                         title=""
                         transform={null}

@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React, { ReactNode } from 'react';
+import ReactN from 'reactn';
 import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Utils } from '@labkey/api';
@@ -107,7 +108,7 @@ interface OwnProps {
     nounPlural: string;
     entityDataType: EntityDataType;
     parentDataTypes?: List<EntityDataType>;
-    importHelpLinkNode: React.ReactNode;
+    importHelpLinkNode: ReactNode;
     auditBehavior?: AuditBehaviorTypes;
     importOnly?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
@@ -119,12 +120,12 @@ interface StateProps {
     insertModel: EntityIdCreationModel;
     originalQueryInfo: QueryInfo;
     isSubmitting: boolean;
-    error: React.ReactNode;
+    error: ReactNode;
     isMerge: boolean;
     file: File;
 }
 
-export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
+export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
     private readonly capNounSingular;
     private readonly capNounPlural;
     private readonly capIdsText;
@@ -470,7 +471,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         );
     };
 
-    renderParentTypes = (entityDataType: EntityDataType): React.ReactNode => {
+    renderParentTypes = (entityDataType: EntityDataType): ReactNode => {
         const { insertModel } = this.state;
         const { combineParentTypes } = this.props;
         const queryName = entityDataType.typeListingSchemaQuery.queryName;
@@ -507,7 +508,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             .toArray();
     };
 
-    renderAddEntityButton = (entityDataType: EntityDataType): React.ReactNode => {
+    renderAddEntityButton = (entityDataType: EntityDataType): ReactNode => {
         const { insertModel } = this.state;
         const { combineParentTypes } = this.props;
         const queryName = entityDataType.typeListingSchemaQuery.queryName;
@@ -536,7 +537,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         }
     };
 
-    renderParentTypesAndButtons = (): React.ReactNode => {
+    renderParentTypesAndButtons = (): ReactNode => {
         const { insertModel } = this.state;
         const { parentDataTypes, combineParentTypes } = this.props;
 
@@ -564,9 +565,11 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
                 );
             }
         }
+
+        return null;
     };
 
-    renderHeader = (isGrid: boolean): React.ReactNode => {
+    renderHeader = (isGrid: boolean): ReactNode => {
         const { insertModel } = this.state;
 
         if (!insertModel) return null;
@@ -654,7 +657,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         this.setState(() => ({ isSubmitting }));
     };
 
-    insertRowsFromGrid = () => {
+    insertRowsFromGrid = (): void => {
         const { insertModel } = this.state;
         const { entityDataType } = this.props;
         const queryGridModel = this.getQueryGridModel();
@@ -721,7 +724,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         return false;
     };
 
-    renderGridButtons = (): React.ReactNode => {
+    renderGridButtons = (): ReactNode => {
         const { insertModel, isSubmitting } = this.state;
         const queryModel = this.getQueryGridModel();
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
@@ -751,7 +754,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         return null;
     };
 
-    renderError = (): React.ReactNode => {
+    renderError = (): ReactNode => {
         const { insertModel } = this.state;
         if (insertModel.isError) {
             return (
@@ -796,7 +799,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         this.setState(() => ({ error: undefined }));
     };
 
-    renderCreateFromGrid = (): React.ReactNode => {
+    renderCreateFromGrid = (): ReactNode => {
         const { insertModel } = this.state;
         const { entityDataType } = this.props;
 
@@ -888,7 +891,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         this.setState(state => ({ isMerge: !state.isMerge }));
     };
 
-    importOptionHelpText = (): React.ReactNode => {
+    importOptionHelpText = (): ReactNode => {
         return (
             <>
                 <p>
@@ -908,7 +911,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         );
     };
 
-    renderImportOptions = (): React.ReactNode => {
+    renderImportOptions = (): ReactNode => {
         return (
             <div className="margin-bottom">
                 <input type="checkbox" checked={this.state.isMerge} onChange={this.toggleInsertOptionChange} />
@@ -972,7 +975,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             });
     };
 
-    renderFileButtons = (): React.ReactNode => {
+    renderFileButtons = (): ReactNode => {
         const { isSubmitting, file, originalQueryInfo } = this.state;
 
         return (
@@ -1001,7 +1004,7 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
             : undefined;
     };
 
-    renderImportEntitiesFromFile = (): React.ReactNode => {
+    renderImportEntitiesFromFile = (): ReactNode => {
         const { fileSizeLimits, disableMerge } = this.props;
 
         return (
@@ -1033,11 +1036,11 @@ export class EntityInsertPanelImpl extends React.Component<Props, StateProps> {
         return this.props.currentStep === EntityInsertPanelTabs.First && !this.props.importOnly;
     };
 
-    renderButtons = (): React.ReactNode => {
+    renderButtons = (): ReactNode => {
         return this.isGridStep() ? this.renderGridButtons() : this.renderFileButtons();
     };
 
-    renderProgress = (): React.ReactNode => {
+    renderProgress = (): ReactNode => {
         const { insertModel, isSubmitting, file } = this.state;
 
         return this.isGridStep() ? (

@@ -77,7 +77,7 @@
     "react-select": "1.0.0-rc.10",
     "react-sticky": "6.0.3",
     "react-treebeard": "3.2.4",
-    "reactn": "2.2.6",
+    "reactn": "2.2.7",
     "redux-actions": "2.3.2",
     "vis-network": "6.5.2"
   },

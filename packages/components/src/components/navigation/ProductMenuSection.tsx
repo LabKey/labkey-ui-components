@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React, { Component, ReactNode } from 'react';
 import { Record } from 'immutable';
 
 import { AppURL } from '../../url/AppURL';
@@ -52,12 +52,12 @@ interface MenuSectionProps {
     currentProductId: string;
 }
 
-export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
+export class ProductMenuSection extends Component<MenuSectionProps> {
     static defaultProps = {
         maxColumns: 1,
     };
 
-    renderEmpty() {
+    renderEmpty = (): ReactNode => {
         const { config } = this.props;
         return (
             <>
@@ -73,9 +73,9 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
                 )}
             </>
         );
-    }
+    };
 
-    renderMenuItemsList(items, columnNumber = 1, totalColumns = 1, withOverflow = false) {
+    renderMenuItemsList = (items, columnNumber = 1, totalColumns = 1, withOverflow = false): ReactNode => {
         const { section } = this.props;
 
         return (
@@ -99,9 +99,9 @@ export class ProductMenuSection extends React.Component<MenuSectionProps, any> {
                           })}
             </ul>
         );
-    }
+    };
 
-    render() {
+    render(): ReactNode {
         const { config, section } = this.props;
         let icon;
         if (!section) {

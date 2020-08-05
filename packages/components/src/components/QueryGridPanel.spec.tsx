@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React from 'react';
 import renderer from 'react-test-renderer';
 import { List } from 'immutable';
 

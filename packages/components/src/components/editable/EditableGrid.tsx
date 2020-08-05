@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as OrigReact from 'react';
-import { ReactNode } from 'react';
-import React from 'reactn';
+import React, { createRef, ReactNode, RefObject } from 'react';
+import ReactN from 'reactn';
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import $ from 'jquery';
@@ -108,7 +107,7 @@ function inputCellKey(col: QueryColumn, row: any): string {
 export interface EditableColumnMetadata {
     placeholder?: string;
     readOnly?: boolean;
-    toolTip?: React.ReactNode;
+    toolTip?: ReactNode;
 }
 
 export interface EditableGridProps {
@@ -148,7 +147,7 @@ export interface EditableGridState {
     showBulkUpdate: boolean;
 }
 
-export class EditableGrid extends React.PureComponent<EditableGridProps, EditableGridState> {
+export class EditableGrid extends ReactN.PureComponent<EditableGridProps, EditableGridState> {
     static defaultProps = {
         allowAdd: true,
         allowBulkAdd: false,
@@ -175,15 +174,15 @@ export class EditableGrid extends React.PureComponent<EditableGridProps, Editabl
     };
 
     private maskDelay: number;
-    private readonly table: React.RefObject<any>;
-    private readonly wrapper: React.RefObject<any>;
+    private readonly table: RefObject<any>;
+    private readonly wrapper: RefObject<any>;
 
     constructor(props: EditableGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
-        this.table = OrigReact.createRef();
-        this.wrapper = OrigReact.createRef();
+        this.table = createRef();
+        this.wrapper = createRef();
 
         this.state = {
             selected: Set<string>(),

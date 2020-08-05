@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React from 'react';
+import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 
 import { QUERY_GRID_PREFIX } from '../constants';
@@ -57,7 +58,7 @@ interface QueryGridState {
     unlisten?: any;
 }
 
-export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
+export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState> {
     constructor(props: QueryGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);

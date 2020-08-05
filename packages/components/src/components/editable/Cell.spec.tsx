@@ -13,10 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
-import { Map } from 'immutable';
+import React from 'react';
 import { mount } from 'enzyme';
-
 import mock from 'xhr-mock';
 
 import { getStateQueryGridModel } from '../../models';
@@ -42,11 +40,9 @@ beforeAll(() => {
         editable: true,
         loader: {
             fetch: () => {
-                return new Promise(resolve => {
-                    resolve({
-                        data: constants.GRID_DATA,
-                        dataIds: constants.GRID_DATA.keySeq().toList(),
-                    });
+                return Promise.resolve({
+                    data: constants.GRID_DATA,
+                    dataIds: constants.GRID_DATA.keySeq().toList(),
                 });
             },
         },
@@ -62,8 +58,6 @@ const queryColumn = QueryColumn.create({
     lookup: undefined,
     name: 'myColumn',
 });
-
-const emptyRow = Map<any, any>();
 
 describe('Cell', () => {
     test('default props', done => {

@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React from 'react';
+import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 import moment from 'moment';
 
@@ -33,7 +34,7 @@ interface NotificationProps {
     user?: User;
 }
 
-export class Notification extends React.Component<NotificationProps, any> {
+export class Notification extends ReactN.Component<NotificationProps, any> {
     componentWillMount() {
         this.createSystemNotification();
     }

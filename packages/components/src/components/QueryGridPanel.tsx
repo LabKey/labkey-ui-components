@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React, { ReactNode } from 'react';
+import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 import classNames from 'classnames';
 
@@ -33,7 +34,7 @@ import { Alert } from './base/Alert';
 interface Props {
     model: QueryGridModel | List<QueryGridModel>;
     buttons?: QueryGridBarButtons;
-    header?: React.ReactNode;
+    header?: ReactNode;
     initModelOnMount?: boolean;
     message?: any;
     asPanel?: boolean;
@@ -55,7 +56,7 @@ interface State {
     activeTab: number;
 }
 
-export class QueryGridPanel extends React.Component<Props, State> {
+export class QueryGridPanel extends ReactN.Component<Props, State> {
     static defaultProps = {
         asPanel: true,
         initModelOnMount: true,

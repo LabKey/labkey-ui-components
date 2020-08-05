@@ -26,4 +26,14 @@ describe('processChartData', () => {
         expect(data.length).toBe(4);
         expect(data[0].label).toBe(5051);
     });
+
+    test('barFillColors', () => {
+        let barFillColors = processChartData(response, ['TotalCount', 'value']).barFillColors;
+        expect(barFillColors).toBe(undefined);
+
+        barFillColors = processChartData(response, ['TotalCount', 'value'], ['Name', 'value'], ['Color', 'value']).barFillColors;
+        expect(Object.keys(barFillColors).length).toBe(4);
+        expect(barFillColors['GPAT 1']).toBe('#ffffff');
+        expect(barFillColors['GPAT 10']).toBe('#dddddd');
+    });
 });

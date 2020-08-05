@@ -62,19 +62,6 @@ export function getDateTimeFormat(): string {
     return moment().toMomentFormatString(LABKEY.container.formats.dateTimeFormat);
 }
 
-function getNumberFormat(): string {
-    return LABKEY.container.formats.numberFormat;
-}
-
-// format input/value using look and feel settings
-function getFormattedDate(d) {
-    return d ? moment(d, getDateFormat()) : d;
-}
-
-function getFormattedDateTime(d) {
-    return d ? moment(d, getDateTimeFormat()) : d;
-}
-
 export function parseDate(dateStr: string, dateFormat?: string) {
     if (!dateStr) return null;
 
@@ -98,15 +85,11 @@ export function formatDateTime(date: Date, timezone?: string) {
     return _date.formatWithJDF(getDateTimeFormat());
 }
 
-function getFormattedNumber(n) {
-    return n ? numeral(n).format(getNumberFormat()) : n;
-}
-
-export function getUnFormattedNumber(n) {
+export function getUnFormattedNumber(n): number {
     return n ? numeral(n).value() : n;
 }
 
-export function generateNameWithTimestamp(name: string) {
+export function generateNameWithTimestamp(name: string): string {
     const date = new Date();
     const dateStr = date.toISOString().split('T')[0];
     let timeStr = date.toTimeString().split(' ')[0];

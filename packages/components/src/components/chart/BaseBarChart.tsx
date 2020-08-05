@@ -10,7 +10,7 @@ interface Props {
     chartHeight: number;
     defaultFillColor?: string;
     defaultBorderColor?: string;
-    barFillColors?: { [key: string]: string }
+    barFillColors?: { [key: string]: string };
 }
 
 interface State {
@@ -79,7 +79,7 @@ export class BaseBarChart extends React.Component<Props, State> {
 
             scales['color'] = {
                 scaleType: 'discrete',
-                scale: function(key) {
+                scale: function (key) {
                     return barFillColors[key] || defaultFillColor;
                 },
             };

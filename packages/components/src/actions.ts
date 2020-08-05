@@ -1227,7 +1227,7 @@ export function getSelectedData(
             queryName,
             filterArray,
             parameters: queryParameters,
-            sort: sorts || '-RowId',
+            sort: sorts,
             columns,
             offset: 0,
         })

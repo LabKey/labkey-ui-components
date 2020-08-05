@@ -36,7 +36,7 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
         return new Promise((resolve, reject) => {
             const { schema, query, queryParameters } = gridModel;
             const columnString = gridModel.getRequestColumnsString();
-            const sorts = gridModel.getSorts() || '-RowId';
+            const sorts = gridModel.getSorts();
             const selectedIds = this.dataIdsForSelection.toArray();
             return getSelectedData(schema, query, selectedIds, columnString, sorts, queryParameters)
                 .then(response => {

@@ -1247,23 +1247,6 @@ export function getSelectedData(
     );
 }
 
-export function getSelectedDataWithQueryGridModel(
-    model: QueryGridModel,
-    columns?: List<QueryColumn>
-): Promise<IGridResponse> {
-    // If columns defined use those for the query columns else use the display columns
-    const columnString = columns ? columns.map(c => c.fieldKey).join(',') : model.getRequestColumnsString();
-
-    return getSelectedData(
-        model.schema,
-        model.query,
-        model.selectedIds.toArray(),
-        columnString,
-        model.getSorts() || '-RowId',
-        model.queryParameters
-    );
-}
-
 function getFilterParameters(filters: List<any>, remove = false): Map<string, string> {
     const params = {};
 

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.83.0
+*Released*: 5 August 2020
 * Fix bug in QueryModel.getColumnString when omittedColumns is present.
 * Section component is now a PureComponent with css classes and more customizable styles
 * Add UserProvider for getting a user and user properties onto a page

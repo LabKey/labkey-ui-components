@@ -7,7 +7,10 @@ interface Props {
     title: string;
     data: any[];
     onClick: (evt: any, row: any) => any;
-    chartHeight: number
+    chartHeight: number;
+    defaultFillColor?: string;
+    defaultBorderColor?: string;
+    barFillColors?: { [key: string]: string }
 }
 
 interface State {
@@ -15,9 +18,11 @@ interface State {
 }
 
 export class BaseBarChart extends React.Component<Props, State> {
-    static defaultProps  = {
-        chartHeight: 350
-    }
+    static defaultProps = {
+        chartHeight: 350,
+        defaultFillColor: '#236fa0',
+        defaultBorderColor: '#236fa0',
+    };
 
     constructor(props: Props) {
         super(props);
@@ -52,7 +57,33 @@ export class BaseBarChart extends React.Component<Props, State> {
     }
 
     getPlotConfig(props: Props): Object {
-        const { title, data, onClick, chartHeight } = props;
+        const { title, data, onClick, chartHeight, defaultFillColor, defaultBorderColor, barFillColors } = props;
+        const aes = {
+            x: 'label',
+            y: 'count',
+        };
+        const scales = {
+            y: {
+                tickFormat: function (v) {
+                    if (v.toString().indexOf('.') > -1) {
+                        return;
+                    }
+
+                    return v;
+                },
+            },
+        };
+
+        if (barFillColors) {
+            aes['color'] = 'label';
+
+            scales['color'] = {
+                scaleType: 'discrete',
+                scale: function(key) {
+                    return barFillColors[key] || defaultFillColor;
+                },
+            };
+        }
 
         return {
             renderTo: this.state.plotId,
@@ -63,30 +94,18 @@ export class BaseBarChart extends React.Component<Props, State> {
                 main: { value: title, visibility: 'hidden' },
                 yLeft: { value: 'Count' },
             },
-            aes: {
-                x: 'label',
-                y: 'count',
-            },
             options: {
-                color: '#236fa0',
-                fill: '#236fa0',
+                color: defaultBorderColor,
+                fill: defaultFillColor,
                 showValues: true,
                 clickFn: onClick,
                 hoverFn: function (row) {
                     return row.label + '\nClick to view details';
                 },
             },
-            scales: {
-                y: {
-                    tickFormat: function (v) {
-                        if (v.toString().indexOf('.') > -1) {
-                            return;
-                        }
-
-                        return v;
-                    },
-                },
-            },
+            legendPos: 'none',
+            aes,
+            scales,
             data,
         };
     }

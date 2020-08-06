@@ -39,11 +39,9 @@ beforeAll(() => {
             fetch: () => {
                 const data = fromJS(sampleDetailsQuery.rows[0]);
 
-                return new Promise(resolve => {
-                    resolve({
-                        data,
-                        dataIds: data.keySeq().toList(),
-                    });
+                return Promise.resolve({
+                    data,
+                    dataIds: data.keySeq().toList(),
                 });
             },
         },
@@ -54,39 +52,32 @@ beforeAll(() => {
 
 describe('<Detail/>', () => {
     test('loading', () => {
-        const component = <Detail />;
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(<Detail />);
 
+        expect(tree.toJSON()).toMatchSnapshot();
+    });
+
+    test('with QueryGridModel', () => {
+        const model = getQueryGridModel(MODEL_ID);
+        const component = <Detail queryModel={model} />;
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
+
+        const wrapper = mount(component);
+        // expect one table row for each display column
+        expect(wrapper.find('tr')).toHaveLength(model.getDetailsDisplayColumns().size);
+        // expect one field value to render as links (Lookupfield)
+        expect(wrapper.find('a')).toHaveLength(1);
+        // expect the row labels to be the column captions by default
+        expect(wrapper.find('table').text().indexOf('Lookup Field Caption')).toBeGreaterThan(-1);
+        wrapper.unmount();
     });
 
-    test('with QueryGridModel', done => {
-        setTimeout(() => {
-            const model = getQueryGridModel(MODEL_ID);
-            const component = <Detail queryModel={model} />;
-            const tree = renderer.create(component);
-            expect(tree).toMatchSnapshot();
+    test('asPanel', () => {
+        const model = getQueryGridModel(MODEL_ID);
+        const tree = renderer.create(<Detail asPanel={true} queryModel={model} />);
 
-            const wrapper = mount(component);
-            // expect one table row for each display column
-            expect(wrapper.find('tr')).toHaveLength(model.getDetailsDisplayColumns().size);
-            // expect one field value to render as links (Lookupfield)
-            expect(wrapper.find('a')).toHaveLength(1);
-            // expect the row labels to be the column captions by default
-            expect(wrapper.find('table').text().indexOf('Lookup Field Caption')).toBeGreaterThan(-1);
-            wrapper.unmount();
-            done();
-        }, 0);
-    });
-
-    test('asPanel', done => {
-        setTimeout(() => {
-            const model = getQueryGridModel(MODEL_ID);
-            const component = <Detail asPanel={true} queryModel={model} />;
-            const tree = renderer.create(component);
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        }, 0);
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 
     test('titleRenderer', () => {

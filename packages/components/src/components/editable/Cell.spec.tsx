@@ -20,7 +20,7 @@ import mock from 'xhr-mock';
 import { getStateQueryGridModel } from '../../models';
 import * as constants from '../../test/data/constants';
 import { gridInit } from '../../actions';
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks, sleep } from '../../testHelpers';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 
 import { Cell } from './Cell';
@@ -30,7 +30,7 @@ const SCHEMA_NAME = 'lists';
 const QUERY_NAME = 'MixtureTypes';
 const MODEL_ID = (GRID_ID + '|' + SCHEMA_NAME + '/' + QUERY_NAME).toLowerCase();
 
-beforeAll(() => {
+beforeAll(async () => {
     initUnitTestMocks();
     const schemaQuery = new SchemaQuery({
         schemaName: SCHEMA_NAME,
@@ -48,6 +48,8 @@ beforeAll(() => {
         },
     });
     gridInit(model, true);
+
+    await sleep(100);
 });
 
 afterAll(() => {
@@ -60,26 +62,20 @@ const queryColumn = QueryColumn.create({
 });
 
 describe('Cell', () => {
-    test('default props', done => {
+    test('default props', () => {
         const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} />);
-
-        setTimeout(() => {
-            expect(cell.find('div')).toHaveLength(1);
-            expect(cell.find('input')).toHaveLength(0);
-            done();
-        }, 25);
+        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('input')).toHaveLength(0);
+        cell.unmount();
     });
 
-    test('with focus', done => {
+    test('with focus', () => {
         const cell = mount(
             <Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused={true} selected={true} />
         );
-
-        setTimeout(() => {
-            expect(cell.find('div')).toHaveLength(0);
-            expect(cell.find('input')).toHaveLength(1);
-            done();
-        }, 25);
+        expect(cell.find('div')).toHaveLength(0);
+        expect(cell.find('input')).toHaveLength(1);
+        cell.unmount();
     });
 
     test('with placeholder', () => {

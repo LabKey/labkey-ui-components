@@ -20,7 +20,7 @@ import { List } from 'immutable';
 import { TESTS_ONLY_RESET_DOM_COUNT } from '../util/utils';
 
 import { getStateQueryGridModel } from '../models';
-import { initUnitTestMocks, registerDefaultURLMappers } from '../testHelpers';
+import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../testHelpers';
 
 import { QueryGridModel, SchemaQuery } from './base/models/model';
 import { QueryGridPanel } from './QueryGridPanel';
@@ -38,7 +38,7 @@ describe('QueryGridPanel render', () => {
     });
 
     test('no model', () => {
-        const tree = renderer.create(<QueryGridPanel model={null} />).toJSON();
+        const tree = renderer.create(<QueryGridPanel model={null} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -49,11 +49,11 @@ describe('QueryGridPanel render', () => {
             queryName: 'Data',
         });
         const model = getStateQueryGridModel(modelId, schemaQuery);
-        const tree = renderer.create(<QueryGridPanel model={model} />).toJSON();
+        const tree = renderer.create(<QueryGridPanel model={model} />);
         expect(tree).toMatchSnapshot();
     });
 
-    test('query grid error', done => {
+    test('query grid error', async () => {
         const modelId = 'gridPanelError';
         const schemaQuery = new SchemaQuery({
             schemaName: 'i.dont.exist',
@@ -62,10 +62,10 @@ describe('QueryGridPanel render', () => {
         const model = getStateQueryGridModel(modelId, schemaQuery);
 
         const tree = renderer.create(<QueryGridPanel model={model} />);
-        setTimeout(() => {
-            expect(tree).toMatchSnapshot();
-            done();
-        }, 0);
+
+        await sleep();
+
+        expect(tree).toMatchSnapshot();
     });
 
     test('with header and message props', () => {
@@ -115,7 +115,7 @@ describe('QueryGridPanel render', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('with showTabs and two grid tabs with one empty (should show only non-empty)', done => {
+    test('with showTabs and two grid tabs with one empty (should show only non-empty)', async () => {
         const modelId1 = 'gridPanelWithTabsAndData';
         const schemaQuery1 = new SchemaQuery({
             schemaName: 'assay.General.GPAT 1',
@@ -130,9 +130,9 @@ describe('QueryGridPanel render', () => {
         const model2 = getStateQueryGridModel(modelId2, schemaQuery2, { title: 'Second Query Grid' });
         const models = List<QueryGridModel>([model1, model2]);
         const tree = renderer.create(<QueryGridPanel model={models} showTabs={true} />);
-        setTimeout(() => {
-            expect(tree).toMatchSnapshot();
-            done();
-        }, 0);
+
+        await sleep();
+
+        expect(tree).toMatchSnapshot();
     });
 });

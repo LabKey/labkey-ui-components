@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { initUnitTestMocks, registerDefaultURLMappers } from '../../../testHelpers';
+import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../../../testHelpers';
 
 import { LineageGrid } from './LineageGrid';
 
@@ -16,17 +16,16 @@ describe('<LineageGrid/>', () => {
             <LineageGrid lsid="urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2" />
         );
 
-        expect(component.toJSON()).toMatchSnapshot();
+        expect(component).toMatchSnapshot();
     });
 
-    test('with data', done => {
+    test('with data', async () => {
         const component = renderer.create(
             <LineageGrid lsid="urn:lsid:labkey.com:Sample.9273.ExpressionSystemSamples:ES-1.2" />
         );
 
-        setTimeout(() => {
-            expect(component.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        expect(component).toMatchSnapshot();
     });
 });

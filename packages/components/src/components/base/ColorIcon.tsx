@@ -5,23 +5,22 @@ interface Props {
     value: string;
     asSquare?: boolean;
     label?: string;
+    useSmall?: boolean;
 }
 
 export class ColorIcon extends PureComponent<Props> {
-    static defaultProps = {
-        cls: 'color-picker__chip',
-    };
-
     render(): ReactNode {
-        const { cls, value, asSquare, label } = this.props;
+        const { cls, value, asSquare, label, useSmall } = this.props;
+
+        let iconCls = cls;
+        if (!iconCls) {
+            iconCls = asSquare ? 'color-picker__chip' : 'color-icon__circle';
+            if (useSmall) iconCls += '-small';
+        }
 
         let icon;
         if (value) {
-            if (asSquare) {
-                icon = <i className={cls} style={{ backgroundColor: value }} />;
-            } else {
-                icon = <i className="color-icon__circle" style={{ backgroundColor: value }} />;
-            }
+            icon = <i className={iconCls} style={{ backgroundColor: value }} />;
         }
 
         return (

@@ -248,10 +248,19 @@ div.react-datepicker__current-month {
     display: inline-block;
     padding-left: 4px;
 }
-.color-icon__circle {
+
+.color-icon__circle-small {
     display: inline-block;
     border-radius: 50%;
     border: solid 1px $gray;
     height: 12px;
     width: 12px;
+}
+
+.color-icon__circle {
+    display: inline-block;
+    border-radius: 50%;
+    border: solid 1px $gray;
+    height: 16px;
+    width: 16px;
 }

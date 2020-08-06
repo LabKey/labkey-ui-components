@@ -1,6 +1,30 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.83.2
+*Released*: 6 August 2020
+* BulkUpdateForm to pass through readonly columns to EditableGrid
+
+### version 0.83.1
+*Released*: 6 August 2020
+* BaseBarChart and processChartData updates to support per-bar fill color designations
+
+### version 0.83.0
+*Released*: 5 August 2020
+* Fix bug in QueryModel.getColumnString when omittedColumns is present.
+* Section component is now a PureComponent with css classes and more customizable styles
+* Add UserProvider for getting a user and user properties onto a page
+* Surface emptyText and showHeader properties of Grid through GridPanel
+* Update to StorageStatusRenderer for different text representing "not in storage"
+* Move BaseBarChart and utility method from sampleManagement
+
+### version 0.82.2
+*Released*: 4 August 2020
+* Add headerCls prop to GridColumn
+* Add useSmall prop to ColorIcon to show small sized icon
+* Add setSelections and replaceSelections to QueryModel Actions
+* Export cancelEvent method
+
 ### version 0.82.1
 *Released*: 29 July 2020
 * Fix sorts issue with QueryModel.urlQueryParams

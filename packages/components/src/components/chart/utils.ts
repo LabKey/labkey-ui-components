@@ -34,3 +34,69 @@ export function processChartData(
 
     return { data, barFillColors } as ChartDataProps;
 }
+
+interface BarChartPlotConfigProps {
+    renderTo: string,
+    title: string,
+    height?: number,
+    width: number,
+    defaultFillColor?: string,
+    defaultBorderColor?: string,
+    data: any[],
+    barFillColors?: { [key: string]: any },
+    onClick?: (evt: any, row: any) => void,
+}
+
+export function getBarChartPlotConfig(props: BarChartPlotConfigProps): { [key: string]: any } {
+    const { renderTo, title, data, onClick, height, width, defaultFillColor, defaultBorderColor, barFillColors } = props;
+    const aes = {
+        x: 'label',
+        y: 'count',
+    };
+    const scales = {
+        y: {
+            tickFormat: function (v) {
+                if (v.toString().indexOf('.') > -1) {
+                    return;
+                }
+
+                return v;
+            },
+        },
+    };
+
+    if (barFillColors) {
+        aes['color'] = 'label';
+
+        scales['color'] = {
+            scaleType: 'discrete',
+            scale: function (key) {
+                return barFillColors[key] || defaultFillColor;
+            },
+        };
+    }
+
+    return {
+        renderTo,
+        rendererType: 'd3',
+        width,
+        height,
+        labels: {
+            main: { value: title, visibility: 'hidden' },
+            yLeft: { value: 'Count' },
+        },
+        options: {
+            color: defaultBorderColor,
+            fill: defaultFillColor,
+            showValues: true,
+            clickFn: onClick,
+            hoverFn: function (row) {
+                return row.label + '\nClick to view details';
+            },
+        },
+        legendPos: 'none',
+        aes,
+        scales,
+        data,
+    };
+}

@@ -2,6 +2,7 @@ import * as React from 'react';
 import $ from 'jquery';
 
 import { debounce, generateId } from '../..';
+import { getBarChartPlotConfig } from "./utils";
 
 interface Props {
     title: string;
@@ -58,56 +59,17 @@ export class BaseBarChart extends React.Component<Props, State> {
 
     getPlotConfig(props: Props): Object {
         const { title, data, onClick, chartHeight, defaultFillColor, defaultBorderColor, barFillColors } = props;
-        const aes = {
-            x: 'label',
-            y: 'count',
-        };
-        const scales = {
-            y: {
-                tickFormat: function (v) {
-                    if (v.toString().indexOf('.') > -1) {
-                        return;
-                    }
-
-                    return v;
-                },
-            },
-        };
-
-        if (barFillColors) {
-            aes['color'] = 'label';
-
-            scales['color'] = {
-                scaleType: 'discrete',
-                scale: function (key) {
-                    return barFillColors[key] || defaultFillColor;
-                },
-            };
-        }
-
-        return {
+        return getBarChartPlotConfig({
             renderTo: this.state.plotId,
-            rendererType: 'd3',
-            width: this.getPlotElement().width() + 50,
+            title,
             height: chartHeight,
-            labels: {
-                main: { value: title, visibility: 'hidden' },
-                yLeft: { value: 'Count' },
-            },
-            options: {
-                color: defaultBorderColor,
-                fill: defaultFillColor,
-                showValues: true,
-                clickFn: onClick,
-                hoverFn: function (row) {
-                    return row.label + '\nClick to view details';
-                },
-            },
-            legendPos: 'none',
-            aes,
-            scales,
+            width: this.getPlotElement().width() + 50,
+            defaultFillColor,
+            defaultBorderColor,
+            onClick,
             data,
-        };
+            barFillColors,
+        });
     }
 
     renderPlot(props: Props) {

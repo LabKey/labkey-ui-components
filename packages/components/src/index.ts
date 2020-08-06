@@ -364,6 +364,7 @@ import {
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanel, DetailPanelWithModel } from './QueryModel/DetailPanel';
+import { EditableDetailPanel } from './QueryModel/EditableDetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
 import { AuditDetailsModel } from './components/auditlog/models';
 import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
@@ -796,6 +797,7 @@ export {
     GridPanelWithModel,
     DetailPanel,
     DetailPanelWithModel,
+    EditableDetailPanel,
     runDetailsColumnsForQueryModel,
     Pagination,
     PaginationData,

@@ -109,3 +109,17 @@
     top: -26px;
 }
 
+
+.timeline-grid.timeline-grid-no-selection {
+
+    tr {
+        &:hover {
+            background-color: white;
+        }
+
+        &.timeline-event-row {
+            cursor: default;
+        }
+    }
+
+}

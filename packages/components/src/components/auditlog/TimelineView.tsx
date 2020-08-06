@@ -7,7 +7,8 @@ import { App, getEventDataValueDisplay, SVGIcon } from "../../index";
 
 interface Props {
     events: List<TimelineEventModel>
-    onEventSelection: (selectedEvent: TimelineEventModel) => any
+    selectionDisabled?; boolean
+    onEventSelection?: (selectedEvent: TimelineEventModel) => any
     showRecentFirst: boolean
     selectedEvent?: TimelineEventModel
     showUserLinks?: boolean
@@ -18,7 +19,10 @@ interface Props {
 export class TimelineView extends React.Component<Props, any> {
 
     selectEvent = (selectedEvent: TimelineEventModel) => {
-        this.props.onEventSelection(selectedEvent);
+        const { onEventSelection, selectionDisabled } = this.props;
+
+        if (onEventSelection && !selectionDisabled)
+            this.props.onEventSelection(selectedEvent);
     };
 
     renderRow(event: TimelineEventModel, selectedEntityInfo?: any): any {
@@ -128,9 +132,11 @@ export class TimelineView extends React.Component<Props, any> {
     }
 
     render () {
-        const { events, selectedEntityInfo} = this.props;
+        const { events, selectedEntityInfo, selectionDisabled} = this.props;
         return (
-            <table className={'timeline-grid'}>
+            <table className={classNames("timeline-grid", {
+                "timeline-grid-no-selection": selectionDisabled
+            })}>
                 <tbody>
                 {events.map(event => {
                     return this.renderRow(event, selectedEntityInfo);

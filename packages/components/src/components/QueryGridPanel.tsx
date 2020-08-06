@@ -50,6 +50,7 @@ interface Props {
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any;
     supportedExportTypes?: Set<EXPORT_TYPES>;
     advancedExportOption?: Record<string, any>;
+    onExport?: Record<number, () => any>;
     highlightLastSelectedRow?: boolean;
 }
 
@@ -202,6 +203,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
             showSampleComparisonReports,
             onReportClicked,
             onCreateReportClicked,
+            onExport,
             onSelectionChange,
             supportedExportTypes,
             advancedExportOption,
@@ -221,6 +223,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
                     onSelectionChange={onSelectionChange}
                     supportedExportTypes={supportedExportTypes}
                     advancedExportOption={advancedExportOption}
+                    onExport={onExport}
                 />
             );
         }

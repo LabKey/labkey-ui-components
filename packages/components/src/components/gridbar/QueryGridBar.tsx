@@ -40,6 +40,7 @@ interface QueryGridBarProps {
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any;
     supportedExportTypes?: Set<EXPORT_TYPES>;
     advancedExportOption?: Record<string, any>;
+    onExport?: Record<number, () => any>;
 }
 
 /**
@@ -63,6 +64,7 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             onSelectionChange,
             supportedExportTypes,
             advancedExportOption,
+            onExport
         } = this.props;
         let buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
 
@@ -76,7 +78,7 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
 
         const pageSizeBtn = model?.isPaged ? <PageSizeSelector model={model} /> : null;
 
-        const exportBtn = model?.showExport ? <Export model={model} advancedOption={advancedExportOption} supportedTypes={supportedExportTypes}/> : null;
+        const exportBtn = model?.showExport ? <Export model={model} advancedOption={advancedExportOption} supportedTypes={supportedExportTypes} onExport={onExport}/> : null;
 
         const chart = model?.showChartSelector ? (
             <ChartSelector

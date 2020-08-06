@@ -72,6 +72,7 @@ import { buildURL, getSortFromUrl } from './url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
 import { intersect, naturalSort, not, resolveKey } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
+import { ExtendedXMLHttpRequest } from '@labkey/api/dist/labkey/Utils';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -784,15 +785,35 @@ export function exportRows(
     } else {
         throw new Error('Unknown export type: ' + type);
     }
-    const url = buildURL(controller, action, undefined, { returnURL: false });
+    if (type === EXPORT_TYPES.LABEL) {
+        printGridLabels(params);
+    }
+    else {
+        const url = buildURL(controller, action, undefined, {returnURL: false});
 
-    // POST a form
-    const form = $(`<form method="POST" action="${url}">`);
-    $.each(params, function (k, v) {
-        form.append($(`<input type="hidden" name="${k.toString()}" value="${v}">`));
-    });
-    $('body').append(form);
-    form.trigger('submit');
+        // POST a form
+        const form = $(`<form method="POST" action="${url}">`);
+        $.each(params, function (k, v) {
+            form.append($(`<input type="hidden" name="${k.toString()}" value="${v}">`));
+        });
+        $('body').append(form);
+        form.trigger('submit');
+    }
+}
+
+export function printGridLabels(params: Record<string, any>) : any {
+    Ajax.request({
+        url: buildURL(BARTENDER_EXPORT_CONTROLLER, "printBarTenderLabels.api", undefined, { returnURL: false }),
+        method: 'GET',
+        params,
+        success: (request: ExtendedXMLHttpRequest) =>  {
+            console.log(request.response);
+            // TODO actually do the printing now that we have the document to print
+        },
+        failure: Utils.getCallbackWrapper(response => {
+            console.error(response);
+        })
+    })
 }
 
 export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): void {

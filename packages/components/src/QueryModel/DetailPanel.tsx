@@ -24,7 +24,7 @@ import { DetailDisplay, DetailDisplaySharedProps } from '../components/forms/det
 import { InjectedQueryModels, withQueryModels } from './withQueryModels';
 
 interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
-    queryColumns?: List<QueryColumn>;
+    queryColumns?: QueryColumn[];
 }
 
 export class DetailPanel extends PureComponent<DetailPanelProps> {
@@ -33,6 +33,7 @@ export class DetailPanel extends PureComponent<DetailPanelProps> {
         const { actions, model, queryColumns, ...detailDisplayProps } = this.props;
         const { editingMode } = detailDisplayProps;
         const error = model.queryInfoError ?? model.rowsError;
+        let displayColumns: List<QueryColumn>;
 
         if (error !== undefined) {
             return <Alert>{error}</Alert>;
@@ -40,18 +41,24 @@ export class DetailPanel extends PureComponent<DetailPanelProps> {
             return <LoadingSpinner />;
         }
 
+        if (queryColumns !== undefined) {
+            displayColumns = List(queryColumns);
+        } else {
+            displayColumns = List(editingMode ? model.updateColumns : model.detailColumns);
+        }
+
         return (
             <DetailDisplay
                 {...detailDisplayProps}
                 data={fromJS(model.gridData)}
-                displayColumns={queryColumns ?? List(editingMode ? model.updateColumns : model.detailColumns)}
+                displayColumns={displayColumns}
             />
         );
     }
 }
 
 interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
-    queryColumns?: List<QueryColumn>;
+    queryColumns?: QueryColumn[];
 }
 
 class DetailPanelWithModelBodyImpl extends PureComponent<DetailPanelWithModelProps & InjectedQueryModels> {

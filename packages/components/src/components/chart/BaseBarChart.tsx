@@ -3,11 +3,16 @@ import $ from 'jquery';
 
 import { debounce, generateId } from '../..';
 
+import { getBarChartPlotConfig } from './utils';
+
 interface Props {
     title: string;
     data: any[];
     onClick: (evt: any, row: any) => any;
-    chartHeight: number
+    chartHeight: number;
+    defaultFillColor?: string;
+    defaultBorderColor?: string;
+    barFillColors?: { [key: string]: string };
 }
 
 interface State {
@@ -15,9 +20,11 @@ interface State {
 }
 
 export class BaseBarChart extends React.Component<Props, State> {
-    static defaultProps  = {
-        chartHeight: 350
-    }
+    static defaultProps = {
+        chartHeight: 350,
+        defaultFillColor: '#236fa0',
+        defaultBorderColor: '#236fa0',
+    };
 
     constructor(props: Props) {
         super(props);
@@ -52,43 +59,18 @@ export class BaseBarChart extends React.Component<Props, State> {
     }
 
     getPlotConfig(props: Props): Object {
-        const { title, data, onClick, chartHeight } = props;
-
-        return {
+        const { title, data, onClick, chartHeight, defaultFillColor, defaultBorderColor, barFillColors } = props;
+        return getBarChartPlotConfig({
             renderTo: this.state.plotId,
-            rendererType: 'd3',
-            width: this.getPlotElement().width() + 50,
+            title,
             height: chartHeight,
-            labels: {
-                main: { value: title, visibility: 'hidden' },
-                yLeft: { value: 'Count' },
-            },
-            aes: {
-                x: 'label',
-                y: 'count',
-            },
-            options: {
-                color: '#236fa0',
-                fill: '#236fa0',
-                showValues: true,
-                clickFn: onClick,
-                hoverFn: function (row) {
-                    return row.label + '\nClick to view details';
-                },
-            },
-            scales: {
-                y: {
-                    tickFormat: function (v) {
-                        if (v.toString().indexOf('.') > -1) {
-                            return;
-                        }
-
-                        return v;
-                    },
-                },
-            },
+            width: this.getPlotElement().width() + 50,
+            defaultFillColor,
+            defaultBorderColor,
+            onClick,
             data,
-        };
+            barFillColors,
+        });
     }
 
     renderPlot(props: Props) {

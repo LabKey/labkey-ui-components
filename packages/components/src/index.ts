@@ -130,6 +130,7 @@ import {
     setSelected,
     unselectAll,
 } from './actions';
+import { cancelEvent } from './events';
 import {
     getEditorModel,
     getQueryGridModel,
@@ -272,6 +273,8 @@ import {
     importAssayRun,
 } from './components/assay/actions';
 import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './components/assay/constants';
+import { BaseBarChart } from './components/chart/BaseBarChart';
+import { processChartData } from './components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
 import { invalidateLineageResults } from './components/lineage/actions';
 import {
@@ -299,6 +302,7 @@ import { UserDetailHeader } from './components/user/UserDetailHeader';
 import { UserProfile } from './components/user/UserProfile';
 import { ChangePasswordModal } from './components/user/ChangePasswordModal';
 import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
+import { UserProvider, UserProviderProps } from './components/user/UserProvider';
 
 import { createFormInputId, fetchDomain, saveDomain, setDomainFields } from './components/domainproperties/actions';
 import {
@@ -420,6 +424,7 @@ export {
     EditableGridModal,
     EditableColumnMetadata,
     EditorModel,
+    cancelEvent,
     // url and location related items
     AppURL,
     Location,
@@ -509,6 +514,8 @@ export {
     SecurityPolicy,
     SecurityRole,
     Principal,
+    UserProvider,
+    UserProviderProps,
     // data class and sample type related items
     DataClassModel,
     deleteDataClass,
@@ -579,6 +586,8 @@ export {
     last12Months,
     monthSort,
     // report / chart related items
+    BaseBarChart,
+    processChartData,
     DataViewInfoTypes,
     IDataViewInfo,
     loadReports,

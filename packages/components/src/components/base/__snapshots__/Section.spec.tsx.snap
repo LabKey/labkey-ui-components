@@ -11,21 +11,10 @@ exports[`<Section /> custom properties 1`] = `
       className="panel-body"
     >
       <div
-        style={
-          Object {
-            "borderBottom": "2px solid #cccccc",
-            "marginBottom": "30px",
-          }
-        }
+        className="section-panel--title-container-large"
       >
         <div
-          style={
-            Object {
-              "display": "inline-block",
-              "fontSize": "200%",
-              "marginBottom": "8px",
-            }
-          }
+          className="section-panel--title-large"
         >
           Testing Title
         </div>
@@ -37,12 +26,7 @@ exports[`<Section /> custom properties 1`] = `
           </div>
         </div>
         <div
-          style={
-            Object {
-              "fontWeight": 300,
-              "marginBottom": "8px",
-            }
-          }
+          className="section-panel--title-caption-large"
         >
           <p>
             Testing Caption
@@ -65,7 +49,7 @@ exports[`<Section /> default properties 1`] = `
       className="panel-body"
     >
       <div
-        style={Object {}}
+        className=""
       />
     </div>
   </div>

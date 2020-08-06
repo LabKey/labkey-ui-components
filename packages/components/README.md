@@ -251,7 +251,7 @@ yarn run lint-fix "./src/components/**/*"
 ## Publishing
 
 ### Credentials
-In order to publish, you will need to set up your npm credentials.  Follow [these instructions](https://internal.labkey.com/wiki/Handbook/Dev/page.view?name=npmrc) to create your .npmrc file.
+In order to publish, you will need to set up your npm credentials.  Follow [these instructions](https://www.labkey.org/Documentation/_PremiumResources/wiki-page.view?name=npmrc) to create your .npmrc file.
 If you do not have permissions to publish to this repository, contact a LabKey Artifactory administrator who can grant you those permissions.
 
 

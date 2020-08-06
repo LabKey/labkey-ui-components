@@ -1,5 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* Add Label as optional export format
 
 ### version 0.83.2
 *Released*: 6 August 2020

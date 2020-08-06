@@ -22,12 +22,13 @@ import { ChartMenu } from './ChartMenu';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 
-interface GridPanelProps {
+interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
     allowSorting?: boolean;
     asPanel?: boolean;
     advancedExportOptions?: { [key: string]: string };
-    ButtonsComponent?: ComponentType<RequiresModelAndActions>;
+    ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
+    buttonsComponentProps?: ButtonsComponentProps;
     emptyText?: string;
     hideEmptyViewMenu?: boolean;
     pageSizes?: number[];
@@ -42,13 +43,13 @@ interface GridPanelProps {
     showHeader?: boolean;
 }
 
-type Props = GridPanelProps & RequiresModelAndActions;
+type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
-interface GridBarProps extends Props {
+interface GridBarProps<T> extends Props<T> {
     onViewSelect: (viewName) => void;
 }
 
-class ButtonBar extends PureComponent<GridBarProps> {
+class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
     loadFirstPage = (): void => {
         const { model, actions } = this.props;
         actions.loadFirstPage(model.id);
@@ -80,6 +81,7 @@ class ButtonBar extends PureComponent<GridBarProps> {
             actions,
             advancedExportOptions,
             ButtonsComponent,
+            buttonsComponentProps,
             hideEmptyViewMenu,
             onViewSelect,
             pageSizes,
@@ -101,7 +103,9 @@ class ButtonBar extends PureComponent<GridBarProps> {
             <div className="grid-panel__button-bar">
                 <div className="grid-panel__button-bar-left">
                     <div className="button-bar__section">
-                        {ButtonsComponent !== undefined && <ButtonsComponent model={model} actions={actions} />}
+                        {ButtonsComponent !== undefined && (
+                            <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
+                        )}
 
                         {showChartMenu && (
                             <ChartMenu
@@ -143,7 +147,7 @@ interface State {
     actionValues: ActionValue[];
 }
 
-export class GridPanel extends PureComponent<Props, State> {
+export class GridPanel<T> extends PureComponent<Props<T>, State> {
     static defaultProps = {
         allowSelections: true,
         allowSorting: true,
@@ -187,7 +191,7 @@ export class GridPanel extends PureComponent<Props, State> {
         actions.loadModel(model.id, allowSelections);
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>): void {
+    componentDidUpdate(prevProps: Readonly<Props<T>>): void {
         if (this.props.model.queryInfo !== undefined && this.props.model !== prevProps.model) {
             this.populateOmnibox();
         }
@@ -590,7 +594,7 @@ export class GridPanel extends PureComponent<Props, State> {
     }
 }
 
-class GridPanelWithModelImpl extends PureComponent<GridPanelProps & InjectedQueryModels> {
+class GridPanelWithModelImpl<T> extends PureComponent<GridPanelProps<T> & InjectedQueryModels> {
     render(): ReactNode {
         const { queryModels, actions, ...props } = this.props;
         return <GridPanel actions={actions} model={Object.values(queryModels)[0]} {...props} />;
@@ -603,4 +607,4 @@ class GridPanelWithModelImpl extends PureComponent<GridPanelProps & InjectedQuer
  *
  * In the future when GridPanel supports multiple models we will render tabs.
  */
-export const GridPanelWithModel = withQueryModels<GridPanelProps>(GridPanelWithModelImpl);
+export const GridPanelWithModel = withQueryModels<GridPanelProps<any>>(GridPanelWithModelImpl);

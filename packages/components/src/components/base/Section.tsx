@@ -19,28 +19,44 @@ interface SectionProps {
     caption?: React.ReactNode;
     context?: React.ReactNode;
     panelClassName?: string;
+    titleClassName?: string;
+    titleContainerClassName?: string;
     title?: string;
+    titleSize?: string;
 }
 
-// FIXME: remove all of these inline styles, make actual CSS classes.
-// FIXME: stop using React.SFC as it is deprecated (likely just convert to a PureComponent for now)
-export const Section: React.SFC<SectionProps> = props => (
-    <>
-        <div className="g-section">
-            <div className={`panel panel-default ${props.panelClassName ? props.panelClassName : ''}`}>
-                <div className="panel-body">
-                    <div style={props.title ? { borderBottom: '2px solid #cccccc', marginBottom: '30px' } : {}}>
-                        {props.title && (
-                            <div style={{ display: 'inline-block', fontSize: '200%', marginBottom: '8px' }}>
-                                {props.title}
-                            </div>
-                        )}
-                        {props.context && <div className="pull-right">{props.context}</div>}
-                        {props.caption && <div style={{ fontWeight: 300, marginBottom: '8px' }}>{props.caption}</div>}
+export class Section extends React.PureComponent<SectionProps> {
+    static defaultProps = {
+        titleSize: 'large',
+    };
+
+    render() {
+        const {
+            panelClassName,
+            titleClassName,
+            titleContainerClassName,
+            title,
+            titleSize,
+            context,
+            caption,
+            children,
+        } = this.props;
+        const titleContainerCls = titleContainerClassName || 'section-panel--title-container-' + titleSize;
+        return (
+            <div className="g-section">
+                <div className={`panel panel-default ${panelClassName ? panelClassName : ''}`}>
+                    <div className="panel-body">
+                        <div className={title ? titleContainerCls : ''}>
+                            {title && (
+                                <div className={titleClassName || 'section-panel--title-' + titleSize}>{title}</div>
+                            )}
+                            {context && <div className="pull-right">{context}</div>}
+                            {caption && <div className={'section-panel--title-caption-' + titleSize}>{caption}</div>}
+                        </div>
+                        {children}
                     </div>
-                    {props.children}
                 </div>
             </div>
-        </div>
-    </>
-);
+        );
+    }
+}

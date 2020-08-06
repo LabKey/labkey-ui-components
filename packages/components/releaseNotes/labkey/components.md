@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     away from QueryGridModel
     * Affected Components: SelectionMenuItem, BulkUpdateModel
     * Affected Classes: EditableGridLoaderFromSelection
+* Add EditableDetailPanel, the QueryModel version of DetailEditing
+* DetailPanel: change queryColumns prop from List<QueryColumn> to QueryColumn[]
+    * We are moving away from Immutable and want to limit how much of it is exposed in our API
+* GridPanel: add new prop buttonsComponentProps
+    * Use this prop to pass any additional props to your ButtonsComponent (Model and Actions are still passed)
 
 ### version 0.84.0
 *Released*: 7 August 2020

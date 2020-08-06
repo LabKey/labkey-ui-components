@@ -7,7 +7,7 @@ import { App, getEventDataValueDisplay, SVGIcon } from "../../index";
 
 interface Props {
     events: List<TimelineEventModel>
-    selectionDisabled?; boolean
+    selectionDisabled?: boolean
     onEventSelection?: (selectedEvent: TimelineEventModel) => any
     showRecentFirst: boolean
     selectedEvent?: TimelineEventModel

@@ -611,4 +611,5 @@ class GridPanelWithModelImpl<T> extends PureComponent<GridPanelProps<T> & Inject
  *
  * In the future when GridPanel supports multiple models we will render tabs.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const GridPanelWithModel = withQueryModels<GridPanelProps<any>>(GridPanelWithModelImpl);

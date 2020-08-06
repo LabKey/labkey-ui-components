@@ -76,7 +76,12 @@ export class ChartMenu extends PureComponent<Props> {
         const selectedChart = charts?.find(chart => chart.reportId === selectedReportId);
         const showChartModal = queryInfo !== undefined && selectedChart !== undefined;
 
-        if (privateCharts.length === 0 && publicCharts.length === 0 && !showSampleComparisonReports && hideEmptyChartMenu) {
+        if (
+            privateCharts.length === 0 &&
+            publicCharts.length === 0 &&
+            !showSampleComparisonReports &&
+            hideEmptyChartMenu
+        ) {
             return null;
         }
 

@@ -75,6 +75,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         this.setState(() => ({ warning: undefined }));
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     handleSubmit = (values: Record<string, any>): void => {
         const { auditBehavior, model, onEditToggle, onUpdate } = this.props;
         const { queryInfo } = model;
@@ -105,8 +106,8 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
         updateRows({ schemaQuery: queryInfo.schemaQuery, rows: [updatedValues], auditBehavior })
             .then(() => {
                 this.setState({ editing: false }, () => {
-                    onUpdate?.();
-                    onEditToggle?.(false);
+                    onUpdate?.(); // eslint-disable-line no-unused-expressions
+                    onEditToggle?.(false); // eslint-disable-line no-unused-expressions
                 });
             })
             .catch(error => {

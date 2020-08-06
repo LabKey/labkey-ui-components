@@ -30,6 +30,7 @@ interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndAct
 export class DetailPanel extends PureComponent<DetailPanelProps> {
     render(): ReactNode {
         // ignoring actions so we don't pass to DetailDisplay
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { actions, model, queryColumns, ...detailDisplayProps } = this.props;
         const { editingMode } = detailDisplayProps;
         const error = model.queryInfoError ?? model.rowsError;
@@ -47,13 +48,7 @@ export class DetailPanel extends PureComponent<DetailPanelProps> {
             displayColumns = List(editingMode ? model.updateColumns : model.detailColumns);
         }
 
-        return (
-            <DetailDisplay
-                {...detailDisplayProps}
-                data={fromJS(model.gridData)}
-                displayColumns={displayColumns}
-            />
-        );
+        return <DetailDisplay {...detailDisplayProps} data={fromJS(model.gridData)} displayColumns={displayColumns} />;
     }
 }
 

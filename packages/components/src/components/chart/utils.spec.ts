@@ -1,6 +1,7 @@
 import { ISelectRowsResult, processChartData } from '../..';
 import AssayRunCountsRowsJson from '../../test/data/AssayRunCounts-getQueryRows.json';
-import { getBarChartPlotConfig } from "./utils";
+
+import { getBarChartPlotConfig } from './utils';
 
 describe('processChartData', () => {
     const response = {
@@ -34,7 +35,8 @@ describe('processChartData', () => {
     });
 
     test('barFillColors with colorPath', () => {
-        const barFillColors = processChartData(response, ['TotalCount', 'value'], ['Name', 'value'], ['Color', 'value']).barFillColors;
+        const barFillColors = processChartData(response, ['TotalCount', 'value'], ['Name', 'value'], ['Color', 'value'])
+            .barFillColors;
         expect(Object.keys(barFillColors).length).toBe(4);
         expect(barFillColors['GPAT 1']).toBe('#ffffff');
         expect(barFillColors['GPAT 10']).toBe('#dddddd');
@@ -66,7 +68,7 @@ describe('processChartData', () => {
             height: 100,
             defaultFillColor: 'red',
             defaultBorderColor: 'blue',
-            barFillColors: {test1: 'green'},
+            barFillColors: { test1: 'green' },
             onClick: jest.fn,
         });
 

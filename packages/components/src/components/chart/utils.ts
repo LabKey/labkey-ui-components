@@ -36,19 +36,29 @@ export function processChartData(
 }
 
 interface BarChartPlotConfigProps {
-    renderTo: string,
-    title: string,
-    height?: number,
-    width: number,
-    defaultFillColor?: string,
-    defaultBorderColor?: string,
-    data: any[],
-    barFillColors?: { [key: string]: any },
-    onClick?: (evt: any, row: any) => void,
+    renderTo: string;
+    title: string;
+    height?: number;
+    width: number;
+    defaultFillColor?: string;
+    defaultBorderColor?: string;
+    data: any[];
+    barFillColors?: { [key: string]: any };
+    onClick?: (evt: any, row: any) => void;
 }
 
 export function getBarChartPlotConfig(props: BarChartPlotConfigProps): { [key: string]: any } {
-    const { renderTo, title, data, onClick, height, width, defaultFillColor, defaultBorderColor, barFillColors } = props;
+    const {
+        renderTo,
+        title,
+        data,
+        onClick,
+        height,
+        width,
+        defaultFillColor,
+        defaultBorderColor,
+        barFillColors,
+    } = props;
     const aes = {
         x: 'label',
         y: 'count',

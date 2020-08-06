@@ -2,7 +2,8 @@ import * as React from 'react';
 import $ from 'jquery';
 
 import { debounce, generateId } from '../..';
-import { getBarChartPlotConfig } from "./utils";
+
+import { getBarChartPlotConfig } from './utils';
 
 interface Props {
     title: string;

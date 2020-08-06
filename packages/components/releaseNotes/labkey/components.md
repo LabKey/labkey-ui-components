@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.83.1
+*Released*: 6 August 2020
 * BaseBarChart and processChartData updates to support per-bar fill color designations
 
 ### version 0.83.0

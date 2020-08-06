@@ -716,12 +716,7 @@ export interface ExportOptions {
     selectionKey?: string;
 }
 
-export function exportRows(
-    type: EXPORT_TYPES,
-    schemaQuery: SchemaQuery,
-    options?: ExportOptions,
-    advancedOptions?: Record<string, any>
-): void {
+export function getExportParams(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options?: ExportOptions, advancedOptions?: Record<string, any>) : any {
     let params: any = {
         schemaName: schemaQuery.schemaName,
         'query.queryName': schemaQuery.queryName,
@@ -763,6 +758,16 @@ export function exportRows(
             params['query.sort'] = options.sorts;
         }
     }
+    return params;
+}
+
+export function exportRows(
+    type: EXPORT_TYPES,
+    schemaQuery: SchemaQuery,
+    options?: ExportOptions,
+    advancedOptions?: Record<string, any>
+): void {
+    let params = getExportParams(type, schemaQuery, options, advancedOptions);
 
     let controller, action;
     if (type === EXPORT_TYPES.CSV || type === EXPORT_TYPES.TSV) {
@@ -785,35 +790,29 @@ export function exportRows(
     } else {
         throw new Error('Unknown export type: ' + type);
     }
-    if (type === EXPORT_TYPES.LABEL) {
-        printGridLabels(params);
-    }
-    else {
-        const url = buildURL(controller, action, undefined, {returnURL: false});
 
-        // POST a form
-        const form = $(`<form method="POST" action="${url}">`);
-        $.each(params, function (k, v) {
-            form.append($(`<input type="hidden" name="${k.toString()}" value="${v}">`));
-        });
-        $('body').append(form);
-        form.trigger('submit');
-    }
+    const url = buildURL(controller, action, undefined, {returnURL: false});
+
+    // POST a form
+    const form = $(`<form method="POST" action="${url}">`);
+    $.each(params, function (k, v) {
+        form.append($(`<input type="hidden" name="${k.toString()}" value="${v}">`));
+    });
+    $('body').append(form);
+    form.trigger('submit');
 }
 
-export function printGridLabels(params: Record<string, any>) : any {
-    Ajax.request({
-        url: buildURL(BARTENDER_EXPORT_CONTROLLER, "printBarTenderLabels.api", undefined, { returnURL: false }),
-        method: 'GET',
-        params,
-        success: (request: ExtendedXMLHttpRequest) =>  {
-            console.log(request.response);
-            // TODO actually do the printing now that we have the document to print
-        },
-        failure: Utils.getCallbackWrapper(response => {
-            console.error(response);
-        })
-    })
+export function getGridExportParams(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>) : any {
+    const { allowSelection, selectedState } = model;
+    const showRows = allowSelection && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
+    const options : ExportOptions = {
+        filters: model.getFilters(),
+        columns: model.getExportColumnsString(),
+        sorts: model.getSorts(),
+        showRows,
+        selectionKey: model.getId(),
+    };
+    return getExportParams(type, SchemaQuery.create(model.schema, model.query, model.view), options, advancedOptions);
 }
 
 export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): void {

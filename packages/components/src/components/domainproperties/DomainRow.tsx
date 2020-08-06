@@ -172,7 +172,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     {fieldError.extraInfo && (
                         <OverlayTrigger
                             placement="bottom"
-                            overlay={<Popover bsClass="popover">{fieldError.extraInfo}</Popover>}
+                            overlay={
+                                <Popover bsClass="popover" id="domain-row-field-error-popover">
+                                    {fieldError.extraInfo}
+                                </Popover>
+                            }
                         >
                             <FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />
                         </OverlayTrigger>

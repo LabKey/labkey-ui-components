@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-
 import { mount } from 'enzyme';
-
-import toJson from 'enzyme-to-json';
 
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 
@@ -99,7 +96,7 @@ describe('DomainForm', () => {
         });
         expect(helpLink.length).toEqual(1);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -109,7 +106,7 @@ describe('DomainForm', () => {
             <DomainForm domain={domain} helpNoun="assay" helpTopic="assays" showHeader={false} onChange={jest.fn()} />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -124,7 +121,7 @@ describe('DomainForm', () => {
         });
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -210,7 +207,7 @@ describe('DomainForm', () => {
         });
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -258,7 +255,7 @@ describe('DomainForm', () => {
 
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -286,7 +283,7 @@ describe('DomainForm', () => {
 
         const form = mount(<DomainForm domain={domain} key="domainForm" onChange={jest.fn()} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -352,7 +349,7 @@ describe('DomainForm', () => {
         expect(expandButton.length).toEqual(1);
         expandButton.simulate('click');
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -379,7 +376,7 @@ describe('DomainForm', () => {
             <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -406,7 +403,7 @@ describe('DomainForm', () => {
             <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -423,7 +420,7 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -431,7 +428,7 @@ describe('DomainForm', () => {
         const domain = DomainDesign.create({});
         const form = mount(<DomainForm domain={domain} showInferFromFile={true} onChange={jest.fn()} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -520,7 +517,7 @@ describe('DomainForm', () => {
         filteredFields = form.find({ className: 'domain-field-row domain-row-border-default' });
         expect(filteredFields.length).toEqual(4);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -564,7 +561,7 @@ describe('DomainForm', () => {
         expect(typeField.find({ value: 'fileLink' }).length).toEqual(0);
         expect(typeField.find({ value: 'attachment' }).length).toEqual(0);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -663,7 +660,7 @@ describe('DomainForm', () => {
             />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -684,7 +681,7 @@ describe('DomainForm', () => {
         const findButton = form.find({ className: 'domain-form-add-btn' });
         expect(findButton.length).toEqual(0);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 });

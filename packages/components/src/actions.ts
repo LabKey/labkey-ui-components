@@ -21,6 +21,7 @@ import { getQueryDetails, searchRows, selectRows } from './query/api';
 import { isEqual } from './query/filter';
 import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import {
+    BARTENDER_EXPORT_CONTROLLER,
     EXPORT_TYPES,
     FASTA_EXPORT_CONTROLLER,
     GENBANK_EXPORT_CONTROLLER,
@@ -777,6 +778,9 @@ export function exportRows(
         controller = GENBANK_EXPORT_CONTROLLER;
         action = 'export.post';
         params['format'] = 'GENBANK';
+    } else if (type === EXPORT_TYPES.LABEL) {
+        controller = BARTENDER_EXPORT_CONTROLLER;
+        action = "printBarTenderLabels.post"
     } else {
         throw new Error('Unknown export type: ' + type);
     }

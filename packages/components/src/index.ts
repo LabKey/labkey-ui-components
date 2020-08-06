@@ -161,6 +161,7 @@ import {
     LoadingState,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
+    EXPORT_TYPES,
 } from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
 import { URL_MAPPERS, URLResolver } from './util/URLResolver';
@@ -774,6 +775,7 @@ export {
     getSchemaQuery,
     resolveSchemaQuery,
     insertColumnFilter,
+    EXPORT_TYPES,
     // QueryGridModel
     QueryGridModel,
     QueryGridPanel,

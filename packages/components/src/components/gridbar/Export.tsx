@@ -107,6 +107,12 @@ export class Export extends React.Component<Props, any> {
                                     &nbsp; GenBank
                                 </MenuItem>
                             ) : undefined}
+                            {supportedTypes.includes(EXPORT_TYPES.LABEL) ? (
+                                <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.LABEL)}>
+                                    <span className="fa fa-tag"/>
+                                    &nbsp; Label
+                                </MenuItem>
+                            ) : undefined}
                         </DropdownButton>
                     </Tip>
                 </span>

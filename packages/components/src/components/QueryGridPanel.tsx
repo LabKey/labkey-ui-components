@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { List, Map } from 'immutable';
+import { List, Map, Set } from 'immutable';
 import classNames from 'classnames';
 
 import { Utils } from '@labkey/api';
@@ -29,6 +29,7 @@ import '../theme/index.scss';
 import { QueryGridModel } from './base/models/model';
 import { LoadingSpinner } from './base/LoadingSpinner';
 import { Alert } from './base/Alert';
+import { EXPORT_TYPES } from '../constants';
 
 interface Props {
     model: QueryGridModel | List<QueryGridModel>;
@@ -47,6 +48,7 @@ interface Props {
     rightTabs?: List<string>;
     onChangeTab?: (tabInd: number) => any;
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any;
+    supportedExportTypes?: Set<EXPORT_TYPES>;
     advancedExportOption?: Record<string, any>;
     highlightLastSelectedRow?: boolean;
 }
@@ -201,6 +203,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
             onReportClicked,
             onCreateReportClicked,
             onSelectionChange,
+            supportedExportTypes,
             advancedExportOption,
             highlightLastSelectedRow,
         } = this.props;
@@ -216,6 +219,7 @@ export class QueryGridPanel extends React.Component<Props, State> {
                     onReportClicked={onReportClicked}
                     onCreateReportClicked={onCreateReportClicked}
                     onSelectionChange={onSelectionChange}
+                    supportedExportTypes={supportedExportTypes}
                     advancedExportOption={advancedExportOption}
                 />
             );

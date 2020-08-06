@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'reactn';
-import { Map } from 'immutable';
+import { Map, Set } from 'immutable';
 
 import { ChartSelector } from '../chart/ChartSelector';
 
@@ -26,6 +26,7 @@ import { ViewSelector } from './ViewSelector';
 import { URLBox } from './URLBox';
 import { GridSelectionBanner } from './GridSelectionBanner';
 import { PageSizeSelector } from './PageSizeSelector';
+import { EXPORT_TYPES } from '../../constants';
 
 type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;
 export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;
@@ -37,6 +38,7 @@ interface QueryGridBarProps {
     onReportClicked?: Function;
     onCreateReportClicked?: Function;
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any;
+    supportedExportTypes?: Set<EXPORT_TYPES>;
     advancedExportOption?: Record<string, any>;
 }
 
@@ -59,6 +61,7 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
             onReportClicked,
             onCreateReportClicked,
             onSelectionChange,
+            supportedExportTypes,
             advancedExportOption,
         } = this.props;
         let buttonsNode = typeof buttons === 'function' ? (buttons as QueryGridBarButtonResolver)(model) : buttons;
@@ -73,7 +76,7 @@ export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
 
         const pageSizeBtn = model?.isPaged ? <PageSizeSelector model={model} /> : null;
 
-        const exportBtn = model?.showExport ? <Export model={model} advancedOption={advancedExportOption} /> : null;
+        const exportBtn = model?.showExport ? <Export model={model} advancedOption={advancedExportOption} supportedTypes={supportedExportTypes}/> : null;
 
         const chart = model?.showChartSelector ? (
             <ChartSelector

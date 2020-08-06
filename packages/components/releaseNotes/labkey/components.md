@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.83.2
+*Released*: 6 August 2020
+* BulkUpdateForm to pass through readonly columns to EditableGrid
+
 ### version 0.83.1
 *Released*: 6 August 2020
 * BaseBarChart and processChartData updates to support per-bar fill color designations

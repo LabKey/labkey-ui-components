@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import moment from 'moment-jdateformatparser';
-import 'moment-timezone';
+import momentTZ from 'moment-timezone';
 import numeral from 'numeral';
 
 import { QueryColumn } from '../components/base/models/model';
@@ -71,18 +71,18 @@ export function parseDate(dateStr: string, dateFormat?: string) {
     return null;
 }
 
-export function formatDate(date: Date, timezone?: string, dateFormat?: string) {
+function _formatDate(date: Date, dateFormat: string, timezone?: string): string {
     if (!date) return null;
-    let _date = moment(date);
-    if (timezone) _date = _date.tz(timezone);
-    return _date.formatWithJDF(dateFormat ? dateFormat : getDateFormat());
+    const _date = moment(timezone ? momentTZ(date).tz(timezone) : date);
+    return _date.formatWithJDF(dateFormat);
 }
 
-export function formatDateTime(date: Date, timezone?: string) {
-    if (!date) return null;
-    let _date = moment(date);
-    if (timezone) _date = _date.tz(timezone);
-    return _date.formatWithJDF(getDateTimeFormat());
+export function formatDate(date: Date, timezone?: string, dateFormat?: string): string {
+    return _formatDate(date, dateFormat ?? getDateFormat(), timezone);
+}
+
+export function formatDateTime(date: Date, timezone?: string, dateFormat?: string): string {
+    return _formatDate(date, dateFormat ?? getDateTimeFormat(), timezone);
 }
 
 export function getUnFormattedNumber(n): number {

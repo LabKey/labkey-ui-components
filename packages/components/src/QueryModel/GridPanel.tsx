@@ -30,6 +30,7 @@ interface GridPanelProps<ButtonsComponentProps> {
     ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
     buttonsComponentProps?: ButtonsComponentProps;
     emptyText?: string;
+    hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
     pageSizes?: number[];
     title?: string;
@@ -82,6 +83,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             advancedExportOptions,
             ButtonsComponent,
             buttonsComponentProps,
+            hideEmptyChartMenu,
             hideEmptyViewMenu,
             onViewSelect,
             pageSizes,
@@ -109,8 +111,9 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
 
                         {showChartMenu && (
                             <ChartMenu
-                                model={model}
+                                hideEmptyChartMenu={hideEmptyChartMenu}
                                 actions={actions}
+                                model={model}
                                 showSampleComparisonReports={showSampleComparisonReports}
                             />
                         )}
@@ -152,6 +155,7 @@ export class GridPanel<T> extends PureComponent<Props<T>, State> {
         allowSelections: true,
         allowSorting: true,
         asPanel: true,
+        hideEmptyChartSelector: false,
         hideEmptyViewMenu: false,
         showPagination: true,
         showButtonBar: true,

@@ -47,7 +47,7 @@ export class AuditDetailsModel extends Record({
     }
 }
 
-export class TimelineEventModel extends Record( {
+export class TimelineEventModel extends Record({
     rowId: undefined,
     eventType: undefined,
     summary: undefined,
@@ -58,24 +58,21 @@ export class TimelineEventModel extends Record( {
     entity: undefined,
     metadata: undefined,
     oldData: undefined,
-    newData: undefined
-
-})
-{
+    newData: undefined,
+}) {
     rowId?: number;
     eventType?: string;
     summary?: string;
-    user?: Map<String, any>;
+    user?: Map<string, any>;
     eventUserId?: number;
-    timestamp?: Map<String, any>;
+    timestamp?: Map<string, any>;
     eventTimestamp?: any;
-    entity?: Map<String, any>;
+    entity?: Map<string, any>;
     metadata?: List<Map<string, any>>;
     oldData?: Map<string, string>;
     newData?: Map<string, string>;
 
-    constructor(values?: { [key: string]: any })
-    {
+    constructor(values?: { [key: string]: any }) {
         super(values);
     }
 
@@ -85,43 +82,41 @@ export class TimelineEventModel extends Record( {
 
     // timezoneStr used for jest test only, to accommodate teamcity timezone difference
     static create(raw: any, timezoneStr?: string): TimelineEventModel {
-
-        let fields = {} as TimelineEventModel;
-        fields.rowId =  raw['rowId'];
-        fields.eventType =  raw['eventType'];
-        fields.summary =  raw['summary'];
+        const fields = {} as TimelineEventModel;
+        fields.rowId = raw['rowId'];
+        fields.eventType = raw['eventType'];
+        fields.summary = raw['summary'];
         fields.user = fromJS(raw['user']);
-        fields.eventUserId =  raw['user']['value'];
+        fields.eventUserId = raw['user']['value'];
         fields.timestamp = fromJS(raw['timestamp']);
         if (raw['timestamp']['value'])
-            fields.eventTimestamp =  timezoneStr ? new Date(raw['timestamp']['value'] + ' ' + timezoneStr) : new Date(raw['timestamp']['value']);
+            fields.eventTimestamp = timezoneStr
+                ? new Date(raw['timestamp']['value'] + ' ' + timezoneStr)
+                : new Date(raw['timestamp']['value']);
         fields.entity = fromJS(raw['entity']);
 
         if (raw.metadata) {
-            let metaRows = [];
-            for (let [key, value] of Object.entries(raw.metadata)) {
-                metaRows.push({field: key, value: fromJS(value)});
+            const metaRows = [];
+            for (const [key, value] of Object.entries(raw.metadata)) {
+                metaRows.push({ field: key, value: fromJS(value) });
             }
             fields.metadata = fromJS(metaRows);
         }
 
-        if (raw.oldData)
-            fields.oldData = fromJS(raw.oldData);
-        if (raw.newData)
-            fields.newData = fromJS(raw.newData);
+        if (raw.oldData) fields.oldData = fromJS(raw.oldData);
+        if (raw.newData) fields.newData = fromJS(raw.newData);
 
         return new TimelineEventModel(fields);
     }
 
-    getAuditDetailsModel() : AuditDetailsModel {
-        if (!this.oldData && !this.newData)
-            return undefined;
+    getAuditDetailsModel(): AuditDetailsModel {
+        if (!this.oldData && !this.newData) return undefined;
 
         return new AuditDetailsModel({
             rowId: this.rowId,
             oldData: this.oldData,
-            newData: this.newData
-        })
+            newData: this.newData,
+        });
     }
 
     isSameEntity(event: TimelineEventModel): boolean {
@@ -130,7 +125,7 @@ export class TimelineEventModel extends Record( {
 }
 
 export interface TimelineGroupedEventInfo {
-    firstEvent: TimelineEventModel,
-    lastEvent: TimelineEventModel,
-    isCompleted: boolean,
+    firstEvent: TimelineEventModel;
+    lastEvent: TimelineEventModel;
+    isCompleted: boolean;
 }

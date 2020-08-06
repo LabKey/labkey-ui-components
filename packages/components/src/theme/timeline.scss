@@ -11,7 +11,7 @@
         }
 
         &.timeline-row-selected {
-            background-color: $body-bg;
+            background-color: $gray-shadow;
         }
 
         &.timeline-event-row {
@@ -109,18 +109,3 @@
     top: -26px;
 }
 
-.timeline-title {
-    color: $gray;
-}
-
-.timeline-filter-btn-group {
-    padding-top: 85px;
-}
-
-.timeline-status-text {
-    padding: 5px 15px;
-}
-
-.timeline-filter-btn-spacer {
-    padding-right: 10px;
-}

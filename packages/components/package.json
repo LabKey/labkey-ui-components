@@ -14,7 +14,7 @@
     "cleanAll": "nps cleanAll",
     "prepublishOnly": "yarn build",
     "storybook": "start-storybook -p 9001 -s ./static -c .storybook",
-    "build-storybook": "build-storybook -c .storybook -o .storybook-out",
+    "build-storybook": "NODE_OPTIONS=--max_old_space_size=4096 build-storybook -c .storybook -o .storybook-out",
     "test": "cross-env NODE_ENV=test jest",
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter && yarn run build-storybook && yarn run build:docs",
     "watch:build": "watch 'yarn build' ./src",

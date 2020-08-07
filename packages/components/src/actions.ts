@@ -800,8 +800,8 @@ export function exportRows(
 }
 
 export function getQueryModelExportParams(model: QueryModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>) : any {
-    const { id, filters, hasSelections, schemaQuery, exportColumnString, sortString } = model;
-    const showRows = hasSelections ? 'SELECTED' : 'ALL'
+    const { id, filters, hasSelections, schemaQuery, exportColumnString, sortString, selections } = model;
+    const showRows = hasSelections && selections.size > 0 ? 'SELECTED' : 'ALL'
     const exportOptions: ExportOptions = {
         filters: List(filters),
         columns: exportColumnString,

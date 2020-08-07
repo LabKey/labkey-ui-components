@@ -111,7 +111,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
+    UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled
         if (nextProps.domainFormDisplayOptions.isDragDisabled !== this.props.domainFormDisplayOptions.isDragDisabled) {
             this.setDragDisabled(nextProps.domainFormDisplayOptions.isDragDisabled, false);

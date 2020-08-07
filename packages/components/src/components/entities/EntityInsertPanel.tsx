@@ -154,11 +154,11 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.init(this.props, true);
     }
 
-    componentWillReceiveProps(nextProps: OwnProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: OwnProps): void {
         if (this.props.location != nextProps.location || this.props.entityDataType !== nextProps.entityDataType)
             this.init(nextProps);
     }

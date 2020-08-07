@@ -192,11 +192,11 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.initModel(this.props);
     }
 
-    componentWillReceiveProps(nextProps: EditableGridProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: EditableGridProps): void {
         this.initModel(nextProps);
     }
 

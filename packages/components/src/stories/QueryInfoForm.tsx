@@ -53,7 +53,7 @@ interface Props {
 }
 
 class QueryInfoFormPage extends React.Component<Props, any> {
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.initModel();
     }
 

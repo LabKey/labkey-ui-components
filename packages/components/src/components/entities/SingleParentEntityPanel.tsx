@@ -58,7 +58,7 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.init();
     }
 

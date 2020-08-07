@@ -87,7 +87,7 @@ export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState> 
         this.initUrlRouteListener();
     }
 
-    componentWillReceiveProps(nextProps: QueryGridProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: QueryGridProps): void {
         this.initModel(nextProps);
 
         // if the nextProps has a model and we didn't before or we have a different model id, then reset the url route listener

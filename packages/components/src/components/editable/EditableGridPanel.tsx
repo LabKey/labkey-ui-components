@@ -44,7 +44,7 @@ export class EditableGridPanel extends ReactN.Component<Props, any> {
         this.initModel(this.props);
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         this.initModel(nextProps);
     }
 

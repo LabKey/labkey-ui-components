@@ -32,7 +32,7 @@ export class BasePropertiesPanel extends React.PureComponent<Props, any> {
         useTheme: false,
     };
 
-    componentWillReceiveProps(nextProps: Readonly<Props>): void {
+    UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>): void {
         const { validate, updateValidStatus } = this.props;
 
         if (nextProps.validate && validate !== nextProps.validate) {

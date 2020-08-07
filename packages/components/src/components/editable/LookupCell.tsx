@@ -63,7 +63,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         initLookup(col, LOOKUP_DEFAULT_SIZE);
     }
 
-    componentWillReceiveProps(nextProps: LookupCellProps): void {
+    UNSAFE_componentWillReceiveProps(nextProps: LookupCellProps): void {
         if (this.state.token && this.getOptions(nextProps).size === 1) {
             this.setState({
                 activeOptionIdx: 0,

@@ -42,7 +42,7 @@ export class BaseBarChart extends React.Component<Props, State> {
         this.renderPlot(this.props);
     }
 
-    componentWillReceiveProps(nextProps: Readonly<Props>) {
+    UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>): void {
         this.renderPlot(nextProps);
     }
 

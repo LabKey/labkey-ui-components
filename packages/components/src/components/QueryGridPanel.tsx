@@ -79,7 +79,7 @@ export class QueryGridPanel extends ReactN.Component<Props, State> {
         }
     };
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         this.initModel(nextProps);
         if (this.state.activeTab != nextProps.activeTab) {
             this.setState(() => ({

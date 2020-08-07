@@ -123,7 +123,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         return props.runId !== undefined;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         const { location, selectStep } = this.props;
 
         if (location && location.query && location.query.dataTab) {
@@ -133,7 +133,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         this.initModel(this.props);
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         if (
             this.props.assayDefinition.protocolSchemaName !== nextProps.assayDefinition.protocolSchemaName ||
             this.props.runId !== nextProps.runId

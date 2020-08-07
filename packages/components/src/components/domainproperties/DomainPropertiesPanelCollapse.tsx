@@ -33,7 +33,7 @@ export function withDomainPropertiesPanelCollapse<Props>(
             };
         }
 
-        componentWillReceiveProps(nextProps: Readonly<Props & MakeDomainPropertiesPanelCollapseProps>): void {
+        UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props & MakeDomainPropertiesPanelCollapseProps>): void {
             const { controlledCollapse, initCollapsed } = this.props;
 
             // if controlled collapse, allow the prop change to update the collapsed state

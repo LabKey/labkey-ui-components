@@ -196,11 +196,11 @@ export class OmniBox extends React.Component<OmniBoxProps, OmniBoxState> {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this._instancePrefix = 'omnibox-' + ++instanceId + '-';
     }
 
-    componentWillReceiveProps(nextProps: OmniBoxProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: OmniBoxProps): void {
         this.setState({
             actionValues: nextProps.values ? [...nextProps.values] : [],
         });

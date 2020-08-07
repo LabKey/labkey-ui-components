@@ -81,7 +81,7 @@ export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.init();
     }
 

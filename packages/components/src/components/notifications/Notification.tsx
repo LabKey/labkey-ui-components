@@ -35,7 +35,7 @@ interface NotificationProps {
 }
 
 export class Notification extends ReactN.Component<NotificationProps, any> {
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.createSystemNotification();
     }
 

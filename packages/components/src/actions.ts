@@ -72,7 +72,7 @@ import { buildURL, getSortFromUrl } from './url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
 import { intersect, naturalSort, not, resolveKey } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
-import { ExtendedXMLHttpRequest } from '@labkey/api/dist/labkey/Utils';
+import { QueryModel } from './QueryModel/QueryModel';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -716,7 +716,7 @@ export interface ExportOptions {
     selectionKey?: string;
 }
 
-export function getExportParams(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options?: ExportOptions, advancedOptions?: Record<string, any>) : any {
+export function getExportParams(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options?: ExportOptions, advancedOptions?: Record<string, any>) : Record<string, any> {
     let params: any = {
         schemaName: schemaQuery.schemaName,
         'query.queryName': schemaQuery.queryName,
@@ -763,11 +763,8 @@ export function getExportParams(type: EXPORT_TYPES, schemaQuery: SchemaQuery, op
 
 export function exportRows(
     type: EXPORT_TYPES,
-    schemaQuery: SchemaQuery,
-    options?: ExportOptions,
-    advancedOptions?: Record<string, any>
-): void {
-    let params = getExportParams(type, schemaQuery, options, advancedOptions);
+    exportParams: Record<string, any>): void {
+    let params = Object.assign({}, exportParams);
 
     let controller, action;
     if (type === EXPORT_TYPES.CSV || type === EXPORT_TYPES.TSV) {
@@ -802,7 +799,20 @@ export function exportRows(
     form.trigger('submit');
 }
 
-export function getGridExportParams(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>) : any {
+export function getQueryModelExportParams(model: QueryModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>) : any {
+    const { id, filters, hasSelections, schemaQuery, exportColumnString, sortString } = model;
+    const showRows = hasSelections ? 'SELECTED' : 'ALL'
+    const exportOptions: ExportOptions = {
+        filters: List(filters),
+        columns: exportColumnString,
+        sorts: sortString,
+        selectionKey: id,
+        showRows,
+    };
+    return getExportParams(type, schemaQuery, exportOptions, advancedOptions);
+}
+
+export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): void {
     const { allowSelection, selectedState } = model;
     const showRows = allowSelection && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
     const options : ExportOptions = {
@@ -812,25 +822,8 @@ export function getGridExportParams(model: QueryGridModel, type: EXPORT_TYPES, a
         showRows,
         selectionKey: model.getId(),
     };
-    return getExportParams(type, SchemaQuery.create(model.schema, model.query, model.view), options, advancedOptions);
-}
-
-export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): void {
-    const { allowSelection, selectedState } = model;
-    const showRows = allowSelection && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
-
-    exportRows(
-        type,
-        SchemaQuery.create(model.schema, model.query, model.view),
-        {
-            filters: model.getFilters(),
-            columns: model.getExportColumnsString(),
-            sorts: model.getSorts(),
-            showRows,
-            selectionKey: model.getId(),
-        },
-        advancedOptions
-    );
+    const exportParams = getExportParams(type, SchemaQuery.create(model.schema, model.query, model.view), options, advancedOptions);
+    exportRows(type, exportParams);
 }
 
 export function gridSelectView(model: QueryGridModel, view: ViewInfo): void {

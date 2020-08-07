@@ -58,7 +58,7 @@ export class BaseBarChart extends React.Component<Props, State> {
         this.renderPlot(this.props);
     }
 
-    getPlotConfig(props: Props): Object {
+    getPlotConfig(props: Props): Record<string, any> {
         const { title, data, onClick, chartHeight, defaultFillColor, defaultBorderColor, barFillColors } = props;
         return getBarChartPlotConfig({
             renderTo: this.state.plotId,

@@ -5,6 +5,7 @@ import { Panel } from 'react-bootstrap';
 
 import { DomainDesign } from '../models';
 import { FileAttachmentForm } from '../../files/FileAttachmentForm';
+
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
 import { AssayDesignerPanels } from './AssayDesignerPanels';

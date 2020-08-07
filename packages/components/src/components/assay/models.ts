@@ -257,7 +257,7 @@ export class AssayStateModel extends Record({
     hasError: false,
     isLoaded: false,
     isLoading: false,
-    protocolsById: Map<number, AssayProtocolModel>()
+    protocolsById: Map<number, AssayProtocolModel>(),
 }) {
     byId: Map<number, AssayDefinitionModel>;
     byName: Map<string, number>;
@@ -273,7 +273,7 @@ export class AssayStateModel extends Record({
 
     getByName(assayName: string): AssayDefinitionModel {
         if (assayName) {
-            let assayRowId = this.byName.get(assayName.toLowerCase());
+            const assayRowId = this.byName.get(assayName.toLowerCase());
             if (assayRowId !== undefined) {
                 return this.byId.get(assayRowId);
             }

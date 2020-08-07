@@ -1,8 +1,5 @@
 import React from 'react';
-
 import { mount } from 'enzyme';
-
-import toJson from 'enzyme-to-json';
 
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { DomainField } from './models';
@@ -28,7 +25,7 @@ describe('DomainExpandedOptions', () => {
             />
         );
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -51,7 +48,7 @@ describe('DomainExpandedOptions', () => {
             />
         );
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -74,7 +71,7 @@ describe('DomainExpandedOptions', () => {
             />
         );
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -97,7 +94,7 @@ describe('DomainExpandedOptions', () => {
             />
         );
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -123,7 +120,7 @@ describe('DomainExpandedOptions', () => {
             />
         );
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 });

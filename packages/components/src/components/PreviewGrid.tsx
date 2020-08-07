@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
@@ -26,7 +26,7 @@ interface PreviewGridState {
 
 type StatelessPreviewGridProps = PreviewGridProps & PreviewGridState;
 
-export class StatelessPreviewGrid extends React.PureComponent<StatelessPreviewGridProps> {
+export class StatelessPreviewGrid extends PureComponent<StatelessPreviewGridProps> {
     render() {
         const { loading, data, error, queryInfo, numCols, numRows, schemaQuery } = this.props;
         let body = <LoadingSpinner />;
@@ -63,7 +63,7 @@ export class StatelessPreviewGrid extends React.PureComponent<StatelessPreviewGr
     }
 }
 
-export class PreviewGrid extends React.PureComponent<PreviewGridProps, PreviewGridState> {
+export class PreviewGrid extends PureComponent<PreviewGridProps, PreviewGridState> {
     constructor(props) {
         super(props);
 
@@ -75,7 +75,11 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, PreviewGr
         };
     }
 
-    fetchData = () => {
+    componentDidMount(): void {
+        this.fetchData();
+    }
+
+    fetchData = (): void => {
         this.setState(() => ({ loading: true }));
         const { numCols, numRows } = this.props;
         const { schemaName, queryName, viewName } = this.props.schemaQuery;
@@ -125,11 +129,7 @@ export class PreviewGrid extends React.PureComponent<PreviewGridProps, PreviewGr
             .catch(handleFailure);
     };
 
-    componentDidMount(): void {
-        this.fetchData();
-    }
-
-    render() {
+    render(): ReactNode {
         return <StatelessPreviewGrid {...this.props} {...this.state} />;
     }
 }

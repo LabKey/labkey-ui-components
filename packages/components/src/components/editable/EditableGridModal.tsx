@@ -33,11 +33,11 @@ export class EditableGridModal extends React.PureComponent<Props, any> {
         isSaving: false,
     };
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.init();
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         if (nextProps.show && !nextProps.isSaving) this.init();
     }
 

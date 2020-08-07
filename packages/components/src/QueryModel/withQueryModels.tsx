@@ -23,6 +23,7 @@ export interface Actions {
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
     loadCharts: (id: string, includeSampleComparison: boolean) => void;
+    replaceSelections: (id: string, selections: string[]) => void;
     selectAllRows: (id: string) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectRow: (id: string, checked, row: { [key: string]: any }) => void;
@@ -32,10 +33,9 @@ export interface Actions {
     setMaxRows: (id: string, maxRows: number) => void;
     setOffset: (id: string, offset: number) => void;
     setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
+    setSelections: (id: string, checked: boolean, selections: string[]) => void;
     setSorts: (id: string, sorts: QuerySort[]) => void;
     setView: (id: string, viewName: string, loadSelections?: boolean) => void;
-    setSelections: (id: string, checked: boolean, selections: string[]) => void;
-    replaceSelections: (id: string, selections: string[]) => void;
 }
 
 export interface RequiresModelAndActions {
@@ -173,9 +173,9 @@ export function withQueryModels<Props>(
                 setOffset: this.setOffset,
                 setMaxRows: this.setMaxRows,
                 setSchemaQuery: this.setSchemaQuery,
+                setSelections: this.setSelections,
                 setSorts: this.setSorts,
                 setView: this.setView,
-                setSelections: this.setSelections,
             };
         }
 
@@ -204,7 +204,7 @@ export function withQueryModels<Props>(
          * If you pass a unique key to the component then React will unmount and remount the component when the key
          * changes.
          */
-        componentDidUpdate(prevProps: Readonly<WrappedProps>, prevState: Readonly<State>): void {
+        componentDidUpdate(prevProps: Readonly<WrappedProps>): void {
             const prevLoc = prevProps.location;
             const currLoc = this.props.location;
 
@@ -784,5 +784,5 @@ export function withQueryModels<Props>(
         queryConfigs: {},
     };
 
-    return withRouter(ComponentWithQueryModels);
+    return withRouter(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;
 }

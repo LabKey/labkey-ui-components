@@ -72,100 +72,92 @@ describe('<DetailEditing/>', () => {
     test('loading', () => {
         const model = getStateQueryGridModel('jest-querygridmodel-loading', SchemaQuery.create('samples', 'Samples'));
         const component = <DetailEditing queryModel={model} canUpdate={true} />;
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
 
         expect(tree).toMatchSnapshot();
     });
 
-    test('canUpdate false', done => {
-        setTimeout(() => {
-            const model = getQueryGridModel(MODEL_ID);
-            const component = <DetailEditing queryModel={model} canUpdate={false} />;
-            const tree = renderer.create(component).toJSON();
+    test('canUpdate false', () => {
+        const model = getQueryGridModel(MODEL_ID);
+        const component = <DetailEditing queryModel={model} canUpdate={false} />;
+        const tree = renderer.create(component);
 
-            expect(tree).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
 
-            const wrapper = mount(component);
-            expect(wrapper.find(editBtnSelector)).toHaveLength(0);
-            done();
-        }, 0);
+        const wrapper = mount(component);
+        expect(wrapper.find(editBtnSelector)).toHaveLength(0);
+        wrapper.unmount();
     });
 
-    test('canUpdate true', done => {
-        setTimeout(() => {
-            const model = getQueryGridModel(MODEL_ID);
-            const component = <DetailEditing queryModel={model} canUpdate={true} />;
-            const tree = renderer.create(component).toJSON();
+    test('canUpdate true', () => {
+        const model = getQueryGridModel(MODEL_ID);
+        const component = <DetailEditing queryModel={model} canUpdate={true} />;
+        const tree = renderer.create(component);
 
-            expect(tree).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
 
-            const wrapper = mount(component);
-            expect(wrapper.find(headingSelector).text()).toBe('Details');
+        const wrapper = mount(component);
+        expect(wrapper.find(headingSelector).text()).toBe('Details');
 
-            // find edit button and click it to make sure form renders
-            const editButton = wrapper.find(editBtnSelector);
-            expect(editButton).toHaveLength(1);
-            expect(editButton.find('i')).toHaveLength(1);
-            editButton.hostNodes().simulate('click');
-            expect(wrapper.find(headingSelector).text()).toBe('Editing Details');
-            expect(wrapper.find('.form-group')).toHaveLength(6);
+        // find edit button and click it to make sure form renders
+        const editButton = wrapper.find(editBtnSelector);
+        expect(editButton).toHaveLength(1);
+        expect(editButton.find('i')).toHaveLength(1);
+        editButton.hostNodes().simulate('click');
+        expect(wrapper.find(headingSelector).text()).toBe('Editing Details');
+        expect(wrapper.find('.form-group')).toHaveLength(6);
 
-            // find the save button and click it
-            expect(wrapper.find('.edit__warning')).toHaveLength(0);
-            const saveButton = wrapper.find('.btn-success');
-            expect(saveButton).toHaveLength(1);
-            saveButton.first().hostNodes().simulate('click');
-            // expect(wrapper.find('.edit__warning')).toHaveLength(1);
+        // find the save button and click it
+        expect(wrapper.find('.edit__warning')).toHaveLength(0);
+        const saveButton = wrapper.find('.btn-success');
+        expect(saveButton).toHaveLength(1);
+        saveButton.first().hostNodes().simulate('click');
 
-            done();
-        }, 0);
+        wrapper.unmount();
     });
 
-    test('useEditIcon false', done => {
-        setTimeout(() => {
-            const model = getQueryGridModel(MODEL_ID);
-            const component = <DetailEditing queryModel={model} canUpdate={true} useEditIcon={false} />;
-            const wrapper = mount(component);
-            // find edit button and make sure it isn't an icon
-            const editButton = wrapper.find(editBtnSelector);
-            expect(editButton.find('i')).toHaveLength(0);
-            expect(editButton.text()).toBe('Edit');
-            done();
-        }, 0);
+    test('useEditIcon false', () => {
+        const model = getQueryGridModel(MODEL_ID);
+        const component = <DetailEditing queryModel={model} canUpdate={true} useEditIcon={false} />;
+        const wrapper = mount(component);
+        // find edit button and make sure it isn't an icon
+        const editButton = wrapper.find(editBtnSelector);
+        expect(editButton.find('i')).toHaveLength(0);
+        expect(editButton.text()).toBe('Edit');
+
+        wrapper.unmount();
     });
 
-    test('custom title and buttons', done => {
-        setTimeout(() => {
-            const model = getQueryGridModel(MODEL_ID);
-            const panelTitleText = 'Override Title';
-            const submitText = 'Override Save';
-            const cancelText = 'Override Cancel';
-            const component = (
-                <DetailEditing
-                    queryModel={model}
-                    canUpdate={true}
-                    title={panelTitleText}
-                    useEditIcon={true}
-                    submitText={submitText}
-                    cancelText={cancelText}
-                />
-            );
+    test('custom title and buttons', () => {
+        const model = getQueryGridModel(MODEL_ID);
+        const panelTitleText = 'Override Title';
+        const submitText = 'Override Save';
+        const cancelText = 'Override Cancel';
+        const component = (
+            <DetailEditing
+                queryModel={model}
+                canUpdate={true}
+                title={panelTitleText}
+                useEditIcon={true}
+                submitText={submitText}
+                cancelText={cancelText}
+            />
+        );
 
-            const wrapper = mount(component);
-            const panelTitle = wrapper.find(headingSelector);
-            expect(panelTitle.text()).toBe(panelTitleText);
+        const wrapper = mount(component);
+        const panelTitle = wrapper.find(headingSelector);
+        expect(panelTitle.text()).toBe(panelTitleText);
 
-            const editButton = wrapper.find(editBtnSelector);
-            editButton.hostNodes().simulate('click');
-            expect(wrapper.find(headingSelector).text()).toBe('Editing ' + panelTitleText);
+        const editButton = wrapper.find(editBtnSelector);
+        editButton.hostNodes().simulate('click');
+        expect(wrapper.find(headingSelector).text()).toBe('Editing ' + panelTitleText);
 
-            const cancelButton = wrapper.find('.btn-default');
-            expect(cancelButton.text()).toBe(cancelText);
+        const cancelButton = wrapper.find('.btn-default');
+        expect(cancelButton.text()).toBe(cancelText);
 
-            const saveButton = wrapper.find('.btn-success');
-            expect(saveButton.text()).toBe(submitText);
+        const saveButton = wrapper.find('.btn-success');
+        expect(saveButton.text()).toBe(submitText);
 
-            done();
-        }, 0);
+        wrapper.unmount();
     });
 });

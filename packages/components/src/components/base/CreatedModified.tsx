@@ -57,7 +57,7 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         if (this.props.useServerDate) {
             Query.getServerDate({
                 success: serverDate => this.setState(() => ({ serverDate, loading: false })),

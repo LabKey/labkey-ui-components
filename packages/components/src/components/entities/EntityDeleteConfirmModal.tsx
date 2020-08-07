@@ -58,7 +58,7 @@ export class EntityDeleteConfirmModal extends React.Component<Props, State> {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this._mounted = true;
         this.init(this.props);
     }

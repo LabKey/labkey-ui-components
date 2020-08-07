@@ -131,7 +131,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         const { schemaQuery } = this.props;
         selectRows({
             schemaName: schemaQuery.schemaName,

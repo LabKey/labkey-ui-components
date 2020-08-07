@@ -150,10 +150,6 @@ export class PropDescType
         return dataType.display === AUTOINT_TYPE.display;
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     getJsonType(): JsonType {
         switch (this.name) {
             case 'boolean':
@@ -423,10 +419,6 @@ export class DomainDesign
         return json;
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     hasErrors(): boolean {
         return (
             this.domainException !== undefined &&
@@ -517,10 +509,6 @@ export class DomainIndex
 
         return indices;
     }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export enum FieldErrors {
@@ -598,10 +586,6 @@ export class PropertyValidatorProperties
     })
     implements IPropertyValidatorProperties {
     failOnMatch: boolean;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export interface IPropertyValidator {
@@ -635,10 +619,6 @@ export class PropertyValidator
     new: boolean;
     rowId?: number;
     expression?: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 
     static fromJS(rawPropertyValidator: any[], type: string): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>();
@@ -1006,10 +986,6 @@ export class DomainField
         return json;
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     getErrors(): FieldErrors {
         if (this.dataType.isLookup() && (!this.lookupSchema || !this.lookupQuery)) {
             return FieldErrors.MISSING_SCHEMA_QUERY;
@@ -1274,10 +1250,6 @@ export class ColumnInfoLite
     static create(raw: IColumnInfoLite): ColumnInfoLite {
         return new ColumnInfoLite(raw);
     }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 interface IQueryInfoLite {
@@ -1337,10 +1309,6 @@ export class QueryInfoLite
                 schemaName,
             })
         );
-    }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
     }
 
     getLookupInfo(rangeURI?: string): List<{ name: string; type: PropDescType }> {
@@ -1483,10 +1451,6 @@ export class DomainException
         return undefined;
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     // merge warnings with an incoming server side errors so that both server and pre-existing client side warning can be shown on the banner
     static mergeWarnings(domain: DomainDesign, exception: DomainException) {
         // merge pre-existing warnings on the domain
@@ -1608,10 +1572,6 @@ export class DomainFieldError
 
         return fieldErrors;
     }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export type HeaderRenderer = (config: IAppDomainHeader) => any;
@@ -1673,10 +1633,6 @@ export class DomainDetails extends Record({
         }
 
         return design;
-    }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
     }
 }
 

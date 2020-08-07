@@ -68,11 +68,11 @@ export class FileAttachmentContainer extends React.Component<
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.initFileNames(this.props);
     }
 
-    componentWillReceiveProps(nextProps: FileAttachmentContainerProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: FileAttachmentContainerProps): void {
         if (this.props.initialFileNames != nextProps.initialFileNames && !this.state.isDirty) {
             this.initFileNames(nextProps);
         }

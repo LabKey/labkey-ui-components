@@ -16,12 +16,8 @@
 
 import React from 'react';
 import { List } from 'immutable';
-
 import { mount } from 'enzyme';
-
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-
-import toJson from 'enzyme-to-json';
 
 import {
     ATTACHMENT_TYPE,
@@ -104,7 +100,7 @@ describe('DomainRow', () => {
             )
         );
 
-        expect(toJson(tree)).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
         tree.unmount();
     });
 
@@ -165,7 +161,7 @@ describe('DomainRow', () => {
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -227,7 +223,7 @@ describe('DomainRow', () => {
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(true);
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -289,7 +285,7 @@ describe('DomainRow', () => {
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -361,7 +357,7 @@ describe('DomainRow', () => {
         const advButton = row.find({ id: createFormInputId(DOMAIN_FIELD_ADV, _domainIndex, _index) });
         expect(advButton.length).toEqual(0);
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -498,7 +494,7 @@ describe('DomainRow', () => {
         expect(req.length).toEqual(1);
         expect(req.props().checked).toEqual(false);
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -558,7 +554,7 @@ describe('DomainRow', () => {
         const expected = 'New Field. ' + severity + ': ' + FIELD_NAME_CHAR_WARNING_MSG;
         expect(rowDetails.text()).toContain(expected);
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 
@@ -618,7 +614,7 @@ describe('DomainRow', () => {
         const expected = 'New Field. ' + severity + ': ' + message;
         expect(rowDetails.text()).toContain(expected);
 
-        expect(toJson(row)).toMatchSnapshot();
+        expect(row).toMatchSnapshot();
         row.unmount();
     });
 });

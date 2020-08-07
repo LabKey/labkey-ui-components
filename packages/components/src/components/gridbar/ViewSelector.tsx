@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React, { Component, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
@@ -21,7 +21,7 @@ import { gridSelectView } from '../../actions';
 import { QueryGridModel, ViewInfo } from '../base/models/model';
 import { generateId, naturalSort } from '../../util/utils';
 
-const emptyList = List<React.ReactNode>();
+const emptyList = List<ReactNode>();
 
 interface Props {
     model: QueryGridModel;
@@ -34,17 +34,16 @@ interface Props {
  *
  * If the model has only one associated view (the default view), the selector will be disabled.
  */
-export class ViewSelector extends React.Component<Props, any> {
+export class ViewSelector extends Component<Props> {
     dropId: string;
 
     constructor(props: Props) {
-        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
         this.dropId = generateId('viewselector-');
     }
 
-    createItem(view: ViewInfo, key: string): React.ReactNode {
+    createItem(view: ViewInfo, key: string): ReactNode {
         const { model } = this.props;
         const activeViewName = model.view ? model.view : ViewInfo.DEFAULT_NAME;
 
@@ -55,11 +54,11 @@ export class ViewSelector extends React.Component<Props, any> {
         );
     }
 
-    createMenuItems(): List<React.ReactNode> {
+    createMenuItems(): List<ReactNode> {
         const { model } = this.props;
 
         if (model.queryInfo) {
-            const items = List<React.ReactNode>().asMutable();
+            const items = List<ReactNode>().asMutable();
 
             const valid = model.queryInfo.views.filter(
                 view => view && !view.isDefault && view.name.indexOf('~~') !== 0
@@ -105,11 +104,11 @@ export class ViewSelector extends React.Component<Props, any> {
         return emptyList;
     }
 
-    onSelectView(view: ViewInfo) {
+    onSelectView = (view: ViewInfo): void => {
         gridSelectView(this.props.model, view);
-    }
+    };
 
-    render() {
+    render(): ReactNode {
         const { model } = this.props;
         const viewItems = this.createMenuItems();
 

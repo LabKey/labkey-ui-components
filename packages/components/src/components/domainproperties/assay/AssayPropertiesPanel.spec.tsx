@@ -2,8 +2,6 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount } from 'enzyme';
 
-import toJson from 'enzyme-to-json';
-
 import { DomainDesign, DomainPanelStatus } from '../models';
 
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
@@ -48,7 +46,7 @@ describe('AssayPropertiesPanel', () => {
     test('default properties', () => {
         const form = mount(<AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} onChange={jest.fn} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -64,7 +62,7 @@ describe('AssayPropertiesPanel', () => {
             />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -79,7 +77,7 @@ describe('AssayPropertiesPanel', () => {
             />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -88,7 +86,7 @@ describe('AssayPropertiesPanel', () => {
             <AssayPropertiesPanel {...BASE_PROPS} model={EMPTY_MODEL} initCollapsed={true} onChange={jest.fn} />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -107,7 +105,7 @@ describe('AssayPropertiesPanel', () => {
             />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 

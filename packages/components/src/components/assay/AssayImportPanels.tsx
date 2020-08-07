@@ -44,6 +44,8 @@ import { Progress } from '../base/Progress';
 import { FileSizeLimitProps } from '../files/models';
 import { IMPORT_DATA_FORM_TYPES } from '../../constants';
 
+import { dismissNotifications } from '../..';
+
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { RunDataPanel } from './RunDataPanel';
@@ -63,7 +65,6 @@ import {
     importAssayRun,
     uploadAssayRunFiles,
 } from './actions';
-import { dismissNotifications } from '../..';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({ isInit: false });
@@ -82,7 +83,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     maxInsertRows?: number;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
-    loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>
+    loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -97,10 +98,9 @@ interface State {
 }
 
 class AssayImportPanelsImpl extends React.Component<Props, State> {
-
     static defaultProps = {
-        loadSelections : loadSelectedSamples
-    }
+        loadSelections: loadSelectedSamples,
+    };
 
     constructor(props: Props) {
         super(props);
@@ -123,7 +123,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         return props.runId !== undefined;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         const { location, selectStep } = this.props;
 
         if (location && location.query && location.query.dataTab) {
@@ -133,7 +133,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         this.initModel(this.props);
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         if (
             this.props.assayDefinition.protocolSchemaName !== nextProps.assayDefinition.protocolSchemaName ||
             this.props.runId !== nextProps.runId

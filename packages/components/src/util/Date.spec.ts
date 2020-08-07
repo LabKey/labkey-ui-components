@@ -59,7 +59,6 @@ describe('formatDateTime', () => {
     test('default to context dateTimeFormat', () => {
         const actualFormat = formatDateTime(testDate);
 
-        expect(actualFormat).toBe('2020-08-06 14:44');
         expect(actualFormat).toEqual(formatDateTime(testDate, undefined, LABKEY.container.formats.dateTimeFormat));
     });
     test('supports timezone', () => {

@@ -96,7 +96,7 @@ export const makeTestData = (getQueryResponse): Promise<RowsResponse> => {
  * to sleep temporarily which will allow async actions in your component to continue.
  * @param ms
  */
-export const sleep = (ms = 0) => {
+export const sleep = (ms = 0): Promise<void> => {
     return new Promise(resolve => {
         setTimeout(() => {
             resolve();

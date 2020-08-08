@@ -36,7 +36,6 @@ export class SearchAction implements Action {
 
     completeAction(tokens: string[]): Promise<Value> {
         const token = tokens.join(' ');
-        // @ts-ignore
         return Promise.resolve({
             value: token,
             valueObject: Filter.create('*', token, Filter.Types.Q),

@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React from 'react';
+import ReactN from 'reactn';
 import { Panel } from 'react-bootstrap';
 
 import { gridInit } from '../../actions';
@@ -29,7 +30,7 @@ interface Props extends EditableGridProps {
     className?: string;
 }
 
-export class EditableGridPanel extends React.Component<Props, any> {
+export class EditableGridPanel extends ReactN.Component<Props, any> {
     constructor(props: EditableGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
@@ -43,7 +44,7 @@ export class EditableGridPanel extends React.Component<Props, any> {
         this.initModel(this.props);
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         this.initModel(nextProps);
     }
 

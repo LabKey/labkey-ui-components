@@ -28,10 +28,6 @@ export class SearchResultsModel extends Record({
     isLoaded: boolean;
     lastUpdate: Date;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(raw: any): SearchResultsModel {
         return new SearchResultsModel({
             ...raw,

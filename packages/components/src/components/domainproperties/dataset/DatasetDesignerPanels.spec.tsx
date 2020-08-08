@@ -17,7 +17,6 @@
 import renderer from 'react-test-renderer';
 import React from 'react';
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
 
 import getDatasetDesign from '../../../test/data/dataset-getDatasetDesign.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../test/data/constants';
@@ -33,7 +32,7 @@ describe('Dataset Designer', () => {
     const populatedDatasetModel = DatasetModel.create(null, getDatasetDesign);
 
     test('New dataset', () => {
-        const designerPanel = (
+        const designerPanels = renderer.create(
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
                 useTheme={true}
@@ -42,8 +41,8 @@ describe('Dataset Designer', () => {
             />
         );
 
-        const dom = renderer.create(designerPanel).toJSON();
-        expect(dom).toMatchSnapshot();
+        expect(designerPanels).toMatchSnapshot();
+        designerPanels.unmount();
     });
 
     test('Edit existing dataset', () => {
@@ -56,7 +55,7 @@ describe('Dataset Designer', () => {
             />
         );
 
-        expect(toJson(designerPanels)).toMatchSnapshot();
+        expect(designerPanels).toMatchSnapshot();
         designerPanels.unmount();
     });
 

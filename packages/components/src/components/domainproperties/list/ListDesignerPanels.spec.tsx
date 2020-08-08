@@ -2,7 +2,6 @@ import React from 'react';
 import { Alert } from 'react-bootstrap';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
 
 import { DEFAULT_LIST_SETTINGS } from '../../../test/data/constants';
 import getDomainDetailsJSON from '../../../test/data/list-getDomainDetails.json';
@@ -33,7 +32,7 @@ describe('ListDesignerPanel', () => {
     test('existing list', () => {
         const listDesignerPanels = mount(<ListDesignerPanels {...BASE_PROPS} initModel={populatedExistingModel} />);
 
-        expect(toJson(listDesignerPanels)).toMatchSnapshot();
+        expect(listDesignerPanels).toMatchSnapshot();
         listDesignerPanels.unmount();
     });
 

@@ -200,7 +200,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
         this.initModel(this.props);
     }
 
-    componentWillReceiveProps(nextProps: QuerySelectOwnProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: QuerySelectOwnProps): void {
         if (nextProps.componentId !== this.props.componentId) {
             this.initModel(nextProps);
         }

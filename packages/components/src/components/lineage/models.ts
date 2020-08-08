@@ -53,10 +53,6 @@ export class LineageNodeMetadata extends Record({
     aliases?: List<string>;
     displayType?: string;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(selectRowsMetadata: Map<any, any>, queryInfo: QueryInfo): LineageNodeMetadata {
         let description;
         if (selectRowsMetadata.hasIn(['Description', 'value']))
@@ -86,10 +82,6 @@ export class LineageLink extends Record({
     lsid: undefined,
 }) {
     lsid: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 
     static createList(values?: any): List<LineageLink> {
         const result = values ? values.map(v => new LineageLink(v)) : [];
@@ -270,10 +262,6 @@ export class LineageNode
     listURL: string;
     meta: LineageNodeMetadata;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(lsid: string, values?: Partial<LineageNodeConfig>): LineageNode {
         let config: any;
 
@@ -308,10 +296,6 @@ export class LineageResult extends Record({
     mergedIn: List<string>;
     nodes: Map<string, LineageNode>;
     seed: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 
     static create(rawLineageResult: any): LineageResult {
         const seed = rawLineageResult.seed;

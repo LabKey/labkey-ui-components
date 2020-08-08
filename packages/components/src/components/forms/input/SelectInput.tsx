@@ -189,7 +189,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         reactSelect: any;
     };
 
-    componentWillReceiveProps(nextProps: SelectInputProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: SelectInputProps): void {
         // Issue 36478, Issue 38631: reset the reactSelect input cache object on prop change
         // We need to do this fairly aggressively and this may not catch all cases, but this is the best
         // bet yet.  It can happen, probably because of bad timing between loading and refreshing the display
@@ -226,16 +226,19 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     toggleDisabled = () => {
         const { selectedOptions } = this.state;
 
-        this.setState(state => {
-            return {
-                isDisabled: !state.isDisabled,
-                selectedOptions: state.isDisabled ? selectedOptions : state.originalOptions,
-            };
-        }, () => {
-            if (this.props.onToggleDisable) {
-                this.props.onToggleDisable(this.state.isDisabled);
+        this.setState(
+            state => {
+                return {
+                    isDisabled: !state.isDisabled,
+                    selectedOptions: state.isDisabled ? selectedOptions : state.originalOptions,
+                };
+            },
+            () => {
+                if (this.props.onToggleDisable) {
+                    this.props.onToggleDisable(this.state.isDisabled);
+                }
             }
-        });
+        );
     };
 
     getId() {

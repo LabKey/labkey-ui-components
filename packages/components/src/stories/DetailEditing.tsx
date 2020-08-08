@@ -43,7 +43,7 @@ function onEditToggle(isEditing) {
 }
 
 class DetailEditingPage extends React.Component<Props, any> {
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.initModel();
     }
 

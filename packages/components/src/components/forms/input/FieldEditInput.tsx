@@ -40,10 +40,6 @@ export class FieldEditProps extends Record({
     key: string;
     value?: string;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     getFieldEditInputName(): string {
         return 'fieldEditInput_' + this.fieldKey;
     }

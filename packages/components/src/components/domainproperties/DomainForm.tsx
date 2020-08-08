@@ -195,7 +195,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }) as List<PropDescType>;
     };
 
-    componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>, nextContext: any): void {
+    UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>, nextContext: any): void {
         const { controlledCollapse, initCollapsed, validate, onChange } = this.props;
 
         // if controlled collapsible, allow the prop change to update the collapsed state

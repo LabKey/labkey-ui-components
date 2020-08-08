@@ -56,7 +56,7 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
         this.initModel();
     }
 
-    componentWillReceiveProps(nextProps: HeatMapProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: HeatMapProps): void {
         this.initModel();
     }
 

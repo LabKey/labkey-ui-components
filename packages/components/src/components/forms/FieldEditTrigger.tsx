@@ -69,7 +69,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
         this.init(this.props);
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         this.init(nextProps);
     }
 

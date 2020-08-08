@@ -5,6 +5,25 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Move Timeline related component and model from Sample Manager
 
+### version 0.84.0
+*Released*: 7 August 2020
+* Updates most package dependencies to the latest version.
+* Notable updates are:
+    - `react 16.8.6 -> 16.13.1`. This brings us up-to-date with the latest version of React. For more details
+    see https://reactjs.org/versions/.
+    - `react-bootstrap 0.32.4 -> 0.33.1`. There have been several updates to the Bootstrap v3 supported variant of
+    this library that are worth having. Namely, fixed support for `UNSAFE_componentWillMount`, etc.
+* Switch to using `UNSAFE_` prefixed React lifecycle methods to silence warnings until we have time to convert these
+usages to their counterpart methods.
+* Switches our tests from using wrapped `setTimeout` with `done()` to async/await pattern. This is better supported by
+more recent versions of Jest.
+* Fix and add tests for `formatDate` and `formatDateTime` after SM exposed a bug in how the `moment-timezone` package
+is imported.
+* Switch all imports of `import React from 'reactn'` to `import ReactN from 'reactn'` to make it more obvious when the
+library is used (for a component). Switch a couple of usages from `ReactN` to `React` where `reactn` wasn't needed.
+* Removed superfluous usages of `enzyme-to-json` from many test cases.
+* Removed superfluous `Immutable.Record` constructors.
+
 ### version 0.83.2
 *Released*: 6 August 2020
 * BulkUpdateForm to pass through readonly columns to EditableGrid

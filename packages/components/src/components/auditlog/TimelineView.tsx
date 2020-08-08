@@ -1,13 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
-import { List } from 'immutable';
 
 import { App, getEventDataValueDisplay, SVGIcon } from '../../index';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 
 interface Props {
-    events: List<TimelineEventModel>;
+    events: TimelineEventModel[];
     selectionDisabled?: boolean;
     onEventSelection?: (selectedEvent: TimelineEventModel) => any;
     showRecentFirst: boolean;

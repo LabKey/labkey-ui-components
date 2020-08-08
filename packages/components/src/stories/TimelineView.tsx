@@ -8,12 +8,11 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs,boolean } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import {List} from "immutable";
 import {TIMELINE_DATA} from "../test/data/constants";
 import {TimelineEventModel, TimelineView} from "..";
 
-let events = List<TimelineEventModel>();
-TIMELINE_DATA.forEach((event) => events = events.push(TimelineEventModel.create(event, 'UTC')));
+let events : TimelineEventModel[] = [];
+TIMELINE_DATA.forEach((event) => events.push(TimelineEventModel.create(event, 'UTC')));
 
 storiesOf('Timeline', module)
     .addDecorator(withKnobs)
@@ -24,7 +23,7 @@ storiesOf('Timeline', module)
                 showRecentFirst={false}
                 selectionDisabled={boolean('selectionDisabled', false)}
                 onEventSelection={(event) => console.log('selected')}
-                selectedEvent={boolean('hasSelection', true) ? events.get(1) : null}
+                selectedEvent={boolean('hasSelection', true) ? events[1] : null}
                 showUserLinks={boolean('showUserLinks', true)}
                 selectedEntityInfo={null}
             />
@@ -37,9 +36,9 @@ storiesOf('Timeline', module)
                 showRecentFirst={false}
                 selectionDisabled={false}
                 onEventSelection={(event) => console.log('selected')}
-                selectedEvent={events.get(1)}
+                selectedEvent={events[1]}
                 showUserLinks={true}
-                selectedEntityInfo={{firstEvent: events.get(1), lastEvent: events.get(5), isCompleted: true}}
+                selectedEntityInfo={{firstEvent: events[1], lastEvent: events[5], isCompleted: true}}
             />
         );
     })
@@ -50,9 +49,9 @@ storiesOf('Timeline', module)
                 showRecentFirst={false}
                 selectionDisabled={false}
                 onEventSelection={(event) => console.log('selected')}
-                selectedEvent={events.get(7)}
+                selectedEvent={events[7]}
                 showUserLinks={boolean('showUserLinks', true)}
-                selectedEntityInfo={{firstEvent: events.get(2), lastEvent: events.get(7), isCompleted: false}}
+                selectedEntityInfo={{firstEvent: events[2], lastEvent: events[7], isCompleted: false}}
             />
         );
     });

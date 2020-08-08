@@ -2,8 +2,6 @@ import React from 'react';
 
 import { shallow } from 'enzyme';
 
-import { List } from 'immutable';
-
 import { boolean } from '@storybook/addon-knobs';
 
 import { TIMELINE_DATA } from '../../test/data/constants';
@@ -11,8 +9,8 @@ import { TIMELINE_DATA } from '../../test/data/constants';
 import { TimelineView } from './TimelineView';
 import { TimelineEventModel } from './models';
 
-let events = List<TimelineEventModel>();
-TIMELINE_DATA.forEach(event => (events = events.push(TimelineEventModel.create(event, 'UTC'))));
+let events : TimelineEventModel[] = [];
+TIMELINE_DATA.forEach((event) => events.push(TimelineEventModel.create(event, 'UTC')));
 
 describe('<TimelineView />', () => {
     test('Disable selection', () => {
@@ -54,9 +52,9 @@ describe('<TimelineView />', () => {
                 showRecentFirst={false}
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
-                selectedEvent={events.get(1)}
+                selectedEvent={events[1]}
                 showUserLinks={true}
-                selectedEntityInfo={{ firstEvent: events.get(1), lastEvent: events.get(5), isCompleted: true }}
+                selectedEntityInfo={{ firstEvent: events[1], lastEvent: events[5], isCompleted: true }}
             />
         );
 
@@ -70,9 +68,9 @@ describe('<TimelineView />', () => {
                 showRecentFirst={false}
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
-                selectedEvent={events.get(7)}
+                selectedEvent={events[7]}
                 showUserLinks={boolean('showUserLinks', true)}
-                selectedEntityInfo={{ firstEvent: events.get(2), lastEvent: events.get(7), isCompleted: false }}
+                selectedEntityInfo={{ firstEvent: events[2], lastEvent: events[7], isCompleted: false }}
             />
         );
 

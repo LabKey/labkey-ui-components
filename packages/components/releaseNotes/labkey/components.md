@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add Label as optional export format and add optional onExport callback to export menu
 * Refactor exportRows and export method for creating the export parameters
+* Export test utility methods makeTestActions and makeTestQueryModel
 
 ### version 0.83.2
 *Released*: 6 August 2020

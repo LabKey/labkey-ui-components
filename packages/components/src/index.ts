@@ -354,6 +354,7 @@ import { DataClassDataType, SampleTypeDataType } from './components/entities/con
 import { SampleTypeModel } from './components/domainproperties/samples/models';
 import { SampleTypeDesigner } from './components/domainproperties/samples/SampleTypeDesigner';
 
+import { makeTestActions, makeTestQueryModel } from './QueryModel/testUtils';
 import { QueryConfig, QueryModel } from './QueryModel/QueryModel';
 import { QueryModelLoader } from './QueryModel/QueryModelLoader';
 import {
@@ -805,6 +806,8 @@ export {
     runDetailsColumnsForQueryModel,
     Pagination,
     PaginationData,
+    makeTestActions,
+    makeTestQueryModel,
     // AuditLog
     AuditDetailsModel,
     AuditQueriesListingPage,

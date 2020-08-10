@@ -10,7 +10,7 @@ import { Actions, LoadingState, QueryInfo, QueryModel } from '..';
  * @param rowCount
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const makeTestModel = (
+export const makeTestQueryModel = (
     schemaQuery,
     queryInfo?: QueryInfo,
     rows?: any,

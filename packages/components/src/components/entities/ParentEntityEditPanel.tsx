@@ -1,4 +1,5 @@
-import React from 'reactn';
+import React, { ReactNode } from 'react';
+import ReactN from 'reactn';
 import { Button, Panel } from 'react-bootstrap';
 
 import { List } from 'immutable';
@@ -50,7 +51,7 @@ interface Props {
 
 interface State {
     editing: boolean;
-    error: React.ReactNode;
+    error: ReactNode;
     loading: boolean;
     parentTypeOptions: List<IEntityTypeOption>;
     submitting: boolean;
@@ -59,7 +60,7 @@ interface State {
     originalValueLoaded: List<boolean>;
 }
 
-export class ParentEntityEditPanel extends React.Component<Props, State> {
+export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
     static defaultProps = {
         cancelText: 'Cancel',
         submitText: 'Save',
@@ -80,7 +81,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.init();
     }
 
@@ -238,7 +239,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         return parentValuesDiffer(this.state.originalParents, this.state.currentParents);
     };
 
-    renderProgress = (): React.ReactNode => {
+    renderProgress = (): ReactNode => {
         const { submitting } = this.state;
         const parentCount = this.state.currentParents.reduce((count, parent) => {
             const values = parent.value ? parent.value.split(',') : [];
@@ -254,7 +255,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         );
     };
 
-    renderEditControls = (): React.ReactNode => {
+    renderEditControls = (): ReactNode => {
         const { cancelText, submitText } = this.props;
         const { submitting } = this.state;
 
@@ -296,7 +297,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         });
     };
 
-    renderSingleParentPanels = (): React.ReactNode => {
+    renderSingleParentPanels = (): ReactNode => {
         const { parentDataType } = this.props;
 
         return this.state.currentParents
@@ -325,7 +326,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
             .toArray();
     };
 
-    renderParentData = (): React.ReactNode => {
+    renderParentData = (): ReactNode => {
         const { parentDataType, childNounSingular } = this.props;
         if (this.hasParents()) {
             return this.renderSingleParentPanels();
@@ -354,7 +355,7 @@ export class ParentEntityEditPanel extends React.Component<Props, State> {
         }));
     };
 
-    renderAddParentButton = (): React.ReactNode => {
+    renderAddParentButton = (): ReactNode => {
         const { parentTypeOptions } = this.state;
         if (!parentTypeOptions || parentTypeOptions.size === 0) return null;
         else {

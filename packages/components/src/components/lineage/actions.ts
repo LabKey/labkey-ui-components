@@ -76,7 +76,7 @@ function fetchLineageNodes(lsids: string[], containerPath?: string): Promise<Lin
             containerPath,
             lsids,
             success: json => {
-                resolve(json.data.map(n => LineageNode.create(n.lsid, n)));
+                resolve(json.data.map(n => LineageNode.create(n.lsid, n as any)));
             },
             failure: error => {
                 reject(error);

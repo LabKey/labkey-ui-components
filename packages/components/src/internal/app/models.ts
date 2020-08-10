@@ -26,10 +26,6 @@ export class AppModel extends Record({
     requestPermissions: boolean;
     user: User;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     hasUserChanged(): boolean {
         return this.initialUserId !== this.user.id;
     }

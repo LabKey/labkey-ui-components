@@ -62,6 +62,7 @@ describe('<ReportList />', () => {
         const wrapper = mount(component);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(messageSelector).text()).toContain('No reports');
+        wrapper.unmount();
     });
 
     test('Render loading', () => {
@@ -70,6 +71,7 @@ describe('<ReportList />', () => {
         expect(tree).toMatchSnapshot();
         const wrapper = mount(component);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
+        wrapper.unmount();
     });
 
     test('Render with data', () => {
@@ -80,6 +82,7 @@ describe('<ReportList />', () => {
         const wrapper = mount(component);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
         expect(wrapper.find(ReportListItem)).toHaveLength(reports.length);
+        wrapper.unmount();
     });
 
     test('onReportClicked should execute on click', () => {
@@ -89,6 +92,7 @@ describe('<ReportList />', () => {
         const wrapper = mount(component);
         wrapper.find(ReportListItem).simulate('click');
         expect(onReportClicked).toHaveBeenCalledTimes(1);
+        wrapper.unmount();
     });
 });
 
@@ -110,6 +114,7 @@ describe('<ReportListItem />', () => {
         // Enzyme prefixes relative URLs with http://localhost
         const expectedHref = `http://localhost${report.appUrl.toString()}`;
         expect(wrapper.find('a').getDOMNode()).toHaveProperty('href', expectedHref);
+        wrapper.unmount();
     });
 
     test('ReportListItem does not render non-existent createdBy', () => {
@@ -119,6 +124,7 @@ describe('<ReportListItem />', () => {
         const component = <ReportListItem report={report} onClick={noop} />;
         const wrapper = mount(component);
         expect(wrapper.find(createdBySelector)).toHaveLength(0);
+        wrapper.unmount();
     });
 
     test('ReportListItem calls onClick when clicked', () => {
@@ -131,6 +137,7 @@ describe('<ReportListItem />', () => {
         // Test that we pass the report to onClick. If this test fails that means we'll need to fix any callbacks that
         // expect a report to be passed to the callback.
         expect(onClick.mock.calls[0][0]).toBe(report);
+        wrapper.unmount();
     });
 });
 
@@ -142,5 +149,6 @@ describe('<ReportItemModal />', () => {
         // Have to use mount + wrapper.debug for snapshot here because react-test-renderer does not work with
         // React portals, which react-bootstrap uses for their modal component.
         expect(wrapper.debug()).toMatchSnapshot();
+        wrapper.unmount();
     });
 });

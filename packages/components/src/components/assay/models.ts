@@ -85,10 +85,6 @@ export class AssayWizardModel
     toDelete?: string;
     selectedSamples?: Map<string, any>;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     isFilesTab(currentStep: AssayUploadTabs): boolean {
         return currentStep === AssayUploadTabs.Files;
     }
@@ -252,10 +248,6 @@ export class AssayUploadResultModel extends Record({
     runId: number;
     success: boolean;
     successurl?: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export class AssayStateModel extends Record({
@@ -265,7 +257,7 @@ export class AssayStateModel extends Record({
     hasError: false,
     isLoaded: false,
     isLoading: false,
-    protocolsById: Map<number, AssayProtocolModel>()
+    protocolsById: Map<number, AssayProtocolModel>(),
 }) {
     byId: Map<number, AssayDefinitionModel>;
     byName: Map<string, number>;
@@ -275,17 +267,13 @@ export class AssayStateModel extends Record({
     isLoading: boolean;
     protocolsById: Map<number, AssayProtocolModel>;
 
-    constructor(values?: {[key:string]: any}) {
-        super(values);
-    }
-
     getById(assayRowId: number): AssayDefinitionModel {
         return this.byId.get(assayRowId);
     }
 
     getByName(assayName: string): AssayDefinitionModel {
         if (assayName) {
-            let assayRowId = this.byName.get(assayName.toLowerCase());
+            const assayRowId = this.byName.get(assayName.toLowerCase());
             if (assayRowId !== undefined) {
                 return this.byId.get(assayRowId);
             }

@@ -85,13 +85,13 @@ export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         if (!this.state.options && !this.state.isLoading) {
             this.getOptions();
         }
     }
 
-    componentWillReceiveProps(nextProps: OwnProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: OwnProps): void {
         if (nextProps.selectedRows) {
             this.setState(() => ({
                 isLoading: false,

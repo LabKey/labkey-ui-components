@@ -127,10 +127,6 @@ export class QueryInfo extends Record({
         );
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     isAppEditable(): boolean {
         return this.appEditableTable && this.getPkCols().size > 0;
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React, { PureComponent, ReactNode } from 'react';
 import { Map, Set } from 'immutable';
 
 import { ChartSelector } from '../chart/ChartSelector';
@@ -53,8 +53,8 @@ interface QueryGridBarProps {
  * - a view selector (based on model.showViewSelector)
  * You may also provide a set of buttons to be displayed within the bar.
  */
-export class QueryGridBar extends React.PureComponent<QueryGridBarProps, any> {
-    render() {
+export class QueryGridBar extends PureComponent<QueryGridBarProps> {
+    render(): ReactNode {
         const {
             buttons,
             model,

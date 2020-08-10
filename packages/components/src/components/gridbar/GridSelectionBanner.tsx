@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React, { Component, ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import { Map } from 'immutable';
 
@@ -26,16 +26,16 @@ interface Props {
     onSelectionChange?: (model: QueryGridModel, row: Map<string, any>, checked: boolean) => any;
 }
 
-export class GridSelectionBanner extends React.Component<Props, any> {
-    selectAll = () => {
+export class GridSelectionBanner extends Component<Props> {
+    selectAll = (): void => {
         gridSelectAll(this.props.model, this.props.onSelectionChange);
     };
 
-    clearAll = () => {
+    clearAll = (): void => {
         gridClearAll(this.props.model, this.props.onSelectionChange);
     };
 
-    render() {
+    render(): ReactNode {
         const { containerCls, model } = this.props;
         if (model && model.isLoaded && model.selectedLoaded) {
             const { maxRows, totalRows } = model;

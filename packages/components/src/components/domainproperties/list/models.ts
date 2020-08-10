@@ -94,10 +94,6 @@ export class ListModel extends Record({
     discussionSettingEnum: string;
     containerPath: string;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(raw: any, defaultSettings = null): ListModel {
         if (defaultSettings) {
             const domain = DomainDesign.create(undefined);

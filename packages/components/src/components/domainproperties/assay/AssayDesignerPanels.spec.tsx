@@ -1,19 +1,13 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 import { mount } from 'enzyme';
-
 import { Panel } from 'react-bootstrap';
 
-import toJson from 'enzyme-to-json';
-
 import { DomainDesign } from '../models';
-
 import { FileAttachmentForm } from '../../files/FileAttachmentForm';
 
 import { AssayProtocolModel } from './models';
-
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
-
 import { AssayDesignerPanels } from './AssayDesignerPanels';
 
 const EXISTING_MODEL = AssayProtocolModel.create({
@@ -76,21 +70,21 @@ describe('AssayDesignerPanels', () => {
     test('default properties', () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
     test('initModel', () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
     test('hideEmptyBatchDomain for new assay', () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} hideEmptyBatchDomain={true} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -99,21 +93,21 @@ describe('AssayDesignerPanels', () => {
             <AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} hideEmptyBatchDomain={true} />
         );
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
     test('appPropertiesOnly for new assay', () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} appPropertiesOnly={true} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
     test('appPropertiesOnly with initModel', () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} appPropertiesOnly={true} />);
 
-        expect(toJson(form)).toMatchSnapshot();
+        expect(form).toMatchSnapshot();
         form.unmount();
     });
 
@@ -200,5 +194,6 @@ describe('AssayDesignerPanels', () => {
             .simulate('click');
         expect(wrapper.find('#' + _appHeaderId)).toHaveLength(1);
         expect(wrapper.find('#' + _appHeaderId).text()).toBe(_appHeaderText);
+        wrapper.unmount();
     });
 });

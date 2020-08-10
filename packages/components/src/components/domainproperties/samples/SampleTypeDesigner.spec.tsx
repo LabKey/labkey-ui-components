@@ -2,7 +2,6 @@ import React from 'react';
 import { Map } from 'immutable';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
-import toJson from 'enzyme-to-json';
 
 import { Alert } from '../../base/Alert';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
@@ -10,7 +9,7 @@ import DomainForm from '../DomainForm';
 
 import { FileAttachmentForm } from '../../files/FileAttachmentForm';
 
-import { DomainDetails, DomainField } from '../models';
+import { DomainDetails } from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner } from './SampleTypeDesigner';
@@ -70,7 +69,7 @@ describe('SampleTypeDesigner', () => {
         expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
         expect(wrapped.find(DomainForm)).toHaveLength(1);
         expect(wrapped.find(FileAttachmentForm)).toHaveLength(0);
-        expect(toJson(wrapped)).toMatchSnapshot();
+        expect(wrapped).toMatchSnapshot();
         wrapped.unmount();
     });
 

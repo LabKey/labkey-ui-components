@@ -311,7 +311,7 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         getValidPublishTargets()
             .then(containers => {
                 this.setState(() => ({ containers }));

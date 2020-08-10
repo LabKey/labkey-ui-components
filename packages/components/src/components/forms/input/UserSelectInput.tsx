@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'reactn';
+import React, { Component, ReactNode } from 'react';
 
 import { getUsersWithPermissions } from '../actions';
 
@@ -15,14 +15,14 @@ interface UserSelectInputProps extends SelectInputProps {
     useEmail?: boolean;
 }
 
-export class UserSelectInput extends React.Component<UserSelectInputProps, any> {
+export class UserSelectInput extends Component<UserSelectInputProps> {
     static defaultProps = {
         cache: false,
         notifyList: false,
         useEmail: false,
     };
 
-    loadOptions(value, cb) {
+    loadOptions = (value, cb): void => {
         const { useEmail } = this.props;
         getUsersWithPermissions(this.props.permissions)
             .then(users => {
@@ -49,12 +49,12 @@ export class UserSelectInput extends React.Component<UserSelectInputProps, any> 
                 console.error(error);
                 cb(null, { complete: true, options: [] });
             });
-    }
+    };
 
-    render() {
+    render(): ReactNode {
         const inputProps = Object.assign(
             {
-                loadOptions: this.loadOptions.bind(this),
+                loadOptions: this.loadOptions,
                 delimiter: this.props.notifyList ? ';' : ',',
             },
             UserSelectInput.defaultProps,

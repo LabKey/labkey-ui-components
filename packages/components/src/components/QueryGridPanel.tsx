@@ -15,7 +15,7 @@
  */
 import React, { ReactNode } from 'react';
 import ReactN from 'reactn';
-import { List, Map } from 'immutable';
+import { List, Map, Set } from 'immutable';
 import classNames from 'classnames';
 
 import { Utils } from '@labkey/api';

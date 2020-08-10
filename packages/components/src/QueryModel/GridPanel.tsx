@@ -82,7 +82,6 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             actions,
             advancedExportOptions,
             ButtonsComponent,
-            buttonsComponentProps,
             hideEmptyChartMenu,
             hideEmptyViewMenu,
             onViewSelect,
@@ -100,6 +99,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewMenu && queryInfo !== undefined;
+        const buttonsComponentProps = this.props.buttonsComponentProps ?? ({} as T);
 
         return (
             <div className="grid-panel__button-bar">
@@ -150,7 +150,7 @@ interface State {
     actionValues: ActionValue[];
 }
 
-export class GridPanel<T> extends PureComponent<Props<T>, State> {
+export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     static defaultProps = {
         allowSelections: true,
         allowSorting: true,

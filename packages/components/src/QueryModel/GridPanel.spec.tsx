@@ -17,7 +17,7 @@ import { RowsResponse } from './QueryModelLoader';
 import { makeTestActions, makeTestModel } from './testUtils';
 
 // The wrapper's return type for mount<GridPanel>(<GridPanel ... />)
-type GridPanelWrapper = ReactWrapper<Readonly<GridPanel<{}>['props']>, Readonly<GridPanel<{}>['state']>, GridPanel<{}>>;
+type GridPanelWrapper = ReactWrapper<Readonly<GridPanel['props']>, Readonly<GridPanel['state']>, GridPanel>;
 
 const SCHEMA_QUERY = SchemaQuery.create('exp.data', 'mixtures');
 let QUERY_INFO: QueryInfo;
@@ -112,7 +112,7 @@ describe('GridPanel', () => {
 
         // Model is loading QueryInfo and Rows, should render loading, disabled ChartMenu, no pagination/ViewMenu.
         let model = makeTestModel(SCHEMA_QUERY);
-        const wrapper = mount<GridPanel<{}>>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         expectNoQueryInfo(wrapper);
 
         // Model is loading Rows, but not QueryInfo, should not render pagination, should render disabled ViewMenu.
@@ -359,7 +359,7 @@ describe('GridPanel', () => {
     test('OmniBox', () => {
         const { rows, orderedRows, rowCount } = DATA;
         const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
-        const wrapper = mount<GridPanel<{}>>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         const grid = wrapper.instance();
 
         const filter1 = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
@@ -499,7 +499,7 @@ describe('GridPanel', () => {
         // happens when bindURL is true and there is a URL change.
         const { rows, orderedRows, rowCount } = DATA;
         const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
-        const wrapper = mount<GridPanel<{}>>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         const nameSort = new QuerySort({ fieldKey: 'Name' });
         const nameFilter = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
         const expirFilter = Filter.create('expirationTime', '1', Filter.Types.EQUAL);
@@ -626,7 +626,7 @@ describe('GridPanel', () => {
             selections: new Set(),
             selectionsLoadingState: LoadingState.LOADED,
         });
-        const wrapper = mount<GridPanel<{}>>(<GridPanel actions={actions} model={model} />);
+        const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
 
         // Check that with no selections the header checkbox is not selected.
         expectHeaderSelectionStatus(wrapper, false);

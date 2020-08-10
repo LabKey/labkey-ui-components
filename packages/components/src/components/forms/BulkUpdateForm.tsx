@@ -55,7 +55,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
         };
     }
 
-    UNSAFE_componentWillMount(): void {
+    componentDidMount(): void {
         const {
             onCancel,
             pluralNoun,
@@ -63,7 +63,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
             readOnlyColumns,
             selectedIds,
             shownInUpdateColumns,
-            sortString
+            sortString,
         } = this.props;
         // Get all shownInUpdateView columns or undefined
         const columns = shownInUpdateColumns

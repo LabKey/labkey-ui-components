@@ -379,12 +379,12 @@ export class QueryModel {
      * @param flattenValues True to flatten the row object to just the key: value pairs
      */
     getRow(key?: string, flattenValues = false): any {
-        if (!this.rows) {
+        if (!this.hasRows) {
             return undefined;
         }
 
         if (key === undefined) {
-            key = Object.keys(this.rows)[0];
+            key = this.orderedRows[0];
         }
 
         const row = this.rows[key];

@@ -117,6 +117,7 @@ import { Footer } from './components/base/Footer';
 
 import { EditorModel, getStateModelId, getStateQueryGridModel, IDataViewInfo } from './models';
 import {
+    clearSelected,
     createQueryGridModelFilteredBySample,
     getSelected,
     getSelectedData,
@@ -390,6 +391,7 @@ export {
     getEditorModel,
     removeQueryGridModel,
     invalidateUsers,
+    clearSelected,
     gridInvalidate,
     gridIdInvalidate,
     queryGridInvalidate,

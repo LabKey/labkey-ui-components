@@ -130,16 +130,8 @@ interface MyComponentProps {
 
 function MyComponent(props: MyComponentProps) {
     const { schemaName, queryName }  = props;
-    const id = `${schemaName}.${queryName}`;
-    const queryConfigs: QueryConfigMap = {
-        [id]: {
-            schemaQuery: SchemaQuery.create(schemaName, queryName),
-        },
-    };
-
-    // We pass a key prop to GridPanelWithModel so that way if the schemaName or queryName changes it will trigger a new
-    // model to load. See the FAQ below for an explanation.
-    return <GridPanelWithModel key={id} queryConfigs={queryConfigs} />;
+    const queryConfig: QueryConfig = { schemaQuery: SchemaQuery.create(schemaName, queryName) };
+    return <GridPanelWithModel queryConfig={queryConfig} />;
 }
 ```
 

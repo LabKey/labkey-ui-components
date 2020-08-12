@@ -12,7 +12,7 @@ interface Props {
     showRecentFirst: boolean;
     selectedEvent?: TimelineEventModel;
     showUserLinks?: boolean;
-    selectedEntityInfo?: TimelineGroupedEventInfo;
+    selectedEntityConnectionInfo?: TimelineGroupedEventInfo[];
 }
 
 export class TimelineView extends React.Component<Props, any> {
@@ -22,8 +22,8 @@ export class TimelineView extends React.Component<Props, any> {
         if (onEventSelection && !selectionDisabled) this.props.onEventSelection(selectedEvent);
     };
 
-    renderRow(event: TimelineEventModel, selectedEntityInfo?: any): any {
-        const { selectedEvent } = this.props;
+    renderRow(event: TimelineEventModel): any {
+        const { selectedEvent, selectedEntityConnectionInfo } = this.props;
         let eventSelected = false;
         let isFirstEvent = false;
         let isLastEvent = false;
@@ -34,18 +34,23 @@ export class TimelineView extends React.Component<Props, any> {
             eventSelected = true;
         }
 
-        if (selectedEntityInfo) {
-            isEventCompleted = selectedEntityInfo.isCompleted;
-            isConnection =
-                selectedEntityInfo.firstEvent &&
-                selectedEntityInfo.lastEvent &&
-                event.eventTimestamp >= selectedEntityInfo.firstEvent.eventTimestamp &&
-                event.eventTimestamp <= selectedEntityInfo.lastEvent.eventTimestamp;
-            if (selectedEntityInfo.firstEvent && event.getRowKey() === selectedEntityInfo.firstEvent.getRowKey()) {
-                isFirstEvent = true;
-            } else if (selectedEntityInfo.lastEvent && event.getRowKey() === selectedEntityInfo.lastEvent.getRowKey()) {
-                isLastEvent = true;
-            }
+        if (selectedEntityConnectionInfo && selectedEntityConnectionInfo.length > 0) {
+            selectedEntityConnectionInfo.forEach((info => {
+                const inRange : boolean = info.firstEvent &&
+                    info.lastEvent &&
+                    event.eventTimestamp >= info.firstEvent.eventTimestamp &&
+                    event.eventTimestamp <= info.lastEvent.eventTimestamp;
+                if (inRange) {
+                    isEventCompleted = info.isCompleted;
+                    isConnection = true;
+                    if (info.firstEvent && event.getRowKey() === info.firstEvent.getRowKey()) {
+                        isFirstEvent = true;
+                    } else if (info.lastEvent && event.getRowKey() === info.lastEvent.getRowKey()) {
+                        isLastEvent = true;
+                    }
+                    return;
+                }
+            }))
         }
 
         // TODO update with inventory icon when available
@@ -159,7 +164,7 @@ export class TimelineView extends React.Component<Props, any> {
     }
 
     render() {
-        const { events, selectedEntityInfo, selectionDisabled } = this.props;
+        const { events, selectionDisabled } = this.props;
         return (
             <table
                 className={classNames('timeline-grid', {
@@ -168,7 +173,7 @@ export class TimelineView extends React.Component<Props, any> {
             >
                 <tbody>
                     {events.map(event => {
-                        return this.renderRow(event, selectedEntityInfo);
+                        return this.renderRow(event);
                     })}
                 </tbody>
             </table>

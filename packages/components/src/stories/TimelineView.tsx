@@ -25,7 +25,7 @@ storiesOf('Timeline', module)
                 onEventSelection={(event) => console.log('selected')}
                 selectedEvent={boolean('hasSelection', true) ? events[1] : null}
                 showUserLinks={boolean('showUserLinks', true)}
-                selectedEntityInfo={null}
+                selectedEntityConnectionInfo={null}
             />
         );
     })
@@ -38,7 +38,7 @@ storiesOf('Timeline', module)
                 onEventSelection={(event) => console.log('selected')}
                 selectedEvent={events[1]}
                 showUserLinks={true}
-                selectedEntityInfo={{firstEvent: events[1], lastEvent: events[5], isCompleted: true}}
+                selectedEntityConnectionInfo={[{firstEvent: events[1], lastEvent: events[5], isCompleted: true}]}
             />
         );
     })
@@ -51,7 +51,7 @@ storiesOf('Timeline', module)
                 onEventSelection={(event) => console.log('selected')}
                 selectedEvent={events[7]}
                 showUserLinks={boolean('showUserLinks', true)}
-                selectedEntityInfo={{firstEvent: events[2], lastEvent: events[7], isCompleted: false}}
+                selectedEntityConnectionInfo={[{firstEvent: events[2], lastEvent: events[7], isCompleted: false}]}
             />
         );
     });

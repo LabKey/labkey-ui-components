@@ -22,7 +22,7 @@ describe('<TimelineView />', () => {
                 onEventSelection={jest.fn()}
                 selectedEvent={null}
                 showUserLinks={true}
-                selectedEntityInfo={null}
+                selectedEntityConnectionInfo={null}
             />
         );
 
@@ -38,7 +38,7 @@ describe('<TimelineView />', () => {
                 onEventSelection={jest.fn()}
                 selectedEvent={null}
                 showUserLinks={false}
-                selectedEntityInfo={null}
+                selectedEntityConnectionInfo={null}
             />
         );
 
@@ -54,7 +54,7 @@ describe('<TimelineView />', () => {
                 onEventSelection={jest.fn()}
                 selectedEvent={events[1]}
                 showUserLinks={true}
-                selectedEntityInfo={{ firstEvent: events[1], lastEvent: events[5], isCompleted: true }}
+                selectedEntityConnectionInfo={[{ firstEvent: events[1], lastEvent: events[5], isCompleted: true }]}
             />
         );
 
@@ -70,7 +70,7 @@ describe('<TimelineView />', () => {
                 onEventSelection={jest.fn()}
                 selectedEvent={events[7]}
                 showUserLinks={boolean('showUserLinks', true)}
-                selectedEntityInfo={{ firstEvent: events[2], lastEvent: events[7], isCompleted: false }}
+                selectedEntityConnectionInfo={[{ firstEvent: events[2], lastEvent: events[7], isCompleted: false }]}
             />
         );
 

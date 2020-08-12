@@ -176,200 +176,198 @@ export const JEST_SITE_ADMIN_USER_ID = 1004;
 
 export const TIMELINE_DATA = [
     {
-        "rowId": 462022,
-        "eventType": "samples",
-        "user" : {
-            "value" : 1005,
-            "urlType" : "user",
-            "displayValue" : "Vader"
+        rowId: 462022,
+        eventType: 'samples',
+        user: {
+            value: 1005,
+            urlType: 'user',
+            displayValue: 'Vader',
         },
-        "timestamp" : {
-            "value" : "2020-04-04 21:57:36.941",
-            "formattedValue" : "2020-04-04 21:57"
+        timestamp: {
+            value: '2020-04-04 21:57:36.941',
+            formattedValue: '2020-04-04 21:57',
         },
-        "summary" : "Sample Registered",
-        "oldData" : { },
-        "newData" : {}
+        summary: 'Sample Registered',
+        oldData: {},
+        newData: {},
     },
     {
-        "rowId": 544,
-        "eventType": "workflow",
-        "user" : {
-            "value" : 1005,
-            "urlType" : "user",
-            "displayValue" : "Vader"
+        rowId: 544,
+        eventType: 'workflow',
+        user: {
+            value: 1005,
+            urlType: 'user',
+            displayValue: 'Vader',
         },
-        "timestamp" : {
-            "value" : "2020-04-04 22:57:36.941",
-            "formattedValue" : "2020-04-04 22:57"
+        timestamp: {
+            value: '2020-04-04 22:57:36.941',
+            formattedValue: '2020-04-04 22:57',
         },
-        "summary" : "Added to job",
-        "metadata" : {
-            "Job Name" : {
-                "value" : 687,
-                "urlType" : "workflow",
-                "displayValue" : "job-1"
+        summary: 'Added to job',
+        metadata: {
+            'Job Name': {
+                value: 687,
+                urlType: 'workflow',
+                displayValue: 'job-1',
             },
-            "Job Owner" : {
-                "value" : 1005,
-                "urlType" : "user",
-                "displayValue" : "Vader"
+            'Job Owner': {
+                value: 1005,
+                urlType: 'user',
+                displayValue: 'Vader',
             },
-            "Job Status": "In Progress"
+            'Job Status': 'In Progress',
         },
-        "entity" : {
-            "value" : 687,
-            "urlType" : "workflow",
-            "displayValue" : "job-1"
-        }
+        entity: {
+            value: 687,
+            urlType: 'workflow',
+            displayValue: 'job-1',
+        },
     },
     {
-        "summary": "Added to storage",
-        "eventType": "inventory",
-        "user": {"displayValue": "xyang", "urlType": "user", "value": 1005},
-        "entity": {"displayValue": "S-1", "value": 6, "url": "/labkey/inventory0804/experiment-showMaterial.view?rowId=6"},
-        "rowId": 46,
-        "timestamp": {"formattedValue": "2020-04-05 22:58", "value": "2020-04-05 22:58:36.941"}
+        summary: 'Added to storage',
+        eventType: 'inventory',
+        user: { displayValue: 'xyang', urlType: 'user', value: 1005 },
+        entity: { displayValue: 'S-1', value: 6, url: '/labkey/inventory0804/experiment-showMaterial.view?rowId=6' },
+        rowId: 46,
+        timestamp: { formattedValue: '2020-04-05 22:58', value: '2020-04-05 22:58:36.941' },
     },
     {
-        "rowId": 1548,
-        "eventType": "assays",
-        "user" : {
-            "value" : 1005,
-            "urlType" : "user",
-            "displayValue" : "Vader"
+        rowId: 1548,
+        eventType: 'assays',
+        user: {
+            value: 1005,
+            urlType: 'user',
+            displayValue: 'Vader',
         },
-        "timestamp" : {
-            "value" : "2020-04-08 22:57:36.941",
-            "formattedValue" : "2020-04-08 22:57"
+        timestamp: {
+            value: '2020-04-08 22:57:36.941',
+            formattedValue: '2020-04-08 22:57',
         },
-        "summary" : "Assay Data Uploaded",
-        "metadata" : {
-            "Assay" : {
-                "value" : "xlsx assay",
-                "urlType" : "assays",
-                "displayValue" : "XLSX Assay"
+        summary: 'Assay Data Uploaded',
+        metadata: {
+            Assay: {
+                value: 'xlsx assay',
+                urlType: 'assays',
+                displayValue: 'XLSX Assay',
             },
-            "Completed By" : {
-                "value" : 1005,
-                "urlType" : "user",
-                "displayValue" : "Vader"
+            'Completed By': {
+                value: 1005,
+                urlType: 'user',
+                displayValue: 'Vader',
             },
-            "Date" : {
-                "value" : "2020-04-08 21:57:36.941",
-                "formattedValue" : "2020-04-08 21:57"
-            }
+            Date: {
+                value: '2020-04-08 21:57:36.941',
+                formattedValue: '2020-04-08 21:57',
+            },
         },
-        "entity" : {
-            "value" : "xlsx assay",
-            "urlType" : "assays",
-            "displayValue" : "XLSX Assay"
-        }
+        entity: {
+            value: 'xlsx assay',
+            urlType: 'assays',
+            displayValue: 'XLSX Assay',
+        },
     },
     {
-        "rowId": 546,
-        "eventType": "workflow",
-        "user" : {
-            "value" : 1038,
-            "urlType" : "user",
-            "displayValue" : "Test Lab User"
+        rowId: 546,
+        eventType: 'workflow',
+        user: {
+            value: 1038,
+            urlType: 'user',
+            displayValue: 'Test Lab User',
         },
-        "timestamp" : {
-            "value" : "2020-04-09 18:57:36.941",
-            "formattedValue" : "2020-04-09 18:57"
+        timestamp: {
+            value: '2020-04-09 18:57:36.941',
+            formattedValue: '2020-04-09 18:57',
         },
-        "summary" : "Added to job",
-        "metadata" : {
-            "Job Name" : {
-                "value" : 688,
-                "urlType" : "workflow",
-                "displayValue" : "job-3"
+        summary: 'Added to job',
+        metadata: {
+            'Job Name': {
+                value: 688,
+                urlType: 'workflow',
+                displayValue: 'job-3',
             },
-            "Job Owner" : {
-                "value" : 1038,
-                "urlType" : "user",
-                "displayValue" : "Test Lab User"
+            'Job Owner': {
+                value: 1038,
+                urlType: 'user',
+                displayValue: 'Test Lab User',
             },
-            "Job Status": "In Progress"
+            'Job Status': 'In Progress',
         },
-        "entity" : {
-            "value" : 688,
-            "urlType" : "workflow",
-            "displayValue" : "job-3"
-        }
+        entity: {
+            value: 688,
+            urlType: 'workflow',
+            displayValue: 'job-3',
+        },
     },
     {
-        "rowId": 547,
-        "eventType": "workflow",
-        "user" : {
-            "value" : 1038,
-            "urlType" : "user",
-            "displayValue" : "Test Lab User"
+        rowId: 547,
+        eventType: 'workflow',
+        user: {
+            value: 1038,
+            urlType: 'user',
+            displayValue: 'Test Lab User',
         },
-        "timestamp" : {
-            "value" : "2020-04-09 19:57:36.941",
-            "formattedValue" : "2020-04-09 19:57"
+        timestamp: {
+            value: '2020-04-09 19:57:36.941',
+            formattedValue: '2020-04-09 19:57',
         },
-        "summary" : "Removed from job",
-        "metadata" : {
-            "Job Name" : {
-                "value" : 688,
-                "urlType" : "workflow",
-                "displayValue" : "job-3"
+        summary: 'Removed from job',
+        metadata: {
+            'Job Name': {
+                value: 688,
+                urlType: 'workflow',
+                displayValue: 'job-3',
             },
-            "Job Owner" : {
-                "value" : 1038,
-                "urlType" : "user",
-                "displayValue" : "Test Lab User"
+            'Job Owner': {
+                value: 1038,
+                urlType: 'user',
+                displayValue: 'Test Lab User',
             },
-            "Job Status": "In Progress"
+            'Job Status': 'In Progress',
         },
-        "entity" : {
-            "value" : 688,
-            "urlType" : "workflow",
-            "displayValue" : "job-3"
-        }
+        entity: {
+            value: 688,
+            urlType: 'workflow',
+            displayValue: 'job-3',
+        },
     },
     {
-        "rowId": 548,
-        "eventType": "workflow",
-        "user" : {
-            "value" : 1005,
-            "urlType" : "user",
-            "displayValue" : "Vader"
+        rowId: 548,
+        eventType: 'workflow',
+        user: {
+            value: 1005,
+            urlType: 'user',
+            displayValue: 'Vader',
         },
-        "timestamp" : {
-            "value" : "2020-04-09 20:57:36.941",
-            "formattedValue" : "2020-04-09 20:57"
+        timestamp: {
+            value: '2020-04-09 20:57:36.941',
+            formattedValue: '2020-04-09 20:57',
         },
-        "summary" : "Completed job",
-        "metadata" : {
-            "Job Name" : {
-                "value" : 687,
-                "urlType" : "workflow",
-                "displayValue" : "job-1"
+        summary: 'Completed job',
+        metadata: {
+            'Job Name': {
+                value: 687,
+                urlType: 'workflow',
+                displayValue: 'job-1',
             },
-            "Job Owner" : {
-                "value" : 1005,
-                "urlType" : "user",
-                "displayValue" : "Vader"
+            'Job Owner': {
+                value: 1005,
+                urlType: 'user',
+                displayValue: 'Vader',
             },
-            "Job Status": "Completed"
+            'Job Status': 'Completed',
         },
-        "entity" : {
-            "value" : 687,
-            "urlType" : "workflow",
-            "displayValue" : "job-1"
-        }
+        entity: {
+            value: 687,
+            urlType: 'workflow',
+            displayValue: 'job-1',
+        },
     },
     {
-        "summary": "Checked out",
-        "eventType": "inventory",
-        "user": {"displayValue": "xyang", "urlType": "user", "value": 1005},
-        "entity": {"displayValue": "S-1", "value": 6, "url": "/labkey/inventory0804/experiment-showMaterial.view?rowId=6"},
-        "rowId": 49,
-        "timestamp": {"formattedValue": "2020-05-04 23:00", "value": "2020-05-04 23:00:23.403"}
-    }
-
+        summary: 'Checked out',
+        eventType: 'inventory',
+        user: { displayValue: 'xyang', urlType: 'user', value: 1005 },
+        entity: { displayValue: 'S-1', value: 6, url: '/labkey/inventory0804/experiment-showMaterial.view?rowId=6' },
+        rowId: 49,
+        timestamp: { formattedValue: '2020-05-04 23:00', value: '2020-05-04 23:00:23.403' },
+    },
 ];
-

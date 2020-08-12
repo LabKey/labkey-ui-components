@@ -35,8 +35,9 @@ export class TimelineView extends React.Component<Props, any> {
         }
 
         if (selectedEntityConnectionInfo && selectedEntityConnectionInfo.length > 0) {
-            selectedEntityConnectionInfo.forEach((info => {
-                const inRange : boolean = info.firstEvent &&
+            selectedEntityConnectionInfo.forEach(info => {
+                const inRange: boolean =
+                    info.firstEvent &&
                     info.lastEvent &&
                     event.eventTimestamp >= info.firstEvent.eventTimestamp &&
                     event.eventTimestamp <= info.lastEvent.eventTimestamp;
@@ -48,10 +49,8 @@ export class TimelineView extends React.Component<Props, any> {
                     } else if (info.lastEvent && event.getRowKey() === info.lastEvent.getRowKey()) {
                         isLastEvent = true;
                     }
-                }
-                else if (info.firstEvent && event.getRowKey() === info.firstEvent.getRowKey())
-                    isFirstEvent = true;
-            }))
+                } else if (info.firstEvent && event.getRowKey() === info.firstEvent.getRowKey()) isFirstEvent = true;
+            });
         }
 
         // TODO update with inventory icon when available

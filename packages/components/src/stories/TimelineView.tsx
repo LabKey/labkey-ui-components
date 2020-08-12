@@ -5,14 +5,14 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs,boolean } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import {TIMELINE_DATA} from "../test/data/constants";
-import {TimelineEventModel, TimelineView} from "..";
+import { TIMELINE_DATA } from '../test/data/constants';
+import { TimelineEventModel, TimelineView } from '..';
 
-let events : TimelineEventModel[] = [];
-TIMELINE_DATA.forEach((event) => events.push(TimelineEventModel.create(event, 'UTC')));
+const events: TimelineEventModel[] = [];
+TIMELINE_DATA.forEach(event => events.push(TimelineEventModel.create(event, 'UTC')));
 
 storiesOf('Timeline', module)
     .addDecorator(withKnobs)
@@ -22,7 +22,7 @@ storiesOf('Timeline', module)
                 events={events}
                 showRecentFirst={false}
                 selectionDisabled={boolean('selectionDisabled', false)}
-                onEventSelection={(event) => console.log('selected')}
+                onEventSelection={event => console.log('selected')}
                 selectedEvent={boolean('hasSelection', true) ? events[1] : null}
                 showUserLinks={boolean('showUserLinks', true)}
                 selectedEntityConnectionInfo={null}
@@ -35,10 +35,10 @@ storiesOf('Timeline', module)
                 events={events}
                 showRecentFirst={false}
                 selectionDisabled={false}
-                onEventSelection={(event) => console.log('selected')}
+                onEventSelection={event => console.log('selected')}
                 selectedEvent={events[1]}
                 showUserLinks={true}
-                selectedEntityConnectionInfo={[{firstEvent: events[1], lastEvent: events[6], isCompleted: true}]}
+                selectedEntityConnectionInfo={[{ firstEvent: events[1], lastEvent: events[6], isCompleted: true }]}
             />
         );
     })
@@ -48,11 +48,10 @@ storiesOf('Timeline', module)
                 events={events}
                 showRecentFirst={false}
                 selectionDisabled={false}
-                onEventSelection={(event) => console.log('selected')}
+                onEventSelection={event => console.log('selected')}
                 selectedEvent={events[7]}
                 showUserLinks={boolean('showUserLinks', true)}
-                selectedEntityConnectionInfo={[{firstEvent: events[2], lastEvent: events[7], isCompleted: false}]}
+                selectedEntityConnectionInfo={[{ firstEvent: events[2], lastEvent: events[7], isCompleted: false }]}
             />
         );
     });
-

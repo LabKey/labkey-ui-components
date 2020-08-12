@@ -9,8 +9,8 @@ import { TIMELINE_DATA } from '../../test/data/constants';
 import { TimelineView } from './TimelineView';
 import { TimelineEventModel } from './models';
 
-let events : TimelineEventModel[] = [];
-TIMELINE_DATA.forEach((event) => events.push(TimelineEventModel.create(event, 'UTC')));
+const events: TimelineEventModel[] = [];
+TIMELINE_DATA.forEach(event => events.push(TimelineEventModel.create(event, 'UTC')));
 
 describe('<TimelineView />', () => {
     test('Disable selection', () => {

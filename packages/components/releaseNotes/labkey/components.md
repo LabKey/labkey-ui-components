@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.86.0
+*Released*: 12 August 2020
 * Move Timeline related component and model from Sample Manager
 
 ### version 0.85.0

@@ -38,7 +38,7 @@ storiesOf('Timeline', module)
                 onEventSelection={(event) => console.log('selected')}
                 selectedEvent={events[1]}
                 showUserLinks={true}
-                selectedEntityConnectionInfo={[{firstEvent: events[1], lastEvent: events[5], isCompleted: true}]}
+                selectedEntityConnectionInfo={[{firstEvent: events[1], lastEvent: events[6], isCompleted: true}]}
             />
         );
     })

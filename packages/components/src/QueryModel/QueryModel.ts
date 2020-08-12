@@ -25,8 +25,8 @@ import { flattenValuesFromRow, offsetFromString, querySortsFromString, searchFil
  * @param schemaQuery: SchemaQuery
  */
 export function createQueryModelId(schemaQuery: SchemaQuery): string {
-    const { schemaName, queryName, viewName } = schemaQuery;
-    return `${schemaName}-${queryName}${viewName !== undefined ? '-' + viewName : ''}`;
+    const { schemaName, queryName } = schemaQuery;
+    return `${schemaName}.${queryName}`;
 }
 
 const sortStringMapper = (s: QuerySort): string => s.toRequestString();

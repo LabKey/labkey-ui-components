@@ -3,7 +3,17 @@ import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner, QueryColumn, QueryInfo, QuerySort } from '..';
+import {
+    Alert,
+    Grid,
+    GRID_CHECKBOX_OPTIONS,
+    GridColumn,
+    LoadingSpinner,
+    QueryColumn,
+    QueryConfig,
+    QueryInfo,
+    QuerySort,
+} from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { headerCell, headerSelectionCell } from '../renderers';
 import { ActionValue } from '../components/omnibox/actions/Action';
@@ -21,6 +31,7 @@ import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
+import { createQueryModelId } from './QueryModel';
 
 interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -598,10 +609,15 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     }
 }
 
-class GridPanelWithModelImpl<T> extends PureComponent<GridPanelProps<T> & InjectedQueryModels> {
+interface GridPaneWithModelBodyProps<T> extends GridPanelProps<T> {
+    id: string;
+}
+
+class GridPanelWithModelBodyImpl<T> extends PureComponent<GridPaneWithModelBodyProps<T> & InjectedQueryModels> {
     render(): ReactNode {
-        const { queryModels, actions, ...props } = this.props;
-        return <GridPanel actions={actions} model={Object.values(queryModels)[0]} {...props} />;
+        const { actions, id, queryModels, ...props } = this.props;
+        const model = queryModels[id];
+        return <GridPanel actions={actions} model={model} {...props} />;
     }
 }
 
@@ -612,4 +628,21 @@ class GridPanelWithModelImpl<T> extends PureComponent<GridPanelProps<T> & Inject
  * In the future when GridPanel supports multiple models we will render tabs.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const GridPanelWithModel = withQueryModels<GridPanelProps<any>>(GridPanelWithModelImpl);
+const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps<any>>(GridPanelWithModelBodyImpl);
+
+interface GridPanelWithModelProps<T> extends GridPanelProps<T> {
+    queryConfig: QueryConfig;
+}
+
+/**
+ * GridPanelWithModel is the same as a GridPanel component, but is wrapped with withQueryModels so it can convert the
+ * queryConfig object into a model and load it for you.
+ */
+export class GridPanelWithModel<T> extends PureComponent<GridPanelWithModelProps<T>> {
+    render() {
+        const { queryConfig, ...props } = this.props;
+        const id = createQueryModelId(queryConfig.schemaQuery);
+        const queryConfigs = { [id]: queryConfig };
+        return <GridPanelWithModelBody {...props} id={id} key={id} queryConfigs={queryConfigs} />;
+    }
+}

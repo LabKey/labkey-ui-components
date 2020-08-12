@@ -30,6 +30,7 @@ import { resolveErrorMessage } from '../../../util/messaging';
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
+import { extractChanges } from './utils';
 
 interface DetailEditingProps {
     queryModel: QueryGridModel;
@@ -71,22 +72,6 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
         };
     }
 
-    arrayListIsEqual(valueArr: Array<string | number>, nestedModelList: List<Map<string, any>>): boolean {
-        let matched = 0;
-        // Loop through the submitted array and the existing list and compare values.
-        // If values match, add tally. If submitted values length is same as existing list, consider them equal.
-        // Note: caller should have checked against empty array and list before function.
-        nestedModelList.forEach(nestedField => {
-            return valueArr.forEach(nestedVal => {
-                if (nestedField.get('value') === nestedVal || nestedField.get('displayValue') === nestedVal) {
-                    matched++;
-                }
-            });
-        });
-
-        return matched === valueArr.length;
-    }
-
     disableSubmitButton = () => {
         this.setState(() => ({ canSubmit: false }));
     };
@@ -94,56 +79,6 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     enableSubmitButton = () => {
         this.setState(() => ({ canSubmit: true }));
     };
-
-    getEditedValues(values): { [propName: string]: any } {
-        const { queryModel } = this.props;
-        const queryData = queryModel.getRow();
-        const queryInfo = queryModel.queryInfo;
-        const updatedValues = {};
-
-        // Loop through submitted values and check against existing values from server
-        Object.keys(values).forEach(field => {
-            // If nested value, will need to do deeper check
-            if (List.isList(queryData.get(field))) {
-                // If the submitted value and existing value are empty, do not update field
-                if (!values[field] && queryData.get(field).size === 0) {
-                    return false;
-                }
-                // If the submitted value is empty and there is an existing value, should update field
-                else if (!values[field] && queryData.get(field).size > 0) {
-                    updatedValues[field] = values[field];
-                } else {
-                    // If submitted value array and existing value array are different size, should update field
-                    if (values[field].length !== queryData.get(field).size) {
-                        updatedValues[field] = values[field];
-                    }
-                    // If submitted value array and existing array are the same size, need to compare full contents
-                    else if (values[field].length === queryData.get(field).size) {
-                        if (!this.arrayListIsEqual(values[field], queryData.get(field))) {
-                            updatedValues[field] = values[field];
-                        }
-                    }
-                }
-            } else if (values[field] != queryData.getIn([field, 'value'])) {
-                const column = queryInfo.getColumn(field);
-
-                // A date field needs to be checked specially
-                if (column && column.jsonType === 'date') {
-                    // Ensure dates have same formatting
-                    // If submitted value is same as existing date down to the minute (issue 40139), do not update
-                    const newDateValue = new Date(values[field]).setUTCSeconds(0, 0);
-                    const origDateValue = new Date(queryData.getIn([field, 'value'])).setUTCSeconds(0, 0);
-                    if (newDateValue === origDateValue) {
-                        return false;
-                    }
-                }
-
-                updatedValues[field] = values[field];
-            }
-        });
-
-        return updatedValues;
-    }
 
     handleClick = () => {
         if (Utils.isFunction(this.props.onEditToggle)) {
@@ -169,8 +104,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
         const queryData = queryModel.getRow();
         const queryInfo = queryModel.queryInfo;
         const schemaQuery = queryInfo.schemaQuery;
-
-        const updatedValues = this.getEditedValues(values);
+        const updatedValues = extractChanges(queryInfo, queryData, values);
 
         // If form contains new values, proceed to update
         if (Object.keys(updatedValues).length > 0) {

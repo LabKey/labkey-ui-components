@@ -11,6 +11,7 @@ import { blurActiveElement } from '../util/utils';
 import { RequiresModelAndActions } from './withQueryModels';
 
 interface Props extends RequiresModelAndActions {
+    hideEmptyChartMenu: boolean;
     onChartClicked?: (chart: DataViewInfo) => boolean;
     onCreateReportClicked?: (type: DataViewInfoTypes) => void;
     showSampleComparisonReports: boolean;
@@ -53,7 +54,7 @@ export class ChartMenu extends PureComponent<Props> {
     );
 
     render(): ReactNode {
-        const { model, showSampleComparisonReports } = this.props;
+        const { hideEmptyChartMenu, model, showSampleComparisonReports } = this.props;
         const {
             charts,
             chartsError,
@@ -74,6 +75,15 @@ export class ChartMenu extends PureComponent<Props> {
         const disabled = isLoading || isLoadingCharts || noCharts || hasError;
         const selectedChart = charts?.find(chart => chart.reportId === selectedReportId);
         const showChartModal = queryInfo !== undefined && selectedChart !== undefined;
+
+        if (
+            privateCharts.length === 0 &&
+            publicCharts.length === 0 &&
+            !showSampleComparisonReports &&
+            hideEmptyChartMenu
+        ) {
+            return null;
+        }
 
         return (
             <div className="chart-menu">

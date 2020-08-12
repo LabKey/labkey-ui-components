@@ -23,6 +23,14 @@ import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/mode
 import { naturalSort, resolveSchemaQuery } from './util/utils';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 
+// Don't touch this directly, if you need access to it use getQueryMetadata, if you need to set the value use
+// setQueryMetadata
+let _queryMetadata = Map<string, any>();
+
+// Don't touch this directly, if you need access to it use getQueryColumnRenderers, if you need to set the value use
+// setQueryColumnRenderers
+let _queryColumnRenderers = Map<string, any>();
+
 /**
  * Initialize the global state object for this package.
  * @param metadata Optional Map to set the query metadata for this application
@@ -38,6 +46,7 @@ export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?
     if (metadata) {
         setQueryMetadata(metadata);
     }
+
     if (columnRenderers) {
         setQueryColumnRenderers(columnRenderers);
     }
@@ -152,37 +161,33 @@ export function removeQueryGridModel(model: QueryGridModel, connectedComponent?:
 }
 
 /**
- * Get the query metadata object from the global QueryGrid state
+ * Get the query metadata object from the global state.
  */
-export function getQueryMetadata(): any {
-    return getGlobalState('metadata');
+export function getQueryMetadata(): Map<string, any> {
+    return _queryMetadata;
 }
 
 /**
- * Sets the query metadata object to be used for this application in the global QueryGrid state
+ * Sets the query metadata object to be used for this application in the global state.
  * @param metadata Map of query metadata to be applied to the query infos and column infos
  */
 export function setQueryMetadata(metadata: Map<string, any>): void {
-    setGlobal({
-        QueryGrid_metadata: metadata,
-    });
+    _queryMetadata = metadata;
 }
 
 /**
- * Get the query grid column renderers map from the global QueryGrid state
+ * Get the query grid column renderers map from the global state.
  */
-export function getQueryColumnRenderers(): any {
-    return getGlobalState('columnrenderers');
+export function getQueryColumnRenderers(): Map<string, any> {
+    return _queryColumnRenderers;
 }
 
 /**
- * Sets the valid column renderers for this application in the global QueryGrid state
- * @param renderers Map of query grid column renderers to be bound to the queryInfo columns
+ * Sets the valid column renderers for this application in the global state.
+ * @param columnRenderers Map of query grid column renderers to be bound to the queryInfo columns
  */
-export function setQueryColumnRenderers(columnrenderers: Map<string, any>): void {
-    setGlobal({
-        QueryGrid_columnrenderers: columnrenderers,
-    });
+export function setQueryColumnRenderers(columnRenderers: Map<string, any>): void {
+    _queryColumnRenderers = columnRenderers;
 }
 
 function getSelectedState(

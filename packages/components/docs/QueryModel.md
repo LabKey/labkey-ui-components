@@ -135,9 +135,6 @@ function MyComponent(props: MyComponentProps) {
 }
 ```
 
-`GridPanelWithModel` assumes you will only ever have one `QueryConfig` in your `queryConfigs` object. We may change the
-API in the near future to enforce this.
-
 ## Frequently asked Questions
 
 - I have changed my `queryConfigs` object but `withQueryModels` isn't updating my models, how to I fix this?

@@ -1227,7 +1227,7 @@ export function getSelectedData(
             queryName,
             filterArray,
             parameters: queryParameters,
-            sort: sorts || '-RowId',
+            sort: sorts,
             columns,
             offset: 0,
         })
@@ -1244,23 +1244,6 @@ export function getSelectedData(
                 console.error(reason);
                 reject(resolveErrorMessage(reason));
             })
-    );
-}
-
-export function getSelectedDataWithQueryGridModel(
-    model: QueryGridModel,
-    columns?: List<QueryColumn>
-): Promise<IGridResponse> {
-    // If columns defined use those for the query columns else use the display columns
-    const columnString = columns ? columns.map(c => c.fieldKey).join(',') : model.getRequestColumnsString();
-
-    return getSelectedData(
-        model.schema,
-        model.query,
-        model.selectedIds.toArray(),
-        columnString,
-        model.getSorts() || '-RowId',
-        model.queryParameters
     );
 }
 

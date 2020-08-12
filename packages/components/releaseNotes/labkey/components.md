@@ -5,6 +5,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Move Timeline related component and model from Sample Manager
 
+### version 0.85.0
+*Released*: 11 August 2020
+* Refactor several components/classes to not depend on QueryGridModel
+    * This allows them to more easily be used by QueryModel and QueryGridModel based components while we transition
+    away from QueryGridModel
+    * Affected Components: SelectionMenuItem, BulkUpdateModel
+    * Affected Classes: EditableGridLoaderFromSelection
+* Add EditableDetailPanel, the QueryModel version of DetailEditing
+* DetailPanel: change queryColumns prop from List<QueryColumn> to QueryColumn[]
+    * We are moving away from Immutable and want to limit how much of it is exposed in our API
+* GridPanel: add new props buttonsComponentProps, and hideEmptyChartMenu
+    * Use buttonsComponentProps to pass any additional props to your ButtonsComponent (model and actions still get
+    passed to the ButtonsComponent)
+    * Use hideEmptyChartMenu to hide the chart menu when no charts are available
+* Move queryMetadata an columnRenderers out of ReactN global storage
+
 ### version 0.84.0
 *Released*: 7 August 2020
 * Updates most package dependencies to the latest version.

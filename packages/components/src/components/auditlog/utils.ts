@@ -97,7 +97,7 @@ export function getTimelineEntityUrl(d: any): string {
 
         switch (urlType) {
             case SAMPLES_KEY:
-                url = AppURL.create(SAMPLES_KEY, value);
+                url = AppURL.create('rd', SAMPLES_KEY, value);
                 break;
             case WORKFLOW_KEY:
                 url = AppURL.create(WORKFLOW_KEY, value);

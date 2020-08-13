@@ -1,13 +1,10 @@
-import React, {
-    ChangeEvent,
-    FunctionComponent,
-    PureComponent,
-    ReactElement,
-} from 'react';
+import React, { ChangeEvent, FunctionComponent, PureComponent, ReactElement, ReactNode } from 'react';
 import { storiesOf } from '@storybook/react';
 import { Button, MenuItem } from 'react-bootstrap';
+import { createMemoryHistory, Route, Router, WithRouterProps } from 'react-router';
 
 import {
+    EditableDetailPanel,
     GridPanel,
     GridPanelWithModel,
     InjectedQueryModels,
@@ -15,10 +12,11 @@ import {
     QueryConfigMap,
     RequiresModelAndActions,
     SchemaQuery,
+    SCHEMAS,
     withQueryModels,
 } from '..';
+
 import './QueryModel.scss';
-import { createMemoryHistory, Route, Router, WithRouterProps } from 'react-router';
 
 class GridPanelButtonsExample extends PureComponent<RequiresModelAndActions> {
     render() {
@@ -119,6 +117,25 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
 
 const ChangeableSchemaQuery = withQueryModels<{}>(ChangeableSchemaQueryImpl);
 
+export class EditableDetailPanelExampleImpl extends PureComponent<{} & InjectedQueryModels> {
+    render(): ReactNode {
+        const { actions, queryModels } = this.props;
+        const model = Object.values(queryModels)[0];
+        const onUpdate = () => console.log('Update complete');
+        return (
+            <EditableDetailPanel
+                actions={actions}
+                appEditable={true}
+                canUpdate={true}
+                model={model}
+                onUpdate={onUpdate}
+            />
+        );
+    }
+}
+
+const EditableDetailsPanelExample = withQueryModels<{}>(EditableDetailPanelExampleImpl);
+
 storiesOf('QueryModel', module)
     .add('GridPanel', () => {
         const history = createMemoryHistory();
@@ -216,4 +233,18 @@ storiesOf('QueryModel', module)
     })
     .add('Changeable SchemaQuery', () => {
         return <ChangeableSchemaQuery />;
+    })
+    .add('EditableDetailPanel', () => {
+        const queryConfigs: QueryConfigMap = {
+            mixtures: {
+                schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Samples'),
+                keyValue: 123,
+            },
+        };
+
+        return (
+            <div className="query-model-example">
+                <EditableDetailsPanelExample autoLoad queryConfigs={queryConfigs} />
+            </div>
+        );
     });

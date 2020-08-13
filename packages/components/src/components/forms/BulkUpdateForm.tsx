@@ -2,29 +2,32 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { getSelectedDataWithQueryGridModel } from '../../actions';
+import { getSelectedData } from '../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
 import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
 import { QueryInfo } from '../base/models/QueryInfo';
-import { QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
+import { QueryColumn, SchemaQuery } from '../base/models/model';
 
 import { QueryInfoForm } from './QueryInfoForm';
 
 interface Props {
-    singularNoun?: string;
-    pluralNoun?: string;
-    uniqueFieldKey?: string;
-    itemLabel?: string;
-    model: QueryGridModel;
     canSubmitForEdit: boolean;
+    itemLabel?: string;
+    onComplete: (data: any, submitForEdit: boolean) => any;
     onCancel: () => any;
     onError?: (message: string) => any;
-    onComplete: (data: any, submitForEdit: boolean) => any;
     onSubmitForEdit: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
-    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
-    shownInUpdateColumns?: boolean;
+    pluralNoun?: string;
+    queryInfo: QueryInfo;
     readOnlyColumns?: List<string>;
+    selectedIds: string[];
+    shownInUpdateColumns?: boolean;
+    singularNoun?: string;
+    // sortString is used so we render editable grids with the proper sorts when using onSubmitForEdit
+    sortString?: string;
+    uniqueFieldKey?: string;
+    updateRows: (schemaQuery: SchemaQuery, rows: any[]) => Promise<any>;
 }
 
 interface State {
@@ -52,15 +55,23 @@ export class BulkUpdateForm extends React.Component<Props, State> {
         };
     }
 
-    UNSAFE_componentWillMount(): void {
-        const { model, onCancel, pluralNoun, shownInUpdateColumns, readOnlyColumns } = this.props;
-
+    componentDidMount(): void {
+        const {
+            onCancel,
+            pluralNoun,
+            queryInfo,
+            readOnlyColumns,
+            selectedIds,
+            shownInUpdateColumns,
+            sortString,
+        } = this.props;
         // Get all shownInUpdateView columns or undefined
         const columns = shownInUpdateColumns
-            ? (model.getKeyColumns().concat(model.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
+            ? (queryInfo.getPkCols().concat(queryInfo.getUpdateColumns(readOnlyColumns)) as List<QueryColumn>)
             : undefined;
-
-        getSelectedDataWithQueryGridModel(model, columns)
+        const columnString = columns?.map(c => c.fieldKey).join(',');
+        const { schemaName, name } = queryInfo;
+        getSelectedData(schemaName, name, selectedIds, columnString, sortString)
             .then(response => {
                 const { data, dataIds } = response;
                 this.setState(() => ({
@@ -79,7 +90,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
     }
 
     getSelectionCount(): number {
-        return this.props.model.selectedIds.size;
+        return this.props.selectedIds.length;
     }
 
     getSelectionNoun(): string {
@@ -93,21 +104,21 @@ export class BulkUpdateForm extends React.Component<Props, State> {
     }
 
     getUpdateQueryInfo(): QueryInfo {
-        const { model, uniqueFieldKey } = this.props;
+        const { queryInfo, uniqueFieldKey } = this.props;
         const lcUniqueFieldKey = uniqueFieldKey ? uniqueFieldKey.toLowerCase() : undefined;
-        const updateColumns = model.queryInfo.columns.filter(
+        const updateColumns = queryInfo.columns.filter(
             column => column.shownInUpdateView && (!lcUniqueFieldKey || column.name.toLowerCase() !== lcUniqueFieldKey)
         );
-        return model.queryInfo.set('columns', updateColumns) as QueryInfo;
+        return queryInfo.set('columns', updateColumns) as QueryInfo;
     }
 
     bulkUpdateSelectedRows = (data): Promise<any> => {
-        const { model, updateRows } = this.props;
+        const { queryInfo, updateRows } = this.props;
         const rows = !Utils.isEmptyObj(data)
-            ? getUpdatedData(this.state.dataForSelection, data, model.queryInfo.pkCols)
+            ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols)
             : [];
 
-        return updateRows(model.queryInfo.schemaQuery, rows);
+        return updateRows(queryInfo.schemaQuery, rows);
     };
 
     onEditWithGrid = (updateData: any) => {
@@ -134,7 +145,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
 
     render() {
         const { isLoadingDataForSelection, dataForSelection } = this.state;
-        const { pluralNoun, model, canSubmitForEdit, onCancel, onComplete } = this.props;
+        const { canSubmitForEdit, onCancel, onComplete, pluralNoun, queryInfo } = this.props;
         const fieldValues =
             isLoadingDataForSelection || !dataForSelection ? undefined : getCommonDataValues(dataForSelection);
 
@@ -158,7 +169,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
                 onHide={onCancel}
                 onCancel={onCancel}
                 queryInfo={this.getUpdateQueryInfo()}
-                schemaQuery={model.queryInfo.schemaQuery}
+                schemaQuery={queryInfo.schemaQuery}
                 title={this.getTitle()}
                 header={this.renderBulkUpdateHeader()}
             />

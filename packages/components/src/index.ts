@@ -117,6 +117,7 @@ import { Footer } from './components/base/Footer';
 
 import { EditorModel, getStateModelId, getStateQueryGridModel, IDataViewInfo } from './models';
 import {
+    clearSelected,
     createQueryGridModelFilteredBySample,
     getSelected,
     getSelectedData,
@@ -368,10 +369,12 @@ import {
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanel, DetailPanelWithModel } from './QueryModel/DetailPanel';
+import { EditableDetailPanel } from './QueryModel/EditableDetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
-import { AuditDetailsModel } from './components/auditlog/models';
+import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './components/auditlog/models';
 import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './components/auditlog/AuditDetails';
+import { TimelineView } from './components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
 import * as App from './internal/app';
 import { runDetailsColumnsForQueryModel } from './QueryModel/utils';
@@ -393,6 +396,7 @@ export {
     getEditorModel,
     removeQueryGridModel,
     invalidateUsers,
+    clearSelected,
     gridInvalidate,
     gridIdInvalidate,
     queryGridInvalidate,
@@ -803,15 +807,19 @@ export {
     GridPanelWithModel,
     DetailPanel,
     DetailPanelWithModel,
+    EditableDetailPanel,
     runDetailsColumnsForQueryModel,
     Pagination,
     PaginationData,
     makeTestActions,
     makeTestQueryModel,
-    // AuditLog
+    // AuditLog and Timeline
     AuditDetailsModel,
     AuditQueriesListingPage,
     AuditDetails,
     getEventDataValueDisplay,
     getTimelineEntityUrl,
+    TimelineEventModel,
+    TimelineGroupedEventInfo,
+    TimelineView,
 };

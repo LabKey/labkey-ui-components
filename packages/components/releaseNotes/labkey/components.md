@@ -1,10 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
-### version TBD
-*Released*: TBD
+### version 0.87.0
+*Released*: 13 August 2020
 * Add Label as optional export format and add optional onExport callback to export menu
 * Refactor exportRows and export method for creating the export parameters
 * Export test utility methods makeTestActions and makeTestQueryModel
+* Export flattenValuesFromRow utility method
 
 ### version 0.86.0
 *Released*: 12 August 2020

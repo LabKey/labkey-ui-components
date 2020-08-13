@@ -72,7 +72,6 @@ import { buildURL, getSortFromUrl } from './url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
 import { intersect, naturalSort, not, resolveKey } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
-import { QueryModel } from './QueryModel/QueryModel';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -797,19 +796,6 @@ export function exportRows(
     });
     $('body').append(form);
     form.trigger('submit');
-}
-
-export function getQueryModelExportParams(model: QueryModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>) : any {
-    const { id, filters, hasSelections, schemaQuery, exportColumnString, sortString, selections } = model;
-    const showRows = hasSelections && selections.size > 0 ? 'SELECTED' : 'ALL'
-    const exportOptions: ExportOptions = {
-        filters: List(filters),
-        columns: exportColumnString,
-        sorts: sortString,
-        selectionKey: id,
-        showRows,
-    };
-    return getExportParams(type, schemaQuery, exportOptions, advancedOptions);
 }
 
 export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): void {

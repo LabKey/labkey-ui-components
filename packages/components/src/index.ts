@@ -122,7 +122,6 @@ import {
     getSelected,
     getSelectedData,
     getSelection,
-    getQueryModelExportParams,
     gridExport,
     gridIdInvalidate,
     gridInit,
@@ -377,7 +376,7 @@ import { AuditDetails } from './components/auditlog/AuditDetails';
 import { TimelineView } from './components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
 import * as App from './internal/app';
-import { runDetailsColumnsForQueryModel } from './QueryModel/utils';
+import { getQueryModelExportParams, runDetailsColumnsForQueryModel } from './QueryModel/utils';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();

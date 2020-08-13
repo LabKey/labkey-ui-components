@@ -122,6 +122,7 @@ import {
     getSelected,
     getSelectedData,
     getSelection,
+    gridExport,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
@@ -162,6 +163,7 @@ import {
     LoadingState,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
+    EXPORT_TYPES,
 } from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
 import { URL_MAPPERS, URLResolver } from './util/URLResolver';
@@ -352,6 +354,7 @@ import { DataClassDataType, SampleTypeDataType } from './components/entities/con
 import { SampleTypeModel } from './components/domainproperties/samples/models';
 import { SampleTypeDesigner } from './components/domainproperties/samples/SampleTypeDesigner';
 
+import { makeTestActions, makeTestQueryModel } from './QueryModel/testUtils';
 import { QueryConfig, QueryModel } from './QueryModel/QueryModel';
 import { QueryModelLoader } from './QueryModel/QueryModelLoader';
 import {
@@ -373,7 +376,7 @@ import { AuditDetails } from './components/auditlog/AuditDetails';
 import { TimelineView } from './components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
 import * as App from './internal/app';
-import { runDetailsColumnsForQueryModel } from './QueryModel/utils';
+import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './QueryModel/utils';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -401,6 +404,8 @@ export {
     getSelected,
     getSelectedData,
     getSelection,
+    getQueryModelExportParams,
+    gridExport,
     gridInit,
     gridShowError,
     setSelected,
@@ -778,6 +783,7 @@ export {
     getSchemaQuery,
     resolveSchemaQuery,
     insertColumnFilter,
+    EXPORT_TYPES,
     // QueryGridModel
     QueryGridModel,
     QueryGridPanel,
@@ -802,8 +808,11 @@ export {
     DetailPanelWithModel,
     EditableDetailPanel,
     runDetailsColumnsForQueryModel,
+    flattenValuesFromRow,
     Pagination,
     PaginationData,
+    makeTestActions,
+    makeTestQueryModel,
     // AuditLog and Timeline
     AuditDetailsModel,
     AuditQueriesListingPage,

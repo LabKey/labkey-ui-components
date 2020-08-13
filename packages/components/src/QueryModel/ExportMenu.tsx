@@ -1,10 +1,9 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
-import { List } from 'immutable';
 
-import { GRID_CHECKBOX_OPTIONS, QueryModel, Tip } from '..';
+import { getQueryModelExportParams, QueryModel, Tip } from '..';
 import { EXPORT_TYPES } from '../constants';
-import { exportRows, ExportOptions } from '../actions';
+import { exportRows } from '../actions';
 
 interface ExportMenuProps {
     // pageSizes is expected to be sorted (ascending)
@@ -24,17 +23,8 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
 
     export = (option): void => {
         const { model, advancedOptions } = this.props;
-        const { id, filters, hasSelections, selectedState, schemaQuery, exportColumnString, sortString } = model;
-        const showRows = hasSelections && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
-        const exportOptions: ExportOptions = {
-            filters: List(filters),
-            columns: exportColumnString,
-            sorts: sortString,
-            selectionKey: id,
-            showRows,
-        };
-
-        exportRows(option.type, schemaQuery, exportOptions, advancedOptions);
+        const exportParams = getQueryModelExportParams(model, option.type, advancedOptions);
+        exportRows(option.type, exportParams);
     };
 
     render(): ReactNode {

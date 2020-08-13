@@ -5,8 +5,10 @@
  */
 import { Filter } from '@labkey/api';
 
-import { QueryColumn, QueryModel, QuerySort } from '..';
+import { EXPORT_TYPES, QueryColumn, QueryModel, QuerySort } from '..';
 import { ActionValue } from '../components/omnibox/actions/Action';
+import { List } from 'immutable';
+import { ExportOptions, getExportParams } from '../actions';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -132,4 +134,17 @@ export function runDetailsColumnsForQueryModel(model: QueryModel, reRunSupport: 
     }
 
     return columns;
+}
+
+export function getQueryModelExportParams(model: QueryModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): any {
+    const {id, filters, hasSelections, schemaQuery, exportColumnString, sortString, selections} = model;
+    const showRows = hasSelections && selections.size > 0 ? 'SELECTED' : 'ALL'
+    const exportOptions: ExportOptions = {
+        filters: List(filters),
+        columns: exportColumnString,
+        sorts: sortString,
+        selectionKey: id,
+        showRows,
+    };
+    return getExportParams(type, schemaQuery, exportOptions, advancedOptions);
 }

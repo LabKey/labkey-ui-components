@@ -1,5 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version TBD
+*Released*: TBD
+* Bind URL parameters when adding QueryModels
+
 ### version 0.87.0
 *Released*: 13 August 2020
 * Add Label as optional export format and add optional onExport callback to export menu

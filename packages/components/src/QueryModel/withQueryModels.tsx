@@ -656,8 +656,11 @@ export function withQueryModels<Props>(
                 produce((draft: Draft<State>) => {
                     // Instantiate the model first because queryConfig.id is optional and is auto-generated in the
                     // QueryModel constructor if not set.
-                    const queryModel = new QueryModel(queryConfig);
+                    let queryModel = new QueryModel(queryConfig);
                     id = queryModel.id;
+                    if (queryModel.bindURL && this.props.location) {
+                        queryModel = queryModel.mutate(queryModel.attributesForURLQueryParams(this.props.location.query));
+                    }
                     draft.queryModels[queryModel.id] = queryModel;
                 }),
                 () => this.maybeLoad(id, load, load, loadSelections)

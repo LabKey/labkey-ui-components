@@ -641,7 +641,7 @@ interface GridPanelWithModelProps<T> extends GridPanelProps<T> {
 export class GridPanelWithModel<T> extends PureComponent<GridPanelWithModelProps<T>> {
     render() {
         const { queryConfig, ...props } = this.props;
-        const id = createQueryModelId(queryConfig.schemaQuery);
+        const id = queryConfig.id ?? createQueryModelId(queryConfig.schemaQuery);
         const queryConfigs = { [id]: queryConfig };
         return <GridPanelWithModelBody {...props} id={id} key={id} queryConfigs={queryConfigs} />;
     }

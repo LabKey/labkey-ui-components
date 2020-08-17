@@ -111,7 +111,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
+    UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled
         if (nextProps.domainFormDisplayOptions.isDragDisabled !== this.props.domainFormDisplayOptions.isDragDisabled) {
             this.setDragDisabled(nextProps.domainFormDisplayOptions.isDragDisabled, false);
@@ -172,7 +172,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     {fieldError.extraInfo && (
                         <OverlayTrigger
                             placement="bottom"
-                            overlay={<Popover bsClass="popover">{fieldError.extraInfo}</Popover>}
+                            overlay={
+                                <Popover bsClass="popover" id="domain-row-field-error-popover">
+                                    {fieldError.extraInfo}
+                                </Popover>
+                            }
                         >
                             <FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />
                         </OverlayTrigger>
@@ -346,6 +350,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.setState(() => ({ showingModal: showing }));
     };
 
+    disableNameInput(field: DomainField): boolean {
+        const lockNameForPK = !field.isNew() && isPrimaryKeyFieldLocked(field.lockType);
+
+        return (
+            isFieldPartiallyLocked(field.lockType) ||
+            isFieldFullyLocked(field.lockType) ||
+            lockNameForPK ||
+            field.lockExistingField // existingField defaults to false. used for query metadata editor
+        );
+    }
+
     renderBaseFields() {
         const {
             index,
@@ -356,7 +371,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             domainIndex,
             domainFormDisplayOptions,
         } = this.props;
-        const lockNameForPK = !field.isNew() && isPrimaryKeyFieldLocked(field.lockType);
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)}>
@@ -368,12 +382,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         name={createFormInputName(DOMAIN_FIELD_NAME)}
                         id={createFormInputId(DOMAIN_FIELD_NAME, domainIndex, index)}
                         onChange={this.onNameChange}
-                        disabled={
-                            isFieldPartiallyLocked(field.lockType) ||
-                            isFieldFullyLocked(field.lockType) ||
-                            lockNameForPK ||
-                            domainFormDisplayOptions.disableNameInput
-                        }
+                        disabled={this.disableNameInput(field)}
                     />
                 </Col>
                 <Col xs={4}>
@@ -422,13 +431,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     showDeleteIcon(field: DomainField): boolean {
-        const { domainFormDisplayOptions } = this.props;
-
         return (
             !isFieldFullyLocked(field.lockType) &&
             !isFieldPartiallyLocked(field.lockType) &&
             !isPrimaryKeyFieldLocked(field.lockType) &&
-            !domainFormDisplayOptions.hideDeleteIcon
+            !field.lockExistingField // existingField defaults to false. used for query metadata editor
         );
     }
 

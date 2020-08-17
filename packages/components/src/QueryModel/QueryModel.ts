@@ -251,7 +251,7 @@ export class QueryModel {
 
         if (omittedColumns.length) {
             const lowerOmit = new Set(omittedColumns.map(c => c.toLowerCase()));
-            fieldKeys = fieldKeys.filter(fieldKey => lowerOmit.has(fieldKey.toLowerCase()));
+            fieldKeys = fieldKeys.filter(fieldKey => !lowerOmit.has(fieldKey.toLowerCase()));
         }
 
         return fieldKeys.join(',');
@@ -306,9 +306,12 @@ export class QueryModel {
      * true.
      */
     get urlQueryParams(): { [key: string]: string } {
-        const { currentPage, urlPrefix, filterArray, selectedReportId, sortString, viewName } = this;
+        const { currentPage, urlPrefix, filterArray, selectedReportId, sorts, viewName } = this;
         const filters = filterArray.filter(f => f.getColumnName() !== '*');
-        const searches = filterArray.filter(f => f.getColumnName() === '*').map(f => f.getValue()).join(';')
+        const searches = filterArray
+            .filter(f => f.getColumnName() === '*')
+            .map(f => f.getValue())
+            .join(';');
         // ReactRouter location.query is typed as any.
         const modelParams: { [key: string]: any } = {};
 
@@ -320,8 +323,8 @@ export class QueryModel {
             modelParams[`${urlPrefix}.view`] = viewName;
         }
 
-        if (sortString !== '') {
-            modelParams[`${urlPrefix}.sort`] = sortString;
+        if (sorts.length > 0) {
+            modelParams[`${urlPrefix}.sort`] = sorts.map(sortStringMapper).join(',');
         }
 
         if (searches.length > 0) {
@@ -349,7 +352,7 @@ export class QueryModel {
         const allColumns = this.allColumns;
 
         // First attempt to find by name/lookup
-        const column = allColumns.find((queryColumn) => {
+        const column = allColumns.find(queryColumn => {
             if (isLookup && queryColumn.isLookup()) {
                 return lowered.split('/')[0] === queryColumn.name.toLowerCase();
             } else if (isLookup && !queryColumn.isLookup()) {
@@ -364,7 +367,7 @@ export class QueryModel {
         }
 
         // Fallback to finding by shortCaption
-        return allColumns.find((column) => {
+        return allColumns.find(column => {
             return column.shortCaption.toLowerCase() === lowered;
         });
     }
@@ -376,12 +379,12 @@ export class QueryModel {
      * @param flattenValues True to flatten the row object to just the key: value pairs
      */
     getRow(key?: string, flattenValues = false): any {
-        if (!this.rows) {
+        if (!this.hasRows) {
             return undefined;
         }
 
         if (key === undefined) {
-            key = Object.keys(this.rows)[0];
+            key = this.orderedRows[0];
         }
 
         const row = this.rows[key];

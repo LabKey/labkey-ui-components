@@ -30,6 +30,7 @@ interface Props {
     model: QueryGridModel;
     supportedTypes?: Set<EXPORT_TYPES>; // the types that are supported
     advancedOption?: Record<string, any>;
+    onExport?: Record<number, () => any>;
 }
 
 /**
@@ -41,9 +42,14 @@ export class Export extends React.Component<Props, any> {
     };
 
     doExport(type: EXPORT_TYPES) {
-        const { model, advancedOption } = this.props;
+        const { model, advancedOption, onExport } = this.props;
 
-        return gridExport(model, type, advancedOption);
+        if (onExport && onExport[type]) {
+            onExport[type]();
+        }
+        else {
+            gridExport(model, type, advancedOption);
+        }
     }
 
     render() {
@@ -106,6 +112,15 @@ export class Export extends React.Component<Props, any> {
                                     </span>
                                     &nbsp; GenBank
                                 </MenuItem>
+                            ) : undefined}
+                            {supportedTypes.includes(EXPORT_TYPES.LABEL) ? (
+                                <>
+                                <MenuItem header>Export and Print {model.selectedQuantity > 0 ? 'Selected' : ''}</MenuItem>
+                                <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.LABEL)}>
+                                    <span className="fa fa-tag"/>
+                                    &nbsp; Label
+                                </MenuItem>
+                                </>
                             ) : undefined}
                         </DropdownButton>
                     </Tip>

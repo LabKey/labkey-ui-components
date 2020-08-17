@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React, { ReactNode } from 'react';
+import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
-
 
 import { getLocation, Location, replaceParameters } from '../../util/URL';
 import { OmniBox } from '../omnibox/OmniBox';
@@ -59,7 +59,7 @@ interface URLBoxState {
     location: Location;
 }
 
-export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
+export class URLBox extends ReactN.Component<URLBoxProps, URLBoxState> {
     static defaultProps = {
         // TODO: There is only one consumer of URLBox (QueryGridPanel) and it never overrides this. Does it need to be
         //  a prop? Probably not. We can probably simplify some code in this component if we remove it.
@@ -80,7 +80,7 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
         return !nextState.changeLock && !isLocationEqual(this.state.location, getLocation());
     }
 
-    onOmniBoxChange = (actionValueCollection: ActionValueCollection[], boxActions: Action[]) => {
+    onOmniBoxChange = (actionValueCollection: ActionValueCollection[], boxActions: Action[]): void => {
         const queryModel = this.getQueryModel();
         const location = getLocation();
         const params = Map<string, string>().asMutable();
@@ -228,10 +228,10 @@ export class URLBox extends React.Component<URLBoxProps, URLBoxState> {
             viewName: model.view,
             filterArray: model.getFilters().toJS(),
             parameters: model.queryParameters,
-        }
-    }
+        };
+    };
 
-    render() {
+    render(): ReactNode {
         const queryModel = this.getQueryModel();
         const { actions, values } = this.mapParamsToActionValues();
 

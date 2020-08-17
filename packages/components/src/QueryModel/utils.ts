@@ -5,8 +5,10 @@
  */
 import { Filter } from '@labkey/api';
 
-import { QuerySort } from '..';
+import { EXPORT_TYPES, QueryColumn, QueryModel, QuerySort } from '..';
 import { ActionValue } from '../components/omnibox/actions/Action';
+import { List } from 'immutable';
+import { ExportOptions, getExportParams } from '../actions';
 
 export function filterToString(filter: Filter.IFilter): string {
     return `${filter.getColumnName()}-${filter.getFilterType().getURLSuffix()}-${filter.getValue()}`;
@@ -95,4 +97,54 @@ export function querySortsFromString(sortsStr: string): QuerySort[] {
 
 export function searchFiltersFromString(searchStr: string): Filter.IFilter[] {
     return searchStr?.split(';').map(search => Filter.create('*', search, Filter.Types.Q));
+}
+
+/**
+ * Returns the columns needed to render an Assay Run Details Page. Adapted from components/assay/actions.ts
+ * getRunDetailsQueryColumns
+ * @param model: QueryModel
+ * @param reRunSupport: string
+ */
+export function runDetailsColumnsForQueryModel(model: QueryModel, reRunSupport: string): QueryColumn[] {
+    let columns = model.displayColumns;
+    const includeRerunColumns = reRunSupport === 'ReRunAndReplace';
+    const replacedByIndex = columns.findIndex(col => col.fieldKey === 'ReplacedByRun');
+
+    if (replacedByIndex > -1) {
+        if (includeRerunColumns) {
+            // Direct manipulation by index is ok here because displayColumns returns a new array every time.
+            columns[replacedByIndex] = columns[replacedByIndex].set('detailRenderer', 'assayrunreference') as QueryColumn;
+        } else {
+            columns = columns.filter((col, index): boolean => replacedByIndex !== index);
+        }
+    }
+
+    if (includeRerunColumns) {
+        const replaces = model.getColumn('ReplacesRun');
+
+        if (replaces) {
+            const column = replaces.set('detailRenderer', 'assayrunreference') as QueryColumn;
+
+            if (replacedByIndex > -1) {
+                columns = [...columns.slice(0, replacedByIndex + 1), column, ...columns.slice(replacedByIndex)];
+            } else {
+                columns.push(column);
+            }
+        }
+    }
+
+    return columns;
+}
+
+export function getQueryModelExportParams(model: QueryModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): any {
+    const {id, filters, hasSelections, schemaQuery, exportColumnString, sortString, selections} = model;
+    const showRows = hasSelections && selections.size > 0 ? 'SELECTED' : 'ALL'
+    const exportOptions: ExportOptions = {
+        filters: List(filters),
+        columns: exportColumnString,
+        sorts: sortString,
+        selectionKey: id,
+        showRows,
+    };
+    return getExportParams(type, schemaQuery, exportOptions, advancedOptions);
 }

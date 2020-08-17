@@ -38,10 +38,6 @@ export class MenuSectionModel extends Record({
     key: string;
     productId: string;
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     static create(rawData: any, currentProductId?: string): MenuSectionModel {
         if (rawData) {
             let items;
@@ -75,10 +71,6 @@ export class MenuItemModel extends Record({
     url: string | AppURL;
     orderNum: number;
     requiresLogin: boolean;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 
     static create(rawData, sectionKey: string, currentProductId?: string): MenuItemModel {
         if (rawData) {
@@ -149,11 +141,7 @@ export class ProductMenuModel extends Record({
     userMenuProductId: string; // the product's id for the user menu items
     productIds: List<string>; // the list of all product ids to be included in the menu; leave undefined for all products in the container
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
-    init() {
+    init(): void {
         if (!this.isLoaded && !this.isLoading) {
             this.getMenuSections()
                 .then(sections => {

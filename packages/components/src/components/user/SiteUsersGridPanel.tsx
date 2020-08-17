@@ -197,13 +197,18 @@ export class SiteUsersGridPanel extends React.PureComponent<Props, State> {
         if (model.selectedLoaded) {
             this.updateSelectedUserId(this.getLastSelectedId());
         } else {
-            getSelected(model.getId(), model.schema, model.query, model.getFilters(), model.containerPath).then(
-                response => {
-                    const selectedUserId =
-                        response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;
-                    this.updateSelectedUserId(selectedUserId);
-                }
-            );
+            getSelected(
+                model.getId(),
+                model.schema,
+                model.query,
+                model.getFilters(),
+                model.containerPath,
+                model.queryParameters
+            ).then(response => {
+                const selectedUserId =
+                    response.selected.length > 0 ? parseInt(List.of(...response.selected).last()) : undefined;
+                this.updateSelectedUserId(selectedUserId);
+            });
         }
     }
 

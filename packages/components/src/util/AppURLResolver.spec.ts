@@ -17,14 +17,16 @@ import { fromJS, List, Map } from 'immutable';
 
 import { AppURL } from '../url/AppURL';
 
-import { initMockServerContext } from '../testHelpers';
+import { initMockServerContext, registerDefaultURLMappers } from '../testHelpers';
 
 import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './AppURLResolver';
 import { URLResolver } from './URLResolver';
 
-describe('URL Resolvers', () => {
-    const resolver = new URLResolver();
+beforeAll(() => {
+    registerDefaultURLMappers();
+});
 
+describe('URL Resolvers', () => {
     const selectRowsResult = fromJS({
         schemaName: ['Go'],
         queryName: 'Mariners',
@@ -123,6 +125,7 @@ describe('URL Resolvers', () => {
     });
 
     test('Should remap URLs within SelectRowsResult', () => {
+        const resolver = new URLResolver();
         initMockServerContext({
             contextPath: 'labkeyTest',
         });

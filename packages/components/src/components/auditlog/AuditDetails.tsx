@@ -2,9 +2,9 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { Component, ReactNode } from 'react';
 import { List, Map } from 'immutable';
-import { Row, Col, Panel } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { Security, User as IUser } from '@labkey/api';
 
 import { AppURL, capitalizeFirstChar, Grid, GridColumn, LoadingSpinner, User } from '../..';
@@ -29,7 +29,7 @@ interface State {
     users: List<IUser>;
 }
 
-export class AuditDetails extends React.Component<Props, State> {
+export class AuditDetails extends Component<Props, State> {
     static defaultProps = {
         title: 'Audit Event Details',
         emptyMsg: 'No audit event selected.',
@@ -47,42 +47,38 @@ export class AuditDetails extends React.Component<Props, State> {
         };
     }
 
-    componentWillMount() {
-        this.init(this.props);
-    }
+    componentDidMount = (): void => {
+        this.init();
+    };
 
-    componentWillReceiveProps(nextProps: Readonly<Props>, nextContext: any): void {
-        if (nextProps.rowId !== this.props.rowId) {
-            this.init(nextProps);
+    componentDidUpdate = (prevProps: Readonly<Props>): void => {
+        if (prevProps.rowId !== this.props.rowId) {
+            this.init();
         }
-    }
+    };
 
-    init(props: Props) {
-        const { user } = props;
+    init = (): void => {
+        const { hasUserField, rowId, user } = this.props;
 
-        if (!props.rowId) return;
+        if (!rowId) return;
 
-        if (props.hasUserField) {
+        if (hasUserField) {
             Security.getUsers({
                 active: false,
                 containerPath: user.isSystemAdmin ? '/' : undefined,
                 allMembers: true,
-                scope: this,
-                success: function (data) {
-                    const users = List<IUser>(data.users);
-                    this.setState(() => ({
-                        users,
-                    }));
+                success: data => {
+                    this.setState({ users: List<IUser>(data.users) });
                 },
-                failure: function () {
+                failure: () => {
                     console.error('Unable to retrieve user data for display.');
                     this.setState(() => ({ users: List<IUser>() }));
                 },
             });
         }
-    }
+    };
 
-    renderUpdateValue(oldVal: string, newVal: string) {
+    renderUpdateValue = (oldVal: string, newVal: string): ReactNode => {
         const changed = oldVal !== newVal;
         const oldDisplay = <span className="display-light old-audit-value right-spacing">{oldVal}</span>;
 
@@ -95,7 +91,7 @@ export class AuditDetails extends React.Component<Props, State> {
                 <span className="new-audit-value">{newVal}</span>
             </>
         );
-    }
+    };
 
     renderInsertValue(oldVal: string, newVal: string) {
         return <span className="new-audit-value">{newVal}</span>;
@@ -187,31 +183,23 @@ export class AuditDetails extends React.Component<Props, State> {
         );
     }
 
-    renderFieldValueGrid() {
-        return <Grid showHeader={false} data={this.props.gridData} columns={this.getGridColumns()} />;
-    }
-
     getUserDisplay(userId: number, showUserLink: boolean) {
-        const { users } = this.state;
-
-        let user: IUser = null;
-        if (users) {
-            user = users.find(user => user.userId === userId);
-        }
+        const user = this.state.users?.find(u => u.userId === userId);
 
         if (user) {
             const link = AppURL.create('q', 'core', 'siteusers', userId).toHref();
             return showUserLink ? <a href={link}>{user.displayName}</a> : <span>{user.displayName}</span>;
-        } // user may have been deleted
-        else
+        } else {
+            // user may have been deleted
             return (
                 <span className="empty-section" title="User deleted from server">
                     {'<' + userId + '>'}
                 </span>
             );
+        }
     }
 
-    getGridColumns(): List<GridColumn> {
+    getGridColumns = (): List<GridColumn> => {
         const { user, gridColumnRenderer } = this.props;
         return List<GridColumn>([
             new GridColumn({
@@ -234,12 +222,12 @@ export class AuditDetails extends React.Component<Props, State> {
                 },
             }),
         ]);
-    }
+    };
 
     renderBody() {
-        const { gridData, changeDetails, summary, hasUserField, emptyMsg } = this.props;
+        const { gridData, changeDetails, rowId, summary, hasUserField, emptyMsg } = this.props;
 
-        if (!this.props.rowId) {
+        if (!rowId) {
             return <div>{emptyMsg}</div>;
         }
 
@@ -254,7 +242,7 @@ export class AuditDetails extends React.Component<Props, State> {
                         <Col xs={12}>{summary}</Col>
                     </Row>
                 )}
-                {gridData && this.renderFieldValueGrid()}
+                {gridData && <Grid data={gridData} columns={this.getGridColumns()} showHeader={false} />}
                 {changeDetails && this.renderChanges()}
             </>
         );
@@ -264,10 +252,10 @@ export class AuditDetails extends React.Component<Props, State> {
         const { title } = this.props;
 
         return (
-            <Panel>
-                <Panel.Heading>{title}</Panel.Heading>
-                <Panel.Body>{this.renderBody()}</Panel.Body>
-            </Panel>
+            <div className="panel panel-default">
+                <div className="panel-heading">{title}</div>
+                <div className="panel-body">{this.renderBody()}</div>
+            </div>
         );
     }
 }

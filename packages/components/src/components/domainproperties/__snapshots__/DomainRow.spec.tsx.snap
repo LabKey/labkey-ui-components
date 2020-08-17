@@ -216,9 +216,7 @@ exports[`DomainRow Sample Field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -309,6 +307,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -396,9 +395,7 @@ exports[`DomainRow Sample Field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -486,6 +483,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -547,6 +545,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 onEntering={[Function]}
                                 onExited={[Function]}
                                 onHide={[Function]}
+                                onMouseUp={[Function]}
                                 renderBackdrop={[Function]}
                                 restoreFocus={true}
                                 show={false}
@@ -594,6 +593,7 @@ exports[`DomainRow Sample Field 1`] = `
                                 rotation={null}
                                 size="lg"
                                 spin={false}
+                                swapOpacity={false}
                                 symbol={false}
                                 title=""
                                 transform={null}
@@ -817,6 +817,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         rotation={null}
                                         size={null}
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -881,6 +882,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         rotation={null}
                                         size="lg"
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -946,9 +948,7 @@ exports[`DomainRow Sample Field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -1036,6 +1036,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={0}
@@ -1173,6 +1174,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                           size="1x"
                                                           spin={false}
                                                           style={Object {}}
+                                                          swapOpacity={false}
                                                           symbol={false}
                                                           title=""
                                                           transform={null}
@@ -1396,6 +1398,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -1561,6 +1564,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -1723,6 +1727,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -1846,9 +1851,7 @@ exports[`DomainRow Sample Field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -1936,6 +1939,7 @@ exports[`DomainRow Sample Field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -2043,6 +2047,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -2402,9 +2407,7 @@ exports[`DomainRow client side warning on field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -2495,6 +2498,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 fieldError={
@@ -2594,9 +2598,7 @@ exports[`DomainRow client side warning on field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -2684,6 +2686,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -2745,6 +2748,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 onEntering={[Function]}
                                 onExited={[Function]}
                                 onHide={[Function]}
+                                onMouseUp={[Function]}
                                 renderBackdrop={[Function]}
                                 restoreFocus={true}
                                 show={false}
@@ -2792,6 +2796,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                 rotation={null}
                                 size="lg"
                                 spin={false}
+                                swapOpacity={false}
                                 symbol={false}
                                 title=""
                                 transform={null}
@@ -3039,6 +3044,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     overlay={
                                       <Popover
                                         bsClass="popover"
+                                        id="domain-row-field-error-popover"
                                         placement="right"
                                       >
                                         SQL queries, R scripts, and other code are easiest to write when field names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, SPSS, and MATLAB.
@@ -3083,6 +3089,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       rotation={null}
                                       size={null}
                                       spin={false}
+                                      swapOpacity={false}
                                       symbol={false}
                                       title=""
                                       transform={null}
@@ -3153,6 +3160,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         rotation={null}
                                         size={null}
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -3217,6 +3225,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         rotation={null}
                                         size="lg"
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -3282,9 +3291,7 @@ exports[`DomainRow client side warning on field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -3372,6 +3379,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={1}
@@ -3486,6 +3494,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -3651,6 +3660,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -3813,6 +3823,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -3936,9 +3947,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -4026,6 +4035,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -4133,6 +4143,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -4492,9 +4503,7 @@ exports[`DomainRow date time field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -4585,6 +4594,7 @@ exports[`DomainRow date time field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -4672,9 +4682,7 @@ exports[`DomainRow date time field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -4762,6 +4770,7 @@ exports[`DomainRow date time field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -4823,6 +4832,7 @@ exports[`DomainRow date time field 1`] = `
                                 onEntering={[Function]}
                                 onExited={[Function]}
                                 onHide={[Function]}
+                                onMouseUp={[Function]}
                                 renderBackdrop={[Function]}
                                 restoreFocus={true}
                                 show={false}
@@ -4870,6 +4880,7 @@ exports[`DomainRow date time field 1`] = `
                                 rotation={null}
                                 size="lg"
                                 spin={false}
+                                swapOpacity={false}
                                 symbol={false}
                                 title=""
                                 transform={null}
@@ -5073,6 +5084,7 @@ exports[`DomainRow date time field 1`] = `
                                         rotation={null}
                                         size={null}
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -5137,6 +5149,7 @@ exports[`DomainRow date time field 1`] = `
                                         rotation={null}
                                         size="lg"
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -5202,9 +5215,7 @@ exports[`DomainRow date time field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -5292,6 +5303,7 @@ exports[`DomainRow date time field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={0}
@@ -5421,6 +5433,7 @@ exports[`DomainRow date time field 1`] = `
                                                               size="1x"
                                                               spin={false}
                                                               style={Object {}}
+                                                              swapOpacity={false}
                                                               symbol={false}
                                                               title=""
                                                               transform={null}
@@ -5658,6 +5671,7 @@ exports[`DomainRow date time field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -5823,6 +5837,7 @@ exports[`DomainRow date time field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -5985,6 +6000,7 @@ exports[`DomainRow date time field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -6108,9 +6124,7 @@ exports[`DomainRow date time field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -6198,6 +6212,7 @@ exports[`DomainRow date time field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -6305,6 +6320,7 @@ exports[`DomainRow date time field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -6471,6 +6487,7 @@ exports[`DomainRow date time field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -6830,9 +6847,7 @@ exports[`DomainRow decimal field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -6923,6 +6938,7 @@ exports[`DomainRow decimal field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -7010,9 +7026,7 @@ exports[`DomainRow decimal field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -7100,6 +7114,7 @@ exports[`DomainRow decimal field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -7161,6 +7176,7 @@ exports[`DomainRow decimal field 1`] = `
                                 onEntering={[Function]}
                                 onExited={[Function]}
                                 onHide={[Function]}
+                                onMouseUp={[Function]}
                                 renderBackdrop={[Function]}
                                 restoreFocus={true}
                                 show={false}
@@ -7208,6 +7224,7 @@ exports[`DomainRow decimal field 1`] = `
                                 rotation={null}
                                 size="lg"
                                 spin={false}
+                                swapOpacity={false}
                                 symbol={false}
                                 title=""
                                 transform={null}
@@ -7411,6 +7428,7 @@ exports[`DomainRow decimal field 1`] = `
                                         rotation={null}
                                         size={null}
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -7475,6 +7493,7 @@ exports[`DomainRow decimal field 1`] = `
                                         rotation={null}
                                         size="lg"
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -7540,9 +7559,7 @@ exports[`DomainRow decimal field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -7630,6 +7647,7 @@ exports[`DomainRow decimal field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={2}
@@ -7758,6 +7776,7 @@ exports[`DomainRow decimal field 1`] = `
                                                               size="1x"
                                                               spin={false}
                                                               style={Object {}}
+                                                              swapOpacity={false}
                                                               symbol={false}
                                                               title=""
                                                               transform={null}
@@ -8031,6 +8050,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={2}
@@ -8196,6 +8216,7 @@ exports[`DomainRow decimal field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -8358,6 +8379,7 @@ exports[`DomainRow decimal field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -8481,9 +8503,7 @@ exports[`DomainRow decimal field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -8571,6 +8591,7 @@ exports[`DomainRow decimal field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={2}
@@ -8678,6 +8699,7 @@ exports[`DomainRow decimal field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -8844,6 +8866,7 @@ exports[`DomainRow decimal field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -9203,9 +9226,7 @@ exports[`DomainRow participant id field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -9296,6 +9317,7 @@ exports[`DomainRow participant id field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -9383,9 +9405,7 @@ exports[`DomainRow participant id field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -9473,6 +9493,7 @@ exports[`DomainRow participant id field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -9534,6 +9555,7 @@ exports[`DomainRow participant id field 1`] = `
                                 onEntering={[Function]}
                                 onExited={[Function]}
                                 onHide={[Function]}
+                                onMouseUp={[Function]}
                                 renderBackdrop={[Function]}
                                 restoreFocus={true}
                                 show={false}
@@ -9581,6 +9603,7 @@ exports[`DomainRow participant id field 1`] = `
                                 rotation={null}
                                 size="lg"
                                 spin={false}
+                                swapOpacity={false}
                                 symbol={false}
                                 title=""
                                 transform={null}
@@ -9808,6 +9831,7 @@ exports[`DomainRow participant id field 1`] = `
                                         rotation={null}
                                         size={null}
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -9872,6 +9896,7 @@ exports[`DomainRow participant id field 1`] = `
                                         rotation={null}
                                         size="lg"
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -9937,9 +9962,7 @@ exports[`DomainRow participant id field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -10027,6 +10050,7 @@ exports[`DomainRow participant id field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={0}
@@ -10141,6 +10165,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -10306,6 +10331,7 @@ exports[`DomainRow participant id field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -10468,6 +10494,7 @@ exports[`DomainRow participant id field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -10591,9 +10618,7 @@ exports[`DomainRow participant id field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -10681,6 +10706,7 @@ exports[`DomainRow participant id field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={0}
@@ -10788,6 +10814,7 @@ exports[`DomainRow participant id field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -10954,6 +10981,7 @@ exports[`DomainRow participant id field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -11313,9 +11341,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -11406,6 +11432,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 fieldError={
@@ -11505,9 +11532,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -11595,6 +11620,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -11656,6 +11682,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 onEntering={[Function]}
                                 onExited={[Function]}
                                 onHide={[Function]}
+                                onMouseUp={[Function]}
                                 renderBackdrop={[Function]}
                                 restoreFocus={true}
                                 show={false}
@@ -11703,6 +11730,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 rotation={null}
                                 size="lg"
                                 spin={false}
+                                swapOpacity={false}
                                 symbol={false}
                                 title=""
                                 transform={null}
@@ -11987,6 +12015,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         rotation={null}
                                         size={null}
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -12051,6 +12080,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         rotation={null}
                                         size="lg"
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -12116,9 +12146,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -12206,6 +12234,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={1}
@@ -12320,6 +12349,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -12485,6 +12515,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -12647,6 +12678,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -12770,9 +12802,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -12860,6 +12890,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -12967,6 +12998,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -13326,9 +13358,7 @@ exports[`DomainRow string field test 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -13419,6 +13449,7 @@ exports[`DomainRow string field test 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -13506,9 +13537,7 @@ exports[`DomainRow string field test 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -13596,6 +13625,7 @@ exports[`DomainRow string field test 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -13657,6 +13687,7 @@ exports[`DomainRow string field test 1`] = `
                                 onEntering={[Function]}
                                 onExited={[Function]}
                                 onHide={[Function]}
+                                onMouseUp={[Function]}
                                 renderBackdrop={[Function]}
                                 restoreFocus={true}
                                 show={false}
@@ -13704,6 +13735,7 @@ exports[`DomainRow string field test 1`] = `
                                 rotation={null}
                                 size="lg"
                                 spin={false}
+                                swapOpacity={false}
                                 symbol={false}
                                 title=""
                                 transform={null}
@@ -13931,6 +13963,7 @@ exports[`DomainRow string field test 1`] = `
                                         rotation={null}
                                         size={null}
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -13995,6 +14028,7 @@ exports[`DomainRow string field test 1`] = `
                                         rotation={null}
                                         size="lg"
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -14060,9 +14094,7 @@ exports[`DomainRow string field test 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -14150,6 +14182,7 @@ exports[`DomainRow string field test 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={1}
@@ -14279,6 +14312,7 @@ exports[`DomainRow string field test 1`] = `
                                                               size="1x"
                                                               spin={false}
                                                               style={Object {}}
+                                                              swapOpacity={false}
                                                               symbol={false}
                                                               title=""
                                                               transform={null}
@@ -14569,6 +14603,7 @@ exports[`DomainRow string field test 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -14734,6 +14769,7 @@ exports[`DomainRow string field test 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -14896,6 +14932,7 @@ exports[`DomainRow string field test 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -15019,9 +15056,7 @@ exports[`DomainRow string field test 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -15109,6 +15144,7 @@ exports[`DomainRow string field test 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -15216,6 +15252,7 @@ exports[`DomainRow string field test 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -15382,6 +15419,7 @@ exports[`DomainRow string field test 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -15741,9 +15779,7 @@ exports[`DomainRow with empty domain form 1`] = `
                 domainFormDisplayOptions={
                   Object {
                     "disableMvEnabled": false,
-                    "disableNameInput": false,
                     "hideAddFieldsButton": false,
-                    "hideDeleteIcon": false,
                     "hideImportData": false,
                     "hideRequired": false,
                     "hideTextOptions": false,
@@ -15834,6 +15870,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "lockType": "NotLocked",
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
+                    "lockExistingField": false,
                   }
                 }
                 helpNoun="domain"
@@ -15921,9 +15958,7 @@ exports[`DomainRow with empty domain form 1`] = `
                             domainFormDisplayOptions={
                               Object {
                                 "disableMvEnabled": false,
-                                "disableNameInput": false,
                                 "hideAddFieldsButton": false,
-                                "hideDeleteIcon": false,
                                 "hideImportData": false,
                                 "hideRequired": false,
                                 "hideTextOptions": false,
@@ -16011,6 +16046,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 "lockType": "NotLocked",
                                 "wrappedColumnName": undefined,
                                 "disablePhiLevel": false,
+                                "lockExistingField": false,
                               }
                             }
                             helpNoun="domain"
@@ -16071,6 +16107,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 onEntering={[Function]}
                                 onExited={[Function]}
                                 onHide={[Function]}
+                                onMouseUp={[Function]}
                                 renderBackdrop={[Function]}
                                 restoreFocus={true}
                                 show={false}
@@ -16118,6 +16155,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                 rotation={null}
                                 size="lg"
                                 spin={false}
+                                swapOpacity={false}
                                 symbol={false}
                                 title=""
                                 transform={null}
@@ -16395,6 +16433,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         rotation={null}
                                         size={null}
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -16459,6 +16498,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         rotation={null}
                                         size="lg"
                                         spin={false}
+                                        swapOpacity={false}
                                         symbol={false}
                                         title=""
                                         transform={null}
@@ -16524,9 +16564,7 @@ exports[`DomainRow with empty domain form 1`] = `
                               domainFormDisplayOptions={
                                 Object {
                                   "disableMvEnabled": false,
-                                  "disableNameInput": false,
                                   "hideAddFieldsButton": false,
-                                  "hideDeleteIcon": false,
                                   "hideImportData": false,
                                   "hideRequired": false,
                                   "hideTextOptions": false,
@@ -16614,6 +16652,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   "lockType": "NotLocked",
                                   "wrappedColumnName": undefined,
                                   "disablePhiLevel": false,
+                                  "lockExistingField": false,
                                 }
                               }
                               index={1}
@@ -16743,6 +16782,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                               size="1x"
                                                               spin={false}
                                                               style={Object {}}
+                                                              swapOpacity={false}
                                                               symbol={false}
                                                               title=""
                                                               transform={null}
@@ -17033,6 +17073,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -17198,6 +17239,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -17360,6 +17402,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -17483,9 +17526,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                         domainFormDisplayOptions={
                                           Object {
                                             "disableMvEnabled": false,
-                                            "disableNameInput": false,
                                             "hideAddFieldsButton": false,
-                                            "hideDeleteIcon": false,
                                             "hideImportData": false,
                                             "hideRequired": false,
                                             "hideTextOptions": false,
@@ -17573,6 +17614,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                             "lockType": "NotLocked",
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
+                                            "lockExistingField": false,
                                           }
                                         }
                                         index={1}
@@ -17680,6 +17722,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}
@@ -17846,6 +17889,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 size="1x"
                                                                 spin={false}
                                                                 style={Object {}}
+                                                                swapOpacity={false}
                                                                 symbol={false}
                                                                 title=""
                                                                 transform={null}

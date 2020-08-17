@@ -81,6 +81,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "lockType": "NotLocked",
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
+      "lockExistingField": false,
     }
   }
   index={1}
@@ -246,6 +247,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                           size="1x"
                           spin={false}
                           style={Object {}}
+                          swapOpacity={false}
                           symbol={false}
                           title=""
                           transform={null}
@@ -408,6 +410,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                           size="1x"
                           spin={false}
                           style={Object {}}
+                          swapOpacity={false}
                           symbol={false}
                           title=""
                           transform={null}

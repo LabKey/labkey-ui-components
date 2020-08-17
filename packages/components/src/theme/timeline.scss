@@ -1,0 +1,125 @@
+.timeline-grid {
+    border-collapse: collapse;
+    width: 100%;
+
+    tr {
+        height: 60px;
+        padding: 0 1px;
+
+        &:hover {
+            background-color: #fafafa;
+        }
+
+        &.timeline-row-selected {
+            background-color: $gray-shadow;
+        }
+
+        &.timeline-event-row {
+            cursor: pointer;
+        }
+        td {
+            height: 60px;
+            padding: 0 1px;
+
+            &.timeline-timestamp-col {
+                min-width: 100px;
+                padding-left: 10px;
+            }
+
+            &.icon-col {
+                width: 100px;
+                height: 60px;
+                display: inline-block;
+                padding: 0 10px;
+                text-align: right;
+            }
+
+            &.detail-col{
+                width: 70%;
+            }
+        }
+    }
+
+}
+
+.timeline-line {
+    display: inline-block;
+    height: 60px;
+    line-height: 0;
+}
+
+.timeline-vline {
+    border-left: 1px solid $legend-border-color;
+    margin-left: 8px;
+    display: inline-block;
+
+    &.vline-short {
+        height: 22px;
+        position: relative;
+        left: -20px;
+    }
+
+    &.vline-long {
+        height: 60px;
+    }
+
+    &.line-highlight {
+        border-left: 1px solid #FFA500;
+    }
+}
+
+.timeline-hline{
+    border-top: 1px solid $legend-border-color;
+    display: inline-block;
+
+    &.hline-long {
+        width: 20px;
+        height: 30px;
+    }
+
+    &.hline-short {
+        width: 13px;
+        height: 10px;
+    }
+}
+
+.timeline-circle {
+    height: 16px;
+    width: 16px;
+    background-color: #FFCC81;
+    border-radius: 50%;
+    border: 2px solid #FFA500;
+    display: inline-block;
+
+    &.timeline-circle-open {
+        background-color: $white;
+        border-right: 2px dotted #FFA500;
+        transform: rotate(35deg);
+    }
+}
+
+.timeline-event-icon {
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    background-color: $white;
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    position: relative;
+    top: -26px;
+}
+
+
+.timeline-grid.timeline-grid-no-selection {
+
+    tr {
+        &:hover {
+            background-color: white;
+        }
+
+        &.timeline-event-row {
+            cursor: default;
+        }
+    }
+
+}

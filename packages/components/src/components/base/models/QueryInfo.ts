@@ -122,12 +122,9 @@ export class QueryInfo extends Record({
             Object.assign({}, queryInfoJson, {
                 columns,
                 schemaQuery,
+                views: Map<string, ViewInfo>(), // need views to be a Map to avoid 'get is not defined' errors
             })
         );
-    }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
     }
 
     isAppEditable(): boolean {

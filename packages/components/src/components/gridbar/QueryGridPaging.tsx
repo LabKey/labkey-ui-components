@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React, { Component, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { loadPage } from '../../actions';
@@ -27,12 +27,12 @@ interface Props {
     showCounts?: boolean;
 }
 
-export class QueryGridPaging extends React.Component<Props, any> {
+export class QueryGridPaging extends Component<Props> {
     static defaultProps = {
         showCounts: true,
     };
 
-    shouldComponentUpdate(nextProps: Props) {
+    shouldComponentUpdate(nextProps: Props): boolean {
         const { model } = this.props;
         const nextModel = nextProps.model;
 
@@ -49,21 +49,21 @@ export class QueryGridPaging extends React.Component<Props, any> {
         return this.props.model.pageNumber || 1;
     }
 
-    nextPage = () => {
+    nextPage = (): void => {
         this.goToPage(this.getCurrentPage() + 1);
     };
 
-    prevPage = () => {
+    prevPage = (): void => {
         this.goToPage(this.getCurrentPage() - 1);
     };
 
-    goToPage = (pageNumber: number) => {
+    goToPage = (pageNumber: number): void => {
         const { model } = this.props;
         loadPage(model, pageNumber);
         blurActiveElement(); // Issue 39418
     };
 
-    render() {
+    render(): ReactNode {
         const { model, showCounts } = this.props;
         const min = model.getMinRowIndex();
         const max = model.getMaxRowIndex();

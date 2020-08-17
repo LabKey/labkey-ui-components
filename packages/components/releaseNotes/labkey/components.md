@@ -1,5 +1,106 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version 0.87.0
+*Released*: 13 August 2020
+* Add Label as optional export format and add optional onExport callback to export menu
+* Refactor exportRows and export method for creating the export parameters
+* Export test utility methods makeTestActions and makeTestQueryModel
+* Export flattenValuesFromRow utility method
+
+### version 0.86.0
+*Released*: 12 August 2020
+* Move Timeline related component and model from Sample Manager
+
+### version 0.85.0
+*Released*: 11 August 2020
+* Refactor several components/classes to not depend on QueryGridModel
+    * This allows them to more easily be used by QueryModel and QueryGridModel based components while we transition
+    away from QueryGridModel
+    * Affected Components: SelectionMenuItem, BulkUpdateModel
+    * Affected Classes: EditableGridLoaderFromSelection
+* Add EditableDetailPanel, the QueryModel version of DetailEditing
+* DetailPanel: change queryColumns prop from List<QueryColumn> to QueryColumn[]
+    * We are moving away from Immutable and want to limit how much of it is exposed in our API
+* GridPanel: add new props buttonsComponentProps, and hideEmptyChartMenu
+    * Use buttonsComponentProps to pass any additional props to your ButtonsComponent (model and actions still get
+    passed to the ButtonsComponent)
+    * Use hideEmptyChartMenu to hide the chart menu when no charts are available
+* Move queryMetadata an columnRenderers out of ReactN global storage
+
+### version 0.84.0
+*Released*: 7 August 2020
+* Updates most package dependencies to the latest version.
+* Notable updates are:
+    - `react 16.8.6 -> 16.13.1`. This brings us up-to-date with the latest version of React. For more details
+    see https://reactjs.org/versions/.
+    - `react-bootstrap 0.32.4 -> 0.33.1`. There have been several updates to the Bootstrap v3 supported variant of
+    this library that are worth having. Namely, fixed support for `UNSAFE_componentWillMount`, etc.
+* Switch to using `UNSAFE_` prefixed React lifecycle methods to silence warnings until we have time to convert these
+usages to their counterpart methods.
+* Switches our tests from using wrapped `setTimeout` with `done()` to async/await pattern. This is better supported by
+more recent versions of Jest.
+* Fix and add tests for `formatDate` and `formatDateTime` after SM exposed a bug in how the `moment-timezone` package
+is imported.
+* Switch all imports of `import React from 'reactn'` to `import ReactN from 'reactn'` to make it more obvious when the
+library is used (for a component). Switch a couple of usages from `ReactN` to `React` where `reactn` wasn't needed.
+* Removed superfluous usages of `enzyme-to-json` from many test cases.
+* Removed superfluous `Immutable.Record` constructors.
+
+### version 0.83.2
+*Released*: 6 August 2020
+* BulkUpdateForm to pass through readonly columns to EditableGrid
+
+### version 0.83.1
+*Released*: 6 August 2020
+* BaseBarChart and processChartData updates to support per-bar fill color designations
+
+### version 0.83.0
+*Released*: 5 August 2020
+* Fix bug in QueryModel.getColumnString when omittedColumns is present.
+* Section component is now a PureComponent with css classes and more customizable styles
+* Add UserProvider for getting a user and user properties onto a page
+* Surface emptyText and showHeader properties of Grid through GridPanel
+* Update to StorageStatusRenderer for different text representing "not in storage"
+* Move BaseBarChart and utility method from sampleManagement
+
+### version 0.82.2
+*Released*: 4 August 2020
+* Add headerCls prop to GridColumn
+* Add useSmall prop to ColorIcon to show small sized icon
+* Add setSelections and replaceSelections to QueryModel Actions
+* Export cancelEvent method
+
+### version 0.82.1
+*Released*: 29 July 2020
+* Fix sorts issue with QueryModel.urlQueryParams
+
+### version 0.82.0
+*Release*: 30 July 2020
+* Add method for applications to register their URL Mappers so different applications can choose to route Server URLs differently.
+* Add a productId property to ActionMapper so it can be used to construct a URL to a separate application.
+
+### version 0.81.2
+*Released*: 29 July 2020
+* Add PaginationInfo component
+
+### version 0.81.1
+*Released*: 29 July 2020
+* Merge forward changes from release20.7-SNAPSHOT branch
+    - includes hotfix changes from version 0.71.3
+
+### version 0.81.0
+*Released*: 28 July 2020
+* Add runDetailsColumnsForQueryModel - convenience method for calculating the columns needed for an assay run details
+page, adapted from getRunDetailsQueryColumns.
+
+### version 0.80.1
+*Released*: 27 July 2020
+* Audit and schema browser component linting and misc cleanup after move from Sample Manager app
+
+### version 0.80.0
+*Released*: 24 July 2020
+* Add support for parameterized queries when getting and setting selections on a grid
+* Export getSelectedData method
 
 ### version TBD
 *Released*: TBD
@@ -88,6 +189,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.72.0
 *Released*: 1 July 2020
 * Add ColorPickerInput
+
+### version 0.71.3
+*Released*: 8 July 2020
+* Issue 40795: Query metadata editor should allow editing type of field in built in table
 
 ### version 0.71.2
 *Released*: 30 June 2020

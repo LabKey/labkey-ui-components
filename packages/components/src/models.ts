@@ -214,10 +214,6 @@ export class VisualizationConfigModel extends Record({
             })
         );
     }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export class ChartConfigModel extends Record({
@@ -238,10 +234,6 @@ export class ChartConfigModel extends Record({
     renderType: string;
     scales: any;
     width: number;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export class QueryConfigModel extends Record({
@@ -272,10 +264,6 @@ export class QueryConfigModel extends Record({
     schemaName: string;
     // sort: string;
     viewName: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export interface ValueDescriptor {
@@ -338,10 +326,6 @@ export class EditorModel
     selectedColIdx: number;
     selectedRowIdx: number;
     selectionCells: Set<string>;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 
     findNextCell(
         startCol: number,
@@ -727,10 +711,6 @@ export class LookupStore extends Record({
 
     static key(col: QueryColumn): string {
         return [col.lookup.schemaName, col.lookup.queryName, col.fieldKey].join('|');
-    }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
     }
 
     containsAll(values: List<string>): boolean {

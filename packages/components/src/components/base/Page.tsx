@@ -35,7 +35,7 @@ export class Page extends React.Component<PageProps, any> {
         Page.setDocumentTitle(this.props);
     }
 
-    componentWillReceiveProps(nextProps: PageProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: PageProps): void {
         Page.setDocumentTitle(nextProps);
     }
 

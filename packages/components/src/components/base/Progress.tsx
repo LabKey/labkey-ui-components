@@ -59,7 +59,7 @@ export class Progress extends React.Component<Props, State> {
         this.end(true);
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         if (!this.props.toggle && nextProps.toggle) {
             if (this.props.delay) {
                 this.delayTimer = window.setTimeout(() => {

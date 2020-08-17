@@ -8,7 +8,8 @@ import {
     LoadingState,
     QueryInfo,
     QueryModel,
-    QueryModelMap, QuerySort,
+    QueryModelMap,
+    QuerySort,
     SchemaQuery,
     withQueryModels,
 } from '..';
@@ -47,7 +48,7 @@ beforeAll(async () => {
 });
 
 describe('withQueryModels', () => {
-    test('actions', async done => {
+    test('actions', async () => {
         const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
         let injectedModels: QueryModelMap;
         let injectedModel: QueryModel;
@@ -254,12 +255,9 @@ describe('withQueryModels', () => {
         await sleep();
         model3 = injectedModels.model3;
         expect(model3.rowsLoadingState).toEqual(LoadingState.LOADED);
-
-        // Due to the async nature of this test we need to call done() to ensure the test does not fail due to timeout.
-        done();
     });
 
-    test('Bind from URL', async done => {
+    test('Bind from URL', async () => {
         const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
         const history = createMemoryHistory();
         const queryConfigs = { model: { schemaQuery: MIXTURES_SCHEMA_QUERY, bindURL: true } };
@@ -337,11 +335,9 @@ describe('withQueryModels', () => {
         // Selecting a report doesn't trigger loading rows.
         expect(injectedModel.rowsLoadingState).toEqual(LoadingState.LOADING);
         expect(injectedModel.selectedReportId).toEqual('db:1');
-
-        done();
     });
 
-    test('Bind to URL', async done => {
+    test('Bind to URL', async () => {
         const modelLoader = new MockQueryModelLoader(MIXTURES_QUERY_INFO, MIXTURES_DATA);
         const history = createMemoryHistory();
         const queryConfigs = { model: { schemaQuery: MIXTURES_SCHEMA_QUERY, bindURL: true } };
@@ -405,7 +401,5 @@ describe('withQueryModels', () => {
         expectedQuery['query.reportId'] = 'db:1';
         injectedActions.selectReport(injectedModel.id, 'db:1');
         expect(injectedLocation.query).toEqual(expectedQuery);
-
-        done();
     });
 });

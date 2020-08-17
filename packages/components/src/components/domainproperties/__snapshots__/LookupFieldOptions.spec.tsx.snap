@@ -90,6 +90,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "lockType": "NotLocked",
         "wrappedColumnName": undefined,
         "disablePhiLevel": false,
+        "lockExistingField": false,
       }
     }
   >
@@ -500,6 +501,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
                           size="1x"
                           spin={false}
                           style={Object {}}
+                          swapOpacity={false}
                           symbol={false}
                           title=""
                           transform={null}
@@ -681,6 +683,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "lockType": "NotLocked",
         "wrappedColumnName": undefined,
         "disablePhiLevel": false,
+        "lockExistingField": false,
       }
     }
   >
@@ -1152,6 +1155,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
                           size="1x"
                           spin={false}
                           style={Object {}}
+                          swapOpacity={false}
                           symbol={false}
                           title=""
                           transform={null}
@@ -1333,6 +1337,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "lockType": "NotLocked",
         "wrappedColumnName": undefined,
         "disablePhiLevel": false,
+        "lockExistingField": false,
       }
     }
   >
@@ -1804,6 +1809,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
                           size="1x"
                           spin={false}
                           style={Object {}}
+                          swapOpacity={false}
                           symbol={false}
                           title=""
                           transform={null}
@@ -1985,6 +1991,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "lockType": "NotLocked",
         "wrappedColumnName": undefined,
         "disablePhiLevel": false,
+        "lockExistingField": false,
       }
     }
   >
@@ -2453,6 +2460,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
                           size="1x"
                           spin={false}
                           style={Object {}}
+                          swapOpacity={false}
                           symbol={false}
                           title=""
                           transform={null}

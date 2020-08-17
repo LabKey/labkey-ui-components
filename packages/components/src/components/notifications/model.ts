@@ -60,7 +60,7 @@ export class NotificationItemModel
     onDismiss?: () => any;
     persistence?: Persistence;
 
-    static create(values?: { [key: string]: any }) {
+    static create(values?: NotificationItemProps): NotificationItemModel {
         return new NotificationItemModel(
             Object.assign(
                 {},
@@ -70,10 +70,6 @@ export class NotificationItemModel
                 values
             )
         );
-    }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
     }
 }
 

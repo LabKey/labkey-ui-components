@@ -150,10 +150,6 @@ export class PropDescType
         return dataType.display === AUTOINT_TYPE.display;
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     getJsonType(): JsonType {
         switch (this.name) {
             case 'boolean':
@@ -311,8 +307,6 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideAddFieldsButton: false,
     disableMvEnabled: false,
     hideImportData: false,
-    hideDeleteIcon: false,
-    disableNameInput: false,
 };
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -425,10 +419,6 @@ export class DomainDesign
         return json;
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     hasErrors(): boolean {
         return (
             this.domainException !== undefined &&
@@ -519,10 +509,6 @@ export class DomainIndex
 
         return indices;
     }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export enum FieldErrors {
@@ -600,10 +586,6 @@ export class PropertyValidatorProperties
     })
     implements IPropertyValidatorProperties {
     failOnMatch: boolean;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export interface IPropertyValidator {
@@ -637,10 +619,6 @@ export class PropertyValidator
     new: boolean;
     rowId?: number;
     expression?: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 
     static fromJS(rawPropertyValidator: any[], type: string): List<PropertyValidator> {
         let propValidators = List<PropertyValidator>();
@@ -735,6 +713,7 @@ export interface IDomainField {
     isPrimaryKey: boolean;
     lockType: string;
     disablePhiLevel?: boolean;
+    lockExistingField?: boolean;
 }
 
 export class DomainField
@@ -784,6 +763,7 @@ export class DomainField
         lockType: DOMAIN_FIELD_NOT_LOCKED,
         wrappedColumnName: undefined,
         disablePhiLevel: false,
+        lockExistingField: false,
     })
     implements IDomainField {
     conceptURI?: string;
@@ -831,6 +811,7 @@ export class DomainField
     lockType: string;
     wrappedColumnName?: string;
     disablePhiLevel?: boolean;
+    lockExistingField?: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         const baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -842,7 +823,10 @@ export class DomainField
                 original: {
                     dataType,
                     conceptURI: rawField.conceptURI,
-                    rangeURI: rawField.propertyId !== undefined ? rawField.rangeURI : undefined, // Issue 38366: only need to use rangeURI filtering for already saved field/property
+                    rangeURI:
+                        rawField.propertyId !== undefined || rawField.wrappedColumnName !== undefined
+                            ? rawField.rangeURI // Issue 40795: need rangURI for alias field (query metadata) to get other available types in the datatype dropdown
+                            : undefined, // Issue 38366: only need to use rangeURI filtering for already saved field/property
                 },
             })
         );
@@ -997,12 +981,9 @@ export class DomainField
         delete json.regexValidators;
         delete json.lookupValidator;
         delete json.disablePhiLevel;
+        delete json.lockExistingField;
 
         return json;
-    }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
     }
 
     getErrors(): FieldErrors {
@@ -1137,7 +1118,8 @@ export function resolveAvailableTypes(
     showFilePropertyType?: boolean
 ): List<PropDescType> {
     // field has not been saved -- display all property types allowed by app
-    if (field.isNew()) {
+    // Issue 40795: need to check wrappedColumnName for alias field in query metadata editor and resolve the datatype fields
+    if (field.isNew() && field.wrappedColumnName == undefined) {
         return appPropertiesOnly
             ? (availableTypes.filter(type => isPropertyTypeAllowed(type, showFilePropertyType)) as List<PropDescType>)
             : availableTypes;
@@ -1268,10 +1250,6 @@ export class ColumnInfoLite
     static create(raw: IColumnInfoLite): ColumnInfoLite {
         return new ColumnInfoLite(raw);
     }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 interface IQueryInfoLite {
@@ -1331,10 +1309,6 @@ export class QueryInfoLite
                 schemaName,
             })
         );
-    }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
     }
 
     getLookupInfo(rangeURI?: string): List<{ name: string; type: PropDescType }> {
@@ -1477,10 +1451,6 @@ export class DomainException
         return undefined;
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     // merge warnings with an incoming server side errors so that both server and pre-existing client side warning can be shown on the banner
     static mergeWarnings(domain: DomainDesign, exception: DomainException) {
         // merge pre-existing warnings on the domain
@@ -1602,10 +1572,6 @@ export class DomainFieldError
 
         return fieldErrors;
     }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export type HeaderRenderer = (config: IAppDomainHeader) => any;
@@ -1630,8 +1596,6 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
-    hideDeleteIcon?: boolean;
-    disableNameInput?: boolean;
 }
 
 /**
@@ -1669,10 +1633,6 @@ export class DomainDetails extends Record({
         }
 
         return design;
-    }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
     }
 }
 

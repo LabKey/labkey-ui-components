@@ -8,17 +8,19 @@ import { Actions, LoadingState, QueryInfo, QueryModel } from '..';
  * @param rows
  * @param orderedRows
  * @param rowCount
+ * @param id
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const makeTestModel = (
+export const makeTestQueryModel = (
     schemaQuery,
     queryInfo?: QueryInfo,
     rows?: any,
     orderedRows?: any,
-    rowCount?: number
+    rowCount?: number,
+    id?: string
 ): QueryModel => {
     let model = new QueryModel({
-        id: 'model',
+        id: id ? id : 'model',
         schemaQuery,
     });
 
@@ -68,5 +70,7 @@ export const makeTestActions = (): Actions => {
         setSchemaQuery: jest.fn(),
         setSorts: jest.fn(),
         setView: jest.fn(),
+        setSelections: jest.fn(),
+        replaceSelections: jest.fn(),
     };
 };

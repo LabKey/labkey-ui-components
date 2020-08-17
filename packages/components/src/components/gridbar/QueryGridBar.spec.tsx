@@ -1,9 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 
 import { SchemaQuery } from '../base/models/model';
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks, sleep } from '../../testHelpers';
 import { getStateQueryGridModel } from '../../models';
 import { gridInit } from '../../actions';
 import { getQueryGridModel } from '../../global';
@@ -20,58 +19,50 @@ beforeAll(() => {
 });
 
 describe('<QueryGridBar/>', () => {
-    test('default props', done => {
+    test('default props', async () => {
         const model = getStateQueryGridModel('QueryGridBarDefaultProps', SQ);
         gridInit(model);
 
-        window.setTimeout(() => {
-            const component = <QueryGridBar model={getQueryGridModel(model.getId())} />;
-            const tree = renderer.create(component);
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        const tree = renderer.create(<QueryGridBar model={getQueryGridModel(model.getId())} />);
+        expect(tree).toMatchSnapshot();
     });
 
-    test('without charts and views', done => {
+    test('without charts and views', async () => {
         const model = getStateQueryGridModel('QueryGridBarWithoutChartsViews', SQ, {
             showChartSelector: false,
             showViewSelector: false,
         });
         gridInit(model);
 
-        window.setTimeout(() => {
-            const component = <QueryGridBar model={getQueryGridModel(model.getId())} />;
-            const tree = renderer.create(component);
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        const tree = renderer.create(<QueryGridBar model={getQueryGridModel(model.getId())} />);
+        expect(tree).toMatchSnapshot();
     });
 
-    test('without omnibox', done => {
+    test('without omnibox', async () => {
         const model = getStateQueryGridModel('QueryGridBarWithoutOmnibox', SQ, {
             showSearchBox: false,
         });
         gridInit(model);
 
-        window.setTimeout(() => {
-            const component = <QueryGridBar model={getQueryGridModel(model.getId())} />;
-            const tree = renderer.create(component);
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        const tree = renderer.create(<QueryGridBar model={getQueryGridModel(model.getId())} />);
+        expect(tree).toMatchSnapshot();
     });
 
-    test('isPaged', done => {
+    test('isPaged', async () => {
         const model = getStateQueryGridModel('QueryGridBarIsPaged', SQ, {
             isPaged: true,
         });
         gridInit(model);
 
-        window.setTimeout(() => {
-            const component = <QueryGridBar model={getQueryGridModel(model.getId())} />;
-            const tree = renderer.create(component);
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        const tree = renderer.create(<QueryGridBar model={getQueryGridModel(model.getId())} />);
+        expect(tree).toMatchSnapshot();
     });
 });

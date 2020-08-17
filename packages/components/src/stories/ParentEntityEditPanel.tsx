@@ -37,7 +37,7 @@ interface Props {
 }
 
 class ParentEntityEditPage extends React.Component<Props, any> {
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.initModel();
     }
 

@@ -1,12 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 
 import { SecurityPolicy } from '../permissions/models';
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import policyJSON from '../../test/data/security-getPolicy.json';
 import rolesJSON from '../../test/data/security-getRoles.json';
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks, sleep } from '../../testHelpers';
 import { JEST_SITE_ADMIN_USER_ID } from '../../test/data/constants';
 
 import { UserDetailsPanel } from './UserDetailsPanel';
@@ -20,18 +19,18 @@ const ROLES = processGetRolesResponse(rolesJSON.roles);
 const ROLES_BY_NAME = getRolesByUniqueName(ROLES);
 
 describe('<UserDetailsPanel/>', () => {
-    test('no principal', done => {
-        const component = <UserDetailsPanel userId={undefined} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} />;
+    test('no principal', async () => {
+        const tree = renderer.create(
+            <UserDetailsPanel userId={undefined} policy={POLICY} rolesByUniqueName={ROLES_BY_NAME} />
+        );
 
-        const tree = renderer.create(component);
-        setTimeout(() => {
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test('with principal no buttons because of self', done => {
-        const component = (
+    test('with principal no buttons because of self', async () => {
+        const tree = renderer.create(
             <UserDetailsPanel
                 userId={JEST_SITE_ADMIN_USER_ID} // see components/package.json "jest" config for the setting of self's userId
                 policy={POLICY}
@@ -40,15 +39,13 @@ describe('<UserDetailsPanel/>', () => {
             />
         );
 
-        const tree = renderer.create(component);
-        setTimeout(() => {
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test('with principal and buttons', done => {
-        const component = (
+    test('with principal and buttons', async () => {
+        const tree = renderer.create(
             <UserDetailsPanel
                 userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering
                 policy={POLICY}
@@ -57,15 +54,13 @@ describe('<UserDetailsPanel/>', () => {
             />
         );
 
-        const tree = renderer.create(component);
-        setTimeout(() => {
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 
-    test('with principal and buttons not allowDelete or allowResetPassword', done => {
-        const component = (
+    test('with principal and buttons not allowDelete or allowResetPassword', async () => {
+        const tree = renderer.create(
             <UserDetailsPanel
                 userId={1005} // self is JEST_SITE_ADMIN_USER_ID which will prevent buttons from rendering
                 policy={POLICY}
@@ -76,10 +71,8 @@ describe('<UserDetailsPanel/>', () => {
             />
         );
 
-        const tree = renderer.create(component);
-        setTimeout(() => {
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        expect(tree.toJSON()).toMatchSnapshot();
     });
 });

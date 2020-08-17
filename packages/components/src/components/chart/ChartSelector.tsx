@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 
 import { QueryGridModel, SchemaQuery } from '../base/models/model';
@@ -56,11 +56,11 @@ export class ChartSelector extends React.Component<Props, State> {
         };
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.requestCharts();
     }
 
-    componentDidUpdate(prevProps: Props) {
+    componentDidUpdate(prevProps: Props): void {
         const prevSQ = prevProps.model.queryInfo ? prevProps.model.queryInfo.schemaQuery : null;
         const curSQ = this.props.model.queryInfo ? this.props.model.queryInfo.schemaQuery : null;
 
@@ -69,7 +69,7 @@ export class ChartSelector extends React.Component<Props, State> {
         }
     }
 
-    setErrorStatus = () => {
+    setErrorStatus = (): void => {
         this.setState({
             privateCharts: null,
             publicCharts: null,
@@ -77,7 +77,7 @@ export class ChartSelector extends React.Component<Props, State> {
         });
     };
 
-    requestChartsWithSampleComparisonReports = () => {
+    requestChartsWithSampleComparisonReports = (): void => {
         const { model } = this.props;
         const targetSchema = model.schema;
         const targetQuery = model.query;
@@ -115,7 +115,7 @@ export class ChartSelector extends React.Component<Props, State> {
             .catch(this.setErrorStatus);
     };
 
-    requestChartsWithoutSampleComparisonReports = () => {
+    requestChartsWithoutSampleComparisonReports = (): void => {
         const { model } = this.props;
         const sq = SchemaQuery.create(model.schema, model.query);
 
@@ -144,7 +144,7 @@ export class ChartSelector extends React.Component<Props, State> {
             .catch(this.setErrorStatus);
     };
 
-    requestCharts() {
+    requestCharts(): void {
         if (this.props.showSampleComparisonReports) {
             this.requestChartsWithSampleComparisonReports();
         } else {
@@ -152,7 +152,7 @@ export class ChartSelector extends React.Component<Props, State> {
         }
     }
 
-    render() {
+    render(): ReactNode {
         const { model, onReportClicked, showSampleComparisonReports, onCreateReportClicked } = this.props;
         const { publicCharts, privateCharts, error } = this.state;
 

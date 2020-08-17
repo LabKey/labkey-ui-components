@@ -1,7 +1,7 @@
 # QueryModel API
 
 At a high level the QueryModel API is a wrapper around the selectRows API. If you need to retrieve data from a LabKey
-table, so you can render it in a React component, then the QueryModel API is most likely what you want.
+table or query, so you can render it in a React component, then the QueryModel API is most likely what you want.
 
 ### QueryModel / QueryConfig
 
@@ -10,7 +10,8 @@ retrieved by the server. You can manually instantiate a `QueryModel`, but you wi
 use the `withQueryModels` HOC to inject the needed QueryModel(s) into your component. To create a QueryModel you will need
 to define a `QueryConfig` object. At a minimum, your `QueryConfig` must have a valid SchemaQuery, but we also support
 many other attributes that allow you to configure the model before it is loaded, all of the attributes can be found
-on the `QueryConfig` interface at `src/QueryModel/QueryModel.ts`.
+on the [`QueryConfig` interface](https://labkey.github.io/labkey-ui-components/interfaces/queryconfig.html) at
+`src/QueryModel/QueryModel.ts`.
 
 ### withQueryModels
 
@@ -119,7 +120,7 @@ Which would render something like this:
 
 ![](minimal_grid_panel.png)
 
-We also provide an implementation called `GridPanelWithModel` that lets you pass in a `queryConfigs` prop so you don't
+We also provide an implementation called `GridPanelWithModel` that lets you pass in a `queryConfig` prop so you don't
 need to wrap your own component with `withQueryModels`. An example of using `GridPanelWithModel`:
 
 ```tsx
@@ -158,7 +159,7 @@ function MyComponent(props: MyComponentProps) {
         `<MyWrappedComponent queryConfigs={queryConfigs} key={schemaName + "." + queryName} />`.
 - How do I allow users to link to a specific page of results on a grid?
     - If you are writing an application, and you want users to be able to send or save a link that has filters, sorts,
-    or a specific page in it you can use URL Binding. When enabled URL binding will persist certain pieces of model
+    or a specific page in it you can use URL Binding. When enabled, URL binding will persist certain pieces of model
     state to the URL so users can share or save links. To use URL binding you must be using the same version of React
     Router as this repo (currently version `3.2.6`) and you must set `bindURL` to true in the `QueryConfig` objects you
     pass to `withQueryModels`.

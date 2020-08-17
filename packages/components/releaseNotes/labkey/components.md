@@ -1,5 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version 0.88.0
+*Released*: 17 August 2020
+* Add docs for QueryModel API to docs folder
+* Change GridPanelWithModel props interface to take a single `QueryConfig` object instead of a `QueryConfigMap`.
+
 ### version 0.87.0
 *Released*: 13 August 2020
 * Add Label as optional export format and add optional onExport callback to export menu

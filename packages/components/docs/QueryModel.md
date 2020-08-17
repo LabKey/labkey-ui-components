@@ -31,8 +31,9 @@ The wrapped components (returned from `withQueryModels`) will take the same prop
 interface `MakeQueryModels`:
 - `queryConfigs`: an object containing the queryConfigs for the models you want `withQueryModels` to instantiate. This
 prop is optional.
-- `autoLoad`: If autoLoad is true withQueryModels will automatically load the models when the component mounts. Defaults
-to false.
+- `autoLoad`: If autoLoad is true withQueryModels will automatically load the models when the component mounts. If false
+ you will need to trigger the loading of your model(s) via `actions.loadModel(modelId)`, this is typically done in the
+ componentDidMount lifecycle method of your components. Defaults to false.
 - `modelLoader`: You can override how `QueryModels` are loaded by providing your own `QueryModelLoader`, you will not
 typically need to use this. It is primarily useful for testing.
 
@@ -53,14 +54,14 @@ type Props = MyComponentProps & InjectedQueryModels;
 class ExampleComponentImpl extends PureComponent<Props> {
     render() {
         const { actions, queryModels, title } = this.props;
-        const model = queryModels.model;
+        const model = queryModels.assayModel;
 
         return (
             <div className="example-component">
                 <div>{title}</div>
                 <div>
                     {model.isLoading && <LoadingSpinner />}
-                    {!model.isLoading && <span>The model has {model.rowCount} rows</span>}
+                    {!model.isLoading && <span>The assay has {model.rowCount} runs</span>}
                 </div>
             </div>
         );
@@ -75,7 +76,7 @@ export const ExampleComponent = withQueryModels<MyComponentProps>(ExampleCompone
 // The component returned from withQueryModels, ExampleComponent in this case, now has the following props type:
 // MyComponentProps & MakeQueryModels. To use the component you pass it a queryConfig and it will isntantiate the
 // models you want and pass them to ExampleComponentImpl:
-const queryConfigs = { model: { schemaQuery: SchemaQuery.create('assay.general.amino acids', 'Runs') }};
+const queryConfigs = { assayModel: { schemaQuery: SchemaQuery.create('assay.general.amino acids', 'Runs') }};
 <ExampleComponent title="My Example Component" queryConfigs={queryConfigs} autoLoad />
 ```
 
@@ -85,6 +86,9 @@ To summarize:
  - Create a component that implements the `InjectedQueryModels` interface
  - Wrap your component with `withQueryModels` (e.g `const MyComponentWithModels = withQueryModels(MyComponent)`)
  - Use your wrapped component: `<MyComponentWithModels queryConfigs={myQueryConfigs} />`
+    - If you don't have enough information to instantiate a model when you render your wrapped component you can always
+    add a model later via `actions.addModel(queryConfig: QueryConfig)`, this is often done if a schema name or query
+    name comes from user input (e.g. from a `<select>` menu).
 
 ### GridPanel
 

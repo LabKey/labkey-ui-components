@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.88.1
+*Released*: 19 August 2020
+* react-beautiful-dnd package update
+
 ### version 0.88.0
 *Released*: 17 August 2020
 * Add docs for QueryModel API to docs folder

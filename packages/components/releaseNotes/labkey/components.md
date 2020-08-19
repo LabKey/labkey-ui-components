@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Bind URL parameters when adding QueryModels
 
+
+### version 0.88.1
+*Released*: 19 August 2020
+* react-beautiful-dnd package update
+
+### version 0.88.0
+*Released*: 17 August 2020
+* Add docs for QueryModel API to docs folder
+* Change GridPanelWithModel props interface to take a single `QueryConfig` object instead of a `QueryConfigMap`.
+
 ### version 0.87.0
 *Released*: 13 August 2020
 * Add Label as optional export format and add optional onExport callback to export menu

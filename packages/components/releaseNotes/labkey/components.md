@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.88.1
+*Released*: 19 August 2020
 * react-beautiful-dnd package update
 
 ### version 0.88.0

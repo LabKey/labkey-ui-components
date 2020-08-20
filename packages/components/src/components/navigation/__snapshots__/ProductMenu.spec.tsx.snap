@@ -237,387 +237,380 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
     open={false}
     title="Menu"
   >
-    <ForwardRef
+    <Uncontrolled(Dropdown)
       id="product-menu"
       onToggle={[Function]}
       open={false}
     >
-      <Uncontrolled(Dropdown)
+      <Dropdown
+        bsClass="dropdown"
+        componentClass={[Function]}
         id="product-menu"
-        innerRef={null}
         onToggle={[Function]}
         open={false}
       >
-        <Dropdown
-          bsClass="dropdown"
-          componentClass={[Function]}
-          id="product-menu"
-          onToggle={[Function]}
-          open={false}
+        <ButtonGroup
+          block={false}
+          bsClass="btn-group"
+          className="dropdown"
+          justified={false}
+          vertical={false}
         >
-          <ButtonGroup
-            block={false}
-            bsClass="btn-group"
-            className="dropdown"
-            justified={false}
-            vertical={false}
+          <div
+            className="dropdown btn-group"
           >
-            <div
-              className="dropdown btn-group"
+            <DropdownToggle
+              bsClass="dropdown-toggle"
+              bsRole="toggle"
+              className="product-menu-button"
+              id="product-menu"
+              key=".0"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              open={false}
+              useAnchor={false}
             >
-              <DropdownToggle
-                bsClass="dropdown-toggle"
-                bsRole="toggle"
-                className="product-menu-button"
+              <Button
+                active={false}
+                aria-expanded={false}
+                aria-haspopup={true}
+                block={false}
+                bsClass="btn"
+                bsStyle="default"
+                className="product-menu-button dropdown-toggle"
+                disabled={false}
                 id="product-menu"
-                key=".0"
                 onClick={[Function]}
                 onKeyDown={[Function]}
-                open={false}
-                useAnchor={false}
+                role="button"
               >
-                <Button
-                  active={false}
+                <button
                   aria-expanded={false}
                   aria-haspopup={true}
-                  block={false}
-                  bsClass="btn"
-                  bsStyle="default"
-                  className="product-menu-button dropdown-toggle"
+                  className="product-menu-button dropdown-toggle btn btn-default"
                   disabled={false}
                   id="product-menu"
                   onClick={[Function]}
                   onKeyDown={[Function]}
                   role="button"
+                  type="button"
                 >
-                  <button
-                    aria-expanded={false}
-                    aria-haspopup={true}
-                    className="product-menu-button dropdown-toggle btn btn-default"
-                    disabled={false}
-                    id="product-menu"
+                  Menu
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+              </Button>
+            </DropdownToggle>
+            <DropdownMenu
+              bsClass="dropdown-menu"
+              bsRole="menu"
+              key=".1"
+              labelledBy="product-menu"
+              onClose={[Function]}
+              onSelect={[Function]}
+              open={false}
+              pullRight={false}
+            >
+              <RootCloseWrapper
+                disabled={true}
+                event="click"
+                onRootClose={[Function]}
+              >
+                <ul
+                  aria-labelledby="product-menu"
+                  className="dropdown-menu"
+                  role="menu"
+                >
+                  <div
+                    className="product-menu-content "
+                    key=".0"
                     onClick={[Function]}
                     onKeyDown={[Function]}
-                    role="button"
-                    type="button"
+                    onSelect={[Function]}
                   >
-                    Menu
-                     
-                    <span
-                      className="caret"
-                    />
-                  </button>
-                </Button>
-              </DropdownToggle>
-              <DropdownMenu
-                bsClass="dropdown-menu"
-                bsRole="menu"
-                key=".1"
-                labelledBy="product-menu"
-                onClose={[Function]}
-                onSelect={[Function]}
-                open={false}
-                pullRight={false}
-              >
-                <RootCloseWrapper
-                  disabled={true}
-                  event="click"
-                  onRootClose={[Function]}
-                >
-                  <ul
-                    aria-labelledby="product-menu"
-                    className="dropdown-menu"
-                    role="menu"
-                  >
-                    <div
-                      className="product-menu-content "
-                      key=".0"
-                      onClick={[Function]}
-                      onKeyDown={[Function]}
-                      onSelect={[Function]}
-                    >
-                      <div>
-                        <div
-                          className="navbar-connector"
-                        />
-                        <div
-                          className="menu-section col-3"
-                          key="samples"
+                    <div>
+                      <div
+                        className="navbar-connector"
+                      />
+                      <div
+                        className="menu-section col-3"
+                        key="samples"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "emptyText": undefined,
+                              "iconURL": undefined,
+                              "iconCls": undefined,
+                              "maxItemsPerColumn": 12,
+                              "maxColumns": 1,
+                              "seeAllURL": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                            }
+                          }
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Sample Sets",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 1,
+                                  "key": undefined,
+                                  "label": "Sample Set 1",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 2,
+                                  "key": undefined,
+                                  "label": "Sample Set 2",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 3,
+                                  "key": undefined,
+                                  "label": "Sample Set 3",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 4,
+                                  "key": undefined,
+                                  "label": "Sample Set 4",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": 2,
+                              "key": "samples",
+                              "productId": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": undefined,
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                              }
-                            }
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Sample Sets",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 1,
-                                    "key": undefined,
-                                    "label": "Sample Set 1",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 2,
-                                    "key": undefined,
-                                    "label": "Sample Set 2",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 3,
-                                    "key": undefined,
-                                    "label": "Sample Set 3",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 4,
-                                    "key": undefined,
-                                    "label": "Sample Set 4",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": 2,
-                                "key": "samples",
-                                "productId": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
-                            <span
-                              className="menu-section-header"
+                            Sample Sets
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="samplescol-1"
+                          >
+                            <li
+                              key="Sample Set 1"
                             >
-                              Sample Sets
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="samplescol-1"
+                              Sample Set 1
+                            </li>
+                            <li
+                              key="Sample Set 2"
                             >
-                              <li
-                                key="Sample Set 1"
-                              >
-                                Sample Set 1
-                              </li>
-                              <li
-                                key="Sample Set 2"
-                              >
-                                Sample Set 2
-                              </li>
-                              <li
-                                key="Sample Set 3"
-                              >
-                                Sample Set 3
-                              </li>
-                              <li
-                                key="Sample Set 4"
-                              >
-                                Sample Set 4
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
-                        <div
-                          className="menu-section col-3"
-                          key="assays"
+                              Sample Set 2
+                            </li>
+                            <li
+                              key="Sample Set 3"
+                            >
+                              Sample Set 3
+                            </li>
+                            <li
+                              key="Sample Set 4"
+                            >
+                              Sample Set 4
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
+                      </div>
+                      <div
+                        className="menu-section col-3"
+                        key="assays"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "emptyText": undefined,
+                              "iconURL": undefined,
+                              "iconCls": undefined,
+                              "maxItemsPerColumn": 12,
+                              "maxColumns": 1,
+                              "seeAllURL": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                            }
+                          }
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Assays",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 11,
+                                  "key": undefined,
+                                  "label": "Assay 1",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 12,
+                                  "key": undefined,
+                                  "label": "Assay 2",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 13,
+                                  "key": undefined,
+                                  "label": "Assay 3",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 14,
+                                  "key": undefined,
+                                  "label": "Assay 4",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 15,
+                                  "key": undefined,
+                                  "label": "Assay 5",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": undefined,
+                              "key": "assays",
+                              "productId": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": undefined,
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                              }
-                            }
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Assays",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 11,
-                                    "key": undefined,
-                                    "label": "Assay 1",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 12,
-                                    "key": undefined,
-                                    "label": "Assay 2",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 13,
-                                    "key": undefined,
-                                    "label": "Assay 3",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 14,
-                                    "key": undefined,
-                                    "label": "Assay 4",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 15,
-                                    "key": undefined,
-                                    "label": "Assay 5",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": undefined,
-                                "key": "assays",
-                                "productId": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
-                            <span
-                              className="menu-section-header"
+                            Assays
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="assayscol-1"
+                          >
+                            <li
+                              key="Assay 1"
                             >
-                              Assays
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="assayscol-1"
+                              Assay 1
+                            </li>
+                            <li
+                              key="Assay 2"
                             >
-                              <li
-                                key="Assay 1"
-                              >
-                                Assay 1
-                              </li>
-                              <li
-                                key="Assay 2"
-                              >
-                                Assay 2
-                              </li>
-                              <li
-                                key="Assay 3"
-                              >
-                                Assay 3
-                              </li>
-                              <li
-                                key="Assay 4"
-                              >
-                                Assay 4
-                              </li>
-                              <li
-                                key="Assay 5"
-                              >
-                                Assay 5
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
-                        <div
-                          className="menu-section col-3"
-                          key="user"
+                              Assay 2
+                            </li>
+                            <li
+                              key="Assay 3"
+                            >
+                              Assay 3
+                            </li>
+                            <li
+                              key="Assay 4"
+                            >
+                              Assay 4
+                            </li>
+                            <li
+                              key="Assay 5"
+                            >
+                              Assay 5
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
+                      </div>
+                      <div
+                        className="menu-section col-3"
+                        key="user"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "emptyText": undefined,
+                              "iconURL": undefined,
+                              "iconCls": undefined,
+                              "maxItemsPerColumn": 12,
+                              "maxColumns": 1,
+                              "seeAllURL": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                            }
+                          }
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Your Items",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 21,
+                                  "key": undefined,
+                                  "label": "Documentation",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": undefined,
+                              "key": "user",
+                              "productId": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": undefined,
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                              }
-                            }
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Your Items",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 21,
-                                    "key": undefined,
-                                    "label": "Documentation",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": undefined,
-                                "key": "user",
-                                "productId": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
-                            <span
-                              className="menu-section-header"
+                            Your Items
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="usercol-1"
+                          >
+                            <li
+                              key="Documentation"
                             >
-                              Your Items
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="usercol-1"
-                            >
-                              <li
-                                key="Documentation"
-                              >
-                                Documentation
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
+                              Documentation
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
                       </div>
                     </div>
-                  </ul>
-                </RootCloseWrapper>
-              </DropdownMenu>
-            </div>
-          </ButtonGroup>
-        </Dropdown>
-      </Uncontrolled(Dropdown)>
-    </ForwardRef>
+                  </div>
+                </ul>
+              </RootCloseWrapper>
+            </DropdownMenu>
+          </div>
+        </ButtonGroup>
+      </Dropdown>
+    </Uncontrolled(Dropdown)>
   </DropdownButton>
 </ProductMenu>
 `;
@@ -790,338 +783,331 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
     open={false}
     title="Menu"
   >
-    <ForwardRef
+    <Uncontrolled(Dropdown)
       id="product-menu"
       onToggle={[Function]}
       open={false}
     >
-      <Uncontrolled(Dropdown)
+      <Dropdown
+        bsClass="dropdown"
+        componentClass={[Function]}
         id="product-menu"
-        innerRef={null}
         onToggle={[Function]}
         open={false}
       >
-        <Dropdown
-          bsClass="dropdown"
-          componentClass={[Function]}
-          id="product-menu"
-          onToggle={[Function]}
-          open={false}
+        <ButtonGroup
+          block={false}
+          bsClass="btn-group"
+          className="dropdown"
+          justified={false}
+          vertical={false}
         >
-          <ButtonGroup
-            block={false}
-            bsClass="btn-group"
-            className="dropdown"
-            justified={false}
-            vertical={false}
+          <div
+            className="dropdown btn-group"
           >
-            <div
-              className="dropdown btn-group"
+            <DropdownToggle
+              bsClass="dropdown-toggle"
+              bsRole="toggle"
+              className="product-menu-button"
+              id="product-menu"
+              key=".0"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              open={false}
+              useAnchor={false}
             >
-              <DropdownToggle
-                bsClass="dropdown-toggle"
-                bsRole="toggle"
-                className="product-menu-button"
+              <Button
+                active={false}
+                aria-expanded={false}
+                aria-haspopup={true}
+                block={false}
+                bsClass="btn"
+                bsStyle="default"
+                className="product-menu-button dropdown-toggle"
+                disabled={false}
                 id="product-menu"
-                key=".0"
                 onClick={[Function]}
                 onKeyDown={[Function]}
-                open={false}
-                useAnchor={false}
+                role="button"
               >
-                <Button
-                  active={false}
+                <button
                   aria-expanded={false}
                   aria-haspopup={true}
-                  block={false}
-                  bsClass="btn"
-                  bsStyle="default"
-                  className="product-menu-button dropdown-toggle"
+                  className="product-menu-button dropdown-toggle btn btn-default"
                   disabled={false}
                   id="product-menu"
                   onClick={[Function]}
                   onKeyDown={[Function]}
                   role="button"
+                  type="button"
                 >
-                  <button
-                    aria-expanded={false}
-                    aria-haspopup={true}
-                    className="product-menu-button dropdown-toggle btn btn-default"
-                    disabled={false}
-                    id="product-menu"
+                  Menu
+                   
+                  <span
+                    className="caret"
+                  />
+                </button>
+              </Button>
+            </DropdownToggle>
+            <DropdownMenu
+              bsClass="dropdown-menu"
+              bsRole="menu"
+              key=".1"
+              labelledBy="product-menu"
+              onClose={[Function]}
+              onSelect={[Function]}
+              open={false}
+              pullRight={false}
+            >
+              <RootCloseWrapper
+                disabled={true}
+                event="click"
+                onRootClose={[Function]}
+              >
+                <ul
+                  aria-labelledby="product-menu"
+                  className="dropdown-menu"
+                  role="menu"
+                >
+                  <div
+                    className="product-menu-content "
+                    key=".0"
                     onClick={[Function]}
                     onKeyDown={[Function]}
-                    role="button"
-                    type="button"
+                    onSelect={[Function]}
                   >
-                    Menu
-                     
-                    <span
-                      className="caret"
-                    />
-                  </button>
-                </Button>
-              </DropdownToggle>
-              <DropdownMenu
-                bsClass="dropdown-menu"
-                bsRole="menu"
-                key=".1"
-                labelledBy="product-menu"
-                onClose={[Function]}
-                onSelect={[Function]}
-                open={false}
-                pullRight={false}
-              >
-                <RootCloseWrapper
-                  disabled={true}
-                  event="click"
-                  onRootClose={[Function]}
-                >
-                  <ul
-                    aria-labelledby="product-menu"
-                    className="dropdown-menu"
-                    role="menu"
-                  >
-                    <div
-                      className="product-menu-content "
-                      key=".0"
-                      onClick={[Function]}
-                      onKeyDown={[Function]}
-                      onSelect={[Function]}
-                    >
-                      <div>
-                        <div
-                          className="navbar-connector"
-                        />
-                        <div
-                          className="menu-section col-2"
-                          key="0"
+                    <div>
+                      <div
+                        className="navbar-connector"
+                      />
+                      <div
+                        className="menu-section col-2"
+                        key="0"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "emptyText": undefined,
+                              "iconURL": undefined,
+                              "iconCls": "test-icon-cls",
+                              "maxItemsPerColumn": 12,
+                              "maxColumns": 1,
+                              "seeAllURL": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                            }
+                          }
+                          key="samples"
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Sample Sets",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 1,
+                                  "key": undefined,
+                                  "label": "Sample Set 1",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 2,
+                                  "key": undefined,
+                                  "label": "Sample Set 2",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 3,
+                                  "key": undefined,
+                                  "label": "Sample Set 3",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 4,
+                                  "key": undefined,
+                                  "label": "Sample Set 4",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": 2,
+                              "key": "samples",
+                              "productId": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": "test-icon-cls",
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                              }
-                            }
-                            key="samples"
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Sample Sets",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 1,
-                                    "key": undefined,
-                                    "label": "Sample Set 1",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 2,
-                                    "key": undefined,
-                                    "label": "Sample Set 2",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 3,
-                                    "key": undefined,
-                                    "label": "Sample Set 3",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 4,
-                                    "key": undefined,
-                                    "label": "Sample Set 4",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": 2,
-                                "key": "samples",
-                                "productId": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
                             <span
-                              className="menu-section-header"
+                              className="test-icon-cls menu-section-icon"
+                            />
+                             
+                            Sample Sets
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="samplescol-1"
+                          >
+                            <li
+                              key="Sample Set 1"
                             >
-                              <span
-                                className="test-icon-cls menu-section-icon"
-                              />
-                               
-                              Sample Sets
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="samplescol-1"
+                              Sample Set 1
+                            </li>
+                            <li
+                              key="Sample Set 2"
                             >
-                              <li
-                                key="Sample Set 1"
-                              >
-                                Sample Set 1
-                              </li>
-                              <li
-                                key="Sample Set 2"
-                              >
-                                Sample Set 2
-                              </li>
-                              <li
-                                key="Sample Set 3"
-                              >
-                                Sample Set 3
-                              </li>
-                              <li
-                                key="Sample Set 4"
-                              >
-                                Sample Set 4
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
-                        <div
-                          className="menu-section col-2"
-                          key="1"
+                              Sample Set 2
+                            </li>
+                            <li
+                              key="Sample Set 3"
+                            >
+                              Sample Set 3
+                            </li>
+                            <li
+                              key="Sample Set 4"
+                            >
+                              Sample Set 4
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
+                      </div>
+                      <div
+                        className="menu-section col-2"
+                        key="1"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "emptyText": undefined,
+                              "iconURL": undefined,
+                              "iconCls": "test-icon-cls",
+                              "maxItemsPerColumn": 12,
+                              "maxColumns": 1,
+                              "seeAllURL": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                            }
+                          }
+                          key="assays"
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Assays",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 11,
+                                  "key": undefined,
+                                  "label": "Assay 1",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 12,
+                                  "key": undefined,
+                                  "label": "Assay 2",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 13,
+                                  "key": undefined,
+                                  "label": "Assay 3",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 14,
+                                  "key": undefined,
+                                  "label": "Assay 4",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                                Immutable.Record {
+                                  "id": 15,
+                                  "key": undefined,
+                                  "label": "Assay 5",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": undefined,
+                              "key": "assays",
+                              "productId": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": "test-icon-cls",
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                              }
-                            }
-                            key="assays"
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Assays",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 11,
-                                    "key": undefined,
-                                    "label": "Assay 1",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 12,
-                                    "key": undefined,
-                                    "label": "Assay 2",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 13,
-                                    "key": undefined,
-                                    "label": "Assay 3",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 14,
-                                    "key": undefined,
-                                    "label": "Assay 4",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 15,
-                                    "key": undefined,
-                                    "label": "Assay 5",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": undefined,
-                                "key": "assays",
-                                "productId": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
                             <span
-                              className="menu-section-header"
+                              className="test-icon-cls menu-section-icon"
+                            />
+                             
+                            Assays
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="assayscol-1"
+                          >
+                            <li
+                              key="Assay 1"
                             >
-                              <span
-                                className="test-icon-cls menu-section-icon"
-                              />
-                               
-                              Assays
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="assayscol-1"
+                              Assay 1
+                            </li>
+                            <li
+                              key="Assay 2"
                             >
-                              <li
-                                key="Assay 1"
-                              >
-                                Assay 1
-                              </li>
-                              <li
-                                key="Assay 2"
-                              >
-                                Assay 2
-                              </li>
-                              <li
-                                key="Assay 3"
-                              >
-                                Assay 3
-                              </li>
-                              <li
-                                key="Assay 4"
-                              >
-                                Assay 4
-                              </li>
-                              <li
-                                key="Assay 5"
-                              >
-                                Assay 5
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
+                              Assay 2
+                            </li>
+                            <li
+                              key="Assay 3"
+                            >
+                              Assay 3
+                            </li>
+                            <li
+                              key="Assay 4"
+                            >
+                              Assay 4
+                            </li>
+                            <li
+                              key="Assay 5"
+                            >
+                              Assay 5
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
                       </div>
                     </div>
-                  </ul>
-                </RootCloseWrapper>
-              </DropdownMenu>
-            </div>
-          </ButtonGroup>
-        </Dropdown>
-      </Uncontrolled(Dropdown)>
-    </ForwardRef>
+                  </div>
+                </ul>
+              </RootCloseWrapper>
+            </DropdownMenu>
+          </div>
+        </ButtonGroup>
+      </Dropdown>
+    </Uncontrolled(Dropdown)>
   </DropdownButton>
 </ProductMenu>
 `;

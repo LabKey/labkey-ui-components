@@ -4,10 +4,10 @@ exports[`<ReportItemModal /> ReportItemModal renders 1`] = `
 "<ReportItemModal report={{...}} onClose={[Function: noop]}>
   <div className=\\"report-item-modal\\">
     <Modal show={true} onHide={[Function: noop]} backdrop={true} keyboard={true} autoFocus={true} enforceFocus={true} restoreFocus={true} manager={{...}} renderBackdrop={[Function: renderBackdrop]} animation={true} dialogComponentClass={[Function: ModalDialog]} bsClass=\\"modal\\">
-      <Modal onHide={[Function: noop]} keyboard={true} autoFocus={true} enforceFocus={true} restoreFocus={true} manager={{...}} renderBackdrop={[Function: renderBackdrop]} show={true} containerClassName=\\"modal-open\\" transition={[Function: DialogTransition]} backdrop={true} backdropTransition={[Function: BackdropTransition]} backdropClassName=\\"modal-backdrop\\" onEntering={[Function: bound handleEntering]} onExited={[Function: bound handleExited]} onMouseUp={[Function]}>
+      <Modal onHide={[Function: noop]} keyboard={true} autoFocus={true} enforceFocus={true} restoreFocus={true} manager={{...}} renderBackdrop={[Function: renderBackdrop]} show={true} containerClassName=\\"modal-open\\" transition={[Function: DialogTransition]} backdrop={true} backdropTransition={[Function: BackdropTransition]} backdropClassName=\\"modal-backdrop\\" onEntering={[Function: bound handleEntering]} onExited={[Function: bound handleExited]}>
         <Portal container={[undefined]} onRendered={[Function]}>
           <Portal containerInfo={{...}}>
-            <div role=\\"dialog\\" onMouseUp={[Function]} style={[undefined]} className={[undefined]}>
+            <div role=\\"dialog\\" style={[undefined]} className={[undefined]}>
               <BackdropTransition appear={true} in={true}>
                 <Fade appear={true} in={true} timeout={150} mountOnEnter={false} unmountOnExit={false}>
                   <Transition appear={true} in={true} timeout={150} mountOnEnter={false} unmountOnExit={false} enter={true} exit={true} onEnter={[Function: noop]} onEntering={[Function: noop]} onEntered={[Function: noop]} onExit={[Function: noop]} onExiting={[Function: noop]} onExited={[Function: noop]}>
@@ -19,9 +19,9 @@ exports[`<ReportItemModal /> ReportItemModal renders 1`] = `
                 <DialogTransition appear={true} unmountOnExit={true} in={true} onExit={[undefined]} onExiting={[undefined]} onExited={[Function]} onEnter={[undefined]} onEntering={[Function: bound handleEntering]} onEntered={[undefined]}>
                   <Fade appear={true} unmountOnExit={true} in={true} onExit={[undefined]} onExiting={[undefined]} onExited={[Function]} onEnter={[undefined]} onEntering={[Function: bound handleEntering]} onEntered={[undefined]} timeout={300} mountOnEnter={false}>
                     <Transition appear={true} unmountOnExit={true} in={true} onExit={[Function: noop]} onExiting={[Function: noop]} onExited={[Function]} onEnter={[Function: noop]} onEntering={[Function: bound handleEntering]} onEntered={[Function: noop]} timeout={300} mountOnEnter={false} enter={true} exit={true}>
-                      <ModalDialog bsClass=\\"modal\\" style={{...}} className=\\"fade in\\" onClick={[Function: bound handleDialogClick]} onMouseDownDialog={[Function]} role=\\"document\\" tabIndex=\\"-1\\">
+                      <ModalDialog bsClass=\\"modal\\" style={{...}} className=\\"fade in\\" onClick={[Function: bound handleDialogClick]} role=\\"document\\" tabIndex=\\"-1\\">
                         <div onClick={[Function: bound handleDialogClick]} role=\\"dialog\\" tabIndex=\\"-1\\" style={{...}} className=\\"fade in modal\\">
-                          <div className=\\"modal-dialog\\" onMouseDown={[Function]}>
+                          <div className=\\"modal-dialog\\">
                             <div className=\\"modal-content\\" role=\\"document\\">
                               <ModalHeader closeButton={true} closeLabel=\\"Close\\" bsClass=\\"modal-header\\">
                                 <div className=\\"modal-header\\">

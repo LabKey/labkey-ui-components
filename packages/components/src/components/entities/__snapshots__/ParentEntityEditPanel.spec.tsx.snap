@@ -89,120 +89,115 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
   submitText="Save"
   title="Test 123"
 >
-  <ForwardRef
+  <Uncontrolled(Panel)
     bsStyle="info"
   >
-    <Uncontrolled(Panel)
+    <Panel
+      bsClass="panel"
       bsStyle="info"
-      innerRef={null}
+      onToggle={[Function]}
     >
-      <Panel
-        bsClass="panel"
-        bsStyle="info"
-        onToggle={[Function]}
+      <div
+        className="panel panel-info"
       >
-        <div
-          className="panel panel-info"
+        <PanelHeading
+          bsClass="panel"
+          componentClass="div"
         >
-          <PanelHeading
-            bsClass="panel"
-            componentClass="div"
+          <div
+            className="panel-heading"
+          >
+            <DetailPanelHeader
+              canUpdate={false}
+              editing={true}
+              isEditable={false}
+              onClickFn={[Function]}
+              title="Test 123"
+              useEditIcon={true}
+            >
+              <div
+                className="detail__edit--heading"
+              >
+                Editing 
+                Test 123
+              </div>
+            </DetailPanelHeader>
+          </div>
+        </PanelHeading>
+        <PanelBody
+          bsClass="panel"
+          collapsible={false}
+        >
+          <div
+            className="panel-body"
           >
             <div
-              className="panel-heading"
+              className="bottom-spacing"
             >
-              <DetailPanelHeader
-                canUpdate={false}
+              <b>
+                Data
+                 for 
+                Test
+              </b>
+            </div>
+            <div
+              key="1"
+            >
+              <hr />
+              <SingleParentEntityPanel
+                childNounSingular="Testing"
                 editing={true}
-                isEditable={false}
-                onClickFn={[Function]}
-                title="Test 123"
-                useEditIcon={true}
-              >
-                <div
-                  className="detail__edit--heading"
-                >
-                  Editing 
-                  Test 123
-                </div>
-              </DetailPanelHeader>
-            </div>
-          </PanelHeading>
-          <PanelBody
-            bsClass="panel"
-            collapsible={false}
-          >
-            <div
-              className="panel-body"
-            >
-              <div
-                className="bottom-spacing"
-              >
-                <b>
-                  Data
-                   for 
-                  Test
-                </b>
-              </div>
-              <div
-                key="1"
-              >
-                <hr />
-                <SingleParentEntityPanel
-                  childNounSingular="Testing"
-                  editing={true}
-                  index={0}
-                  onChangeParentType={[Function]}
-                  onChangeParentValue={[Function]}
-                  onInitialParentValue={[Function]}
-                  parentDataType={
-                    Object {
-                      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-                      "deleteHelpLinkTopic": "dataClass",
-                      "dependencyText": "derived sample dependencies",
-                      "descriptionPlural": "parent types",
-                      "descriptionSingular": "parent type",
-                      "inputColumnName": "Inputs/Data/First",
-                      "inputTypeColumnName": "Inputs/Data/First/DataClass",
-                      "inputTypeValueField": "rowId",
-                      "insertColumnNamePrefix": "DataInputs/",
-                      "instanceSchemaName": "exp.data",
-                      "nounAsParentSingular": "Parent",
-                      "nounPlural": "data",
-                      "nounSingular": "data",
-                      "typeListingSchemaQuery": Immutable.Record {
-                        "schemaName": "exp",
-                        "queryName": "DataClasses",
-                        "viewName": undefined,
-                      },
-                      "typeNounSingular": "Data Type",
-                      "uniqueFieldKey": "Name",
-                    }
+                index={0}
+                onChangeParentType={[Function]}
+                onChangeParentValue={[Function]}
+                onInitialParentValue={[Function]}
+                parentDataType={
+                  Object {
+                    "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                    "deleteHelpLinkTopic": "dataClass",
+                    "dependencyText": "derived sample dependencies",
+                    "descriptionPlural": "parent types",
+                    "descriptionSingular": "parent type",
+                    "inputColumnName": "Inputs/Data/First",
+                    "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                    "inputTypeValueField": "rowId",
+                    "insertColumnNamePrefix": "DataInputs/",
+                    "instanceSchemaName": "exp.data",
+                    "nounAsParentSingular": "Parent",
+                    "nounPlural": "data",
+                    "nounSingular": "data",
+                    "typeListingSchemaQuery": Immutable.Record {
+                      "schemaName": "exp",
+                      "queryName": "DataClasses",
+                      "viewName": undefined,
+                    },
+                    "typeNounSingular": "Data Type",
+                    "uniqueFieldKey": "Name",
                   }
+                }
+              >
+                <LoadingSpinner
+                  msg="Loading..."
+                  wrapperClassName=""
                 >
-                  <LoadingSpinner
-                    msg="Loading..."
-                    wrapperClassName=""
+                  <span
+                    className=""
                   >
-                    <span
-                      className=""
-                    >
-                      <i
-                        aria-hidden="true"
-                        className="fa fa-spinner fa-pulse"
-                      />
-                       
-                      Loading...
-                    </span>
-                  </LoadingSpinner>
-                </SingleParentEntityPanel>
-              </div>
+                    <i
+                      aria-hidden="true"
+                      className="fa fa-spinner fa-pulse"
+                    />
+                     
+                    Loading...
+                  </span>
+                </LoadingSpinner>
+              </SingleParentEntityPanel>
             </div>
-          </PanelBody>
-        </div>
-      </Panel>
-    </Uncontrolled(Panel)>
-  </ForwardRef>
+          </div>
+        </PanelBody>
+      </div>
+    </Panel>
+  </Uncontrolled(Panel)>
   <div
     className="full-width bottom-spacing"
   >
@@ -301,7 +296,6 @@ exports[`<ParentEntityEditPanel> editing, no data 1`] = `
         onEntering={[Function]}
         onExited={[Function]}
         onHide={[Function]}
-        onMouseUp={[Function]}
         renderBackdrop={[Function]}
         restoreFocus={true}
         show={false}
@@ -401,159 +395,154 @@ exports[`<ParentEntityEditPanel> error state 1`] = `
   submitText="Save"
   title="Test 123"
 >
-  <ForwardRef
+  <Uncontrolled(Panel)
     bsStyle="default"
   >
-    <Uncontrolled(Panel)
+    <Panel
+      bsClass="panel"
       bsStyle="default"
-      innerRef={null}
+      onToggle={[Function]}
     >
-      <Panel
-        bsClass="panel"
-        bsStyle="default"
-        onToggle={[Function]}
+      <div
+        className="panel panel-default"
       >
-        <div
-          className="panel panel-default"
+        <PanelHeading
+          bsClass="panel"
+          componentClass="div"
         >
-          <PanelHeading
-            bsClass="panel"
-            componentClass="div"
+          <div
+            className="panel-heading"
           >
-            <div
-              className="panel-heading"
+            <DetailPanelHeader
+              canUpdate={false}
+              editing={false}
+              isEditable={false}
+              onClickFn={[Function]}
+              title="Test 123"
+              useEditIcon={true}
             >
-              <DetailPanelHeader
-                canUpdate={false}
-                editing={false}
-                isEditable={false}
-                onClickFn={[Function]}
-                title="Test 123"
-                useEditIcon={true}
+              <div
+                className="detail__edit--heading"
               >
-                <div
-                  className="detail__edit--heading"
-                >
-                  Test 123
-                </div>
-              </DetailPanelHeader>
-            </div>
-          </PanelHeading>
-          <PanelBody
-            bsClass="panel"
-            collapsible={false}
+                Test 123
+              </div>
+            </DetailPanelHeader>
+          </div>
+        </PanelHeading>
+        <PanelBody
+          bsClass="panel"
+          collapsible={false}
+        >
+          <div
+            className="panel-body"
           >
-            <div
-              className="panel-body"
+            <Alert
+              bsStyle="danger"
             >
               <Alert
+                bsClass="alert"
                 bsStyle="danger"
+                closeLabel="Close alert"
               >
-                <Alert
-                  bsClass="alert"
-                  bsStyle="danger"
-                  closeLabel="Close alert"
+                <div
+                  className="alert alert-danger"
+                  role="alert"
                 >
-                  <div
-                    className="alert alert-danger"
-                    role="alert"
-                  >
-                    My error message
-                  </div>
-                </Alert>
+                  My error message
+                </div>
               </Alert>
-              <div
-                className="bottom-spacing"
-              >
-                <b>
-                  Data
-                   for 
-                  Test
-                </b>
-              </div>
-              <div
-                key="1"
-              >
-                <hr />
-                <SingleParentEntityPanel
-                  childNounSingular="Testing"
-                  editing={false}
-                  index={0}
-                  onChangeParentType={[Function]}
-                  onChangeParentValue={[Function]}
-                  onInitialParentValue={[Function]}
-                  parentDataType={
-                    Object {
-                      "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
-                      "deleteHelpLinkTopic": "dataClass",
-                      "dependencyText": "derived sample dependencies",
-                      "descriptionPlural": "parent types",
-                      "descriptionSingular": "parent type",
-                      "inputColumnName": "Inputs/Data/First",
-                      "inputTypeColumnName": "Inputs/Data/First/DataClass",
-                      "inputTypeValueField": "rowId",
-                      "insertColumnNamePrefix": "DataInputs/",
-                      "instanceSchemaName": "exp.data",
-                      "nounAsParentSingular": "Parent",
-                      "nounPlural": "data",
-                      "nounSingular": "data",
-                      "typeListingSchemaQuery": Immutable.Record {
-                        "schemaName": "exp",
-                        "queryName": "DataClasses",
-                        "viewName": undefined,
-                      },
-                      "typeNounSingular": "Data Type",
-                      "uniqueFieldKey": "Name",
-                    }
-                  }
-                >
-                  <div
-                    className="top-spacing"
-                    key="grid-0"
-                  >
-                    <table
-                      className="table table-responsive table-condensed detail-component--table__fixed"
-                    >
-                      <tbody>
-                        <tr
-                          key="type-name"
-                        >
-                          <td>
-                            Data Type
-                          </td>
-                          <td>
-                            No 
-                            data type
-                             has been set for this 
-                            testing
-                            .
-                          </td>
-                        </tr>
-                        <tr
-                          key="parent-id"
-                        >
-                          <td>
-                            Data ID
-                          </td>
-                          <td>
-                            No 
-                            data
-                             ID has been set for this 
-                            testing
-                            .
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </SingleParentEntityPanel>
-              </div>
+            </Alert>
+            <div
+              className="bottom-spacing"
+            >
+              <b>
+                Data
+                 for 
+                Test
+              </b>
             </div>
-          </PanelBody>
-        </div>
-      </Panel>
-    </Uncontrolled(Panel)>
-  </ForwardRef>
+            <div
+              key="1"
+            >
+              <hr />
+              <SingleParentEntityPanel
+                childNounSingular="Testing"
+                editing={false}
+                index={0}
+                onChangeParentType={[Function]}
+                onChangeParentValue={[Function]}
+                onInitialParentValue={[Function]}
+                parentDataType={
+                  Object {
+                    "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+                    "deleteHelpLinkTopic": "dataClass",
+                    "dependencyText": "derived sample dependencies",
+                    "descriptionPlural": "parent types",
+                    "descriptionSingular": "parent type",
+                    "inputColumnName": "Inputs/Data/First",
+                    "inputTypeColumnName": "Inputs/Data/First/DataClass",
+                    "inputTypeValueField": "rowId",
+                    "insertColumnNamePrefix": "DataInputs/",
+                    "instanceSchemaName": "exp.data",
+                    "nounAsParentSingular": "Parent",
+                    "nounPlural": "data",
+                    "nounSingular": "data",
+                    "typeListingSchemaQuery": Immutable.Record {
+                      "schemaName": "exp",
+                      "queryName": "DataClasses",
+                      "viewName": undefined,
+                    },
+                    "typeNounSingular": "Data Type",
+                    "uniqueFieldKey": "Name",
+                  }
+                }
+              >
+                <div
+                  className="top-spacing"
+                  key="grid-0"
+                >
+                  <table
+                    className="table table-responsive table-condensed detail-component--table__fixed"
+                  >
+                    <tbody>
+                      <tr
+                        key="type-name"
+                      >
+                        <td>
+                          Data Type
+                        </td>
+                        <td>
+                          No 
+                          data type
+                           has been set for this 
+                          testing
+                          .
+                        </td>
+                      </tr>
+                      <tr
+                        key="parent-id"
+                      >
+                        <td>
+                          Data ID
+                        </td>
+                        <td>
+                          No 
+                          data
+                           ID has been set for this 
+                          testing
+                          .
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </SingleParentEntityPanel>
+            </div>
+          </div>
+        </PanelBody>
+      </div>
+    </Panel>
+  </Uncontrolled(Panel)>
 </ParentEntityEditPanel>
 `;
 
@@ -646,80 +635,75 @@ exports[`<ParentEntityEditPanel> loading state 1`] = `
   submitText="Save"
   title="Test 123"
 >
-  <ForwardRef
+  <Uncontrolled(Panel)
     bsStyle="default"
   >
-    <Uncontrolled(Panel)
+    <Panel
+      bsClass="panel"
       bsStyle="default"
-      innerRef={null}
+      onToggle={[Function]}
     >
-      <Panel
-        bsClass="panel"
-        bsStyle="default"
-        onToggle={[Function]}
+      <div
+        className="panel panel-default"
       >
-        <div
-          className="panel panel-default"
+        <PanelHeading
+          bsClass="panel"
+          componentClass="div"
         >
-          <PanelHeading
-            bsClass="panel"
-            componentClass="div"
+          <div
+            className="panel-heading"
           >
-            <div
-              className="panel-heading"
-            >
-              <DetailPanelHeader
-                canUpdate={false}
-                editing={false}
-                isEditable={false}
-                onClickFn={[Function]}
-                title="Test 123"
-                useEditIcon={true}
-              >
-                <div
-                  className="detail__edit--heading"
-                >
-                  Test 123
-                </div>
-              </DetailPanelHeader>
-            </div>
-          </PanelHeading>
-          <PanelBody
-            bsClass="panel"
-            collapsible={false}
-          >
-            <div
-              className="panel-body"
+            <DetailPanelHeader
+              canUpdate={false}
+              editing={false}
+              isEditable={false}
+              onClickFn={[Function]}
+              title="Test 123"
+              useEditIcon={true}
             >
               <div
-                className="bottom-spacing"
+                className="detail__edit--heading"
               >
-                <b>
-                  Data
-                   for 
-                  Test
-                </b>
+                Test 123
               </div>
-              <LoadingSpinner
-                msg="Loading..."
-                wrapperClassName=""
-              >
-                <span
-                  className=""
-                >
-                  <i
-                    aria-hidden="true"
-                    className="fa fa-spinner fa-pulse"
-                  />
-                   
-                  Loading...
-                </span>
-              </LoadingSpinner>
+            </DetailPanelHeader>
+          </div>
+        </PanelHeading>
+        <PanelBody
+          bsClass="panel"
+          collapsible={false}
+        >
+          <div
+            className="panel-body"
+          >
+            <div
+              className="bottom-spacing"
+            >
+              <b>
+                Data
+                 for 
+                Test
+              </b>
             </div>
-          </PanelBody>
-        </div>
-      </Panel>
-    </Uncontrolled(Panel)>
-  </ForwardRef>
+            <LoadingSpinner
+              msg="Loading..."
+              wrapperClassName=""
+            >
+              <span
+                className=""
+              >
+                <i
+                  aria-hidden="true"
+                  className="fa fa-spinner fa-pulse"
+                />
+                 
+                Loading...
+              </span>
+            </LoadingSpinner>
+          </div>
+        </PanelBody>
+      </div>
+    </Panel>
+  </Uncontrolled(Panel)>
 </ParentEntityEditPanel>
 `;

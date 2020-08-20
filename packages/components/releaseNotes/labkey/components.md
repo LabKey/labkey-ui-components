@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Bind URL parameters when adding QueryModels
+
 ### version 0.89.0
 *Released*: 20 August 2020
 * Adds support for a directory-only view of FileTree

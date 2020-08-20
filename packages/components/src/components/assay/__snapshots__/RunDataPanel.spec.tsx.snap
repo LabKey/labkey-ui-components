@@ -71,7 +71,9 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 <div
                   className="wizard-row--container"
                 >
-                  <div>
+                  <div
+                    className=""
+                  >
                     <div
                       className="file-upload--container block"
                     >
@@ -465,7 +467,9 @@ exports[`<RunDataPanel/> default props 1`] = `
                 <div
                   className="wizard-row--container"
                 >
-                  <div>
+                  <div
+                    className=""
+                  >
                     <div
                       className="file-upload--container block"
                     >

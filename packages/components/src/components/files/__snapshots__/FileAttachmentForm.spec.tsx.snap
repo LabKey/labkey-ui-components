@@ -10,15 +10,19 @@ exports[`<FileAttachmentForm/> no props 1`] = `
       label="Attachments"
       showLabel={true}
     >
-      <FileAttachmentContainer
-        acceptedFormats=""
-        allowDirectories={true}
-        allowMultiple={true}
-        compact={false}
-        handleChange={[Function]}
-        handleRemoval={[Function]}
-        labelLong="Select file or drag and drop here."
-      />
+      <div
+        className=""
+      >
+        <FileAttachmentContainer
+          acceptedFormats=""
+          allowDirectories={true}
+          allowMultiple={true}
+          compact={false}
+          handleChange={[Function]}
+          handleRemoval={[Function]}
+          labelLong="Select file or drag and drop here."
+        />
+      </div>
     </FormSection>
   </span>
 </Fragment>
@@ -34,15 +38,19 @@ exports[`<FileAttachmentForm/> with attributes 1`] = `
       label="file attachment"
       showLabel={true}
     >
-      <FileAttachmentContainer
-        acceptedFormats=".tsv, .xls, .xlsx"
-        allowDirectories={false}
-        allowMultiple={false}
-        compact={false}
-        handleChange={[Function]}
-        handleRemoval={[Function]}
-        labelLong="Select file or drag and drop here."
-      />
+      <div
+        className=""
+      >
+        <FileAttachmentContainer
+          acceptedFormats=".tsv, .xls, .xlsx"
+          allowDirectories={false}
+          allowMultiple={false}
+          compact={false}
+          handleChange={[Function]}
+          handleRemoval={[Function]}
+          labelLong="Select file or drag and drop here."
+        />
+      </div>
     </FormSection>
   </span>
   <div

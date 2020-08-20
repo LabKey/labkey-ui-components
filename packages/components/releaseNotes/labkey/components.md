@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Bind URL parameters when adding QueryModels
 
+### version 0.89.0
+*Released*: 20 August 2020
+* Adds support for a directory-only view of FileTree
+* IFile interface now includes permissions data
+* Allows for clearing out attached files from FileAttachmentContainer from parent component
+* Adds button styling for a compact FileAttachmentContainer
 
 ### version 0.88.1
 *Released*: 19 August 2020

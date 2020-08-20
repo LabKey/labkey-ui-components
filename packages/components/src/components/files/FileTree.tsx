@@ -209,15 +209,6 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             .then(data => {
                 let loadedData = data;
 
-                // TODO: figure out how to query the server to get the root node permissions from WebDav
-                const permissions = {
-                    canDelete: false,
-                    canEdit: true,
-                    canRead: true,
-                    canRename: false,
-                    canUpload: false,
-                };
-
                 // treebeard has bugs when there is not a single root node
                 if (Array.isArray(data)) {
                     if (data.length < 1) {

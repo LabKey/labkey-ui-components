@@ -61,7 +61,8 @@ function getWebDavUrl(containerPath: string, directory?: string, createIntermedi
         (!skipAtFiles ? '/' + encodeURIComponent('@files') : '');
 
     if (directory) {
-        url += '/' + directory;
+        let encodedDirName = encodeURIComponent(directory).replace(/%2F/g, "/");
+        url += '/' + encodedDirName;
     }
 
     if (createIntermediates) {
@@ -94,7 +95,8 @@ export function getWebDavFiles(
                         return filtered;
                     }
                 }, Map<string, WebDavFile>());
-                resolve(filteredFiles);
+                const filterFilesAndPerms = Map({files: filteredFiles, permissions: response.permissions});
+                resolve(filterFilesAndPerms);
             }),
             failure: Utils.getCallbackWrapper(
                 response => {

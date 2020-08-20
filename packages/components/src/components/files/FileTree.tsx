@@ -170,6 +170,7 @@ interface FileTreeProps {
     allowMultiSelect?: boolean;
     useFileIconCls?: boolean;
     emptyDirectoryText?: string;
+    getRootPermissions?: (directory?: string) => Promise<any>
 }
 
 interface FileTreeState {
@@ -201,20 +202,12 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         };
     }
 
-    componentDidMount(): void {
+    loadData = (permissions = null) => {
         const { loadData } = this.props;
 
-        this.setState(() => ({ loading: true }));
         loadData()
             .then(data => {
                 let loadedData = data;
-                let permissions = {
-                    canDelete: false,
-                    canEdit: true,
-                    canRead: true,
-                    canRename: false,
-                    canUpload: false
-                };
 
                 // treebeard has bugs when there is not a single root node
                 if (Array.isArray(data)) {
@@ -245,6 +238,23 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             .catch((reason: any) => {
                 this.setState(() => ({ error: reason, loading: false }));
             });
+    }
+
+    componentDidMount(): void {
+        const { getRootPermissions } = this.props;
+        this.setState(() => ({ loading: true }));
+
+        if (getRootPermissions){
+            getRootPermissions()
+                .then(data => {
+                    this.loadData(data);
+                })
+                .catch((reason: any) => {
+                    this.setState(() => ({ error: reason, loading: false }));
+                });
+        } else {
+            this.loadData();
+        }
     }
 
     headerDecorator = props => {
@@ -406,6 +416,12 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             .then(children => {
                 const { data } = this.state;
                 const dataNode = this.getDataNode(nodeId, data);
+
+                // In the ModuleEditor move-folder case, if a resource is being moved into a dir that has
+                // not been clicked on and lazily-loaded, we bypass below state-management
+                if (undefined === dataNode) {
+                    return;
+                }
 
                 children = children.map(child => {
                     child.id = dataNode.id + '|' + child.name; // generate Id from path

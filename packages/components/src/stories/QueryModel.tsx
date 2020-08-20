@@ -9,6 +9,7 @@ import {
     GridPanelWithModel,
     InjectedQueryModels,
     ManageDropdownButton,
+    QueryConfig,
     QueryConfigMap,
     RequiresModelAndActions,
     SchemaQuery,
@@ -148,12 +149,10 @@ storiesOf('QueryModel', module)
                     return key + '=' + value;
                 })
                 .join('&');
-            const queryConfigs: QueryConfigMap = {
-                mixtures: {
-                    bindURL: true,
-                    schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
-                    urlPrefix: 'mixtures',
-                },
+            const queryConfigs: QueryConfig = {
+                bindURL: true,
+                schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
+                urlPrefix: 'mixtures',
             };
 
             const onQueryChange = (evt: ChangeEvent<HTMLInputElement>): void => {
@@ -174,7 +173,7 @@ storiesOf('QueryModel', module)
                     <GridPanelWithModel
                         ButtonsComponent={GridPanelButtonsExample}
                         title="Mixtures"
-                        queryConfigs={queryConfigs}
+                        queryConfig={queryConfigs}
                     />
                 </div>
             );
@@ -187,16 +186,14 @@ storiesOf('QueryModel', module)
         );
     })
     .add('Minimal GridPanel', () => {
-        const queryConfigs: QueryConfigMap = {
-            mixtures: {
-                schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
-            },
+        const queryConfig: QueryConfig = {
+            schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
         };
 
         return (
             <div className="query-model-example">
                 <GridPanelWithModel
-                    queryConfigs={queryConfigs}
+                    queryConfig={queryConfig}
                     asPanel={false}
                     showOmniBox={false}
                     showButtonBar={false}
@@ -206,28 +203,24 @@ storiesOf('QueryModel', module)
         );
     })
     .add('Bad Query Info', () => {
-        const queryConfigs: QueryConfigMap = {
-            mixtures: {
-                schemaQuery: SchemaQuery.create('i.do.not.exist', 'IAmNonExistent'),
-            },
+        const queryConfig: QueryConfig = {
+            schemaQuery: SchemaQuery.create('i.do.not.exist', 'IAmNonExistent'),
         };
 
         return (
             <div className="query-model-example">
-                <GridPanelWithModel title="Bad QueryInfo" queryConfigs={queryConfigs}/>
+                <GridPanelWithModel title="Bad QueryInfo" queryConfig={queryConfig}/>
             </div>
         );
     })
     .add('Bad Query', () => {
-        const queryConfigs: QueryConfigMap = {
-            mixtures: {
-                schemaQuery: SchemaQuery.create('exp.data', 'mixturesbad'),
-            },
+        const queryConfig: QueryConfig = {
+            schemaQuery: SchemaQuery.create('exp.data', 'mixturesbad'),
         };
 
         return (
             <div className="query-model-example">
-                <GridPanelWithModel title="Bad Query" queryConfigs={queryConfigs}/>
+                <GridPanelWithModel title="Bad Query" queryConfig={queryConfig}/>
             </div>
         );
     })

@@ -37,11 +37,10 @@ describe('QueryModel', () => {
         expect(model.queryName).toEqual('mixtures');
         expect(model.viewName).toEqual(undefined);
         // Auto-generated model ids are based off of the SchemaQuery in the QueryConfig
-        expect(model.id).toEqual('exp.data-mixtures');
+        expect(model.id).toEqual('exp.data.mixtures');
         const schemaQuery = SchemaQuery.create('exp.data', 'mixtures', 'someViewName');
         model = new QueryModel({ schemaQuery });
         expect(model.viewName).toEqual('someViewName');
-        expect(model.id).toEqual('exp.data-mixtures-someViewName');
         model = new QueryModel({ id: 'custom', schemaQuery: SCHEMA_QUERY });
         expect(model.id).toEqual('custom');
     });

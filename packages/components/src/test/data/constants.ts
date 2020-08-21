@@ -36,6 +36,13 @@ export const GRID_DATA = Map<any, Map<string, any>>({
         Name: 'name two',
         Description: 'second description',
     }),
+    '3': Map<any, Map<string, any>>({
+        GRID_EDIT_INDEX: 3,
+        rowid: '3',
+        Name: 'name three',
+        Description: 'three description',
+        mixtureTypeId: 'not in db'
+    }),
 });
 
 export const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);

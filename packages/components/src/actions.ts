@@ -70,7 +70,7 @@ import {
 } from './components/base/models/model';
 import { buildURL, getSortFromUrl } from './url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
-import { intersect, naturalSort, not, resolveKey } from './util/utils';
+import { caseInsensitive, intersect, naturalSort, not, resolveKey } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 
 const EMPTY_ROW = Map<string, any>();
@@ -1906,7 +1906,9 @@ export function pasteEvent(
     event: any,
     onBefore?: any,
     onComplete?: any,
-    columnMetadata?: Map<string, EditableColumnMetadata>
+    columnMetadata?: Map<string, EditableColumnMetadata>,
+    readonlyRows?: List<any>,
+    lockRowCount?: boolean
 ): void {
     const model = getEditorModel(modelId);
 
@@ -1920,7 +1922,9 @@ export function pasteEvent(
             getPasteValue(event),
             onBefore,
             onComplete,
-            columnMetadata
+            columnMetadata,
+            readonlyRows,
+            lockRowCount,
         );
     }
 }
@@ -1932,13 +1936,16 @@ function pasteCell(
     value: any,
     onBefore?: any,
     onComplete?: any,
-    columnMetadata?: Map<string, EditableColumnMetadata>
+    columnMetadata?: Map<string, EditableColumnMetadata>,
+    readonlyRows?: List<any>,
+    lockRowCount?: boolean
 ): void {
     const gridModel = getQueryGridModel(modelId);
     let model = getEditorModel(modelId);
 
     if (model) {
-        const paste = validatePaste(model, colIdx, rowIdx, value);
+        const readOnlyRowCount = readonlyRows && !lockRowCount ? getReadonlyRowCount(gridModel, model, rowIdx, readonlyRows) : 0;
+        const paste = validatePaste(model, colIdx, rowIdx, value, readOnlyRowCount);
 
         if (paste.success) {
             if (onBefore) {
@@ -1946,7 +1953,7 @@ function pasteCell(
             }
             model = beginPaste(model, paste.payload.data.size);
 
-            if (paste.rowsToAdd > 0) {
+            if (paste.rowsToAdd > 0 && !lockRowCount) {
                 model = addRows(gridModel, paste.rowsToAdd);
             }
 
@@ -1970,7 +1977,9 @@ function pasteCell(
                         gridModel,
                         paste,
                         (col: QueryColumn) => getLookupStore(col),
-                        columnMetadata
+                        columnMetadata,
+                        readonlyRows,
+                        lockRowCount
                     ).then(payload => {
                         model = updateEditorModel(model, {
                             cellMessages: payload.cellMessages,
@@ -2002,7 +2011,7 @@ function endPaste(model: EditorModel): EditorModel {
     });
 }
 
-function validatePaste(model: EditorModel, colMin: number, rowMin: number, value: any): IPasteModel {
+function validatePaste(model: EditorModel, colMin: number, rowMin: number, value: any, readOnlyRowCount?: number): IPasteModel {
     const maxRowPaste = 1000;
     const payload = parsePaste(value);
 
@@ -2016,7 +2025,7 @@ function validatePaste(model: EditorModel, colMin: number, rowMin: number, value
     const paste: IPasteModel = {
         coordinates,
         payload,
-        rowsToAdd: Math.max(0, coordinates.rowMin + payload.numRows - model.rowCount),
+        rowsToAdd: Math.max(0, coordinates.rowMin + payload.numRows + (readOnlyRowCount ? readOnlyRowCount : 0) - model.rowCount),
         success: true,
     };
 
@@ -2396,7 +2405,9 @@ function pasteCellLoad(
     gridModel: QueryGridModel,
     paste: IPasteModel,
     getLookup: (col: QueryColumn) => LookupStore,
-    columnMetadata: Map<string, EditableColumnMetadata>
+    columnMetadata: Map<string, EditableColumnMetadata>,
+    readonlyRows?: List<any>,
+    lockRowCount?: boolean
 ): Promise<{ cellMessages: CellMessages; cellValues: CellValues; selectionCells: Set<string> }> {
     return new Promise(resolve => {
         const { data } = paste.payload;
@@ -2448,8 +2459,26 @@ function pasteCellLoad(
         } else {
             const { colMin, rowMin } = paste.coordinates;
 
+            let rowIdx = rowMin;
+            let hasReachedRowLimit = false;
             data.forEach((row, rn) => {
-                const rowIdx = rowMin + rn;
+                if (hasReachedRowLimit && lockRowCount)
+                    return;
+
+                if (readonlyRows) {
+                    while(rowIdx < model.rowCount && isReadonlyRow(gridModel, rowIdx, readonlyRows)) {
+                        //add row if needed
+                        rowIdx++;
+                    }
+
+                    if (rowIdx >= model.rowCount) {
+                        hasReachedRowLimit = true;
+                        return;
+                    }
+                }
+
+
+                // find the next editable row;
                 row.forEach((value, cn) => {
                     const colIdx = colMin + cn;
                     const col = columns.get(colIdx);
@@ -2485,6 +2514,8 @@ function pasteCellLoad(
 
                     selectionCells.add(cellKey);
                 });
+
+                rowIdx++;
             });
         }
 
@@ -2494,6 +2525,37 @@ function pasteCellLoad(
             selectionCells: selectionCells.asImmutable(),
         });
     });
+}
+
+function isReadonlyRow(model: QueryGridModel, rowInd: number, readonlyRows: List<string>) : boolean {
+    const data : List<Map<string, string>> = model.getDataEdit();
+    const keyCols = model.getKeyColumns();
+
+    if (keyCols.size == 1 && data.get(rowInd)) {
+        const key = caseInsensitive(data.get(rowInd).toJS(), keyCols.get(0).fieldKey);
+        return readonlyRows.contains(key);
+    }
+
+    return false;
+}
+
+function getReadonlyRowCount(model: QueryGridModel, editorModel: EditorModel, startRowInd: number, readonlyRows: List<string>) : number {
+    const data : List<Map<string, string>> = model.getDataEdit();
+    const keyCols = model.getKeyColumns();
+
+    if (keyCols.size == 1) {
+        const fieldKey = keyCols.get(0).fieldKey;
+        let editableRowCount = 0;
+        for (let i = startRowInd; i < editorModel.rowCount; i++) {
+            const key = caseInsensitive(data.get(i).toJS(), fieldKey);
+            if (readonlyRows.contains(key))
+                editableRowCount++;
+        }
+
+        return editableRowCount;
+    }
+
+    return editorModel.rowCount - startRowInd;
 }
 
 interface IParseLookupPayload {

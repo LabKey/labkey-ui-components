@@ -27,9 +27,23 @@ import './stories.scss';
 import { EditableColumnMetadata } from '../components/editable/EditableGrid';
 import { SchemaQuery } from '../components/base/models/model';
 import { PlacementType } from '../components/editable/Controls';
+import { GridColumn } from "..";
+import { GRID_EDIT_INDEX } from "../components/base/models/constants";
 
 const CONTROLS_GROUP = 'Grid controls';
 const PANEL_GROUP = 'Grid';
+
+const CUSTOM_COUNT_COL = new GridColumn({
+    index: GRID_EDIT_INDEX,
+    tableCell: true,
+    title: 'Location',
+    width: 45,
+    cell: (d, r, c, rn) => (
+        <td className="cellular-count" key={c.index} style={{ textAlign: c.align || 'left' } as any}>
+            <div className="cellular-count-static-content">Row: {rn}</div>
+        </td>
+    ),
+});
 
 storiesOf('EditableGridPanel', module)
     .addDecorator(withKnobs)
@@ -112,6 +126,8 @@ storiesOf('EditableGridPanel', module)
                 condensed={boolean('Condensed?', true, PANEL_GROUP)}
                 emptyGridMsg={text('Empty grid message', 'Add rows to start', PANEL_GROUP)}
                 maxTotalRows={number('Max rows', undefined, {}, PANEL_GROUP)}
+                rowNumColumn={boolean('Use custom row count column?', true, PANEL_GROUP) ? CUSTOM_COUNT_COL : undefined}
+                hideCountCol={boolean('Hide count col?', false, PANEL_GROUP)}
             />
         );
     })
@@ -158,6 +174,9 @@ storiesOf('EditableGridPanel', module)
                 title={text('Title', 'Editable grid with data', PANEL_GROUP)}
                 maxTotalRows={number('Max Rows Total', undefined, {}, CONTROLS_GROUP)}
                 model={model}
+                rowNumColumn={boolean('Use custom row count column?', true, PANEL_GROUP) ? CUSTOM_COUNT_COL : undefined}
+                hideCountCol={boolean('Hide count col?', false, PANEL_GROUP)}
+                readonlyRows={boolean('With readonly rows?', true, PANEL_GROUP) ? List<any>(['3']) : undefined}
             />
         );
     })

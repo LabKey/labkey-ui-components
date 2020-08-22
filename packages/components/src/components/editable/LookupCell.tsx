@@ -34,6 +34,7 @@ export interface LookupCellProps {
     rowIdx: number;
     select: (modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any;
     values: List<ValueDescriptor>;
+    onCellModify?: () => any;
 }
 
 interface LookupCellState {
@@ -139,7 +140,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
     };
 
     onInputKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
-        const { colIdx, modelId, rowIdx, values } = this.props;
+        const { colIdx, modelId, rowIdx, values, onCellModify } = this.props;
         const { activeOptionIdx } = this.state;
         const options = this.getOptions(this.props);
 
@@ -147,6 +148,8 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
             case KEYS.Backspace:
                 if (!this.hasInputValue() && values !== undefined && values.size) {
                     modifyCell(modelId, colIdx, rowIdx, values.last(), MODIFICATION_TYPES.REMOVE);
+                    if (onCellModify)
+                        onCellModify();
                 }
                 break;
             case KEYS.Enter:
@@ -173,7 +176,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
     };
 
     onItemClick = (vd: ValueDescriptor): void => {
-        const { col, colIdx, modelId, rowIdx } = this.props;
+        const { col, colIdx, modelId, rowIdx, onCellModify } = this.props;
 
         modifyCell(
             modelId,
@@ -182,6 +185,8 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
             vd,
             col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE
         );
+        if (onCellModify)
+            onCellModify();
         this.clearInput();
 
         if (!this.isMultiValue()) {
@@ -193,8 +198,11 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
     };
 
     onItemRemove = (vd: ValueDescriptor): void => {
-        const { modelId, colIdx, rowIdx } = this.props;
+        const { modelId, colIdx, rowIdx, onCellModify } = this.props;
         modifyCell(modelId, colIdx, rowIdx, vd, MODIFICATION_TYPES.REMOVE);
+        if (onCellModify)
+            onCellModify();
+
         this.focusInput();
     };
 

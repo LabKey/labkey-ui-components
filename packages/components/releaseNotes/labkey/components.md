@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Support disabling rows using readonlyRows
     * Allow hiding row count column using hideCountCol
     * Allow row count column to use custom rowNumColumn instead of the static column
+    * Add onCellModify prop
 
 ### version 0.89.1
 *Released*: 20 August 2020

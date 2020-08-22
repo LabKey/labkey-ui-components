@@ -72,7 +72,8 @@ function inputCellFactory(
     allowSelection?: boolean,
     hideCountCol?: boolean,
     columnMetadata?: EditableColumnMetadata,
-    readonlyRows?: List<any>
+    readonlyRows?: List<any>,
+    onCellModify?: () => any
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
@@ -113,6 +114,7 @@ function inputCellFactory(
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
+                onCellModify={onCellModify}
             />
         );
     };
@@ -165,6 +167,7 @@ export interface EditableGridProps {
     maxTotalRows?: number;
     hideCountCol?: boolean;
     rowNumColumn?: GridColumn;
+    onCellModify?: () => any
 }
 
 export interface EditableGridState {
@@ -306,7 +309,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     };
 
     generateColumns = (): List<GridColumn> => {
-        const { allowBulkRemove, allowBulkUpdate, allowRemove, columnMetadata, hideCountCol, rowNumColumn, readonlyRows } = this.props;
+        const { allowBulkRemove, allowBulkUpdate, allowRemove, columnMetadata, hideCountCol, rowNumColumn, readonlyRows, onCellModify } = this.props;
         const model = this.getModel(this.props);
         const editorModel = this.getEditorModel();
         let gridColumns = List<GridColumn>();
@@ -341,7 +344,8 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                         allowBulkRemove || allowBulkUpdate,
                         hideCountCol,
                         columnMetadata.get(qCol.fieldKey),
-                        readonlyRows
+                        readonlyRows,
+                        onCellModify
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
@@ -495,6 +499,8 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             if (beforeRowCount !== afterRowCount) {
                 this.onRowCountChange();
             }
+            if (this.props.onCellModify)
+                this.props.onCellModify();
         }
     };
 

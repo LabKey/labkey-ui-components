@@ -1,8 +1,5 @@
 import { mount } from 'enzyme';
-
 import React from 'react';
-
-import toJson from 'enzyme-to-json';
 
 import { createFormInputId } from './actions';
 import { DOMAIN_FIELD_DEFAULT_SCALE, DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED } from './constants';
@@ -57,7 +54,7 @@ describe('NumericFieldOptions', () => {
         });
         expect(defaultScale.props().value).toEqual('LOG');
 
-        expect(toJson(numeric)).toMatchSnapshot();
+        expect(numeric).toMatchSnapshot();
         numeric.unmount();
     });
 });

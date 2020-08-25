@@ -1,8 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import toJson from 'enzyme-to-json';
-
 import { JsonType } from '../models';
 import { createFormInputId } from '../actions';
 import {
@@ -62,7 +60,7 @@ describe('Filters', () => {
         select = filters.find({ id: createFormInputId(DOMAIN_SECOND_FILTER_TYPE, domainIndex, validatorIndex) });
         expect(select.at(0).props().value).toEqual('None');
 
-        expect(toJson(filters)).toMatchSnapshot();
+        expect(filters).toMatchSnapshot();
         filters.unmount();
     });
 
@@ -161,7 +159,7 @@ describe('Filters', () => {
                 expect(Filters.isValid(invalidExpression1, prefix)).toEqual(false);
                 expect(Filters.isValid(invalidExpression2, prefix)).toEqual(false);
 
-                expect(toJson(filters)).toMatchSnapshot();
+                expect(filters).toMatchSnapshot();
                 filters.unmount();
             });
         });
@@ -188,7 +186,7 @@ describe('Filters', () => {
         const dateValues = filters.find('input[type="date"]');
         expect(dateValues.length).toEqual(2);
 
-        expect(toJson(filters)).toMatchSnapshot();
+        expect(filters).toMatchSnapshot();
         filters.unmount();
     });
 

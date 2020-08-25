@@ -1,8 +1,5 @@
 import { mount } from 'enzyme';
-
 import React from 'react';
-
-import toJson from 'enzyme-to-json';
 
 import { createFormInputId } from './actions';
 import {
@@ -96,7 +93,7 @@ describe('TextFieldOptions', () => {
         expect(lengthField2.length).toEqual(1);
         expect(lengthField2.props().value).toEqual(_scale2);
 
-        expect(toJson(textField)).toMatchSnapshot();
+        expect(textField).toMatchSnapshot();
         textField.unmount();
     });
 });

@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import toJson from 'enzyme-to-json';
 
 import { INTEGER_TYPE, PropertyValidator } from '../models';
 import { createFormInputId } from '../actions';
@@ -57,7 +56,7 @@ describe('RangeValidationOptions', () => {
 
         expect(RangeValidationOptions.isValid(validatorModel)).toEqual(true);
 
-        expect(toJson(validator)).toMatchSnapshot();
+        expect(validator).toMatchSnapshot();
         validator.unmount();
     });
 
@@ -86,7 +85,7 @@ describe('RangeValidationOptions', () => {
             'Test range validator: Is Greater Than 0 and Is Less Than 10'
         );
 
-        expect(toJson(validator)).toMatchSnapshot();
+        expect(validator).toMatchSnapshot();
         validator.unmount();
     });
 });

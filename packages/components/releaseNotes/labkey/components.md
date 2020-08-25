@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
+* Add ability to show comments from metadata on timeline events.
+
+### version 0.89.1
+*Released*: 21 August 2020
 * Bind URL parameters when adding QueryModels
 
 ### version 0.89.0

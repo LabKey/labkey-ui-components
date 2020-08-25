@@ -1,8 +1,5 @@
 import { mount } from 'enzyme';
-
 import React from 'react';
-
-import toJson from 'enzyme-to-json';
 
 import { createFormInputId } from './actions';
 import { DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED } from './constants';
@@ -44,7 +41,7 @@ describe('DateTimeFieldOptions', () => {
         formatField = dateTime.find({ id: createFormInputId(DOMAIN_FIELD_FORMAT, 1, 1), className: 'form-control' });
         expect(formatField.props().value).toEqual(_format2);
 
-        expect(toJson(dateTime)).toMatchSnapshot();
+        expect(dateTime).toMatchSnapshot();
         dateTime.unmount();
     });
 });

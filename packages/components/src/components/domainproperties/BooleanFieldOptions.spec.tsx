@@ -1,8 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import toJson from 'enzyme-to-json';
-
 import { BooleanFieldOptions } from './BooleanFieldOptions';
 import { createFormInputId } from './actions';
 import { DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_NOT_LOCKED } from './constants';
@@ -39,7 +37,7 @@ describe('BooleanFieldOptions', () => {
         formatField = boolean.find({ id: createFormInputId(DOMAIN_FIELD_FORMAT, 1, 1), className: 'form-control' });
         expect(formatField.props().value).toEqual(_format2);
 
-        expect(toJson(boolean)).toMatchSnapshot();
+        expect(boolean).toMatchSnapshot();
         boolean.unmount();
     });
 });

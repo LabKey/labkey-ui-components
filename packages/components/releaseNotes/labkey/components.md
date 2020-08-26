@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
+* Export FieldEditTrigger for use in Freezer Manager app
+
+### version TBD
+*Released*: TBD
 * Bind URL parameters when adding QueryModels
 
 ### version 0.89.0

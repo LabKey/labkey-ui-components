@@ -306,6 +306,7 @@ import { UserProfile } from './components/user/UserProfile';
 import { ChangePasswordModal } from './components/user/ChangePasswordModal';
 import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 import { UserProvider, UserProviderProps } from './components/user/UserProvider';
+import { FieldEditTrigger } from './components/forms/FieldEditTrigger';
 
 import { createFormInputId, fetchDomain, saveDomain, setDomainFields } from './components/domainproperties/actions';
 import {
@@ -479,6 +480,7 @@ export {
     SelectInputProps, // TODO this probably doesn't need to be exported, long-term.  Used by the <Select> element in Biologics, which may want to be moved here instead.
     DatePickerInput,
     DateInput,
+    FieldEditTrigger,
     FileInput,
     TextAreaInput,
     TextInput,

@@ -1,8 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.89.2
+*Released*: 26 August 2020
+* Merge 20.7-SNAPSHOT branch
+
+### version 0.89.1
+*Released*: 20 August 2020
 * Bind URL parameters when adding QueryModels
 
 ### version 0.89.0
@@ -203,6 +207,10 @@ page, adapted from getRunDetailsQueryColumns.
 ### version 0.72.0
 *Released*: 1 July 2020
 * Add ColorPickerInput
+
+### version 0.71.4
+*Released*: 26 August 2020
+* Issue 38711: Biologics: when uploading assay data from an assay request, assay request ID isn't maintained
 
 ### version 0.71.3
 *Released*: 8 July 2020

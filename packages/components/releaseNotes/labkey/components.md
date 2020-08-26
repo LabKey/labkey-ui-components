@@ -1,8 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.89.2
+*Released*: 26 August 2020
+* Merge 20.7-SNAPSHOT branch
+
+### version 0.89.1
+*Released*: 20 August 2020
 * Bind URL parameters when adding QueryModels
 
 ### version 0.89.0

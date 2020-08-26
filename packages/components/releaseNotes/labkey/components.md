@@ -204,6 +204,10 @@ page, adapted from getRunDetailsQueryColumns.
 *Released*: 1 July 2020
 * Add ColorPickerInput
 
+### version 0.71.4
+*Released*: 26 August 2020
+* Issue 38711: Biologics: when uploading assay data from an assay request, assay request ID isn't maintained
+
 ### version 0.71.3
 *Released*: 8 July 2020
 * Issue 40795: Query metadata editor should allow editing type of field in built in table

@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Export FieldEditTrigger for use in Freezer Manager app
+* Export FieldEditTrigger for use in applications
 
 ### version 0.90.0
 *Released*: 27 August 2020

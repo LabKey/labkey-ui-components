@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { App, getEventDataValueDisplay, SVGIcon } from '../../index';
+import { App, getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../index';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 
@@ -70,7 +70,7 @@ export class TimelineView extends React.Component<Props, any> {
             >
                 {this.renderTimestampCol(event.timestamp)}
                 {this.renderIconCol(icon, eventSelected, isFirstEvent, isLastEvent, isEventCompleted, isConnection)}
-                {this.renderDetailCol(event.summary, event.user, event.entity)}
+                {this.renderDetailCol(event.summary, event.user, event.entity, event.getComment())}
             </tr>
         );
     }
@@ -149,7 +149,22 @@ export class TimelineView extends React.Component<Props, any> {
         );
     }
 
-    renderDetailCol(summary: string, user: any, entity: any) {
+    renderComment(comment: string) : React.ReactNode {
+        if (!comment)
+            return null;
+
+        const icon = <i className="timeline-comments fa fa-comments"/>;
+        return (
+            <LabelHelpTip
+                title={"Comment"}
+                body={() => {return comment}}
+                placement="bottom"
+                iconComponent ={() => {return icon}}
+            />
+        )
+    }
+
+    renderDetailCol(summary: string, user: any, entity: any, comment: string) {
         const { showUserLinks } = this.props;
         return (
             <td key="tl-detail-col" className="detail-col">
@@ -158,7 +173,7 @@ export class TimelineView extends React.Component<Props, any> {
                     {entity != null && <span> - </span>}
                     {entity != null && getEventDataValueDisplay(entity)}
                 </div>
-                <div>{getEventDataValueDisplay(user, showUserLinks)}</div>
+                <div>{getEventDataValueDisplay(user, showUserLinks)} {this.renderComment(comment)}</div>
             </td>
         );
     }

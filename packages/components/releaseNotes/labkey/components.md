@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.90.0
+*Released*: 27 August 2020
+* Add ability to show comments from metadata on timeline events.
+
 ### version 0.89.2
 *Released*: 26 August 2020
 * Merge 20.7-SNAPSHOT branch

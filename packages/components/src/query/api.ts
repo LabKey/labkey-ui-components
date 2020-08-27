@@ -618,6 +618,7 @@ export interface InsertRowsOptions {
     rows: List<any>;
     schemaQuery: SchemaQuery;
     auditBehavior?: AuditBehaviorTypes;
+    auditUserComment?: string;
 }
 
 export class InsertRowsResponse extends Record({
@@ -647,7 +648,7 @@ export class InsertRowsResponse extends Record({
 
 export function insertRows(options: InsertRowsOptions): Promise<InsertRowsResponse> {
     return new Promise((resolve, reject) => {
-        const { fillEmptyFields, rows, schemaQuery, auditBehavior } = options;
+        const { fillEmptyFields, rows, schemaQuery, auditBehavior, auditUserComment } = options;
         const _rows = fillEmptyFields === true ? ensureAllFieldsInAllRows(rows) : rows;
 
         Query.insertRows({
@@ -655,6 +656,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
             queryName: schemaQuery.queryName,
             rows: _rows.toArray(),
             auditBehavior,
+            auditUserComment,
             apiVersion: 13.2,
             success: response => {
                 resolve(
@@ -721,6 +723,7 @@ interface IUpdateRowsOptions {
     schemaQuery: SchemaQuery;
     rows: any[];
     auditBehavior?: AuditBehaviorTypes;
+    auditUserComment?: string;
 }
 
 export function updateRows(options: IUpdateRowsOptions): Promise<any> {
@@ -731,6 +734,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
             queryName: options.schemaQuery.queryName,
             rows: options.rows,
             auditBehavior: options.auditBehavior,
+            auditUserComment: options.auditUserComment,
             success: response => {
                 resolve(
                     Object.assign(
@@ -761,6 +765,7 @@ interface DeleteRowsOptions {
     schemaQuery: SchemaQuery;
     rows: any[];
     auditBehavior?: AuditBehaviorTypes;
+    auditUserComment?: string;
 }
 
 export function deleteRows(options: DeleteRowsOptions): Promise<any> {
@@ -770,6 +775,7 @@ export function deleteRows(options: DeleteRowsOptions): Promise<any> {
             queryName: options.schemaQuery.queryName,
             rows: options.rows,
             auditBehavior: options.auditBehavior,
+            auditUserComment: options.auditUserComment,
             apiVersion: 13.2,
             success: () => {
                 resolve(

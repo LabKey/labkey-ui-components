@@ -1432,10 +1432,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.0.2":
-  version "1.0.2"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.0.2.tgz#61cf04b5c159f5ccafb4dc172831ceaf956063c8"
-  integrity sha1-Yc8EtcFZ9cyvtNwXKDHOr5VgY8g=
+"@labkey/api@1.1.0":
+  version "1.1.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.0.tgz#b70fbe749d7c3b30ae77f5d8e9e12a2cde5cedbe"
+  integrity sha1-tw++dJ18OzCud/XY6eEqLN5c7b4=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"
@@ -12198,8 +12198,6 @@ supports-color@^5.3.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
   integrity sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==
-  dependencies:
-    has-flag "^3.0.0"
 
 supports-color@^6.1.0:
   version "6.1.0"

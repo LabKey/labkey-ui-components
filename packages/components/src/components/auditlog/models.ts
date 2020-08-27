@@ -122,6 +122,15 @@ export class TimelineEventModel extends Record({
     isSameEntity(event: TimelineEventModel): boolean {
         return this.entity && event.entity && this.entity.get('value') === event.entity.get('value');
     }
+
+    getComment() : string {
+        if (!this.metadata)
+            return undefined;
+        const commentField = this.metadata.find((metadataRow) => (metadataRow.get('field').toLowerCase() === 'comment'));
+        if (commentField)
+            return commentField.get('value');
+        return undefined;
+    }
 }
 
 export interface TimelineGroupedEventInfo {

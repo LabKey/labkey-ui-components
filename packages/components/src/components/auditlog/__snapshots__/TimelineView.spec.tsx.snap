@@ -58,6 +58,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -122,6 +123,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -186,6 +188,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
           >
             xyang
           </a>
+           
         </div>
       </td>
     </tr>
@@ -250,6 +253,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -314,6 +318,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
           >
             Test Lab User
           </a>
+           
         </div>
       </td>
     </tr>
@@ -378,6 +383,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
           >
             Test Lab User
           </a>
+           
         </div>
       </td>
     </tr>
@@ -442,6 +448,7 @@ exports[`<TimelineView /> Disable selection 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -506,6 +513,16 @@ exports[`<TimelineView /> Disable selection 1`] = `
           >
             xyang
           </a>
+           
+          <LabelHelpTip
+            body={[Function]}
+            customStyle={Object {}}
+            iconComponent={[Function]}
+            id="tooltip"
+            placement="bottom"
+            size="1x"
+            title="Comment"
+          />
         </div>
       </td>
     </tr>
@@ -567,6 +584,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
         </div>
         <div>
           Vader
+           
         </div>
       </td>
     </tr>
@@ -627,6 +645,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
         </div>
         <div>
           Vader
+           
         </div>
       </td>
     </tr>
@@ -687,6 +706,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
         </div>
         <div>
           xyang
+           
         </div>
       </td>
     </tr>
@@ -747,6 +767,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
         </div>
         <div>
           Vader
+           
         </div>
       </td>
     </tr>
@@ -807,6 +828,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
         </div>
         <div>
           Test Lab User
+           
         </div>
       </td>
     </tr>
@@ -867,6 +889,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
         </div>
         <div>
           Test Lab User
+           
         </div>
       </td>
     </tr>
@@ -927,6 +950,7 @@ exports[`<TimelineView /> Hide user link 1`] = `
         </div>
         <div>
           Vader
+           
         </div>
       </td>
     </tr>
@@ -987,6 +1011,16 @@ exports[`<TimelineView /> Hide user link 1`] = `
         </div>
         <div>
           xyang
+           
+          <LabelHelpTip
+            body={[Function]}
+            customStyle={Object {}}
+            iconComponent={[Function]}
+            id="tooltip"
+            placement="bottom"
+            size="1x"
+            title="Comment"
+          />
         </div>
       </td>
     </tr>
@@ -1052,6 +1086,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1122,6 +1157,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1186,6 +1222,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           >
             xyang
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1250,6 +1287,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1314,6 +1352,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           >
             Test Lab User
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1384,6 +1423,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           >
             Test Lab User
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1448,6 +1488,7 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1512,6 +1553,16 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           >
             xyang
           </a>
+           
+          <LabelHelpTip
+            body={[Function]}
+            customStyle={Object {}}
+            iconComponent={[Function]}
+            id="tooltip"
+            placement="bottom"
+            size="1x"
+            title="Comment"
+          />
         </div>
       </td>
     </tr>
@@ -1577,6 +1628,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1641,6 +1693,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1711,6 +1764,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           >
             xyang
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1775,6 +1829,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1839,6 +1894,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           >
             Test Lab User
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1903,6 +1959,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           >
             Test Lab User
           </a>
+           
         </div>
       </td>
     </tr>
@@ -1967,6 +2024,7 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           >
             Vader
           </a>
+           
         </div>
       </td>
     </tr>
@@ -2037,6 +2095,16 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           >
             xyang
           </a>
+           
+          <LabelHelpTip
+            body={[Function]}
+            customStyle={Object {}}
+            iconComponent={[Function]}
+            id="tooltip"
+            placement="bottom"
+            size="1x"
+            title="Comment"
+          />
         </div>
       </td>
     </tr>

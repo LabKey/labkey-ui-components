@@ -1,5 +1,4 @@
 import React from 'react';
-import toJson from 'enzyme-to-json';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { MockLookupProvider } from '../../test/components/Lookup';
@@ -147,7 +146,7 @@ describe('LookupFieldOptions', () => {
                     expect(queryField.state().queries.size).toEqual(3);
                     expect(queryField.state().queries.get(1).name).toEqual(_queries1);
 
-                    expect(toJson(lookupField)).toMatchSnapshot();
+                    expect(lookupField).toMatchSnapshot();
                     lookupField.unmount();
                 });
             });
@@ -223,7 +222,7 @@ describe('LookupFieldOptions', () => {
                     expect(schema.state().schemas.size).toEqual(1);
                     expect(schema.state().schemas.get(0).schemaName).toEqual(_newSchema);
 
-                    expect(toJson(lookupField)).toMatchSnapshot();
+                    expect(lookupField).toMatchSnapshot();
                     lookupField.unmount();
                 });
             });
@@ -301,7 +300,7 @@ describe('LookupFieldOptions', () => {
                     expect(queryField.state().queries.size).toEqual(1);
                     expect(queryField.state().queries.get(0).name).toEqual(_query2);
 
-                    expect(toJson(lookupField)).toMatchSnapshot();
+                    expect(lookupField).toMatchSnapshot();
                     lookupField.unmount();
                 });
             });
@@ -372,7 +371,7 @@ describe('LookupFieldOptions', () => {
                 expect(queryField.state().queries.size).toEqual(0);
                 expect(queryField.props().value).toEqual('');
 
-                expect(toJson(lookupField)).toMatchSnapshot();
+                expect(lookupField).toMatchSnapshot();
                 lookupField.unmount();
             });
         });

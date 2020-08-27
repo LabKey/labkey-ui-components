@@ -1432,10 +1432,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.0.3-fmCheckInAndOut.0":
-  version "1.0.3-fmCheckInAndOut.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.0.3-fmCheckInAndOut.0.tgz#fba21f979bea9c66f6d32a587ddd3afeba285d1a"
-  integrity sha1-+6Ifl5vqnGb20ypYfd06/rooXRo=
+"@labkey/api@1.1.0":
+  version "1.1.0"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.0.tgz#b70fbe749d7c3b30ae77f5d8e9e12a2cde5cedbe"
+  integrity sha1-tw++dJ18OzCud/XY6eEqLN5c7b4=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"

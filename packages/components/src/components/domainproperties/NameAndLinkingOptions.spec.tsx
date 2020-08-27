@@ -1,8 +1,5 @@
 import { mount } from 'enzyme';
-
 import React from 'react';
-
-import toJson from 'enzyme-to-json';
 
 import { createFormInputId } from './actions';
 import {
@@ -68,7 +65,7 @@ describe('NameAndLinkingOptions', () => {
         expect(formField.length).toEqual(1);
         expect(formField.props().value).toEqual(_URL);
 
-        expect(toJson(numeric)).toMatchSnapshot();
+        expect(numeric).toMatchSnapshot();
         numeric.unmount();
     });
 });

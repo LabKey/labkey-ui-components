@@ -262,6 +262,17 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
     }
 
+    populateAssayRequest(runProperties): Map<string, any> {
+        // Need to pre-populate the run properties form with assayRequest if it is present on the URL (see issue 38711)
+        const assayRequest = this.props.location.query.assayRequest;
+
+        if (assayRequest !== undefined) {
+            return runProperties.set('assayRequest', assayRequest);
+        }
+
+        return runProperties;
+    }
+
     onGetQueryDetailsComplete() {
         const { assayDefinition, location } = this.props;
         const sampleColumnData = assayDefinition.getSampleColumn();
@@ -272,7 +283,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             // samples.
             this.props.loadSelections(location, sampleColumnData.column).then(samples => {
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
-                let runProperties = this.getRunPropertiesRow(this.props);
+                let runProperties = this.populateAssayRequest(this.getRunPropertiesRow(this.props));
                 let batchProperties = this.getBatchPropertiesRow(this.props);
                 if (sampleColumnData && samples && samples.size == 1) {
                     const { column, domain } = sampleColumnData;
@@ -307,7 +318,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     model: state.model.merge({
                         isInit: this.isRunPropertiesInit(this.props),
                         batchProperties: this.getBatchPropertiesRow(this.props),
-                        runProperties: this.getRunPropertiesRow(this.props),
+                        runProperties: this.populateAssayRequest(this.getRunPropertiesRow(this.props)),
                     }) as AssayWizardModel,
                 }),
                 this.onInitModelComplete

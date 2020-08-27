@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import toJson from 'enzyme-to-json';
 
 import { INTEGER_TYPE, PropertyValidator } from '../models';
 import { createFormInputId } from '../actions';
@@ -61,7 +60,7 @@ describe('RegexValidationOptions', () => {
 
         expect(RegexValidationOptions.isValid(validatorModel)).toEqual(true);
 
-        expect(toJson(validator)).toMatchSnapshot();
+        expect(validator).toMatchSnapshot();
         validator.unmount();
     });
 
@@ -88,7 +87,7 @@ describe('RegexValidationOptions', () => {
         const collapsed = validator.find({ id: 'domain-regex-validator-' + validatorIndex });
         expect(collapsed.children().children().text()).toEqual('Test Validator: $[abc]');
 
-        expect(toJson(validator)).toMatchSnapshot();
+        expect(validator).toMatchSnapshot();
         validator.unmount();
     });
 });

@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { hookServer, IntegrationTestServer, successfulResponse } from './integrationUtils';
-import { sleep } from './utils';
-
-export {
-    hookServer,
-    IntegrationTestServer,
-    sleep,
-    successfulResponse,
+/**
+ * Utility method to asynchronously sleep for a specified number of milliseconds.
+ * @param ms number of milliseconds to sleep.
+ */
+export const sleep = (ms = 0): Promise<void> => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, ms);
+    });
 };

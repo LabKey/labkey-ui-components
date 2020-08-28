@@ -4,6 +4,7 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: './src/index.ts',
@@ -37,5 +38,15 @@ module.exports = {
         filename: 'test.js',
         library: '@labkey/test',
         libraryTarget: 'umd'
-    }
+    },
+    plugins: [
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: 'config',
+                    to: 'config'
+                }
+            ]
+        }),
+    ]
 };

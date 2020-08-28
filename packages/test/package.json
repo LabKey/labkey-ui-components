@@ -30,7 +30,6 @@
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
   "dependencies": {
-    "mock-fs": "4.13.0",
     "properties-reader": "2.0.0",
     "supertest": "4.0.2"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/test",
-  "version": "0.0.1-fb-test-package.0",
+  "version": "0.0.1-fb-test-package.1",
   "description": "Configurations and utilities for JavaScript-based testing",
   "main": "dist/test.js",
   "module": "dist/test.js",

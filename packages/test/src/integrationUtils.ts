@@ -20,6 +20,11 @@ import { sleep } from './utils';
 
 declare var LABKEY;
 
+// I was unable to get process.env to be available at runtime in a compiled bundle.
+// In lieu of accessing directly this is configured in hookServer() which expects the user
+// to pass in the current process.env.
+let ENV: any = {};
+
 export interface IntegrationTestServer {
     get: (controller: string, action: string, params?: any, containerPath?: string) => any;
     init: (lkProjectName: string, containerOptions?: any) => Promise<void>;
@@ -41,11 +46,14 @@ const getRequest = (server: any, controller: string, action: string, params?: an
     return withAuth(server, server.get(url));
 };
 
-export const hookServer = (): IntegrationTestServer => {
-    // Override the global context path -- required for ActionURL to work
-    LABKEY.contextPath = process.env.INTEGRATION_CONTEXT_PATH;
+export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
+    // Bind global ENV
+    ENV = env;
 
-    const location = process.env.INTEGRATION_SERVER;
+    // Override the global context path -- required for ActionURL to work
+    LABKEY.contextPath = ENV.INTEGRATION_CONTEXT_PATH;
+
+    const location = ENV.INTEGRATION_SERVER;
     const server = supertest(location);
     server.LOCATION = location;
 
@@ -174,7 +182,7 @@ const teardown = async (server: any): Promise<void> => {
 };
 
 const withAuth = (server: any, request: any): any => {
-    const { INTEGRATION_AUTH_PASS, INTEGRATION_AUTH_USER } = process.env;
+    const { INTEGRATION_AUTH_PASS, INTEGRATION_AUTH_USER } = ENV;
     request = request.auth(INTEGRATION_AUTH_USER, INTEGRATION_AUTH_PASS);
 
     if (server.CSRF_TOKEN) {

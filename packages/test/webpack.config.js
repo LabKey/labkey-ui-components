@@ -49,5 +49,5 @@ module.exports = {
             ]
         }),
     ],
-    externals: ['@labkey/api']
+    externals: ['@labkey/api', 'supertest']
 };

@@ -43,25 +43,35 @@ function getTestProperties() {
 
     const propFile = process.env.TEAMCITY_BUILD_PROPERTIES_FILE;
 
-    // Apply properties from test.properties
+    // Apply TeamCity build properties, if present
     if (propFile) {
         if (fs.existsSync(propFile)) {
             const properties = propertiesReader(propFile);
 
             const serverPropName = 'labkey.server';
             const propServer = properties.get(serverPropName);
-            const serverParts = propServer.split('://');
+            if (propServer) {
+                const serverParts = propServer.split('://');
 
-            if (serverParts.length !== 2) {
-                throw new Error(`Expected test property "${serverPropName}" to be formatted with protocol (e.g. http://server). Received "${propServer}".`);
+                if (serverParts.length !== 2) {
+                    throw new Error(`Expected test property "${serverPropName}" to be formatted with protocol (e.g. http://localhost). Received "${propServer}".`);
+                }
+
+                props.protocol = serverParts[0];
+                props.server = serverParts[1];
             }
 
-            // Defaults not applied if test.properties present
-            props = {
-                contextPath: properties.get('labkey.contextpath'),
-                port: properties.get('labkey.port'),
-                protocol: serverParts[0],
-                server: serverParts[1],
+            const propContextPath = properties.get('labkey.contextpath');
+            if (propContextPath) {
+                props.contextPath = propContextPath;
+            }
+
+            let propPort = properties.get('labkey.port');
+            if (!propPort) {
+                propPort = properties.get('tomcat.port') // Property from TeamCity build agents
+            }
+            if (propPort) {
+                props.port = propPort;
             }
         } else {
             throw new Error(`Unable to locate test properties file at path "${propFile}".`);

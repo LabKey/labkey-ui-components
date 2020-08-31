@@ -194,7 +194,9 @@ storiesOf('QueryModel', module)
             <div className="query-model-example">
                 <GridPanelWithModel
                     getFilterDisplayValue={(columnName: string, rawValue: string) => {
-                        return rawValue + '-withSuffix';
+                        if ("name" === columnName.toLowerCase())
+                            return rawValue + '-withSuffix';
+                        return null;
                     }}
                     queryConfig={queryConfig}
                     showOmniBox={true}

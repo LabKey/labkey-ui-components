@@ -171,6 +171,9 @@ storiesOf('QueryModel', module)
                         <input style={{ width: '800px' }} value={queryString} onChange={onQueryChange} />
                     </div>
                     <GridPanelWithModel
+                        getFilterDisplayValue={(columnName: string, rawValue: string) => {
+                            return rawValue + '-withSuffix';
+                        }}
                         ButtonsComponent={GridPanelButtonsExample}
                         title="Mixtures"
                         queryConfig={queryConfigs}

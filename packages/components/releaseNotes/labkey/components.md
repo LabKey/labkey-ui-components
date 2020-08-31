@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Allow custom display value for Omnibox filter options
+
 ### version 0.91.0
 *Released*: 30 August 2020
 * EditableGrid updates:

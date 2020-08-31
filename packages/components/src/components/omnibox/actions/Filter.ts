@@ -164,10 +164,12 @@ export class FilterAction implements Action {
     optionalLabel = 'columns';
     getColumns: (all?: boolean) => List<QueryColumn>;
     urlPrefix: string;
+    getFilterDisplayValue: (columnName: string, rawValue: string) => string;
 
-    constructor(urlPrefix: string, getColumns: () => List<QueryColumn>) {
+    constructor(urlPrefix: string, getColumns: () => List<QueryColumn>, getFilterDisplayValue?: (columnName: string, rawValue: string) => string) {
         this.getColumns = getColumns;
         this.urlPrefix = urlPrefix;
+        this.getFilterDisplayValue = getFilterDisplayValue;
     }
 
     static parseTokens(tokens: string[], columns: List<QueryColumn>, isComplete?: boolean): IFilterContext {
@@ -412,12 +414,18 @@ export class FilterAction implements Action {
 
         return strValues.map(strValue => {
             const value = `"${col.shortCaption}" ${operator} ${strValue}`;
+            let displayValue = value;
+            if (this.getFilterDisplayValue) {
+                const altDisplayValue = this.getFilterDisplayValue(col.shortCaption, strValue);
+                if (altDisplayValue)
+                    displayValue = `"${col.shortCaption}" ${operator} ${altDisplayValue}`;
+            }
             return {
                 // label and value are the same, and appendValue is false, because we want to ignore all user input when
                 // they select an option. This is a workaround because of how Omnibox.resolveInputValue works. See
                 // Issue 40195.
                 value,
-                label: value,
+                label: displayValue,
                 appendValue: false,
                 isComplete: true,
             };
@@ -445,9 +453,9 @@ export class FilterAction implements Action {
             if (!Utils.isArray(rawValue)) {
                 throw new Error(
                     "Expected '" +
-                        filterType.getMultiValueSeparator() +
-                        "' string or an Array of values, got: " +
-                        rawValue
+                    filterType.getMultiValueSeparator() +
+                    "' string or an Array of values, got: " +
+                    rawValue
                 );
             }
 
@@ -461,6 +469,14 @@ export class FilterAction implements Action {
             }
         } else {
             value = '' + rawValue;
+
+            if (this.getFilterDisplayValue) {
+                const displayValue = this.getFilterDisplayValue(columnName, value);
+                if (displayValue) {
+                    value = '' + displayValue;
+                }
+            }
+
         }
 
         if (value) {

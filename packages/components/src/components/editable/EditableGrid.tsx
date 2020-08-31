@@ -77,15 +77,13 @@ function inputCellFactory(
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
         let colOffset = 0;
-        if (allowSelection)
-            colOffset += 1;
-        if (!hideCountCol)
-            colOffset += 1;
+        if (allowSelection) colOffset += 1;
+        if (!hideCountCol) colOffset += 1;
 
         const colIdx = cn - colOffset;
 
         const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
-        let isReadonlyRow : boolean = false;
+        let isReadonlyRow = false;
 
         if (!isReadonlyCol && model && readonlyRows) {
             const keyCols = model.getKeyColumns();
@@ -98,7 +96,6 @@ function inputCellFactory(
                 );
             }
         }
-
 
         return (
             <Cell
@@ -167,7 +164,7 @@ export interface EditableGridProps {
     maxTotalRows?: number;
     hideCountCol?: boolean;
     rowNumColumn?: GridColumn;
-    onCellModify?: () => any
+    onCellModify?: () => any;
 }
 
 export interface EditableGridState {
@@ -202,7 +199,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         striped: false,
         maxTotalRows: MAX_EDITABLE_GRID_ROWS,
         hideCountCol: false,
-        rowNumColumn: COUNT_COL
+        rowNumColumn: COUNT_COL,
     };
 
     private maskDelay: number;
@@ -309,7 +306,16 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     };
 
     generateColumns = (): List<GridColumn> => {
-        const { allowBulkRemove, allowBulkUpdate, allowRemove, columnMetadata, hideCountCol, rowNumColumn, readonlyRows, onCellModify } = this.props;
+        const {
+            allowBulkRemove,
+            allowBulkUpdate,
+            allowRemove,
+            columnMetadata,
+            hideCountCol,
+            rowNumColumn,
+            readonlyRows,
+            onCellModify,
+        } = this.props;
         const model = this.getModel(this.props);
         const editorModel = this.getEditorModel();
         let gridColumns = List<GridColumn>();
@@ -331,8 +337,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             });
             gridColumns = gridColumns.push(selColumn);
         }
-        if (!hideCountCol)
-            gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
+        if (!hideCountCol) gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
 
         this.getColumns().forEach(qCol => {
             gridColumns = gridColumns.push(
@@ -494,13 +499,20 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         if (!this.props.disabled) {
             const modelId = this.props.model.getId();
             const beforeRowCount = this.getEditorModel().rowCount;
-            pasteEvent(modelId, event, this.showMask, this.hideMask, this.props.columnMetadata, this.props.readonlyRows, !this.props.allowAdd);
+            pasteEvent(
+                modelId,
+                event,
+                this.showMask,
+                this.hideMask,
+                this.props.columnMetadata,
+                this.props.readonlyRows,
+                !this.props.allowAdd
+            );
             const afterRowCount = this.getEditorModel().rowCount;
             if (beforeRowCount !== afterRowCount) {
                 this.onRowCountChange();
             }
-            if (this.props.onCellModify)
-                this.props.onCellModify();
+            if (this.props.onCellModify) this.props.onCellModify();
         }
     };
 

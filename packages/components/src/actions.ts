@@ -715,7 +715,12 @@ export interface ExportOptions {
     selectionKey?: string;
 }
 
-export function getExportParams(type: EXPORT_TYPES, schemaQuery: SchemaQuery, options?: ExportOptions, advancedOptions?: Record<string, any>) : Record<string, any> {
+export function getExportParams(
+    type: EXPORT_TYPES,
+    schemaQuery: SchemaQuery,
+    options?: ExportOptions,
+    advancedOptions?: Record<string, any>
+): Record<string, any> {
     let params: any = {
         schemaName: schemaQuery.schemaName,
         'query.queryName': schemaQuery.queryName,
@@ -760,10 +765,8 @@ export function getExportParams(type: EXPORT_TYPES, schemaQuery: SchemaQuery, op
     return params;
 }
 
-export function exportRows(
-    type: EXPORT_TYPES,
-    exportParams: Record<string, any>): void {
-    let params = Object.assign({}, exportParams);
+export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>): void {
+    const params = Object.assign({}, exportParams);
 
     let controller, action;
     if (type === EXPORT_TYPES.CSV || type === EXPORT_TYPES.TSV) {
@@ -782,12 +785,12 @@ export function exportRows(
         params['format'] = 'GENBANK';
     } else if (type === EXPORT_TYPES.LABEL) {
         controller = BARTENDER_EXPORT_CONTROLLER;
-        action = "printBarTenderLabels.post"
+        action = 'printBarTenderLabels.post';
     } else {
         throw new Error('Unknown export type: ' + type);
     }
 
-    const url = buildURL(controller, action, undefined, {returnURL: false});
+    const url = buildURL(controller, action, undefined, { returnURL: false });
 
     // POST a form
     const form = $(`<form method="POST" action="${url}">`);
@@ -801,14 +804,19 @@ export function exportRows(
 export function gridExport(model: QueryGridModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): void {
     const { allowSelection, selectedState } = model;
     const showRows = allowSelection && selectedState !== GRID_CHECKBOX_OPTIONS.NONE ? 'SELECTED' : 'ALL';
-    const options : ExportOptions = {
+    const options: ExportOptions = {
         filters: model.getFilters(),
         columns: model.getExportColumnsString(),
         sorts: model.getSorts(),
         showRows,
         selectionKey: model.getId(),
     };
-    const exportParams = getExportParams(type, SchemaQuery.create(model.schema, model.query, model.view), options, advancedOptions);
+    const exportParams = getExportParams(
+        type,
+        SchemaQuery.create(model.schema, model.query, model.view),
+        options,
+        advancedOptions
+    );
     exportRows(type, exportParams);
 }
 
@@ -1924,7 +1932,7 @@ export function pasteEvent(
             onComplete,
             columnMetadata,
             readonlyRows,
-            lockRowCount,
+            lockRowCount
         );
     }
 }
@@ -1944,7 +1952,8 @@ function pasteCell(
     let model = getEditorModel(modelId);
 
     if (model) {
-        const readOnlyRowCount = readonlyRows && !lockRowCount ? getReadonlyRowCount(gridModel, model, rowIdx, readonlyRows) : 0;
+        const readOnlyRowCount =
+            readonlyRows && !lockRowCount ? getReadonlyRowCount(gridModel, model, rowIdx, readonlyRows) : 0;
         const paste = validatePaste(model, colIdx, rowIdx, value, readOnlyRowCount);
 
         if (paste.success) {
@@ -2011,7 +2020,13 @@ function endPaste(model: EditorModel): EditorModel {
     });
 }
 
-function validatePaste(model: EditorModel, colMin: number, rowMin: number, value: any, readOnlyRowCount?: number): IPasteModel {
+function validatePaste(
+    model: EditorModel,
+    colMin: number,
+    rowMin: number,
+    value: any,
+    readOnlyRowCount?: number
+): IPasteModel {
     const maxRowPaste = 1000;
     const payload = parsePaste(value);
 
@@ -2025,7 +2040,10 @@ function validatePaste(model: EditorModel, colMin: number, rowMin: number, value
     const paste: IPasteModel = {
         coordinates,
         payload,
-        rowsToAdd: Math.max(0, coordinates.rowMin + payload.numRows + (readOnlyRowCount ? readOnlyRowCount : 0) - model.rowCount),
+        rowsToAdd: Math.max(
+            0,
+            coordinates.rowMin + payload.numRows + (readOnlyRowCount ? readOnlyRowCount : 0) - model.rowCount
+        ),
         success: true,
     };
 
@@ -2462,12 +2480,11 @@ function pasteCellLoad(
             let rowIdx = rowMin;
             let hasReachedRowLimit = false;
             data.forEach((row, rn) => {
-                if (hasReachedRowLimit && lockRowCount)
-                    return;
+                if (hasReachedRowLimit && lockRowCount) return;
 
                 if (readonlyRows) {
-                    while(rowIdx < model.rowCount && isReadonlyRow(gridModel, rowIdx, readonlyRows)) {
-                        //add row if needed
+                    while (rowIdx < model.rowCount && isReadonlyRow(gridModel, rowIdx, readonlyRows)) {
+                        // add row if needed
                         rowIdx++;
                     }
 
@@ -2476,7 +2493,6 @@ function pasteCellLoad(
                         return;
                     }
                 }
-
 
                 // find the next editable row;
                 row.forEach((value, cn) => {
@@ -2527,8 +2543,8 @@ function pasteCellLoad(
     });
 }
 
-function isReadonlyRow(model: QueryGridModel, rowInd: number, readonlyRows: List<string>) : boolean {
-    const data : List<Map<string, string>> = model.getDataEdit();
+function isReadonlyRow(model: QueryGridModel, rowInd: number, readonlyRows: List<string>): boolean {
+    const data: List<Map<string, string>> = model.getDataEdit();
     const keyCols = model.getKeyColumns();
 
     if (keyCols.size == 1 && data.get(rowInd)) {
@@ -2539,8 +2555,13 @@ function isReadonlyRow(model: QueryGridModel, rowInd: number, readonlyRows: List
     return false;
 }
 
-function getReadonlyRowCount(model: QueryGridModel, editorModel: EditorModel, startRowInd: number, readonlyRows: List<string>) : number {
-    const data : List<Map<string, string>> = model.getDataEdit();
+function getReadonlyRowCount(
+    model: QueryGridModel,
+    editorModel: EditorModel,
+    startRowInd: number,
+    readonlyRows: List<string>
+): number {
+    const data: List<Map<string, string>> = model.getDataEdit();
     const keyCols = model.getKeyColumns();
 
     if (keyCols.size == 1) {
@@ -2548,8 +2569,7 @@ function getReadonlyRowCount(model: QueryGridModel, editorModel: EditorModel, st
         let editableRowCount = 0;
         for (let i = startRowInd; i < editorModel.rowCount; i++) {
             const key = caseInsensitive(data.get(i).toJS(), fieldKey);
-            if (readonlyRows.contains(key))
-                editableRowCount++;
+            if (readonlyRows.contains(key)) editableRowCount++;
         }
 
         return editableRowCount;

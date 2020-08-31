@@ -27,8 +27,8 @@ import './stories.scss';
 import { EditableColumnMetadata } from '../components/editable/EditableGrid';
 import { SchemaQuery } from '../components/base/models/model';
 import { PlacementType } from '../components/editable/Controls';
-import { GridColumn } from "..";
-import { GRID_EDIT_INDEX } from "../components/base/models/constants";
+import { GridColumn } from '..';
+import { GRID_EDIT_INDEX } from '../components/base/models/constants';
 
 const CONTROLS_GROUP = 'Grid controls';
 const PANEL_GROUP = 'Grid';
@@ -128,7 +128,13 @@ storiesOf('EditableGridPanel', module)
                 maxTotalRows={number('Max rows', undefined, {}, PANEL_GROUP)}
                 rowNumColumn={boolean('Use custom row count column?', true, PANEL_GROUP) ? CUSTOM_COUNT_COL : undefined}
                 hideCountCol={boolean('Hide count col?', false, PANEL_GROUP)}
-                onCellModify={boolean('onCellModifyFn?', false, PANEL_GROUP) ? () => {console.log('modified');} : undefined}
+                onCellModify={
+                    boolean('onCellModifyFn?', false, PANEL_GROUP)
+                        ? () => {
+                              console.log('modified');
+                          }
+                        : undefined
+                }
             />
         );
     })
@@ -178,7 +184,13 @@ storiesOf('EditableGridPanel', module)
                 rowNumColumn={boolean('Use custom row count column?', true, PANEL_GROUP) ? CUSTOM_COUNT_COL : undefined}
                 hideCountCol={boolean('Hide count col?', false, PANEL_GROUP)}
                 readonlyRows={boolean('With readonly rows?', true, PANEL_GROUP) ? List<any>(['3']) : undefined}
-                onCellModify={boolean('onCellModifyFn?', false, PANEL_GROUP) ? () => {console.log('modified');} : undefined}
+                onCellModify={
+                    boolean('onCellModifyFn?', false, PANEL_GROUP)
+                        ? () => {
+                              console.log('modified');
+                          }
+                        : undefined
+                }
             />
         );
     })

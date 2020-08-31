@@ -153,11 +153,11 @@ export class TimelineView extends React.Component<Props, any> {
         if (!comment)
             return null;
 
-        const icon = <i className="timeline-comments fa fa-comments"/>;
+        const icon = <i className="timeline-comments-icon fa fa-comments"/>;
         return (
             <LabelHelpTip
                 title={"Comment"}
-                body={() => {return comment}}
+                body={() => {return <div className="timeline-comments">{comment}</div>}}
                 placement="bottom"
                 iconComponent ={() => {return icon}}
             />

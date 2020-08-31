@@ -1,11 +1,6 @@
 module.exports = {
     "globals": {
-        "LABKEY": {
-            "moduleContext": {},
-            "user": {
-                "id": 1004
-            }
-        }
+        "LABKEY": {}
     },
     "moduleFileExtensions": [
         "js",
@@ -23,9 +18,8 @@ module.exports = {
     ],
     "testPathIgnorePatterns": [
         "/node_modules/",
-        "./test/js/globals.js"
     ],
-    "testRegex": "(\\.ispec)\\.(ts|tsx)$",
+    "testRegex": "(\\.ispec)\\.(ts)$",
     "preset": "ts-jest",
     "rootDir": "../../",
     "testMatch": null,

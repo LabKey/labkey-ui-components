@@ -16,7 +16,7 @@
 import { hookServer } from '../integrationUtils';
 
 // Declare the name of the LabKey project for these tests.
-const PROJECT_NAME = 'MyIntegrationTestProject';
+const PROJECT_NAME = 'LabKeyTestExampleProject';
 
 // Acquire an instance of the configured server. This will use the configuration supplied
 // either by command line or configuration file.

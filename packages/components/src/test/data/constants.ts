@@ -36,6 +36,13 @@ export const GRID_DATA = Map<any, Map<string, any>>({
         Name: 'name two',
         Description: 'second description',
     }),
+    '3': Map<any, Map<string, any>>({
+        GRID_EDIT_INDEX: 3,
+        rowid: '3',
+        Name: 'name three',
+        Description: 'three description',
+        mixtureTypeId: 'not in db',
+    }),
 });
 
 export const ASSAY_DEFINITION_MODEL = AssayDefinitionModel.create(assayWizardJSON.assayDef);
@@ -370,11 +377,11 @@ export const TIMELINE_DATA = [
         rowId: 49,
         timestamp: { formattedValue: '2020-05-04 23:00', value: '2020-05-04 23:00:23.403' },
         metadata: {
-            'Checked Out': { formattedValue: "2020-05-4 23:00", value: '2020-5-4 23:00:23.403'},
+            'Checked Out': { formattedValue: '2020-05-4 23:00', value: '2020-5-4 23:00:23.403' },
             'Checked Out By': { displayValue: 'xyang', urlType: 'user', value: 1005 },
-            'Comment': "This is why I checked it out.",
-            'Storage box': { displayValue: 'Box f', urlType: "box", value: "38"},
-            'Storage space': {displayValue: 'A-1', urlType: 'boxCell', value: "38-1-1"}
-        }
+            Comment: 'This is why I checked it out.',
+            'Storage box': { displayValue: 'Box f', urlType: 'box', value: '38' },
+            'Storage space': { displayValue: 'A-1', urlType: 'boxCell', value: '38-1-1' },
+        },
     },
 ];

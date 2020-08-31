@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.91.0
+*Released*: 30 August 2020
+* EditableGrid updates:
+    * Support disabling rows using readonlyRows
+    * Allow hiding row count column using hideCountCol
+    * Allow row count column to use custom rowNumColumn instead of the static column
+    * Add onCellModify prop
+    * export updateEditorModel
+
 ### version 0.90.0
 *Released*: 27 August 2020
 * Add ability to show comments from metadata on timeline events.

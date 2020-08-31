@@ -9,6 +9,7 @@
     "dist/"
   ],
   "scripts": {
+    "setup": "yarn install --frozen-lockfile",
     "build": "nps build",
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",

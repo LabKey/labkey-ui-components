@@ -12,10 +12,10 @@ Once they're ready, we'll officially push the components as version 1.0.0.
 <!--- keep these alphabetical --->
 | Package | Status | Description |
 | --- | --- | --- |
-| [@labkey/components](packages/components/README.md) |  [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest) | All components, models, actions, and utility functions for LabKey applications and pages
+| [@labkey/components](packages/components/README.md) | [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest) | All components, models, actions, and utility functions for LabKey applications and pages
 | [@labkey/eslint-config-base](packages/eslint-config-base/README.md) | | Base ESLint configuration with TypeScript and Prettier support.
 | [@labkey/eslint-config-react](packages/eslint-config-react/README.md) | | Extends the base configuration with React support.
-| [@labkey/test](packages/test/README.md) | | Utilities and configurations for running JavaScript tests with LabKey Server.
+| [@labkey/test](packages/test/README.md) | [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabkeyTrunk_ModuleSuites_ApiSuites_LabkeyTestIntegration)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabkeyTrunk_ModuleSuites_ApiSuites_LabkeyTestIntegration) | Utilities and configurations for running JavaScript tests with LabKey Server.
 
 
 ## Using @labkey npm packages

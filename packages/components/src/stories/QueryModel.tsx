@@ -171,9 +171,6 @@ storiesOf('QueryModel', module)
                         <input style={{ width: '800px' }} value={queryString} onChange={onQueryChange} />
                     </div>
                     <GridPanelWithModel
-                        getFilterDisplayValue={(columnName: string, rawValue: string) => {
-                            return rawValue + '-withSuffix';
-                        }}
                         ButtonsComponent={GridPanelButtonsExample}
                         title="Mixtures"
                         queryConfig={queryConfigs}
@@ -186,6 +183,23 @@ storiesOf('QueryModel', module)
             <Router history={history}>
                 <Route path="/" component={ExampleGrid} />
             </Router>
+        );
+    })
+    .add('With custom Name filter display values', () => {
+        const queryConfig: QueryConfig = {
+            schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
+        };
+
+        return (
+            <div className="query-model-example">
+                <GridPanelWithModel
+                    getFilterDisplayValue={(columnName: string, rawValue: string) => {
+                        return rawValue + '-withSuffix';
+                    }}
+                    queryConfig={queryConfig}
+                    showOmniBox={true}
+                />
+            </div>
         );
     })
     .add('Minimal GridPanel', () => {

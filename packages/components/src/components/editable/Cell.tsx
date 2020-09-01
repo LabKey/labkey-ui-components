@@ -42,6 +42,7 @@ interface Props {
     selected?: boolean;
     selection?: boolean;
     values?: List<ValueDescriptor>;
+    onCellModify?: () => any;
 }
 
 export class Cell extends React.PureComponent<Props> {
@@ -77,7 +78,7 @@ export class Cell extends React.PureComponent<Props> {
 
     handleBlur = (evt: any): void => {
         clearTimeout(this.changeTO);
-        const { colIdx, modelId, rowIdx } = this.props;
+        const { colIdx, modelId, rowIdx, onCellModify } = this.props;
         modifyCell(
             modelId,
             colIdx,
@@ -88,6 +89,7 @@ export class Cell extends React.PureComponent<Props> {
             },
             MODIFICATION_TYPES.REPLACE
         );
+        if (onCellModify) onCellModify();
     };
 
     handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -95,7 +97,7 @@ export class Cell extends React.PureComponent<Props> {
 
         clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
-            const { colIdx, modelId, rowIdx } = this.props;
+            const { colIdx, modelId, rowIdx, onCellModify } = this.props;
             modifyCell(
                 modelId,
                 colIdx,
@@ -106,6 +108,7 @@ export class Cell extends React.PureComponent<Props> {
                 },
                 MODIFICATION_TYPES.REPLACE
             );
+            if (onCellModify) onCellModify();
         }, 250);
     };
 
@@ -122,7 +125,7 @@ export class Cell extends React.PureComponent<Props> {
     };
 
     handleKeys = (event: React.KeyboardEvent<HTMLElement>) => {
-        const { colIdx, focused, modelId, rowIdx, selected } = this.props;
+        const { colIdx, focused, modelId, rowIdx, selected, onCellModify } = this.props;
 
         switch (event.keyCode) {
             case KEYS.Alt:
@@ -149,6 +152,7 @@ export class Cell extends React.PureComponent<Props> {
                 if (!focused && selected && !this.isReadOnly()) {
                     cancelEvent(event);
                     modifyCell(modelId, colIdx, rowIdx, undefined, MODIFICATION_TYPES.REMOVE_ALL);
+                    if (onCellModify) onCellModify();
                 }
                 break;
             case KEYS.Tab:
@@ -210,7 +214,19 @@ export class Cell extends React.PureComponent<Props> {
     };
 
     render() {
-        const { col, colIdx, focused, message, modelId, placeholder, rowIdx, selected, selection, values } = this.props;
+        const {
+            col,
+            colIdx,
+            focused,
+            message,
+            modelId,
+            placeholder,
+            rowIdx,
+            selected,
+            selection,
+            values,
+            onCellModify,
+        } = this.props;
 
         if (!focused) {
             let valueDisplay = values
@@ -266,6 +282,7 @@ export class Cell extends React.PureComponent<Props> {
                 rowIdx,
                 select: selectCell,
                 values,
+                onCellModify,
             };
 
             return <LookupCell {...lookupProps} />;

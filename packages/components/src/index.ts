@@ -140,6 +140,7 @@ import {
     initQueryGridState,
     invalidateUsers,
     removeQueryGridModel,
+    updateEditorModel,
 } from './global';
 import {
     deleteRows,
@@ -401,6 +402,7 @@ export {
     gridIdInvalidate,
     queryGridInvalidate,
     schemaGridInvalidate,
+    updateEditorModel,
     // grid functions
     getSelected,
     getSelectedData,

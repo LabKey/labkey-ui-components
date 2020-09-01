@@ -1,4 +1,4 @@
-import React, { FC, PureComponent, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 
 import { PaginationButton } from './PaginationButton';
@@ -62,6 +62,7 @@ export class Pagination extends PureComponent<PaginationProps> {
                 {showPaginationButtons && (
                     <ButtonGroup className="pagination-button-group">
                         <PaginationButton
+                            className="pagination-button--previous"
                             disabled={disabled || isFirstPage}
                             iconClass="fa-chevron-left"
                             tooltip="Previous Page"
@@ -80,6 +81,7 @@ export class Pagination extends PureComponent<PaginationProps> {
                         />
 
                         <PaginationButton
+                            className="pagination-button--next"
                             disabled={disabled || isLastPage}
                             iconClass="fa-chevron-right"
                             tooltip="Next Page"

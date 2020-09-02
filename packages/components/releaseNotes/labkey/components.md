@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.91.2
+*Released*: 2 September 2020
 * Export FieldEditTrigger for use in applications
 
 ### version 0.91.1

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Export FieldEditTrigger for use in applications
 
+### version 0.91.1
+*Released*: 1 September 2020
+* Add class names to PageMenu, PageSizeMenu, PaginationButton, and Pagination components
+
 ### version 0.91.0
 *Released*: 30 August 2020
 * EditableGrid updates:

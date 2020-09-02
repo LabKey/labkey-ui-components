@@ -30,7 +30,13 @@ export class PageSizeMenu extends PureComponent<PageSizeMenuProps> {
         return (
             <div className="page-size-menu">
                 <Tip caption="Page Size" trigger={['hover']}>
-                    <DropdownButton id={`page-size-drop-${id}`} pullRight title={pageSize} disabled={disabled}>
+                    <DropdownButton
+                        className="page-size-dropdown"
+                        id={`page-size-drop-${id}`}
+                        pullRight
+                        title={pageSize}
+                        disabled={disabled}
+                    >
                         <MenuItem header>Page Size</MenuItem>
 
                         {menuItems}

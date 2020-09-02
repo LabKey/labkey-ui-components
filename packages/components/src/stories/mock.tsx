@@ -482,7 +482,10 @@ export function initQueryGridMocks(delayMs = undefined) {
         if (queryResponse) {
             const unique = new Set(
                 queryResponse.get('rows').map(row => {
-                    const data = row.getIn(['data', column]);
+                    let data = row.getIn(['data', column]);
+                    if (!data) {
+                        data = row.getIn(['data', column.split("/")[0]]);
+                    }
                     return data.get('displayValue') ?? data.get('value');
                 })
             );

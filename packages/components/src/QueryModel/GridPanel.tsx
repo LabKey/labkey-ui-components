@@ -184,7 +184,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { id } = props.model;
 
         this.omniBoxActions = {
-            filter: new FilterAction(id, this.getColumns, props.getFilterDisplayValue),
+            filter: new FilterAction(id, this.getColumns, null, props.getFilterDisplayValue),
             search: new SearchAction(id),
             sort: new SortAction(id, this.getColumns),
             view: new ViewAction(id, this.getColumns, this.getQueryInfo),

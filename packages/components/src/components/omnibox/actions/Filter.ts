@@ -21,6 +21,7 @@ import { QueryColumn } from '../../base/models/model';
 import { parseColumns, resolveFieldKey } from '../utils';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
+import { QueryInfo } from "../../..";
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
@@ -166,7 +167,7 @@ export class FilterAction implements Action {
     urlPrefix: string;
     getFilterDisplayValue: (columnName: string, rawValue: string) => string;
 
-    constructor(urlPrefix: string, getColumns: () => List<QueryColumn>, getFilterDisplayValue?: (columnName: string, rawValue: string) => string) {
+    constructor(urlPrefix: string, getColumns: () => List<QueryColumn>, getQueryInfo?: () => QueryInfo, getFilterDisplayValue?: (columnName: string, rawValue: string) => string) {
         this.getColumns = getColumns;
         this.urlPrefix = urlPrefix;
         this.getFilterDisplayValue = getFilterDisplayValue;
@@ -436,11 +437,12 @@ export class FilterAction implements Action {
         columnName: string,
         filterType: Filter.IFilterType,
         rawValue: string | string[]
-    ): { displayValue: string; isReadOnly: boolean } {
+    ): { displayValue: string; isReadOnly: boolean, inputValue: string } {
         let isReadOnly = false;
 
-        let value: string;
+        let value: string, inputValue: string;
         const displayParts = [columnName, resolveSymbol(filterType)];
+        const inputDisplayParts = [`"${displayParts[0]}"`, displayParts[1]];
 
         if (!filterType.isDataValueRequired()) {
             // intentionally do not modify "display" -- this filter type does not support a value (e.g. isblank)
@@ -475,6 +477,8 @@ export class FilterAction implements Action {
                 if (displayValue) {
                     value = '' + displayValue;
                 }
+                inputDisplayParts.push(value);
+                inputValue = inputDisplayParts.join(' ');
             }
 
         }
@@ -485,6 +489,7 @@ export class FilterAction implements Action {
 
         return {
             displayValue: displayParts.join(' '),
+            inputValue,
             isReadOnly,
         };
     }
@@ -506,13 +511,13 @@ export class FilterAction implements Action {
         const filterType = filter.getFilterType();
         const value = filter.getValue();
         const operator = resolveSymbol(filter.getFilterType());
-        const { displayValue, isReadOnly } = this.getDisplayValue(label ?? columnName, filterType, value);
+        const { displayValue, isReadOnly, inputValue } = this.getDisplayValue(label ?? columnName, filterType, value);
 
         return {
             action: this,
             displayValue,
             isReadOnly,
-            value: `"${label ?? columnName}" ${operator} ${value}`,
+            value: inputValue ? inputValue : `"${label ?? columnName}" ${operator} ${value}`,
             valueObject: filter,
         };
     }

@@ -337,7 +337,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
           className="btn-group"
         >
           <button
-            className="disabled-button-with-tooltip btn btn-default"
+            className="pagination-button disabled-button-with-tooltip btn btn-default"
             disabled={true}
             onBlur={[Function]}
             onClick={[Function]}
@@ -423,7 +423,7 @@ exports[`<QueryGridBar/> isPaged 1`] = `
             </ul>
           </div>
           <button
-            className="btn btn-default"
+            className="pagination-button btn btn-default"
             disabled={false}
             onBlur={[Function]}
             onClick={[Function]}

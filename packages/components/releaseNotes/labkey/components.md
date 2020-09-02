@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update TimelineView styling so comments retain white space
 
+### version 0.91.2
+*Released*: 2 September 2020
+* Export FieldEditTrigger for use in applications
+
 ### version 0.91.1
 *Released*: 1 September 2020
 * Add class names to PageMenu, PageSizeMenu, PaginationButton, and Pagination components

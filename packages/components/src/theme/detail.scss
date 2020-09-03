@@ -105,7 +105,7 @@
 .field__set,
 .field__unset {
   cursor: pointer;
-  &:hover {
+  &:hover .field-edit__icon {
     color: $brand-warning;
   }
 }

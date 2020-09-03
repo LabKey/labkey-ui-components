@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.91.4
+*Released*: 3 September 2020
 * Update TimelineView styling so comments retain white space
 * In `withQueryModels`, set the loading selection state appropriately when clearing or setting selections
 

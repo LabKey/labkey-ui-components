@@ -167,6 +167,7 @@ export class FilterAction implements Action {
     urlPrefix: string;
     getFilterDisplayValue: (columnName: string, rawValue: string) => string;
 
+    // todo, define an interface for Action constructor param and use a signle object as param
     constructor(urlPrefix: string, getColumns: () => List<QueryColumn>, getQueryInfo?: () => QueryInfo, getFilterDisplayValue?: (columnName: string, rawValue: string) => string) {
         this.getColumns = getColumns;
         this.urlPrefix = urlPrefix;
@@ -443,7 +444,7 @@ export class FilterAction implements Action {
 
         let value: string, inputValue: string;
         const displayParts = [columnName, resolveSymbol(filterType)];
-        const inputDisplayParts = [`"${displayParts[0]}"`, displayParts[1]];
+        const inputDisplayParts = [`"${displayParts[0]}"`, displayParts[1]]; // need to quote column name for input display
 
         if (!filterType.isDataValueRequired()) {
             // intentionally do not modify "display" -- this filter type does not support a value (e.g. isblank)

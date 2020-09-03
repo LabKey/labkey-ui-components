@@ -514,6 +514,10 @@ export function getUpdatedDataFromGrid(
             const row = editedRow.reduce((row, value, key) => {
                 const originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
 
+                // Convert empty cell to null
+                if (value === '')
+                    value = null;
+
                 // If col is a multi-value column, compare all values for changes
                 if (List.isList(originalValue) && Array.isArray(value)) {
                     if (
@@ -528,12 +532,12 @@ export function getUpdatedDataFromGrid(
                 // Lookup columns store a list but grid only holds a single value
                 else if (List.isList(originalValue) && !Array.isArray(value)) {
                     if (originalValue.get(0).value !== value) {
-                        row[key] = value || null;
+                        row[key] = value ?? null;
                     }
-                } else if ((value && !originalValue) || originalValue != value) {
+                } else if (originalValue !== value) {
                     // if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value, we set the value to null in our update data
-                    row[key] = value || null;
+                    row[key] = value ?? null;
                 }
                 return row;
             }, {});

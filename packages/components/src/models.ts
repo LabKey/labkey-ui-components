@@ -650,7 +650,7 @@ export class EditorModel
         return data.map(valueMap => {
             const returnMap = valueMap.reduce((m, valueMap, key) => {
                 const editorData = EditorModel.getEditorDataFromQueryValueMap(valueMap);
-                if (editorData) return m.set(key, editorData);
+                if (editorData !== undefined) return m.set(key, editorData);
                 else return m;
             }, Map<any, any>());
             return updates ? returnMap.merge(updates) : returnMap;

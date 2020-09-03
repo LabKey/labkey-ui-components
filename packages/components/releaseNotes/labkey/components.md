@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.91.3
+*Released*: 3 September 2020
 * Allow custom display value for Omnibox filter options
 
 ### version 0.91.2

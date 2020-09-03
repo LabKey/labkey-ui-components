@@ -434,7 +434,10 @@ export function initQueryGridMocks(delayMs = undefined) {
         ) {
             responseBody = lineageRunDetail;
         } else if (queryName === 'mixturesbad') {
-            return res.status(400).headers(JSON_HEADERS).body(JSON.stringify({ exception: 'Error loading rows'}));
+            return res
+                .status(400)
+                .headers(JSON_HEADERS)
+                .body(JSON.stringify({ exception: 'Error loading rows' }));
         }
 
         if (!responseBody) {
@@ -484,7 +487,7 @@ export function initQueryGridMocks(delayMs = undefined) {
                 queryResponse.get('rows').map(row => {
                     let data = row.getIn(['data', column]);
                     if (!data) {
-                        data = row.getIn(['data', column.split("/")[0]]);
+                        data = row.getIn(['data', column.split('/')[0]]);
                     }
                     return data.get('displayValue') ?? data.get('value');
                 })

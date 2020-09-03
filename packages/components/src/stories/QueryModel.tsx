@@ -158,9 +158,9 @@ storiesOf('QueryModel', module)
             const onQueryChange = (evt: ChangeEvent<HTMLInputElement>): void => {
                 const query = {};
                 evt.target.value.split('&').forEach(segment => {
-                    const [ key, value ] = segment.split('=');
+                    const [key, value] = segment.split('=');
                     query[key] = value;
-                    router.replace({...location, query });
+                    router.replace({ ...location, query });
                 });
             };
 
@@ -194,8 +194,7 @@ storiesOf('QueryModel', module)
             <div className="query-model-example">
                 <GridPanelWithModel
                     getFilterDisplayValue={(columnName: string, rawValue: string) => {
-                        if ("name" === columnName.toLowerCase())
-                            return rawValue + '-withSuffix';
+                        if (columnName.toLowerCase() === 'name') return rawValue + '-withSuffix';
                         return null;
                     }}
                     queryConfig={queryConfig}
@@ -228,7 +227,7 @@ storiesOf('QueryModel', module)
 
         return (
             <div className="query-model-example">
-                <GridPanelWithModel title="Bad QueryInfo" queryConfig={queryConfig}/>
+                <GridPanelWithModel title="Bad QueryInfo" queryConfig={queryConfig} />
             </div>
         );
     })
@@ -239,7 +238,7 @@ storiesOf('QueryModel', module)
 
         return (
             <div className="query-model-example">
-                <GridPanelWithModel title="Bad Query" queryConfig={queryConfig}/>
+                <GridPanelWithModel title="Bad Query" queryConfig={queryConfig} />
             </div>
         );
     })

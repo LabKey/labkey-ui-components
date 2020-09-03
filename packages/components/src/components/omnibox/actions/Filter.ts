@@ -20,8 +20,9 @@ import { QueryColumn } from '../../base/models/model';
 
 import { parseColumns, resolveFieldKey } from '../utils';
 
+import { QueryInfo } from '../../..';
+
 import { Action, ActionOption, ActionValue, Value } from './Action';
-import { QueryInfo } from "../../..";
 
 /**
  * The following section prepares the SYMBOL_MAP and SUFFIX_MAP to allow any Filter Action instances
@@ -168,7 +169,12 @@ export class FilterAction implements Action {
     getFilterDisplayValue: (columnName: string, rawValue: string) => string;
 
     // todo, define an interface for Action constructor param and use a signle object as param
-    constructor(urlPrefix: string, getColumns: () => List<QueryColumn>, getQueryInfo?: () => QueryInfo, getFilterDisplayValue?: (columnName: string, rawValue: string) => string) {
+    constructor(
+        urlPrefix: string,
+        getColumns: () => List<QueryColumn>,
+        getQueryInfo?: () => QueryInfo,
+        getFilterDisplayValue?: (columnName: string, rawValue: string) => string
+    ) {
         this.getColumns = getColumns;
         this.urlPrefix = urlPrefix;
         // getQueryInfo is not used by Filter currently, but needs to be in params since it's used by View Action, see URLBox new urlAction(urlPrefix, this.getColumns, this.getQueryInfo)
@@ -420,8 +426,7 @@ export class FilterAction implements Action {
             let displayValue = value;
             if (this.getFilterDisplayValue) {
                 const altDisplayValue = this.getFilterDisplayValue(col.shortCaption, strValue);
-                if (altDisplayValue)
-                    displayValue = `"${col.shortCaption}" ${operator} ${altDisplayValue}`;
+                if (altDisplayValue) displayValue = `"${col.shortCaption}" ${operator} ${altDisplayValue}`;
             }
             return {
                 // label and value are the same, and appendValue is false, because we want to ignore all user input when
@@ -439,7 +444,7 @@ export class FilterAction implements Action {
         columnName: string,
         filterType: Filter.IFilterType,
         rawValue: string | string[]
-    ): { displayValue: string; isReadOnly: boolean, inputValue: string } {
+    ): { displayValue: string; isReadOnly: boolean; inputValue: string } {
         let isReadOnly = false;
 
         let value: string, inputValue: string;
@@ -457,9 +462,9 @@ export class FilterAction implements Action {
             if (!Utils.isArray(rawValue)) {
                 throw new Error(
                     "Expected '" +
-                    filterType.getMultiValueSeparator() +
-                    "' string or an Array of values, got: " +
-                    rawValue
+                        filterType.getMultiValueSeparator() +
+                        "' string or an Array of values, got: " +
+                        rawValue
                 );
             }
 
@@ -482,7 +487,6 @@ export class FilterAction implements Action {
                 inputDisplayParts.push(value);
                 inputValue = inputDisplayParts.join(' ');
             }
-
         }
 
         if (value) {

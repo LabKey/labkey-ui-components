@@ -317,6 +317,15 @@ export function withQueryModels<Props>(
 
         clearSelections = async (id: string): Promise<void> => {
             const { modelLoader } = this.props;
+            const isLoading = this.state.queryModels[id].selectionsLoadingState === LoadingState.LOADING;
+
+            if (!isLoading) {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+                    })
+                );
+            }
 
             try {
                 await modelLoader.clearSelections(this.state.queryModels[id]);
@@ -324,6 +333,9 @@ export function withQueryModels<Props>(
                     produce((draft: Draft<State>) => {
                         const model = draft.queryModels[id];
                         model.selections = new Set();
+                        if (!isLoading) {
+                            model.selectionsLoadingState = LoadingState.LOADED;
+                        }
                         model.selectionsError = undefined;
                     })
                 );
@@ -334,6 +346,15 @@ export function withQueryModels<Props>(
 
         setSelections = async (id: string, checked: boolean, selections: string[]): Promise<void> => {
             const { modelLoader } = this.props;
+            const isLoading = this.state.queryModels[id].selectionsLoadingState === LoadingState.LOADING;
+
+            if (!isLoading) {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+                    })
+                );
+            }
 
             try {
                 await modelLoader.setSelections(this.state.queryModels[id], checked, selections);
@@ -348,6 +369,9 @@ export function withQueryModels<Props>(
                             }
                         });
                         model.selectionsError = undefined;
+                        if (!isLoading) {
+                            model.selectionsLoadingState = LoadingState.LOADED;
+                        }
                     })
                 );
             } catch (error) {
@@ -358,6 +382,12 @@ export function withQueryModels<Props>(
         replaceSelections = async (id: string, selections: string[]): Promise<void> => {
             const { modelLoader } = this.props;
 
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+                })
+            );
+
             try {
                 await modelLoader.clearSelections(this.state.queryModels[id]);
                 await modelLoader.setSelections(this.state.queryModels[id], true, selections);
@@ -366,6 +396,7 @@ export function withQueryModels<Props>(
                         const model = draft.queryModels[id];
                         model.selections = new Set(selections);
                         model.selectionsError = undefined;
+                        model.selectionsLoadingState = LoadingState.LOADED;
                     })
                 );
             } catch (error) {

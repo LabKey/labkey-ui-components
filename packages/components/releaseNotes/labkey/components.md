@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Update TimelineView styling so comments retain white space
+* In `withQueryModels`, set the loading selection state appropriately when clearing or setting selections
 
 ### version 0.91.2
 *Released*: 2 September 2020

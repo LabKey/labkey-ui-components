@@ -170,6 +170,7 @@ export class FilterAction implements Action {
     constructor(urlPrefix: string, getColumns: () => List<QueryColumn>, getQueryInfo?: () => QueryInfo, getFilterDisplayValue?: (columnName: string, rawValue: string) => string) {
         this.getColumns = getColumns;
         this.urlPrefix = urlPrefix;
+        // getQueryInfo is not used by Filter currently, but needs to be in params since it's used by View Action, see URLBox new urlAction(urlPrefix, this.getColumns, this.getQueryInfo)
         this.getFilterDisplayValue = getFilterDisplayValue;
     }
 

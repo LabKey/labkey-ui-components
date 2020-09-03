@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update TimelineView styling so comments retain white space
 * In `withQueryModels`, set the loading selection state appropriately when clearing or setting selections
 
+### version 0.91.3
+*Released*: 3 September 2020
+* Allow custom display value for Omnibox filter options
+
 ### version 0.91.2
 *Released*: 2 September 2020
 * Export FieldEditTrigger for use in applications

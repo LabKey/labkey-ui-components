@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update FieldEditTrigger to remove dependency on QueryModel and remove immutable List from interface
+
 ### version 0.91.5
 *Released*: 4 September 2020
 * Updates to EditableGrid data processing functions to fix issues with boolean values

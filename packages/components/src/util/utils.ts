@@ -514,6 +514,22 @@ export function getUpdatedDataFromGrid(
             const row = editedRow.reduce((row, value, key) => {
                 const originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
 
+                // Convert empty cell to null
+                if (value === '')
+                    value = null;
+
+                // EditableGrid passes in strings for single values. Attempt this conversion here to help check for
+                // updated values. This is not the final type check.
+                if (typeof originalValue === "number" || typeof originalValue === "boolean") {
+                    try {
+                        value = JSON.parse(value);
+                    }
+                    catch (e) {
+                        // Incorrect types are handled by API and user feedback created from that response. Don't need
+                        // to handle that here.
+                    }
+                }
+
                 // If col is a multi-value column, compare all values for changes
                 if (List.isList(originalValue) && Array.isArray(value)) {
                     if (
@@ -528,12 +544,14 @@ export function getUpdatedDataFromGrid(
                 // Lookup columns store a list but grid only holds a single value
                 else if (List.isList(originalValue) && !Array.isArray(value)) {
                     if (originalValue.get(0).value !== value) {
-                        row[key] = value || null;
+                        row[key] = value ?? null;
                     }
-                } else if ((value && !originalValue) || originalValue != value) {
-                    // if the value is 'undefined', it will be removed from the update rows, so in order to
-                    // erase an existing value, we set the value to null in our update data
-                    row[key] = value || null;
+                } else if (originalValue !== value) {
+                    // - only update if the value has changed
+                    // - if the value is 'undefined', it will be removed from the update rows, so in order to
+                    // erase an existing value we set the value to null in our update data
+
+                    row[key] = value ?? null;
                 }
                 return row;
             }, {});

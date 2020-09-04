@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.91.2-fb-41091-sample-id.2",
+  "version": "0.91.4-fb-41091-sample-id.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

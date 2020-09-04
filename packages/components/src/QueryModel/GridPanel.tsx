@@ -53,6 +53,7 @@ interface GridPanelProps<ButtonsComponentProps> {
     showSampleComparisonReports?: boolean;
     showViewMenu?: boolean;
     showHeader?: boolean;
+    getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
 }
 
 type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
@@ -183,7 +184,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         const { id } = props.model;
 
         this.omniBoxActions = {
-            filter: new FilterAction(id, this.getColumns),
+            filter: new FilterAction(id, this.getColumns, null, props.getFilterDisplayValue),
             search: new SearchAction(id),
             sort: new SortAction(id, this.getColumns),
             view: new ViewAction(id, this.getColumns, this.getQueryInfo),

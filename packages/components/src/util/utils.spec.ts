@@ -784,96 +784,6 @@ describe('getUpdatedData', () => {
 });
 
 describe('getUpdatedDataFromGrid', () => {
-    // const originalData = fromJS({
-    //     "448": {
-    //         "RowId": {
-    //             "value": 448,
-    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
-    //         },
-    //         "Value": {
-    //             "value": null
-    //         },
-    //         "Data": {
-    //             "value": "data1"
-    //         },
-    //         "AndAgain": {
-    //             "value": "again"
-    //         },
-    //         "Name": {
-    //             "value": "S-20190516-9042",
-    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=448"
-    //         },
-    //         "Other": {
-    //             "value": "other1"
-    //         }
-    //     },
-    //     "447": {
-    //         "RowId": {
-    //             "value": 447,
-    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
-    //         },
-    //         "Value": {
-    //             "value": null
-    //         },
-    //         "Data": {
-    //             "value": "data1"
-    //         },
-    //         "AndAgain": {
-    //             "value": "again"
-    //         },
-    //         "Name": {
-    //             "value": "S-20190516-4622",
-    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=447"
-    //         },
-    //         "Other": {
-    //             "value": "other2"
-    //         }
-    //     },
-    //     "446": {
-    //         "RowId": {
-    //             "value": 446,
-    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
-    //         },
-    //         "Value": {
-    //             "value": "val"
-    //         },
-    //         "Data": {
-    //             "value": "data1"
-    //         },
-    //         "AndAgain": {
-    //             "value": "again"
-    //         },
-    //         "Name": {
-    //             "value": "S-20190516-2368",
-    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=446"
-    //         },
-    //         "Other": {
-    //             "value": "other3"
-    //         }
-    //     },
-    //     "445": {
-    //         "RowId": {
-    //             "value": 445,
-    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
-    //         },
-    //         "Value": {
-    //             "value": "val"
-    //         },
-    //         "Data": {
-    //             "value": "data1"
-    //         },
-    //         "AndAgain": {
-    //             "value": "again"
-    //         },
-    //         "Name": {
-    //             "value": "S-20190516-9512",
-    //             "url": "/labkey/Sample%20Management/experiment-showMaterial.view?rowId=445"
-    //         },
-    //         "Other": {
-    //             "value": null
-    //         }
-    //     },
-    // });
     const originalData = fromJS({
         448: {
             RowId: 448,
@@ -882,6 +792,8 @@ describe('getUpdatedDataFromGrid', () => {
             AndAgain: 'again',
             Name: 'S-20190516-9042',
             Other: 'other1',
+            Bool: true,
+            Int: 0
         },
         447: {
             RowId: 447,
@@ -890,6 +802,8 @@ describe('getUpdatedDataFromGrid', () => {
             AndAgain: 'again',
             Name: 'S-20190516-4622',
             Other: 'other2',
+            Bool: false,
+            Int: 7
         },
         446: {
             RowId: 446,
@@ -898,6 +812,8 @@ describe('getUpdatedDataFromGrid', () => {
             AndAgain: 'again',
             Name: 'S-20190516-2368',
             Other: 'other3',
+            Bool: true,
+            Int: 6
         },
         445: {
             RowId: 445,
@@ -906,6 +822,8 @@ describe('getUpdatedDataFromGrid', () => {
             AndAgain: 'again',
             Name: 'S-20190516-9512',
             Other: null,
+            Bool: false,
+            Int: 5
         },
     });
     test('no edited rows', () => {
@@ -924,14 +842,18 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: 'again',
                     Name: 'S-20190516-9042',
                     Other: 'other1',
+                    Bool: true,
+                    Int: 0
                 }),
                 Map<string, any>({
                     RowId: '447',
-                    Value: null,
+                    Value: '',
                     Data: 'data1',
                     AndAgain: 'again',
                     Name: 'S-20190516-4622',
                     Other: 'other2',
+                    Bool: false,
+                    Int: '7'
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -940,6 +862,8 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: 'again',
                     Name: 'S-20190516-2368',
                     Other: 'other3',
+                    Bool: true,
+                    Int: '6'
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -948,6 +872,8 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: 'again',
                     Name: 'S-20190516-9512',
                     Other: null,
+                    Bool: false,
+                    Int: 5
                 }),
             ],
             'RowId'
@@ -966,6 +892,8 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: 'again',
                     Name: 'S-20190516-9042',
                     Other: 'other1',
+                    Bool: undefined,
+                    Int: undefined
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -974,6 +902,8 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: null,
                     Name: 'S-20190516-4622',
                     Other: 'other2',
+                    Bool: undefined,
+                    Int: undefined
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -982,6 +912,8 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: 'again',
                     Name: 'S-20190516-2368',
                     Other: 'other3',
+                    Bool: true,
+                    Int: 6
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -990,16 +922,22 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: 'again',
                     Name: 'S-20190516-9512',
                     Other: null,
+                    Bool: false,
+                    Int: 5
                 }),
             ],
             'RowId'
         );
         expect(updatedData).toHaveLength(2);
         expect(updatedData[0]).toStrictEqual({
+            Int: null,
+            Bool: null,
             Data: null,
             RowId: '448',
         });
         expect(updatedData[1]).toStrictEqual({
+            Int: null,
+            Bool: null,
             AndAgain: null,
             RowId: '447',
         });
@@ -1016,14 +954,18 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: 'again',
                     Name: 'S-20190516-9042',
                     Other: 'other1',
+                    Bool: '',
+                    Int: ''
                 }),
                 Map<string, any>({
                     RowId: '447',
-                    Value: null,
+                    Value: '447 Value',
                     Data: 'data1',
                     AndAgain: null,
                     Name: 'S-20190516-4622',
                     Other: 'other2',
+                    Bool: '',
+                    Int: '0'
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -1032,6 +974,8 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: 'change me',
                     Name: 'S-20190516-2368',
                     Other: 'other3',
+                    Bool: false,
+                    Int: 66
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -1040,25 +984,35 @@ describe('getUpdatedDataFromGrid', () => {
                     AndAgain: 'again',
                     Name: 'S-20190516-9512',
                     Other: null,
+                    Bool: true,
+                    Int: 5
                 }),
             ],
             'RowId'
         );
         expect(updatedData).toHaveLength(4);
         expect(updatedData[0]).toStrictEqual({
+            Int: null,
+            Bool: null,
             Data: null,
             RowId: '448',
         });
         expect(updatedData[1]).toStrictEqual({
+            Int: 0,
+            Bool: null,
             AndAgain: null,
+            Value: '447 Value',
             RowId: '447',
         });
         expect(updatedData[2]).toStrictEqual({
+            Int: 66,
+            Bool: false,
             Value: 'new val',
             AndAgain: 'change me',
             RowId: '446',
         });
         expect(updatedData[3]).toStrictEqual({
+            Bool: true,
             Data: 'other data',
             RowId: '445',
         });
@@ -1071,6 +1025,8 @@ describe('getUpdatedDataFromGrid', () => {
                 Map<string, any>({
                     RowId: '448',
                     'New Field': 'new value',
+                    Bool2: false,
+                    Int2: 22,
                 }),
             ],
             'RowId'
@@ -1078,6 +1034,8 @@ describe('getUpdatedDataFromGrid', () => {
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({
             'New Field': 'new value',
+            Bool2: false,
+            Int2: 22,
             RowId: '448',
         });
     });

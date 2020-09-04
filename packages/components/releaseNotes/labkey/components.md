@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.91.5
+*Released*: 4 September 2020
+* Updates to EditableGrid data processing functions to fix issues with boolean values
+
 ### version 0.91.4
 *Released*: 3 September 2020
 * Update TimelineView styling so comments retain white space

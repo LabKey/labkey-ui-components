@@ -1680,7 +1680,7 @@ function applySelection(
     };
 }
 
-export function initLookup(column: QueryColumn, maxRows: number, values?: List<string>) {
+export function initLookup(column: QueryColumn, maxRows: number, values?: List<string>, keys?: List<any>) {
     if (shouldInitLookup(column, values)) {
         const store = new LookupStore({
             key: LookupStore.key(column),
@@ -1689,7 +1689,7 @@ export function initLookup(column: QueryColumn, maxRows: number, values?: List<s
         });
         updateLookupStore(store, {}, false);
 
-        return searchLookup(column, maxRows, undefined, values);
+        return searchLookup(column, maxRows, undefined, values, keys);
     }
 
     return Promise.resolve();
@@ -1713,11 +1713,11 @@ function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
     return false;
 }
 
-export function searchLookup(column: QueryColumn, maxRows: number, token?: string, values?: List<string>) {
+export function searchLookup(column: QueryColumn, maxRows: number, token?: string, values?: List<string>, keys?: List<any>) {
     let store = getLookupStore(column);
 
     // prevent redundant search
-    if (store && (token !== store.lastToken || values)) {
+    if (store && (token !== store.lastToken || values || keys)) {
         store = updateLookupStore(store, {
             isLoaded: false,
             isLoading: true,
@@ -1738,6 +1738,12 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
         if (values) {
             selectRowOptions.filterArray = [
                 Filter.create(column.lookup.displayColumn, values.toArray(), Filter.Types.IN),
+            ];
+        }
+
+        if (keys) {
+            selectRowOptions.filterArray = [
+                Filter.create(column.lookup.keyColumn, keys.toArray(), Filter.Types.IN),
             ];
         }
 

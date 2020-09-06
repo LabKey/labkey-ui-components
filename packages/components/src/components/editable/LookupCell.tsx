@@ -35,6 +35,7 @@ export interface LookupCellProps {
     select: (modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any;
     values: List<ValueDescriptor>;
     onCellModify?: () => any;
+    filteredLookupValues?: List<string>;
 }
 
 interface LookupCellState {
@@ -60,8 +61,8 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
     }
 
     componentDidMount(): void {
-        const { col } = this.props;
-        initLookup(col, LOOKUP_DEFAULT_SIZE);
+        const { col, filteredLookupValues } = this.props;
+        initLookup(col, LOOKUP_DEFAULT_SIZE, filteredLookupValues);
     }
 
     UNSAFE_componentWillReceiveProps(nextProps: LookupCellProps): void {
@@ -81,7 +82,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
             this.inputEl.current.value = '';
         }
 
-        searchLookup(this.props.col, LOOKUP_DEFAULT_SIZE);
+        searchLookup(this.props.col, LOOKUP_DEFAULT_SIZE, undefined, this.props.filteredLookupValues);
 
         this.setState({
             activeOptionIdx: -1,
@@ -117,7 +118,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
         this.blurTO = window.setTimeout(() => {
             const { colIdx, modelId, rowIdx } = this.props;
             this.props.select(modelId, colIdx, rowIdx);
-            searchLookup(this.props.col, LOOKUP_DEFAULT_SIZE);
+            searchLookup(this.props.col, LOOKUP_DEFAULT_SIZE, null, this.props.filteredLookupValues);
         }, 200);
     };
 
@@ -130,7 +131,7 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
                 token = this.inputEl.current.value;
             }
 
-            searchLookup(this.props.col, LOOKUP_DEFAULT_SIZE, token);
+            searchLookup(this.props.col, LOOKUP_DEFAULT_SIZE, token, this.props.filteredLookupValues);
 
             this.setState({
                 activeOptionIdx: -1,

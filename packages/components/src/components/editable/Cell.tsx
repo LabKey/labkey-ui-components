@@ -43,6 +43,7 @@ interface Props {
     selection?: boolean;
     values?: List<ValueDescriptor>;
     onCellModify?: () => any;
+    filteredLookupValues?: List<string>
 }
 
 export class Cell extends React.PureComponent<Props> {
@@ -226,6 +227,7 @@ export class Cell extends React.PureComponent<Props> {
             selection,
             values,
             onCellModify,
+            filteredLookupValues,
         } = this.props;
 
         if (!focused) {
@@ -283,6 +285,7 @@ export class Cell extends React.PureComponent<Props> {
                 select: selectCell,
                 values,
                 onCellModify,
+                filteredLookupValues,
             };
 
             return <LookupCell {...lookupProps} />;

@@ -1969,13 +1969,14 @@ function pasteCell(
             const byColumnValues = getPasteValuesByColumn(paste);
             // prior to load, ensure lookup column stores are loaded
             const columnLoaders: any[] = gridModel.getInsertColumns().reduce((arr, column, index) => {
+                const filteredLookup = getColumnFilteredLookup(column, columnMetadata);
                 if (
                     index >= paste.coordinates.colMin &&
                     index <= paste.coordinates.colMax &&
                     byColumnValues.get(index - paste.coordinates.colMin).size > 0
                 )
-                    arr.push(initLookup(column, undefined, byColumnValues.get(index - paste.coordinates.colMin)));
-                else arr.push(initLookup(column, LOOKUP_DEFAULT_SIZE));
+                    arr.push(initLookup(column, undefined, filteredLookup ? filteredLookup : byColumnValues.get(index - paste.coordinates.colMin)));
+                else arr.push(initLookup(column, LOOKUP_DEFAULT_SIZE, filteredLookup));
                 return arr;
             }, []);
 
@@ -2416,6 +2417,14 @@ function getPasteValuesByColumn(paste: IPasteModel): List<List<string>> {
 function isReadOnly(column: QueryColumn, columnMetadata: Map<string, EditableColumnMetadata>): boolean {
     const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey);
     return (column && column.readOnly) || (metadata && metadata.readOnly);
+}
+
+function getColumnFilteredLookup(column: QueryColumn, columnMetadata: Map<string, EditableColumnMetadata>): List<string> {
+    const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey);
+    if (metadata)
+        return metadata.filteredLookupValues;
+
+    return undefined;
 }
 
 function pasteCellLoad(

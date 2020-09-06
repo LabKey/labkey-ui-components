@@ -62,8 +62,8 @@ export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellStat
     }
 
     componentDidMount(): void {
-        const { col, filteredLookupValues } = this.props;
-        initLookup(col, LOOKUP_DEFAULT_SIZE, filteredLookupValues);
+        const { col, filteredLookupValues, filteredLookupKeys } = this.props;
+        initLookup(col, LOOKUP_DEFAULT_SIZE, filteredLookupValues, filteredLookupKeys);
     }
 
     UNSAFE_componentWillReceiveProps(nextProps: LookupCellProps): void {

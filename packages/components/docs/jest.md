@@ -51,7 +51,7 @@ rendering of components with different sets of parameters.
     1. ...
 1. You can run individual jest test cases from IntelliJ directly. When run in debug mode, you can set breakpoints in
     the jest test code but also in the React component code or functions.
-    1. Note that under certain circumstances, like a serious or snapshots tests, there may be a case where a test will
+    1. Note that under certain circumstances, like a series of snapshots tests, there may be a case where a test will
         pass when run individually but fail when run with the rest of the related test cases. For these reason it is
         good to run the full `yarn test` command on the `packages/components` directory before pushing your changes.
 1. ...

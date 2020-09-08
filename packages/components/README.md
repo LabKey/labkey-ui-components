@@ -94,13 +94,8 @@ Note that the version number within the `package.json` file will be set while ru
  more on version numbering.
 * Update the `releaseNotes/labkey/components.md` file to document what is changing in this version. Note that the final release
 version number and date will be set just before you merge your feature branch.
-* Write [jest](https://jestjs.io/docs/en/getting-started.html) tests together with [enzyme](https://airbnb.io/enzyme/) to test
-non-rendering functions and rendering of components with different sets of parameters.  Jest
-tests should be preferred over other types of tests since they are quick to run and small enough to be easily understood,
-but they should generally not try to do a lot of interaction with the components. You can, however, validate that callbacks
-passed to a component are called when expected.  See existing `.spec.ts` files for examples.
-* Write jest tests that use actual server responses where needed.  We have several examples of tests using `xhr-mock`
-for reading in realistic data that can be captured from the server.
+* Write [jest](https://jestjs.io/docs/en/getting-started.html) tests for your React components, models, and utility functions.
+    * See additional documentation on [Jest testing recommendations](https://github.com/LabKey/labkey-ui-components/blob/master/packages/components/docs/immer.md).
 * Write or update [storybook stories](#storybook) that illustrate the functionality.  This is the easiest way to do the bulk of manual
 testing and iteration on display updates.  Again, we have several examples of stories that use actual data captured
 from the server for various Ajax calls that are required.

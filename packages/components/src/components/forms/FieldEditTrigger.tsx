@@ -22,13 +22,14 @@ import { updateRows } from '../../query/api';
 import { QueryColumn } from '../base/models/model';
 
 import { FieldEditForm, FieldEditProps } from './input/FieldEditInput';
-import { QueryInfo } from '../..';
+import { QueryInfo, resolveErrorMessage } from '../..';
 
 export interface FieldEditTriggerProps {
     canUpdate?: boolean;
     caption?: string;
     containerPath?: string;
     fieldKeys: Array<string>;
+    fieldProps?: {[key: string] : Partial<FieldEditProps>};
     iconField?: string;
     iconAlwaysVisible?: boolean;
     isLoading: boolean;
@@ -77,6 +78,7 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
 
     init() {
         const { fieldKeys, isLoading, queryInfo, row } = this.props;
+        const fieldProps = this.props.fieldProps || {};
         if (!isLoading && queryInfo) {
             let fields = [];
             fieldKeys.forEach(key => {
@@ -94,15 +96,19 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
                     if (column.jsonType === 'int' || column.jsonType === 'float') {
                         inputType = "number";
                     }
+                    let props = {
+                        caption: column.caption,
+                        data,
+                        fieldKey: column.fieldKey,
+                        inputType: inputType,
+                        key,
+                        value,
+                    };
+                    if (fieldProps[key]) {
+                        props = Object.assign( props, fieldProps[key]);
+                    }
                     fields.push(
-                        new FieldEditProps({
-                            caption: column.caption,
-                            data,
-                            fieldKey: column.fieldKey,
-                            inputType: inputType,
-                            key,
-                            value,
-                        })
+                        new FieldEditProps(props)
                     );
                 } else if (LABKEY.devMode) {
                     const sq = queryInfo.schemaQuery;
@@ -178,7 +184,7 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
                 .catch(error => {
                     console.error(error);
                     this.setState({
-                        error: 'There was a problem updating the data.',
+                        error: resolveErrorMessage(error, 'data', 'data', 'updating'),
                     });
                 });
         }
@@ -207,6 +213,8 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
                     inputPlaceholder: 'Enter a ' + field.caption.toLowerCase() + '...',
                     inputType: field.inputType,
                     value: field.value,
+                    step: field.step,
+                    minValue: field.minValue
                 })
             );
             columnKeys = columnKeys.push(field.fieldKey);

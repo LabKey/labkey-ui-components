@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, ReactNode, memo } from 'react';
 
-interface SpinnerProps {
-    msg?: React.ReactNode;
+interface Props {
+    msg?: ReactNode;
     wrapperClassName?: string;
 }
 
-export class LoadingSpinner extends React.PureComponent<SpinnerProps, any> {
-    static defaultProps = {
-        msg: 'Loading...',
-        wrapperClassName: '',
-    };
+export const LoadingSpinner: FC<Props> = memo(({ msg, wrapperClassName }) => {
+    return (
+        <span className={wrapperClassName}>
+            <i aria-hidden="true" className="fa fa-spinner fa-pulse" /> {msg}
+        </span>
+    );
+});
 
-    render() {
-        const { msg, wrapperClassName } = this.props;
-
-        return (
-            <span className={wrapperClassName}>
-                <i aria-hidden="true" className="fa fa-spinner fa-pulse" /> {msg}
-            </span>
-        );
-    }
-}
+LoadingSpinner.defaultProps = {
+    msg: 'Loading...',
+    wrapperClassName: '',
+};

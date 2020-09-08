@@ -2,15 +2,16 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, PureComponent, memo, ReactNode, useMemo } from 'react';
 import { fromJS } from 'immutable';
 import { Link, WithRouterProps } from 'react-router';
+
 import {
     AppURL,
     BreadcrumbCreate,
     DetailPanel,
     InjectedQueryModels,
-    LoadingPage,
+    LoadingSpinner,
     Page,
     PageHeader,
     SchemaQuery,
@@ -61,7 +62,7 @@ class DetailBodyImpl extends PureComponent<BodyProps & InjectedQueryModels> {
         const model = queryModels[id];
 
         if (model.isLoading) {
-            return <LoadingPage title="Query Details" />;
+            return <LoadingSpinner />;
         }
 
         const { queryInfo } = model;
@@ -86,20 +87,23 @@ class DetailBodyImpl extends PureComponent<BodyProps & InjectedQueryModels> {
 
 const DetailBody = withQueryModels<BodyProps>(DetailBodyImpl);
 
-export class QueryDetailPage extends PureComponent<WithRouterProps> {
-    render(): ReactNode {
-        const { schema, query, id } = this.props.params;
-        const modelId = `q.details.${schema}.${query}.${id}`;
-        const queryConfigs = {
+export const QueryDetailPage: FC<WithRouterProps> = memo(({ params }) => {
+    const { schema, query, id } = params;
+    const modelId = `q.details.${schema}.${query}.${id}`;
+
+    const queryConfigs = useMemo(
+        () => ({
             [modelId]: {
                 bindURL: true,
                 keyValue: id,
                 requiredColumns: SCHEMAS.CBMB.toArray(),
                 schemaQuery: SchemaQuery.create(schema, query),
             },
-        };
+        }),
+        [modelId]
+    );
 
-        // Key is needed so if the user navigates directly from one detail page to another we trigger a remount/reload
-        return <DetailBody autoLoad id={modelId} key={modelId} queryConfigs={queryConfigs} />;
-    }
-}
+    // Key is used here so that if the schema or query change via the URL we remount the component which will
+    // instantiate a new model and reload all page data.
+    return <DetailBody autoLoad id={modelId} key={modelId} queryConfigs={queryConfigs} />;
+});

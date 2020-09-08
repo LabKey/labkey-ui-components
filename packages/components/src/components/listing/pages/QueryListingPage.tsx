@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2020 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { Link, WithRouterProps } from 'react-router';
 
 import { AppURL, SchemaQuery, Breadcrumb, InjectedQueryModels, GridPanel, Page, PageHeader } from '../../..';
@@ -41,7 +41,12 @@ const QueryListingBody = withQueryModels<BodyProps>(QueryListingBodyImpl);
 export const QueryListingPage: FC<WithRouterProps> = ({ params }) => {
     const { schema, query } = params;
     const modelId = `q.${schema}.${query}`;
-    const queryConfigs = { [modelId]: { bindURL: true, schemaQuery: SchemaQuery.create(schema, query) } };
+    const queryConfigs = useMemo(
+        () => ({
+            [modelId]: { bindURL: true, schemaQuery: SchemaQuery.create(schema, query) },
+        }),
+        [modelId]
+    );
 
     // Key is used here so that if the schema or query change via the URL we remount the component which will
     // instantiate a new model and reload all page data.

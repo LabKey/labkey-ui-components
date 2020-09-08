@@ -12,7 +12,7 @@ testing) can help us to get the full test coverage that we need for LabKey featu
 We use [enzyme](https://enzymejs.github.io/enzyme/) in some of our jest test cases to test non-rendering functions and
 rendering of components with different sets of parameters.
 
-##Recommendations
+## Recommendations
 1. During or immediately after development (i.e. before a feature branch pull request is merged), review your set of
     changes to see what test cases should be added for any new or changed code.
     1. This includes simple bug fixes as a test case can often be added to prevent regressions of that bug with
@@ -53,13 +53,13 @@ rendering of components with different sets of parameters.
         good to run the full `yarn test` command on the `packages/components` directory before pushing your changes.
 1. ...
 
-##Mocks
+## Mocks
 We have several examples of tests using `xhr-mock` for reading in realistic data that can be captured from the
 LabKey server to use in the various test cases.
 
 ...
 
-##Examples
+## Examples
 1. Utility function example ...
 1. Enzyme examples of using `.find()` ...
 1. Enzyme examples for using component `.props()` and/or `.state()` ...

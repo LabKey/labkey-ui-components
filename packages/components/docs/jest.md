@@ -35,12 +35,15 @@ rendering of components with different sets of parameters.
     to **small display only React components**.
     1. Using snapshot tests for large nested components can results in very large snapshot files which are hard to
         review when it comes time to change something or update that snapshot
-    1. Check in the related `.snap` files for your test cases. Without these, TeamCity will have trouble verifying that
-        your tests are valid.
+    1. Don't forget to commit the related `.snap` files for your test cases. Without these, TeamCity will have trouble
+        verifying that your tests are valid.
     1. Treat the `.snap` files as code when it comes to changes made to existing snapshots and newly created test cases.
         This means that you should review the new `.snap` files when a new case is added to make sure the contents exist
         and are as expected. This also means that changes to these files should be reviewed during code review of a
         pull request.
+    1. Don't manually update `.snap` files. Review the content of the failure for an existing test and then use the
+        `yarn test -u` option to update the files. Note that if you are running the test case manually from IntelliJ,
+        there is an "update snapshot" link you can click that will use this option for you.
     1. If you are getting local test failures and unexpected changes to a `.snap` file that seems unrelated to your set
         of changes in your feature branch, be sure to locally run the `yarn install` command from the
         `/packages/components` directory. There have been a few cases where an update to a package dependency can result

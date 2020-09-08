@@ -23,13 +23,13 @@ import { QueryColumn } from '../base/models/model';
 
 import { FieldEditForm, FieldEditProps } from './input/FieldEditInput';
 import { QueryInfo, resolveErrorMessage } from '../..';
+import { getServerContext } from '@labkey/api';
 
 export interface FieldEditTriggerProps {
     canUpdate?: boolean;
     caption?: string;
     containerPath?: string;
-    fieldKeys: Array<string>;
-    fieldProps?: {[key: string] : Partial<FieldEditProps>};
+    fieldProps?: Array<Partial<FieldEditProps>>;
     iconField?: string;
     iconAlwaysVisible?: boolean;
     isLoading: boolean;
@@ -77,15 +77,14 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
     }
 
     init() {
-        const { fieldKeys, isLoading, queryInfo, row } = this.props;
-        const fieldProps = this.props.fieldProps || {};
+        const { fieldProps, isLoading, queryInfo, row } = this.props;
         if (!isLoading && queryInfo) {
             let fields = [];
-            fieldKeys.forEach(key => {
-                const column = queryInfo.getColumn(key);
+            fieldProps.forEach(field => {
+                const column = queryInfo.getColumn(field.key);
 
                 if (column) {
-                    const data = row[key] || row[key.toLowerCase()];
+                    const data = row[field.key] || row[field.key.toLowerCase()];
                     let value;
 
                     if (data) {
@@ -96,24 +95,20 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
                     if (column.jsonType === 'int' || column.jsonType === 'float') {
                         inputType = "number";
                     }
-                    let props = {
+                    let props = Object.assign({}, field, {
                         caption: column.caption,
                         data,
                         fieldKey: column.fieldKey,
                         inputType: inputType,
-                        key,
                         value,
-                    };
-                    if (fieldProps[key]) {
-                        props = Object.assign( props, fieldProps[key]);
-                    }
+                    });
                     fields.push(
                         new FieldEditProps(props)
                     );
-                } else if (LABKEY.devMode) {
+                } else if (getServerContext().devMode) {
                     const sq = queryInfo.schemaQuery;
                     console.warn(
-                        `FieldEditTrigger: column "${key}" not available on QueryInfo for "${sq.schemaName}.${sq.queryName}"`
+                        `FieldEditTrigger: column "${field.key}" not available on QueryInfo for "${sq.schemaName}.${sq.queryName}"`
                     );
                 }
             });
@@ -194,7 +189,7 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
         const { canUpdate, showIconText, showValueOnNotAllowed } = this.props;
         const { error, fields } = this.state;
 
-        const iconField = this.props.iconField ? this.props.iconField : this.props.fieldKeys[0];
+        const iconField = this.props.iconField ? this.props.iconField : this.props.fieldProps[0].key;
         const caption = this.props.caption
             ? this.props.caption
             : fields && fields.length > 0

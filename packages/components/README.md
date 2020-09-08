@@ -95,7 +95,7 @@ Note that the version number within the `package.json` file will be set while ru
 * Update the `releaseNotes/labkey/components.md` file to document what is changing in this version. Note that the final release
 version number and date will be set just before you merge your feature branch.
 * Write [jest](https://jestjs.io/docs/en/getting-started.html) tests for your React components, models, and utility functions.
-    * See additional documentation on [Jest testing recommendations](https://github.com/LabKey/labkey-ui-components/blob/master/packages/components/docs/immer.md).
+    * See additional documentation on [Jest testing recommendations](./docs/jest.md).
 * Write or update [storybook stories](#storybook) that illustrate the functionality.  This is the easiest way to do the bulk of manual
 testing and iteration on display updates.  Again, we have several examples of stories that use actual data captured
 from the server for various Ajax calls that are required.

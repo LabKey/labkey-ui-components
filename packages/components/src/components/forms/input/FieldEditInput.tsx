@@ -134,7 +134,7 @@ class FieldEditInputImpl extends React.Component<FieldEditInputStateProps, any> 
             defaultValue: value,
             onChange: this.handleChange.bind(this),
             placeholder: inputPlaceholder,
-            type: 'text',
+            type: inputType,
         };
 
         switch (inputType) {

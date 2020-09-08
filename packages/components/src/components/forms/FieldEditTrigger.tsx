@@ -89,13 +89,17 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
                     if (data) {
                         value = data['displayValue'] ? data['displayValue'] : data['value'];
                     }
-
+                    let inputType = column.inputType;
+                    // TODO handle date and checkbox inputs.  Also this doesn't handle min value and steps for number fields
+                    if (column.jsonType === 'int' || column.jsonType === 'float') {
+                        inputType = "number";
+                    }
                     fields.push(
                         new FieldEditProps({
                             caption: column.caption,
                             data,
                             fieldKey: column.fieldKey,
-                            inputType: column.inputType,
+                            inputType: inputType,
                             key,
                             value,
                         })

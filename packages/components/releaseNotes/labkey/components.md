@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Update FieldEditTrigger to remove dependency on QueryModel and remove immutable List from interface
+* Update FieldEditTrigger
+    * remove dependency on QueryModel and remove immutable List from interface
+    * respect number input types
 
 ### version 0.91.5
 *Released*: 4 September 2020

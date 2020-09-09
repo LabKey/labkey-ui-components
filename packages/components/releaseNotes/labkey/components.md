@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.91.6
+*Released*: 9 September 2020
+* Use QueryModel in query pages
+
 ### version 0.91.5
 *Released*: 4 September 2020
 * Updates to EditableGrid data processing functions to fix issues with boolean values

@@ -25,7 +25,7 @@ import { FieldEditForm, FieldEditProps } from './input/FieldEditInput';
 import { QueryInfo, resolveErrorMessage } from '../..';
 import { getServerContext } from '@labkey/api';
 
-export interface FieldEditTriggerProps {
+export interface FieldEditorOverlayProps {
     canUpdate?: boolean;
     caption?: string;
     containerPath?: string;
@@ -43,12 +43,13 @@ export interface FieldEditTriggerProps {
 
 interface State {
     error?: string;
-    fields?: Array<FieldEditProps>;
+    fields?: List<FieldEditProps>;
+    iconField: string;
 }
 
-type Props = FieldEditTriggerProps;
+type Props = FieldEditorOverlayProps;
 
-export class FieldEditTrigger extends React.PureComponent<Props, State> {
+export class FieldEditorOverlay extends React.PureComponent<Props, State> {
     private fieldEditOverlayTrigger: React.RefObject<OverlayTrigger>;
 
     static defaultProps = {
@@ -62,7 +63,8 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
         this.fieldEditOverlayTrigger = React.createRef();
 
         this.state = {
-            fields: [],
+            fields: List<FieldEditProps>(),
+            iconField: props.iconField ? props.iconField : props.fieldProps[0].key
         };
     }
 
@@ -78,8 +80,10 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
 
     init() {
         const { fieldProps, isLoading, queryInfo, row } = this.props;
+
         if (!isLoading && queryInfo) {
-            let fields = [];
+            let fields = List<FieldEditProps>();
+
             fieldProps.forEach(field => {
                 const column = queryInfo.getColumn(field.key);
 
@@ -99,12 +103,12 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
                         caption: column.caption,
                         data,
                         fieldKey: column.fieldKey,
+                        inputPlaceholder: 'Enter a ' + column.caption.toLowerCase() + '...',
                         inputType: inputType,
                         value,
                     });
-                    fields.push(
-                        new FieldEditProps(props)
-                    );
+                    fields = fields.push(new FieldEditProps(props));
+
                 } else if (getServerContext().devMode) {
                     const sq = queryInfo.schemaQuery;
                     console.warn(
@@ -114,7 +118,7 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
             });
 
             this.setState({
-                fields,
+                fields
             });
         }
     }
@@ -145,7 +149,6 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
         const { containerPath, row, queryInfo, onUpdate, handleUpdateRows } = this.props;
 
         const name = row.Name?.value;
-
 
         if (this.fieldValuesChanged(submittedValues)) {
             const schemaQuery = queryInfo.schemaQuery;
@@ -186,33 +189,18 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
     }
 
     render() {
-        const { canUpdate, showIconText, showValueOnNotAllowed } = this.props;
-        const { error, fields } = this.state;
+        const { canUpdate,  showIconText, showValueOnNotAllowed } = this.props;
+        const { error, fields, iconField } = this.state;
 
-        const iconField = this.props.iconField ? this.props.iconField : this.props.fieldProps[0].key;
         const caption = this.props.caption
             ? this.props.caption
-            : fields && fields.length > 0
-                ? fields[0].caption
+            : fields && fields.size > 0
+                ? fields.get(0).caption
                 : 'Fields';
-
-        let overlayFields = List<FieldEditProps>();
         let haveValues = false;
-        let columnKeys = List<string>();
+
         let fieldValue;
         fields.forEach(field => {
-            overlayFields = overlayFields.push(
-                new FieldEditProps({
-                    caption: field.caption,
-                    fieldKey: field.fieldKey,
-                    inputPlaceholder: 'Enter a ' + field.caption.toLowerCase() + '...',
-                    inputType: field.inputType,
-                    value: field.value,
-                    step: field.step,
-                    minValue: field.minValue
-                })
-            );
-            columnKeys = columnKeys.push(field.fieldKey);
             haveValues = haveValues || (field.value !== undefined && field.value !== null && field.value.length != 0);
             if (field.key === iconField) {
                 fieldValue = field.value;
@@ -229,7 +217,7 @@ export class FieldEditTrigger extends React.PureComponent<Props, State> {
                             <FieldEditForm
                                 caption={caption}
                                 error={error}
-                                fields={overlayFields}
+                                fields={this.state.fields}
                                 hideOverlayFn={this.handleOverlayClose}
                                 onSubmitFn={this.updateFields}
                             />

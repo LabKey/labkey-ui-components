@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Update FieldEditTrigger
+    * rename to FieldEditorOverlay
     * remove dependency on QueryGridModel and remove immutable List from interface
     * respect number input types
 

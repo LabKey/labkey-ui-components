@@ -1,7 +1,7 @@
 import React from 'react';
 import { fromJS } from "immutable";
 
-import { FieldEditTrigger, QueryColumn, QueryInfo } from '../../index';
+import { FieldEditorOverlay, QueryColumn, QueryInfo } from '../../index';
 import { mount } from 'enzyme';
 
 const queryInfo = QueryInfo.create({columns: fromJS({
@@ -18,11 +18,11 @@ const DATA_ROW = {
 };
 
 
-describe('<FieldEditTrigger/>', () => {
+describe('<FieldEditorOverlay/>', () => {
 
     test("isLoading", () => {
         const component = (
-            <FieldEditTrigger
+            <FieldEditorOverlay
                 queryInfo={queryInfo}
                 fieldProps={[{key: 'Description'}]}
                 isLoading={true}
@@ -37,7 +37,7 @@ describe('<FieldEditTrigger/>', () => {
 
     test('can update props with data', () => {
         const component = (
-            <FieldEditTrigger
+            <FieldEditorOverlay
                 canUpdate={true}
                 queryInfo={queryInfo}
                 fieldProps={[{key: 'Description'}]}
@@ -53,7 +53,7 @@ describe('<FieldEditTrigger/>', () => {
 
     test('custom iconField', () => {
         const component = (
-            <FieldEditTrigger
+            <FieldEditorOverlay
                 queryInfo={queryInfo}
                 fieldProps={[{key: 'Description'}, {key: 'Value'}, {key: 'Units'}]}
                 iconField={'Units'}
@@ -69,7 +69,7 @@ describe('<FieldEditTrigger/>', () => {
 
     test("do not show iconText", () => {
         const component = (
-            <FieldEditTrigger
+            <FieldEditorOverlay
                 canUpdate={true}
                 queryInfo={queryInfo}
                 fieldProps={[{key: 'Description'}, {key: 'Value'}]}
@@ -88,7 +88,7 @@ describe('<FieldEditTrigger/>', () => {
 
     test('can update without data', () => {
         const component = (
-            <FieldEditTrigger
+            <FieldEditorOverlay
                 canUpdate={true}
                 queryInfo={queryInfo}
                 fieldProps={[{key: 'Description'}]}
@@ -104,7 +104,7 @@ describe('<FieldEditTrigger/>', () => {
     });
 
     test('custom caption', () => {
-        const component = <FieldEditTrigger
+        const component = <FieldEditorOverlay
             canUpdate={true}
             queryInfo={queryInfo}
             fieldProps={[{key: 'Description'}]}
@@ -119,7 +119,7 @@ describe('<FieldEditTrigger/>', () => {
     });
 
     test('user without update perm', () => {
-        const component = <FieldEditTrigger
+        const component = <FieldEditorOverlay
             queryInfo={queryInfo}
             fieldProps={[{key: 'Description'}]}
             isLoading={false}
@@ -132,7 +132,7 @@ describe('<FieldEditTrigger/>', () => {
     });
 
     test('user cannot see value', () => {
-        const component = <FieldEditTrigger
+        const component = <FieldEditorOverlay
             queryInfo={queryInfo}
             fieldProps={[{key: 'Description'}]}
             isLoading={false}

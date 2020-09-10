@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.92.0
+*Released*: 10 September 2020
 * Update FieldEditTrigger
     * rename to FieldEditorOverlay
     * remove dependency on QueryGridModel and remove immutable List from interface

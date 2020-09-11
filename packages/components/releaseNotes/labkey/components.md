@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add optional verb property to EntityDeleteConfirmModal
+
 ### version 0.92.0
 *Released*: 10 September 2020
 * Update FieldEditTrigger

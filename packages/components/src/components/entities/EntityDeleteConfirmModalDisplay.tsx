@@ -26,6 +26,7 @@ interface Props {
     onCancel: () => any;
     confirmationData: DeleteConfirmationData;
     entityDataType: EntityDataType;
+    verb?: string
 }
 
 /**
@@ -35,8 +36,12 @@ interface Props {
  * different confirmation data scenarios.
  */
 export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any> {
+    static defaultProps = {
+        verb: 'deleted'
+    }
+
     getConfirmationProperties(): { message: any; title: string; canDelete: boolean } {
-        const { confirmationData, entityDataType } = this.props;
+        const { confirmationData, entityDataType, verb } = this.props;
         const { deleteHelpLinkTopic, nounSingular, nounPlural, dependencyText } = entityDataType;
 
         if (!confirmationData) return undefined;
@@ -57,7 +62,7 @@ export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any>
                 ' are no longer valid.';
         } else if (numCannotDelete === 0) {
             text = totalNum === 1 ? 'The selected ' : totalNum === 2 ? 'Both ' : 'All ' + totalNum + ' ';
-            text += totalNoun + ' will be permanently deleted.';
+            text += totalNoun + ' will be permanently ' + verb + '.';
         } else if (numCanDelete === 0) {
             if (totalNum === 1) {
                 text =
@@ -68,7 +73,7 @@ export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any>
                 text += ' because they have ' + dependencyText + '.';
             }
         } else {
-            text = "You've selected " + totalNum + ' ' + totalNoun + ' but only ' + numCanDelete + ' can be deleted.  ';
+            text = "You've selected " + totalNum + ' ' + totalNoun + ' but only ' + numCanDelete + ' can be ' + verb + '.  ';
             text += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
             text += (numCannotDelete === 1 ? ' it has ' : ' they have ') + dependencyText + '.';
         }

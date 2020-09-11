@@ -33,7 +33,9 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-caption="Flag"
               data-fieldkey="flag"
             >
-              <span>
+              <span
+                className=""
+              >
                 
               </span>
             </td>
@@ -50,7 +52,9 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-caption="For set 3"
               data-fieldkey="for set 3"
             >
-              <span>
+              <span
+                className=""
+              >
                 abc
               </span>
             </td>
@@ -67,7 +71,9 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-caption="Again for set 3"
               data-fieldkey="again for set 3"
             >
-              <span>
+              <span
+                className=""
+              >
                 false
               </span>
             </td>
@@ -84,7 +90,9 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-caption="Another"
               data-fieldkey="another"
             >
-              <span>
+              <span
+                className=""
+              >
                 test test
               </span>
             </td>
@@ -159,7 +167,9 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-caption="Flag"
               data-fieldkey="flag"
             >
-              <span>
+              <span
+                className=""
+              >
                 
               </span>
             </td>
@@ -176,7 +186,9 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-caption="For set 3"
               data-fieldkey="for set 3"
             >
-              <span>
+              <span
+                className=""
+              >
                 abc
               </span>
             </td>
@@ -193,7 +205,9 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-caption="Again for set 3"
               data-fieldkey="again for set 3"
             >
-              <span>
+              <span
+                className=""
+              >
                 false
               </span>
             </td>
@@ -210,7 +224,9 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-caption="Another"
               data-fieldkey="another"
             >
-              <span>
+              <span
+                className=""
+              >
                 test test
               </span>
             </td>

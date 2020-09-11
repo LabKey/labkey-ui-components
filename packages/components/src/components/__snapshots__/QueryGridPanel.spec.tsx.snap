@@ -3115,7 +3115,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span />
+                  <span
+                    className=""
+                  />
                 </td>
                 <td
                   style={
@@ -3124,7 +3126,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span />
+                  <span
+                    className=""
+                  />
                 </td>
                 <td
                   style={
@@ -3146,7 +3150,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span>
+                  <span
+                    className=""
+                  >
                     2019-08-07 13:18
                   </span>
                 </td>
@@ -3170,7 +3176,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span />
+                  <span
+                    className=""
+                  />
                 </td>
                 <td
                   style={
@@ -3179,7 +3187,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span>
+                  <span
+                    className=""
+                  >
                     reimport run 2
                   </span>
                 </td>
@@ -3190,7 +3200,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span />
+                  <span
+                    className=""
+                  />
                 </td>
                 <td
                   style={
@@ -3199,7 +3211,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span />
+                  <span
+                    className=""
+                  />
                 </td>
                 <td
                   style={
@@ -3208,7 +3222,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span />
+                  <span
+                    className=""
+                  />
                 </td>
                 <td
                   style={
@@ -3217,7 +3233,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span />
+                  <span
+                    className=""
+                  />
                 </td>
                 <td
                   style={
@@ -3226,7 +3244,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span />
+                  <span
+                    className=""
+                  />
                 </td>
                 <td
                   style={
@@ -3235,7 +3255,9 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                     }
                   }
                 >
-                  <span />
+                  <span
+                    className=""
+                  />
                 </td>
               </tr>
             </tbody>

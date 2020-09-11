@@ -157,7 +157,7 @@ export class TimelineView extends React.Component<Props, any> {
         return (
             <LabelHelpTip
                 title={"Comment"}
-                body={() => {return <div className="timeline-comments">{comment}</div>}}
+                body={() => {return <div className="whitespace-prewrap">{comment}</div>}}
                 placement="bottom"
                 iconComponent ={() => {return icon}}
             />

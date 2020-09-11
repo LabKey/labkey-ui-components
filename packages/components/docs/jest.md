@@ -4,12 +4,12 @@
 our React components, models, and utility functions. It is in use in this labkey-ui-components package along with
 several LabKey modules that have React pages.
 
-Jest tests are quick to run and are a good tool for doing unit testing of React components, properties and meethods of
+Jest tests are quick to run and are a good tool for doing unit testing of React components, properties and methods of
 a model, utility functions, among other things. Jest tests in conjunction with other integration testing options (like
 the [@labkey/test](../../test/README.md) package and Selenium
 testing) can help us to get the full test coverage that we need for LabKey features / stories.
 
-We use [enzyme](https://enzymejs.github.io/enzyme/) in some of our jest test cases to test non-rendering functions and
+We use [enzyme](https://enzymejs.github.io/enzyme/) in many of our jest test cases to test non-rendering functions and
 rendering of components with different sets of parameters.
 
 ## Recommendations

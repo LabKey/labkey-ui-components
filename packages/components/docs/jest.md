@@ -29,10 +29,15 @@ rendering of components with different sets of parameters.
         components wrapper.
     1. Different types of [selectors](https://enzymejs.github.io/enzyme/docs/api/selector.html) can be used to find what
         you are looking for including: css selector, component names, or object properties.
-    1. ...
+    1. See the following cheat sheets
+        1. https://devhints.io/jest
+        1. https://devhints.io/enzyme
 1. Use jest [snapshot tests](https://jestjs.io/docs/en/snapshot-testing) for making sure the UI for your component
     doesn't change unexpectedly during development of related features. We recommend that snapshot tests be constrained
     to **small display only React components**.
+    1. **NOTICE:** our preference is for using `mount()` with `find()` and other state checks for your components. We have
+        see that those test cases are much easier to maintain and reason about when a test fails / regresses. If you have
+        any logic in your component, try using enzyme testing and reserve snapshot testing for those truly display components only.
     1. Using snapshot tests for large nested components can results in very large snapshot files which are hard to
         review when it comes time to change something or update that snapshot
     1. Don't forget to commit the related `.snap` files for your test cases. Without these, TeamCity will have trouble
@@ -48,13 +53,12 @@ rendering of components with different sets of parameters.
         of changes in your feature branch, be sure to locally run the `yarn install` command from the
         `/packages/components` directory. There have been a few cases where an update to a package dependency can result
         in some DOM changes, and without having those package updates installed locally, you can get conflicting results.
-    1. ...
 1. You can run individual jest test cases from IntelliJ directly. When run in debug mode, you can set breakpoints in
     the jest test code but also in the React component code or functions.
+    1. When doing enzyme testing, using `wrapper.debug()` can be used to show HTML for debugging purposes.
     1. Note that under certain circumstances, like a series of snapshots tests, there may be a case where a test will
         pass when run individually but fail when run with the rest of the related test cases. For these reason it is
         good to run the full `yarn test` command on the `packages/components` directory before pushing your changes.
-1. ...
 
 ## Mocks
 We have several examples of tests using `xhr-mock` for reading in realistic data that can be captured from the
@@ -63,10 +67,25 @@ LabKey server to use in the various test cases.
 ...
 
 ## Examples
-1. Utility function example ...
-1. Enzyme examples of using `.find()` ...
-1. Enzyme examples for using component `.props()` and/or `.state()` ...
-1. Enzyme examples that simulate events (i.e. click) ...
-1. Snapshot examples of display components ...
-1. Examples that use `async` for ...
-1. Examples that use mock data for a component or function ...
+1. Testing of utility functions
+    1. [util/Date.spec.ts](../src/util/Date.spec.ts)
+    1. [internal/app/utils.spec.ts](../src/internal/app/utils.spec.ts)
+1. Enzyme examples of using `.find()`
+    1. [base/ConfirmModal.spec.tsx](../src/components/base/ConfirmModal.spec.tsx)
+    1. [assay/RunPropertiesPanel.spec.tsx](../src/components/assay/RunPropertiesPanel.spec.tsx)
+1. Enzyme examples for using component `.props()` and/or `.state()`
+    1. [domainproperties/AdvancedSettings.spec.tsx](../src/components/domainproperties/AdvancedSettings.spec.tsx)
+    1. [omnibox/OmniBox.spec.tsx](../src/components/omnibox/OmniBox.spec.tsx)
+1. Enzyme examples that `.simulate()` events (i.e. `click` or `change`)
+    1. [QueryModel/GridPanel.spec.tsx](../src/QueryModel/GridPanel.spec.tsx)
+1. Snapshot examples using `renderer` and `toMatchSnapshot()`
+    1. [input/ColorPickerInput.spec.tsx](../src/components/forms/input/ColorPickerInput.spec.tsx)
+1. Using `async` with `await sleep()`
+    1. [QueryModel/withQueryModels.spec.tsx](../src/QueryModel/withQueryModels.spec.tsx)
+1. Using `jest.mock`
+    1. [pagination/Pagination.spec.tsx](../src/components/pagination/Pagination.spec.tsx)
+    1. [components/QueryGrid.spec.tsx](../src/components/QueryGrid.spec.tsx)
+1. Using `xhr-mock`
+    1. [editable/Cell.spec.tsx](../src/components/editable/Cell.spec.tsx)
+1. Using `jest.spyOn` for an Ajax request to check param contents:
+    1. [query/SelectRows.spec.ts](https://github.com/LabKey/labkey-api-js/blob/main/src/labkey/query/SelectRows.spec.ts)

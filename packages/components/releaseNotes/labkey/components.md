@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add optional verb property to EntityDeleteConfirmModal
+* Add styling to DetailDisplay to preserve line breaks
 
 ### version 0.92.0
 *Released*: 10 September 2020

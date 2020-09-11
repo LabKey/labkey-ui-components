@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { hookServer } from '../integrationUtils';
+import { hookServer, RequestOptions, successfulResponse } from '../integrationUtils';
 
 // Declare the name of the LabKey project for these tests.
 const PROJECT_NAME = 'LabKeyTestExampleProject';
@@ -39,10 +39,42 @@ describe('query-selectRows.api', () => {
     it('requires a query parameter', async () => {
         // Act
         // Make a POST request against the server. Here we expect a 404 response status code.
-        const response = await server.post('query', 'selectRows.api', { schemaName: 'core' }).expect(404);
+        const response = await server
+            .post('query', 'selectRows.api', { schemaName: 'core' })
+            .expect(404);
 
         // Assert
         const { exception } = response.body;
         expect(exception).toEqual('Query not specified');
+    });
+});
+
+describe('query-executeSql.api', () => {
+    let requestOptions: RequestOptions;
+
+    beforeAll(async () => {
+        const testContainer = await server.createTestContainer();
+        // TODO: Use a different user to make these requests -- must be given read permission in the test container
+        // const testUser = await server.createUser('boom@test.com', 'pwSuper1Awesome!');
+
+        requestOptions = {
+            containerPath: testContainer.path,
+            // requestContext: await server.createRequestContext(testUser),
+        };
+    });
+
+    it('successfully processes request', async () => {
+        // Act
+        // Make a POST request against the server. Here we expect a successful response.
+        const response = await server
+            .post('query', 'executeSql.api', {
+                schemaName: 'core',
+                sql: 'SELECT Name FROM core.containers',
+            }, requestOptions)
+            .expect(successfulResponse);
+
+        // Assert
+        const { rowCount } = response.body;
+        expect(rowCount).toEqual(1);
     });
 });

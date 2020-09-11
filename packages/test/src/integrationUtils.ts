@@ -13,51 +13,118 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import supertest from 'supertest';
+import supertest, { SuperTest, Test } from 'supertest';
 import { ActionURL, Container, Utils } from '@labkey/api';
 
 import { sleep } from './utils';
 
 declare var LABKEY;
 
-// I was unable to get process.env to be available at runtime in a compiled bundle.
-// In lieu of accessing directly this is configured in hookServer() which expects the user
-// to pass in the current process.env.
-let ENV: any = {};
+class RequestContext {
+    csrfToken?: string;
+    password: string;
+    username: string;
+
+    constructor(config: Partial<RequestContext>) {
+        this.csrfToken = config.csrfToken;
+        this.password = config.password;
+        this.username = config.username;
+    }
+}
+
+interface ServerContext {
+    agent: SuperTest<Test>;
+    containerPath?: string;
+    defaultContext: RequestContext;
+    initialized: boolean;
+    location: string;
+    projectPath?: string;
+}
+
+export interface RequestOptions {
+    containerPath?: string;
+    requestContext?: RequestContext;
+}
+
+interface PostRequestOptions extends RequestOptions {
+    postProcessor?: (postRequest: any, payload: any) => any;
+}
 
 export interface IntegrationTestServer {
-    get: (controller: string, action: string, params?: any, containerPath?: string) => any;
+    createRequestContext: (config: Partial<RequestContext>) => Promise<RequestContext>;
+    createTestContainer: (containerOptions?: any) => Promise<Container>;
+    createUser: (email: string, password: string) => Promise<any>;
+    get: (controller: string, action: string, params?: any, options?: RequestOptions) => Test;
     init: (lkProjectName: string, containerOptions?: any) => Promise<void>;
-    post: (controller: string, action: string, payload?: any, containerPath?: string, postProcessor?: (postRequest: any, payload: any) => any) => any;
+    post: (controller: string, action: string, payload?: any, options?: PostRequestOptions) => Test;
     teardown: () => Promise<void>;
 }
 
-const createContainer = async (server: any, containerPath: string, name: string, containerOptions?: any /* Security.CreateContainerOptions */): Promise<Container> => {
-    const response = await postRequest(server, 'core', 'createContainer.api', {
+const _createContainer = async (ctx: ServerContext, containerPath: string, name: string, containerOptions?: any /* Security.CreateContainerOptions */): Promise<Container> => {
+    const response = await postRequest(ctx, 'core', 'createContainer.api', {
         ...containerOptions,
         name
-    }, containerPath).expect(successfulResponse);
+    }, { containerPath }).expect(successfulResponse);
 
     return response.body;
 };
 
-const getRequest = (server: any, controller: string, action: string, params?: any, containerPath?: string): any => {
-    const url = ActionURL.buildURL(controller, action, containerPath ?? server.CONTAINER_PATH, params);
-    return withAuth(server, server.get(url));
+const createRequestContext = async (ctx: ServerContext, config: Partial<RequestContext>) => {
+    const requestCtx = new RequestContext(config);
+    requestCtx.csrfToken = await initCSRF(ctx);
+    return requestCtx;
+};
+
+const createTestContainer = async (ctx: ServerContext, containerOptions?: any /* Security.CreateContainerOptions */): Promise<Container> => {
+    if (!ctx.projectPath) {
+        throw new Error('Failed to create test container. Project must be initialized via init() prior to creating a test container.');
+    }
+
+    return await _createContainer(ctx, ctx.projectPath, Utils.generateUUID(), containerOptions);
+};
+
+const createUser = async (ctx: ServerContext, email: string, password: string): Promise<any> => {
+    const createUserResponse = await postRequest(ctx, 'security', 'createNewUser.api', {
+        email,
+        sendEmail: false,
+    }).expect(200);
+
+    return { username: email, password };
+};
+
+const getRequest = (
+    ctx: ServerContext,
+    controller: string,
+    action: string,
+    params?: any,
+    options?: RequestOptions
+): Test => {
+    const containerPath = options?.containerPath ?? ctx.containerPath;
+    const url = ActionURL.buildURL(controller, action, containerPath, params);
+    return withAuth(ctx, ctx.agent.get(url), options);
 };
 
 export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
-    // Bind global ENV
-    ENV = env;
-
     // Override the global context path -- required for ActionURL to work
-    LABKEY.contextPath = ENV.INTEGRATION_CONTEXT_PATH;
+    LABKEY.contextPath = env.INTEGRATION_CONTEXT_PATH;
 
-    const location = ENV.INTEGRATION_SERVER;
-    const server = supertest(location);
-    server.LOCATION = location;
+    const location = env.INTEGRATION_SERVER;
+
+    const server: ServerContext = {
+        agent: supertest(location),
+        // This will be fully initialized after call to init()
+        defaultContext: new RequestContext({
+            password: env.INTEGRATION_AUTH_PASS,
+            username: env.INTEGRATION_AUTH_USER,
+        }),
+        initialized: false,
+        location,
+    };
 
     return {
+        createRequestContext: createRequestContext.bind(this, server),
+        createTestContainer: createTestContainer.bind(this, server),
+        createUser: createUser.bind(this, server),
         get: getRequest.bind(this, server),
         init: init.bind(this, server),
         post: postRequest.bind(this, server),
@@ -65,21 +132,25 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
     };
 };
 
-const init = async (server: any, projectName: string, containerOptions?: any): Promise<void> => {
-    server.PROJECT_NAME = projectName;
-
-    // Get CSRF credentials
-    server.CSRF_TOKEN = await initCSRF(server);
+const init = async (ctx: ServerContext, projectName: string, containerOptions?: any): Promise<void> => {
+    // Initialize the default request context
+    ctx.defaultContext.csrfToken = await initCSRF(ctx);
 
     // Ensure project exists
     let project: Container;
-    const getProjectResponse = await getRequest(server, 'project', 'getContainers.api', undefined, server.PROJECT_NAME).send();
+    const getProjectResponse = await getRequest(
+        ctx,
+        'project',
+        'getContainers.api',
+        undefined,
+        { containerPath: projectName }
+    ).send();
 
     // project-getContainers.api returns HTML if the container DNE. Process against status codes directly.
     if (getProjectResponse.status !== 200) {
         if (getProjectResponse.status === 404) {
             try {
-                project = await createContainer(server, '/', server.PROJECT_NAME);
+                project = await _createContainer(ctx, '/', projectName);
             }
             catch (e) {
                 throw new Error('Failed to initialize integration test. Unable to create test project.');
@@ -91,29 +162,31 @@ const init = async (server: any, projectName: string, containerOptions?: any): P
         project = getProjectResponse.body;
     }
 
-    // Create test container
+    ctx.projectPath = project.path;
+
+    // Create default test container
     try {
-        const testContainer = await createContainer(server, project.path, Utils.generateUUID(), containerOptions);
-        server.CONTAINER_PATH = testContainer.path;
+        const testContainer = await createTestContainer(ctx, containerOptions);
+        ctx.containerPath = testContainer.path;
     }
     catch (e) {
         throw new Error('Failed to initialize integration test. Unable to create test container.');
     }
 
-    server.INITIALIZED = true;
+    ctx.initialized = true;
 
     // Log useful information
-    console.log('server:', server.LOCATION);
-    console.log('container path:', server.CONTAINER_PATH);
+    console.log('server:', ctx.location);
+    console.log('container path:', ctx.containerPath);
 };
 
-const initCSRF = async (server: any): Promise<string> => {
+const initCSRF = async (ctx: ServerContext): Promise<string> => {
     const MAX_RETRIES = 5;
     let lastResponse;
 
     for (let i = 0; i < MAX_RETRIES; i++) {
         try {
-            let whoAmIResponse = await getRequest(server, 'login', 'whoAmI.api').send();
+            let whoAmIResponse = await getRequest(ctx, 'login', 'whoAmI.api').send();
 
             if (whoAmIResponse.status === 200) {
                 return whoAmIResponse.body.CSRF;
@@ -132,17 +205,23 @@ const initCSRF = async (server: any): Promise<string> => {
     throw new Error('Failed to initialize CSRF. Unable to make successful request to login-whoAmI.api.');
 };
 
-const postRequest = (server: any, controller: string, action: string, payload?: any, containerPath?: string, postProcessor?: (postRequest: any, payload: any) => any): any => {
-    let postRequest = server
-        .post(ActionURL.buildURL(controller, action, containerPath ?? server.CONTAINER_PATH));
+const postRequest = (
+    ctx: ServerContext,
+    controller: string,
+    action: string,
+    payload?: any,
+    options?: PostRequestOptions
+): Test => {
+    const containerPath = options?.containerPath ?? ctx.containerPath;
+    let postRequest = ctx.agent.post(ActionURL.buildURL(controller, action, containerPath));
 
-    if (postProcessor) {
-        postRequest = postProcessor(postRequest, payload);
+    if (options?.postProcessor) {
+        postRequest = options.postProcessor(postRequest, payload);
     } else {
         postRequest = postRequest.send(payload).set('Content-Type', 'application/json');
     }
 
-    return withAuth(server, postRequest);
+    return withAuth(ctx, postRequest, options);
 };
 
 /**
@@ -170,10 +249,16 @@ export const successfulResponse = (response: any): boolean => {
     return true;
 };
 
-const teardown = async (server: any): Promise<void> => {
-    if (server.INITIALIZED) {
+const teardown = async (ctx: ServerContext): Promise<void> => {
+    if (ctx.initialized) {
         try {
-            return await postRequest(server, 'core', 'deleteContainer.api', undefined, server.PROJECT_NAME).expect(successfulResponse);
+            await postRequest(
+                ctx,
+                'core',
+                'deleteContainer.api',
+                undefined,
+                { containerPath: ctx.projectPath }
+            ).expect(successfulResponse);
         }
         catch (e) {
             throw new Error('Failed to teardown integration test. Unable to delete test project.');
@@ -181,14 +266,14 @@ const teardown = async (server: any): Promise<void> => {
     }
 };
 
-const withAuth = (server: any, request: any): any => {
-    const { INTEGRATION_AUTH_PASS, INTEGRATION_AUTH_USER } = ENV;
-    request = request.auth(INTEGRATION_AUTH_USER, INTEGRATION_AUTH_PASS);
+const withAuth = (ctx: ServerContext, request: Test, options?: RequestOptions): Test => {
+    const requestContext = options?.requestContext ?? ctx.defaultContext;
+    const { csrfToken, password, username } = requestContext;
 
-    if (server.CSRF_TOKEN) {
-        request = request
-            .set('X-LABKEY-CSRF', server.CSRF_TOKEN)
-            .set('Cookie', `X-LABKEY-CSRF=${server.CSRF_TOKEN}`);
+    request = request.auth(username, password);
+
+    if (csrfToken) {
+        request = request.set('X-LABKEY-CSRF', csrfToken).set('Cookie', `X-LABKEY-CSRF=${csrfToken}`);
     }
 
     return request;

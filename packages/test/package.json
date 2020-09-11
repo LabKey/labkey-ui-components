@@ -35,9 +35,10 @@
   },
   "devDependencies": {
     "@labkey/api": "1.1.0",
-    "@types/enzyme": "3.10.5",
-    "@types/jest": "26.0.10",
+    "@types/enzyme": "3.10.6",
+    "@types/jest": "26.0.13",
     "@types/node": "12.0.4",
+    "@types/supertest": "2.0.10",
     "copy-webpack-plugin": "6.1.0",
     "cross-env": "7.0.2",
     "enzyme": "3.11.0",

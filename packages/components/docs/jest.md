@@ -62,9 +62,23 @@ rendering of components with different sets of parameters.
 
 ## Mocks
 We have several examples of tests using `xhr-mock` for reading in realistic data that can be captured from the
-LabKey server to use in the various test cases.
+LabKey server to use in the various test cases. Having a jest spec file call `initUnitTestMocks()` in its setup
+(i.e. `beforeAll()`) will use the same mock data that `storybook` uses for mocking up responses to various API calls
+made during a component lifecycle.
 
-...
+Note that several of our current tests run without mocking up all of the functions / APIs that they call. When this
+happens, it is still possible for a test to run and pass, but you will likely see outputs in the test run that look
+like the following:
+```
+Cannot log after tests are done. Did you forget to wait for something async in your test?
+```
+
+In addition to mocking data with `xhr-mock`, the `LABKEY` context variable can be mocked / populated with data to use
+during jest test execution. Setting this variable is done in the `package.json` file. You can see an example of this
+from the [package.json](../package.json) file in this `@labkey/components` package. Note that a LabKey module that
+has its own jest tests will currently need to mock the `LABKEY` object if that modules uses any components from the
+`@labkey/components` package. This will hopefully be fixed in the `@labkey/components` package soon.
+
 
 ## Examples
 1. Testing of utility functions
@@ -85,7 +99,7 @@ LabKey server to use in the various test cases.
 1. Using `jest.mock`
     1. [pagination/Pagination.spec.tsx](../src/components/pagination/Pagination.spec.tsx)
     1. [components/QueryGrid.spec.tsx](../src/components/QueryGrid.spec.tsx)
-1. Using `xhr-mock`
+1. Using `xhr-mock` via `initUnitTestMocks()`
     1. [editable/Cell.spec.tsx](../src/components/editable/Cell.spec.tsx)
 1. Using `jest.spyOn` for an Ajax request to check param contents:
     1. [query/SelectRows.spec.ts](https://github.com/LabKey/labkey-api-js/blob/main/src/labkey/query/SelectRows.spec.ts)

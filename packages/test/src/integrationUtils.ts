@@ -20,6 +20,12 @@ import { sleep } from './utils';
 
 declare var LABKEY;
 
+interface CreateNewUser {
+    email: string;
+    isNew: boolean;
+    message: string;
+}
+
 class RequestContext {
     csrfToken?: string;
     password: string;
@@ -32,9 +38,22 @@ class RequestContext {
     }
 }
 
+// It is a bit odd to define this enumeration here. We could consider
+// moving it to @labkey/api (similar to Security.PermissionTypes).
+export enum SecurityRole {
+    // All enumeration values are expected to be a prefixed name of
+    // their corollary Java class role.
+    Author = 'Author',
+    Editor = 'Editor',
+    FolderAdmin = 'FolderAdmin',
+    ProjectAdmin = 'ProjectAdmin',
+    Reader = 'Reader',
+}
+
 interface ServerContext {
     agent: SuperTest<Test>;
     containerPath?: string;
+    createdUsers: string[];
     defaultContext: RequestContext;
     initialized: boolean;
     location: string;
@@ -51,6 +70,7 @@ interface PostRequestOptions extends RequestOptions {
 }
 
 export interface IntegrationTestServer {
+    addUserToRole: (email: string, role: SecurityRole, containerPath?: string) => Promise<void>;
     createRequestContext: (config: Partial<RequestContext>) => Promise<RequestContext>;
     createTestContainer: (containerOptions?: any) => Promise<Container>;
     createUser: (email: string, password: string) => Promise<any>;
@@ -59,6 +79,13 @@ export interface IntegrationTestServer {
     post: (controller: string, action: string, payload?: any, options?: PostRequestOptions) => Test;
     teardown: () => Promise<void>;
 }
+
+const addUserToRole = async (ctx: ServerContext, email: string, role: SecurityRole, containerPath?: string): Promise<void> => {
+    await postRequest(ctx, 'security', 'addAssignment.api', {
+        email,
+        roleClassName: `org.labkey.api.security.roles.${SecurityRole[role]}Role`,
+    }, { containerPath: containerPath ?? ctx.containerPath }).expect(successfulResponse);
+};
 
 const _createContainer = async (ctx: ServerContext, containerPath: string, name: string, containerOptions?: any /* Security.CreateContainerOptions */): Promise<Container> => {
     const response = await postRequest(ctx, 'core', 'createContainer.api', {
@@ -84,12 +111,36 @@ const createTestContainer = async (ctx: ServerContext, containerOptions?: any /*
 };
 
 const createUser = async (ctx: ServerContext, email: string, password: string): Promise<any> => {
+    // Delete user (if the account already exists)
+    // This ensures the given user's password and subsequent permissions are as expected
+    await deleteUser(ctx, email);
+
+    // Create the user
     const createUserResponse = await postRequest(ctx, 'security', 'createNewUser.api', {
         email,
         sendEmail: false,
-    }).expect(200);
+    }).expect(successfulResponse);
+
+    // Expect to create only one user
+    const { users } = createUserResponse.body;
+    if (users.length !== 1) {
+        throw new Error(`Failed to create user. Unexpected number of users returned after creating account for "${email}".`);
+    }
+
+    await setInitialPassword(ctx, users[0], password);
+
+    ctx.createdUsers.push(email);
 
     return { username: email, password };
+};
+
+const deleteUser = async (ctx: ServerContext, email: string): Promise<void> => {
+    const userId = await getUserId(ctx, email);
+
+    if (userId !== undefined) {
+        await postRequest(ctx, 'security', 'deleteUser.api', { id: userId }, { containerPath: '/' })
+            .expect(successfulResponse);
+    }
 };
 
 const getRequest = (
@@ -104,6 +155,20 @@ const getRequest = (
     return withAuth(ctx, ctx.agent.get(url), options);
 };
 
+const getUserId = async (ctx: ServerContext, email: string): Promise<number> => {
+    const queryResponse = await postRequest(ctx, 'query', 'selectRows.api', {
+        apiVersion: '17.1',
+        schemaName: 'core',
+        'query.columns': 'UserId,Email',
+        'query.queryName': 'users',
+        'query.email~eq': email,
+    }, { containerPath: '/' }).expect(successfulResponse);
+
+    const { rows } = queryResponse.body;
+    if (rows.length === 1) return rows[0].data.UserId.value;
+    return undefined;
+};
+
 export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
     // Override the global context path -- required for ActionURL to work
     LABKEY.contextPath = env.INTEGRATION_CONTEXT_PATH;
@@ -112,6 +177,7 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
 
     const server: ServerContext = {
         agent: supertest(location),
+        createdUsers: [],
         // This will be fully initialized after call to init()
         defaultContext: new RequestContext({
             password: env.INTEGRATION_AUTH_PASS,
@@ -122,6 +188,7 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
     };
 
     return {
+        addUserToRole: addUserToRole.bind(this, server),
         createRequestContext: createRequestContext.bind(this, server),
         createTestContainer: createTestContainer.bind(this, server),
         createUser: createUser.bind(this, server),
@@ -224,6 +291,34 @@ const postRequest = (
     return withAuth(ctx, postRequest, options);
 };
 
+const setInitialPassword = async (ctx: ServerContext, user: CreateNewUser, password: string): Promise<void> => {
+    // Only works for new users
+    const { email, isNew, message } = user;
+    if (isNew !== true) {
+        throw new Error(`Failed to create user. Expected a new user to be created for account "${email}".`);
+    }
+
+    const tokenPrefix = 'setPassword.view?verification=';
+    const tokenSuffix = '&amp;email=';
+
+    if (message.indexOf(tokenPrefix) === -1 || message.indexOf(tokenSuffix) === -1) {
+        throw new Error(`Failed to create user. Unexpected response message after creating account "${email}".`);
+    }
+    const verification = message.split(tokenPrefix)[1].split(tokenSuffix)[0];
+
+    // Set the password (we're talking to HTML here...)
+    await postRequest(ctx, 'login', 'setPassword.view', undefined, {
+        containerPath: '/',
+        postProcessor: (request) => (
+            request
+                .field('email', email)
+                .field('password', password)
+                .field('password2', password)
+                .field('verification', verification)
+        ),
+    }).expect(302); // Expect to be redirected
+}
+
 /**
  * Utility that provides improved error messaging in the event of
  * an unsuccessful response when a successful (statusCode === 200) response is expected.
@@ -252,6 +347,7 @@ export const successfulResponse = (response: any): boolean => {
 const teardown = async (ctx: ServerContext): Promise<void> => {
     if (ctx.initialized) {
         try {
+            // Delete project created for this test run
             await postRequest(
                 ctx,
                 'core',
@@ -262,6 +358,14 @@ const teardown = async (ctx: ServerContext): Promise<void> => {
         }
         catch (e) {
             throw new Error('Failed to teardown integration test. Unable to delete test project.');
+        }
+
+        try {
+            // Delete all users created during this test run
+            await Promise.all(ctx.createdUsers.map(email => deleteUser(ctx, email)));
+        }
+        catch (e) {
+            throw new Error('Failed to teardown integration test. Unable to delete test users.');
         }
     }
 };

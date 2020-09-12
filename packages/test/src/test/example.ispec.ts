@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { hookServer, RequestOptions, successfulResponse } from '../integrationUtils';
+import { hookServer, RequestOptions, SecurityRole, successfulResponse } from '../integrationUtils';
 
 // Declare the name of the LabKey project for these tests.
 const PROJECT_NAME = 'LabKeyTestExampleProject';
@@ -50,27 +50,55 @@ describe('query-selectRows.api', () => {
 });
 
 describe('query-executeSql.api', () => {
-    let requestOptions: RequestOptions;
+    let noPermissionsUserOptions: RequestOptions;
+    let readerUserOptions: RequestOptions;
 
     beforeAll(async () => {
+        // Create a new test container that tests can be run in
         const testContainer = await server.createTestContainer();
-        // TODO: Use a different user to make these requests -- must be given read permission in the test container
-        // const testUser = await server.createUser('boom@test.com', 'pwSuper1Awesome!');
 
-        requestOptions = {
+        // Create two users
+        const noPermissionsUser = await server.createUser('hasnopermissions@lktestuser.com', 'pwSuper1Awesome!');
+        const readerUser = await server.createUser('reader@lktestuser.com', 'pwSuper2Awesome!');
+
+        // Assign permissions to a user in the test container
+        await server.addUserToRole('reader@lktestuser.com', SecurityRole.Reader, testContainer.path);
+
+        noPermissionsUserOptions = {
             containerPath: testContainer.path,
-            // requestContext: await server.createRequestContext(testUser),
+            requestContext: await server.createRequestContext(noPermissionsUser),
         };
+
+        readerUserOptions = {
+            containerPath: testContainer.path,
+            requestContext: await server.createRequestContext(readerUser),
+        }
     });
 
-    it('successfully processes request', async () => {
+    it('requires read permission', async () => {
+        // Act
+        // Make a POST request against the server. Here we expect a to be rejected because the user does not
+        // have appropriate permissions.
+        const response = await server
+            .post('query', 'executeSql.api', {
+                schemaName: 'core',
+                sql: 'SELECT Name FROM core.containers',
+            }, noPermissionsUserOptions)
+            .expect(403);
+
+        // Assert
+        const { exception } = response.body;
+        expect(exception).toContain('User does not have permission to perform this operation.');
+    });
+
+    it('successfully responds', async () => {
         // Act
         // Make a POST request against the server. Here we expect a successful response.
         const response = await server
             .post('query', 'executeSql.api', {
                 schemaName: 'core',
                 sql: 'SELECT Name FROM core.containers',
-            }, requestOptions)
+            }, readerUserOptions)
             .expect(successfulResponse);
 
         // Assert

@@ -1713,7 +1713,13 @@ function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
     return false;
 }
 
-export function searchLookup(column: QueryColumn, maxRows: number, token?: string, values?: List<string>, keys?: List<any>) {
+export function searchLookup(
+    column: QueryColumn,
+    maxRows: number,
+    token?: string,
+    values?: List<string>,
+    keys?: List<any>
+) {
     let store = getLookupStore(column);
 
     // prevent redundant search
@@ -1742,9 +1748,7 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
         }
 
         if (keys) {
-            selectRowOptions.filterArray = [
-                Filter.create(column.lookup.keyColumn, keys.toArray(), Filter.Types.IN),
-            ];
+            selectRowOptions.filterArray = [Filter.create(column.lookup.keyColumn, keys.toArray(), Filter.Types.IN)];
         }
 
         return searchRows(selectRowOptions, token, lookup.displayColumn)
@@ -1981,7 +1985,13 @@ function pasteCell(
                     index <= paste.coordinates.colMax &&
                     byColumnValues.get(index - paste.coordinates.colMin).size > 0
                 )
-                    arr.push(initLookup(column, undefined, filteredLookup ? filteredLookup : byColumnValues.get(index - paste.coordinates.colMin)));
+                    arr.push(
+                        initLookup(
+                            column,
+                            undefined,
+                            filteredLookup ? filteredLookup : byColumnValues.get(index - paste.coordinates.colMin)
+                        )
+                    );
                 else arr.push(initLookup(column, LOOKUP_DEFAULT_SIZE, filteredLookup));
                 return arr;
             }, []);
@@ -2425,10 +2435,12 @@ function isReadOnly(column: QueryColumn, columnMetadata: Map<string, EditableCol
     return (column && column.readOnly) || (metadata && metadata.readOnly);
 }
 
-function getColumnFilteredLookup(column: QueryColumn, columnMetadata: Map<string, EditableColumnMetadata>): List<string> {
+function getColumnFilteredLookup(
+    column: QueryColumn,
+    columnMetadata: Map<string, EditableColumnMetadata>
+): List<string> {
     const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey);
-    if (metadata)
-        return metadata.filteredLookupValues;
+    if (metadata) return metadata.filteredLookupValues;
 
     return undefined;
 }

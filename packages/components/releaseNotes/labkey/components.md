@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.92.1
+*Released*: 12 September 2020
 * Allow filtered list of editable grid cell lookup values
 
 ### version 0.92.0

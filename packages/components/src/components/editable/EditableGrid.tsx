@@ -133,8 +133,8 @@ export interface EditableColumnMetadata {
     placeholder?: string;
     readOnly?: boolean;
     toolTip?: ReactNode;
-    filteredLookupValues?: List<string>
-    filteredLookupKeys?: List<any>
+    filteredLookupValues?: List<string>;
+    filteredLookupKeys?: List<any>;
 }
 
 export interface EditableGridProps {

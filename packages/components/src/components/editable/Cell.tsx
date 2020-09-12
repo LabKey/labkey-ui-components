@@ -43,8 +43,8 @@ interface Props {
     selection?: boolean;
     values?: List<ValueDescriptor>;
     onCellModify?: () => any;
-    filteredLookupValues?: List<string>,
-    filteredLookupKeys?: List<any>,
+    filteredLookupValues?: List<string>;
+    filteredLookupKeys?: List<any>;
 }
 
 export class Cell extends React.PureComponent<Props> {

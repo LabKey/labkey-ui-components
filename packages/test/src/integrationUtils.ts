@@ -162,8 +162,12 @@ const createUser = async (ctx: ServerContext, email: string, password: string): 
     if (users.length !== 1) {
         throw new Error(`Failed to create user. Unexpected number of users returned after creating account for "${email}".`);
     }
+    const [ user ] = users;
+    if (user.isNew !== true) {
+        throw new Error(`Failed to create user. The user account "${email}" already exists.`);
+    }
 
-    await setInitialPassword(ctx, users[0], password);
+    await setInitialPassword(ctx, email, password, parseVerificationToken(user));
 
     ctx.createdUsers.push(email);
 
@@ -306,6 +310,23 @@ const initCSRF = async (ctx: ServerContext): Promise<string> => {
     throw new Error('Failed to initialize CSRF. Unable to make successful request to login-whoAmI.api.');
 };
 
+/**
+ * Parses the verification token from the message supplied via the createNewUser.api upon creating a new user.
+ * e.g. Expected to contain a link like:
+ * http://localhost:8080/labkey/login-setPassword.view?verification=p9PVITQgdpiny1tI0kCPvVp8fu72Miab&amp;email=newuser@test.com
+ */
+const parseVerificationToken = (user: CreateNewUser): string => {
+    const { email, message } = user;
+    const tokenPrefix = 'setPassword.view?verification=';
+    const tokenSuffix = '&amp;email=';
+
+    if (message.indexOf(tokenPrefix) === -1 || message.indexOf(tokenSuffix) === -1) {
+        throw new Error(`Failed to parse verification token. Unexpected response message for account "${email}".`);
+    }
+
+    return message.split(tokenPrefix)[1].split(tokenSuffix)[0];
+}
+
 const postRequest = (
     ctx: ServerContext,
     controller: string,
@@ -338,21 +359,7 @@ const request = (
     return request;
 };
 
-const setInitialPassword = async (ctx: ServerContext, user: CreateNewUser, password: string): Promise<void> => {
-    // Only works for new users
-    const { email, isNew, message } = user;
-    if (isNew !== true) {
-        throw new Error(`Failed to initialize password. Initial password can only be set for new user accounts. "${email}" is not a new account.`);
-    }
-
-    const tokenPrefix = 'setPassword.view?verification=';
-    const tokenSuffix = '&amp;email=';
-
-    if (message.indexOf(tokenPrefix) === -1 || message.indexOf(tokenSuffix) === -1) {
-        throw new Error(`Failed to initialize password. Unexpected response message for account "${email}".`);
-    }
-    const verification = message.split(tokenPrefix)[1].split(tokenSuffix)[0];
-
+const setInitialPassword = async (ctx: ServerContext, email: string, password: string, verification: string): Promise<void> => {
     // Set the password (we're talking to HTML here...)
     await request(ctx, 'login', 'setPassword.view', (agent, url) => (
         agent.post(url)

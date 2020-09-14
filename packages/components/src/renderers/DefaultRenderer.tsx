@@ -18,14 +18,10 @@ import { List } from 'immutable';
 
 import { MultiValueRenderer } from './MultiValueRenderer';
 
-interface Props {
-    data: any;
-}
-
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.
  */
-export class DefaultRenderer extends React.PureComponent<Props> {
+export class DefaultRenderer extends React.PureComponent<any> {
     render(): ReactNode {
         const { data } = this.props;
 

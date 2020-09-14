@@ -1680,7 +1680,7 @@ function applySelection(
     };
 }
 
-export function initLookup(column: QueryColumn, maxRows: number, values?: List<string>) {
+export function initLookup(column: QueryColumn, maxRows: number, values?: List<string>, keys?: List<any>) {
     if (shouldInitLookup(column, values)) {
         const store = new LookupStore({
             key: LookupStore.key(column),
@@ -1689,7 +1689,7 @@ export function initLookup(column: QueryColumn, maxRows: number, values?: List<s
         });
         updateLookupStore(store, {}, false);
 
-        return searchLookup(column, maxRows, undefined, values);
+        return searchLookup(column, maxRows, undefined, values, keys);
     }
 
     return Promise.resolve();
@@ -1713,11 +1713,17 @@ function shouldInitLookup(col: QueryColumn, values?: List<string>): boolean {
     return false;
 }
 
-export function searchLookup(column: QueryColumn, maxRows: number, token?: string, values?: List<string>) {
+export function searchLookup(
+    column: QueryColumn,
+    maxRows: number,
+    token?: string,
+    values?: List<string>,
+    keys?: List<any>
+) {
     let store = getLookupStore(column);
 
     // prevent redundant search
-    if (store && (token !== store.lastToken || values)) {
+    if (store && (token !== store.lastToken || values || keys)) {
         store = updateLookupStore(store, {
             isLoaded: false,
             isLoading: true,
@@ -1739,6 +1745,10 @@ export function searchLookup(column: QueryColumn, maxRows: number, token?: strin
             selectRowOptions.filterArray = [
                 Filter.create(column.lookup.displayColumn, values.toArray(), Filter.Types.IN),
             ];
+        }
+
+        if (keys) {
+            selectRowOptions.filterArray = [Filter.create(column.lookup.keyColumn, keys.toArray(), Filter.Types.IN)];
         }
 
         return searchRows(selectRowOptions, token, lookup.displayColumn)
@@ -1969,13 +1979,20 @@ function pasteCell(
             const byColumnValues = getPasteValuesByColumn(paste);
             // prior to load, ensure lookup column stores are loaded
             const columnLoaders: any[] = gridModel.getInsertColumns().reduce((arr, column, index) => {
+                const filteredLookup = getColumnFilteredLookup(column, columnMetadata);
                 if (
                     index >= paste.coordinates.colMin &&
                     index <= paste.coordinates.colMax &&
                     byColumnValues.get(index - paste.coordinates.colMin).size > 0
                 )
-                    arr.push(initLookup(column, undefined, byColumnValues.get(index - paste.coordinates.colMin)));
-                else arr.push(initLookup(column, LOOKUP_DEFAULT_SIZE));
+                    arr.push(
+                        initLookup(
+                            column,
+                            undefined,
+                            filteredLookup ? filteredLookup : byColumnValues.get(index - paste.coordinates.colMin)
+                        )
+                    );
+                else arr.push(initLookup(column, LOOKUP_DEFAULT_SIZE, filteredLookup));
                 return arr;
             }, []);
 
@@ -2416,6 +2433,16 @@ function getPasteValuesByColumn(paste: IPasteModel): List<List<string>> {
 function isReadOnly(column: QueryColumn, columnMetadata: Map<string, EditableColumnMetadata>): boolean {
     const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey);
     return (column && column.readOnly) || (metadata && metadata.readOnly);
+}
+
+function getColumnFilteredLookup(
+    column: QueryColumn,
+    columnMetadata: Map<string, EditableColumnMetadata>
+): List<string> {
+    const metadata: EditableColumnMetadata = columnMetadata && columnMetadata.get(column.fieldKey);
+    if (metadata) return metadata.filteredLookupValues;
+
+    return undefined;
 }
 
 function pasteCellLoad(

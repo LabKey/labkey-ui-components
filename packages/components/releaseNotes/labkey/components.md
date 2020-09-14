@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Issue 36941: Query Grid and details component multiline field does not render text as multi-line
 * Issue 40839: Copy theme/scss files to dist instead of compiling down to a single css file
 
+### version 0.92.1
+*Released*: 12 September 2020
+* Allow filtered list of editable grid cell lookup values
+
 ### version 0.92.0
 *Released*: 10 September 2020
 * Update FieldEditTrigger

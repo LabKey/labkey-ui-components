@@ -13,12 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { hookServer, IntegrationTestServer, successfulResponse } from './integrationUtils';
+import {
+    hookServer,
+    IntegrationTestServer,
+    PostRequestOptions,
+    RequestOptions,
+    successfulResponse
+} from './integrationUtils';
 import { sleep } from './utils';
 
 export {
     hookServer,
     IntegrationTestServer,
+    PostRequestOptions,
+    RequestOptions,
     sleep,
     successfulResponse,
 };

@@ -65,7 +65,7 @@ export interface RequestOptions {
     requestContext?: RequestContext;
 }
 
-interface PostRequestOptions extends RequestOptions {
+export interface PostRequestOptions extends RequestOptions {
     postProcessor?: (postRequest: any, payload: any) => any;
 }
 
@@ -217,7 +217,7 @@ const init = async (ctx: ServerContext, projectName: string, containerOptions?: 
     if (getProjectResponse.status !== 200) {
         if (getProjectResponse.status === 404) {
             try {
-                project = await _createContainer(ctx, '/', projectName);
+                project = await _createContainer(ctx, '/', projectName, containerOptions);
             }
             catch (e) {
                 throw new Error('Failed to initialize integration test. Unable to create test project.');
@@ -233,7 +233,7 @@ const init = async (ctx: ServerContext, projectName: string, containerOptions?: 
 
     // Create default test container
     try {
-        const testContainer = await createTestContainer(ctx, containerOptions);
+        const testContainer = await createTestContainer(ctx);
         ctx.containerPath = testContainer.path;
     }
     catch (e) {

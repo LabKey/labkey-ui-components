@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DefaultRenderer boolean 1`] = `
+<span
+  className=""
+>
+  true
+</span>
+`;
+
+exports[`DefaultRenderer displayValue 1`] = `
+<span
+  className=""
+>
+  Value 1
+</span>
+`;
+
+exports[`DefaultRenderer formattedValue 1`] = `
+<span
+  className=""
+>
+  Value 1.00
+</span>
+`;
+
+exports[`DefaultRenderer new line 1`] = `
+<span
+  className="whitespace-prewrap"
+>
+  test1
+test2
+</span>
+`;
+
+exports[`DefaultRenderer string 1`] = `
+<span
+  className=""
+>
+  test string
+</span>
+`;
+
+exports[`DefaultRenderer undefined 1`] = `
+<span
+  className=""
+/>
+`;
+
+exports[`DefaultRenderer url 1`] = `
+<a
+  href="labkey.com"
+>
+  Value 1
+</a>
+`;
+
+exports[`DefaultRenderer value 1`] = `
+<span
+  className=""
+>
+  1
+</span>
+`;

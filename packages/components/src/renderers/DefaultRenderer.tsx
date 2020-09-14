@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 
 import { MultiValueRenderer } from './MultiValueRenderer';
 
+interface Props {
+    data: any;
+}
+
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.
  */
-export class DefaultRenderer extends React.Component<any, any> {
-    render() {
+export class DefaultRenderer extends React.PureComponent<Props> {
+    render(): ReactNode {
         const { data } = this.props;
 
         let display = null;

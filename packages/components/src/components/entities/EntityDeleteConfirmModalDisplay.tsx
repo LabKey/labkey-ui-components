@@ -73,7 +73,7 @@ export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any>
                 text += ' because they have ' + dependencyText + '.';
             }
         } else {
-            text = "You've selected " + totalNum + ' ' + totalNoun + ' but only ' + numCanDelete + ' can be ' + verb + '.  ';
+            text = "You've selected " + totalNum + ' ' + totalNoun + ' but only ' + numCanDelete + ' can be ' + verb + '. ';
             text += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
             text += (numCannotDelete === 1 ? ' it has ' : ' they have ') + dependencyText + '.';
         }

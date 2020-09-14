@@ -112,6 +112,8 @@ function inputCellFactory(
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
                 onCellModify={onCellModify}
+                filteredLookupValues={columnMetadata ? columnMetadata.filteredLookupValues : undefined}
+                filteredLookupKeys={columnMetadata ? columnMetadata.filteredLookupKeys : undefined}
             />
         );
     };
@@ -131,6 +133,8 @@ export interface EditableColumnMetadata {
     placeholder?: string;
     readOnly?: boolean;
     toolTip?: ReactNode;
+    filteredLookupValues?: List<string>;
+    filteredLookupKeys?: List<any>;
 }
 
 export interface EditableGridProps {

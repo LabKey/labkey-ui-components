@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add optional verb property to EntityDeleteConfirmModal
 * Add styling to DetailDisplay to preserve line breaks
 
+### version 0.92.1
+*Released*: 12 September 2020
+* Allow filtered list of editable grid cell lookup values
+
 ### version 0.92.0
 *Released*: 10 September 2020
 * Update FieldEditTrigger

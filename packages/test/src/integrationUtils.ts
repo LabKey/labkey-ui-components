@@ -26,7 +26,12 @@ interface CreateNewUser {
     message: string;
 }
 
-class RequestContext {
+interface UserCredentials {
+    password: string;
+    username: string;
+}
+
+class RequestContext implements UserCredentials {
     csrfToken?: string;
     password: string;
     username: string;
@@ -55,7 +60,6 @@ interface ServerContext {
     containerPath?: string;
     createdUsers: string[];
     defaultContext: RequestContext;
-    initialized: boolean;
     location: string;
     projectPath?: string;
 }
@@ -66,17 +70,41 @@ export interface RequestOptions {
 }
 
 export interface PostRequestOptions extends RequestOptions {
-    postProcessor?: (postRequest: any, payload: any) => any;
+    postProcessor?: (postRequest: Test, payload: any) => Test;
 }
 
 export interface IntegrationTestServer {
+    /**
+     * Add a user (by their email address) to a permission's role in a the test container. This allows for
+     * testing of users with different permissions in the test container.
+     */
     addUserToRole: (email: string, role: SecurityRole, containerPath?: string) => Promise<void>;
+    /**
+     * Creates a RequestContext that can be used for subsequent server requests (e.g. get, post). This will
+     * initialize the CSRF token to ensure that the server requests authenticate as expected.
+     */
     createRequestContext: (config: Partial<RequestContext>) => Promise<RequestContext>;
+    /**
+     * Creates a new Container on the server within the test Project. This allows for testing across multiple
+     * containers or creating a separate container for a test suite.
+     */
     createTestContainer: (containerOptions?: any) => Promise<Container>;
-    createUser: (email: string, password: string) => Promise<any>;
+    /**
+     * Create a new user account on the server with the specified credentials. If the account already exists, then
+     * the account will be deleted and re-created to ensure credentials and permissions are configured as expected.
+     */
+    createUser: (email: string, password: string) => Promise<UserCredentials>;
+    /** Make a GET request against the server. */
     get: (controller: string, action: string, params?: any, options?: RequestOptions) => Test;
+    /** Initializes the server for the test run. This is required to be called prior to any tests running. */
     init: (lkProjectName: string, containerOptions?: any) => Promise<void>;
+    /** Make a POST request against the server. */
     post: (controller: string, action: string, payload?: any, options?: PostRequestOptions) => Test;
+    /**
+     * Tears down any test artifacts on the server. This is intended to be called after the tests complete.
+     * Specifically, it deletes the test Project along with any test containers created during the test run.
+     * Additionally, deletes all user accounts created during the test run.
+     */
     teardown: () => Promise<void>;
 }
 
@@ -110,7 +138,7 @@ const createTestContainer = async (ctx: ServerContext, containerOptions?: any /*
     return await _createContainer(ctx, ctx.projectPath, Utils.generateUUID(), containerOptions);
 };
 
-const createUser = async (ctx: ServerContext, email: string, password: string): Promise<any> => {
+const createUser = async (ctx: ServerContext, email: string, password: string): Promise<UserCredentials> => {
     // Delete user (if the account already exists)
     // This ensures the given user's password and subsequent permissions are as expected
     await deleteUser(ctx, email);
@@ -161,7 +189,8 @@ const getUserId = async (ctx: ServerContext, email: string): Promise<number> => 
         schemaName: 'core',
         'query.columns': 'UserId,Email',
         'query.queryName': 'users',
-        'query.email~eq': email,
+        // User emails are lower-cased upon account creation
+        'query.email~eq': email.toLowerCase(),
     }, { containerPath: '/' }).expect(successfulResponse);
 
     const { rows } = queryResponse.body;
@@ -183,7 +212,6 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
             password: env.INTEGRATION_AUTH_PASS,
             username: env.INTEGRATION_AUTH_USER,
         }),
-        initialized: false,
         location,
     };
 
@@ -239,8 +267,6 @@ const init = async (ctx: ServerContext, projectName: string, containerOptions?: 
     catch (e) {
         throw new Error('Failed to initialize integration test. Unable to create test container.');
     }
-
-    ctx.initialized = true;
 
     // Log useful information
     console.log('server:', ctx.location);
@@ -345,7 +371,7 @@ export const successfulResponse = (response: any): boolean => {
 };
 
 const teardown = async (ctx: ServerContext): Promise<void> => {
-    if (ctx.initialized) {
+    if (ctx.projectPath) {
         try {
             // Delete project created for this test run
             await postRequest(
@@ -353,13 +379,14 @@ const teardown = async (ctx: ServerContext): Promise<void> => {
                 'core',
                 'deleteContainer.api',
                 undefined,
-                { containerPath: ctx.projectPath }
+                {containerPath: ctx.projectPath}
             ).expect(successfulResponse);
-        }
-        catch (e) {
+        } catch (e) {
             throw new Error('Failed to teardown integration test. Unable to delete test project.');
         }
+    }
 
+    if (ctx.createdUsers.length > 0) {
         try {
             // Delete all users created during this test run
             await Promise.all(ctx.createdUsers.map(email => deleteUser(ctx, email)));

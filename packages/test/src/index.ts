@@ -18,6 +18,7 @@ import {
     IntegrationTestServer,
     PostRequestOptions,
     RequestOptions,
+    SecurityRole,
     successfulResponse
 } from './integrationUtils';
 import { sleep } from './utils';
@@ -27,6 +28,7 @@ export {
     IntegrationTestServer,
     PostRequestOptions,
     RequestOptions,
+    SecurityRole,
     sleep,
     successfulResponse,
 };

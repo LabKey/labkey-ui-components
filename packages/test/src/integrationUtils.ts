@@ -20,6 +20,8 @@ import { sleep } from './utils';
 
 declare var LABKEY;
 
+type AgentProvider = (agent: SuperTest<Test>, url: string) => Test;
+
 interface CreateNewUser {
     email: string;
     isNew: boolean;
@@ -69,10 +71,6 @@ export interface RequestOptions {
     requestContext?: RequestContext;
 }
 
-export interface PostRequestOptions extends RequestOptions {
-    postProcessor?: (postRequest: Test, payload: any) => Test;
-}
-
 export interface IntegrationTestServer {
     /**
      * Add a user (by their email address) to a permission's role in a the test container. This allows for
@@ -98,8 +96,18 @@ export interface IntegrationTestServer {
     get: (controller: string, action: string, params?: any, options?: RequestOptions) => Test;
     /** Initializes the server for the test run. This is required to be called prior to any tests running. */
     init: (lkProjectName: string, containerOptions?: any) => Promise<void>;
-    /** Make a POST request against the server. */
-    post: (controller: string, action: string, payload?: any, options?: PostRequestOptions) => Test;
+    /**
+     * Make a POST request against the server. This will set the header "Content-Type" to "application/json"
+     * so the payload is expected to be a JSON serializable object. For other usages of POST use `request()` instead.
+     */
+    post: (controller: string, action: string, payload?: any, options?: RequestOptions) => Test;
+    /**
+     * For more advanced requests (beyond simple GET/POST) this method provides access to superagent directly.
+     * The URL is composed from the provided controller, action, and containerPath and is made available
+     * via the `AgentProvider`.
+     * See superagent documentation for API: https://visionmedia.github.io/superagent/
+     */
+    request: (controller: string, action: string, agentProvider: AgentProvider, options?: RequestOptions) => Test;
     /**
      * Tears down any test artifacts on the server. This is intended to be called after the tests complete.
      * Specifically, it deletes the test Project along with any test containers created during the test run.
@@ -178,9 +186,8 @@ const getRequest = (
     params?: any,
     options?: RequestOptions
 ): Test => {
-    const containerPath = options?.containerPath ?? ctx.containerPath;
-    const url = ActionURL.buildURL(controller, action, containerPath, params);
-    return withAuth(ctx, ctx.agent.get(url), options);
+    const url = ActionURL.buildURL(controller, action, options?.containerPath ?? ctx.containerPath, params);
+    return request(ctx, controller, action, agent => agent.get(url), options);
 };
 
 const getUserId = async (ctx: ServerContext, email: string): Promise<number> => {
@@ -223,6 +230,7 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
         get: getRequest.bind(this, server),
         init: init.bind(this, server),
         post: postRequest.bind(this, server),
+        request: request.bind(this, server),
         teardown: teardown.bind(this, server),
     };
 };
@@ -303,18 +311,31 @@ const postRequest = (
     controller: string,
     action: string,
     payload?: any,
-    options?: PostRequestOptions
+    options?: RequestOptions
 ): Test => {
-    const containerPath = options?.containerPath ?? ctx.containerPath;
-    let postRequest = ctx.agent.post(ActionURL.buildURL(controller, action, containerPath));
+    return request(ctx, controller, action, (agent, url) => {
+        return agent.post(url).send(payload).set('Content-Type', 'application/json');
+    }, options);
+};
 
-    if (options?.postProcessor) {
-        postRequest = options.postProcessor(postRequest, payload);
-    } else {
-        postRequest = postRequest.send(payload).set('Content-Type', 'application/json');
+const request = (
+    ctx: ServerContext,
+    controller: string,
+    action: string,
+    agentProvider: AgentProvider,
+    options?: RequestOptions
+): Test => {
+    const requestContext = options?.requestContext ?? ctx.defaultContext;
+    const { csrfToken, password, username } = requestContext;
+
+    const url = ActionURL.buildURL(controller, action, options?.containerPath ?? ctx.containerPath);
+    let request = agentProvider(ctx.agent, url).auth(username, password);
+
+    if (csrfToken) {
+        request = request.set('X-LABKEY-CSRF', csrfToken).set('Cookie', `X-LABKEY-CSRF=${csrfToken}`);
     }
 
-    return withAuth(ctx, postRequest, options);
+    return request;
 };
 
 const setInitialPassword = async (ctx: ServerContext, user: CreateNewUser, password: string): Promise<void> => {
@@ -333,16 +354,14 @@ const setInitialPassword = async (ctx: ServerContext, user: CreateNewUser, passw
     const verification = message.split(tokenPrefix)[1].split(tokenSuffix)[0];
 
     // Set the password (we're talking to HTML here...)
-    await postRequest(ctx, 'login', 'setPassword.view', undefined, {
-        containerPath: '/',
-        postProcessor: (request) => (
-            request
-                .field('email', email)
-                .field('password', password)
-                .field('password2', password)
-                .field('verification', verification)
-        ),
-    }).expect(302); // Expect to be redirected
+    await request(ctx, 'login', 'setPassword.view', (agent, url) => (
+        agent.post(url)
+            .field('email', email)
+            .field('password', password)
+            .field('password2', password)
+            .field('verification', verification)
+            .expect(302) // Expect to be redirected
+    ), { containerPath: '/' });
 }
 
 /**
@@ -395,17 +414,4 @@ const teardown = async (ctx: ServerContext): Promise<void> => {
             throw new Error('Failed to teardown integration test. Unable to delete test users.');
         }
     }
-};
-
-const withAuth = (ctx: ServerContext, request: Test, options?: RequestOptions): Test => {
-    const requestContext = options?.requestContext ?? ctx.defaultContext;
-    const { csrfToken, password, username } = requestContext;
-
-    request = request.auth(username, password);
-
-    if (csrfToken) {
-        request = request.set('X-LABKEY-CSRF', csrfToken).set('Cookie', `X-LABKEY-CSRF=${csrfToken}`);
-    }
-
-    return request;
 };

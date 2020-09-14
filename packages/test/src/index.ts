@@ -16,7 +16,6 @@
 import {
     hookServer,
     IntegrationTestServer,
-    PostRequestOptions,
     RequestOptions,
     SecurityRole,
     successfulResponse
@@ -26,7 +25,6 @@ import { sleep } from './utils';
 export {
     hookServer,
     IntegrationTestServer,
-    PostRequestOptions,
     RequestOptions,
     SecurityRole,
     sleep,

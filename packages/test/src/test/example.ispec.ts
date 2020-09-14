@@ -79,12 +79,21 @@ describe('query-executeSql.api', () => {
         // Act
         // Make a POST request against the server. Here we expect a to be rejected because the user does not
         // have appropriate permissions.
-        const response = await server
-            .post('query', 'executeSql.api', {
-                schemaName: 'core',
-                sql: 'SELECT Name FROM core.containers',
-            }, noPermissionsUserOptions)
-            .expect(403);
+        const response = await server.request(
+            'query',
+            'executeSql.api',
+            (agent, url) => {
+                return agent
+                    .post(url)
+                    .send({
+                        schemaName: 'core',
+                        sql: 'SELECT Name FROM core.containers',
+                    })
+                    .set('Content-Type', 'application/json')
+                    .expect(403);
+            },
+            noPermissionsUserOptions
+        );
 
         // Assert
         const { exception } = response.body;

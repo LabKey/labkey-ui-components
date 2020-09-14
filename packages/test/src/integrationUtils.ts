@@ -76,7 +76,7 @@ export interface IntegrationTestServer {
      * Add a user (by their email address) to a permission's role in a the test container. This allows for
      * testing of users with different permissions in the test container.
      */
-    addUserToRole: (email: string, role: SecurityRole, containerPath?: string) => Promise<void>;
+    addUserToRole: (email: string, role: SecurityRole | string, containerPath?: string) => Promise<void>;
     /**
      * Creates a RequestContext that can be used for subsequent server requests (e.g. get, post). This will
      * initialize the CSRF token to ensure that the server requests authenticate as expected.
@@ -116,10 +116,10 @@ export interface IntegrationTestServer {
     teardown: () => Promise<void>;
 }
 
-const addUserToRole = async (ctx: ServerContext, email: string, role: SecurityRole, containerPath?: string): Promise<void> => {
+const addUserToRole = async (ctx: ServerContext, email: string, role: SecurityRole | string, containerPath?: string): Promise<void> => {
     await postRequest(ctx, 'security', 'addAssignment.api', {
         email,
-        roleClassName: `org.labkey.api.security.roles.${SecurityRole[role]}Role`,
+        roleClassName: SecurityRole[role] !== undefined ? `org.labkey.api.security.roles.${SecurityRole[role]}Role` : role,
     }, { containerPath: containerPath ?? ctx.containerPath }).expect(successfulResponse);
 };
 
@@ -342,14 +342,14 @@ const setInitialPassword = async (ctx: ServerContext, user: CreateNewUser, passw
     // Only works for new users
     const { email, isNew, message } = user;
     if (isNew !== true) {
-        throw new Error(`Failed to create user. Expected a new user to be created for account "${email}".`);
+        throw new Error(`Failed to initialize password. Initial password can only be set for new user accounts. "${email}" is not a new account.`);
     }
 
     const tokenPrefix = 'setPassword.view?verification=';
     const tokenSuffix = '&amp;email=';
 
     if (message.indexOf(tokenPrefix) === -1 || message.indexOf(tokenSuffix) === -1) {
-        throw new Error(`Failed to create user. Unexpected response message after creating account "${email}".`);
+        throw new Error(`Failed to initialize password. Unexpected response message for account "${email}".`);
     }
     const verification = message.split(tokenPrefix)[1].split(tokenSuffix)[0];
 

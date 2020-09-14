@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.92.2
+*Released*: 14 September 2020
+* Add optional verb property to EntityDeleteConfirmModal
+* Add styling to DetailDisplay to preserve line breaks
+
 ### version 0.92.1
 *Released*: 12 September 2020
 * Allow filtered list of editable grid cell lookup values

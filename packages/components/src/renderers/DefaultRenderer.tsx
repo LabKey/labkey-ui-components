@@ -48,6 +48,6 @@ export class DefaultRenderer extends React.Component<any, any> {
             }
         }
 
-        return <span>{display}</span>;
+        return <span className="detail-display">{display}</span>;
     }
 }

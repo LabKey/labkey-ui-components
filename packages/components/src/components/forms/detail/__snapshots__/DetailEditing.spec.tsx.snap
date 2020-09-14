@@ -34,7 +34,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-fieldkey="flag"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 
               </span>
@@ -53,7 +53,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-fieldkey="for set 3"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 abc
               </span>
@@ -72,7 +72,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-fieldkey="again for set 3"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 false
               </span>
@@ -91,7 +91,7 @@ exports[`<DetailEditing/> canUpdate false 1`] = `
               data-fieldkey="another"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 test test
               </span>
@@ -168,7 +168,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-fieldkey="flag"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 
               </span>
@@ -187,7 +187,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-fieldkey="for set 3"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 abc
               </span>
@@ -206,7 +206,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-fieldkey="again for set 3"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 false
               </span>
@@ -225,7 +225,7 @@ exports[`<DetailEditing/> canUpdate true 1`] = `
               data-fieldkey="another"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 test test
               </span>

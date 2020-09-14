@@ -48,9 +48,7 @@ export class DefaultRenderer extends React.PureComponent<any> {
             }
         }
 
-        // issue 36941: when using the default renderer, add css so that line breaks as preserved
-        const cls = display?.indexOf('\n') > -1 ? 'whitespace-prewrap' : '';
-
-        return <span className={cls}>{display}</span>;
+        // Issue 36941: when using the default renderer, add css so that line breaks as preserved
+        return <span className="detail-display">{display}</span>;
     }
 }

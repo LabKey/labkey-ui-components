@@ -30,7 +30,7 @@ exports[`<Detail/> asPanel 1`] = `
               data-fieldkey="flag"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 
               </span>
@@ -49,7 +49,7 @@ exports[`<Detail/> asPanel 1`] = `
               data-fieldkey="for set 3"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 abc
               </span>
@@ -68,7 +68,7 @@ exports[`<Detail/> asPanel 1`] = `
               data-fieldkey="again for set 3"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 false
               </span>
@@ -87,7 +87,7 @@ exports[`<Detail/> asPanel 1`] = `
               data-fieldkey="another"
             >
               <span
-                className=""
+                className="detail-display"
               >
                 test test
               </span>
@@ -151,7 +151,7 @@ exports[`<Detail/> with QueryGridModel 1`] = `
           data-fieldkey="flag"
         >
           <span
-            className=""
+            className="detail-display"
           >
             
           </span>
@@ -170,7 +170,7 @@ exports[`<Detail/> with QueryGridModel 1`] = `
           data-fieldkey="for set 3"
         >
           <span
-            className=""
+            className="detail-display"
           >
             abc
           </span>
@@ -189,7 +189,7 @@ exports[`<Detail/> with QueryGridModel 1`] = `
           data-fieldkey="again for set 3"
         >
           <span
-            className=""
+            className="detail-display"
           >
             false
           </span>
@@ -208,7 +208,7 @@ exports[`<Detail/> with QueryGridModel 1`] = `
           data-fieldkey="another"
         >
           <span
-            className=""
+            className="detail-display"
           >
             test test
           </span>

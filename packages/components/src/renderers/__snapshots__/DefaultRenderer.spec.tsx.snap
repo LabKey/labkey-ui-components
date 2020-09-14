@@ -2,7 +2,7 @@
 
 exports[`DefaultRenderer boolean 1`] = `
 <span
-  className=""
+  className="detail-display"
 >
   true
 </span>
@@ -10,7 +10,7 @@ exports[`DefaultRenderer boolean 1`] = `
 
 exports[`DefaultRenderer displayValue 1`] = `
 <span
-  className=""
+  className="detail-display"
 >
   Value 1
 </span>
@@ -18,7 +18,7 @@ exports[`DefaultRenderer displayValue 1`] = `
 
 exports[`DefaultRenderer formattedValue 1`] = `
 <span
-  className=""
+  className="detail-display"
 >
   Value 1.00
 </span>
@@ -26,7 +26,7 @@ exports[`DefaultRenderer formattedValue 1`] = `
 
 exports[`DefaultRenderer new line 1`] = `
 <span
-  className="whitespace-prewrap"
+  className="detail-display"
 >
   test1
 test2
@@ -35,7 +35,7 @@ test2
 
 exports[`DefaultRenderer string 1`] = `
 <span
-  className=""
+  className="detail-display"
 >
   test string
 </span>
@@ -43,7 +43,7 @@ exports[`DefaultRenderer string 1`] = `
 
 exports[`DefaultRenderer undefined 1`] = `
 <span
-  className=""
+  className="detail-display"
 />
 `;
 
@@ -57,7 +57,7 @@ exports[`DefaultRenderer url 1`] = `
 
 exports[`DefaultRenderer value 1`] = `
 <span
-  className=""
+  className="detail-display"
 >
   1
 </span>

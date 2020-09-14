@@ -78,7 +78,7 @@ export function getWebDavFiles(
     includeDirectories?: boolean,
     skipAtFiles?: boolean,
     alternateFilterCondition?: (file: any) => boolean,
-): Promise<Map<string, WebDavFile>> {
+): Promise<Map<string, any>> {
     return new Promise((resolve, reject) => {
         const url = getWebDavUrl(containerPath, directory, false, skipAtFiles);
 

@@ -31,6 +31,7 @@ import {
     caseInsensitive,
     contains,
     getCommonDataValues,
+    getDisambiguatedSelectInputOptions,
     getSchemaQuery,
     getUpdatedData,
     getUpdatedDataFromGrid,
@@ -1133,5 +1134,80 @@ describe('similaritySortFactory', () => {
         // case-sensitive
         result = getValues().sort(similaritySortFactory('s-1', true));
         expect(result[0]).toEqual('6S-1'); // degrade to natural sort
+    });
+});
+
+const sourceOptions = [{
+    "value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6",
+    "label": "Source-1 (sourceType1)"
+}, {
+    "value": "urn:lsid:labkey.com:Data.Folder-8:3d55fee0-d81c-1038-b2c8-93ec7daaff14",
+    "label": "Source-1 (sourceType2)"
+}, {
+    "value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0c4-c884-1038-ba3d-f653126805a6",
+    "label": "Source-2"
+}];
+
+describe('getDisambiguatedSelectInputOptions', () => {
+    test('from QueryGridModel data', () => {
+        const rows = [{
+            "links": null,
+            "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6"},
+            "SourceType": {"url": "#/rd/dataclass/sourceType1", "value": "sourceType1"},
+            "rowId": {"value": 57},
+            "Name": {"value": "Source-1"}
+        }, {
+            "links": null,
+            "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0c4-c884-1038-ba3d-f653126805a6"},
+            "SourceType": {"url": "#/rd/dataclass/sourceType1", "value": "sourceType1"},
+            "rowId": {"value": 58},
+            "Name": {"value": "Source-2"}
+        }, {
+            "links": null,
+            "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:3d55fee0-d81c-1038-b2c8-93ec7daaff14"},
+            "SourceType": {"url": "#/rd/dataclass/sourceType2", "value": "sourceType2"},
+            "rowId": {"value": 65},
+            "Name": {"value": "Source-1"}
+        }];
+
+        expect(getDisambiguatedSelectInputOptions(fromJS(rows), 'lsid', 'Name', 'SourceType')).toEqual(expect.arrayContaining([
+            expect.objectContaining(sourceOptions[0]),
+            expect.objectContaining(sourceOptions[1]),
+            expect.objectContaining(sourceOptions[2])
+        ]));
+    });
+
+    test('from selectRows result', () => {
+        const rows = {
+            "0": {
+                "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6"},
+                "SourceType": {
+                    "value": "sourceType1"
+                },
+                "rowId": {"value": 57},
+                "Name": {"value": "Source-1"}
+            },
+            "1": {
+                "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0c4-c884-1038-ba3d-f653126805a6"},
+                "SourceType": {
+                    "value": "sourceType1"
+                },
+                "rowId": {"value": 58},
+                "Name": {"value": "Source-2"}
+            },
+            "2": {
+                "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:3d55fee0-d81c-1038-b2c8-93ec7daaff14"},
+                "SourceType": {
+                    "value": "sourceType2"
+                },
+                "rowId": {"value": 65},
+                "Name": {"value": "Source-1"}
+            }
+        }
+        expect(getDisambiguatedSelectInputOptions(rows, 'lsid', 'Name', 'SourceType')).toEqual(expect.arrayContaining([
+            expect.objectContaining(sourceOptions[0]),
+            expect.objectContaining(sourceOptions[1]),
+            expect.objectContaining(sourceOptions[2])
+        ]));
     });
 });

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Add getDisambiguatedSelectInputOptions util
+
 ### version 0.92.2
 *Released*: 14 September 2020
 * Add optional verb property to EntityDeleteConfirmModal

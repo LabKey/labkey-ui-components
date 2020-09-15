@@ -111,7 +111,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         };
     }
 
-    componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
+    UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled
         if (nextProps.domainFormDisplayOptions.isDragDisabled !== this.props.domainFormDisplayOptions.isDragDisabled) {
             this.setDragDisabled(nextProps.domainFormDisplayOptions.isDragDisabled, false);
@@ -172,7 +172,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                     {fieldError.extraInfo && (
                         <OverlayTrigger
                             placement="bottom"
-                            overlay={<Popover bsClass="popover">{fieldError.extraInfo}</Popover>}
+                            overlay={
+                                <Popover bsClass="popover" id="domain-row-field-error-popover">
+                                    {fieldError.extraInfo}
+                                </Popover>
+                            }
                         >
                             <FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />
                         </OverlayTrigger>

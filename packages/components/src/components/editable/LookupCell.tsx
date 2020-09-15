@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as OrigReact from 'react';
-import React from 'reactn';
+import React, { createRef, KeyboardEvent, ReactNode, RefObject } from 'react';
+import ReactN from 'reactn';
 import classNames from 'classnames';
 import { List } from 'immutable';
 
@@ -34,6 +34,9 @@ export interface LookupCellProps {
     rowIdx: number;
     select: (modelId: string, colIdx: number, rowIdx: number, selection?: SELECTION_TYPES, resetValue?: boolean) => any;
     values: List<ValueDescriptor>;
+    onCellModify?: () => any;
+    filteredLookupValues?: List<string>;
+    filteredLookupKeys?: List<any>;
 }
 
 interface LookupCellState {
@@ -41,24 +44,16 @@ interface LookupCellState {
     token?: string;
 }
 
-export class LookupCell extends React.Component<LookupCellProps, LookupCellState> {
+export class LookupCell extends ReactN.Component<LookupCellProps, LookupCellState> {
     private blurTO: number;
     private changeTO: number;
-    private inputEl: React.RefObject<any>;
+    private inputEl: RefObject<HTMLInputElement>;
 
     constructor(props: LookupCellProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
-        this.clearInput = this.clearInput.bind(this);
-        this.focusInput = this.focusInput.bind(this);
-        this.onInputBlur = this.onInputBlur.bind(this);
-        this.onInputChange = this.onInputChange.bind(this);
-        this.onInputKeyDown = this.onInputKeyDown.bind(this);
-        this.onItemClick = this.onItemClick.bind(this);
-        this.onItemRemove = this.onItemRemove.bind(this);
-
-        this.inputEl = OrigReact.createRef();
+        this.inputEl = createRef<HTMLInputElement>();
 
         this.state = {
             activeOptionIdx: -1,
@@ -66,12 +61,12 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
         };
     }
 
-    componentDidMount() {
-        const { col } = this.props;
-        initLookup(col, LOOKUP_DEFAULT_SIZE);
+    componentDidMount(): void {
+        const { col, filteredLookupValues, filteredLookupKeys } = this.props;
+        initLookup(col, LOOKUP_DEFAULT_SIZE, filteredLookupValues, filteredLookupKeys);
     }
 
-    componentWillReceiveProps(nextProps: LookupCellProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: LookupCellProps): void {
         if (this.state.token && this.getOptions(nextProps).size === 1) {
             this.setState({
                 activeOptionIdx: 0,
@@ -79,56 +74,68 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
         }
     }
 
-    cancelBlur() {
+    cancelBlur = (): void => {
         clearTimeout(this.blurTO);
-    }
+    };
 
-    clearInput() {
+    clearInput = (): void => {
         if (this.inputEl && this.inputEl.current) {
             this.inputEl.current.value = '';
         }
 
-        searchLookup(this.props.col, LOOKUP_DEFAULT_SIZE);
+        searchLookup(
+            this.props.col,
+            LOOKUP_DEFAULT_SIZE,
+            undefined,
+            this.props.filteredLookupValues,
+            this.props.filteredLookupKeys
+        );
 
         this.setState({
             activeOptionIdx: -1,
             token: undefined,
         });
-    }
+    };
 
-    focusInput() {
+    focusInput = (): void => {
         this.cancelBlur();
         if (this.inputEl && this.inputEl.current) {
             this.inputEl.current.focus();
         }
-    }
+    };
 
     hasInputValue(): boolean {
         const { token } = this.state;
         return token !== undefined && token !== '';
     }
 
-    highlight(index: number) {
+    highlight = (index: number): void => {
         if (index >= -1 && index < this.getOptions(this.props).size) {
             this.setState({
                 activeOptionIdx: index,
             });
         }
-    }
+    };
 
-    isMultiValue(): boolean {
+    isMultiValue = (): boolean => {
         return this.props.col.isJunctionLookup();
-    }
+    };
 
-    onInputBlur() {
+    onInputBlur = (): void => {
         this.blurTO = window.setTimeout(() => {
             const { colIdx, modelId, rowIdx } = this.props;
             this.props.select(modelId, colIdx, rowIdx);
-            searchLookup(this.props.col, LOOKUP_DEFAULT_SIZE);
+            searchLookup(
+                this.props.col,
+                LOOKUP_DEFAULT_SIZE,
+                null,
+                this.props.filteredLookupValues,
+                this.props.filteredLookupKeys
+            );
         }, 200);
-    }
+    };
 
-    onInputChange() {
+    onInputChange = (): void => {
         clearTimeout(this.changeTO);
         this.changeTO = window.setTimeout(() => {
             let token;
@@ -137,17 +144,23 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
                 token = this.inputEl.current.value;
             }
 
-            searchLookup(this.props.col, LOOKUP_DEFAULT_SIZE, token);
+            searchLookup(
+                this.props.col,
+                LOOKUP_DEFAULT_SIZE,
+                token,
+                this.props.filteredLookupValues,
+                this.props.filteredLookupKeys
+            );
 
             this.setState({
                 activeOptionIdx: -1,
                 token,
             });
         }, 350);
-    }
+    };
 
-    onInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
-        const { colIdx, modelId, rowIdx, values } = this.props;
+    onInputKeyDown = (event: KeyboardEvent<HTMLInputElement>): void => {
+        const { colIdx, modelId, rowIdx, values, onCellModify } = this.props;
         const { activeOptionIdx } = this.state;
         const options = this.getOptions(this.props);
 
@@ -155,6 +168,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
             case KEYS.Backspace:
                 if (!this.hasInputValue() && values !== undefined && values.size) {
                     modifyCell(modelId, colIdx, rowIdx, values.last(), MODIFICATION_TYPES.REMOVE);
+                    if (onCellModify) onCellModify();
                 }
                 break;
             case KEYS.Enter:
@@ -178,10 +192,10 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
                 cancelEvent(event);
                 break;
         }
-    }
+    };
 
-    onItemClick(vd: ValueDescriptor) {
-        const { col, colIdx, modelId, rowIdx } = this.props;
+    onItemClick = (vd: ValueDescriptor): void => {
+        const { col, colIdx, modelId, rowIdx, onCellModify } = this.props;
 
         modifyCell(
             modelId,
@@ -190,6 +204,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
             vd,
             col.isJunctionLookup() ? MODIFICATION_TYPES.ADD : MODIFICATION_TYPES.REPLACE
         );
+        if (onCellModify) onCellModify();
         this.clearInput();
 
         if (!this.isMultiValue()) {
@@ -198,15 +213,17 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
         }
 
         this.focusInput();
-    }
+    };
 
-    onItemRemove(vd: ValueDescriptor) {
-        const { modelId, colIdx, rowIdx } = this.props;
+    onItemRemove = (vd: ValueDescriptor): void => {
+        const { modelId, colIdx, rowIdx, onCellModify } = this.props;
         modifyCell(modelId, colIdx, rowIdx, vd, MODIFICATION_TYPES.REMOVE);
-        this.focusInput();
-    }
+        if (onCellModify) onCellModify();
 
-    renderOptions(): React.ReactNode {
+        this.focusInput();
+    };
+
+    renderOptions(): ReactNode {
         const store = this.getStore();
 
         if (!store) {
@@ -228,7 +245,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
                             {vd.display}
                         </a>
                     ),
-                List<React.ReactNode>()
+                List<ReactNode>()
             )
             .push(
                 <a className="disabled list-group-item" key="resultmatcher">
@@ -242,7 +259,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
             .toArray();
     }
 
-    renderValue(): React.ReactNode {
+    renderValue(): ReactNode {
         const { values } = this.props;
 
         return (
@@ -288,7 +305,7 @@ export class LookupCell extends React.Component<LookupCellProps, LookupCellState
         return emptyList;
     }
 
-    render() {
+    render(): ReactNode {
         return (
             <div className="cell-lookup">
                 {this.renderValue()}

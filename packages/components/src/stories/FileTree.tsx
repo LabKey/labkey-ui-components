@@ -5,13 +5,27 @@ import React from 'react';
 
 import { FileTree } from '../components/files/FileTree';
 import { fetchFileTestTree } from '../components/files/FileTreeTest';
+import './FileTree.scss';
 
 storiesOf('FileTree', module)
     .addDecorator(withKnobs)
-    .add('With basic data', () => (
+    .add('With basic data, and checkboxes', () => (
         <div>
             <FileTree
-                allowMultiSelect={boolean('allowMultiSelect', true)}
+                allowMultiSelect={true}
+                useFileIconCls={boolean('useFileIconCls', true)}
+                loadData={fetchFileTestTree}
+                onFileSelect={(name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => {
+                    console.log(path, checked);
+                    return true;
+                }}
+            />
+        </div>
+    ))
+    .add('With basic data, without checkboxes', () => (
+        <div>
+            <FileTree
+                allowMultiSelect={false}
                 useFileIconCls={boolean('useFileIconCls', true)}
                 loadData={fetchFileTestTree}
                 onFileSelect={(name: string, path: string, checked: boolean, isDirectory: boolean, node: any) => {

@@ -1,6 +1,130 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.92.2
+*Released*: 14 September 2020
+* Add optional verb property to EntityDeleteConfirmModal
+* Add styling to DetailDisplay to preserve line breaks
+
+### version 0.92.1
+*Released*: 12 September 2020
+* Allow filtered list of editable grid cell lookup values
+
+### version 0.92.0
+*Released*: 10 September 2020
+* Update FieldEditTrigger
+    * rename to FieldEditorOverlay
+    * remove dependency on QueryGridModel and remove immutable List from interface
+    * respect number input types
+
+### version 0.91.6
+*Released*: 9 September 2020
+* Use QueryModel in query pages
+
+### version 0.91.5
+*Released*: 4 September 2020
+* Updates to EditableGrid data processing functions to fix issues with boolean values
+
+### version 0.91.4
+*Released*: 3 September 2020
+* Update TimelineView styling so comments retain white space
+* In `withQueryModels`, set the loading selection state appropriately when clearing or setting selections
+
+### version 0.91.3
+*Released*: 3 September 2020
+* Allow custom display value for Omnibox filter options
+
+### version 0.91.2
+*Released*: 2 September 2020
+* Export FieldEditTrigger for use in applications
+
+### version 0.91.1
+*Released*: 1 September 2020
+* Add class names to PageMenu, PageSizeMenu, PaginationButton, and Pagination components
+
+### version 0.91.0
+*Released*: 30 August 2020
+* EditableGrid updates:
+    * Support disabling rows using readonlyRows
+    * Allow hiding row count column using hideCountCol
+    * Allow row count column to use custom rowNumColumn instead of the static column
+    * Add onCellModify prop
+    * export updateEditorModel
+
+### version 0.90.0
+*Released*: 27 August 2020
+* Add ability to show comments from metadata on timeline events.
+
+### version 0.89.2
+*Released*: 26 August 2020
+* Merge 20.7-SNAPSHOT branch
+
+### version 0.89.1
+*Released*: 20 August 2020
+* Bind URL parameters when adding QueryModels
+
+### version 0.89.0
+*Released*: 20 August 2020
+* Adds support for a directory-only view of FileTree
+* IFile interface now includes permissions data
+* Allows for clearing out attached files from FileAttachmentContainer from parent component
+* Adds button styling for a compact FileAttachmentContainer
+
+### version 0.88.1
+*Released*: 19 August 2020
+* react-beautiful-dnd package update
+
+### version 0.88.0
+*Released*: 17 August 2020
+* Add docs for QueryModel API to docs folder
+* Change GridPanelWithModel props interface to take a single `QueryConfig` object instead of a `QueryConfigMap`.
+
+### version 0.87.0
+*Released*: 13 August 2020
+* Add Label as optional export format and add optional onExport callback to export menu
+* Refactor exportRows and export method for creating the export parameters
+* Export test utility methods makeTestActions and makeTestQueryModel
+* Export flattenValuesFromRow utility method
+
+### version 0.86.0
+*Released*: 12 August 2020
+* Move Timeline related component and model from Sample Manager
+
+### version 0.85.0
+*Released*: 11 August 2020
+* Refactor several components/classes to not depend on QueryGridModel
+    * This allows them to more easily be used by QueryModel and QueryGridModel based components while we transition
+    away from QueryGridModel
+    * Affected Components: SelectionMenuItem, BulkUpdateModel
+    * Affected Classes: EditableGridLoaderFromSelection
+* Add EditableDetailPanel, the QueryModel version of DetailEditing
+* DetailPanel: change queryColumns prop from List<QueryColumn> to QueryColumn[]
+    * We are moving away from Immutable and want to limit how much of it is exposed in our API
+* GridPanel: add new props buttonsComponentProps, and hideEmptyChartMenu
+    * Use buttonsComponentProps to pass any additional props to your ButtonsComponent (model and actions still get
+    passed to the ButtonsComponent)
+    * Use hideEmptyChartMenu to hide the chart menu when no charts are available
+* Move queryMetadata an columnRenderers out of ReactN global storage
+
+### version 0.84.0
+*Released*: 7 August 2020
+* Updates most package dependencies to the latest version.
+* Notable updates are:
+    - `react 16.8.6 -> 16.13.1`. This brings us up-to-date with the latest version of React. For more details
+    see https://reactjs.org/versions/.
+    - `react-bootstrap 0.32.4 -> 0.33.1`. There have been several updates to the Bootstrap v3 supported variant of
+    this library that are worth having. Namely, fixed support for `UNSAFE_componentWillMount`, etc.
+* Switch to using `UNSAFE_` prefixed React lifecycle methods to silence warnings until we have time to convert these
+usages to their counterpart methods.
+* Switches our tests from using wrapped `setTimeout` with `done()` to async/await pattern. This is better supported by
+more recent versions of Jest.
+* Fix and add tests for `formatDate` and `formatDateTime` after SM exposed a bug in how the `moment-timezone` package
+is imported.
+* Switch all imports of `import React from 'reactn'` to `import ReactN from 'reactn'` to make it more obvious when the
+library is used (for a component). Switch a couple of usages from `ReactN` to `React` where `reactn` wasn't needed.
+* Removed superfluous usages of `enzyme-to-json` from many test cases.
+* Removed superfluous `Immutable.Record` constructors.
+
 ### version 0.83.2
 *Released*: 6 August 2020
 * BulkUpdateForm to pass through readonly columns to EditableGrid
@@ -137,6 +261,10 @@ page, adapted from getRunDetailsQueryColumns.
 ### version 0.72.0
 *Released*: 1 July 2020
 * Add ColorPickerInput
+
+### version 0.71.4
+*Released*: 26 August 2020
+* Issue 38711: Biologics: when uploading assay data from an assay request, assay request ID isn't maintained
 
 ### version 0.71.3
 *Released*: 8 July 2020

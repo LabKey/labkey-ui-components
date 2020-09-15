@@ -10,7 +10,7 @@ exports[`PageSizeMenu render 1`] = `
     <button
       aria-expanded={false}
       aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
+      className="page-size-dropdown dropdown-toggle btn btn-default"
       disabled={false}
       id="page-size-drop-model"
       onClick={[Function]}
@@ -123,7 +123,7 @@ exports[`PageSizeMenu render 2`] = `
     <button
       aria-expanded={false}
       aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
+      className="page-size-dropdown dropdown-toggle btn btn-default"
       disabled={false}
       id="page-size-drop-model"
       onClick={[Function]}
@@ -236,7 +236,7 @@ exports[`PageSizeMenu render 3`] = `
     <button
       aria-expanded={false}
       aria-haspopup={true}
-      className="dropdown-toggle btn btn-default"
+      className="page-size-dropdown dropdown-toggle btn btn-default"
       disabled={false}
       id="page-size-drop-model"
       onClick={[Function]}

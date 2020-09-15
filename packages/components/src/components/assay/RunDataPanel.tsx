@@ -94,11 +94,11 @@ export class RunDataPanel extends React.Component<Props, State> {
         return this.props.wizardModel.runId !== undefined;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.initPreviewData();
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         if (nextProps.wizardModel.runId != this.props.wizardModel.runId) {
             this.setState(() => ({
                 previousRunData: nextProps.wizardModel.usePreviousRunFile ? { isLoaded: false } : undefined,

@@ -16,7 +16,7 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 
-import { getSelectedDataWithQueryGridModel } from '../../actions';
+import { getSelectedData } from '../../actions';
 import { EditorModel } from '../../models';
 import { IGridLoader, IGridResponse, QueryGridModel } from '../base/models/model';
 
@@ -26,8 +26,7 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
     dataIdsForSelection: List<any>;
     model: QueryGridModel;
 
-    constructor(updateData, model: QueryGridModel, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) {
-        this.model = model;
+    constructor(updateData, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) {
         this.updateData = updateData || {};
         this.dataForSelection = dataForSelection;
         this.dataIdsForSelection = dataIdsForSelection;
@@ -35,10 +34,11 @@ export class EditableGridLoaderFromSelection implements IGridLoader {
 
     selectAndFetch(gridModel: QueryGridModel): Promise<IGridResponse> {
         return new Promise((resolve, reject) => {
-            // N.B.  gridModel is the model backing the editable grid, which has no selection on it,
-            // so we use this.model, the model for the original query grid with selection.
-            this.model = this.model.set('requiredColumns', gridModel.get('requiredColumns')) as QueryGridModel;
-            return getSelectedDataWithQueryGridModel(this.model)
+            const { schema, query, queryParameters } = gridModel;
+            const columnString = gridModel.getRequestColumnsString();
+            const sorts = gridModel.getSorts();
+            const selectedIds = this.dataIdsForSelection.toArray();
+            return getSelectedData(schema, query, selectedIds, columnString, sorts, queryParameters)
                 .then(response => {
                     const { data, dataIds, totalRows } = response;
                     resolve({

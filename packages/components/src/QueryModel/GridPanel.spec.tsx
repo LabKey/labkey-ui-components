@@ -14,7 +14,7 @@ import { Change, ChangeType } from '../components/omnibox/OmniBox';
 
 import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';
-import { makeTestActions, makeTestModel } from './testUtils';
+import { makeTestActions, makeTestQueryModel } from './testUtils';
 
 // The wrapper's return type for mount<GridPanel>(<GridPanel ... />)
 type GridPanelWrapper = ReactWrapper<Readonly<GridPanel['props']>, Readonly<GridPanel['state']>, GridPanel>;
@@ -111,7 +111,7 @@ describe('GridPanel', () => {
         const { rows, orderedRows, rowCount } = DATA;
 
         // Model is loading QueryInfo and Rows, should render loading, disabled ChartMenu, no pagination/ViewMenu.
-        let model = makeTestModel(SCHEMA_QUERY);
+        let model = makeTestQueryModel(SCHEMA_QUERY);
         const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         expectNoQueryInfo(wrapper);
 
@@ -198,7 +198,7 @@ describe('GridPanel', () => {
 
         // We should render nothing but an error if we had issues loading the QueryInfo.
         const queryInfoError = 'Error loading query info';
-        model = model = makeTestModel(SCHEMA_QUERY).mutate({ queryInfoError });
+        model = model = makeTestQueryModel(SCHEMA_QUERY).mutate({ queryInfoError });
         wrapper.setProps({
             model,
             asPanel: true,
@@ -212,14 +212,14 @@ describe('GridPanel', () => {
 
         // We still render ChartMenu, ViewMenu, and any custom buttons
         const rowsError = 'Error loading rows';
-        model = makeTestModel(SCHEMA_QUERY, QUERY_INFO).mutate({ rowsError });
+        model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO).mutate({ rowsError });
         wrapper.setProps({ model });
         expectNoRows(wrapper);
         expectError(wrapper, rowsError);
 
         // If an error happens when loading selections we render a grid and an error.
         const selectionsError = 'Error loading selections';
-        model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows, rowCount).mutate({ selectionsError });
+        model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows, rowCount).mutate({ selectionsError });
         wrapper.setProps({ model });
         expectGrid(wrapper);
         expectError(wrapper, selectionsError);
@@ -358,7 +358,7 @@ describe('GridPanel', () => {
 
     test('OmniBox', () => {
         const { rows, orderedRows, rowCount } = DATA;
-        const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
+        const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
         const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         const grid = wrapper.instance();
 
@@ -498,7 +498,7 @@ describe('GridPanel', () => {
         // This test ensures that the Omnibox updates when there are exernal changes to the model, typically this
         // happens when bindURL is true and there is a URL change.
         const { rows, orderedRows, rowCount } = DATA;
-        const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
+        const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount);
         const wrapper = mount<GridPanel>(<GridPanel actions={actions} model={model} />);
         const nameSort = new QuerySort({ fieldKey: 'Name' });
         const nameFilter = Filter.create('Name', 'DMXP', Filter.Types.EQUAL);
@@ -622,7 +622,7 @@ describe('GridPanel', () => {
 
     test('Selections', () => {
         const { rows, orderedRows, rowCount } = DATA;
-        const model = makeTestModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount).mutate({
+        const model = makeTestQueryModel(SCHEMA_QUERY, QUERY_INFO, rows, orderedRows.slice(0, 20), rowCount).mutate({
             selections: new Set(),
             selectionsLoadingState: LoadingState.LOADED,
         });

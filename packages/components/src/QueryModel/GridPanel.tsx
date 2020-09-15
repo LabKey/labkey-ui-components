@@ -3,7 +3,17 @@ import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { Alert, Grid, GRID_CHECKBOX_OPTIONS, GridColumn, LoadingSpinner, QueryColumn, QueryInfo, QuerySort } from '..';
+import {
+    Alert,
+    Grid,
+    GRID_CHECKBOX_OPTIONS,
+    GridColumn,
+    LoadingSpinner,
+    QueryColumn,
+    QueryConfig,
+    QueryInfo,
+    QuerySort,
+} from '..';
 import { GRID_SELECTION_INDEX } from '../components/base/models/constants';
 import { headerCell, headerSelectionCell } from '../renderers';
 import { ActionValue } from '../components/omnibox/actions/Action';
@@ -21,14 +31,17 @@ import { SelectionStatus } from './SelectionStatus';
 import { ChartMenu } from './ChartMenu';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
+import { createQueryModelId } from './QueryModel';
 
-interface GridPanelProps {
+interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
     allowSorting?: boolean;
     asPanel?: boolean;
     advancedExportOptions?: { [key: string]: string };
-    ButtonsComponent?: ComponentType<RequiresModelAndActions>;
+    ButtonsComponent?: ComponentType<ButtonsComponentProps & RequiresModelAndActions>;
+    buttonsComponentProps?: ButtonsComponentProps;
     emptyText?: string;
+    hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
     pageSizes?: number[];
     title?: string;
@@ -40,15 +53,16 @@ interface GridPanelProps {
     showSampleComparisonReports?: boolean;
     showViewMenu?: boolean;
     showHeader?: boolean;
+    getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
 }
 
-type Props = GridPanelProps & RequiresModelAndActions;
+type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
-interface GridBarProps extends Props {
+interface GridBarProps<T> extends Props<T> {
     onViewSelect: (viewName) => void;
 }
 
-class ButtonBar extends PureComponent<GridBarProps> {
+class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
     loadFirstPage = (): void => {
         const { model, actions } = this.props;
         actions.loadFirstPage(model.id);
@@ -80,6 +94,7 @@ class ButtonBar extends PureComponent<GridBarProps> {
             actions,
             advancedExportOptions,
             ButtonsComponent,
+            hideEmptyChartMenu,
             hideEmptyViewMenu,
             onViewSelect,
             pageSizes,
@@ -96,17 +111,21 @@ class ButtonBar extends PureComponent<GridBarProps> {
         const canExport = showExport && !hasError;
         // Don't disable view selection when there is an error because it's possible the error may be caused by the view
         const canSelectView = showViewMenu && queryInfo !== undefined;
+        const buttonsComponentProps = this.props.buttonsComponentProps ?? ({} as T);
 
         return (
             <div className="grid-panel__button-bar">
                 <div className="grid-panel__button-bar-left">
                     <div className="button-bar__section">
-                        {ButtonsComponent !== undefined && <ButtonsComponent model={model} actions={actions} />}
+                        {ButtonsComponent !== undefined && (
+                            <ButtonsComponent {...buttonsComponentProps} model={model} actions={actions} />
+                        )}
 
                         {showChartMenu && (
                             <ChartMenu
-                                model={model}
+                                hideEmptyChartMenu={hideEmptyChartMenu}
                                 actions={actions}
+                                model={model}
                                 showSampleComparisonReports={showSampleComparisonReports}
                             />
                         )}
@@ -143,11 +162,12 @@ interface State {
     actionValues: ActionValue[];
 }
 
-export class GridPanel extends PureComponent<Props, State> {
+export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     static defaultProps = {
         allowSelections: true,
         allowSorting: true,
         asPanel: true,
+        hideEmptyChartSelector: false,
         hideEmptyViewMenu: false,
         showPagination: true,
         showButtonBar: true,
@@ -164,7 +184,7 @@ export class GridPanel extends PureComponent<Props, State> {
         const { id } = props.model;
 
         this.omniBoxActions = {
-            filter: new FilterAction(id, this.getColumns),
+            filter: new FilterAction(id, this.getColumns, null, props.getFilterDisplayValue),
             search: new SearchAction(id),
             sort: new SortAction(id, this.getColumns),
             view: new ViewAction(id, this.getColumns, this.getQueryInfo),
@@ -187,7 +207,7 @@ export class GridPanel extends PureComponent<Props, State> {
         actions.loadModel(model.id, allowSelections);
     }
 
-    componentDidUpdate(prevProps: Readonly<Props>): void {
+    componentDidUpdate(prevProps: Readonly<Props<T>>): void {
         if (this.props.model.queryInfo !== undefined && this.props.model !== prevProps.model) {
             this.populateOmnibox();
         }
@@ -590,10 +610,15 @@ export class GridPanel extends PureComponent<Props, State> {
     }
 }
 
-class GridPanelWithModelImpl extends PureComponent<GridPanelProps & InjectedQueryModels> {
+interface GridPaneWithModelBodyProps<T> extends GridPanelProps<T> {
+    id: string;
+}
+
+class GridPanelWithModelBodyImpl<T> extends PureComponent<GridPaneWithModelBodyProps<T> & InjectedQueryModels> {
     render(): ReactNode {
-        const { queryModels, actions, ...props } = this.props;
-        return <GridPanel actions={actions} model={Object.values(queryModels)[0]} {...props} />;
+        const { actions, id, queryModels, ...props } = this.props;
+        const model = queryModels[id];
+        return <GridPanel actions={actions} model={model} {...props} />;
     }
 }
 
@@ -603,4 +628,22 @@ class GridPanelWithModelImpl extends PureComponent<GridPanelProps & InjectedQuer
  *
  * In the future when GridPanel supports multiple models we will render tabs.
  */
-export const GridPanelWithModel = withQueryModels<GridPanelProps>(GridPanelWithModelImpl);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps<any>>(GridPanelWithModelBodyImpl);
+
+interface GridPanelWithModelProps<T> extends GridPanelProps<T> {
+    queryConfig: QueryConfig;
+}
+
+/**
+ * GridPanelWithModel is the same as a GridPanel component, but is wrapped with withQueryModels so it can convert the
+ * queryConfig object into a model and load it for you.
+ */
+export class GridPanelWithModel<T> extends PureComponent<GridPanelWithModelProps<T>> {
+    render() {
+        const { queryConfig, ...props } = this.props;
+        const id = queryConfig.id ?? createQueryModelId(queryConfig.schemaQuery);
+        const queryConfigs = { [id]: queryConfig };
+        return <GridPanelWithModelBody {...props} id={id} key={id} queryConfigs={queryConfigs} />;
+    }
+}

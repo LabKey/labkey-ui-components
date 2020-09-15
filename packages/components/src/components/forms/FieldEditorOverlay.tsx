@@ -19,18 +19,22 @@ import { List } from 'immutable';
 
 import { updateRows } from '../../query/api';
 
-import { QueryGridModel } from '../base/models/model';
+import { QueryColumn } from '../base/models/model';
 
 import { FieldEditForm, FieldEditProps } from './input/FieldEditInput';
+import { QueryInfo, resolveErrorMessage } from '../..';
+import { getServerContext } from '@labkey/api';
 
-export interface FieldEditTriggerProps {
+export interface FieldEditorOverlayProps {
     canUpdate?: boolean;
     caption?: string;
     containerPath?: string;
-    fieldKeys: List<string>;
+    fieldProps?: Array<Partial<FieldEditProps>>;
     iconField?: string;
     iconAlwaysVisible?: boolean;
-    queryModel: QueryGridModel;
+    isLoading: boolean;
+    queryInfo: QueryInfo;
+    row: any;
     showIconText?: boolean;
     showValueOnNotAllowed?: boolean;
     onUpdate?: () => void;
@@ -40,11 +44,12 @@ export interface FieldEditTriggerProps {
 interface State {
     error?: string;
     fields?: List<FieldEditProps>;
+    iconField: string;
 }
 
-type Props = FieldEditTriggerProps;
+type Props = FieldEditorOverlayProps;
 
-export class FieldEditTrigger extends React.Component<Props, State> {
+export class FieldEditorOverlay extends React.PureComponent<Props, State> {
     private fieldEditOverlayTrigger: React.RefObject<OverlayTrigger>;
 
     static defaultProps = {
@@ -57,63 +62,68 @@ export class FieldEditTrigger extends React.Component<Props, State> {
         super(props);
         this.fieldEditOverlayTrigger = React.createRef();
 
-        this.handleOverlayClose = this.handleOverlayClose.bind(this);
-        this.updateFields = this.updateFields.bind(this);
-
         this.state = {
             fields: List<FieldEditProps>(),
+            iconField: props.iconField ? props.iconField : props.fieldProps[0].key
         };
     }
 
     componentDidMount() {
-        this.init(this.props);
+        this.init();
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        this.init(nextProps);
+    componentDidUpdate(prevProps: Props) {
+        if (prevProps.isLoading && !this.props.isLoading) {
+            this.init();
+        }
     }
 
-    init(props: Props) {
-        const { fieldKeys, queryModel } = props;
-        if (queryModel.isLoaded && queryModel.queryInfo) {
-            const row = queryModel.getRow();
+    init() {
+        const { fieldProps, isLoading, queryInfo, row } = this.props;
+
+        if (!isLoading && queryInfo) {
             let fields = List<FieldEditProps>();
-            fieldKeys.forEach(key => {
-                const column = queryModel.queryInfo.getColumn(key);
+
+            fieldProps.forEach(field => {
+                const column = queryInfo.getColumn(field.key);
 
                 if (column) {
-                    const data = row.get(key) || row.get(key.toLowerCase());
+                    const data = row[field.key] || row[field.key.toLowerCase()];
                     let value;
 
                     if (data) {
-                        value = data.has('displayValue') ? data.get('displayValue') : data.get('value');
+                        value = data['displayValue'] ? data['displayValue'] : data['value'];
                     }
+                    let inputType = column.inputType;
+                    // TODO handle date and checkbox inputs.
+                    if (column.jsonType === 'int' || column.jsonType === 'float') {
+                        inputType = "number";
+                    }
+                    let props = Object.assign({}, field, {
+                        caption: column.caption,
+                        data,
+                        fieldKey: column.fieldKey,
+                        inputPlaceholder: 'Enter a ' + column.caption.toLowerCase() + '...',
+                        inputType,
+                        value,
+                    });
+                    fields = fields.push(new FieldEditProps(props));
 
-                    fields = fields.push(
-                        new FieldEditProps({
-                            caption: column.caption,
-                            data,
-                            fieldKey: column.fieldKey,
-                            inputType: column.inputType,
-                            key,
-                            value,
-                        })
-                    );
-                } else if (LABKEY.devMode) {
-                    const sq = queryModel.queryInfo.schemaQuery;
+                } else if (getServerContext().devMode) {
+                    const sq = queryInfo.schemaQuery;
                     console.warn(
-                        `FieldEditTrigger: column "${key}" not available on QueryInfo for "${sq.schemaName}.${sq.queryName}"`
+                        `FieldEditTrigger: column "${field.key}" not available on QueryInfo for "${sq.schemaName}.${sq.queryName}"`
                     );
                 }
             });
 
             this.setState({
-                fields,
+                fields
             });
         }
     }
 
-    handleOverlayClose() {
+    handleOverlayClose = () => {
         document.body.click();
         this.setState({
             error: undefined,
@@ -129,20 +139,25 @@ export class FieldEditTrigger extends React.Component<Props, State> {
         );
     }
 
-    updateFields(submittedValues) {
-        const { containerPath, queryModel, onUpdate, handleUpdateRows } = this.props;
+    getRowId() : string | number {
+        const { queryInfo, row } = this.props;
+        const pkCols :List<QueryColumn> = queryInfo.getPkCols();
+        return row[pkCols.get(0).fieldKey].value;
+    }
 
-        const row = queryModel.getRow();
-        const name = row.getIn(['Name', 'value']);
+    updateFields = (submittedValues) => {
+        const { containerPath, row, queryInfo, onUpdate, handleUpdateRows } = this.props;
+
+        const name = row.Name?.value;
 
         if (this.fieldValuesChanged(submittedValues)) {
-            const schemaQuery = queryModel.queryInfo.schemaQuery;
+            const schemaQuery = queryInfo.schemaQuery;
 
             const options: any = {
                 schemaQuery,
                 rows: [
                     {
-                        rowId: queryModel.keyValue,
+                        rowId: this.getRowId(),
                         name,
                     },
                 ],
@@ -167,38 +182,25 @@ export class FieldEditTrigger extends React.Component<Props, State> {
                 .catch(error => {
                     console.error(error);
                     this.setState({
-                        error: 'There was a problem updating the data.',
+                        error: resolveErrorMessage(error, 'data', 'data', 'updating'),
                     });
                 });
         }
     }
 
     render() {
-        const { canUpdate, showIconText, showValueOnNotAllowed } = this.props;
-        const { error, fields } = this.state;
+        const { canUpdate,  showIconText, showValueOnNotAllowed } = this.props;
+        const { error, fields, iconField } = this.state;
 
-        const iconField = this.props.iconField ? this.props.iconField : this.props.fieldKeys.get(0);
         const caption = this.props.caption
             ? this.props.caption
             : fields && fields.size > 0
-            ? fields.get(0).caption
-            : 'Fields';
-
-        let overlayFields = List<FieldEditProps>();
+                ? fields.get(0).caption
+                : 'Fields';
         let haveValues = false;
-        let columnKeys = List<string>();
+
         let fieldValue;
         fields.forEach(field => {
-            overlayFields = overlayFields.push(
-                new FieldEditProps({
-                    caption: field.caption,
-                    fieldKey: field.fieldKey,
-                    inputPlaceholder: 'Enter a ' + field.caption.toLowerCase() + '...',
-                    inputType: field.inputType,
-                    value: field.value,
-                })
-            );
-            columnKeys = columnKeys.push(field.fieldKey);
             haveValues = haveValues || (field.value !== undefined && field.value !== null && field.value.length != 0);
             if (field.key === iconField) {
                 fieldValue = field.value;
@@ -215,7 +217,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
                             <FieldEditForm
                                 caption={caption}
                                 error={error}
-                                fields={overlayFields}
+                                fields={this.state.fields}
                                 hideOverlayFn={this.handleOverlayClose}
                                 onSubmitFn={this.updateFields}
                             />
@@ -227,7 +229,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
                         <span className={haveValues ? 'field__set' : 'field__unset'}>
                             <span title={'Edit ' + caption} className="field-edit__icon fa fa-pencil-square-o" />
                             {showIconText && (
-                                <span title={fieldValue}>
+                                <span className="detail-display" title={fieldValue}>
                                     {haveValues
                                         ? fieldValue
                                             ? fieldValue
@@ -238,7 +240,7 @@ export class FieldEditTrigger extends React.Component<Props, State> {
                         </span>
                     </OverlayTrigger>
                 )}
-                {!canUpdate && showValueOnNotAllowed && <span title={fieldValue}>{fieldValue}</span>}
+                {!canUpdate && showValueOnNotAllowed && <span className="detail-display" title={fieldValue}>{fieldValue}</span>}
             </>
         );
     }

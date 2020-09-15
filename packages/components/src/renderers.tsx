@@ -15,7 +15,7 @@
  */
 import React from 'react';
 import classNames from 'classnames';
-import { OrderedMap } from 'immutable';
+import { OrderedMap, Map } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { DefaultRenderer } from './renderers/DefaultRenderer';

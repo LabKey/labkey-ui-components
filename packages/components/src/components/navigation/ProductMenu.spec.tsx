@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React from 'react';
 import renderer from 'react-test-renderer';
-import toJson from 'enzyme-to-json';
 import { mount } from 'enzyme';
 import { List, Map } from 'immutable';
 
@@ -144,7 +143,7 @@ describe('ProductMenu render', () => {
 
         const menuButton = mount(<ProductMenu model={model} />);
         expect(menuButton.find('.menu-section').length).toBe(3);
-        expect(toJson(menuButton)).toMatchSnapshot();
+        expect(menuButton).toMatchSnapshot();
         menuButton.unmount();
     });
 
@@ -202,7 +201,7 @@ describe('ProductMenu render', () => {
 
         const menuButton = mount(<ProductMenu model={model} sectionConfigs={sectionConfigs} />);
         expect(menuButton.find('.menu-section').length).toBe(2);
-        expect(toJson(menuButton)).toMatchSnapshot();
+        expect(menuButton).toMatchSnapshot();
         menuButton.unmount();
     });
 });

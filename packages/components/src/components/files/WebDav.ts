@@ -22,6 +22,11 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     name: string;
     options: string;
     propertiesRowId?: number;
+    canDelete: boolean;
+    canEdit: boolean;
+    canRead: boolean;
+    canRename: boolean;
+    canUpload: boolean;
 
     constructor(params?: IFile) {
         params ? super(params) : super();
@@ -31,6 +36,11 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
         const webDavFile = new WebDavFile(values);
 
         return webDavFile.merge({
+            canDelete: values.canDelete,
+            canEdit: values.canEdit,
+            canRead: values.canRead,
+            canRename: values.canRename,
+            canUpload: values.canUpload,
             isCollection: values.collection,
             isLeaf: values.leaf,
             createdBy: values.createdby,
@@ -51,7 +61,8 @@ function getWebDavUrl(containerPath: string, directory?: string, createIntermedi
         (!skipAtFiles ? '/' + encodeURIComponent('@files') : '');
 
     if (directory) {
-        url += '/' + directory;
+        let encodedDirName = encodeURIComponent(directory).replace(/%2F/g, "/");
+        url += '/' + encodedDirName;
     }
 
     if (createIntermediates) {
@@ -65,7 +76,8 @@ export function getWebDavFiles(
     containerPath: string,
     directory?: string,
     includeDirectories?: boolean,
-    skipAtFiles?: boolean
+    skipAtFiles?: boolean,
+    alternateFilterCondition?: (file: any) => boolean,
 ): Promise<Map<string, WebDavFile>> {
     return new Promise((resolve, reject) => {
         const url = getWebDavUrl(containerPath, directory, false, skipAtFiles);
@@ -76,12 +88,15 @@ export function getWebDavFiles(
             success: Utils.getCallbackWrapper(response => {
                 // Filter directories and create webdav files
                 const filteredFiles = response.files.reduce((filtered, file) => {
-                    if (includeDirectories || !file.collection) {
+                    const filterCondition = alternateFilterCondition ? alternateFilterCondition(file) : (includeDirectories || !file.collection);
+                    if (filterCondition) {
                         return filtered.set(file.text, WebDavFile.create(file));
+                    } else {
+                        return filtered;
                     }
                 }, Map<string, WebDavFile>());
-
-                resolve(filteredFiles);
+                const filterFilesAndPerms = Map({files: filteredFiles, permissions: response.permissions});
+                resolve(filterFilesAndPerms);
             }),
             failure: Utils.getCallbackWrapper(
                 response => {

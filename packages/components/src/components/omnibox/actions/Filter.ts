@@ -20,6 +20,8 @@ import { QueryColumn } from '../../base/models/model';
 
 import { parseColumns, resolveFieldKey } from '../utils';
 
+import { QueryInfo } from '../../..';
+
 import { Action, ActionOption, ActionValue, Value } from './Action';
 
 /**
@@ -164,10 +166,19 @@ export class FilterAction implements Action {
     optionalLabel = 'columns';
     getColumns: (all?: boolean) => List<QueryColumn>;
     urlPrefix: string;
+    getFilterDisplayValue: (columnName: string, rawValue: string) => string;
 
-    constructor(urlPrefix: string, getColumns: () => List<QueryColumn>) {
+    // todo, define an interface for Action constructor param and use a signle object as param
+    constructor(
+        urlPrefix: string,
+        getColumns: () => List<QueryColumn>,
+        getQueryInfo?: () => QueryInfo,
+        getFilterDisplayValue?: (columnName: string, rawValue: string) => string
+    ) {
         this.getColumns = getColumns;
         this.urlPrefix = urlPrefix;
+        // getQueryInfo is not used by Filter currently, but needs to be in params since it's used by View Action, see URLBox new urlAction(urlPrefix, this.getColumns, this.getQueryInfo)
+        this.getFilterDisplayValue = getFilterDisplayValue;
     }
 
     static parseTokens(tokens: string[], columns: List<QueryColumn>, isComplete?: boolean): IFilterContext {
@@ -412,12 +423,17 @@ export class FilterAction implements Action {
 
         return strValues.map(strValue => {
             const value = `"${col.shortCaption}" ${operator} ${strValue}`;
+            let displayValue = value;
+            if (this.getFilterDisplayValue) {
+                const altDisplayValue = this.getFilterDisplayValue(col.shortCaption, strValue);
+                if (altDisplayValue) displayValue = `"${col.shortCaption}" ${operator} ${altDisplayValue}`;
+            }
             return {
                 // label and value are the same, and appendValue is false, because we want to ignore all user input when
                 // they select an option. This is a workaround because of how Omnibox.resolveInputValue works. See
                 // Issue 40195.
                 value,
-                label: value,
+                label: displayValue,
                 appendValue: false,
                 isComplete: true,
             };
@@ -428,11 +444,12 @@ export class FilterAction implements Action {
         columnName: string,
         filterType: Filter.IFilterType,
         rawValue: string | string[]
-    ): { displayValue: string; isReadOnly: boolean } {
+    ): { displayValue: string; isReadOnly: boolean; inputValue: string } {
         let isReadOnly = false;
 
-        let value: string;
+        let value: string, inputValue: string;
         const displayParts = [columnName, resolveSymbol(filterType)];
+        const inputDisplayParts = [`"${displayParts[0]}"`, displayParts[1]]; // need to quote column name for input display
 
         if (!filterType.isDataValueRequired()) {
             // intentionally do not modify "display" -- this filter type does not support a value (e.g. isblank)
@@ -461,6 +478,15 @@ export class FilterAction implements Action {
             }
         } else {
             value = '' + rawValue;
+
+            if (this.getFilterDisplayValue) {
+                const displayValue = this.getFilterDisplayValue(columnName, value);
+                if (displayValue) {
+                    value = '' + displayValue;
+                }
+                inputDisplayParts.push(value);
+                inputValue = inputDisplayParts.join(' ');
+            }
         }
 
         if (value) {
@@ -469,6 +495,7 @@ export class FilterAction implements Action {
 
         return {
             displayValue: displayParts.join(' '),
+            inputValue,
             isReadOnly,
         };
     }
@@ -490,13 +517,13 @@ export class FilterAction implements Action {
         const filterType = filter.getFilterType();
         const value = filter.getValue();
         const operator = resolveSymbol(filter.getFilterType());
-        const { displayValue, isReadOnly } = this.getDisplayValue(label ?? columnName, filterType, value);
+        const { displayValue, isReadOnly, inputValue } = this.getDisplayValue(label ?? columnName, filterType, value);
 
         return {
             action: this,
             displayValue,
             isReadOnly,
-            value: `"${label ?? columnName}" ${operator} ${value}`,
+            value: inputValue ? inputValue : `"${label ?? columnName}" ${operator} ${value}`,
             valueObject: filter,
         };
     }

@@ -16,6 +16,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
+import classNames from 'classnames';
 
 import { FormSection } from '../base/FormSection';
 import { Progress } from '../base/Progress';
@@ -59,6 +60,7 @@ interface FileAttachmentFormProps {
     previewGridProps?: FileGridPreviewProps;
     templateUrl?: string;
     compact?: boolean;
+    ref?: any;
 }
 
 interface State {
@@ -86,8 +88,12 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         compact: false,
     };
 
+    fileAttachmentContainerRef: React.RefObject<FileAttachmentContainer>;
+
     constructor(props?: FileAttachmentFormProps) {
         super(props);
+
+        this.fileAttachmentContainerRef = React.createRef();
 
         if (props.allowMultiple && props.previewGridProps) {
             console.warn('Showing the file preview grid is only supported for single file upload.');
@@ -100,11 +106,11 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.initPreviewData(this.props);
     }
 
-    componentWillReceiveProps(nextProps: FileAttachmentFormProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: FileAttachmentFormProps): void {
         if (this.props.previewGridProps !== nextProps.previewGridProps) {
             this.initPreviewData(nextProps);
         }
@@ -172,6 +178,10 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         );
     };
 
+    manuallyClearFiles = (attachmentName: string) => {
+        this.fileAttachmentContainerRef.current.handleRemove(attachmentName);
+    }
+
     handleSubmit = () => {
         const { onSubmit } = this.props;
 
@@ -183,30 +193,38 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     };
 
     renderButtons() {
-        const { cancelText, onCancel, submitText } = this.props;
+        const { cancelText, onCancel, submitText, compact } = this.props;
 
-        return (
-            <div className="row top-spacing bottom-spacing">
-                <div className="col-xs-6">
-                    <Button onClick={onCancel} bsStyle="default" title={cancelText}>
-                        {cancelText}
-                    </Button>
-                </div>
-                <div className="col-xs-6">
-                    <div className="pull-right">
-                        <Button
-                            className="file-form-submit-btn"
-                            onClick={this.handleSubmit}
-                            bsStyle="success"
-                            disabled={this.state.attachedFiles.size == 0}
-                            title={submitText}
-                        >
-                            {submitText}
+        const button =
+            <Button
+                className={classNames('file-form-submit-btn', {'file-form-submit-btn--compact': compact})}
+                onClick={this.handleSubmit}
+                bsStyle="success"
+                disabled={this.state.attachedFiles.size == 0}
+                title={submitText}
+            >
+                {submitText}
+            </Button>;
+
+
+        if (compact) {
+            return (button)
+        } else {
+            return (
+                <div className="row top-spacing bottom-spacing">
+                    <div className="col-xs-6">
+                        <Button onClick={onCancel} bsStyle="default" title={cancelText}>
+                            {cancelText}
                         </Button>
                     </div>
+                    <div className="col-xs-6">
+                        <div className="pull-right">
+                            {button}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        );
+            );
+        }
     }
 
     isShowPreviewGrid() {
@@ -356,20 +374,24 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             <>
                 <span className="translator--toggle__wizard">
                     <FormSection iconSpacer={false} label={label} showLabel={showLabel}>
-                        <FileAttachmentContainer
-                            index={this.props.index}
-                            acceptedFormats={acceptedFormats}
-                            allowDirectories={allowDirectories}
-                            handleChange={this.handleFileChange}
-                            handleRemoval={this.handleFileRemoval}
-                            initialFileNames={initialFileNames}
-                            initialFiles={initialFiles}
-                            allowMultiple={allowMultiple}
-                            sizeLimits={sizeLimits}
-                            sizeLimitsHelpText={sizeLimitsHelpText}
-                            labelLong={labelLong}
-                            compact={compact}
-                        />
+                        <div className={classNames({'file-upload--one-row': compact})}>
+                            <FileAttachmentContainer
+                                ref={this.fileAttachmentContainerRef}
+                                index={this.props.index}
+                                acceptedFormats={acceptedFormats}
+                                allowDirectories={allowDirectories}
+                                handleChange={this.handleFileChange}
+                                handleRemoval={this.handleFileRemoval}
+                                initialFileNames={initialFileNames}
+                                initialFiles={initialFiles}
+                                allowMultiple={allowMultiple}
+                                sizeLimits={sizeLimits}
+                                sizeLimitsHelpText={sizeLimitsHelpText}
+                                labelLong={labelLong}
+                                compact={compact}
+                            />
+                                {compact && showButtons && this.renderButtons()}
+                        </div>
                     </FormSection>
                 </span>
                 {this.renderPreviewGrid()}
@@ -382,7 +404,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                     />
                 )}
                 {this.renderFooter()}
-                {showButtons && this.renderButtons()}
+                {!compact && showButtons && this.renderButtons()}
             </>
         );
     }

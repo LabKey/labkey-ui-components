@@ -18,7 +18,7 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS, Map } from 'immutable';
 
-import { initUnitTestMocks } from '../../../testHelpers';
+import { initUnitTestMocks, sleep } from '../../../testHelpers';
 import { ENTITY_FORM_IDS } from '../entities/constants';
 import { DomainDetails, DomainPanelStatus } from '../models';
 
@@ -39,7 +39,7 @@ beforeAll(() => {
 });
 
 describe('<SampleTypePropertiesPanel/>', () => {
-    test('default props', done => {
+    test('default props', async () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
@@ -52,13 +52,12 @@ describe('<SampleTypePropertiesPanel/>', () => {
             />
         );
 
-        setTimeout(() => {
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        expect(tree).toMatchSnapshot();
     });
 
-    test('appPropertiesOnly', done => {
+    test('appPropertiesOnly', async () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
@@ -72,13 +71,12 @@ describe('<SampleTypePropertiesPanel/>', () => {
             />
         );
 
-        setTimeout(() => {
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        expect(tree).toMatchSnapshot();
     });
 
-    test('nameExpressionInfoUrl', done => {
+    test('nameExpressionInfoUrl', async () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
@@ -92,10 +90,9 @@ describe('<SampleTypePropertiesPanel/>', () => {
             />
         );
 
-        setTimeout(() => {
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        expect(tree).toMatchSnapshot();
     });
 
     test('Load existing SampleTypeModel', () => {
@@ -140,7 +137,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
         wrapper.unmount();
     });
 
-    test('include dataclass and use custom labels', done => {
+    test('include dataclass and use custom labels', async () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
@@ -160,9 +157,8 @@ describe('<SampleTypePropertiesPanel/>', () => {
             />
         );
 
-        setTimeout(() => {
-            expect(tree.toJSON()).toMatchSnapshot();
-            done();
-        });
+        await sleep();
+
+        expect(tree).toMatchSnapshot();
     });
 });

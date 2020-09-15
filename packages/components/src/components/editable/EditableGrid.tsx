@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import * as OrigReact from 'react';
-import { ReactNode } from 'react';
-import React from 'reactn';
+import React, { createRef, ReactNode, RefObject } from 'react';
+import ReactN from 'reactn';
 import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import $ from 'jquery';
@@ -68,28 +67,53 @@ const COUNT_COL = new GridColumn({
 // the column index for cell values and cell messages does not include either the selection
 // column or the row number column, so we adjust the value passed to <Cell> to accommodate.
 function inputCellFactory(
-    modelId: string,
+    model: QueryGridModel,
     editorModel: EditorModel,
     allowSelection?: boolean,
-    columnMetadata?: EditableColumnMetadata
+    hideCountCol?: boolean,
+    columnMetadata?: EditableColumnMetadata,
+    readonlyRows?: List<any>,
+    onCellModify?: () => any
 ) {
     return (value: any, row: any, c: GridColumn, rn: number, cn: number) => {
-        const colIdx = cn - (allowSelection ? 2 : 1);
+        let colOffset = 0;
+        if (allowSelection) colOffset += 1;
+        if (!hideCountCol) colOffset += 1;
+
+        const colIdx = cn - colOffset;
+
+        const isReadonlyCol = columnMetadata ? columnMetadata.readOnly : false;
+        let isReadonlyRow = false;
+
+        if (!isReadonlyCol && model && readonlyRows) {
+            const keyCols = model.getKeyColumns();
+            if (keyCols.size == 1) {
+                const key = caseInsensitive(row.toJS(), keyCols.get(0).fieldKey);
+                isReadonlyRow = key && readonlyRows.contains(key);
+            } else {
+                console.warn(
+                    'Setting readonly rows for models with ' + keyCols.size + ' keys is not currently supported.'
+                );
+            }
+        }
 
         return (
             <Cell
                 col={c.raw}
                 colIdx={colIdx}
                 key={inputCellKey(c.raw, row)}
-                modelId={modelId}
+                modelId={model.getId()}
                 placeholder={columnMetadata ? columnMetadata.placeholder : undefined}
-                readOnly={columnMetadata ? columnMetadata.readOnly : false}
+                readOnly={isReadonlyCol || isReadonlyRow}
                 rowIdx={rn}
                 focused={editorModel ? editorModel.isFocused(colIdx, rn) : false}
                 message={editorModel ? editorModel.getMessage(colIdx, rn) : undefined}
                 selected={editorModel ? editorModel.isSelected(colIdx, rn) : false}
                 selection={editorModel ? editorModel.inSelection(colIdx, rn) : false}
                 values={editorModel ? editorModel.getValue(colIdx, rn) : List<ValueDescriptor>()}
+                onCellModify={onCellModify}
+                filteredLookupValues={columnMetadata ? columnMetadata.filteredLookupValues : undefined}
+                filteredLookupKeys={columnMetadata ? columnMetadata.filteredLookupKeys : undefined}
             />
         );
     };
@@ -108,7 +132,9 @@ function inputCellKey(col: QueryColumn, row: any): string {
 export interface EditableColumnMetadata {
     placeholder?: string;
     readOnly?: boolean;
-    toolTip?: React.ReactNode;
+    toolTip?: ReactNode;
+    filteredLookupValues?: List<string>;
+    filteredLookupKeys?: List<any>;
 }
 
 export interface EditableGridProps {
@@ -132,6 +158,7 @@ export interface EditableGridProps {
     readOnlyColumns?: List<string>;
     removeColumnTitle?: string;
     notDeletable?: List<any>; // list of key values that cannot be deleted.
+    readonlyRows?: List<any>; // list of key values for rows that are readonly.
     striped?: boolean;
     initialEmptyRowCount?: number;
     model: QueryGridModel;
@@ -139,6 +166,9 @@ export interface EditableGridProps {
     onRowCountChange?: (rowCount?: number) => any;
     emptyGridMsg?: string;
     maxTotalRows?: number;
+    hideCountCol?: boolean;
+    rowNumColumn?: GridColumn;
+    onCellModify?: () => any;
 }
 
 export interface EditableGridState {
@@ -148,7 +178,7 @@ export interface EditableGridState {
     showBulkUpdate: boolean;
 }
 
-export class EditableGrid extends React.PureComponent<EditableGridProps, EditableGridState> {
+export class EditableGrid extends ReactN.PureComponent<EditableGridProps, EditableGridState> {
     static defaultProps = {
         allowAdd: true,
         allowBulkAdd: false,
@@ -172,18 +202,20 @@ export class EditableGrid extends React.PureComponent<EditableGridProps, Editabl
         initialEmptyRowCount: 1,
         striped: false,
         maxTotalRows: MAX_EDITABLE_GRID_ROWS,
+        hideCountCol: false,
+        rowNumColumn: COUNT_COL,
     };
 
     private maskDelay: number;
-    private readonly table: React.RefObject<any>;
-    private readonly wrapper: React.RefObject<any>;
+    private readonly table: RefObject<any>;
+    private readonly wrapper: RefObject<any>;
 
     constructor(props: EditableGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
 
-        this.table = OrigReact.createRef();
-        this.wrapper = OrigReact.createRef();
+        this.table = createRef();
+        this.wrapper = createRef();
 
         this.state = {
             selected: Set<string>(),
@@ -193,11 +225,11 @@ export class EditableGrid extends React.PureComponent<EditableGridProps, Editabl
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.initModel(this.props);
     }
 
-    componentWillReceiveProps(nextProps: EditableGridProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: EditableGridProps): void {
         this.initModel(nextProps);
     }
 
@@ -278,7 +310,16 @@ export class EditableGrid extends React.PureComponent<EditableGridProps, Editabl
     };
 
     generateColumns = (): List<GridColumn> => {
-        const { allowBulkRemove, allowBulkUpdate, allowRemove, columnMetadata } = this.props;
+        const {
+            allowBulkRemove,
+            allowBulkUpdate,
+            allowRemove,
+            columnMetadata,
+            hideCountCol,
+            rowNumColumn,
+            readonlyRows,
+            onCellModify,
+        } = this.props;
         const model = this.getModel(this.props);
         const editorModel = this.getEditorModel();
         let gridColumns = List<GridColumn>();
@@ -300,17 +341,20 @@ export class EditableGrid extends React.PureComponent<EditableGridProps, Editabl
             });
             gridColumns = gridColumns.push(selColumn);
         }
-        gridColumns = gridColumns.push(COUNT_COL);
+        if (!hideCountCol) gridColumns = gridColumns.push(rowNumColumn ? rowNumColumn : COUNT_COL);
 
         this.getColumns().forEach(qCol => {
             gridColumns = gridColumns.push(
                 new GridColumn({
                     align: qCol.align,
                     cell: inputCellFactory(
-                        model.getId(),
+                        model,
                         editorModel,
-                        allowBulkRemove,
-                        columnMetadata.get(qCol.fieldKey)
+                        allowBulkRemove || allowBulkUpdate,
+                        hideCountCol,
+                        columnMetadata.get(qCol.fieldKey),
+                        readonlyRows,
+                        onCellModify
                     ),
                     index: qCol.fieldKey,
                     raw: qCol,
@@ -459,11 +503,20 @@ export class EditableGrid extends React.PureComponent<EditableGridProps, Editabl
         if (!this.props.disabled) {
             const modelId = this.props.model.getId();
             const beforeRowCount = this.getEditorModel().rowCount;
-            pasteEvent(modelId, event, this.showMask, this.hideMask, this.props.columnMetadata);
+            pasteEvent(
+                modelId,
+                event,
+                this.showMask,
+                this.hideMask,
+                this.props.columnMetadata,
+                this.props.readonlyRows,
+                !this.props.allowAdd
+            );
             const afterRowCount = this.getEditorModel().rowCount;
             if (beforeRowCount !== afterRowCount) {
                 this.onRowCountChange();
             }
+            if (this.props.onCellModify) this.props.onCellModify();
         }
     };
 

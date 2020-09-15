@@ -30,6 +30,8 @@ export class FieldEditProps extends Record({
     fieldKey: undefined,
     inputPlaceholder: undefined,
     inputType: undefined,
+    minValue: undefined,
+    step: undefined,
     key: undefined,
     value: undefined,
 }) {
@@ -37,12 +39,10 @@ export class FieldEditProps extends Record({
     fieldKey: string;
     inputPlaceholder: string;
     inputType: string;
+    minValue: number; // used for number input types
+    step: number; // used for number input types; default is 1
     key: string;
     value?: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 
     getFieldEditInputName(): string {
         return 'fieldEditInput_' + this.fieldKey;
@@ -93,6 +93,8 @@ export class FieldEditForm extends React.Component<Props, any> {
                             inputPlaceholder={field.inputPlaceholder}
                             showButtons={index === 0}
                             value={field.value}
+                            step={field.step}
+                            minValue={field.minValue}
                             hideOverlayFn={hideOverlayFn}
                         />
                     ))}
@@ -102,11 +104,13 @@ export class FieldEditForm extends React.Component<Props, any> {
     }
 }
 
-interface FieldEditInputStateProps {
+interface FieldEditInputProps {
     caption?: string;
     fieldCaption?: string;
     inputPlaceholder?: string;
     inputType?: any;
+    step?: number;
+    minValue?: number;
     name: string;
     showButtons?: boolean;
     value?: string;
@@ -120,7 +124,7 @@ interface FieldEditInputStateProps {
     showRequired?: Function;
 }
 
-class FieldEditInputImpl extends React.Component<FieldEditInputStateProps, any> {
+class FieldEditInputImpl extends React.Component<FieldEditInputProps, any> {
     static defaultProps = {
         inputPlaceholder: '...',
     };
@@ -130,7 +134,7 @@ class FieldEditInputImpl extends React.Component<FieldEditInputStateProps, any> 
     }
 
     resolveFormElement() {
-        const { inputPlaceholder, inputType, value } = this.props;
+        const { inputPlaceholder, inputType, value, step, minValue } = this.props;
 
         const props = {
             autoFocus: true,
@@ -138,13 +142,14 @@ class FieldEditInputImpl extends React.Component<FieldEditInputStateProps, any> 
             defaultValue: value,
             onChange: this.handleChange.bind(this),
             placeholder: inputPlaceholder,
-            type: 'text',
+            type: inputType
         };
 
         switch (inputType) {
             case 'textarea':
                 return <textarea rows={4} {...props} />;
-
+            case 'number':
+                return <input {...props} min={minValue} step={step}/>
             default:
                 return <input {...props} />;
         }

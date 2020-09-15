@@ -1,24 +1,23 @@
-import React, {
-    ChangeEvent,
-    FunctionComponent,
-    PureComponent,
-    ReactElement,
-} from 'react';
+import React, { ChangeEvent, FunctionComponent, PureComponent, ReactElement, ReactNode } from 'react';
 import { storiesOf } from '@storybook/react';
 import { Button, MenuItem } from 'react-bootstrap';
+import { createMemoryHistory, Route, Router, WithRouterProps } from 'react-router';
 
 import {
+    EditableDetailPanel,
     GridPanel,
     GridPanelWithModel,
     InjectedQueryModels,
     ManageDropdownButton,
+    QueryConfig,
     QueryConfigMap,
     RequiresModelAndActions,
     SchemaQuery,
+    SCHEMAS,
     withQueryModels,
 } from '..';
+
 import './QueryModel.scss';
-import { createMemoryHistory, Route, Router, WithRouterProps } from 'react-router';
 
 class GridPanelButtonsExample extends PureComponent<RequiresModelAndActions> {
     render() {
@@ -119,6 +118,25 @@ class ChangeableSchemaQueryImpl extends PureComponent<{} & InjectedQueryModels, 
 
 const ChangeableSchemaQuery = withQueryModels<{}>(ChangeableSchemaQueryImpl);
 
+export class EditableDetailPanelExampleImpl extends PureComponent<{} & InjectedQueryModels> {
+    render(): ReactNode {
+        const { actions, queryModels } = this.props;
+        const model = Object.values(queryModels)[0];
+        const onUpdate = () => console.log('Update complete');
+        return (
+            <EditableDetailPanel
+                actions={actions}
+                appEditable={true}
+                canUpdate={true}
+                model={model}
+                onUpdate={onUpdate}
+            />
+        );
+    }
+}
+
+const EditableDetailsPanelExample = withQueryModels<{}>(EditableDetailPanelExampleImpl);
+
 storiesOf('QueryModel', module)
     .add('GridPanel', () => {
         const history = createMemoryHistory();
@@ -131,20 +149,18 @@ storiesOf('QueryModel', module)
                     return key + '=' + value;
                 })
                 .join('&');
-            const queryConfigs: QueryConfigMap = {
-                mixtures: {
-                    bindURL: true,
-                    schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
-                    urlPrefix: 'mixtures',
-                },
+            const queryConfigs: QueryConfig = {
+                bindURL: true,
+                schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
+                urlPrefix: 'mixtures',
             };
 
             const onQueryChange = (evt: ChangeEvent<HTMLInputElement>): void => {
                 const query = {};
                 evt.target.value.split('&').forEach(segment => {
-                    const [ key, value ] = segment.split('=');
+                    const [key, value] = segment.split('=');
                     query[key] = value;
-                    router.replace({...location, query });
+                    router.replace({ ...location, query });
                 });
             };
 
@@ -157,7 +173,7 @@ storiesOf('QueryModel', module)
                     <GridPanelWithModel
                         ButtonsComponent={GridPanelButtonsExample}
                         title="Mixtures"
-                        queryConfigs={queryConfigs}
+                        queryConfig={queryConfigs}
                     />
                 </div>
             );
@@ -169,17 +185,33 @@ storiesOf('QueryModel', module)
             </Router>
         );
     })
-    .add('Minimal GridPanel', () => {
-        const queryConfigs: QueryConfigMap = {
-            mixtures: {
-                schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
-            },
+    .add('With custom Name filter display values', () => {
+        const queryConfig: QueryConfig = {
+            schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
         };
 
         return (
             <div className="query-model-example">
                 <GridPanelWithModel
-                    queryConfigs={queryConfigs}
+                    getFilterDisplayValue={(columnName: string, rawValue: string) => {
+                        if (columnName.toLowerCase() === 'name') return rawValue + '-withSuffix';
+                        return null;
+                    }}
+                    queryConfig={queryConfig}
+                    showOmniBox={true}
+                />
+            </div>
+        );
+    })
+    .add('Minimal GridPanel', () => {
+        const queryConfig: QueryConfig = {
+            schemaQuery: SchemaQuery.create('exp.data', 'mixturespaging'),
+        };
+
+        return (
+            <div className="query-model-example">
+                <GridPanelWithModel
+                    queryConfig={queryConfig}
                     asPanel={false}
                     showOmniBox={false}
                     showButtonBar={false}
@@ -189,31 +221,41 @@ storiesOf('QueryModel', module)
         );
     })
     .add('Bad Query Info', () => {
-        const queryConfigs: QueryConfigMap = {
-            mixtures: {
-                schemaQuery: SchemaQuery.create('i.do.not.exist', 'IAmNonExistent'),
-            },
+        const queryConfig: QueryConfig = {
+            schemaQuery: SchemaQuery.create('i.do.not.exist', 'IAmNonExistent'),
         };
 
         return (
             <div className="query-model-example">
-                <GridPanelWithModel title="Bad QueryInfo" queryConfigs={queryConfigs}/>
+                <GridPanelWithModel title="Bad QueryInfo" queryConfig={queryConfig} />
             </div>
         );
     })
     .add('Bad Query', () => {
-        const queryConfigs: QueryConfigMap = {
-            mixtures: {
-                schemaQuery: SchemaQuery.create('exp.data', 'mixturesbad'),
-            },
+        const queryConfig: QueryConfig = {
+            schemaQuery: SchemaQuery.create('exp.data', 'mixturesbad'),
         };
 
         return (
             <div className="query-model-example">
-                <GridPanelWithModel title="Bad Query" queryConfigs={queryConfigs}/>
+                <GridPanelWithModel title="Bad Query" queryConfig={queryConfig} />
             </div>
         );
     })
     .add('Changeable SchemaQuery', () => {
         return <ChangeableSchemaQuery />;
+    })
+    .add('EditableDetailPanel', () => {
+        const queryConfigs: QueryConfigMap = {
+            mixtures: {
+                schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Samples'),
+                keyValue: 123,
+            },
+        };
+
+        return (
+            <div className="query-model-example">
+                <EditableDetailsPanelExample autoLoad queryConfigs={queryConfigs} />
+            </div>
+        );
     });

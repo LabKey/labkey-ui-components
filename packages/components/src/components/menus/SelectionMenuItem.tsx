@@ -13,33 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { QueryGridModel } from '../base/models/model';
+import { QueryModel } from '../..';
 
 interface Props {
     id: string;
-    model: QueryGridModel;
+    model?: QueryGridModel;
+    queryModel?: QueryModel;
     text: string;
-    onClick: () => any;
+    onClick: () => void;
     disabledMsg: string;
     maxSelection?: number;
     maxSelectionDisabledMsg?: string;
     nounPlural: string;
 }
 
-export class SelectionMenuItem extends React.Component<Props, any> {
+export class SelectionMenuItem extends PureComponent<Props> {
     static defaultProps = {
         disabledMsg: 'Select one or more',
         nounPlural: 'items',
     };
 
+    get tooManySelected(): boolean {
+        const { maxSelection, model, queryModel } = this.props;
+        const numSelections = model?.selectedIds.size ?? queryModel?.selections?.size;
+        return numSelections !== undefined && numSelections > maxSelection;
+    }
+
+    get tooFewSelected(): boolean {
+        const { model, queryModel } = this.props;
+        const numSelections = model?.selectedIds.size ?? queryModel?.selections?.size;
+        return numSelections !== undefined && numSelections === 0;
+    }
+
+    get disabled(): boolean {
+        const { model, queryModel } = this.props;
+        const totalRows = model?.totalRows ?? queryModel?.rowCount;
+        return totalRows === undefined || this.tooFewSelected || this.tooManySelected;
+    }
+
     render() {
-        const { id, model, text, onClick, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
-        const tooManySelected = model && maxSelection && model.selectedIds.size > maxSelection;
-        const tooFewSelected = model && model.selectedIds.size === 0;
-        const disabled = !model || model.totalRows === 0 || tooFewSelected || tooManySelected;
+        const { id, text, onClick, disabledMsg, maxSelection, maxSelectionDisabledMsg, nounPlural } = this.props;
+        const { disabled, tooFewSelected, tooManySelected } = this;
         const item = (
             <MenuItem onClick={onClick} disabled={disabled}>
                 {text}
@@ -49,6 +67,7 @@ export class SelectionMenuItem extends React.Component<Props, any> {
         const message = tooFewSelected
             ? disabledMsg + ' ' + nounPlural + '.'
             : maxSelectionDisabledMsg || 'At most ' + maxSelection + ' ' + nounPlural + ' can be selected.';
+
         if (disabled) {
             const overlay = <Popover id={id + '-disabled-warning'}>{message}</Popover>;
 

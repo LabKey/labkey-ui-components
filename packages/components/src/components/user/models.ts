@@ -10,8 +10,4 @@ export class ChangePasswordModel extends Record({
     oldPassword: string;
     password: string;
     password2: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }

@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React from 'react';
 import { mount } from 'enzyme';
-import toJson from 'enzyme-to-json';
 import { List } from 'immutable';
 
 import { AppURL } from '../../url/AppURL';
@@ -66,19 +65,6 @@ describe('ProductMenuSection render', () => {
         },
     ]);
 
-    const yourItems = List<MenuSectionModel>([
-        {
-            id: 21,
-            label: 'Documentation',
-        },
-    ]);
-
-    const yourItemsSection = MenuSectionModel.create({
-        label: 'Your Items',
-        items: yourItems,
-        key: 'user',
-    });
-
     test('empty section no text', () => {
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
@@ -100,7 +86,7 @@ describe('ProductMenuSection render', () => {
         );
 
         expect(menuSection.find('li').length).toBe(0);
-        expect(toJson(menuSection)).toMatchSnapshot();
+        expect(menuSection).toMatchSnapshot();
     });
 
     test('empty section with empty text and create link', () => {
@@ -126,7 +112,7 @@ describe('ProductMenuSection render', () => {
 
         expect(menuSection.find('li.empty-section').length).toBe(1);
         expect(menuSection.contains('Test empty text')).toBe(true);
-        expect(toJson(menuSection)).toMatchSnapshot();
+        expect(menuSection).toMatchSnapshot();
     });
 
     test('section with custom headerURL and headerText', () => {
@@ -151,7 +137,7 @@ describe('ProductMenuSection render', () => {
             />
         );
 
-        expect(toJson(menuSection)).toMatchSnapshot();
+        expect(menuSection).toMatchSnapshot();
     });
 
     test('one-column section', () => {
@@ -177,7 +163,7 @@ describe('ProductMenuSection render', () => {
             />
         );
         expect(menuSection.find('ul').length).toBe(1);
-        expect(toJson(menuSection)).toMatchSnapshot();
+        expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
     });
 
@@ -201,13 +187,12 @@ describe('ProductMenuSection render', () => {
         );
 
         expect(menuSection.find('ul').length).toBe(2);
-        expect(toJson(menuSection)).toMatchSnapshot();
+        expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
     });
 
     test('two columns with overflow link', () => {
         const productId = 'testProductOverflowLink';
-        const sections = List<MenuSectionModel>().asMutable();
 
         const section = new MenuSectionModel({
             label: 'Assays',
@@ -227,7 +212,7 @@ describe('ProductMenuSection render', () => {
         );
         expect(menuSection.find('ul').length).toBe(2);
         expect(menuSection.find('span.overflow-link').length).toBe(1);
-        expect(toJson(menuSection)).toMatchSnapshot();
+        expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
     });
 });

@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
-import { Map } from 'immutable';
+import React from 'react';
 import { mount } from 'enzyme';
-
 import mock from 'xhr-mock';
 
 import { getStateQueryGridModel } from '../../models';
 import * as constants from '../../test/data/constants';
 import { gridInit } from '../../actions';
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks, sleep } from '../../testHelpers';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 
 import { Cell } from './Cell';
@@ -32,7 +30,7 @@ const SCHEMA_NAME = 'lists';
 const QUERY_NAME = 'MixtureTypes';
 const MODEL_ID = (GRID_ID + '|' + SCHEMA_NAME + '/' + QUERY_NAME).toLowerCase();
 
-beforeAll(() => {
+beforeAll(async () => {
     initUnitTestMocks();
     const schemaQuery = new SchemaQuery({
         schemaName: SCHEMA_NAME,
@@ -42,16 +40,16 @@ beforeAll(() => {
         editable: true,
         loader: {
             fetch: () => {
-                return new Promise(resolve => {
-                    resolve({
-                        data: constants.GRID_DATA,
-                        dataIds: constants.GRID_DATA.keySeq().toList(),
-                    });
+                return Promise.resolve({
+                    data: constants.GRID_DATA,
+                    dataIds: constants.GRID_DATA.keySeq().toList(),
                 });
             },
         },
     });
     gridInit(model, true);
+
+    await sleep(100);
 });
 
 afterAll(() => {
@@ -63,29 +61,21 @@ const queryColumn = QueryColumn.create({
     name: 'myColumn',
 });
 
-const emptyRow = Map<any, any>();
-
 describe('Cell', () => {
-    test('default props', done => {
+    test('default props', () => {
         const cell = mount(<Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} />);
-
-        setTimeout(() => {
-            expect(cell.find('div')).toHaveLength(1);
-            expect(cell.find('input')).toHaveLength(0);
-            done();
-        }, 25);
+        expect(cell.find('div')).toHaveLength(1);
+        expect(cell.find('input')).toHaveLength(0);
+        cell.unmount();
     });
 
-    test('with focus', done => {
+    test('with focus', () => {
         const cell = mount(
             <Cell col={queryColumn} colIdx={1} modelId={MODEL_ID} rowIdx={2} focused={true} selected={true} />
         );
-
-        setTimeout(() => {
-            expect(cell.find('div')).toHaveLength(0);
-            expect(cell.find('input')).toHaveLength(1);
-            done();
-        }, 25);
+        expect(cell.find('div')).toHaveLength(0);
+        expect(cell.find('input')).toHaveLength(1);
+        cell.unmount();
     });
 
     test('with placeholder', () => {

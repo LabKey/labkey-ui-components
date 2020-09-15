@@ -1,7 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
-import toJson from 'enzyme-to-json';
 
 import { Alert } from '../../base/Alert';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
@@ -44,7 +43,7 @@ describe('DataClassDesigner', () => {
             />
         );
 
-        const tree = renderer.create(form).toJSON();
+        const tree = renderer.create(form);
         expect(tree).toMatchSnapshot();
     });
 
@@ -55,7 +54,7 @@ describe('DataClassDesigner', () => {
         expect(wrapped.find(DataClassPropertiesPanel)).toHaveLength(1);
         expect(wrapped.find(DomainForm)).toHaveLength(1);
         expect(wrapped.find(FileAttachmentForm)).toHaveLength(0);
-        expect(toJson(wrapped)).toMatchSnapshot();
+        expect(wrapped).toMatchSnapshot();
         wrapped.unmount();
     });
 

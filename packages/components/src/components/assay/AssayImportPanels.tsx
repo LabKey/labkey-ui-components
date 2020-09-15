@@ -44,6 +44,8 @@ import { Progress } from '../base/Progress';
 import { FileSizeLimitProps } from '../files/models';
 import { IMPORT_DATA_FORM_TYPES } from '../../constants';
 
+import { dismissNotifications } from '../..';
+
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { RunDataPanel } from './RunDataPanel';
@@ -63,7 +65,6 @@ import {
     importAssayRun,
     uploadAssayRunFiles,
 } from './actions';
-import { dismissNotifications } from '../..';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({ isInit: false });
@@ -82,7 +83,7 @@ interface OwnProps {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     maxInsertRows?: number;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
-    loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>
+    loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -97,10 +98,9 @@ interface State {
 }
 
 class AssayImportPanelsImpl extends React.Component<Props, State> {
-
     static defaultProps = {
-        loadSelections : loadSelectedSamples
-    }
+        loadSelections: loadSelectedSamples,
+    };
 
     constructor(props: Props) {
         super(props);
@@ -123,7 +123,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         return props.runId !== undefined;
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         const { location, selectStep } = this.props;
 
         if (location && location.query && location.query.dataTab) {
@@ -133,7 +133,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         this.initModel(this.props);
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
         if (
             this.props.assayDefinition.protocolSchemaName !== nextProps.assayDefinition.protocolSchemaName ||
             this.props.runId !== nextProps.runId
@@ -262,6 +262,17 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
     }
 
+    populateAssayRequest(runProperties): Map<string, any> {
+        // Need to pre-populate the run properties form with assayRequest if it is present on the URL (see issue 38711)
+        const assayRequest = this.props.location.query.assayRequest;
+
+        if (assayRequest !== undefined) {
+            return runProperties.set('assayRequest', assayRequest);
+        }
+
+        return runProperties;
+    }
+
     onGetQueryDetailsComplete() {
         const { assayDefinition, location } = this.props;
         const sampleColumnData = assayDefinition.getSampleColumn();
@@ -272,7 +283,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             // samples.
             this.props.loadSelections(location, sampleColumnData.column).then(samples => {
                 // Only one sample can be added at batch or run level, so ignore selected samples if multiple are selected.
-                let runProperties = this.getRunPropertiesRow(this.props);
+                let runProperties = this.populateAssayRequest(this.getRunPropertiesRow(this.props));
                 let batchProperties = this.getBatchPropertiesRow(this.props);
                 if (sampleColumnData && samples && samples.size == 1) {
                     const { column, domain } = sampleColumnData;
@@ -307,7 +318,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     model: state.model.merge({
                         isInit: this.isRunPropertiesInit(this.props),
                         batchProperties: this.getBatchPropertiesRow(this.props),
-                        runProperties: this.getRunPropertiesRow(this.props),
+                        runProperties: this.populateAssayRequest(this.getRunPropertiesRow(this.props)),
                     }) as AssayWizardModel,
                 }),
                 this.onInitModelComplete

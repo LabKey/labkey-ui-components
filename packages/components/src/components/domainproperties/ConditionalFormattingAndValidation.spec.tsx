@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import toJson from 'enzyme-to-json';
 
 import propertyValidatorRange from '../../test/data/propertyValidator-range.json';
 import propertyValidatorRegex from '../../test/data/propertyValidator-regex.json';
@@ -78,7 +77,7 @@ describe('ConditionalFormattingAndValidation', () => {
         expect(validatorStrings.at(0).text()).toEqual(expectedValidators);
         expect(validatorStrings.at(1).text()).toEqual(expectedValidators);
 
-        expect(toJson(cfv)).toMatchSnapshot();
+        expect(cfv).toMatchSnapshot();
         cfv.unmount();
     });
 
@@ -123,7 +122,7 @@ describe('ConditionalFormattingAndValidation', () => {
         expect(validatorStrings.length).toEqual(1);
         expect(validatorStrings.at(0).text()).toEqual(formatsString);
 
-        expect(toJson(cfv)).toMatchSnapshot();
+        expect(cfv).toMatchSnapshot();
         cfv.unmount();
     });
 
@@ -145,7 +144,7 @@ describe('ConditionalFormattingAndValidation', () => {
         const validatorStrings = cfv.find({ className: 'domain-validator-link' });
         expect(validatorStrings.length).toEqual(0);
 
-        expect(toJson(cfv)).toMatchSnapshot();
+        expect(cfv).toMatchSnapshot();
         cfv.unmount();
     });
 });

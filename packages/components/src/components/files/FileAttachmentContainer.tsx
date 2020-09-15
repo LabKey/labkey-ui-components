@@ -68,11 +68,11 @@ export class FileAttachmentContainer extends React.Component<
         };
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount(): void {
         this.initFileNames(this.props);
     }
 
-    componentWillReceiveProps(nextProps: FileAttachmentContainerProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: FileAttachmentContainerProps): void {
         if (this.props.initialFileNames != nextProps.initialFileNames && !this.state.isDirty) {
             this.initFileNames(nextProps);
         }
@@ -330,8 +330,8 @@ export class FileAttachmentContainer extends React.Component<
         const fileUploadText = 'fileUpload' + (index !== undefined ? index : '');
 
         return (
-            <div>
-                <div className={classNames('file-upload--container', hideFileUpload ? 'hidden' : 'block')}>
+            <>
+                <div className={classNames('file-upload--container', hideFileUpload ? 'hidden' : 'block', {'file-upload--container--compact': compact})}>
                     <label
                         className={classNames({
                             'file-upload--label': !compact,
@@ -370,7 +370,7 @@ export class FileAttachmentContainer extends React.Component<
                 {fileNames.map((fileName: string) => {
                     return <FileAttachmentEntry key={fileName} name={fileName} onDelete={this.handleRemove} />;
                 })}
-            </div>
+            </>
         );
     }
 }

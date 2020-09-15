@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'reactn';
+import React from 'react';
+import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 
 import { QUERY_GRID_PREFIX } from '../constants';
@@ -57,7 +58,7 @@ interface QueryGridState {
     unlisten?: any;
 }
 
-export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
+export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState> {
     constructor(props: QueryGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);
@@ -86,7 +87,7 @@ export class QueryGrid extends React.Component<QueryGridProps, QueryGridState> {
         this.initUrlRouteListener();
     }
 
-    componentWillReceiveProps(nextProps: QueryGridProps) {
+    UNSAFE_componentWillReceiveProps(nextProps: QueryGridProps): void {
         this.initModel(nextProps);
 
         // if the nextProps has a model and we didn't before or we have a different model id, then reset the url route listener

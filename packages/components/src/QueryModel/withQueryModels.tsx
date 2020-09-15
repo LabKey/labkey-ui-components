@@ -23,6 +23,7 @@ export interface Actions {
     loadFirstPage: (id: string) => void;
     loadLastPage: (id: string) => void;
     loadCharts: (id: string, includeSampleComparison: boolean) => void;
+    replaceSelections: (id: string, selections: string[]) => void;
     selectAllRows: (id: string) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     selectRow: (id: string, checked, row: { [key: string]: any }) => void;
@@ -32,10 +33,9 @@ export interface Actions {
     setMaxRows: (id: string, maxRows: number) => void;
     setOffset: (id: string, offset: number) => void;
     setSchemaQuery: (id: string, schemaQuery: SchemaQuery, loadSelections?: boolean) => void;
+    setSelections: (id: string, checked: boolean, selections: string[]) => void;
     setSorts: (id: string, sorts: QuerySort[]) => void;
     setView: (id: string, viewName: string, loadSelections?: boolean) => void;
-    setSelections: (id: string, checked: boolean, selections: string[]) => void;
-    replaceSelections: (id: string, selections: string[]) => void;
 }
 
 export interface RequiresModelAndActions {
@@ -173,9 +173,9 @@ export function withQueryModels<Props>(
                 setOffset: this.setOffset,
                 setMaxRows: this.setMaxRows,
                 setSchemaQuery: this.setSchemaQuery,
+                setSelections: this.setSelections,
                 setSorts: this.setSorts,
                 setView: this.setView,
-                setSelections: this.setSelections,
             };
         }
 
@@ -204,7 +204,7 @@ export function withQueryModels<Props>(
          * If you pass a unique key to the component then React will unmount and remount the component when the key
          * changes.
          */
-        componentDidUpdate(prevProps: Readonly<WrappedProps>, prevState: Readonly<State>): void {
+        componentDidUpdate(prevProps: Readonly<WrappedProps>): void {
             const prevLoc = prevProps.location;
             const currLoc = this.props.location;
 
@@ -317,6 +317,15 @@ export function withQueryModels<Props>(
 
         clearSelections = async (id: string): Promise<void> => {
             const { modelLoader } = this.props;
+            const isLoading = this.state.queryModels[id].selectionsLoadingState === LoadingState.LOADING;
+
+            if (!isLoading) {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+                    })
+                );
+            }
 
             try {
                 await modelLoader.clearSelections(this.state.queryModels[id]);
@@ -324,6 +333,9 @@ export function withQueryModels<Props>(
                     produce((draft: Draft<State>) => {
                         const model = draft.queryModels[id];
                         model.selections = new Set();
+                        if (!isLoading) {
+                            model.selectionsLoadingState = LoadingState.LOADED;
+                        }
                         model.selectionsError = undefined;
                     })
                 );
@@ -334,6 +346,15 @@ export function withQueryModels<Props>(
 
         setSelections = async (id: string, checked: boolean, selections: string[]): Promise<void> => {
             const { modelLoader } = this.props;
+            const isLoading = this.state.queryModels[id].selectionsLoadingState === LoadingState.LOADING;
+
+            if (!isLoading) {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+                    })
+                );
+            }
 
             try {
                 await modelLoader.setSelections(this.state.queryModels[id], checked, selections);
@@ -348,6 +369,9 @@ export function withQueryModels<Props>(
                             }
                         });
                         model.selectionsError = undefined;
+                        if (!isLoading) {
+                            model.selectionsLoadingState = LoadingState.LOADED;
+                        }
                     })
                 );
             } catch (error) {
@@ -358,6 +382,12 @@ export function withQueryModels<Props>(
         replaceSelections = async (id: string, selections: string[]): Promise<void> => {
             const { modelLoader } = this.props;
 
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    draft.queryModels[id].selectionsLoadingState = LoadingState.LOADING;
+                })
+            );
+
             try {
                 await modelLoader.clearSelections(this.state.queryModels[id]);
                 await modelLoader.setSelections(this.state.queryModels[id], true, selections);
@@ -366,6 +396,7 @@ export function withQueryModels<Props>(
                         const model = draft.queryModels[id];
                         model.selections = new Set(selections);
                         model.selectionsError = undefined;
+                        model.selectionsLoadingState = LoadingState.LOADED;
                     })
                 );
             } catch (error) {
@@ -656,8 +687,11 @@ export function withQueryModels<Props>(
                 produce((draft: Draft<State>) => {
                     // Instantiate the model first because queryConfig.id is optional and is auto-generated in the
                     // QueryModel constructor if not set.
-                    const queryModel = new QueryModel(queryConfig);
+                    let queryModel = new QueryModel(queryConfig);
                     id = queryModel.id;
+                    if (queryModel.bindURL && this.props.location) {
+                        queryModel = queryModel.mutate(queryModel.attributesForURLQueryParams(this.props.location.query));
+                    }
                     draft.queryModels[queryModel.id] = queryModel;
                 }),
                 () => this.maybeLoad(id, load, load, loadSelections)
@@ -784,5 +818,5 @@ export function withQueryModels<Props>(
         queryConfigs: {},
     };
 
-    return withRouter(ComponentWithQueryModels);
+    return withRouter(ComponentWithQueryModels) as ComponentType<Props & MakeQueryModels>;
 }

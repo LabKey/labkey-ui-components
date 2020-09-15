@@ -1,25 +1,19 @@
 import React from 'react';
 import { mount } from 'enzyme';
-
 import PanelBody from 'react-bootstrap/lib/PanelBody';
-
 import { List } from 'immutable';
-
 import { Button } from 'react-bootstrap';
 
 import { Alert, DataClassDataType, LoadingSpinner, QueryGridModel, SchemaQuery } from '../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
-
 import { initUnitTestMocks } from '../../testHelpers';
 
 import { EntityChoice } from './models';
-
-import { SingleParentEntityPanel } from './SingleParentEntityPanel';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';
 
-// beforeAll(() => {
-//     initUnitTestMocks();
-// });
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 describe('<ParentEntityEditPanel>', () => {
     const modelId = 'id';
@@ -54,6 +48,7 @@ describe('<ParentEntityEditPanel>', () => {
         expect(panel.find(Alert)).toHaveLength(1);
         expect(panel.find(PanelBody).text()).toContain('Data for Test');
         expect(panel).toMatchSnapshot();
+        panel.unmount();
     });
 
     test('loading state', () => {
@@ -70,6 +65,7 @@ describe('<ParentEntityEditPanel>', () => {
         panel.setState({ loading: true });
         expect(panel.find(LoadingSpinner)).toHaveLength(1);
         expect(panel).toMatchSnapshot();
+        panel.unmount();
     });
 
     test('editing, no data', () => {
@@ -93,5 +89,6 @@ describe('<ParentEntityEditPanel>', () => {
         expect(header.text()).toContain('Editing Test 123');
         expect(panel.find(Button)).toHaveLength(2);
         expect(panel).toMatchSnapshot();
+        panel.unmount();
     });
 });

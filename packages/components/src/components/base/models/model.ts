@@ -87,10 +87,6 @@ export class Container extends Record(defaultContainer) implements Partial<ICont
     sortOrder: number;
     title: string;
     type: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 interface IUserProps extends Partial<UserWithPermissions> {
@@ -147,10 +143,6 @@ export class User extends Record(defaultUser) implements IUserProps {
         return new User(defaultUser);
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     hasUpdatePermission(): boolean {
         return hasAllPermissions(this, [PermissionTypes.Update]);
     }
@@ -199,10 +191,6 @@ export class SchemaQuery extends Record({
     schemaName: string;
     queryName: string;
     viewName: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 
     // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
     getSchema() {
@@ -392,10 +380,6 @@ export class QueryColumn extends Record({
     static DATA_INPUTS = 'DataInputs';
     static MATERIAL_INPUTS = 'MaterialInputs';
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     isExpInput(): boolean {
         return this.isDataInput() || this.isMaterialInput();
     }
@@ -491,10 +475,6 @@ export class QueryLookup extends Record({
     // schema: string; -- NOT ALLOWING -- USE schemaName
     schemaName: string;
     // table: string; -- NOT ALLOWING -- USE queryName
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export interface IQueryGridModel {
@@ -1067,10 +1047,6 @@ export class SchemaDetails extends Record({
         return new SchemaDetails(copy);
     }
 
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
-
     getLabel() {
         return this.schemaName;
     }
@@ -1153,10 +1129,6 @@ export class ViewInfo extends Record({
             })
         );
     }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 export class LastActionStatus extends Record({
@@ -1169,10 +1141,6 @@ export class LastActionStatus extends Record({
     date: Date;
     level: MessageLevel;
     message: string;
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
-    }
 }
 
 function getFiltersFromView(rawViewInfo): List<Filter.IFilter> {
@@ -1305,10 +1273,6 @@ export class AssayDefinitionModel extends Record({
             domainTypes,
             links,
         });
-    }
-
-    constructor(values?: { [key: string]: any }) {
-        super(values);
     }
 
     getDomainByType(domainType: AssayDomainTypes): List<QueryColumn> {

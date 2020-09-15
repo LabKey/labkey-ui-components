@@ -1,6 +1,5 @@
 import { mount } from 'enzyme';
 import React from 'react';
-import toJson from 'enzyme-to-json';
 
 import { INTEGER_TYPE, TEXT_TYPE } from '../models';
 import { createFormInputId } from '../actions';
@@ -77,7 +76,7 @@ describe('ConditionalFormatOptions', () => {
             width: '100px',
         });
 
-        expect(toJson(format)).toMatchSnapshot();
+        expect(format).toMatchSnapshot();
         format.unmount();
     });
 
@@ -103,7 +102,7 @@ describe('ConditionalFormatOptions', () => {
         const collapsed = format.find({ id: 'domain-condition-format-' + validatorIndex });
         expect(collapsed.children().children().text()).toEqual('Is Not Blank and Is Greater Than 5');
 
-        expect(toJson(format)).toMatchSnapshot();
+        expect(format).toMatchSnapshot();
         format.unmount();
     });
 });

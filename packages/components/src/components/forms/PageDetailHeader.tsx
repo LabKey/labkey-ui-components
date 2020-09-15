@@ -20,11 +20,11 @@ import { hasAllPermissions } from '../../util/utils';
 import { User } from '../base/models/model';
 import { SVGIcon } from '../base/SVGIcon';
 
-import { FieldEditTrigger, FieldEditTriggerProps } from './FieldEditTrigger';
+import { FieldEditorOverlay, FieldEditorOverlayProps } from './FieldEditorOverlay';
 
 interface Props {
     description?: ReactNode;
-    fieldTriggerProps?: FieldEditTriggerProps;
+    fieldTriggerProps?: FieldEditorOverlayProps;
     iconAltText?: string;
     iconDir?: string;
     iconSrc?: string;
@@ -81,7 +81,7 @@ export class PageDetailHeader extends PureComponent<Props> {
                     {description && <span className="detail__header--desc">{description}</span>}
                     {fieldTriggerProps && (
                         <div className="text__truncate">
-                            <FieldEditTrigger
+                            <FieldEditorOverlay
                                 {...fieldTriggerProps}
                                 canUpdate={hasAllPermissions(user, [PermissionTypes.Update])}
                             />

@@ -117,10 +117,12 @@ import { Footer } from './components/base/Footer';
 
 import { EditorModel, getStateModelId, getStateQueryGridModel, IDataViewInfo } from './models';
 import {
+    clearSelected,
     createQueryGridModelFilteredBySample,
     getSelected,
     getSelectedData,
     getSelection,
+    gridExport,
     gridIdInvalidate,
     gridInit,
     gridInvalidate,
@@ -138,6 +140,7 @@ import {
     initQueryGridState,
     invalidateUsers,
     removeQueryGridModel,
+    updateEditorModel,
 } from './global';
 import {
     deleteRows,
@@ -161,6 +164,7 @@ import {
     LoadingState,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
+    EXPORT_TYPES,
 } from './constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
 import { URL_MAPPERS, URLResolver } from './util/URLResolver';
@@ -304,6 +308,7 @@ import { UserProfile } from './components/user/UserProfile';
 import { ChangePasswordModal } from './components/user/ChangePasswordModal';
 import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
 import { UserProvider, UserProviderProps } from './components/user/UserProvider';
+import { FieldEditorOverlay } from './components/forms/FieldEditorOverlay';
 
 import { createFormInputId, fetchDomain, saveDomain, setDomainFields } from './components/domainproperties/actions';
 import {
@@ -352,6 +357,7 @@ import { DataClassDataType, SampleTypeDataType } from './components/entities/con
 import { SampleTypeModel } from './components/domainproperties/samples/models';
 import { SampleTypeDesigner } from './components/domainproperties/samples/SampleTypeDesigner';
 
+import { makeTestActions, makeTestQueryModel } from './QueryModel/testUtils';
 import { QueryConfig, QueryModel } from './QueryModel/QueryModel';
 import { QueryModelLoader } from './QueryModel/QueryModelLoader';
 import {
@@ -365,13 +371,15 @@ import {
 } from './QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
 import { DetailPanel, DetailPanelWithModel } from './QueryModel/DetailPanel';
+import { EditableDetailPanel } from './QueryModel/EditableDetailPanel';
 import { Pagination, PaginationData } from './components/pagination/Pagination';
-import { AuditDetailsModel } from './components/auditlog/models';
+import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './components/auditlog/models';
 import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './components/auditlog/AuditDetails';
+import { TimelineView } from './components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
 import * as App from './internal/app';
-import { runDetailsColumnsForQueryModel } from './QueryModel/utils';
+import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './QueryModel/utils';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -390,14 +398,18 @@ export {
     getEditorModel,
     removeQueryGridModel,
     invalidateUsers,
+    clearSelected,
     gridInvalidate,
     gridIdInvalidate,
     queryGridInvalidate,
     schemaGridInvalidate,
+    updateEditorModel,
     // grid functions
     getSelected,
     getSelectedData,
     getSelection,
+    getQueryModelExportParams,
+    gridExport,
     gridInit,
     gridShowError,
     setSelected,
@@ -471,6 +483,7 @@ export {
     SelectInputProps, // TODO this probably doesn't need to be exported, long-term.  Used by the <Select> element in Biologics, which may want to be moved here instead.
     DatePickerInput,
     DateInput,
+    FieldEditorOverlay,
     FileInput,
     TextAreaInput,
     TextInput,
@@ -776,6 +789,7 @@ export {
     getSchemaQuery,
     resolveSchemaQuery,
     insertColumnFilter,
+    EXPORT_TYPES,
     // QueryGridModel
     QueryGridModel,
     QueryGridPanel,
@@ -798,13 +812,20 @@ export {
     GridPanelWithModel,
     DetailPanel,
     DetailPanelWithModel,
+    EditableDetailPanel,
     runDetailsColumnsForQueryModel,
+    flattenValuesFromRow,
     Pagination,
     PaginationData,
-    // AuditLog
+    makeTestActions,
+    makeTestQueryModel,
+    // AuditLog and Timeline
     AuditDetailsModel,
     AuditQueriesListingPage,
     AuditDetails,
     getEventDataValueDisplay,
     getTimelineEntityUrl,
+    TimelineEventModel,
+    TimelineGroupedEventInfo,
+    TimelineView,
 };

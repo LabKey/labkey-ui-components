@@ -26,11 +26,17 @@ interface CreateNewUser {
     email: string;
     isNew: boolean;
     message: string;
+    userId: number;
 }
 
 interface UserCredentials {
     password: string;
     username: string;
+}
+
+export interface TestUser extends UserCredentials {
+    email: string;
+    userId: number;
 }
 
 class RequestContext implements UserCredentials {
@@ -91,7 +97,7 @@ export interface IntegrationTestServer {
      * Create a new user account on the server with the specified credentials. If the account already exists, then
      * the account will be deleted and re-created to ensure credentials and permissions are configured as expected.
      */
-    createUser: (email: string, password: string) => Promise<UserCredentials>;
+    createUser: (email: string, password: string) => Promise<TestUser>;
     /** Make a GET request against the server. */
     get: (controller: string, action: string, params?: any, options?: RequestOptions) => Test;
     /** Initializes the server for the test run. This is required to be called prior to any tests running. */
@@ -146,7 +152,7 @@ const createTestContainer = async (ctx: ServerContext, containerOptions?: any /*
     return await _createContainer(ctx, ctx.projectPath, Utils.generateUUID(), containerOptions);
 };
 
-const createUser = async (ctx: ServerContext, email: string, password: string): Promise<UserCredentials> => {
+const createUser = async (ctx: ServerContext, email: string, password: string): Promise<TestUser> => {
     // Delete user (if the account already exists)
     // This ensures the given user's password and subsequent permissions are as expected
     await deleteUser(ctx, email);
@@ -171,7 +177,12 @@ const createUser = async (ctx: ServerContext, email: string, password: string): 
 
     ctx.createdUsers.push(email);
 
-    return { username: email, password };
+    return {
+        email,
+        password,
+        userId: user.userId,
+        username: email,
+    };
 };
 
 const deleteUser = async (ctx: ServerContext, email: string): Promise<void> => {

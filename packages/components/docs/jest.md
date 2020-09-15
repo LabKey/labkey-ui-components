@@ -9,6 +9,12 @@ a model, utility functions, among other things. Jest tests in conjunction with o
 the [@labkey/test](../../test/README.md) package and Selenium
 testing) can help us to get the full test coverage that we need for LabKey features / stories.
 
+With how quickly jest tests can run in comparison to Selenium tests and how much easier they are to maintain, it is
+good to make an automated test plan for your feature / story which will get us the coverage we want in the quickest
+turn around time possible. One good example of where a Selenium test is preffered over a jest test is when one component
+can affect another component in the application (i.e. based on state/data stored in the database that is changed by
+one component and shown in another).
+
 We use [enzyme](https://enzymejs.github.io/enzyme/) in many of our jest test cases to test non-rendering functions and
 rendering of components with different sets of parameters.
 
@@ -16,11 +22,11 @@ rendering of components with different sets of parameters.
 1. During or immediately after development (i.e. before a feature branch pull request is merged), review your set of
     changes to see what test cases should be added for any new or changed code.
     1. This includes simple bug fixes as a test case can often be added to prevent regressions of that bug with
-    future changes.
+    future changes. Note that when fixing a bug, writing a test case that reproduces it can be a good starting place.
 1. Keep as much logic out of your React component as possible and put that code in utility functions or method functions
     for your model objects.
-    1. This allows for much easier function level unit tests to be written which are separate
-    from the component level test cases.
+    1. This allows for much easier function-level unit tests to be written that are separate
+    from the component-level test cases.
 1. Use enzyme [shallow rendering](https://enzymejs.github.io/enzyme/docs/api/shallow.html) (via `shallow(...)`)
     if you want to constrain your testing to just the given component (and not any of its child components) and
     [full rendering](https://enzymejs.github.io/enzyme/docs/api/mount.html) (via `mount(...)`) for components that
@@ -34,12 +40,14 @@ rendering of components with different sets of parameters.
         1. https://devhints.io/enzyme
 1. Use jest [snapshot tests](https://jestjs.io/docs/en/snapshot-testing) for making sure the UI for your component
     doesn't change unexpectedly during development of related features. We recommend that snapshot tests be constrained
-    to **small display only React components**.
-    1. **NOTICE:** our preference is for using `mount()` with `find()` and other state checks for your components. We have
-        see that those test cases are much easier to maintain and reason about when a test fails / regresses. If you have
+    to **small display-only React components**.
+    1. **NOTICE:** our preference is for using `mount()` or `shallow()` with `find()` and other state checks for your components. We have
+        seen that those test cases are much easier to maintain and reason about when a test fails / regresses. If you have
         any logic in your component, try using enzyme testing and reserve snapshot testing for those truly display components only.
     1. Using snapshot tests for large nested components can results in very large snapshot files which are hard to
-        review when it comes time to change something or update that snapshot
+        review when it comes time to change something or update that snapshot.
+    1. If you find that you need to traverse a deeply nested component to test it, consider if the test might be
+        better suited for a smaller child component or if the current component should be refactored to reduce complexity.
     1. Don't forget to commit the related `.snap` files for your test cases. Without these, TeamCity will have trouble
         verifying that your tests are valid.
     1. Treat the `.snap` files as code when it comes to changes made to existing snapshots and newly created test cases.
@@ -49,16 +57,16 @@ rendering of components with different sets of parameters.
     1. Don't manually update `.snap` files. Review the content of the failure for an existing test and then use the
         `yarn test -u` option to update the files. Note that if you are running the test case manually from IntelliJ,
         there is an "update snapshot" link you can click that will use this option for you.
-    1. If you are getting local test failures and unexpected changes to a `.snap` file that seems unrelated to your set
+    1. If you are getting local test failures and unexpected changes to a `.snap` file that seem unrelated to your set
         of changes in your feature branch, be sure to locally run the `yarn install` command from the
-        `/packages/components` directory. There have been a few cases where an update to a package dependency can result
+        `/packages/components` directory. An update to a package dependency can result
         in some DOM changes, and without having those package updates installed locally, you can get conflicting results.
 1. You can run individual jest test cases from IntelliJ directly. When run in debug mode, you can set breakpoints in
     the jest test code but also in the React component code or functions.
     1. When doing enzyme testing, using `wrapper.debug()` can be used to show HTML for debugging purposes.
-    1. Note that under certain circumstances, like a series of snapshots tests, there may be a case where a test will
-        pass when run individually but fail when run with the rest of the related test cases. For these reason it is
-        good to run the full `yarn test` command on the `packages/components` directory before pushing your changes.
+1. Make sure you run the full `yarn test` command in the `packages/components` directory before pushing your changes.
+    1. Under certain circumstances, like a series of snapshots tests, there may be a case where a test will
+        pass when run individually but fail when run with the rest of the related test cases.
 
 ## Mocks
 We have several examples of tests using `xhr-mock` for reading in realistic data that can be captured from the

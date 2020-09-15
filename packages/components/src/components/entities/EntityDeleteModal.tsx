@@ -23,6 +23,7 @@ interface Props {
     onCancel: () => any;
     entityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
+    verb?: string
 }
 
 export const EntityDeleteModal: React.FC<Props> = (props) => {
@@ -103,6 +104,7 @@ export const EntityDeleteModal: React.FC<Props> = (props) => {
                     onConfirm={onConfirm}
                     onCancel={onCancel}
                     entityDataType={entityDataType}
+                    verb={props.verb}
                 />
             )}
             <Progress

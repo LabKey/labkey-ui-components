@@ -164,6 +164,7 @@
 .detail__header--desc {
   color: grey;
   font-style: $font-size-small;
+  white-space: pre-wrap;
 }
 
 .detail__header--name {

@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Issue 40839: Copy theme/scss files to dist instead of compiling down to a single css file
     * Issue 39458: Add handleFileChange prop to FilesListingForm to track dirty state
 
+### version 0.92.2
+*Released*: 14 September 2020
+* Add optional verb property to EntityDeleteConfirmModal
+* Add styling to DetailDisplay to preserve line breaks
+
 ### version 0.92.1
 *Released*: 12 September 2020
 * Allow filtered list of editable grid cell lookup values

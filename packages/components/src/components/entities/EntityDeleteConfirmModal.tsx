@@ -29,6 +29,7 @@ interface Props {
     entityDataType: EntityDataType;
     rowIds?: string[];
     selectionKey?: string;
+    verb?: string
 }
 
 interface State {
@@ -116,6 +117,7 @@ export class EntityDeleteConfirmModal extends React.Component<Props, State> {
                 confirmationData={this.state.confirmationData}
                 onConfirm={onConfirm}
                 onCancel={onCancel}
+                verb={this.props.verb}
                 entityDataType={entityDataType}
             />
         );

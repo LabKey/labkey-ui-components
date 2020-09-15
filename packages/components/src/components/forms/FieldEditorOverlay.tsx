@@ -229,7 +229,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                         <span className={haveValues ? 'field__set' : 'field__unset'}>
                             <span title={'Edit ' + caption} className="field-edit__icon fa fa-pencil-square-o" />
                             {showIconText && (
-                                <span title={fieldValue}>
+                                <span className="detail-display" title={fieldValue}>
                                     {haveValues
                                         ? fieldValue
                                             ? fieldValue
@@ -240,7 +240,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                         </span>
                     </OverlayTrigger>
                 )}
-                {!canUpdate && showValueOnNotAllowed && <span title={fieldValue}>{fieldValue}</span>}
+                {!canUpdate && showValueOnNotAllowed && <span className="detail-display" title={fieldValue}>{fieldValue}</span>}
             </>
         );
     }

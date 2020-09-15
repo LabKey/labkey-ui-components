@@ -56,6 +56,10 @@
   padding-left: 5px;
 }
 
+.detail-display {
+    white-space: pre-wrap;
+}
+
 .component-detail--child {
   position: absolute;
   width: 5%;
@@ -160,6 +164,7 @@
 .detail__header--desc {
   color: grey;
   font-style: $font-size-small;
+  white-space: pre-wrap;
 }
 
 .detail__header--name {

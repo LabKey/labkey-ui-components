@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.94.0
+*Released*: 16 September 2020
+* Add getDisambiguatedSelectInputOptions util
+
 ### version 0.93.0
 *Released*: 16 September 2020
 * Item 7840: Misc grid and detail form value styling fixes for 20.10

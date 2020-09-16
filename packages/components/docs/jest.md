@@ -11,9 +11,17 @@ testing) can help us to get the full test coverage that we need for LabKey featu
 
 With how quickly jest tests can run in comparison to Selenium tests and how much easier they are to maintain, it is
 good to make an automated test plan for your feature / story which will get us the coverage we want in the quickest
-turn around time possible. One good example of where a Selenium test is preffered over a jest test is when one component
+turn around time possible. One good example of where a Selenium test is preferred over a jest test is when one component
 can affect another component in the application (i.e. based on state/data stored in the database that is changed by
 one component and shown in another).
+
+In order to understand what scenarios to cover in writing unit tests for a React component, consider the set of
+meaningfully different combinations of props and state that will affect the composition of the component, as well as
+what actions within the component will affect its state. For example, rather than attempting to write a unit test that
+checks whether filling out a form and clicking a button displays a certain modal, you could divide this up into
+individual test cases: check that manipulating the state of the controlled component handling the form populates
+the form fields as desired, check that clicking the button properly mutates the state handling whether or not the modal
+is displayed, check that the correct modal is rendered depending on what props it is given, etc.
 
 We use [enzyme](https://enzymejs.github.io/enzyme/) in many of our jest test cases to test non-rendering functions and
 rendering of components with different sets of parameters.
@@ -25,13 +33,13 @@ rendering of components with different sets of parameters.
     future changes. Note that when fixing a bug, writing a test case that reproduces it can be a good starting place.
 1. Keep as much logic out of your React component as possible and put that code in utility functions or method functions
     for your model objects.
-    1. This allows for much easier function-level unit tests to be written that are separate
-    from the component-level test cases.
+    1. Writing unit tests for functions that have been factored out of a React component is both simpler, and often
+    reduces the complexity of the separate component-level tests.
 1. Use enzyme [shallow rendering](https://enzymejs.github.io/enzyme/docs/api/shallow.html) (via `shallow(...)`)
     if you want to constrain your testing to just the given component (and not any of its child components) and
     [full rendering](https://enzymejs.github.io/enzyme/docs/api/mount.html) (via `mount(...)`) for components that
     interact with DOM APIs or for components wrapped in higher order components.
-    1. Use the `.find()` method to verify that expected DOM elements or child components are included in your rendered
+    1. Use the `.find()` [method](https://enzymejs.github.io/enzyme/docs/api/ShallowWrapper/find.html) to verify that expected DOM elements or child components are included in your rendered
         components wrapper.
     1. Different types of [selectors](https://enzymejs.github.io/enzyme/docs/api/selector.html) can be used to find what
         you are looking for including: css selector, component names, or object properties.
@@ -41,7 +49,7 @@ rendering of components with different sets of parameters.
 1. Use jest [snapshot tests](https://jestjs.io/docs/en/snapshot-testing) for making sure the UI for your component
     doesn't change unexpectedly during development of related features. We recommend that snapshot tests be constrained
     to **small display-only React components**.
-    1. **NOTICE:** our preference is for using `mount()` or `shallow()` with `find()` and other state checks for your components. We have
+    1. **NOTICE:** Our preference is for using `mount()` or `shallow()` with `find()` and other state checks for your components. We have
         seen that those test cases are much easier to maintain and reason about when a test fails / regresses. If you have
         any logic in your component, try using enzyme testing and reserve snapshot testing for those truly display components only.
     1. Using snapshot tests for large nested components can results in very large snapshot files which are hard to

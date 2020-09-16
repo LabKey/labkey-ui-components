@@ -10,27 +10,21 @@ import {
 } from "../..";
 
 interface Props {
-    model: QueryGridModel
-    useSelected: boolean
-    beforeDelete?: () => any
-    afterDelete: () => any
-    afterDeleteFailure: () => any
-    onCancel: () => any
+    afterDelete: () => any;
+    afterDeleteFailure: () => any;
+    numToDelete: number;
+    onCancel: () => any;
+    selectionKey?: string;
+    selectedRowId?: string;
 }
 
 export function AssayRunDeleteModal(props: Props) {
-    const { model, onCancel, afterDelete, afterDeleteFailure, beforeDelete, useSelected } = props;
+    const { afterDelete, afterDeleteFailure, numToDelete, onCancel, selectionKey, selectedRowId } = props;
     const [showProgress, setShowProgress] = useState<boolean>();
-
-    const numToDelete = useSelected ? model.selectedIds.size : 1;
     const noun =  numToDelete === 1 ? ' assay run' : ' assay runs';
 
     function onConfirm() {
         setShowProgress(true);
-        beforeDelete && beforeDelete();
-
-        const selectionKey = useSelected ? model.getId(): undefined;
-        const selectedRowId = useSelected ? undefined : model.getRow(0).getIn(['RowId', 'value']);
         deleteAssayRuns(selectionKey, selectedRowId, true).then((response) => {
             const numRunsCascadeDeleted = response.hasOwnProperty('runIdsCascadeDeleted') ? response.runIdsCascadeDeleted.length : 0;
             const additionalInfo = numRunsCascadeDeleted > 0 ? ' In addition, ' + numRunsCascadeDeleted + ' replaced ' + (numRunsCascadeDeleted === 1 ? 'run was' : 'runs were') + ' also deleted.' : '';

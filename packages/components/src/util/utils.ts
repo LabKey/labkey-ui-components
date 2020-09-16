@@ -582,7 +582,7 @@ export const blurActiveElement = (): void => {
  * @param valueField
  * @param typeField
  */
-export function getDisambiguatedSelectInputOptions(rows: List<any> | { [key: string] : any }, keyField: string, valueField: string, typeField: string) {
+export function getDisambiguatedSelectInputOptions(rows: List<Map<string, any>> | { [key: string] : any }, keyField: string, valueField: string, typeField: string) {
     let options = [], rawOptions = [];
 
     if (Iterable.isIterable(rows)) {

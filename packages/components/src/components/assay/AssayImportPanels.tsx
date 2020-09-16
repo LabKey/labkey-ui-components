@@ -264,7 +264,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
 
     populateAssayRequest(runProperties): Map<string, any> {
         // Need to pre-populate the run properties form with assayRequest if it is present on the URL (see issue 38711)
-        const assayRequest = this.props.location.query.assayRequest;
+        const assayRequest = this.props.location?.query.assayRequest;
 
         if (assayRequest !== undefined) {
             return runProperties.set('assayRequest', assayRequest);

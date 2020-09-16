@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 
 import { MultiValueRenderer } from './MultiValueRenderer';
@@ -21,8 +21,8 @@ import { MultiValueRenderer } from './MultiValueRenderer';
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.
  */
-export class DefaultRenderer extends React.Component<any, any> {
-    render() {
+export class DefaultRenderer extends React.PureComponent<any> {
+    render(): ReactNode {
         const { data } = this.props;
 
         let display = null;
@@ -48,6 +48,7 @@ export class DefaultRenderer extends React.Component<any, any> {
             }
         }
 
+        // Issue 36941: when using the default renderer, add css so that line breaks as preserved
         return <span className="detail-display">{display}</span>;
     }
 }

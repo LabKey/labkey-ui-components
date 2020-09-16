@@ -18,6 +18,7 @@ interface Props {
     handleUpload?: (files: Map<string, File>, cb: () => any) => any;
     handleDelete?: (file: string) => any;
     handleDownload?: (files: Set<string>) => any;
+    handleFileChange?: (cancel: boolean) => any;
     canInsert?: boolean;
     canDelete?: boolean;
     useFilePropertiesEditTrigger?: boolean;
@@ -41,12 +42,6 @@ export class FilesListingForm extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        this.downloadSelectedFiles = this.downloadSelectedFiles.bind(this);
-        this.onFinishUploadFiles = this.onFinishUploadFiles.bind(this);
-        this.toggleUploadSection = this.toggleUploadSection.bind(this);
-        this.toggleFileSelection = this.toggleFileSelection.bind(this);
-        this.uploadAttachedFiles = this.uploadAttachedFiles.bind(this);
-
         this.state = {
             selectedFiles: Set<string>(),
             confirmDeletionSet: Set<string>(),
@@ -54,37 +49,36 @@ export class FilesListingForm extends React.Component<Props, State> {
         };
     }
 
-    toggleUploadSection() {
+    toggleUploadSection = () => {
         this.setState({ showFileUploadPanel: !this.state.showFileUploadPanel });
-    }
+        if (this.props.handleFileChange) this.props.handleFileChange(true);
+    };
 
-    toggleFileSelection(event) {
+    toggleFileSelection = event => {
         const target = event.target;
         const name = target.name;
         this.setState({
             selectedFiles: target.checked ? this.state.selectedFiles.add(name) : this.state.selectedFiles.delete(name),
         });
-    }
+    };
 
-    onFinishUploadFiles() {
-        const { onUploadFiles } = this.props;
-        if (onUploadFiles) onUploadFiles();
+    onFinishUploadFiles = () => {
+        if (this.props.onUploadFiles) this.props.onUploadFiles();
         this.toggleUploadSection();
-    }
+    };
 
-    uploadAttachedFiles(files: Map<string, File>) {
-        const { handleUpload, onSubmit } = this.props;
+    uploadAttachedFiles = (files: Map<string, File>) => {
+        if (this.props.onSubmit) this.props.onSubmit();
+        if (this.props.handleUpload) this.props.handleUpload(files, this.onFinishUploadFiles);
+    };
 
-        if (onSubmit) onSubmit();
+    downloadSelectedFiles = () => {
+        if (this.props.handleDownload) this.props.handleDownload(this.state.selectedFiles);
+    };
 
-        if (handleUpload) handleUpload(files, this.onFinishUploadFiles);
-    }
-
-    downloadSelectedFiles() {
-        const { handleDownload } = this.props;
-
-        if (handleDownload) handleDownload(this.state.selectedFiles);
-    }
+    handleFileChange = () => {
+        if (this.props.handleFileChange) this.props.handleFileChange(false);
+    };
 
     renderButtons() {
         const { addFileText, canInsert, files, readOnlyFiles } = this.props;
@@ -156,6 +150,8 @@ export class FilesListingForm extends React.Component<Props, State> {
                         allowMultiple={true}
                         onCancel={this.toggleUploadSection}
                         onSubmit={this.uploadAttachedFiles}
+                        onFileChange={this.handleFileChange}
+                        onFileRemoval={this.handleFileChange}
                         showButtons={true}
                         showLabel={false}
                         showProgressBar={true}

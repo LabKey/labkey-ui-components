@@ -47,6 +47,7 @@ import {
     debounce,
     devToolsActive,
     generateId,
+    getDisambiguatedSelectInputOptions,
     getSchemaQuery,
     hasAllPermissions,
     naturalSort,
@@ -379,6 +380,7 @@ import { TimelineView } from './components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
 import * as App from './internal/app';
 import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './QueryModel/utils';
+import { withRouteLeave, RouteLeaveProps } from './util/RouteLeave';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -696,6 +698,7 @@ export {
     // util functions (TODO: need to see if all of these are still being used outside of this package)
     datePlaceholder,
     getDateFormat,
+    getDisambiguatedSelectInputOptions,
     getUnFormattedNumber,
     formatDate,
     formatDateTime,
@@ -739,6 +742,8 @@ export {
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,
+    withRouteLeave,
+    RouteLeaveProps,
     SchemaListing,
     SchemaListingPage,
     QueriesListing,

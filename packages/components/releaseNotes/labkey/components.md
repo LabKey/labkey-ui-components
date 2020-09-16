@@ -5,6 +5,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Allow for custom root label for FileTree
 
+### version 0.94.0
+*Released*: 16 September 2020
+* Add getDisambiguatedSelectInputOptions util
+
+### version 0.93.0
+*Released*: 16 September 2020
+* Item 7840: Misc grid and detail form value styling fixes for 20.10
+    * Issue 36941: Query Grid and details component multiline field does not render text as multi-line
+    * Issue 40839: Copy theme/scss files to dist instead of compiling down to a single css file
+    * Issue 39458: Add handleFileChange prop to FilesListingForm to track dirty state
+    * RouteLeave HOC to be used in various app pages so they don't have to implement it themselves anymore
+
 ### version 0.92.2
 *Released*: 14 September 2020
 * Add optional verb property to EntityDeleteConfirmModal

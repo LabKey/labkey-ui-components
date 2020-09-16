@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.92.2-fb-gridFixes2010.1",
+  "version": "0.93.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

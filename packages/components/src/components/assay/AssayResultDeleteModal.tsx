@@ -3,12 +3,12 @@ import { useState } from 'react'
 import {
     AssayResultDeleteConfirmModal,
     ConfirmModal,
-    deleteRows,
-    Progress,
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
-    SchemaQuery,
-} from '@labkey/components';
+    deleteRows,
+    Progress,
+    SchemaQuery
+} from "../..";
 
 interface Props {
     afterDelete: () => any;

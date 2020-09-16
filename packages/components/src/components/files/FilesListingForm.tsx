@@ -54,7 +54,7 @@ export class FilesListingForm extends React.Component<Props, State> {
         if (this.props.handleFileChange) this.props.handleFileChange(true);
     };
 
-    toggleFileSelection = (event) => {
+    toggleFileSelection = event => {
         const target = event.target;
         const name = target.name;
         this.setState({

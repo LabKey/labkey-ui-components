@@ -149,19 +149,22 @@ export class TimelineView extends React.Component<Props, any> {
         );
     }
 
-    renderComment(comment: string) : React.ReactNode {
-        if (!comment)
-            return null;
+    renderComment(comment: string): React.ReactNode {
+        if (!comment) return null;
 
-        const icon = <i className="timeline-comments-icon fa fa-comments"/>;
+        const icon = <i className="timeline-comments-icon fa fa-comments" />;
         return (
             <LabelHelpTip
-                title={"Comment"}
-                body={() => {return <div className="detail-display">{comment}</div>}}
+                title="Comment"
+                body={() => {
+                    return <div className="detail-display">{comment}</div>;
+                }}
                 placement="bottom"
-                iconComponent ={() => {return icon}}
+                iconComponent={() => {
+                    return icon;
+                }}
             />
-        )
+        );
     }
 
     renderDetailCol(summary: string, user: any, entity: any, comment: string) {
@@ -173,7 +176,9 @@ export class TimelineView extends React.Component<Props, any> {
                     {entity != null && <span> - </span>}
                     {entity != null && getEventDataValueDisplay(entity)}
                 </div>
-                <div>{getEventDataValueDisplay(user, showUserLinks)} {this.renderComment(comment)}</div>
+                <div>
+                    {getEventDataValueDisplay(user, showUserLinks)} {this.renderComment(comment)}
+                </div>
             </td>
         );
     }

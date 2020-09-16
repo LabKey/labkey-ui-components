@@ -1,7 +1,9 @@
 import React from 'react';
 import { WithRouterProps } from 'react-router';
-import { BeforeUnload } from './BeforeUnload';
+
 import { confirmLeaveWhenDirty } from '../components/navigation/utils';
+
+import { BeforeUnload } from './BeforeUnload';
 
 interface RouteLeaveInjectedProps {
     setDirty: (dirty: boolean) => void;
@@ -22,7 +24,7 @@ export const withRouteLeave = (Component: React.ComponentType) => {
             this.props.router.setRouteLeaveHook(this.props.routes[this.props.routes.length - 1], this.onRouteLeave);
         }
 
-        onRouteLeave = (event) => {
+        onRouteLeave = event => {
             if (this._dirty) {
                 event.returnValue = true; // this is for the page reload case
                 return confirmLeaveWhenDirty(this.props.location);

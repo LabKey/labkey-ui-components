@@ -12,7 +12,7 @@ describe('DefaultRenderer', () => {
     });
 
     test('string', () => {
-        const component = <DefaultRenderer data={'test string'} />;
+        const component = <DefaultRenderer data="test string" />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
@@ -31,25 +31,27 @@ describe('DefaultRenderer', () => {
     // });
 
     test('value', () => {
-        const component = <DefaultRenderer data={fromJS({value: 1})} />;
+        const component = <DefaultRenderer data={fromJS({ value: 1 })} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('displayValue', () => {
-        const component = <DefaultRenderer data={fromJS({value: 1, displayValue: 'Value 1'})} />;
+        const component = <DefaultRenderer data={fromJS({ value: 1, displayValue: 'Value 1' })} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('formattedValue', () => {
-        const component = <DefaultRenderer data={fromJS({value: 1, displayValue: 'Value 1', formattedValue: 'Value 1.00'})} />;
+        const component = (
+            <DefaultRenderer data={fromJS({ value: 1, displayValue: 'Value 1', formattedValue: 'Value 1.00' })} />
+        );
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('url', () => {
-        const component = <DefaultRenderer data={fromJS({value: 1, displayValue: 'Value 1', url: 'labkey.com'})} />;
+        const component = <DefaultRenderer data={fromJS({ value: 1, displayValue: 'Value 1', url: 'labkey.com' })} />;
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });

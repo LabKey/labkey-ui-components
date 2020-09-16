@@ -61,7 +61,7 @@ function getWebDavUrl(containerPath: string, directory?: string, createIntermedi
         (!skipAtFiles ? '/' + encodeURIComponent('@files') : '');
 
     if (directory) {
-        let encodedDirName = encodeURIComponent(directory).replace(/%2F/g, "/");
+        const encodedDirName = encodeURIComponent(directory).replace(/%2F/g, '/');
         url += '/' + encodedDirName;
     }
 
@@ -77,7 +77,7 @@ export function getWebDavFiles(
     directory?: string,
     includeDirectories?: boolean,
     skipAtFiles?: boolean,
-    alternateFilterCondition?: (file: any) => boolean,
+    alternateFilterCondition?: (file: any) => boolean
 ): Promise<Map<string, any>> {
     return new Promise((resolve, reject) => {
         const url = getWebDavUrl(containerPath, directory, false, skipAtFiles);
@@ -88,14 +88,16 @@ export function getWebDavFiles(
             success: Utils.getCallbackWrapper(response => {
                 // Filter directories and create webdav files
                 const filteredFiles = response.files.reduce((filtered, file) => {
-                    const filterCondition = alternateFilterCondition ? alternateFilterCondition(file) : (includeDirectories || !file.collection);
+                    const filterCondition = alternateFilterCondition
+                        ? alternateFilterCondition(file)
+                        : includeDirectories || !file.collection;
                     if (filterCondition) {
                         return filtered.set(file.text, WebDavFile.create(file));
                     } else {
                         return filtered;
                     }
                 }, Map<string, WebDavFile>());
-                const filterFilesAndPerms = Map({files: filteredFiles, permissions: response.permissions});
+                const filterFilesAndPerms = Map({ files: filteredFiles, permissions: response.permissions });
                 resolve(filterFilesAndPerms);
             }),
             failure: Utils.getCallbackWrapper(

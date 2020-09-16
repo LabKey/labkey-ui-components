@@ -515,16 +515,14 @@ export function getUpdatedDataFromGrid(
                 const originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
 
                 // Convert empty cell to null
-                if (value === '')
-                    value = null;
+                if (value === '') value = null;
 
                 // EditableGrid passes in strings for single values. Attempt this conversion here to help check for
                 // updated values. This is not the final type check.
-                if (typeof originalValue === "number" || typeof originalValue === "boolean") {
+                if (typeof originalValue === 'number' || typeof originalValue === 'boolean') {
                     try {
                         value = JSON.parse(value);
-                    }
-                    catch (e) {
+                    } catch (e) {
                         // Incorrect types are handled by API and user feedback created from that response. Don't need
                         // to handle that here.
                     }
@@ -582,38 +580,50 @@ export const blurActiveElement = (): void => {
  * @param valueField
  * @param typeField
  */
-export function getDisambiguatedSelectInputOptions(rows: List<Map<string, any>> | { [key: string] : any }, keyField: string, valueField: string, typeField: string) {
-    let options = [], rawOptions = [];
+export function getDisambiguatedSelectInputOptions(
+    rows: List<Map<string, any>> | { [key: string]: any },
+    keyField: string,
+    valueField: string,
+    typeField: string
+) {
+    const options = [],
+        rawOptions = [];
 
     if (Iterable.isIterable(rows)) {
         rows.forEach(row => {
-            rawOptions.push({value: row.getIn([keyField, 'value']), label: row.getIn([valueField, 'value']), type: row.getIn([typeField, 'value'])});
+            rawOptions.push({
+                value: row.getIn([keyField, 'value']),
+                label: row.getIn([valueField, 'value']),
+                type: row.getIn([typeField, 'value']),
+            });
         });
-    }
-    else {
-        Object.keys(rows).forEach((row) => {
+    } else {
+        Object.keys(rows).forEach(row => {
             const data = rows[row];
-            rawOptions.push({value: data[keyField].value, label: data[valueField].value, type: data[typeField].value});
-        })
+            rawOptions.push({
+                value: data[keyField].value,
+                label: data[valueField].value,
+                type: data[typeField].value,
+            });
+        });
     }
 
     rawOptions.sort((a, b) => {
         return a.label.localeCompare(b.label);
-    })
+    });
 
-    let duplicateValues = [];
+    const duplicateValues = [];
     for (let i = 0; i < rawOptions.length - 1; i++) {
         if (rawOptions[i + 1].label == rawOptions[i].label) {
-            if (duplicateValues.indexOf(rawOptions[i].label) === -1)
-                duplicateValues.push(rawOptions[i].label);
+            if (duplicateValues.indexOf(rawOptions[i].label) === -1) duplicateValues.push(rawOptions[i].label);
         }
     }
 
     rawOptions.forEach(option => {
-        const label = duplicateValues.indexOf(option.label) > -1 ? option.label + " (" + option.type + ")" : option.label;
-        options.push({value: option.value, label});
-    })
+        const label =
+            duplicateValues.indexOf(option.label) > -1 ? option.label + ' (' + option.type + ')' : option.label;
+        options.push({ value: option.value, label });
+    });
 
     return options;
 }
-

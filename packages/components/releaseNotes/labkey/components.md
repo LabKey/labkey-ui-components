@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.94.0
+*Released*: 16 September 2020
 * Add getDisambiguatedSelectInputOptions util
 
 ### version 0.93.0

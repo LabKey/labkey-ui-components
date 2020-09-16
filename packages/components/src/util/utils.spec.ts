@@ -794,7 +794,7 @@ describe('getUpdatedDataFromGrid', () => {
             Name: 'S-20190516-9042',
             Other: 'other1',
             Bool: true,
-            Int: 0
+            Int: 0,
         },
         447: {
             RowId: 447,
@@ -804,7 +804,7 @@ describe('getUpdatedDataFromGrid', () => {
             Name: 'S-20190516-4622',
             Other: 'other2',
             Bool: false,
-            Int: 7
+            Int: 7,
         },
         446: {
             RowId: 446,
@@ -814,7 +814,7 @@ describe('getUpdatedDataFromGrid', () => {
             Name: 'S-20190516-2368',
             Other: 'other3',
             Bool: true,
-            Int: 6
+            Int: 6,
         },
         445: {
             RowId: 445,
@@ -824,7 +824,7 @@ describe('getUpdatedDataFromGrid', () => {
             Name: 'S-20190516-9512',
             Other: null,
             Bool: false,
-            Int: 5
+            Int: 5,
         },
     });
     test('no edited rows', () => {
@@ -844,7 +844,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-9042',
                     Other: 'other1',
                     Bool: true,
-                    Int: 0
+                    Int: 0,
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -854,7 +854,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-4622',
                     Other: 'other2',
                     Bool: false,
-                    Int: '7'
+                    Int: '7',
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -864,7 +864,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-2368',
                     Other: 'other3',
                     Bool: true,
-                    Int: '6'
+                    Int: '6',
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -874,7 +874,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-9512',
                     Other: null,
                     Bool: false,
-                    Int: 5
+                    Int: 5,
                 }),
             ],
             'RowId'
@@ -894,7 +894,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-9042',
                     Other: 'other1',
                     Bool: undefined,
-                    Int: undefined
+                    Int: undefined,
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -904,7 +904,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-4622',
                     Other: 'other2',
                     Bool: undefined,
-                    Int: undefined
+                    Int: undefined,
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -914,7 +914,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-2368',
                     Other: 'other3',
                     Bool: true,
-                    Int: 6
+                    Int: 6,
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -924,7 +924,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-9512',
                     Other: null,
                     Bool: false,
-                    Int: 5
+                    Int: 5,
                 }),
             ],
             'RowId'
@@ -956,7 +956,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-9042',
                     Other: 'other1',
                     Bool: '',
-                    Int: ''
+                    Int: '',
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -966,7 +966,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-4622',
                     Other: 'other2',
                     Bool: '',
-                    Int: '0'
+                    Int: '0',
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -976,7 +976,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-2368',
                     Other: 'other3',
                     Bool: false,
-                    Int: 66
+                    Int: 66,
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -986,7 +986,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Name: 'S-20190516-9512',
                     Other: null,
                     Bool: true,
-                    Int: 5
+                    Int: 5,
                 }),
             ],
             'RowId'
@@ -1137,77 +1137,89 @@ describe('similaritySortFactory', () => {
     });
 });
 
-const sourceOptions = [{
-    "value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6",
-    "label": "Source-1 (sourceType1)"
-}, {
-    "value": "urn:lsid:labkey.com:Data.Folder-8:3d55fee0-d81c-1038-b2c8-93ec7daaff14",
-    "label": "Source-1 (sourceType2)"
-}, {
-    "value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0c4-c884-1038-ba3d-f653126805a6",
-    "label": "Source-2"
-}];
+const sourceOptions = [
+    {
+        value: 'urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6',
+        label: 'Source-1 (sourceType1)',
+    },
+    {
+        value: 'urn:lsid:labkey.com:Data.Folder-8:3d55fee0-d81c-1038-b2c8-93ec7daaff14',
+        label: 'Source-1 (sourceType2)',
+    },
+    {
+        value: 'urn:lsid:labkey.com:Data.Folder-8:81c1e0c4-c884-1038-ba3d-f653126805a6',
+        label: 'Source-2',
+    },
+];
 
 describe('getDisambiguatedSelectInputOptions', () => {
     test('from QueryGridModel data', () => {
-        const rows = [{
-            "links": null,
-            "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6"},
-            "SourceType": {"url": "#/rd/dataclass/sourceType1", "value": "sourceType1"},
-            "rowId": {"value": 57},
-            "Name": {"value": "Source-1"}
-        }, {
-            "links": null,
-            "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0c4-c884-1038-ba3d-f653126805a6"},
-            "SourceType": {"url": "#/rd/dataclass/sourceType1", "value": "sourceType1"},
-            "rowId": {"value": 58},
-            "Name": {"value": "Source-2"}
-        }, {
-            "links": null,
-            "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:3d55fee0-d81c-1038-b2c8-93ec7daaff14"},
-            "SourceType": {"url": "#/rd/dataclass/sourceType2", "value": "sourceType2"},
-            "rowId": {"value": 65},
-            "Name": {"value": "Source-1"}
-        }];
+        const rows = [
+            {
+                links: null,
+                lsid: { value: 'urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6' },
+                SourceType: { url: '#/rd/dataclass/sourceType1', value: 'sourceType1' },
+                rowId: { value: 57 },
+                Name: { value: 'Source-1' },
+            },
+            {
+                links: null,
+                lsid: { value: 'urn:lsid:labkey.com:Data.Folder-8:81c1e0c4-c884-1038-ba3d-f653126805a6' },
+                SourceType: { url: '#/rd/dataclass/sourceType1', value: 'sourceType1' },
+                rowId: { value: 58 },
+                Name: { value: 'Source-2' },
+            },
+            {
+                links: null,
+                lsid: { value: 'urn:lsid:labkey.com:Data.Folder-8:3d55fee0-d81c-1038-b2c8-93ec7daaff14' },
+                SourceType: { url: '#/rd/dataclass/sourceType2', value: 'sourceType2' },
+                rowId: { value: 65 },
+                Name: { value: 'Source-1' },
+            },
+        ];
 
-        expect(getDisambiguatedSelectInputOptions(fromJS(rows), 'lsid', 'Name', 'SourceType')).toEqual(expect.arrayContaining([
-            expect.objectContaining(sourceOptions[0]),
-            expect.objectContaining(sourceOptions[1]),
-            expect.objectContaining(sourceOptions[2])
-        ]));
+        expect(getDisambiguatedSelectInputOptions(fromJS(rows), 'lsid', 'Name', 'SourceType')).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining(sourceOptions[0]),
+                expect.objectContaining(sourceOptions[1]),
+                expect.objectContaining(sourceOptions[2]),
+            ])
+        );
     });
 
     test('from selectRows result', () => {
         const rows = {
-            "0": {
-                "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6"},
-                "SourceType": {
-                    "value": "sourceType1"
+            '0': {
+                lsid: { value: 'urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6' },
+                SourceType: {
+                    value: 'sourceType1',
                 },
-                "rowId": {"value": 57},
-                "Name": {"value": "Source-1"}
+                rowId: { value: 57 },
+                Name: { value: 'Source-1' },
             },
-            "1": {
-                "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:81c1e0c4-c884-1038-ba3d-f653126805a6"},
-                "SourceType": {
-                    "value": "sourceType1"
+            '1': {
+                lsid: { value: 'urn:lsid:labkey.com:Data.Folder-8:81c1e0c4-c884-1038-ba3d-f653126805a6' },
+                SourceType: {
+                    value: 'sourceType1',
                 },
-                "rowId": {"value": 58},
-                "Name": {"value": "Source-2"}
+                rowId: { value: 58 },
+                Name: { value: 'Source-2' },
             },
-            "2": {
-                "lsid": {"value": "urn:lsid:labkey.com:Data.Folder-8:3d55fee0-d81c-1038-b2c8-93ec7daaff14"},
-                "SourceType": {
-                    "value": "sourceType2"
+            '2': {
+                lsid: { value: 'urn:lsid:labkey.com:Data.Folder-8:3d55fee0-d81c-1038-b2c8-93ec7daaff14' },
+                SourceType: {
+                    value: 'sourceType2',
                 },
-                "rowId": {"value": 65},
-                "Name": {"value": "Source-1"}
-            }
-        }
-        expect(getDisambiguatedSelectInputOptions(rows, 'lsid', 'Name', 'SourceType')).toEqual(expect.arrayContaining([
-            expect.objectContaining(sourceOptions[0]),
-            expect.objectContaining(sourceOptions[1]),
-            expect.objectContaining(sourceOptions[2])
-        ]));
+                rowId: { value: 65 },
+                Name: { value: 'Source-1' },
+            },
+        };
+        expect(getDisambiguatedSelectInputOptions(rows, 'lsid', 'Name', 'SourceType')).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining(sourceOptions[0]),
+                expect.objectContaining(sourceOptions[1]),
+                expect.objectContaining(sourceOptions[2]),
+            ])
+        );
     });
 });

@@ -380,6 +380,7 @@ import { TimelineView } from './components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
 import * as App from './internal/app';
 import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './QueryModel/utils';
+import { withRouteLeave, RouteLeaveProps } from './util/RouteLeave';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -741,6 +742,8 @@ export {
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,
+    withRouteLeave,
+    RouteLeaveProps,
     SchemaListing,
     SchemaListingPage,
     QueriesListing,

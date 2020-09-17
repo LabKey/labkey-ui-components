@@ -47,6 +47,7 @@ import {
     debounce,
     devToolsActive,
     generateId,
+    getDisambiguatedSelectInputOptions,
     getSchemaQuery,
     hasAllPermissions,
     naturalSort,
@@ -697,6 +698,7 @@ export {
     // util functions (TODO: need to see if all of these are still being used outside of this package)
     datePlaceholder,
     getDateFormat,
+    getDisambiguatedSelectInputOptions,
     getUnFormattedNumber,
     formatDate,
     formatDateTime,

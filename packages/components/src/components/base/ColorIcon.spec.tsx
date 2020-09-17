@@ -51,5 +51,7 @@ describe('ColorIcon', () => {
         color = '#ffffff';
         wrapper.setProps({ asSquare: true, value: color });
         verifyIconDisplay(wrapper, color, label);
+
+        wrapper.unmount();
     });
 });

@@ -60,9 +60,10 @@ For doing development of LabKey UI Components, you should be familiar with the f
 * [Bootstrap](https://getbootstrap.com/docs/3.4/) - for consistent, responsive styling
 * [React-Bootstrap](https://5c507d49471426000887a6a7--react-bootstrap.netlify.com/) - bootstrap styling for react components
 * [Typescript](https://www.typescriptlang.org/docs/home.html) - for typing of javascript objects
-* [Jest](https://jestjs.io/docs/en/getting-started.html) - For unit testing of components
-* [Enzyme](https://airbnb.io/enzyme/) - Testing utility library
-* [Storybook](https://storybook.js.org/) - For use in manual testing and exploration of features outside of an application
+* [Immer](https://immerjs.github.io/immer/docs/introduction) - for immutability of normal JavaScript objects, arrays, Sets, and Maps.
+* [Jest](https://jestjs.io/docs/en/getting-started.html) - for unit testing of components
+* [Enzyme](https://airbnb.io/enzyme/) - testing utility library
+* [Storybook](https://storybook.js.org/) - for use in manual testing and exploration of features outside of an application
 
 Note that we are currently not using the latest versions of Bootstrap, React-Bootstrap and Typescript because there
 have been some significant changes between our current version and the latest version of these libraries, so when looking for docs,
@@ -76,6 +77,9 @@ You should do pretty well to follow the styles and practices currently represent
 some guides to best practices for doing front-end development:
 * [Alan's Guidelines](https://docs.google.com/presentation/d/1hW9gYbWhW6spr7uhAjpKBNl3hWPXUOPbmlwD6UkYWE8/edit?pli=1#slide=id.g5627a1f538_0_120)
 * [Airbnb Style Guide](https://github.com/airbnb/javascript)
+* [Immer for immutability](./docs/immer.md)
+* [QueryModel API](./docs/QueryModel.md)
+* [Jest Testing Recommendations](./docs/jest.md)
 
 Generally, when doing development, you should:
 
@@ -94,15 +98,11 @@ Note that the version number within the `package.json` file will be set while ru
  more on version numbering.
 * Update the `releaseNotes/labkey/components.md` file to document what is changing in this version. Note that the final release
 version number and date will be set just before you merge your feature branch.
-* Write [jest](https://jestjs.io/docs/en/getting-started.html) tests together with [enzyme](https://airbnb.io/enzyme/) to test
-non-rendering functions and rendering of components with different sets of parameters.  Jest
-tests should be preferred over other types of tests since they are quick to run and small enough to be easily understood,
-but they should generally not try to do a lot of interaction with the components. You can, however, validate that callbacks
-passed to a component are called when expected.  See existing `.spec.ts` files for examples.
-* Write jest tests that use actual server responses where needed.  We have several examples of tests using `xhr-mock`
-for reading in realistic data that can be captured from the server.
+* Write [jest](https://jestjs.io/docs/en/getting-started.html) tests for your React components, models, and utility functions.
+    * See additional documentation on [Jest testing recommendations](./docs/jest.md).
 * Write or update [storybook stories](#storybook) that illustrate the functionality.  This is the easiest way to do the bulk of manual
-testing and iteration on display updates.  Again, we have several examples of stories that use actual data captured
+testing and iteration on display updates.
+    * We have several examples of stories that use actual data captured
 from the server for various Ajax calls that are required.
 * Test within the application, using a published alpha package version, once display and functionality are as expected from within storybook.
 

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/themes",
-  "version": "0.0.0",
+  "version": "0.0.0-fb-labkey-themes.0",
   "description": "Themes that come bundled with LabKey Server",
   "files": [
     "dist/"
@@ -25,8 +25,7 @@
     "registry": "https://artifactory.labkey.com/artifactory/api/npm/libs-client"
   },
   "homepage": "https://github.com/LabKey/labkey-ui-components#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "bootstrap-sass": "3.4.1",
     "css-loader": "4.3.0",
@@ -39,8 +38,8 @@
     "nps-utils": "1.7.0",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "postcss-loader": "3.0.0",
-    "rimraf": "3.0.2",
     "resolve-url-loader": "3.1.1",
+    "rimraf": "3.0.2",
     "sass-loader": "10.0.2",
     "uglifyjs-webpack-plugin": "2.2.0",
     "url-loader": "4.1.0",

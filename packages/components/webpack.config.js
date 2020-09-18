@@ -4,7 +4,6 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -16,14 +15,12 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
                     'css-loader'
                 ]
             },
             {
                 test: /\.scss$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
@@ -71,15 +68,21 @@ module.exports = {
         libraryTarget: 'umd'
     },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: 'components.css'
-        }),
         new CopyWebpackPlugin({
             patterns: [
                 {
                     // copy static scss files into the dist dir to be used by LabKey module apps
                     from: 'src/internal/app/scss',
                     to: 'assets/scss'
+                }
+            ]
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    // copy theme scss files into the dist dir to be used by LabKey module apps
+                    from: 'src/theme',
+                    to: 'assets/scss/theme'
                 }
             ]
         })

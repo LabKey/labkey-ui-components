@@ -189,6 +189,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         allowMultiSelect: true,
         useFileIconCls: false,
         emptyDirectoryText: 'No Files Found',
+        defaultRootName: 'root'
     };
 
     constructor(props: FileTreeProps) {
@@ -221,9 +222,8 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                         }];
                     }
 
-                    const rootName = defaultRootName ? defaultRootName : 'root';
                     loadedData = {
-                        name: rootName,
+                        name: defaultRootName,
                         id: DEFAULT_ROOT_PREFIX, // Special id
                         children: data,
                         toggled: true,

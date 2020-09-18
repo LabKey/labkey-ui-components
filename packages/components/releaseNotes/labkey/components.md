@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Allow for custom root label for FileTree
+
 ### version 0.94.0
 *Released*: 16 September 2020
 * Add getDisambiguatedSelectInputOptions util

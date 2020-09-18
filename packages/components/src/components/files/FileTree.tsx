@@ -171,6 +171,7 @@ interface FileTreeProps {
     useFileIconCls?: boolean;
     emptyDirectoryText?: string;
     getRootPermissions?: (directory?: string) => Promise<any>
+    defaultRootName?: string;
 }
 
 interface FileTreeState {
@@ -203,7 +204,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     }
 
     loadData = (permissions = null) => {
-        const { loadData } = this.props;
+        const { loadData, defaultRootName } = this.props;
 
         loadData()
             .then(data => {
@@ -220,8 +221,9 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
                         }];
                     }
 
+                    const rootName = defaultRootName ? defaultRootName : 'root';
                     loadedData = {
-                        name: 'root',
+                        name: rootName,
                         id: DEFAULT_ROOT_PREFIX, // Special id
                         children: data,
                         toggled: true,

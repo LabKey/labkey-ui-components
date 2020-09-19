@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.94.1
+*Released*: TBD September 2020
+* Item 7767: Make getAuditQueries non global in AuditQueriesListingPage so that id does not check isSMEnabled and isFMEnabled for all apps consuming ui-components
+
 ### version 0.94.0
 *Released*: 16 September 2020
 * Add getDisambiguatedSelectInputOptions util

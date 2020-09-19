@@ -28,14 +28,13 @@ import { AuditDetailsModel } from './models';
 import { getAuditDetail } from './actions';
 import { AuditQuery, getAuditQueries } from './utils';
 
-const AUDIT_QUERIES = getAuditQueries();
-
 interface Props {
     params: any;
     user: User;
 }
 
 interface State {
+    auditQueries: AuditQuery[];
     selected: string;
     selectedRowId: number;
     detail?: AuditDetailsModel;
@@ -47,6 +46,7 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
         super(props);
 
         this.state = {
+            auditQueries: getAuditQueries(),
             selected: props.params.query,
             selectedRowId: undefined,
         };
@@ -132,7 +132,7 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
     };
 
     get selectedQuery(): AuditQuery {
-        return AUDIT_QUERIES.find(q => q.value === this.state.selected);
+        return this.state.auditQueries.find(q => q.value === this.state.selected);
     }
 
     get containerFilter(): Query.ContainerFilter {
@@ -252,7 +252,7 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
                     valueKey="value"
                     labelKey="label"
                     onChange={this.onSelectionChange}
-                    options={AUDIT_QUERIES}
+                    options={this.state.auditQueries}
                 />
                 {this.hasDetailView() ? this.renderMasterDetailGrid() : this.renderSingleGrid()}
             </Page>

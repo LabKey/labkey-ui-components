@@ -1,6 +1,6 @@
 {
   "name": "@labkey/themes",
-  "version": "0.0.0-fb-labkey-themes.0",
+  "version": "0.0.0-fb-labkey-themes.1",
   "description": "Themes that come bundled with LabKey Server",
   "files": [
     "dist/"

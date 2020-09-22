@@ -19,7 +19,7 @@ import { Filter, Security, PermissionTypes, User, Utils } from '@labkey/api';
 
 import { getQueryDetails, ISelectRowsResult, searchRows, selectRows } from '../../query/api';
 
-import { getUsers, setUsers } from '../../../global';
+import { getUsers, setUsers } from '../../global';
 import { naturalSort, similaritySortFactory } from '../../util/utils';
 import { QueryInfo } from '../base/models/QueryInfo';
 

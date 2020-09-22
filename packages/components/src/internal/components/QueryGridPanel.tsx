@@ -20,8 +20,8 @@ import classNames from 'classnames';
 
 import { Utils } from '@labkey/api';
 
-import { gridInit } from '../../actions';
-import { getQueryGridModel } from '../../global';
+import { gridInit } from '../actions';
+import { getQueryGridModel } from '../global';
 
 import { QueryGrid } from './QueryGrid';
 import { QueryGridBar, QueryGridBarButtons } from './gridbar/QueryGridBar';
@@ -30,7 +30,7 @@ import '../../theme/index.scss';
 import { QueryGridModel } from './base/models/model';
 import { LoadingSpinner } from './base/LoadingSpinner';
 import { Alert } from './base/Alert';
-import { EXPORT_TYPES } from '../../constants';
+import { EXPORT_TYPES } from '../constants';
 
 interface Props {
     model: QueryGridModel | List<QueryGridModel>;

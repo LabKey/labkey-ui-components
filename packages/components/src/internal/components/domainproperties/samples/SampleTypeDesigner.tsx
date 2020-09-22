@@ -20,7 +20,7 @@ import { IParentOption } from '../../entities/models';
 
 import { addDomainField, getDomainPanelStatus } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
-import { SAMPLE_SET_DISPLAY_TEXT } from '../../../../constants';
+import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
 import { IParentAlias, SampleTypeModel } from './models';

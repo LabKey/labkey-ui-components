@@ -25,8 +25,8 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { SVGIcon } from '../base/SVGIcon';
 import { SchemaQuery } from '../base/models/model';
 import { Alert } from '../base/Alert';
-import { DataViewInfo, IDataViewInfo } from '../../../models';
-import { DataViewInfoTypes, GRID_REPORTS, VISUALIZATION_REPORTS } from '../../../constants';
+import { DataViewInfo, IDataViewInfo } from '../../models';
+import { DataViewInfoTypes, GRID_REPORTS, VISUALIZATION_REPORTS } from '../../constants';
 
 const ICONS = {
     [DataViewInfoTypes.AutomaticPlot]: 'xy_line',

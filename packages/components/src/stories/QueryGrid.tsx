@@ -18,8 +18,8 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 
 import { QueryGrid } from '../internal/components/QueryGrid';
-import { updateQueryGridModel } from '../global';
-import { getStateQueryGridModel } from '../models';
+import { updateQueryGridModel } from '../internal/global';
+import { getStateQueryGridModel } from '../internal/models';
 import './stories.scss';
 import { QueryGridModel, SchemaQuery } from '../internal/components/base/models/model';
 

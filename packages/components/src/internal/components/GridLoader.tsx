@@ -17,7 +17,7 @@ import React from 'react';
 import { fromJS, List } from 'immutable';
 
 import { selectRows } from '../query/api';
-import { getSelected } from '../../actions';
+import { getSelected } from '../actions';
 
 import { IGridLoader, IGridResponse, IGridSelectionResponse, QueryGridModel } from './base/models/model';
 

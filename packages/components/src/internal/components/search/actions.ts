@@ -2,7 +2,7 @@ import { List, Map } from 'immutable';
 import { Ajax, Utils } from '@labkey/api';
 
 import { buildURL } from '../../url/ActionURL';
-import { RELEVANT_SEARCH_RESULT_TYPES } from '../../../constants';
+import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
 import { URLResolver } from '../../util/URLResolver';
 import { SCHEMAS } from '../../../index';

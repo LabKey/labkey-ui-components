@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal } from 'react-bootstrap';
 
-import { gridInit, schemaGridInvalidate } from '../../../actions';
-import { getQueryGridModel } from '../../../global';
+import { gridInit, schemaGridInvalidate } from '../../actions';
+import { getQueryGridModel } from '../../global';
 
 import { QueryGridModel } from '../base/models/model';
 

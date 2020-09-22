@@ -19,7 +19,7 @@ import { List } from 'immutable';
 
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
-import { setMaxRows } from '../../../actions';
+import { setMaxRows } from '../../actions';
 
 const DEFAULT_SIZE_OPTIONS = List.of(20, 40, 100, 250, 400);
 

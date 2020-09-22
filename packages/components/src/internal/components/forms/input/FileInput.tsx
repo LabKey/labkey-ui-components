@@ -17,7 +17,7 @@ import React, { RefObject } from 'react';
 import classNames from 'classnames';
 
 import { FieldLabel } from '../FieldLabel';
-import { cancelEvent } from '../../../../events';
+import { cancelEvent } from '../../../events';
 
 import { QueryColumn } from '../../base/models/model';
 

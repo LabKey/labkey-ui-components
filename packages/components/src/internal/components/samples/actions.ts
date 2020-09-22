@@ -18,7 +18,7 @@ import { fromJS, List, Map, OrderedMap } from 'immutable';
 
 import { IEntityTypeDetails } from '../entities/models';
 import { deleteEntityType } from '../entities/actions';
-import { getSelection } from '../../../actions';
+import { getSelection } from '../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';

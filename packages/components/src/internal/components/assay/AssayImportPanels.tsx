@@ -22,10 +22,10 @@ import { Location } from '../../util/URL';
 import { loadSelectedSamples } from '../samples/actions';
 
 import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
-import { getQueryGridModel, removeQueryGridModel } from '../../../global';
+import { getQueryGridModel, removeQueryGridModel } from '../../global';
 
-import { getStateQueryGridModel } from '../../../models';
-import { gridInit } from '../../../actions';
+import { getStateQueryGridModel } from '../../models';
+import { gridInit } from '../../actions';
 import { getQueryDetails } from '../../query/api';
 
 import {
@@ -42,7 +42,7 @@ import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';
 import { Progress } from '../base/Progress';
 import { FileSizeLimitProps } from '../files/models';
-import { IMPORT_DATA_FORM_TYPES } from '../../../constants';
+import { IMPORT_DATA_FORM_TYPES } from '../../constants';
 
 import { dismissNotifications } from '../../../index';
 

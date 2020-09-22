@@ -21,7 +21,7 @@ import { fromJS } from 'immutable';
 
 import { QueryGridModel, QueryInfo } from '../../../index';
 
-import { initUnitTests, makeQueryInfo, makeTestData } from '../../../testHelpers';
+import { initUnitTests, makeQueryInfo, makeTestData } from '../../testHelpers';
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../../test/data/mixtures-getQuery.json';
 

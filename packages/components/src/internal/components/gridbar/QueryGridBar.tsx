@@ -26,7 +26,7 @@ import { ViewSelector } from './ViewSelector';
 import { URLBox } from './URLBox';
 import { GridSelectionBanner } from './GridSelectionBanner';
 import { PageSizeSelector } from './PageSizeSelector';
-import { EXPORT_TYPES } from '../../../constants';
+import { EXPORT_TYPES } from '../../constants';
 
 type QueryGridBarButtonResolver = (model?: QueryGridModel) => React.ReactNode;
 export type QueryGridBarButtons = React.ReactNode | QueryGridBarButtonResolver;

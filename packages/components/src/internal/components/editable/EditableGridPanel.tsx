@@ -17,7 +17,7 @@ import React from 'react';
 import ReactN from 'reactn';
 import { Panel } from 'react-bootstrap';
 
-import { gridInit } from '../../../actions';
+import { gridInit } from '../../actions';
 
 import { QueryGridModel } from '../base/models/model';
 import { LoadingSpinner } from '../base/LoadingSpinner';

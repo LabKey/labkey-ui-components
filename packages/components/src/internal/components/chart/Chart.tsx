@@ -17,8 +17,8 @@ import React from 'react';
 import $ from 'jquery';
 import { Filter } from '@labkey/api';
 
-import { DataViewInfo, VisualizationConfigModel } from '../../../models';
-import { getVisualizationConfig } from '../../../actions';
+import { DataViewInfo, VisualizationConfigModel } from '../../models';
+import { getVisualizationConfig } from '../../actions';
 import { debounce, generateId } from '../../util/utils';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 

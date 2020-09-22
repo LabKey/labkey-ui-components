@@ -22,7 +22,7 @@ import { Utils } from '@labkey/api';
 
 import { selectRows } from '../../query/api';
 
-import { MAX_EDITABLE_GRID_ROWS } from '../../../constants';
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { QueryColumn, SchemaQuery } from '../base/models/model';

@@ -14,7 +14,7 @@ import {
     withQueryModels,
 } from '..';
 
-import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../testHelpers';
+import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../internal/testHelpers';
 import { MockQueryModelLoader } from '../test/MockQueryModelLoader';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';

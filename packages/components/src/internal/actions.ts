@@ -17,9 +17,9 @@ import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { Ajax, Filter, Query, Utils } from '@labkey/api';
 import $ from 'jquery';
 
-import { getQueryDetails, searchRows, selectRows } from './internal/query/api';
-import { isEqual } from './internal/query/filter';
-import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './internal/util/URL';
+import { getQueryDetails, searchRows, selectRows } from './query/api';
+import { isEqual } from './query/filter';
+import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
     EXPORT_TYPES,
@@ -57,8 +57,8 @@ import {
     updateQueryGridModel,
     updateSelections,
 } from './global';
-import { EditableColumnMetadata } from './internal/components/editable/EditableGrid';
-import { QueryInfo } from './internal/components/base/models/QueryInfo';
+import { EditableColumnMetadata } from './components/editable/EditableGrid';
+import { QueryInfo } from './components/base/models/QueryInfo';
 import {
     AssayDefinitionModel,
     IGridResponse,
@@ -67,11 +67,11 @@ import {
     QueryGridModel,
     SchemaQuery,
     ViewInfo,
-} from './internal/components/base/models/model';
-import { buildURL, getSortFromUrl } from './internal/url/ActionURL';
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './internal/components/base/models/constants';
-import { caseInsensitive, intersect, naturalSort, not, resolveKey } from './internal/util/utils';
-import { resolveErrorMessage } from './internal/util/messaging';
+} from './components/base/models/model';
+import { buildURL, getSortFromUrl } from './url/ActionURL';
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
+import { caseInsensitive, intersect, naturalSort, not, resolveKey } from './util/utils';
+import { resolveErrorMessage } from './util/messaging';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;

@@ -4,8 +4,8 @@ import { List } from 'immutable';
 import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { QueryColumn, QueryGridModel } from '../base/models/model';
-import { getEditorModel } from '../../../global';
-import { EditorModel } from '../../../models';
+import { getEditorModel } from '../../global';
+import { EditorModel } from '../../models';
 
 import { QueryInfoForm } from './QueryInfoForm';
 

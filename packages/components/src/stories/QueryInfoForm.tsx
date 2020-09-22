@@ -17,12 +17,12 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 
-import { getStateQueryGridModel } from '../models';
+import { getStateQueryGridModel } from '../internal/models';
 import { QueryInfoForm } from '../internal/components/forms/QueryInfoForm';
 import * as constants from '../test/data/constants';
-import { gridInit } from '../actions';
+import { gridInit } from '../internal/actions';
 import './stories.scss';
-import { getQueryGridModel } from '../global';
+import { getQueryGridModel } from '../internal/global';
 import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
 import { QueryGridModel, SchemaQuery } from '../internal/components/base/models/model';
 

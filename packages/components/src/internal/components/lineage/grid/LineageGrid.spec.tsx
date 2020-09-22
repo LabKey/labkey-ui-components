@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../../../../testHelpers';
+import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../../../testHelpers';
 
 import { LineageGrid } from './LineageGrid';
 

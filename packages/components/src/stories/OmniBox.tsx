@@ -17,7 +17,7 @@ import './stories.scss';
 import { OmniBox } from '../internal/components/omnibox/OmniBox';
 import { Grid } from '../internal/components/base/Grid';
 import { ViewAction } from '../internal/components/omnibox/actions/View';
-import { makeQueryInfo, makeTestData } from '../testHelpers';
+import { makeQueryInfo, makeTestData } from '../internal/testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQuery.json';
 import { LoadingSpinner, QueryColumn, QueryGridModel, QueryInfo } from '..';

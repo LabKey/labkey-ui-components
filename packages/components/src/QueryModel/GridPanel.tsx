@@ -15,7 +15,7 @@ import {
     QuerySort,
 } from '..';
 import { GRID_SELECTION_INDEX } from '../internal/components/base/models/constants';
-import { headerCell, headerSelectionCell } from '../renderers';
+import { headerCell, headerSelectionCell } from '../internal/renderers';
 import { ActionValue } from '../internal/components/omnibox/actions/Action';
 import { FilterAction } from '../internal/components/omnibox/actions/Filter';
 import { SearchAction } from '../internal/components/omnibox/actions/Search';

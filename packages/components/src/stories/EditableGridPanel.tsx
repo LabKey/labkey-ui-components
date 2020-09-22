@@ -18,8 +18,8 @@ import { storiesOf } from '@storybook/react';
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
 import { List, Map } from 'immutable';
 
-import { gridInit } from '../actions';
-import { getStateQueryGridModel } from '../models';
+import { gridInit } from '../internal/actions';
+import { getStateQueryGridModel } from '../internal/models';
 import { EditableGridPanel } from '../internal/components/editable/EditableGridPanel';
 import * as constants from '../test/data/constants';
 

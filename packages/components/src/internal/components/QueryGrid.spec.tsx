@@ -16,7 +16,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { initQueryGridState, updateQueryGridModel } from '../../global';
+import { initQueryGridState, updateQueryGridModel } from '../global';
 
 import { QueryGrid } from './QueryGrid';
 import { QueryGridModel, SchemaQuery } from './base/models/model';
@@ -26,7 +26,7 @@ beforeAll(() => {
 });
 
 // Mock all the actions to test just the rendering parts for QueryGrid itself
-jest.mock('../../actions');
+jest.mock('../actions');
 
 describe('QueryGrid render', () => {
     test('loading', () => {

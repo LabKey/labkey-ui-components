@@ -16,8 +16,8 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
-import { getStateQueryGridModel } from '../../../models';
-import { getQueryGridModel } from '../../../global';
+import { getStateQueryGridModel } from '../../models';
+import { getQueryGridModel } from '../../global';
 import { buildURL } from '../../url/ActionURL';
 import { naturalSort } from '../../util/utils';
 import { SCHEMAS } from '../base/models/schemas';

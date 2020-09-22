@@ -17,11 +17,11 @@ import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 
 import { QueryGridModel, SchemaQuery } from '../base/models/model';
-import { DataViewInfo, IDataViewInfo } from '../../../models';
+import { DataViewInfo, IDataViewInfo } from '../../models';
 
-import { fetchCharts } from '../../../actions';
+import { fetchCharts } from '../../actions';
 import { naturalSort } from '../../../index';
-import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../../constants';
+import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../constants';
 import { loadReports } from '../../query/reports';
 
 import { ChartMenu } from './ChartMenu';

@@ -21,12 +21,12 @@ import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
 import { Link } from 'react-router';
 
-import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../../constants';
+import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn } from '../../../actions';
-import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../../global';
+import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn } from '../../actions';
+import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
 
-import { getStateQueryGridModel } from '../../../models';
+import { getStateQueryGridModel } from '../../models';
 
 import { EditableColumnMetadata } from '../editable/EditableGrid';
 import { EditableGridPanel } from '../editable/EditableGridPanel';

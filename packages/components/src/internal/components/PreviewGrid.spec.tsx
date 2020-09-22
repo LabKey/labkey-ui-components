@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../../testHelpers';
+import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../testHelpers';
 
 import { PreviewGrid } from './PreviewGrid';
 import { SchemaQuery } from './base/models/model';

@@ -10,7 +10,7 @@ import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';
 
 import { HelpTopicURL } from '../HelpTopicURL';
-import { initQueryGridState } from '../../../../global';
+import { initQueryGridState } from '../../../global';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
     withDomainPropertiesPanelCollapse,

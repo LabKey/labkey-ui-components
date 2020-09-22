@@ -2,10 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import { SchemaQuery } from '../base/models/model';
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
-import { getStateQueryGridModel } from '../../../models';
-import { gridInit } from '../../../actions';
-import { getQueryGridModel } from '../../../global';
+import { initUnitTestMocks, sleep } from '../../testHelpers';
+import { getStateQueryGridModel } from '../../models';
+import { gridInit } from '../../actions';
+import { getQueryGridModel } from '../../global';
 
 import { QueryGridBar } from './QueryGridBar';
 

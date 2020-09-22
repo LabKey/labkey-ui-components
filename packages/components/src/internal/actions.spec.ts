@@ -22,14 +22,14 @@ import {
     updateEditorModel,
     updateQueryGridModel,
 } from './global';
-import { QueryInfo } from './internal/components/base/models/QueryInfo';
-import { QueryColumn, QueryGridModel, SchemaQuery } from './internal/components/base/models/model';
+import { QueryInfo } from './components/base/models/QueryInfo';
+import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { addColumns, changeColumn, removeColumn, updateEditorData } from './actions';
 
-import mixturesQueryInfo from './test/data/mixtures-getQueryDetails.json';
-import sampleSet2QueryInfo from './test/data/sampleSet2-getQueryDetails.json';
-import emptyEditorGridModel from './test/data/sampleSet2-emptyEditableGrid.json';
+import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
+import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
+import emptyEditorGridModel from '../test/data/sampleSet2-emptyEditableGrid.json';
 // FIXME, when the editableGridWithData file is read in, the objects are automatically
 //  converted to Maps, which means accessing them like objects doesn't work.  That's a problem.
 // const editableGridWithData = require("./test/data/sampleSet2-editableGridWithData.json");

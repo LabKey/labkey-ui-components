@@ -4,7 +4,7 @@ import React from 'react';
 
 import { mount } from 'enzyme';
 
-import { initUnitTestMocks } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../testHelpers';
 
 import { QueryGridPanel, SelectInput } from '../../../index';
 

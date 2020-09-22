@@ -120,7 +120,7 @@ import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 
-import { EditorModel, getStateModelId, getStateQueryGridModel, IDataViewInfo } from './models';
+import { EditorModel, getStateModelId, getStateQueryGridModel, IDataViewInfo } from './internal/models';
 import {
     clearSelected,
     createQueryGridModelFilteredBySample,
@@ -136,8 +136,8 @@ import {
     schemaGridInvalidate,
     setSelected,
     unselectAll,
-} from './actions';
-import { cancelEvent } from './events';
+} from './internal/actions';
+import { cancelEvent } from './internal/events';
 import {
     getEditorModel,
     getQueryGridModel,
@@ -146,7 +146,7 @@ import {
     invalidateUsers,
     removeQueryGridModel,
     updateEditorModel,
-} from './global';
+} from './internal/global';
 import {
     deleteRows,
     getQueryDetails,
@@ -170,7 +170,7 @@ import {
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     EXPORT_TYPES,
-} from './constants';
+} from './internal/constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { URL_MAPPERS, URLResolver } from './internal/util/URLResolver';
 import { ActionMapper, URLService } from './internal/util/URLService';

@@ -15,7 +15,7 @@
  */
 import { fromJS } from 'immutable';
 
-import { initQueryGridState } from '../global';
+import { initQueryGridState } from '../internal/global';
 import { initBrowserHistoryState } from '../internal/util/global';
 
 import { FileColumnRenderer } from '../internal/renderers/FileColumnRenderer';

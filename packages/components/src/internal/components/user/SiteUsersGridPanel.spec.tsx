@@ -18,7 +18,7 @@ import { mount } from 'enzyme';
 
 import { SecurityPolicy } from '../permissions/models';
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
-import { initQueryGridState } from '../../../global';
+import { initQueryGridState } from '../../global';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
 

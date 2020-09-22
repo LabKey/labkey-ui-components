@@ -31,8 +31,8 @@ import {
 } from './global';
 
 import { EditorModel, LookupStore } from './models';
-import { QueryColumn, QueryGridModel, SchemaQuery } from './internal/components/base/models/model';
-import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
+import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
+import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 
 beforeEach(() => {
     resetQueryGridState();

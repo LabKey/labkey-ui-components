@@ -20,9 +20,9 @@ import { Filter } from '@labkey/api';
 
 import { blurActiveElement, generateId } from '../../util/utils';
 import { QueryGridModel } from '../base/models/model';
-import { DataViewInfo } from '../../../models';
-import { setReportId } from '../../../actions';
-import { DataViewInfoTypes } from '../../../constants';
+import { DataViewInfo } from '../../models';
+import { setReportId } from '../../actions';
+import { DataViewInfoTypes } from '../../constants';
 
 import { ChartModal } from './ChartModal';
 import { ChartMenuItem } from './ChartMenuItem';

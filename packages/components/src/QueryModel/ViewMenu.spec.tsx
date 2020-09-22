@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 
 import { QueryInfo, SchemaQuery } from '..';
 
-import { initUnitTests, makeQueryInfo } from '../testHelpers';
+import { initUnitTests, makeQueryInfo } from '../internal/testHelpers';
 
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { MenuItem } from 'react-bootstrap';
 
-import { DataViewInfo } from '../../../models';
+import { DataViewInfo } from '../../models';
 
 interface ChartMenuItemProps {
     chart: DataViewInfo;

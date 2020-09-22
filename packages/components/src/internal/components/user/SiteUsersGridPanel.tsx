@@ -9,8 +9,8 @@ import { Filter, ActionURL } from '@labkey/api';
 
 import { QueryGridModel } from '../base/models/model';
 import { SCHEMAS } from '../base/models/schemas';
-import { getStateQueryGridModel } from '../../../models';
-import { getQueryGridModel } from '../../../global';
+import { getStateQueryGridModel } from '../../models';
+import { getQueryGridModel } from '../../global';
 import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
 import { SelectionMenuItem } from '../menus/SelectionMenuItem';
 import { QueryGridPanel } from '../QueryGridPanel';
@@ -21,7 +21,7 @@ import { capitalizeFirstChar } from '../../util/utils';
 import { getLocation, getRouteFromLocationHash, replaceParameter } from '../../util/URL';
 import { getBrowserHistory } from '../../util/global';
 
-import { getSelected } from '../../../actions';
+import { getSelected } from '../../actions';
 
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { getSelectedUserIds } from './actions';

@@ -23,7 +23,7 @@ import { QueryColumn, QueryGridModel } from '../../base/models/model';
 
 import mixturesQueryInfo from '../../../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../../../test/data/mixtures-getQuery.json';
-import { initUnitTests, makeQueryInfo, makeTestData } from '../../../../testHelpers';
+import { initUnitTests, makeQueryInfo, makeTestData } from '../../../testHelpers';
 import { QueryInfo } from '../../../../index';
 
 import { FilterAction, getURLSuffix } from './Filter';

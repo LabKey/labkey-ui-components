@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Modal } from 'react-bootstrap';
 import { Filter } from '@labkey/api';
 
-import { DataViewInfo } from '../../../models';
+import { DataViewInfo } from '../../models';
 
 import { Chart } from './Chart';
 

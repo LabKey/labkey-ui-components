@@ -16,7 +16,7 @@
 import React from 'react';
 import { fromJS, List } from 'immutable';
 
-import { EditorModel } from '../../../models';
+import { EditorModel } from '../../models';
 import { selectRows } from '../../query/api';
 import { IGridLoader, IGridResponse, QueryGridModel } from '../base/models/model';
 

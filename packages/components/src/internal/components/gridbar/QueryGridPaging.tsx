@@ -16,7 +16,7 @@
 import React, { Component, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-import { loadPage } from '../../../actions';
+import { loadPage } from '../../actions';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
 import { blurActiveElement } from '../../util/utils';

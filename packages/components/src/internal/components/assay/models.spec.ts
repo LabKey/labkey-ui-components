@@ -18,9 +18,9 @@ import { Utils } from '@labkey/api';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
-import { initQueryGridState } from '../../../global';
-import { getStateQueryGridModel } from '../../../models';
-import { gridInit } from '../../../actions';
+import { initQueryGridState } from '../../global';
+import { getStateQueryGridModel } from '../../models';
+import { gridInit } from '../../actions';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { AssayUploadTabs, SchemaQuery } from '../base/models/model';
 

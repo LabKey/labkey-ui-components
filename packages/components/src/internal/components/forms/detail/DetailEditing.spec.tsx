@@ -18,13 +18,13 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS } from 'immutable';
 
-import { getStateQueryGridModel } from '../../../../models';
-import { getQueryGridModel } from '../../../../global';
+import { getStateQueryGridModel } from '../../../models';
+import { getQueryGridModel } from '../../../global';
 
 import sampleDetailsQuery from '../../../../test/data/sampleDetails-getQuery.json';
-import { initUnitTestMocks } from '../../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelpers';
 import { SCHEMAS } from '../../base/models/schemas';
-import { gridInit } from '../../../../actions';
+import { gridInit } from '../../../actions';
 import { SchemaQuery } from '../../base/models/model';
 
 import { DetailEditing } from './DetailEditing';

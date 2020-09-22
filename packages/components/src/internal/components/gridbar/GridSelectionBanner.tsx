@@ -17,7 +17,7 @@ import React, { Component, ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import { Map } from 'immutable';
 
-import { gridClearAll, gridSelectAll } from '../../../actions';
+import { gridClearAll, gridSelectAll } from '../../actions';
 import { QueryGridModel } from '../base/models/model';
 
 interface Props {

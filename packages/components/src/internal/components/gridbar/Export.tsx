@@ -17,8 +17,8 @@ import React from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { Set } from 'immutable';
 
-import { gridExport } from '../../../actions';
-import { EXPORT_TYPES } from '../../../constants';
+import { gridExport } from '../../actions';
+import { EXPORT_TYPES } from '../../constants';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
 

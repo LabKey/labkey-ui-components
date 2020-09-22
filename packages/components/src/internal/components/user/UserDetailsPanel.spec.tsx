@@ -5,7 +5,7 @@ import { SecurityPolicy } from '../permissions/models';
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
+import { initUnitTestMocks, sleep } from '../../testHelpers';
 import { JEST_SITE_ADMIN_USER_ID } from '../../../test/data/constants';
 
 import { UserDetailsPanel } from './UserDetailsPanel';

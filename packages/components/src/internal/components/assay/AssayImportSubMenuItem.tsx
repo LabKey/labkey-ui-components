@@ -2,7 +2,7 @@ import React from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { MAX_EDITABLE_GRID_ROWS } from '../../../constants';
+import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import { ISubItem, SubMenuItem, SubMenuItemProps } from '../menus/SubMenuItem';
 import { AssayDefinitionModel, QueryGridModel } from '../base/models/model';
 

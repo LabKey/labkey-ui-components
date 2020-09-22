@@ -10,7 +10,7 @@ import { IParentAlias } from '../domainproperties/samples/models';
 
 import { SelectInput } from '../forms/input/SelectInput';
 
-import { PARENT_ALIAS_HELPER_TEXT } from '../../../constants';
+import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 

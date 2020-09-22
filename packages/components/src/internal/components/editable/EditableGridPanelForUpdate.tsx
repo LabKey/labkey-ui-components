@@ -1,7 +1,7 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 
-import { getEditorModel } from '../../../global';
+import { getEditorModel } from '../../global';
 
 import { QueryGridModel, SchemaQuery } from '../base/models/model';
 import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';

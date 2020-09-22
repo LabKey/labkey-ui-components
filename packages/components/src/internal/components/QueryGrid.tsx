@@ -17,10 +17,10 @@ import React from 'react';
 import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 
-import { QUERY_GRID_PREFIX } from '../../constants';
-import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGridSelected } from '../../actions';
-import { getStateModelId, getStateQueryGridModel } from '../../models';
-import { headerCell, headerSelectionCell } from '../../renderers';
+import { QUERY_GRID_PREFIX } from '../constants';
+import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGridSelected } from '../actions';
+import { getStateModelId, getStateQueryGridModel } from '../models';
+import { headerCell, headerSelectionCell } from '../renderers';
 import { getBrowserHistory } from '../util/global';
 
 import { generateId } from '../util/utils';

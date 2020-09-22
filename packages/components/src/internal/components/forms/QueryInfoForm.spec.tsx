@@ -19,7 +19,7 @@ import { mount, shallow } from 'enzyme';
 
 import { Button, Modal, ModalTitle } from 'react-bootstrap';
 
-import { initUnitTestMocks } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../testHelpers';
 import { getQueryDetails } from '../../query/api';
 import { SchemaQuery } from '../base/models/model';
 

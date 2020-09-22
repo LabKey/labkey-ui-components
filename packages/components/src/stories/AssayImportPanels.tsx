@@ -18,9 +18,9 @@ import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, number, withKnobs } from '@storybook/addon-knobs';
 
-import { gridInit } from '../actions';
-import { getStateQueryGridModel } from '../models';
-import { getQueryGridModel } from '../global';
+import { gridInit } from '../internal/actions';
+import { getStateQueryGridModel } from '../internal/models';
+import { getQueryGridModel } from '../internal/global';
 import { withFormSteps, WithFormStepsProps } from '../internal/components/forms/FormStep';
 import { RunDataPanel } from '../internal/components/assay/RunDataPanel';
 import { RunPropertiesPanel } from '../internal/components/assay/RunPropertiesPanel';

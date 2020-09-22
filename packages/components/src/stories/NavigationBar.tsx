@@ -12,7 +12,7 @@ import { MenuSectionConfig } from '../internal/components/navigation/ProductMenu
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../internal/components/navigation/model';
 import { NavigationBar } from '../internal/components/navigation/NavigationBar';
 import { User } from '../internal/components/base/models/model';
-import { AppURL } from '../url/AppURL';
+import { AppURL } from '../internal/url/AppURL';
 
 import { ICON_URL } from './mock';
 import './stories.scss';

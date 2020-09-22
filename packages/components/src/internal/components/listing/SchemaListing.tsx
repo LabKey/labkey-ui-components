@@ -19,7 +19,7 @@ import { List, Map } from 'immutable';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { SchemaDetails } from '../base/models/model';
-import { AppURL } from '../../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { Grid, GridColumn } from '../base/Grid';
 import { fetchSchemas } from '../base/models/schemas';
 

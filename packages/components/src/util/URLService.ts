@@ -17,7 +17,7 @@ import { List, Map, OrderedSet } from 'immutable';
 
 import { ActionURL } from '@labkey/api';
 
-import { AppURL } from '../url/AppURL';
+import { AppURL } from '../internal/url/AppURL';
 
 import { createProductUrl } from '../internal/components/navigation/utils';
 

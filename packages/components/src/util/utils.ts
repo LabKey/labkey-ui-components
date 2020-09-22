@@ -17,7 +17,7 @@ import { List, Map, Set, Iterable } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { SchemaQuery, User } from '../internal/components/base/models/model';
-import { hasParameter, toggleParameter } from '../url/ActionURL';
+import { hasParameter, toggleParameter } from '../internal/url/ActionURL';
 
 const emptyList = List<string>();
 

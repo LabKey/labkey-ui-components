@@ -16,8 +16,8 @@
 import { List, Record } from 'immutable';
 import { ActionURL, Ajax, Utils, QueryKey } from '@labkey/api';
 
-import { AppURL } from '../../../url/AppURL';
-import { buildURL } from '../../../url/ActionURL';
+import { AppURL } from '../../url/AppURL';
+import { buildURL } from '../../url/ActionURL';
 
 import { createProductUrl, createProductUrlFromParts } from './utils';
 

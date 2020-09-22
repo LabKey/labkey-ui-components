@@ -20,7 +20,7 @@ import { text, withKnobs } from '@storybook/addon-knobs';
 import { HeatMap } from '../internal/components/heatmap/HeatMap';
 import './stories.scss';
 import { SCHEMAS } from '../internal/components/base/models/schemas';
-import { AppURL } from '../url/AppURL';
+import { AppURL } from '../internal/url/AppURL';
 
 storiesOf('HeatMap', module)
     .addDecorator(withKnobs)

@@ -15,7 +15,7 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { AppURL } from '../url/AppURL';
+import { AppURL } from '../internal/url/AppURL';
 
 import { initMockServerContext, registerDefaultURLMappers } from '../testHelpers';
 

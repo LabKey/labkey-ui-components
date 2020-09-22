@@ -15,7 +15,7 @@
  */
 import { Ajax, Utils } from '@labkey/api';
 
-import { buildURL } from '../../../url/ActionURL';
+import { buildURL } from '../../url/ActionURL';
 
 import { InferDomainResponse } from './models/model';
 

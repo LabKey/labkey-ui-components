@@ -21,7 +21,7 @@ import { gridInit } from '../../../actions';
 import { getStateQueryGridModel } from '../../../models';
 import { getQueryGridModel } from '../../../global';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { AppURL } from '../../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { QueryGridModel, SchemaQuery } from '../base/models/model';
 import { naturalSort } from '../../../util/utils';
 

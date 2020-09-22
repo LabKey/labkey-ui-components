@@ -18,7 +18,7 @@ import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
 import { getStateQueryGridModel } from '../../../models';
 import { getQueryGridModel } from '../../../global';
-import { buildURL } from '../../../url/ActionURL';
+import { buildURL } from '../../url/ActionURL';
 import { naturalSort } from '../../../util/utils';
 import { SCHEMAS } from '../base/models/schemas';
 import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';

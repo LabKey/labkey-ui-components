@@ -20,7 +20,7 @@ import { AssayProtocolModel } from '../internal/components/domainproperties/assa
 import { fetchProtocol } from '../internal/components/domainproperties/assay/actions';
 
 import { getQueryDetails, selectRows } from '../internal/query/api';
-import { AppURL, spliceURL } from '../url/AppURL';
+import { AppURL, spliceURL } from '../internal/url/AppURL';
 import { SCHEMAS } from '../internal/components/base/models/schemas';
 
 export interface AppRouteResolver {

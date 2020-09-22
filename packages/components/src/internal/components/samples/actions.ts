@@ -21,7 +21,7 @@ import { deleteEntityType } from '../entities/actions';
 import { getSelection } from '../../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
-import { buildURL } from '../../../url/ActionURL';
+import { buildURL } from '../../url/ActionURL';
 import { selectRows } from '../../query/api';
 import { DomainDetails } from '../domainproperties/models';
 

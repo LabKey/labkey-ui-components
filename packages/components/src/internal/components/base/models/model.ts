@@ -32,8 +32,8 @@ import {
     resolveSchemaQuery,
     toLowerSafe,
 } from '../../../../util/utils';
-import { AppURL } from '../../../../url/AppURL';
-import { WHERE_FILTER_TYPE } from '../../../../url/WhereFilterType';
+import { AppURL } from '../../../url/AppURL';
+import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
 import { QueryInfo } from './QueryInfo';

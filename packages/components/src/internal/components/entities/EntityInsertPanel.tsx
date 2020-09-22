@@ -35,7 +35,7 @@ import { Location } from '../../../util/URL';
 import { SelectInput } from '../forms/input/SelectInput';
 
 import { Progress } from '../base/Progress';
-import { AppURL } from '../../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { QueryInfo } from '../base/models/QueryInfo';
 import {
     IGridLoader,

@@ -60,11 +60,11 @@ import {
 } from './util/utils';
 import { BeforeUnload } from './util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './util/messaging';
-import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL';
-import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
+import { buildURL, hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
+import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
-import { AppURL, spliceURL } from './url/AppURL';
+import { AppURL, spliceURL } from './internal/url/AppURL';
 import { Alert } from './internal/components/base/Alert';
 import { DeleteIcon } from './internal/components/base/DeleteIcon';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';

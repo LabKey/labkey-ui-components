@@ -2,7 +2,7 @@ import React from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { AppURL, AssayContextConsumer, AssayLink } from '../../../index';
-import { applyURL } from '../../../url/ActionURL';
+import { applyURL } from '../../url/ActionURL';
 
 interface AssayReImportRunButtonProps {
     runId: string | number;

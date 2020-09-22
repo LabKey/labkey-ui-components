@@ -13,7 +13,7 @@ import {
     SAMPLES_KEY,
     WORKFLOW_KEY,
 } from '../../app';
-import { AppURL } from '../../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 
 export type AuditQuery = {
     containerFilter?: Query.ContainerFilter;

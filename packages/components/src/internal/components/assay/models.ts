@@ -20,7 +20,7 @@ import { getEditorModel } from '../../../global';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel } from '../base/models/model';
 import { FileAttachmentFormModel } from '../files/models';
-import { AppURL } from '../../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { generateNameWithTimestamp } from '../../../util/Date';
 import { AssayProtocolModel } from '../../../index';
 

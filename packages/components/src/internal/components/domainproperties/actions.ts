@@ -20,7 +20,7 @@ import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
 import { naturalSort } from '../../../util/utils';
 import { processSchemas } from '../base/models/schemas';
-import { buildURL } from '../../../url/ActionURL';
+import { buildURL } from '../../url/ActionURL';
 
 import {
     decodeLookup,

@@ -19,7 +19,7 @@ import { Ajax, Utils } from '@labkey/api';
 import { SEVERITY_LEVEL_ERROR } from '../constants';
 import { DomainException } from '../models';
 
-import { buildURL } from '../../../../url/ActionURL';
+import { buildURL } from '../../../url/ActionURL';
 import { setDomainException } from '../actions';
 import { Container } from '../../base/models/model';
 

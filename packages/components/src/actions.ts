@@ -68,7 +68,7 @@ import {
     SchemaQuery,
     ViewInfo,
 } from './internal/components/base/models/model';
-import { buildURL, getSortFromUrl } from './url/ActionURL';
+import { buildURL, getSortFromUrl } from './internal/url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './internal/components/base/models/constants';
 import { caseInsensitive, intersect, naturalSort, not, resolveKey } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';

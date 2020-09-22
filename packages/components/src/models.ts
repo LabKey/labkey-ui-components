@@ -20,7 +20,7 @@ import { getQueryColumnRenderers, getQueryGridModel, getQueryMetadata } from './
 import { DefaultGridLoader } from './internal/components/GridLoader';
 import { IQueryGridModel, QueryColumn, QueryGridModel, SchemaQuery, ViewInfo } from './internal/components/base/models/model';
 import { resolveSchemaQuery } from './util/utils';
-import { AppURL } from './url/AppURL';
+import { AppURL } from './internal/url/AppURL';
 import { GRID_EDIT_INDEX } from './internal/components/base/models/constants';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from './constants';
 

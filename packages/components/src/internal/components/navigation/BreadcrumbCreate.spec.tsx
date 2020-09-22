@@ -18,7 +18,7 @@ import { fromJS, Map } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { AppURL } from '../../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 
 import { BreadcrumbCreate } from './BreadcrumbCreate';
 

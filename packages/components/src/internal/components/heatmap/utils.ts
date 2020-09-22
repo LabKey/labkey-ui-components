@@ -15,7 +15,7 @@
  */
 import { Filter } from '@labkey/api';
 
-import { AppURL } from '../../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 
 export const ALL_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 

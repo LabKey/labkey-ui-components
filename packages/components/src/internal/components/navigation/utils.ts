@@ -1,7 +1,7 @@
 import { Location } from 'history';
 
-import { AppURL } from '../../../url/AppURL';
-import { buildURL } from '../../../url/ActionURL';
+import { AppURL } from '../../url/AppURL';
+import { buildURL } from '../../url/ActionURL';
 
 export const ON_LEAVE_DIRTY_STATE_MESSAGE =
     'You have unsaved changes that will be lost. Are you sure you want to continue?';

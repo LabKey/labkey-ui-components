@@ -18,7 +18,7 @@ import { Link } from 'react-router';
 import { List } from 'immutable';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { AppURL } from '../../../url/AppURL';
+import { AppURL } from '../../url/AppURL';
 import { Grid, GridColumn } from '../base/Grid';
 import { fetchGetQueries } from '../base/models/schemas';
 import { QueryInfo } from '../base/models/QueryInfo';

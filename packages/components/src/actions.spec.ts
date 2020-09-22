@@ -22,8 +22,8 @@ import {
     updateEditorModel,
     updateQueryGridModel,
 } from './global';
-import { QueryInfo } from './components/base/models/QueryInfo';
-import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
+import { QueryInfo } from './internal/components/base/models/QueryInfo';
+import { QueryColumn, QueryGridModel, SchemaQuery } from './internal/components/base/models/model';
 import { CellMessage, EditorModel, ValueDescriptor } from './models';
 import { addColumns, changeColumn, removeColumn, updateEditorData } from './actions';
 

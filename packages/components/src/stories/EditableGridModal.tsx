@@ -24,11 +24,11 @@ import * as constants from '../test/data/constants';
 
 import { List, Map } from 'immutable';
 
-import { EditableGridModal } from '../components/editable/EditableGridModal';
+import { EditableGridModal } from '../internal/components/editable/EditableGridModal';
 import { gridInit } from '../actions';
-import { EditableColumnMetadata } from '../components/editable/EditableGrid';
-import { EditableGridLoader } from '../components/editable/EditableGridLoader';
-import { SchemaQuery } from '../components/base/models/model';
+import { EditableColumnMetadata } from '../internal/components/editable/EditableGrid';
+import { EditableGridLoader } from '../internal/components/editable/EditableGridLoader';
+import { SchemaQuery } from '../internal/components/base/models/model';
 
 storiesOf('EditableGridModal', module)
     .addDecorator(withKnobs)

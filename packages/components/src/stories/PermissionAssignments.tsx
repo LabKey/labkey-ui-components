@@ -9,8 +9,8 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { List, Map } from 'immutable';
 import { Security } from '@labkey/api';
 
-import { PermissionAssignments } from '../components/permissions/PermissionAssignments';
-import { SecurityPolicy, SecurityRole, Principal } from '../components/permissions/models';
+import { PermissionAssignments } from '../internal/components/permissions/PermissionAssignments';
+import { SecurityPolicy, SecurityRole, Principal } from '../internal/components/permissions/models';
 
 import {
     getInactiveUsers,
@@ -18,7 +18,7 @@ import {
     getPrincipalsById,
     getRolesByUniqueName,
     processGetRolesResponse,
-} from '../components/permissions/actions';
+} from '../internal/components/permissions/actions';
 import { JEST_SITE_ADMIN_USER_ID } from '../test/data/constants';
 import policyJSON from '../test/data/security-getPolicy.json';
 import './stories.scss';

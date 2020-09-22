@@ -17,9 +17,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { HeatMap } from '../components/heatmap/HeatMap';
+import { HeatMap } from '../internal/components/heatmap/HeatMap';
 import './stories.scss';
-import { SCHEMAS } from '../components/base/models/schemas';
+import { SCHEMAS } from '../internal/components/base/models/schemas';
 import { AppURL } from '../url/AppURL';
 
 storiesOf('HeatMap', module)

@@ -18,7 +18,7 @@ import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { ImportWithRenameConfirmModal } from '../components/assay/ImportWithRenameConfirmModal';
+import { ImportWithRenameConfirmModal } from '../internal/components/assay/ImportWithRenameConfirmModal';
 
 storiesOf('ImportWithRenameConfirmModal', module)
     .addDecorator(withKnobs)

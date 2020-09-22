@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 
-import { User } from '../../components/base/models/model';
+import { User } from '../../internal/components/base/models/model';
 
 export const TEST_USER_GUEST = new User({
     canDelete: false,

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { resetNotificationsState } from '../components/notifications/global';
+import { resetNotificationsState } from '../internal/components/notifications/global';
 
 // initialize the global state and the LABKEY object with enough structure to work for notifications
 export function notificationInit() {

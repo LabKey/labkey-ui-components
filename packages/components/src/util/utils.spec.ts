@@ -16,7 +16,7 @@
 import { fromJS, List, Map } from 'immutable';
 import { PermissionTypes } from '@labkey/api';
 
-import { SchemaQuery } from '../components/base/models/model';
+import { SchemaQuery } from '../internal/components/base/models/model';
 
 import {
     TEST_USER_APP_ADMIN,

@@ -18,8 +18,8 @@ import { List, Map } from 'immutable';
 import { User } from '@labkey/api';
 
 import { LookupStore, EditorModel } from '../models';
-import { QueryGridModel } from '../components/base/models/model';
-import { NotificationItemModel } from '../components/notifications/model';
+import { QueryGridModel } from '../internal/components/base/models/model';
+import { NotificationItemModel } from '../internal/components/notifications/model';
 
 // Typescript helper definition of global state for reactn
 declare module 'reactn/default' {

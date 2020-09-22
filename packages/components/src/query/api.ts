@@ -20,8 +20,8 @@ import { AuditBehaviorTypes, Filter, Query, QueryDOM } from '@labkey/api';
 import { URLResolver } from '../util/URLResolver';
 import { getQueryMetadata } from '../global';
 import { caseInsensitive, resolveKeyFromJson, resolveSchemaQuery } from '../util/utils';
-import { QueryInfo } from '../components/base/models/QueryInfo';
-import { QueryColumn, QueryInfoStatus, SchemaQuery, ViewInfo } from '../components/base/models/model';
+import { QueryInfo } from '../internal/components/base/models/QueryInfo';
+import { QueryColumn, QueryInfoStatus, SchemaQuery, ViewInfo } from '../internal/components/base/models/model';
 
 const queryDetailsCache: { [key: string]: Promise<QueryInfo> } = {};
 

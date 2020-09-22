@@ -16,12 +16,12 @@
 import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { AssayProtocolModel } from '../components/domainproperties/assay/models';
-import { fetchProtocol } from '../components/domainproperties/assay/actions';
+import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
+import { fetchProtocol } from '../internal/components/domainproperties/assay/actions';
 
 import { getQueryDetails, selectRows } from '../query/api';
 import { AppURL, spliceURL } from '../url/AppURL';
-import { SCHEMAS } from '../components/base/models/schemas';
+import { SCHEMAS } from '../internal/components/base/models/schemas';
 
 export interface AppRouteResolver {
     matches: (route: string) => boolean;

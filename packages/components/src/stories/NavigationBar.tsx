@@ -8,10 +8,10 @@ import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 import { List, Map } from 'immutable';
 
-import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
-import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../components/navigation/model';
-import { NavigationBar } from '../components/navigation/NavigationBar';
-import { User } from '../components/base/models/model';
+import { MenuSectionConfig } from '../internal/components/navigation/ProductMenuSection';
+import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../internal/components/navigation/model';
+import { NavigationBar } from '../internal/components/navigation/NavigationBar';
+import { User } from '../internal/components/base/models/model';
 import { AppURL } from '../url/AppURL';
 
 import { ICON_URL } from './mock';

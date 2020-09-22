@@ -9,8 +9,8 @@ import { initUnitTests, makeQueryInfo, makeTestData } from '../testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
 
-import { ActionValue } from '../components/omnibox/actions/Action';
-import { Change, ChangeType } from '../components/omnibox/OmniBox';
+import { ActionValue } from '../internal/components/omnibox/actions/Action';
+import { Change, ChangeType } from '../internal/components/omnibox/OmniBox';
 
 import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';

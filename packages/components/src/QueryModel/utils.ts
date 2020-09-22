@@ -6,7 +6,7 @@
 import { Filter } from '@labkey/api';
 
 import { EXPORT_TYPES, QueryColumn, QueryModel, QuerySort } from '..';
-import { ActionValue } from '../components/omnibox/actions/Action';
+import { ActionValue } from '../internal/components/omnibox/actions/Action';
 import { List } from 'immutable';
 import { ExportOptions, getExportParams } from '../actions';
 

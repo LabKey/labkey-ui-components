@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { SubMenuItem } from '../components/menus/SubMenuItem';
+import { SubMenuItem } from '../internal/components/menus/SubMenuItem';
 
 const allItems = [
     {

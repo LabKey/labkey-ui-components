@@ -19,11 +19,11 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 
 import { List } from 'immutable';
 
-import { QueryGridPanel } from '../components/QueryGridPanel';
+import { QueryGridPanel } from '../internal/components/QueryGridPanel';
 import { DataViewInfo, getStateQueryGridModel } from '../models';
-import { ManageDropdownButton } from '../components/buttons/ManageDropdownButton';
-import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
-import { SelectionMenuItem } from '../components/menus/SelectionMenuItem';
+import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
+import { QueryGridModel, SchemaQuery } from '../internal/components/base/models/model';
+import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
 import { DataViewInfoTypes } from '../constants';
 import './stories.scss';
 

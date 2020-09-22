@@ -19,7 +19,7 @@ import { Alert } from 'react-bootstrap';
 
 import { LoadingSpinner, QueryColumn, QueryConfig, RequiresModelAndActions } from '..';
 
-import { DetailDisplay, DetailDisplaySharedProps } from '../components/forms/detail/DetailDisplay';
+import { DetailDisplay, DetailDisplaySharedProps } from '../internal/components/forms/detail/DetailDisplay';
 
 import { InjectedQueryModels, withQueryModels } from './withQueryModels';
 

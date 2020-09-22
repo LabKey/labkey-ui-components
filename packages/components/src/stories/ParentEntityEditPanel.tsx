@@ -21,9 +21,9 @@ import { getStateQueryGridModel } from '../models';
 import { gridInit } from '../actions';
 import { getQueryGridModel } from '../global';
 import './stories.scss';
-import { LoadingSpinner } from '../components/base/LoadingSpinner';
-import { SCHEMAS } from '../components/base/models/schemas';
-import { QueryGridModel, SchemaQuery } from '../components/base/models/model';
+import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
+import { SCHEMAS } from '../internal/components/base/models/schemas';
+import { QueryGridModel, SchemaQuery } from '../internal/components/base/models/model';
 import { DataClassDataType, ParentEntityEditPanel } from '..';
 
 interface Props {

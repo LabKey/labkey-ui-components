@@ -19,8 +19,8 @@ import { initQueryGridState } from '../global';
 import { initBrowserHistoryState } from '../util/global';
 
 import { FileColumnRenderer } from '../renderers/FileColumnRenderer';
-import { SCHEMAS } from '../components/base/models/schemas';
-import { initNotificationsState } from '../components/notifications/global';
+import { SCHEMAS } from '../internal/components/base/models/schemas';
+import { initNotificationsState } from '../internal/components/notifications/global';
 
 import { initMocks } from './mock';
 

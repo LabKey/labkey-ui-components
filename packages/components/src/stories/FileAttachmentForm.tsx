@@ -9,12 +9,12 @@ import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 import mock, { proxy } from 'xhr-mock';
 
-import { FileAttachmentForm } from '../components/files/FileAttachmentForm';
+import { FileAttachmentForm } from '../internal/components/files/FileAttachmentForm';
 import inferDomainJson from '../test/data/property-inferDomainWithSpecimenId.json';
 import filePreviewJson from '../test/data/property-getFilePreview.json';
 
 import './stories.scss';
-import { ALL_FILES_LIMIT_KEY, FileSizeLimitProps } from '../components/files/models';
+import { ALL_FILES_LIMIT_KEY, FileSizeLimitProps } from '../internal/components/files/models';
 
 mock.setup();
 mock.post(/.*\/property\/inferDomain.*/, {

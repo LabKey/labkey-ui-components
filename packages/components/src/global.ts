@@ -19,9 +19,9 @@ import { User } from '@labkey/api';
 
 import { initBrowserHistoryState } from './util/global';
 import { EditorModel, LookupStore } from './models';
-import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
+import { QueryColumn, QueryGridModel, SchemaQuery } from './internal/components/base/models/model';
 import { naturalSort, resolveSchemaQuery } from './util/utils';
-import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
+import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
 
 // Don't touch this directly, if you need access to it use getQueryMetadata, if you need to set the value use
 // setQueryMetadata

@@ -1,4 +1,4 @@
-import { User } from '../../components/base/models/model';
+import { User } from '../components/base/models/model';
 
 import {
     TEST_USER_APP_ADMIN,

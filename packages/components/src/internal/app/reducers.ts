@@ -5,7 +5,7 @@
 import { fromJS, Map } from 'immutable';
 import { handleActions } from 'redux-actions';
 
-import { ProductMenuModel } from '../../components/navigation/model';
+import { ProductMenuModel } from '../components/navigation/model';
 
 import { AppModel, LogoutReason } from './models';
 import {

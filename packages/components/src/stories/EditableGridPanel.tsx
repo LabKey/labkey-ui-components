@@ -20,15 +20,15 @@ import { List, Map } from 'immutable';
 
 import { gridInit } from '../actions';
 import { getStateQueryGridModel } from '../models';
-import { EditableGridPanel } from '../components/editable/EditableGridPanel';
+import { EditableGridPanel } from '../internal/components/editable/EditableGridPanel';
 import * as constants from '../test/data/constants';
 
 import './stories.scss';
-import { EditableColumnMetadata } from '../components/editable/EditableGrid';
-import { SchemaQuery } from '../components/base/models/model';
-import { PlacementType } from '../components/editable/Controls';
+import { EditableColumnMetadata } from '../internal/components/editable/EditableGrid';
+import { SchemaQuery } from '../internal/components/base/models/model';
+import { PlacementType } from '../internal/components/editable/Controls';
 import { GridColumn } from '..';
-import { GRID_EDIT_INDEX } from '../components/base/models/constants';
+import { GRID_EDIT_INDEX } from '../internal/components/base/models/constants';
 
 const CONTROLS_GROUP = 'Grid controls';
 const PANEL_GROUP = 'Grid';

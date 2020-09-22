@@ -9,8 +9,8 @@ import { storiesOf } from '@storybook/react';
 import { select, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { MenuOption, SubMenu } from '../components/menus/SubMenu';
-import { MultiMenuButton } from '../components/menus/MultiMenuButton';
+import { MenuOption, SubMenu } from '../internal/components/menus/SubMenu';
+import { MultiMenuButton } from '../internal/components/menus/MultiMenuButton';
 
 // Note that usually the key and name are not the same, but we use the same values
 // here to make interaction easier.  The key is what is compared to the current choice.

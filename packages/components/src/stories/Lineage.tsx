@@ -19,9 +19,9 @@ import { Panel } from 'react-bootstrap';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { LineageGraph } from '../components/lineage/LineageGraph';
-import { LineageGrid, LineageGridFromLocation } from '../components/lineage/grid/LineageGrid';
-import { LineageFilter, LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from '../components/lineage/types';
+import { LineageGraph } from '../internal/components/lineage/LineageGraph';
+import { LineageGrid, LineageGridFromLocation } from '../internal/components/lineage/grid/LineageGrid';
+import { LineageFilter, LINEAGE_DIRECTIONS, LINEAGE_GROUPING_GENERATIONS } from '../internal/components/lineage/types';
 
 import './stories.scss';
 

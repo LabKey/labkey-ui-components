@@ -19,7 +19,7 @@ import { createMemoryHistory, Route, Router } from 'react-router';
 
 import data from '../test/data/example_browse_data_tree_api.json';
 import './stories.scss';
-import { ReportItemModal, ReportList } from '../components/report-list/ReportList';
+import { ReportItemModal, ReportList } from '../internal/components/report-list/ReportList';
 import { AppURL } from '../url/AppURL';
 import { flattenBrowseDataTreeResponse } from '../query/reports';
 

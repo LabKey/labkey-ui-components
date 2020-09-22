@@ -1,7 +1,7 @@
 import React from 'react';
 import { WithRouterProps } from 'react-router';
 
-import { confirmLeaveWhenDirty } from '../components/navigation/utils';
+import { confirmLeaveWhenDirty } from '../internal/components/navigation/utils';
 
 import { BeforeUnload } from './BeforeUnload';
 

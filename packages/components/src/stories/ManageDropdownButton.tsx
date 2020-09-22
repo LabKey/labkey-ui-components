@@ -8,7 +8,7 @@ import { MenuItem } from 'react-bootstrap';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 
-import { ManageDropdownButton } from '../components/buttons/ManageDropdownButton';
+import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
 import './stories.scss';
 
 storiesOf('ManageDropdownButton', module)

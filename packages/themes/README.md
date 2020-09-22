@@ -1,6 +1,6 @@
 # @labkey/themes
 
-This package contains the core themes for LabKey Server.
+This package contains the core UI themes for LabKey Server.
 
 ## Installation
 

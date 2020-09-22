@@ -18,7 +18,7 @@ import classNames from 'classnames';
 import { OrderedMap, Map } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
-import { DefaultRenderer } from './renderers/DefaultRenderer';
+import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
 import { GridColumn } from './internal/components/base/Grid';
 import { CustomToggle } from './internal/components/base/CustomToggle';

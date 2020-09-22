@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 import { TEST_USER_READER } from '../../../test/data/users';
 import { FileInput } from '../forms/input/FileInput';
 import { TextInput } from '../forms/input/TextInput';
-import { getQueryDetails } from '../../../query/api';
+import { getQueryDetails } from '../../query/api';
 import { initUnitTestMocks } from '../../../testHelpers';
 import { SCHEMAS } from '../base/models/schemas';
 

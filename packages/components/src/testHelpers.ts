@@ -5,7 +5,7 @@ import mock, { proxy } from 'xhr-mock';
 import { initQueryGridState } from './global';
 import { initLineageMocks, initQueryGridMocks, initUserPropsMocks } from './stories/mock';
 import { QueryInfo } from './internal/components/base/models/QueryInfo';
-import { applyQueryMetadata, handle132Response } from './query/api';
+import { applyQueryMetadata, handle132Response } from './internal/query/api';
 import { bindColumnRenderers } from './renderers';
 import { RowsResponse } from './QueryModel/QueryModelLoader';
 import { URLService } from './util/URLService';

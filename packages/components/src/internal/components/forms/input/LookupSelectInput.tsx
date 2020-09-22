@@ -17,7 +17,7 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { ISelectRowsResult, selectRows } from '../../../../query/api';
+import { ISelectRowsResult, selectRows } from '../../../query/api';
 import { LabelOverlay } from '../LabelOverlay';
 import { LoadingSpinner } from '../../base/LoadingSpinner';
 import { QueryColumn, QueryLookup } from '../../base/models/model';

@@ -5,7 +5,7 @@ import { ActionURL } from '@labkey/api';
 import { DomainDesign, DomainFieldIndexChange, IAppDomainHeader } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
-import { importData } from '../../../../query/api';
+import { importData } from '../../../query/api';
 
 import { Progress } from '../../base/Progress';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';

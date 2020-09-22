@@ -21,7 +21,7 @@ import data from '../test/data/example_browse_data_tree_api.json';
 import './stories.scss';
 import { ReportItemModal, ReportList } from '../internal/components/report-list/ReportList';
 import { AppURL } from '../url/AppURL';
-import { flattenBrowseDataTreeResponse } from '../query/reports';
+import { flattenBrowseDataTreeResponse } from '../internal/query/reports';
 
 const history = createMemoryHistory();
 

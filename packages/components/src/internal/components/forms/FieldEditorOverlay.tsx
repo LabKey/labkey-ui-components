@@ -17,7 +17,7 @@ import React from 'react';
 import { OverlayTrigger } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { updateRows } from '../../../query/api';
+import { updateRows } from '../../query/api';
 
 import { QueryColumn } from '../base/models/model';
 

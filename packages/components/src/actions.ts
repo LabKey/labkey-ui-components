@@ -17,8 +17,8 @@ import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { Ajax, Filter, Query, Utils } from '@labkey/api';
 import $ from 'jquery';
 
-import { getQueryDetails, searchRows, selectRows } from './query/api';
-import { isEqual } from './query/filter';
+import { getQueryDetails, searchRows, selectRows } from './internal/query/api';
+import { isEqual } from './internal/query/filter';
 import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,

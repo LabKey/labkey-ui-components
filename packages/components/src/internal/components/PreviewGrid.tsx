@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { getQueryDetails, selectRows } from '../../query/api';
+import { getQueryDetails, selectRows } from '../query/api';
 
 import { resolveErrorMessage } from '../../index';
 

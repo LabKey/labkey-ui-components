@@ -157,8 +157,8 @@ import {
     searchRows,
     selectRows,
     updateRows,
-} from './query/api';
-import { flattenBrowseDataTreeResponse, loadReports } from './query/reports';
+} from './internal/query/api';
+import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
     DataViewInfoTypes,
     IMPORT_DATA_FORM_TYPES,

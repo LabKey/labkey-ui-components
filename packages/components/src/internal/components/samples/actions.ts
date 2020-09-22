@@ -22,7 +22,7 @@ import { getSelection } from '../../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 import { buildURL } from '../../../url/ActionURL';
-import { selectRows } from '../../../query/api';
+import { selectRows } from '../../query/api';
 import { DomainDetails } from '../domainproperties/models';
 
 export function initSampleSetSelects(isUpdate: boolean, ssName: string, includeDataClasses: boolean): Promise<any[]> {

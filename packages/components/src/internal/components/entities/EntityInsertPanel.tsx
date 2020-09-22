@@ -30,7 +30,7 @@ import { getStateQueryGridModel } from '../../../models';
 
 import { EditableColumnMetadata } from '../editable/EditableGrid';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
-import { getQueryDetails, InsertRowsResponse } from '../../../query/api';
+import { getQueryDetails, InsertRowsResponse } from '../../query/api';
 import { Location } from '../../../util/URL';
 import { SelectInput } from '../forms/input/SelectInput';
 

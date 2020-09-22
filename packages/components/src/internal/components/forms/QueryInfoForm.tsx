@@ -20,7 +20,7 @@ import Formsy, { addValidationRule } from 'formsy-react';
 import { Input } from 'formsy-react-components';
 import { Utils } from '@labkey/api';
 
-import { selectRows } from '../../../query/api';
+import { selectRows } from '../../query/api';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../../constants';
 import { LoadingSpinner } from '../base/LoadingSpinner';

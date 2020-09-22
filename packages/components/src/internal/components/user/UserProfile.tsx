@@ -7,7 +7,7 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
-import { getQueryDetails } from '../../../query/api';
+import { getQueryDetails } from '../../query/api';
 import { FileInput } from '../forms/input/FileInput';
 import { QueryInfoForm } from '../forms/QueryInfoForm';
 import { LoadingSpinner } from '../base/LoadingSpinner';

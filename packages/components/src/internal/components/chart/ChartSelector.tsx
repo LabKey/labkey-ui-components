@@ -22,7 +22,7 @@ import { DataViewInfo, IDataViewInfo } from '../../../models';
 import { fetchCharts } from '../../../actions';
 import { naturalSort } from '../../../index';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../../constants';
-import { loadReports } from '../../../query/reports';
+import { loadReports } from '../../query/reports';
 
 import { ChartMenu } from './ChartMenu';
 

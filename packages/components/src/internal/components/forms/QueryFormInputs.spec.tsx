@@ -21,7 +21,7 @@ import { mount } from 'enzyme';
 
 import { initUnitTestMocks } from '../../../testHelpers';
 
-import { getQueryDetails } from '../../../query/api';
+import { getQueryDetails } from '../../query/api';
 
 import { SchemaQuery } from '../base/models/model';
 

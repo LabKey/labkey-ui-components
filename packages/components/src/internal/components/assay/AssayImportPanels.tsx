@@ -26,7 +26,7 @@ import { getQueryGridModel, removeQueryGridModel } from '../../../global';
 
 import { getStateQueryGridModel } from '../../../models';
 import { gridInit } from '../../../actions';
-import { getQueryDetails } from '../../../query/api';
+import { getQueryDetails } from '../../query/api';
 
 import {
     AssayDefinitionModel,

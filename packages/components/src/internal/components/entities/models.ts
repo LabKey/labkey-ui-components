@@ -18,7 +18,7 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 import { Option } from 'react-select';
 
 import { getEditorModel } from '../../../global';
-import { insertRows } from '../../../query/api';
+import { insertRows } from '../../query/api';
 import { gridShowError } from '../../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryInfo } from '../base/models/QueryInfo';

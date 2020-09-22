@@ -19,7 +19,7 @@ import { List, Map } from 'immutable';
 import Formsy from 'formsy-react';
 import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
-import { updateRows } from '../../../../query/api';
+import { updateRows } from '../../../query/api';
 
 import { QueryColumn, QueryGridModel } from '../../base/models/model';
 

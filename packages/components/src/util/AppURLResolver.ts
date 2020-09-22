@@ -19,7 +19,7 @@ import { Filter } from '@labkey/api';
 import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
 import { fetchProtocol } from '../internal/components/domainproperties/assay/actions';
 
-import { getQueryDetails, selectRows } from '../query/api';
+import { getQueryDetails, selectRows } from '../internal/query/api';
 import { AppURL, spliceURL } from '../url/AppURL';
 import { SCHEMAS } from '../internal/components/base/models/schemas';
 

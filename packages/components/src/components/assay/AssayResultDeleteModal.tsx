@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
 import {
-    AssayResultDeleteConfirmModal,
     ConfirmModal,
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
@@ -9,6 +8,7 @@ import {
     Progress,
     SchemaQuery
 } from "../..";
+import {AssayResultDeleteConfirmModal} from "./AssayResultDeleteConfirmModal";
 
 interface Props {
     afterDelete: () => any;

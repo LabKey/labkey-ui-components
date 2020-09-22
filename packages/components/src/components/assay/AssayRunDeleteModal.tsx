@@ -1,13 +1,13 @@
 import * as React from 'react'
 import { useState } from 'react'
 import {
-    AssayRunDeleteConfirmModal,
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
     deleteAssayRuns,
     Progress,
     QueryGridModel
 } from "../..";
+import {AssayRunDeleteConfirmModal} from "./AssayRunDeleteConfirmModal";
 
 interface Props {
     afterDelete: () => any;

@@ -18,7 +18,7 @@ import { storiesOf } from '@storybook/react';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { AssayRunDeleteConfirmModal } from '..';
+import {AssayRunDeleteConfirmModal} from "../components/assay/AssayRunDeleteConfirmModal";
 
 storiesOf('AssayRunDeleteConfirmModal', module)
     .addDecorator(withKnobs)

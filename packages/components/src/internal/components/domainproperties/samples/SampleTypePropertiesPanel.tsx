@@ -7,7 +7,7 @@ import { IParentOption } from '../../entities/models';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 import { AddEntityButton, ColorPickerInput, generateId, getHelpLink, helpLinkNode, SCHEMAS } from '../../../../index';
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../../../constants';
-import { DERIVE_SAMPLES_ALIAS_TOPIC, DEFINE_SAMPLE_TYPE_TOPIC } from '../../../../util/helpLinks';
+import { DERIVE_SAMPLES_ALIAS_TOPIC, DEFINE_SAMPLE_TYPE_TOPIC } from '../../../util/helpLinks';
 import { SampleSetParentAliasRow } from '../../samples/SampleSetParentAliasRow';
 import {
     InjectedDomainPropertiesPanelCollapseProps,

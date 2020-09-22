@@ -17,9 +17,9 @@ import { QueryGridPanel } from '../QueryGridPanel';
 
 import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
-import { capitalizeFirstChar } from '../../../util/utils';
-import { getLocation, getRouteFromLocationHash, replaceParameter } from '../../../util/URL';
-import { getBrowserHistory } from '../../../util/global';
+import { capitalizeFirstChar } from '../../util/utils';
+import { getLocation, getRouteFromLocationHash, replaceParameter } from '../../util/URL';
+import { getBrowserHistory } from '../../util/global';
 
 import { getSelected } from '../../../actions';
 

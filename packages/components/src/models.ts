@@ -19,7 +19,7 @@ import { genCellKey } from './actions';
 import { getQueryColumnRenderers, getQueryGridModel, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './internal/components/GridLoader';
 import { IQueryGridModel, QueryColumn, QueryGridModel, SchemaQuery, ViewInfo } from './internal/components/base/models/model';
-import { resolveSchemaQuery } from './util/utils';
+import { resolveSchemaQuery } from './internal/util/utils';
 import { AppURL } from './internal/url/AppURL';
 import { GRID_EDIT_INDEX } from './internal/components/base/models/constants';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from './constants';

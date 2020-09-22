@@ -25,7 +25,7 @@ import { QueryColumn, QueryGridModel } from '../../base/models/model';
 
 import { Alert } from '../../base/Alert';
 
-import { resolveErrorMessage } from '../../../../util/messaging';
+import { resolveErrorMessage } from '../../../util/messaging';
 
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
 import { Detail } from './Detail';

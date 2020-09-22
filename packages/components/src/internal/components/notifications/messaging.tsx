@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { getActionErrorMessage } from '../../../util/messaging';
+import { getActionErrorMessage } from '../../util/messaging';
 
 import { createNotification } from './actions';
 import { NotificationItemProps } from './model';

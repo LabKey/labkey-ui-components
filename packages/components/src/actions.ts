@@ -19,7 +19,7 @@ import $ from 'jquery';
 
 import { getQueryDetails, searchRows, selectRows } from './internal/query/api';
 import { isEqual } from './internal/query/filter';
-import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
+import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './internal/util/URL';
 import {
     BARTENDER_EXPORT_CONTROLLER,
     EXPORT_TYPES,
@@ -70,8 +70,8 @@ import {
 } from './internal/components/base/models/model';
 import { buildURL, getSortFromUrl } from './internal/url/ActionURL';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './internal/components/base/models/constants';
-import { caseInsensitive, intersect, naturalSort, not, resolveKey } from './util/utils';
-import { resolveErrorMessage } from './util/messaging';
+import { caseInsensitive, intersect, naturalSort, not, resolveKey } from './internal/util/utils';
+import { resolveErrorMessage } from './internal/util/messaging';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;

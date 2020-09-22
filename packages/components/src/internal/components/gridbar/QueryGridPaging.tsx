@@ -19,7 +19,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { loadPage } from '../../../actions';
 import { Tip } from '../base/Tip';
 import { QueryGridModel } from '../base/models/model';
-import { blurActiveElement } from '../../../util/utils';
+import { blurActiveElement } from '../../util/utils';
 import { PaginationButton } from '../pagination/PaginationButton';
 
 interface Props {

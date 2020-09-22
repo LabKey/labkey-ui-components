@@ -31,7 +31,7 @@ import {
     resolveKey,
     resolveSchemaQuery,
     toLowerSafe,
-} from '../../../../util/utils';
+} from '../../../util/utils';
 import { AppURL } from '../../../url/AppURL';
 import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 

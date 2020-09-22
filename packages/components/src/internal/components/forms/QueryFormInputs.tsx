@@ -24,7 +24,7 @@ import { QueryInfo } from '../base/models/QueryInfo';
 
 import { insertColumnFilter, QueryColumn, SchemaQuery } from '../base/models/model';
 
-import { caseInsensitive } from '../../../util/utils';
+import { caseInsensitive } from '../../util/utils';
 
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';

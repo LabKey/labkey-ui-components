@@ -11,7 +11,7 @@ import {
     PROPERTY_FIELDS_PHI_TOPIC,
     helpLinkNode,
     MISSING_VALUES_TOPIC,
-} from '../../../util/helpLinks';
+} from '../../util/helpLinks';
 
 import {
     DATETIME_TYPE,

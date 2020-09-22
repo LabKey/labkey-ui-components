@@ -12,7 +12,7 @@ import {
     CONFIGURE_SCRIPTING_TOPIC,
     helpLinkNode,
     PROGRAMMATIC_QC_TOPIC,
-} from '../../../../util/helpLinks';
+} from '../../../util/helpLinks';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { getValidPublishTargets } from './actions';

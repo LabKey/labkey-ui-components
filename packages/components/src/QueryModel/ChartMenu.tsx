@@ -6,7 +6,7 @@ import { ChartMenuItem } from '../internal/components/chart/ChartMenuItem';
 import { DataViewInfo } from '../models';
 
 import { ChartModal } from '../internal/components/chart/ChartModal';
-import { blurActiveElement } from '../util/utils';
+import { blurActiveElement } from '../internal/util/utils';
 
 import { RequiresModelAndActions } from './withQueryModels';
 

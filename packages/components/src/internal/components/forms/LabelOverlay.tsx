@@ -18,7 +18,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { QueryColumn } from '../base/models/model';
 import { LabelHelpTip } from '../base/LabelHelpTip';
-import { generateId } from '../../../util/utils';
+import { generateId } from '../../util/utils';
 
 export interface LabelOverlayProps {
     inputId?: string;

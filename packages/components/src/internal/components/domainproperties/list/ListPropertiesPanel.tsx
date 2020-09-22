@@ -4,7 +4,7 @@ import { Utils } from '@labkey/api';
 
 import { DomainDesign } from '../models';
 
-import { DEFINE_LIST_TOPIC } from '../../../../util/helpLinks';
+import { DEFINE_LIST_TOPIC } from '../../../util/helpLinks';
 import { HelpTopicURL } from '../HelpTopicURL';
 
 import {

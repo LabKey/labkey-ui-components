@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { capitalizeFirstChar } from '../../../util/utils';
+import { capitalizeFirstChar } from '../../util/utils';
 import { ConfirmModal } from '../base/ConfirmModal';
 
 import { Progress } from '../base/Progress';

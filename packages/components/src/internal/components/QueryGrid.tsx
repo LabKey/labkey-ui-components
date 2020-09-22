@@ -21,11 +21,11 @@ import { QUERY_GRID_PREFIX } from '../../constants';
 import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGridSelected } from '../../actions';
 import { getStateModelId, getStateQueryGridModel } from '../../models';
 import { headerCell, headerSelectionCell } from '../../renderers';
-import { getBrowserHistory } from '../../util/global';
+import { getBrowserHistory } from '../util/global';
 
-import { generateId } from '../../util/utils';
+import { generateId } from '../util/utils';
 
-import { getRouteFromLocationHash } from '../../util/URL';
+import { getRouteFromLocationHash } from '../util/URL';
 
 import { QueryColumn, QueryGridModel, SchemaQuery } from './base/models/model';
 import { Grid, GridColumn, GridProps } from './base/Grid';

@@ -5,7 +5,7 @@ import { Utils } from '@labkey/api';
 import { ConfirmModal } from '../base/ConfirmModal';
 
 import { Alert } from '../base/Alert';
-import { resolveErrorMessage } from '../../../util/messaging';
+import { resolveErrorMessage } from '../../util/messaging';
 
 import { updateUsersActiveState } from './actions';
 

@@ -14,7 +14,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { QueryColumn, User } from '../base/models/model';
 import { SCHEMAS } from '../base/models/schemas';
-import { getActionErrorMessage } from '../../../util/messaging';
+import { getActionErrorMessage } from '../../util/messaging';
 import { Alert } from '../base/Alert';
 
 import { getUserDetailsRowData, updateUserDetails } from './actions';

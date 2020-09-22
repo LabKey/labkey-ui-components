@@ -3,7 +3,7 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { toLowerSafe } from '../../../../util/utils';
+import { toLowerSafe } from '../../../util/utils';
 
 import { insertColumnFilter, LastActionStatus, QueryColumn, QueryInfoStatus, SchemaQuery, ViewInfo } from './model';
 import { QuerySort } from './QuerySort';

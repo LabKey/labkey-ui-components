@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
-import { helpLinkNode, URL_ENCODING_TOPIC } from '../../../util/helpLinks';
+import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';

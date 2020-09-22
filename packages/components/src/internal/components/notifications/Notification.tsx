@@ -20,7 +20,7 @@ import moment from 'moment';
 
 import { User } from '../base/models/model';
 
-import { getDateFormat } from '../../../util/Date';
+import { getDateFormat } from '../../util/Date';
 
 import { NotificationItemModel, NotificationItemProps, Persistence } from './model';
 import { createNotification, setTrialBannerDismissSessionKey } from './actions';

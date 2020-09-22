@@ -17,7 +17,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { List } from 'immutable';
 
-import { TESTS_ONLY_RESET_DOM_COUNT } from '../../util/utils';
+import { TESTS_ONLY_RESET_DOM_COUNT } from '../util/utils';
 
 import { getStateQueryGridModel } from '../../models';
 import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../../testHelpers';

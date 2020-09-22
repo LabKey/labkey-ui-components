@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { QueryModel, ViewInfo } from '..';
-import { blurActiveElement } from '../util/utils';
+import { blurActiveElement } from '../internal/util/utils';
 
 interface ViewMenuProps {
     hideEmptyViewMenu: boolean;

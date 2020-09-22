@@ -19,7 +19,7 @@ import { Panel } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
-import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../../util/helpLinks';
+import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
 import { SearchResultCard } from './SearchResultCard';
 import { SearchResultsModel } from './models';

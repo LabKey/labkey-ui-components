@@ -5,7 +5,7 @@ import { Utils } from '@labkey/api';
 import { getSelectedData } from '../../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../../constants';
 
-import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../../util/utils';
+import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { QueryColumn, SchemaQuery } from '../base/models/model';
 

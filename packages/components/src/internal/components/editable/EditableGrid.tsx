@@ -40,7 +40,7 @@ import { MAX_EDITABLE_GRID_ROWS } from '../../../constants';
 import { Grid, GridColumn } from '../base/Grid';
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from '../base/models/constants';
 import { QueryColumn, QueryGridModel } from '../base/models/model';
-import { blurActiveElement, capitalizeFirstChar, caseInsensitive } from '../../../util/utils';
+import { blurActiveElement, capitalizeFirstChar, caseInsensitive } from '../../util/utils';
 import { DeleteIcon } from '../base/DeleteIcon';
 import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';

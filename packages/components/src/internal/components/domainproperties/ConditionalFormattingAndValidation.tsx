@@ -7,7 +7,7 @@ import {
     FIELD_EDITOR_RANGE_VALIDATION_TOPIC,
     FIELD_EDITOR_REGEX_TOPIC,
     helpLinkNode,
-} from '../../../util/helpLinks';
+} from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';

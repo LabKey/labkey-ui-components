@@ -17,7 +17,7 @@ import React from 'react';
 import { List, Map, Set } from 'immutable';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { naturalSort } from '../../../util/utils';
+import { naturalSort } from '../../util/utils';
 
 import { HeatMapProps } from './HeatMap';
 

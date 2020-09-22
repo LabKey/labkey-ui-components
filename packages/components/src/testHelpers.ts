@@ -8,8 +8,8 @@ import { QueryInfo } from './internal/components/base/models/QueryInfo';
 import { applyQueryMetadata, handle132Response } from './internal/query/api';
 import { bindColumnRenderers } from './renderers';
 import { RowsResponse } from './QueryModel/QueryModelLoader';
-import { URLService } from './util/URLService';
-import { URL_MAPPERS } from './util/URLResolver';
+import { URLService } from './internal/util/URLService';
+import { URL_MAPPERS } from './internal/util/URLResolver';
 
 declare let LABKEY: LabKey;
 

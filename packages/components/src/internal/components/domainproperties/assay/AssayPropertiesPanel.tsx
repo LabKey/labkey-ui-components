@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
-import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../../util/helpLinks';
+import { DEFINE_ASSAY_SCHEMA_TOPIC } from '../../../util/helpLinks';
 import { HelpTopicURL } from '../HelpTopicURL';
 import {
     InjectedDomainPropertiesPanelCollapseProps,

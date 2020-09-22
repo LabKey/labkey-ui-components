@@ -16,7 +16,7 @@
 import React from 'react';
 
 import { ConfirmModal } from '../base/ConfirmModal';
-import { helpLinkNode } from '../../../util/helpLinks';
+import { helpLinkNode } from '../../util/helpLinks';
 
 import { DeleteConfirmationData } from './actions';
 import { EntityDataType } from './models';

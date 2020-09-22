@@ -12,8 +12,8 @@ import { SecurityPolicy, SecurityRole } from '../permissions/models';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
 import { getUserProperties } from '../base/actions';
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { caseInsensitive } from '../../../util/utils';
-import { getDateTimeFormat } from '../../../util/Date';
+import { caseInsensitive } from '../../util/utils';
+import { getDateTimeFormat } from '../../util/Date';
 
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';

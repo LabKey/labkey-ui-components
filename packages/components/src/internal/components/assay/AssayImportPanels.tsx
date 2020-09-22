@@ -18,7 +18,7 @@ import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { Location } from '../../../util/URL';
+import { Location } from '../../util/URL';
 import { loadSelectedSamples } from '../samples/actions';
 
 import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
@@ -36,7 +36,7 @@ import {
     QueryGridModel,
     SchemaQuery,
 } from '../base/models/model';
-import { getActionErrorMessage, resolveErrorMessage } from '../../../util/messaging';
+import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { Alert } from '../base/Alert';
 import { WizardNavButtons } from '../buttons/WizardNavButtons';

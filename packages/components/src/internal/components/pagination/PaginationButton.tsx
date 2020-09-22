@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 
-import { blurActiveElement } from '../../../util/utils';
+import { blurActiveElement } from '../../util/utils';
 import { Tip } from '../../../index';
 
 interface Props {

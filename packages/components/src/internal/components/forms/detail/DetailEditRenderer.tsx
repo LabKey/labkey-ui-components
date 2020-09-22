@@ -27,7 +27,7 @@ import { AppendUnits } from '../../../renderers/AppendUnits';
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 import { LookupSelectInput } from '../input/LookupSelectInput';
 import { QueryColumn } from '../../base/models/model';
-import { getUnFormattedNumber } from '../../../../util/Date';
+import { getUnFormattedNumber } from '../../../util/Date';
 
 import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
 

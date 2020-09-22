@@ -17,7 +17,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { Location } from '../util/URL';
+import { Location } from '../internal/util/URL';
 
 import { EntityInsertPanel } from '../internal/components/entities/EntityInsertPanel';
 

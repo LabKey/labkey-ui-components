@@ -23,7 +23,7 @@ import { getQueryGridModel } from '../../../global';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { AppURL } from '../../url/AppURL';
 import { QueryGridModel, SchemaQuery } from '../base/models/model';
-import { naturalSort } from '../../../util/utils';
+import { naturalSort } from '../../util/utils';
 
 import { addDateRangeFilter, last12Months, monthSort } from './utils';
 import { HeatMapDisplay } from './HeatMapDisplay';

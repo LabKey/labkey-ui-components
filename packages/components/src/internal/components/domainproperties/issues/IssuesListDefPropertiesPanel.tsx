@@ -14,7 +14,7 @@ import {
 
 import { HelpTopicURL } from '../HelpTopicURL';
 
-import { DEFINE_ISSUES_LIST_TOPIC } from '../../../../util/helpLinks';
+import { DEFINE_ISSUES_LIST_TOPIC } from '../../../util/helpLinks';
 
 import { AssignmentOptions, BasicPropertiesFields } from './IssuesListDefPropertiesPanelFormElements';
 import { IssuesListDefModel } from './models';

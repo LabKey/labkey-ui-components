@@ -27,7 +27,7 @@ import {
 } from '../DomainPropertiesPanelCollapse';
 import { BasePropertiesPanel, BasePropertiesPanelProps } from '../BasePropertiesPanel';
 import { HelpTopicURL } from '../HelpTopicURL';
-import { DEFINE_DATASET_TOPIC } from '../../../../util/helpLinks';
+import { DEFINE_DATASET_TOPIC } from '../../../util/helpLinks';
 
 import { DomainDesign, DomainField } from '../models';
 

@@ -57,9 +57,9 @@ import {
     resolveSchemaQuery,
     toggleDevTools,
     valueIsEmpty,
-} from './util/utils';
-import { BeforeUnload } from './util/BeforeUnload';
-import { getActionErrorMessage, resolveErrorMessage } from './util/messaging';
+} from './internal/util/utils';
+import { BeforeUnload } from './internal/util/BeforeUnload';
+import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
 import { buildURL, hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
@@ -96,9 +96,13 @@ import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './internal/compone
 import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
 import { createNotification } from './internal/components/notifications/actions';
-import { addNotification, dismissNotifications, initNotificationsState } from './internal/components/notifications/global';
+import {
+    addNotification,
+    dismissNotifications,
+    initNotificationsState,
+} from './internal/components/notifications/global';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { datePlaceholder, formatDate, formatDateTime, getDateFormat, getUnFormattedNumber } from './util/Date';
+import { datePlaceholder, formatDate, formatDateTime, getDateFormat, getUnFormattedNumber } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -167,17 +171,17 @@ import {
     NO_UPDATES_MESSAGE,
     EXPORT_TYPES,
 } from './constants';
-import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
-import { URL_MAPPERS, URLResolver } from './util/URLResolver';
-import { ActionMapper, URLService } from './util/URLService';
-import { DATA_IMPORT_TOPIC, DELETE_SAMPLES_TOPIC, getHelpLink, helpLinkNode } from './util/helpLinks';
+import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
+import { URL_MAPPERS, URLResolver } from './internal/util/URLResolver';
+import { ActionMapper, URLService } from './internal/util/URLService';
+import { DATA_IMPORT_TOPIC, DELETE_SAMPLES_TOPIC, getHelpLink, helpLinkNode } from './internal/util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
     AssayRunResolver,
     ListResolver,
     SamplesResolver,
-} from './util/AppURLResolver';
+} from './internal/util/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
@@ -198,7 +202,11 @@ import { BulkAddUpdateForm } from './internal/components/forms/BulkAddUpdateForm
 import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
 import { LabelOverlay } from './internal/components/forms/LabelOverlay';
 import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
-import { getQueryFormLabelFieldName, isQueryFormLabelField, QueryFormInputs } from './internal/components/forms/QueryFormInputs';
+import {
+    getQueryFormLabelFieldName,
+    isQueryFormLabelField,
+    QueryFormInputs,
+} from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
 import { SelectInput, SelectInputProps } from './internal/components/forms/input/SelectInput';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
@@ -233,7 +241,10 @@ import { addDateRangeFilter, last12Months, monthSort } from './internal/componen
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
 import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
-import { createDeleteErrorNotification, createDeleteSuccessNotification } from './internal/components/notifications/messaging';
+import {
+    createDeleteErrorNotification,
+    createDeleteSuccessNotification,
+} from './internal/components/notifications/messaging';
 import {
     EntityDataType,
     EntityInputProps,
@@ -301,7 +312,11 @@ import { ITab, SubNav } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
-import { confirmLeaveWhenDirty, createProductUrl, createProductUrlFromParts } from './internal/components/navigation/utils';
+import {
+    confirmLeaveWhenDirty,
+    createProductUrl,
+    createProductUrlFromParts,
+} from './internal/components/navigation/utils';
 import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
@@ -310,7 +325,12 @@ import { SiteUsersGridPanel } from './internal/components/user/SiteUsersGridPane
 import { UserProvider, UserProviderProps } from './internal/components/user/UserProvider';
 import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
 
-import { createFormInputId, fetchDomain, saveDomain, setDomainFields } from './internal/components/domainproperties/actions';
+import {
+    createFormInputId,
+    fetchDomain,
+    saveDomain,
+    setDomainFields,
+} from './internal/components/domainproperties/actions';
 import {
     DomainDesign,
     DomainDetails,
@@ -346,7 +366,12 @@ import {
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
 import { PermissionsPageContextProvider } from './internal/components/permissions/PermissionsContextProvider';
-import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
+import {
+    PermissionsProviderProps,
+    Principal,
+    SecurityPolicy,
+    SecurityRole,
+} from './internal/components/permissions/models';
 import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
@@ -380,7 +405,7 @@ import { TimelineView } from './internal/components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
 import * as App from './internal/app';
 import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './QueryModel/utils';
-import { withRouteLeave, RouteLeaveProps } from './util/RouteLeave';
+import { withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();

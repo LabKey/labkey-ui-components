@@ -9,7 +9,7 @@ import { importData } from '../../../query/api';
 
 import { Progress } from '../../base/Progress';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
-import { resolveErrorMessage } from '../../../../util/messaging';
+import { resolveErrorMessage } from '../../../util/messaging';
 
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { ListModel } from './models';

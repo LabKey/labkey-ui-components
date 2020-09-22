@@ -31,7 +31,7 @@ import { getStateQueryGridModel } from '../../../models';
 import { EditableColumnMetadata } from '../editable/EditableGrid';
 import { EditableGridPanel } from '../editable/EditableGridPanel';
 import { getQueryDetails, InsertRowsResponse } from '../../query/api';
-import { Location } from '../../../util/URL';
+import { Location } from '../../util/URL';
 import { SelectInput } from '../forms/input/SelectInput';
 
 import { Progress } from '../base/Progress';
@@ -45,7 +45,7 @@ import {
     QueryGridModel,
     SchemaQuery,
 } from '../base/models/model';
-import { capitalizeFirstChar, generateId } from '../../../util/utils';
+import { capitalizeFirstChar, generateId } from '../../util/utils';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
@@ -63,7 +63,7 @@ import {
 } from '../../../index';
 import { FormStep, FormTabs } from '../forms/FormStep';
 import { FileSizeLimitProps } from '../files/models';
-import { resolveErrorMessage } from '../../../util/messaging';
+import { resolveErrorMessage } from '../../util/messaging';
 
 import {
     EntityDataType,

@@ -7,7 +7,7 @@ import DomainForm from '../DomainForm';
 
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
-import { resolveErrorMessage } from '../../../../util/messaging';
+import { resolveErrorMessage } from '../../../util/messaging';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';

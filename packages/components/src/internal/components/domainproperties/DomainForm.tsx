@@ -25,9 +25,9 @@ import { ConfirmModal } from '../base/ConfirmModal';
 import { InferDomainResponse } from '../base/models/model';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
-import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../../util/helpLinks';
+import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
-import { blurActiveElement } from '../../../util/utils';
+import { blurActiveElement } from '../../util/utils';
 
 import { EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR } from './constants';
 import { LookupProvider } from './Lookup/Context';

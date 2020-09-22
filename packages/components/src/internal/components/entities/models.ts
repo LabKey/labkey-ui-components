@@ -23,7 +23,7 @@ import { gridShowError } from '../../../actions';
 import { SCHEMAS } from '../base/models/schemas';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
-import { capitalizeFirstChar, decodePart, encodePart, generateId } from '../../../util/utils';
+import { capitalizeFirstChar, decodePart, encodePart, generateId } from '../../util/utils';
 import { IEntityDetails } from '../domainproperties/entities/models';
 
 export interface EntityInputProps {

@@ -16,8 +16,8 @@
 import { fromJS, List, Map } from 'immutable';
 import { ActionURL, Experiment, Filter } from '@labkey/api';
 
-import { AppURL } from '../internal/url/AppURL';
-import { LineageLinkMetadata } from '../internal/components/lineage/types';
+import { AppURL } from '../url/AppURL';
+import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { ActionMapper, URLMapper, URLService } from './URLService';
 

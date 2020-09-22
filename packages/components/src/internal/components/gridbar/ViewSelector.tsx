@@ -19,7 +19,7 @@ import { List } from 'immutable';
 
 import { gridSelectView } from '../../../actions';
 import { QueryGridModel, ViewInfo } from '../base/models/model';
-import { generateId, naturalSort } from '../../../util/utils';
+import { generateId, naturalSort } from '../../util/utils';
 
 const emptyList = List<ReactNode>();
 

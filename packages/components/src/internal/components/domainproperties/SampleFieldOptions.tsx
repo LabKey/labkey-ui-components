@@ -5,7 +5,7 @@ import { List } from 'immutable';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
 
-import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../../util/helpLinks';
+import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, fetchQueries } from './actions';

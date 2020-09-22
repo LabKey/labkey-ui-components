@@ -18,7 +18,7 @@ import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { getLocation, Location, replaceParameters } from '../../../util/URL';
+import { getLocation, Location, replaceParameters } from '../../util/URL';
 import { OmniBox } from '../omnibox/OmniBox';
 import { Action, ActionValue, ActionValueCollection } from '../omnibox/actions/Action';
 import { FilterAction } from '../omnibox/actions/Filter';

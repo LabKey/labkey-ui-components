@@ -2,7 +2,7 @@ import moment from 'moment';
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, PermissionTypes, Utils } from '@labkey/api';
 
-import { caseInsensitive, hasAllPermissions } from '../../../util/utils';
+import { caseInsensitive, hasAllPermissions } from '../../util/utils';
 import { QueryGridModel, SchemaQuery, User } from '../base/models/model';
 import { buildURL } from '../../url/ActionURL';
 

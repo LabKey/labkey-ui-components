@@ -27,13 +27,13 @@ import { FormStep, FormTabs } from '../forms/FormStep';
 
 import { AssayUploadTabs, InferDomainResponse, QueryGridModel } from '../base/models/model';
 import { getServerFilePreview } from '../base/actions';
-import { getActionErrorMessage } from '../../../util/messaging';
+import { getActionErrorMessage } from '../../util/messaging';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
 import { FileSizeLimitProps } from '../files/models';
 import { getEditorModel, helpLinkNode, IMPORT_DATA_FORM_TYPES } from '../../../index';
-import { DATA_IMPORT_TOPIC } from '../../../util/helpLinks';
+import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
 import { getRunPropertiesFileName, getRunPropertiesRow } from './actions';
 import { AssayWizardModel } from './models';

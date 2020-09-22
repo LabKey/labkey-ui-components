@@ -6,7 +6,7 @@ import { List } from 'immutable';
 import { ConfirmModal } from '../base/ConfirmModal';
 
 import { Alert } from '../base/Alert';
-import { resolveErrorMessage } from '../../../util/messaging';
+import { resolveErrorMessage } from '../../util/messaging';
 
 import { deleteUsers } from './actions';
 

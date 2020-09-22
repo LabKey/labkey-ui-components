@@ -7,7 +7,7 @@ import { Option } from 'react-select';
 
 import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInput } from '../../../../index';
 
-import { DATASET_PROPERTIES_TOPIC } from '../../../../util/helpLinks';
+import { DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
 
 import { SectionHeading } from '../SectionHeading';
 

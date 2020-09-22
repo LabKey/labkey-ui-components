@@ -16,7 +16,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
-import { hasAllPermissions } from '../../../util/utils';
+import { hasAllPermissions } from '../../util/utils';
 import { User } from '../base/models/model';
 import { SVGIcon } from '../base/SVGIcon';
 

@@ -15,7 +15,7 @@
  */
 import React from 'react';
 
-import { datePlaceholder } from '../../../../util/Date';
+import { datePlaceholder } from '../../../util/Date';
 
 import { QueryColumn } from '../../base/models/model';
 

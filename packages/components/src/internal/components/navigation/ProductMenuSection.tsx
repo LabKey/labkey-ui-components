@@ -17,7 +17,7 @@ import React, { Component, ReactNode } from 'react';
 import { Record } from 'immutable';
 
 import { AppURL } from '../../url/AppURL';
-import { naturalSort } from '../../../util/utils';
+import { naturalSort } from '../../util/utils';
 
 import { MenuSectionModel } from './model';
 import { createProductUrlFromParts, getHref } from './utils';

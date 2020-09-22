@@ -3,7 +3,7 @@ import React from 'react';
 import { ConfirmModal } from '../base/ConfirmModal';
 
 import { Alert } from '../base/Alert';
-import { resolveErrorMessage } from '../../../util/messaging';
+import { resolveErrorMessage } from '../../util/messaging';
 
 import { resetPassword } from './actions';
 

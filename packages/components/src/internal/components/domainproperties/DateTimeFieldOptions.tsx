@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
-import { DATE_FORMATS_TOPIC, helpLinkNode } from '../../../util/helpLinks';
+import { DATE_FORMATS_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, getNameFromId } from './actions';

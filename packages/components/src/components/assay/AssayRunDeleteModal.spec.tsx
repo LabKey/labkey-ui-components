@@ -1,19 +1,18 @@
-import { mount } from 'enzyme';
 import React from 'react';
+import { mount } from 'enzyme';
 
 import { AssayRunDeleteModal } from './AssayRunDeleteModal';
 
 describe('<AssayRunDeleteModal/>', () => {
     test('Show progress', () => {
-        const component = (
+        const wrapper = mount(
             <AssayRunDeleteModal
-                onCancel={jest.fn()}
                 afterDelete={jest.fn()}
                 afterDeleteFailure={jest.fn()}
                 numToDelete={1}
+                onCancel={jest.fn()}
             />
         );
-        const wrapper = mount(component);
 
         // Confirm modal
         expect(wrapper.childAt(0).childAt(0).text().indexOf('delete 1 assay run')).toBeGreaterThan(-1);

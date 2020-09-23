@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
-import { createDeleteErrorNotification, createDeleteSuccessNotification, deleteAssayRuns, Progress } from '../..';
-
-import { AssayRunDeleteConfirmModal } from './AssayRunDeleteConfirmModal';
+import {
+    ConfirmModal,
+    createDeleteErrorNotification,
+    createDeleteSuccessNotification,
+    deleteAssayRuns,
+    Progress,
+} from '../..';
 
 interface Props {
     afterDelete: () => void;
@@ -13,49 +17,66 @@ interface Props {
     selectedRowId?: string;
 }
 
-export function AssayRunDeleteModal(props: Props) {
+export const AssayRunDeleteModal: FC<Props> = props => {
     const { afterDelete, afterDeleteFailure, numToDelete, onCancel, selectionKey, selectedRowId } = props;
-    const [showProgress, setShowProgress] = useState<boolean>();
-    const noun = numToDelete === 1 ? ' assay run' : ' assay runs';
+    const [showProgress, setShowProgress] = useState<boolean>(false);
+    const noun = useMemo<string>(() => (numToDelete === 1 ? ' assay run' : ' assay runs'), [numToDelete]);
 
-    function onConfirm(): void {
+    const onConfirm = async (): Promise<void> => {
         setShowProgress(true);
-        deleteAssayRuns(selectionKey, selectedRowId, true)
-            .then(response => {
-                const numRunsCascadeDeleted = response.hasOwnProperty('runIdsCascadeDeleted')
-                    ? response.runIdsCascadeDeleted.length
-                    : 0;
-                const additionalInfo =
-                    numRunsCascadeDeleted > 0
-                        ? ' In addition, ' +
-                          numRunsCascadeDeleted +
-                          ' replaced ' +
-                          (numRunsCascadeDeleted === 1 ? 'run was' : 'runs were') +
-                          ' also deleted.'
-                        : '';
 
-                afterDelete();
-                createDeleteSuccessNotification(noun, numToDelete, additionalInfo);
-            })
-            .catch(reason => {
-                console.error(reason);
-                setShowProgress(false);
-                createDeleteErrorNotification(noun);
-                afterDeleteFailure();
-            });
-    }
+        try {
+            const response = await deleteAssayRuns(selectionKey, selectedRowId, true);
+
+            const numRunsCascadeDeleted = response.hasOwnProperty('runIdsCascadeDeleted')
+                ? response.runIdsCascadeDeleted.length
+                : 0;
+            const additionalInfo =
+                numRunsCascadeDeleted > 0
+                    ? ' In addition, ' +
+                      numRunsCascadeDeleted +
+                      ' replaced ' +
+                      (numRunsCascadeDeleted === 1 ? 'run was' : 'runs were') +
+                      ' also deleted.'
+                    : '';
+
+            afterDelete();
+            createDeleteSuccessNotification(noun, numToDelete, additionalInfo);
+        } catch (error) {
+            console.error(error);
+            setShowProgress(false);
+            createDeleteErrorNotification(noun);
+            afterDeleteFailure();
+        }
+    };
 
     return (
         <>
             {!showProgress && (
-                <AssayRunDeleteConfirmModal numToDelete={numToDelete} onConfirm={onConfirm} onCancel={onCancel} />
+                <ConfirmModal
+                    cancelButtonText="Cancel"
+                    confirmButtonText="Yes, Delete"
+                    msg={
+                        <span>
+                            The entirety of the {numToDelete > 1 ? numToDelete : ''} selected {noun} and any of{' '}
+                            {numToDelete === 1 ? 'its' : 'their'} previously replaced versions will be permanently
+                            deleted.&nbsp;
+                            <p className="top-spacing">
+                                <strong>Deletion cannot be undone.</strong> Do you want to proceed?
+                            </p>
+                        </span>
+                    }
+                    onCancel={onCancel}
+                    onConfirm={onConfirm}
+                    title={'Permanently delete ' + numToDelete + noun + '?'}
+                />
             )}
             <Progress
-                modal={true}
                 estimate={numToDelete * 10}
-                title={'Deleting ' + numToDelete + noun}
+                modal={true}
+                title={`Deleting ${numToDelete}${noun}`}
                 toggle={showProgress}
             />
         </>
     );
-}
+};

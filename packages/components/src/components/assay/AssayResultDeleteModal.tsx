@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import {
     ConfirmModal,
@@ -10,55 +9,47 @@ import {
     SchemaQuery,
 } from '../..';
 
-import { AssayResultDeleteConfirmModal } from './AssayResultDeleteConfirmModal';
-
 interface Props {
-    afterDelete: () => any;
-    afterDeleteFailure: () => any;
+    afterDelete: () => void;
+    afterDeleteFailure: () => void;
     maxToDelete?: number;
-    onCancel: () => any;
+    onCancel: () => void;
     schemaQuery: SchemaQuery;
     selectedIds: string[];
 }
 
-export function AssayResultDeleteModal(props: Props) {
+export const AssayResultDeleteModal: FC<Props> = props => {
     const { onCancel, afterDelete, afterDeleteFailure, maxToDelete, schemaQuery, selectedIds } = props;
-    const [showProgress, setShowProgress] = useState<boolean>();
+    const [showProgress, setShowProgress] = useState<boolean>(false);
     const numToDelete = selectedIds.length;
-    const noun = numToDelete ? ' assay result' : ' assay results';
+    const noun = useMemo<string>(() => (numToDelete ? ' assay result' : ' assay results'), [numToDelete]);
 
-    function onConfirm() {
+    const onConfirm = async (): Promise<void> => {
         setShowProgress(true);
-        const rows = selectedIds.map(id => ({ RowId: id }));
-        deleteRows({
-            schemaQuery,
-            rows,
-        })
-            .then(response => {
-                afterDelete();
-                createDeleteSuccessNotification(noun, numToDelete);
-            })
-            .catch(reason => {
-                console.error(reason);
-                setShowProgress(false);
-                createDeleteErrorNotification(noun);
-                afterDeleteFailure();
+
+        try {
+            await deleteRows({
+                rows: selectedIds.map(id => ({ RowId: id })),
+                schemaQuery,
             });
-    }
+
+            afterDelete();
+            createDeleteSuccessNotification(noun, numToDelete);
+        } catch (error) {
+            console.error(error);
+            setShowProgress(false);
+            createDeleteErrorNotification(noun);
+            afterDeleteFailure();
+        }
+    };
 
     if (maxToDelete && numToDelete > maxToDelete) {
         return (
             <ConfirmModal
-                title="Cannot Delete Assay Results"
-                onCancel={onCancel}
-                msg={
-                    'You cannot delete more than ' +
-                    maxToDelete +
-                    ' individual assay results at a time.  ' +
-                    ' Please select fewer results and try again.'
-                }
-                onConfirm={undefined}
                 cancelButtonText="Dismiss"
+                msg={`You cannot delete more than ${maxToDelete} individual assay results at a time. Please select fewer results and try again.`}
+                onCancel={onCancel}
+                title="Cannot Delete Assay Results"
             />
         );
     }
@@ -66,14 +57,28 @@ export function AssayResultDeleteModal(props: Props) {
     return (
         <>
             {!showProgress && (
-                <AssayResultDeleteConfirmModal numToDelete={numToDelete} onConfirm={onConfirm} onCancel={onCancel} />
+                <ConfirmModal
+                    cancelButtonText="Cancel"
+                    confirmButtonText="Yes, Delete"
+                    msg={
+                        <span>
+                            The {numToDelete > 1 ? numToDelete : ''} selected {noun} will be permanently deleted.&nbsp;
+                            <p className="top-spacing">
+                                <strong>Deletion cannot be undone.</strong> Do you want to proceed?
+                            </p>
+                        </span>
+                    }
+                    onCancel={onCancel}
+                    onConfirm={onConfirm}
+                    title={`Permanently delete ${numToDelete}${noun}?`}
+                />
             )}
             <Progress
-                modal={true}
                 estimate={numToDelete * 10}
-                title={'Deleting ' + numToDelete + noun}
+                modal={true}
+                title={`Deleting ${numToDelete}${noun}`}
                 toggle={showProgress}
             />
         </>
     );
-}
+};

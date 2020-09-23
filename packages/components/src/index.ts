@@ -53,7 +53,6 @@ import {
     naturalSort,
     naturalSortByProperty,
     resolveKey,
-    resolveKeyFromJson,
     resolveSchemaQuery,
     toggleDevTools,
     valueIsEmpty,
@@ -102,7 +101,7 @@ import {
     initNotificationsState,
 } from './internal/components/notifications/global';
 import { ConfirmModal } from './internal/components/base/ConfirmModal';
-import { datePlaceholder, formatDate, formatDateTime, getDateFormat, getUnFormattedNumber } from './internal/util/Date';
+import { formatDate, formatDateTime, getDateFormat } from './internal/util/Date';
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
@@ -174,7 +173,7 @@ import {
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { URL_MAPPERS, URLResolver } from './internal/util/URLResolver';
 import { ActionMapper, URLService } from './internal/util/URLService';
-import { DATA_IMPORT_TOPIC, DELETE_SAMPLES_TOPIC, getHelpLink, helpLinkNode } from './internal/util/helpLinks';
+import { getHelpLink, helpLinkNode } from './internal/util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -403,9 +402,9 @@ import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQue
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
-import * as App from './internal/app';
 import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './QueryModel/utils';
 import { withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
+import * as App from './internal/app';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -684,7 +683,7 @@ export {
     inferDomainFromFile,
     InferDomainResponse,
     IFieldChange,
-    IBannerMessage, // TODO remove usages of this in platform and remove from export list here
+    IBannerMessage,
     IAppDomainHeader,
     BasePropertiesPanel,
     AssayPropertiesPanel,
@@ -721,17 +720,14 @@ export {
     WebDavFile,
     getWebDavFiles,
     uploadWebDavFile,
-    // util functions (TODO: need to see if all of these are still being used outside of this package)
-    datePlaceholder,
+    // util functions
     getDateFormat,
     getDisambiguatedSelectInputOptions,
-    getUnFormattedNumber,
     formatDate,
     formatDateTime,
     caseInsensitive,
     capitalizeFirstChar,
     resolveKey,
-    resolveKeyFromJson,
     naturalSort,
     naturalSortByProperty,
     generateId,
@@ -813,8 +809,6 @@ export {
     LastActionStatus,
     LoadingState,
     SCHEMAS,
-    DATA_IMPORT_TOPIC, // TODO looks like this isn't used outside this package
-    DELETE_SAMPLES_TOPIC, // TODO looks like this isn't used outside this package
     getSchemaQuery,
     resolveSchemaQuery,
     insertColumnFilter,

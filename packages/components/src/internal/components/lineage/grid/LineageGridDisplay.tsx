@@ -6,7 +6,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { Alert, AppURL, getLocation, Grid, GridProps } from '../../../../index';
+import { Alert, AppURL, getLocation, Grid, GridProps } from '../../../..';
 
 import { LineageGridModel } from '../models';
 import { DEFAULT_LINEAGE_DISTANCE } from '../constants';

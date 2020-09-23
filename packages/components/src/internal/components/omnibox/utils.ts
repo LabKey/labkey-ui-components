@@ -1,5 +1,5 @@
 import { List } from 'immutable';
-import { QueryColumn } from '../../../index';
+import { QueryColumn } from '../../..';
 
 /**
  * From the supplied columnName this method will determine which columns in the "columns" list

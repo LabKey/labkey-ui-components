@@ -4,7 +4,7 @@ import { Alert } from 'react-bootstrap';
 
 import { getQueryDetails, selectRows } from '../query/api';
 
-import { resolveErrorMessage } from '../../index';
+import { resolveErrorMessage } from '../..';
 
 import { SchemaQuery } from './base/models/model';
 import { QueryInfo } from './base/models/QueryInfo';

@@ -4,7 +4,7 @@ import PanelBody from 'react-bootstrap/lib/PanelBody';
 import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { Alert, DataClassDataType, LoadingSpinner, QueryGridModel, SchemaQuery } from '../../../index';
+import { Alert, DataClassDataType, LoadingSpinner, QueryGridModel, SchemaQuery } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 import { initUnitTestMocks } from '../../testHelpers';
 

@@ -1,6 +1,6 @@
 import { fromJS, List, Map } from 'immutable';
 
-import { DataClassDataType, QueryGridModel, SchemaQuery } from '../../../index';
+import { DataClassDataType, QueryGridModel, SchemaQuery } from '../../..';
 
 import { EntityChoice, IEntityTypeOption } from './models';
 import { getInitialParentChoices, parentValuesDiffer } from './utils';

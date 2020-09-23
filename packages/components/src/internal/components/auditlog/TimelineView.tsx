@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { App, getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../../index';
+import { App, getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../..';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 

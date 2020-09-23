@@ -1,7 +1,7 @@
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
-import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../../../index';
+import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../../..';
 
 import {
     DisplayObject,

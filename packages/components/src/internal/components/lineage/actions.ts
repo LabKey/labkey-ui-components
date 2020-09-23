@@ -7,7 +7,7 @@ import { Draft, produce } from 'immer';
 import { fromJS, Map, OrderedSet } from 'immutable';
 import { Experiment, Filter, getServerContext } from '@labkey/api';
 
-import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../../../index';
+import { AppURL, ISelectRowsResult, Location, SchemaQuery, SCHEMAS, selectRows } from '../../..';
 
 import {
     Lineage,

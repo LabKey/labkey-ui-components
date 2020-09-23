@@ -19,7 +19,7 @@ import { List } from 'immutable';
 import { Button } from 'react-bootstrap';
 import $ from 'jquery';
 
-import { AppURL } from '../../../index';
+import { AppURL } from '../../..';
 
 import NavItem, { ParentNavItem } from './NavItem';
 

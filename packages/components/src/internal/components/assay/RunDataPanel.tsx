@@ -32,7 +32,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { FileAttachmentForm } from '../files/FileAttachmentForm';
 import { Alert } from '../base/Alert';
 import { FileSizeLimitProps } from '../files/models';
-import { getEditorModel, helpLinkNode, IMPORT_DATA_FORM_TYPES } from '../../../index';
+import { getEditorModel, helpLinkNode, IMPORT_DATA_FORM_TYPES } from '../../..';
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
 import { getRunPropertiesFileName, getRunPropertiesRow } from './actions';

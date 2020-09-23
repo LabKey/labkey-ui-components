@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { generateId, QueryColumn, SelectInput } from '../../../../index';
+import { generateId, QueryColumn, SelectInput } from '../../../..';
 
 interface AliasInputProps {
     col: QueryColumn;

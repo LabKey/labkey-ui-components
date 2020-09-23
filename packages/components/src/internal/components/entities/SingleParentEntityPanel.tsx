@@ -18,7 +18,7 @@ import {
     RemoveEntityButton,
     SchemaQuery,
     SelectInput,
-} from '../../../index';
+} from '../../..';
 
 import { DETAIL_TABLE_CLASSES } from '../forms/constants';
 

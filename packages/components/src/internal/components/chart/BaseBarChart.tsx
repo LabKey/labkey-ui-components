@@ -1,7 +1,7 @@
 import * as React from 'react';
 import $ from 'jquery';
 
-import { debounce, generateId } from '../../../index';
+import { debounce, generateId } from '../../..';
 
 import { getBarChartPlotConfig } from './utils';
 

@@ -21,7 +21,7 @@ import {
     Page,
     PageHeader,
     SelectInput,
-} from '../../../index';
+} from '../../..';
 
 import { AuditDetails } from './AuditDetails';
 import { AuditDetailsModel } from './models';

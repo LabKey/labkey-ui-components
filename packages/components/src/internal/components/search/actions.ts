@@ -5,7 +5,7 @@ import { buildURL } from '../../url/ActionURL';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
 
 import { URLResolver } from '../../util/URLResolver';
-import { SCHEMAS } from '../../../index';
+import { SCHEMAS } from '../../..';
 
 import { SearchIdData, SearchResultCardData } from './models';
 

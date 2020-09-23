@@ -9,7 +9,7 @@ import { Progress } from '../base/Progress';
 import {QueryGridModel, SchemaQuery} from '../base/models/model';
 import { createDeleteErrorNotification, createDeleteSuccessNotification } from '../notifications/messaging';
 
-import {deleteRows, NotificationItemProps} from '../../../index';
+import {deleteRows, NotificationItemProps} from '../../..';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';

@@ -24,7 +24,7 @@ import { QueryColumn, QueryGridModel } from '../../base/models/model';
 import mixturesQueryInfo from '../../../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../../../test/data/mixtures-getQuery.json';
 import { initUnitTests, makeQueryInfo, makeTestData } from '../../../testHelpers';
-import { QueryInfo } from '../../../../index';
+import { QueryInfo } from '../../../..';
 
 import { FilterAction, getURLSuffix } from './Filter';
 import { ActionOption, Value } from './Action';

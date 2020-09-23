@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-import { SVGIcon, Theme } from '../../../../index';
+import { SVGIcon, Theme } from '../../../..';
 
 import { LineageNode } from '../models';
 import { LineageDataLink } from '../LineageDataLink';

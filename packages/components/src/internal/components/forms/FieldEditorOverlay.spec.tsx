@@ -1,7 +1,7 @@
 import React from 'react';
 import { fromJS } from "immutable";
 
-import { FieldEditorOverlay, QueryColumn, QueryInfo } from '../../../index';
+import { FieldEditorOverlay, QueryColumn, QueryInfo } from '../../..';
 import { mount } from 'enzyme';
 
 const queryInfo = QueryInfo.create({columns: fromJS({

@@ -16,7 +16,7 @@
 import React, { PureComponent } from 'react';
 import { List } from 'immutable';
 
-import { LoadingSpinner, QueryColumn, QueryGridModel } from '../../../../index';
+import { LoadingSpinner, QueryColumn, QueryGridModel } from '../../../..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from './DetailDisplay';
 

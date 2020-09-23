@@ -6,7 +6,7 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { Button } from 'react-bootstrap';
 
-import { AppURL, GridColumn } from '../../../index';
+import { AppURL, GridColumn } from '../../..';
 
 import { DEFAULT_LINEAGE_DISTANCE } from './constants';
 import { LINEAGE_DIRECTIONS } from './types';

@@ -9,7 +9,7 @@ import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 import { FilePreviewGrid } from '../files/FilePreviewGrid';
 import { InferDomainResponse } from '../base/models/model';
 
-import { DeleteIcon } from '../../../index';
+import { DeleteIcon } from '../../..';
 
 interface Props {
     noun: string;

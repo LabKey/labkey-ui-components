@@ -19,7 +19,7 @@ import { mount, shallow } from 'enzyme';
 
 import { fromJS } from 'immutable';
 
-import { QueryGridModel, QueryInfo } from '../../../index';
+import { QueryGridModel, QueryInfo } from '../../..';
 
 import { initUnitTests, makeQueryInfo, makeTestData } from '../../testHelpers';
 import mixturesQueryInfo from '../../../test/data/mixtures-getQueryDetails.json';

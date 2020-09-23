@@ -26,7 +26,7 @@ import { SearchAction } from '../omnibox/actions/Search';
 import { SortAction } from '../omnibox/actions/Sort';
 import { ViewAction } from '../omnibox/actions/View';
 import { QueryColumn, QueryGridModel } from '../base/models/model';
-import { QueryInfo } from '../../../index';
+import { QueryInfo } from '../../..';
 
 /**
  * This is a mapping of actions with their associated URL param. It is keyed by the name of action

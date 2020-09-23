@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-import { LoadingSpinner } from '../../../../index';
+import { LoadingSpinner } from '../../../..';
 
 import { LineageOptions } from '../types';
 import { Lineage } from '../models';

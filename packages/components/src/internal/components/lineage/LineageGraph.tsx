@@ -5,7 +5,7 @@
 import React, { PureComponent } from 'react';
 import { Experiment } from '@labkey/api';
 
-import { Alert, LoadingSpinner } from '../../../index';
+import { Alert, LoadingSpinner } from '../../..';
 
 import { InjectedLineage, withLineage, WithLineageOptions } from './withLineage';
 import { NodeInteractionProvider, WithNodeInteraction } from './actions';

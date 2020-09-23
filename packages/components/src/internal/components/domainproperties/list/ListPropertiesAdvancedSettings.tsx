@@ -4,7 +4,7 @@ import { Button, Col, FormControl, FormGroup, Modal, Radio } from 'react-bootstr
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../../../index';
+import { helpLinkNode, LabelHelpTip, ListModel, SelectInput } from '../../../..';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 

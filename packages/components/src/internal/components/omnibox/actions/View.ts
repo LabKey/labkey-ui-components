@@ -18,7 +18,7 @@ import { List } from 'immutable';
 import { QueryColumn } from '../../base/models/model';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
-import { QueryInfo } from '../../../../index';
+import { QueryInfo } from '../../../..';
 
 export class ViewAction implements Action {
     static NAME = 'view';

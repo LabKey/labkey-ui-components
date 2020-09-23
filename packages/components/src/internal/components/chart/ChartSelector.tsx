@@ -20,7 +20,7 @@ import { QueryGridModel, SchemaQuery } from '../base/models/model';
 import { DataViewInfo, IDataViewInfo } from '../../models';
 
 import { fetchCharts } from '../../actions';
-import { naturalSort } from '../../../index';
+import { naturalSort } from '../../..';
 import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../constants';
 import { loadReports } from '../../query/reports';
 

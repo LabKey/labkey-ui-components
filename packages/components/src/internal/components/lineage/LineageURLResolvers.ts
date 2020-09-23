@@ -1,6 +1,6 @@
 import { ActionURL, Experiment, Filter } from '@labkey/api';
 
-import { URLResolver } from '../../../index';
+import { URLResolver } from '../../..';
 
 import { LineageLinkMetadata, LineageOptions, LineageURLResolvers } from './types';
 import { LineageNode } from './models';

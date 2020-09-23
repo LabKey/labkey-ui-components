@@ -8,7 +8,7 @@ import produce from 'immer';
 import { SectionHeading } from '../SectionHeading';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
-import { LoadingSpinner, Principal, SelectInput } from '../../../../index';
+import { LoadingSpinner, Principal, SelectInput } from '../../../..';
 
 import { IssuesListDefModel } from './models';
 import {

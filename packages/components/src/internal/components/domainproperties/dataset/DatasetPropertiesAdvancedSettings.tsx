@@ -5,7 +5,7 @@ import { getServerContext } from '@labkey/api';
 
 import { Option } from 'react-select';
 
-import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInput } from '../../../../index';
+import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInput } from '../../../..';
 
 import { DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
 

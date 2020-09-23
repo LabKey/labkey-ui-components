@@ -44,7 +44,7 @@ import { Progress } from '../base/Progress';
 import { FileSizeLimitProps } from '../files/models';
 import { IMPORT_DATA_FORM_TYPES } from '../../constants';
 
-import { dismissNotifications } from '../../../index';
+import { dismissNotifications } from '../../..';
 
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';

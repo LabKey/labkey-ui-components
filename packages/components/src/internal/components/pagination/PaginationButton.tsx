@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import classNames from 'classnames';
 
 import { blurActiveElement } from '../../util/utils';
-import { Tip } from '../../../index';
+import { Tip } from '../../..';
 
 interface Props {
     disabled: boolean;

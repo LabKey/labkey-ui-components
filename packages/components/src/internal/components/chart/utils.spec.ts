@@ -1,4 +1,4 @@
-import { ISelectRowsResult, processChartData } from '../../../index';
+import { ISelectRowsResult, processChartData } from '../../..';
 import AssayRunCountsRowsJson from '../../../test/data/AssayRunCounts-getQueryRows.json';
 
 import { getBarChartPlotConfig } from './utils';

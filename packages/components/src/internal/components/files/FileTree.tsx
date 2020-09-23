@@ -8,7 +8,7 @@ import { Checkbox, Alert } from 'react-bootstrap';
 import { List } from 'immutable';
 import classNames from 'classnames';
 
-import { LoadingSpinner } from '../../../index';
+import { LoadingSpinner } from '../../..';
 
 const customStyle = {
     tree: {

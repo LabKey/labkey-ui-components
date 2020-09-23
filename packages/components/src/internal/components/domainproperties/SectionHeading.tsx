@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LabelHelpTip } from '../../../index';
+import { LabelHelpTip } from '../../..';
 
 interface Props {
     title: string;

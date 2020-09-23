@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 
 import { DomainPanelStatus } from '../models';
 
-import { Alert } from '../../../../index';
+import { Alert } from '../../../..';
 import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
 import getDomainDetailsJSON from '../../../../test/data/issuesListDef-getDomainDetails.json';
 

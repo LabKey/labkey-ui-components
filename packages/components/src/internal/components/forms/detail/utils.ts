@@ -1,4 +1,4 @@
-import { QueryInfo } from '../../../../index';
+import { QueryInfo } from '../../../..';
 import { List, Map } from 'immutable';
 
 function arrayListIsEqual(valueArr: Array<string | number>, nestedModelList: List<Map<string, any>>): boolean {

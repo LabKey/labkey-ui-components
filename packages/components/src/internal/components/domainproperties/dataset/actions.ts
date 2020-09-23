@@ -19,7 +19,7 @@ import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 import { fromJS, List } from 'immutable';
 import { Option } from 'react-select';
 
-import { DomainDesign, DomainField, selectRows } from '../../../../index';
+import { DomainDesign, DomainField, selectRows } from '../../../..';
 
 import { DatasetModel } from './models';
 import {

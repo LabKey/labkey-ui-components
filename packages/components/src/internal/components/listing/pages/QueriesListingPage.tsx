@@ -5,7 +5,7 @@
 import React, { Component, ReactNode } from 'react';
 import { Link, WithRouterProps } from 'react-router';
 
-import { AppURL, Breadcrumb, Page, PageHeader } from '../../../../index';
+import { AppURL, Breadcrumb, Page, PageHeader } from '../../../..';
 import { QueriesListing } from '../QueriesListing';
 
 export class QueriesListingPage extends Component<WithRouterProps> {

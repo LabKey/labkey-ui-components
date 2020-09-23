@@ -19,7 +19,7 @@ import {
     QueryGridModel,
     resolveErrorMessage,
     updateRows,
-} from '../../../index';
+} from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
 import { DELIMITER } from '../forms/input/SelectInput';

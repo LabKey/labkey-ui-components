@@ -17,7 +17,7 @@ import React, { PureComponent } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { QueryGridModel } from '../base/models/model';
-import { QueryModel } from '../../../index';
+import { QueryModel } from '../../..';
 
 interface Props {
     id: string;

@@ -1,7 +1,7 @@
 import React, { ComponentType, PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 
-import { LoadingState } from '../../../index';
+import { LoadingState } from '../../..';
 
 import { loadLineageResult, loadSampleStats, loadSeedResult } from './actions';
 import { ILineage, Lineage } from './models';

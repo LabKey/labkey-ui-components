@@ -1,6 +1,6 @@
 import { List, Map, Set } from 'immutable';
 
-import { naturalSort, QueryGridModel } from '../../../index';
+import { naturalSort, QueryGridModel } from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
 import { PARENT_DATA_GRID_PREFIX } from './constants';

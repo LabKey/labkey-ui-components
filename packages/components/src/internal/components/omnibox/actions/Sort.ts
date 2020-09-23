@@ -19,7 +19,7 @@ import { parseColumns, resolveFieldKey } from '../utils';
 import { QueryColumn } from '../../base/models/model';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
-import { QuerySort } from '../../../../index';
+import { QuerySort } from '../../../..';
 
 export class SortAction implements Action {
     iconCls = 'sort';

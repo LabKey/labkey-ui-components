@@ -22,7 +22,7 @@ import { List } from 'immutable';
 
 import { SectionHeading } from '../SectionHeading';
 import { DomainFieldLabel } from '../DomainFieldLabel';
-import { DomainField, SelectInput } from '../../../../index';
+import { DomainField, SelectInput } from '../../../..';
 
 import { DATETIME_RANGE_URI } from '../constants';
 

@@ -5,7 +5,7 @@
 import React, { FC, memo, useMemo } from 'react';
 import { Link, WithRouterProps } from 'react-router';
 
-import { AppURL, SchemaQuery, Breadcrumb, InjectedQueryModels, GridPanel, Page, PageHeader } from '../../../../index';
+import { AppURL, SchemaQuery, Breadcrumb, InjectedQueryModels, GridPanel, Page, PageHeader } from '../../../..';
 
 // Importing "withQueryModels" from "../.." causes a circular dependency break...
 import { withQueryModels } from '../../../../QueryModel/withQueryModels';

@@ -20,7 +20,7 @@ import AutosizeInput from 'react-input-autosize';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { naturalSort, QueryColumn } from '../../../index';
+import { naturalSort, QueryColumn } from '../../..';
 
 import { Action, ActionOption, ActionValue, ActionValueCollection } from './actions/Action';
 import { Option } from './Option';

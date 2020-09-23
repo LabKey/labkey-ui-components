@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 
 import DomainForm from '../DomainForm';
 
-import { Alert } from '../../../../index';
+import { Alert } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';

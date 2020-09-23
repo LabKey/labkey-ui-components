@@ -6,7 +6,7 @@ import { Draft, immerable, produce } from 'immer';
 import { List, Map, Record } from 'immutable';
 import { Experiment, Utils } from '@labkey/api';
 
-import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../../../index';
+import { GridColumn, LineageFilter, LoadingState, QueryInfo } from '../../..';
 
 import {
     DEFAULT_GROUPING_OPTIONS,

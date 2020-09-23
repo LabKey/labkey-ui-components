@@ -2,7 +2,7 @@ import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { buildURL, Principal } from '../../../../index';
+import { buildURL, Principal } from '../../../..';
 
 import { DuplicateFilesResponse } from '../../assay/actions';
 

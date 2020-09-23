@@ -4,7 +4,7 @@
  */
 import React from 'react';
 
-import { Page, PageHeader } from '../../../index';
+import { Page, PageHeader } from '../../..';
 
 import { InsufficientPermissionsAlert } from './InsufficientPermissionsAlert';
 

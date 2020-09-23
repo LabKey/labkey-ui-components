@@ -14,7 +14,7 @@ import {
     SAMPLE_TYPE,
     saveDomain,
     SCHEMAS,
-} from '../../../../index';
+} from '../../../..';
 import DomainForm from '../DomainForm';
 import { IParentOption } from '../../entities/models';
 

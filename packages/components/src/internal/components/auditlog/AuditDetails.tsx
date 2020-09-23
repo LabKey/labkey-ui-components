@@ -7,7 +7,7 @@ import { List, Map } from 'immutable';
 import { Row, Col } from 'react-bootstrap';
 import { Security, User as IUser } from '@labkey/api';
 
-import { AppURL, capitalizeFirstChar, Grid, GridColumn, LoadingSpinner, User } from '../../../index';
+import { AppURL, capitalizeFirstChar, Grid, GridColumn, LoadingSpinner, User } from '../../..';
 
 import { AuditDetailsModel } from './models';
 import { getEventDataValueDisplay } from './utils';

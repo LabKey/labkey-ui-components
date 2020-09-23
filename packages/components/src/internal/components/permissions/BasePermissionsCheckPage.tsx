@@ -4,7 +4,7 @@
  */
 import React from 'react';
 
-import { InsufficientPermissionsPage, LoadingSpinner, Page, PageDetailHeader, Notification, User } from '../../../index';
+import { InsufficientPermissionsPage, LoadingSpinner, Page, PageDetailHeader, Notification, User } from '../../..';
 
 interface Props {
     user: User;

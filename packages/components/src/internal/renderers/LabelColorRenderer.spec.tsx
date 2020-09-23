@@ -2,7 +2,7 @@ import React from 'react';
 import { fromJS } from 'immutable';
 import renderer from 'react-test-renderer';
 
-import { LabelColorRenderer } from '../../index';
+import { LabelColorRenderer } from '../..';
 
 describe('LabelColorRenderer', () => {
     test('undefined data', () => {

@@ -4,7 +4,7 @@
  */
 import React, { Component, ReactNode } from 'react';
 
-import { Page, PageHeader } from '../../../../index';
+import { Page, PageHeader } from '../../../..';
 import { SchemaListing } from '../SchemaListing';
 
 export class SchemaListingPage extends Component {

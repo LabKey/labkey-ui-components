@@ -1,4 +1,4 @@
-import { SCHEMAS } from '../../../index';
+import { SCHEMAS } from '../../..';
 
 export const RUN_PROPERTIES_GRID_ID = 'assay-run-details';
 

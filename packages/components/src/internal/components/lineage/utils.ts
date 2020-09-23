@@ -5,7 +5,7 @@
 import { List, Map } from 'immutable';
 import { Experiment, Utils } from '@labkey/api';
 
-import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../../../index';
+import { imageURL, SchemaQuery, SCHEMAS, Theme } from '../../..';
 
 import { LineageItemWithMetadata, LineageLink, LineageNode } from './models';
 import { LINEAGE_DIRECTIONS, LineageIconMetadata } from './types';

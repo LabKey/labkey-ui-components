@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 
-import { ISelectRowsResult, naturalSort } from '../../../index';
+import { ISelectRowsResult, naturalSort } from '../../..';
 
 interface ChartDataProps {
     data: any[];

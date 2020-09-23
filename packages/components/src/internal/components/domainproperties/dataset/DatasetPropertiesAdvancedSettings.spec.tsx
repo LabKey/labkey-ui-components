@@ -22,7 +22,7 @@ import { mount } from 'enzyme';
 import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import getDatasetDesignSharedStudy from '../../../../test/data/dataset-getDatasetDesignSharedStudy.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
-import { SelectInput } from '../../../../index';
+import { SelectInput } from '../../../..';
 
 import { AdvancedSettings, DatasetSettingsInput, DatasetSettingsSelect } from './DatasetPropertiesAdvancedSettings';
 import { DatasetModel } from './models';

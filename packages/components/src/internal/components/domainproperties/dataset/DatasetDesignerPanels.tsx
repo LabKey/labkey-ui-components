@@ -29,7 +29,7 @@ import { DomainDesign, DomainField, DomainFieldIndexChange } from '../models';
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import DomainForm from '../DomainForm';
 
-import { importData, Progress, resolveErrorMessage } from '../../../../index';
+import { importData, Progress, resolveErrorMessage } from '../../../..';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_NOT_LOCKED } from '../constants';
 

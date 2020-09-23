@@ -6,7 +6,7 @@ import { mount } from 'enzyme';
 
 import { initUnitTestMocks } from '../../testHelpers';
 
-import { QueryGridPanel, SelectInput } from '../../../index';
+import { QueryGridPanel, SelectInput } from '../../..';
 
 import { IEntityTypeOption } from './models';
 import { DataClassDataType } from './constants';

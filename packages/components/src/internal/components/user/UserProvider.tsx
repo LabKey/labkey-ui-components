@@ -5,7 +5,7 @@
 import React from 'react';
 import { Map, fromJS } from 'immutable';
 
-import { getUserProperties, LoadingPage, User } from '../../../index';
+import { getUserProperties, LoadingPage, User } from '../../..';
 
 interface Props {
     user: User;

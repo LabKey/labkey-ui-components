@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Alert } from "../../../index";
+import { Alert } from "../../..";
 
 export function InsufficientPermissionsAlert(props: any) {
     return <Alert>You do not have permissions for this action.</Alert>;

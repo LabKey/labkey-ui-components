@@ -2,7 +2,7 @@ import React from 'react';
 
 import { WithRouterProps } from 'react-router';
 
-import { Alert, AssayDefinitionModel, AssayProtocolModel, getActionErrorMessage, LoadingPage, NotFound } from '../../../index';
+import { Alert, AssayDefinitionModel, AssayProtocolModel, getActionErrorMessage, LoadingPage, NotFound } from '../../..';
 
 import { AssayStateModel } from './models';
 

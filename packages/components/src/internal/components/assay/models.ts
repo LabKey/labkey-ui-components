@@ -22,7 +22,7 @@ import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel } fr
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { AssayProtocolModel } from '../../../index';
+import { AssayProtocolModel } from '../../..';
 
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel;

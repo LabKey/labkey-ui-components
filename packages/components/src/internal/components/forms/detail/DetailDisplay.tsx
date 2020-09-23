@@ -2,7 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
 
-import { DefaultRenderer, QueryColumn } from '../../../../index';
+import { DefaultRenderer, QueryColumn } from '../../../..';
 
 import { DETAIL_TABLE_CLASSES } from '../constants';
 

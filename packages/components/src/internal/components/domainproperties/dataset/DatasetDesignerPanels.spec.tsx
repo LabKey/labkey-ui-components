@@ -20,7 +20,7 @@ import { mount } from 'enzyme';
 
 import getDatasetDesign from '../../../../test/data/dataset-getDatasetDesign.json';
 import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/constants';
-import { Alert } from '../../../../index';
+import { Alert } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
 import { DatasetDesignerPanels } from './DatasetDesignerPanels';

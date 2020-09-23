@@ -8,7 +8,7 @@ import { Security } from '@labkey/api';
 
 import { LoadingPage } from '../base/LoadingPage';
 
-import { resolveErrorMessage } from '../../../index';
+import { resolveErrorMessage } from '../../..';
 
 import { PermissionsProviderProps, Principal } from './models';
 import {

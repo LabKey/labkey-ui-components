@@ -22,7 +22,7 @@ import { updateRows } from '../../query/api';
 import { QueryColumn } from '../base/models/model';
 
 import { FieldEditForm, FieldEditProps } from './input/FieldEditInput';
-import { QueryInfo, resolveErrorMessage } from '../../../index';
+import { QueryInfo, resolveErrorMessage } from '../../..';
 import { getServerContext } from '@labkey/api';
 
 export interface FieldEditorOverlayProps {

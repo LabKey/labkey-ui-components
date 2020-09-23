@@ -4,7 +4,7 @@
  */
 import { Edge } from 'vis-network';
 
-import { LoadingState } from '../../../index';
+import { LoadingState } from '../../..';
 
 import {
     collapsedNodesTest1,

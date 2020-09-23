@@ -5,7 +5,7 @@
 import React, { FunctionComponent, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 
-import { Alert, Grid, GridColumn, LoadingSpinner } from '../../../index';
+import { Alert, Grid, GridColumn, LoadingSpinner } from '../../..';
 
 import { InjectedLineage, withLineage } from './withLineage';
 

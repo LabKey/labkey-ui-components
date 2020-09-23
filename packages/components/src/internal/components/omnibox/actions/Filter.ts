@@ -20,7 +20,7 @@ import { QueryColumn } from '../../base/models/model';
 
 import { parseColumns, resolveFieldKey } from '../utils';
 
-import { QueryInfo } from '../../../../index';
+import { QueryInfo } from '../../../..';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
 

@@ -52,7 +52,6 @@ import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
 import { Alert } from '../base/Alert';
 import { PlacementType } from '../editable/Controls';
 import {
-    DATA_IMPORT_TOPIC,
     FileAttachmentForm,
     getActionErrorMessage,
     helpLinkNode,
@@ -60,7 +59,7 @@ import {
     withFormSteps,
     WithFormStepsProps,
     WizardNavButtons,
-} from '../../../index';
+} from '../../..';
 import { FormStep, FormTabs } from '../forms/FormStep';
 import { FileSizeLimitProps } from '../files/models';
 import { resolveErrorMessage } from '../../util/messaging';
@@ -75,6 +74,7 @@ import {
 } from './models';
 
 import { getEntityTypeData } from './actions';
+import { DATA_IMPORT_TOPIC } from "../../util/helpLinks";
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;

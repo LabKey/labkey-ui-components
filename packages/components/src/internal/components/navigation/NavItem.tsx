@@ -16,7 +16,7 @@
 import React, { FC, memo, useEffect, useRef, useState } from 'react';
 import { Link, withRouter, WithRouterProps } from 'react-router';
 
-import { AppURL } from '../../../index';
+import { AppURL } from '../../..';
 
 interface NavItemProps {
     onActive?: (activeEl: HTMLElement) => void;

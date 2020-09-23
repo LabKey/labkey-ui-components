@@ -1,4 +1,4 @@
-import { AppURL } from '../../../index';
+import { AppURL } from '../../..';
 
 import { createProductUrlFromParts, createProductUrl } from './utils';
 

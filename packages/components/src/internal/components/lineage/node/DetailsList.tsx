@@ -1,6 +1,6 @@
 import React, { Fragment, PureComponent, ReactNode } from 'react';
 
-import { SVGIcon } from '../../../../index';
+import { SVGIcon } from '../../../..';
 
 import { LineageItemWithMetadata, LineageIOWithMetadata, LineageNode } from '../models';
 import { LineageNodeCollection } from '../vis/VisGraphGenerator';

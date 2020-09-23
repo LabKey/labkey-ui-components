@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.96.0
+*Released*: 23 September 2020
+* Add AssayRunDeleteModal and AssayResultDeleteModal components
+* Factor AssayRunDeleteConfirmModal and AssayResultDeleteConfirmModal into the above components
+
 ### version 0.95.0
 *Released*: 22 September 2020
 * Allow for custom root label for FileTree

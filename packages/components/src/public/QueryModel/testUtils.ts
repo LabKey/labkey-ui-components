@@ -1,4 +1,4 @@
-import { Actions, LoadingState, QueryInfo, QueryModel } from '..';
+import { Actions, LoadingState, QueryInfo, QueryModel } from '../..';
 
 /**
  * @ignore

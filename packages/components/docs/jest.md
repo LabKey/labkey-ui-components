@@ -107,11 +107,11 @@ has its own jest tests will currently need to mock the `LABKEY` object if that m
     1. [domainproperties/AdvancedSettings.spec.tsx](src/internal/components/domainproperties/AdvancedSettings.spec.tsx)
     1. [omnibox/OmniBox.spec.tsx](src/internal/components/omnibox/OmniBox.spec.tsx)
 1. Enzyme examples that `.simulate()` events (i.e. `click` or `change`)
-    1. [QueryModel/GridPanel.spec.tsx](../src/QueryModel/GridPanel.spec.tsx)
+    1. [QueryModel/GridPanel.spec.tsx](src/public/QueryModel/GridPanel.spec.tsx)
 1. Snapshot examples using `renderer` and `toMatchSnapshot()`
     1. [input/ColorPickerInput.spec.tsx](src/internal/components/forms/input/ColorPickerInput.spec.tsx)
 1. Using `async` with `await sleep()`
-    1. [QueryModel/withQueryModels.spec.tsx](../src/QueryModel/withQueryModels.spec.tsx)
+    1. [QueryModel/withQueryModels.spec.tsx](src/public/QueryModel/withQueryModels.spec.tsx)
 1. Using `jest.mock`
     1. [pagination/Pagination.spec.tsx](src/internal/components/pagination/Pagination.spec.tsx)
     1. [components/QueryGrid.spec.tsx](src/internal/components/QueryGrid.spec.tsx)

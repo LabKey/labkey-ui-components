@@ -8,7 +8,7 @@ import { Link, WithRouterProps } from 'react-router';
 import { AppURL, SchemaQuery, Breadcrumb, InjectedQueryModels, GridPanel, Page, PageHeader } from '../../../..';
 
 // Importing "withQueryModels" from "../.." causes a circular dependency break...
-import { withQueryModels } from '../../../../QueryModel/withQueryModels';
+import { withQueryModels } from '../../../../public/QueryModel/withQueryModels';
 
 interface BodyProps {
     id: string;

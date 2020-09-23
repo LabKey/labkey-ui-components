@@ -12,14 +12,14 @@ import {
     QuerySort,
     SchemaQuery,
     withQueryModels,
-} from '..';
+} from '../..';
 
-import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../internal/testHelpers';
-import { MockQueryModelLoader } from '../test/MockQueryModelLoader';
-import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
-import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
-import aminoAcidsQueryInfo from '../test/data/assayAminoAcidsData-getQueryDetails.json';
-import aminoAcidsQuery from '../test/data/assayAminoAcidsData-getQuery.json';
+import { initUnitTests, makeQueryInfo, makeTestData, sleep } from '../../internal/testHelpers';
+import { MockQueryModelLoader } from '../../test/MockQueryModelLoader';
+import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
+import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
+import aminoAcidsQueryInfo from '../../test/data/assayAminoAcidsData-getQueryDetails.json';
+import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
 
 import { RowsResponse } from './QueryModelLoader';
 

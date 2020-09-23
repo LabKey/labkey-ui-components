@@ -7,7 +7,7 @@ import { initLineageMocks, initQueryGridMocks, initUserPropsMocks } from '../sto
 import { QueryInfo } from './components/base/models/QueryInfo';
 import { applyQueryMetadata, handle132Response } from './query/api';
 import { bindColumnRenderers } from './renderers';
-import { RowsResponse } from '../QueryModel/QueryModelLoader';
+import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
 import { URLService } from './util/URLService';
 import { URL_MAPPERS } from './util/URLResolver';
 

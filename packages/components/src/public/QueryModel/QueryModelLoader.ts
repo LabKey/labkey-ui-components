@@ -10,12 +10,12 @@ import {
     QueryInfo,
     selectRows,
     setSelected,
-} from '..';
-import { bindColumnRenderers } from '../internal/renderers';
-import { clearSelected, fetchCharts, ISelectResponse, selectAll } from '../internal/actions';
-import { VISUALIZATION_REPORTS } from '../internal/constants';
+} from '../..';
+import { bindColumnRenderers } from '../../internal/renderers';
+import { clearSelected, fetchCharts, ISelectResponse, selectAll } from '../../internal/actions';
+import { VISUALIZATION_REPORTS } from '../../internal/constants';
 
-import { DataViewInfo } from '../internal/models';
+import { DataViewInfo } from '../../internal/models';
 
 import { GridMessage, QueryModel } from './QueryModel';
 

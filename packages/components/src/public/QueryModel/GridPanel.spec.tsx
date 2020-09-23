@@ -3,14 +3,14 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Filter } from '@labkey/api';
 
-import { GRID_CHECKBOX_OPTIONS, GridPanel, LoadingState, QueryInfo, QueryModel, QuerySort, SchemaQuery } from '..';
+import { GRID_CHECKBOX_OPTIONS, GridPanel, LoadingState, QueryInfo, QueryModel, QuerySort, SchemaQuery } from '../..';
 
-import { initUnitTests, makeQueryInfo, makeTestData } from '../internal/testHelpers';
-import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
-import mixturesQuery from '../test/data/mixtures-getQueryPaging.json';
+import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/testHelpers';
+import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
+import mixturesQuery from '../../test/data/mixtures-getQueryPaging.json';
 
-import { ActionValue } from '../internal/components/omnibox/actions/Action';
-import { Change, ChangeType } from '../internal/components/omnibox/OmniBox';
+import { ActionValue } from '../../internal/components/omnibox/actions/Action';
+import { Change, ChangeType } from '../../internal/components/omnibox/OmniBox';
 
 import { RequiresModelAndActions } from './withQueryModels';
 import { RowsResponse } from './QueryModelLoader';

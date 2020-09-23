@@ -1,6 +1,6 @@
-import { LoadingState, QueryInfo, SchemaQuery, QuerySort } from '..';
-import { initUnitTests, makeQueryInfo } from '../internal/testHelpers';
-import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
+import { LoadingState, QueryInfo, SchemaQuery, QuerySort } from '../..';
+import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
+import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 
 import { QueryConfig, QueryModel } from './QueryModel';
 

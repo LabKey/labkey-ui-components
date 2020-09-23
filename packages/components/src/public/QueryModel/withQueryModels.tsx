@@ -6,7 +6,7 @@ import { Draft, produce } from 'immer';
 
 import { withRouter, WithRouterProps } from 'react-router';
 
-import { LoadingState, naturalSort, QuerySort, resolveErrorMessage, SchemaQuery } from '..';
+import { LoadingState, naturalSort, QuerySort, resolveErrorMessage, SchemaQuery } from '../..';
 
 import { QueryConfig, QueryModel } from './QueryModel';
 import { DefaultQueryModelLoader, QueryModelLoader } from './QueryModelLoader';

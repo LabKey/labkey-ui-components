@@ -381,9 +381,9 @@ import { DataClassDataType, SampleTypeDataType } from './internal/components/ent
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 import { SampleTypeDesigner } from './internal/components/domainproperties/samples/SampleTypeDesigner';
 
-import { makeTestActions, makeTestQueryModel } from './QueryModel/testUtils';
-import { QueryConfig, QueryModel } from './QueryModel/QueryModel';
-import { QueryModelLoader } from './QueryModel/QueryModelLoader';
+import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
+import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
+import { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
 import {
     Actions,
     InjectedQueryModels,
@@ -392,17 +392,17 @@ import {
     QueryModelMap,
     RequiresModelAndActions,
     withQueryModels,
-} from './QueryModel/withQueryModels';
-import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
-import { DetailPanel, DetailPanelWithModel } from './QueryModel/DetailPanel';
-import { EditableDetailPanel } from './QueryModel/EditableDetailPanel';
+} from './public/QueryModel/withQueryModels';
+import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
+import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
+import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination, PaginationData } from './internal/components/pagination/Pagination';
 import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
-import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './QueryModel/utils';
+import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './public/QueryModel/utils';
 import { withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
 import * as App from './internal/app';
 

@@ -4,8 +4,8 @@ import { fromJS } from 'immutable';
 import { Button } from 'react-bootstrap';
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { DetailPanelHeader } from '../internal/components/forms/detail/DetailPanelHeader';
-import { extractChanges } from '../internal/components/forms/detail/utils';
+import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
+import { extractChanges } from '../../internal/components/forms/detail/utils';
 
 import {
     Alert,
@@ -17,7 +17,7 @@ import {
     resolveErrorMessage,
     titleRenderer,
     updateRows,
-} from '..';
+} from '../..';
 
 interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;

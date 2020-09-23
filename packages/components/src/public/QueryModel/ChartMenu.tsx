@@ -1,12 +1,12 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-import { DataViewInfoTypes } from '../internal/constants';
-import { ChartMenuItem } from '../internal/components/chart/ChartMenuItem';
-import { DataViewInfo } from '../internal/models';
+import { DataViewInfoTypes } from '../../internal/constants';
+import { ChartMenuItem } from '../../internal/components/chart/ChartMenuItem';
+import { DataViewInfo } from '../../internal/models';
 
-import { ChartModal } from '../internal/components/chart/ChartModal';
-import { blurActiveElement } from '../internal/util/utils';
+import { ChartModal } from '../../internal/components/chart/ChartModal';
+import { blurActiveElement } from '../../internal/util/utils';
 
 import { RequiresModelAndActions } from './withQueryModels';
 

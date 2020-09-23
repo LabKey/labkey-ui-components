@@ -13,16 +13,16 @@ import {
     QueryConfig,
     QueryInfo,
     QuerySort,
-} from '..';
-import { GRID_SELECTION_INDEX } from '../internal/components/base/models/constants';
-import { headerCell, headerSelectionCell } from '../internal/renderers';
-import { ActionValue } from '../internal/components/omnibox/actions/Action';
-import { FilterAction } from '../internal/components/omnibox/actions/Filter';
-import { SearchAction } from '../internal/components/omnibox/actions/Search';
-import { SortAction } from '../internal/components/omnibox/actions/Sort';
-import { ViewAction } from '../internal/components/omnibox/actions/View';
-import { Change, ChangeType, OmniBox } from '../internal/components/omnibox/OmniBox';
-import { Pagination } from '../internal/components/pagination/Pagination';
+} from '../..';
+import { GRID_SELECTION_INDEX } from '../../internal/components/base/models/constants';
+import { headerCell, headerSelectionCell } from '../../internal/renderers';
+import { ActionValue } from '../../internal/components/omnibox/actions/Action';
+import { FilterAction } from '../../internal/components/omnibox/actions/Filter';
+import { SearchAction } from '../../internal/components/omnibox/actions/Search';
+import { SortAction } from '../../internal/components/omnibox/actions/Sort';
+import { ViewAction } from '../../internal/components/omnibox/actions/View';
+import { Change, ChangeType, OmniBox } from '../../internal/components/omnibox/OmniBox';
+import { Pagination } from '../../internal/components/pagination/Pagination';
 
 import { InjectedQueryModels, RequiresModelAndActions, withQueryModels } from './withQueryModels';
 import { ViewMenu } from './ViewMenu';

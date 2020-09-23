@@ -19,7 +19,7 @@ import {
 } from '../../../..';
 
 // Importing "withQueryModels" from "../.." causes a circular dependency break...
-import { withQueryModels } from '../../../../QueryModel/withQueryModels';
+import { withQueryModels } from '../../../../public/QueryModel/withQueryModels';
 
 interface BodyProps {
     id: string;

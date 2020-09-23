@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { SCHEMAS } from '../../../index';
+import { SCHEMAS } from '../../..';
 import { AssayResultDeleteModal } from './AssayResultDeleteModal';
 
 describe('<AssayResultDeleteModal/>', () => {

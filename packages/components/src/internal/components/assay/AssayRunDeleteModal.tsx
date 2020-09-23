@@ -6,7 +6,7 @@ import {
     createDeleteSuccessNotification,
     deleteAssayRuns,
     Progress,
-} from '../../../index';
+} from '../../..';
 
 interface Props {
     afterDelete: () => void;

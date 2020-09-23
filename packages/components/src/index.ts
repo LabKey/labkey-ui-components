@@ -88,7 +88,7 @@ import { Grid, GridColumn, GridProps } from './components/base/Grid';
 import { FormSection } from './components/base/FormSection';
 import { Section } from './components/base/Section';
 import { FileAttachmentForm } from './components/files/FileAttachmentForm';
-import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './components/files/models';
+import { DEFAULT_FILE, FileAttachmentFormModel, IFile, FileSizeLimitProps } from './components/files/models';
 import { FilesListing } from './components/files/FilesListing';
 import { FilesListingForm } from './components/files/FilesListingForm';
 import { FileAttachmentEntry } from './components/files/FileAttachmentEntry';
@@ -687,6 +687,7 @@ export {
     FileAttachmentFormModel,
     DEFAULT_FILE,
     IFile,
+    FileSizeLimitProps,
     FilesListing,
     FilesListingForm,
     FileAttachmentEntry,

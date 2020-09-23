@@ -115,6 +115,11 @@ export interface IntegrationTestServer {
      */
     request: (controller: string, action: string, agentProvider: AgentProvider, options?: RequestOptions) => Test;
     /**
+     * This is the default request context used for all requests that do not explicitly specify a different
+     * request context.
+     */
+    requestContext: RequestContext;
+    /**
      * Tears down any test artifacts on the server. This is intended to be called after the tests complete.
      * Specifically, it deletes the test Project along with any test containers created during the test run.
      * Additionally, deletes all user accounts created during the test run.
@@ -246,6 +251,7 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
         init: init.bind(this, server),
         post: postRequest.bind(this, server),
         request: request.bind(this, server),
+        requestContext: server.defaultContext,
         teardown: teardown.bind(this, server),
     };
 };

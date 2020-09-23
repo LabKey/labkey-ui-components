@@ -24,6 +24,7 @@ module.exports = {
         "**/__snapshots__/**",
         "**/__mocks__/**",
         "**/test/**",
+        "**/internal/**",
     ],
     externalPattern: "**/node_modules/** ",
     excludeExternals: true,

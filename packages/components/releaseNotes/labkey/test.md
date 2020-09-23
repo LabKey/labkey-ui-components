@@ -2,7 +2,7 @@
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
 ### version 0.0.4
-*Released*: ## September 2020
+*Released*: 23 September 2020
 * Expose default request context
 
 ### version 0.0.3

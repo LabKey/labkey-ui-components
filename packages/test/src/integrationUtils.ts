@@ -26,11 +26,17 @@ interface CreateNewUser {
     email: string;
     isNew: boolean;
     message: string;
+    userId: number;
 }
 
 interface UserCredentials {
     password: string;
     username: string;
+}
+
+export interface TestUser extends UserCredentials {
+    email: string;
+    userId: number;
 }
 
 class RequestContext implements UserCredentials {
@@ -91,7 +97,7 @@ export interface IntegrationTestServer {
      * Create a new user account on the server with the specified credentials. If the account already exists, then
      * the account will be deleted and re-created to ensure credentials and permissions are configured as expected.
      */
-    createUser: (email: string, password: string) => Promise<UserCredentials>;
+    createUser: (email: string, password: string) => Promise<TestUser>;
     /** Make a GET request against the server. */
     get: (controller: string, action: string, params?: any, options?: RequestOptions) => Test;
     /** Initializes the server for the test run. This is required to be called prior to any tests running. */
@@ -108,6 +114,11 @@ export interface IntegrationTestServer {
      * See superagent documentation for API: https://visionmedia.github.io/superagent/
      */
     request: (controller: string, action: string, agentProvider: AgentProvider, options?: RequestOptions) => Test;
+    /**
+     * This is the default request context used for all requests that do not explicitly specify a different
+     * request context.
+     */
+    requestContext: RequestContext;
     /**
      * Tears down any test artifacts on the server. This is intended to be called after the tests complete.
      * Specifically, it deletes the test Project along with any test containers created during the test run.
@@ -146,7 +157,7 @@ const createTestContainer = async (ctx: ServerContext, containerOptions?: any /*
     return await _createContainer(ctx, ctx.projectPath, Utils.generateUUID(), containerOptions);
 };
 
-const createUser = async (ctx: ServerContext, email: string, password: string): Promise<UserCredentials> => {
+const createUser = async (ctx: ServerContext, email: string, password: string): Promise<TestUser> => {
     // Delete user (if the account already exists)
     // This ensures the given user's password and subsequent permissions are as expected
     await deleteUser(ctx, email);
@@ -171,7 +182,12 @@ const createUser = async (ctx: ServerContext, email: string, password: string): 
 
     ctx.createdUsers.push(email);
 
-    return { username: email, password };
+    return {
+        email,
+        password,
+        userId: user.userId,
+        username: email,
+    };
 };
 
 const deleteUser = async (ctx: ServerContext, email: string): Promise<void> => {
@@ -235,6 +251,7 @@ export const hookServer = (env: NodeJS.ProcessEnv): IntegrationTestServer => {
         init: init.bind(this, server),
         post: postRequest.bind(this, server),
         request: request.bind(this, server),
+        requestContext: server.defaultContext,
         teardown: teardown.bind(this, server),
     };
 };

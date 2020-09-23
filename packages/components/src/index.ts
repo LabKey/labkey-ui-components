@@ -270,8 +270,8 @@ import { deleteDataClass, fetchDataClass } from './internal/components/domainpro
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayContextConsumer, AssayProvider, AssayProviderProps } from './internal/components/assay/AssayProvider';
 import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
-import { AssayResultDeleteConfirmModal } from './internal/components/assay/AssayResultDeleteConfirmModal';
-import { AssayRunDeleteConfirmModal } from './internal/components/assay/AssayRunDeleteConfirmModal';
+import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
+import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
@@ -595,8 +595,8 @@ export {
     // assay
     AssayUploadResultModel,
     AssayDesignDeleteConfirmModal,
-    AssayResultDeleteConfirmModal,
-    AssayRunDeleteConfirmModal,
+    AssayResultDeleteModal,
+    AssayRunDeleteModal,
     AssayStateModel,
     AssayImportPanels,
     AssayProvider,

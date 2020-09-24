@@ -5,11 +5,11 @@
 import { List, Map } from 'immutable';
 import { getServerContext, PermissionTypes } from '@labkey/api';
 
-import { AppURL } from '../../url/AppURL';
-import { buildURL, imageURL } from '../../url/ActionURL';
-import { hasAllPermissions } from '../../util/utils';
-import { MenuSectionConfig } from '../../components/navigation/ProductMenuSection';
-import { User } from '../../components/base/models/model';
+import { AppURL } from '../url/AppURL';
+import { buildURL, imageURL } from '../url/ActionURL';
+import { hasAllPermissions } from '../util/utils';
+import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
+import { User } from '../components/base/models/model';
 
 import {
     ASSAYS_KEY,

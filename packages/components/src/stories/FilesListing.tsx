@@ -7,7 +7,7 @@ import './stories.scss';
 
 import { FILES_DATA } from '../test/data/constants';
 import { IFile } from '..';
-import { FilesListing } from '../components/files/FilesListing';
+import { FilesListing } from '../internal/components/files/FilesListing';
 
 storiesOf('FilesListing', module)
     .addDecorator(withKnobs)

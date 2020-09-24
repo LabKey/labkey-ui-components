@@ -3,8 +3,8 @@ import { storiesOf } from '@storybook/react';
 import { number, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { PreviewGrid } from '../components/PreviewGrid';
-import { SchemaQuery } from '../components/base/models/model';
+import { PreviewGrid } from '../internal/components/PreviewGrid';
+import { SchemaQuery } from '../internal/components/base/models/model';
 
 storiesOf('PreviewGrid', module)
     .addDecorator(withKnobs)

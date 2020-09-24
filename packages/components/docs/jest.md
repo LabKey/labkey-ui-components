@@ -98,24 +98,24 @@ has its own jest tests will currently need to mock the `LABKEY` object if that m
 
 ## Examples
 1. Testing of utility functions
-    1. [util/Date.spec.ts](../src/util/Date.spec.ts)
+    1. [util/Date.spec.ts](src/internal/util/Date.spec.ts)
     1. [internal/app/utils.spec.ts](../src/internal/app/utils.spec.ts)
 1. Enzyme examples of using `.find()`
-    1. [base/ConfirmModal.spec.tsx](../src/components/base/ConfirmModal.spec.tsx)
-    1. [assay/RunPropertiesPanel.spec.tsx](../src/components/assay/RunPropertiesPanel.spec.tsx)
+    1. [base/ConfirmModal.spec.tsx](src/internal/components/base/ConfirmModal.spec.tsx)
+    1. [assay/RunPropertiesPanel.spec.tsx](src/internal/components/assay/RunPropertiesPanel.spec.tsx)
 1. Enzyme examples for using component `.props()` and/or `.state()`
-    1. [domainproperties/AdvancedSettings.spec.tsx](../src/components/domainproperties/AdvancedSettings.spec.tsx)
-    1. [omnibox/OmniBox.spec.tsx](../src/components/omnibox/OmniBox.spec.tsx)
+    1. [domainproperties/AdvancedSettings.spec.tsx](src/internal/components/domainproperties/AdvancedSettings.spec.tsx)
+    1. [omnibox/OmniBox.spec.tsx](src/internal/components/omnibox/OmniBox.spec.tsx)
 1. Enzyme examples that `.simulate()` events (i.e. `click` or `change`)
-    1. [QueryModel/GridPanel.spec.tsx](../src/QueryModel/GridPanel.spec.tsx)
+    1. [QueryModel/GridPanel.spec.tsx](src/public/QueryModel/GridPanel.spec.tsx)
 1. Snapshot examples using `renderer` and `toMatchSnapshot()`
-    1. [input/ColorPickerInput.spec.tsx](../src/components/forms/input/ColorPickerInput.spec.tsx)
+    1. [input/ColorPickerInput.spec.tsx](src/internal/components/forms/input/ColorPickerInput.spec.tsx)
 1. Using `async` with `await sleep()`
-    1. [QueryModel/withQueryModels.spec.tsx](../src/QueryModel/withQueryModels.spec.tsx)
+    1. [QueryModel/withQueryModels.spec.tsx](src/public/QueryModel/withQueryModels.spec.tsx)
 1. Using `jest.mock`
-    1. [pagination/Pagination.spec.tsx](../src/components/pagination/Pagination.spec.tsx)
-    1. [components/QueryGrid.spec.tsx](../src/components/QueryGrid.spec.tsx)
+    1. [pagination/Pagination.spec.tsx](src/internal/components/pagination/Pagination.spec.tsx)
+    1. [components/QueryGrid.spec.tsx](src/internal/components/QueryGrid.spec.tsx)
 1. Using `xhr-mock` via `initUnitTestMocks()`
-    1. [editable/Cell.spec.tsx](../src/components/editable/Cell.spec.tsx)
+    1. [editable/Cell.spec.tsx](src/internal/components/editable/Cell.spec.tsx)
 1. Using `jest.spyOn` for an Ajax request to check param contents:
     1. [query/SelectRows.spec.ts](https://github.com/LabKey/labkey-api-js/blob/main/src/labkey/query/SelectRows.spec.ts)

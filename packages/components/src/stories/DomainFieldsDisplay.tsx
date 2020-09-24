@@ -7,8 +7,8 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { DomainFieldsDisplay } from '../components/domainproperties/DomainFieldsDisplay';
-import { DomainDesign } from '../components/domainproperties/models';
+import { DomainFieldsDisplay } from '../internal/components/domainproperties/DomainFieldsDisplay';
+import { DomainDesign } from '../internal/components/domainproperties/models';
 import data from '../test/data/property-getDomain.json';
 import './stories.scss';
 

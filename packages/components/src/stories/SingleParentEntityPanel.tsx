@@ -21,8 +21,8 @@ import './stories.scss';
 import { fromJS, List } from 'immutable';
 
 import { DataClassDataType } from '..';
-import { SingleParentEntityPanel } from '../components/entities/SingleParentEntityPanel';
-import { IEntityTypeOption } from '../components/entities/models';
+import { SingleParentEntityPanel } from '../internal/components/entities/SingleParentEntityPanel';
+import { IEntityTypeOption } from '../internal/components/entities/models';
 
 const parentTypeOptions = List<IEntityTypeOption>([
     {

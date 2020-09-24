@@ -7,7 +7,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { ToggleButtons } from '../components/buttons/ToggleButtons';
+import { ToggleButtons } from '../internal/components/buttons/ToggleButtons';
 import './stories.scss';
 
 interface State {

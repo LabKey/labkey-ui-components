@@ -10,14 +10,14 @@ import { fromJS, List } from 'immutable';
 import { Query } from '@labkey/api';
 
 
-import { SearchAction } from '../components/omnibox/actions/Search';
-import { FilterAction } from '../components/omnibox/actions/Filter';
-import { SortAction } from '../components/omnibox/actions/Sort';
+import { SearchAction } from '../internal/components/omnibox/actions/Search';
+import { FilterAction } from '../internal/components/omnibox/actions/Filter';
+import { SortAction } from '../internal/components/omnibox/actions/Sort';
 import './stories.scss';
-import { OmniBox } from '../components/omnibox/OmniBox';
-import { Grid } from '../components/base/Grid';
-import { ViewAction } from '../components/omnibox/actions/View';
-import { makeQueryInfo, makeTestData } from '../testHelpers';
+import { OmniBox } from '../internal/components/omnibox/OmniBox';
+import { Grid } from '../internal/components/base/Grid';
+import { ViewAction } from '../internal/components/omnibox/actions/View';
+import { makeQueryInfo, makeTestData } from '../internal/testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQuery.json';
 import { LoadingSpinner, QueryColumn, QueryGridModel, QueryInfo } from '..';

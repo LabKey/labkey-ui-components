@@ -3,8 +3,8 @@ import { withKnobs, boolean } from '@storybook/addon-knobs';
 
 import React from 'react';
 
-import { FileTree } from '../components/files/FileTree';
-import { fetchFileTestTree } from '../components/files/FileTreeTest';
+import { FileTree } from '../internal/components/files/FileTree';
+import { fetchFileTestTree } from '../internal/components/files/FileTreeTest';
 import './FileTree.scss';
 
 storiesOf('FileTree', module)

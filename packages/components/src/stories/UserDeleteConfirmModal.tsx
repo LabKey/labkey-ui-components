@@ -17,7 +17,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { List } from 'immutable';
 
-import { UserDeleteConfirmModal } from '../components/user/UserDeleteConfirmModal';
+import { UserDeleteConfirmModal } from '../internal/components/user/UserDeleteConfirmModal';
 import './stories.scss';
 
 storiesOf('UserDeleteConfirmModal', module)

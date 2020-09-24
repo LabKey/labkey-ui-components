@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, boolean } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { ExpandableContainer } from '../components/ExpandableContainer';
+import { ExpandableContainer } from '../internal/components/ExpandableContainer';
 
 storiesOf('ExpandableContainer', module)
     .addDecorator(withKnobs)

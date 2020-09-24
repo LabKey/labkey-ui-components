@@ -7,7 +7,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
-import { Cards } from '../components/base/Cards';
+import { Cards } from '../internal/components/base/Cards';
 
 import { ICON_URL } from './mock';
 import './stories.scss';

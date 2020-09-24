@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "0.96.0",
+  "version": "0.96.1",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -19,7 +19,7 @@
     "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter && yarn run build-storybook && yarn run build:docs",
     "watch:build": "watch 'yarn build' ./src",
     "watch": "npm run watch:build",
-    "build-public:docs": "npm run clean:docs && typedoc --out ../../docs --tsconfig tsconfig.json --options typedoc-public.js ./src/QueryModel && touch ../../docs/.nojekyll",
+    "build-public:docs": "npm run clean:docs && typedoc --out ../../docs --tsconfig tsconfig.json --options typedoc-public.js ./src/public && touch ../../docs/.nojekyll",
     "build-internal:docs": "rimraf ../../docs/internal && typedoc --out ../../docs/internal --tsconfig tsconfig.json --options typedoc-internal.js . && touch ../../docs/internal/.nojekyll",
     "build:docs": "npm run build-public:docs && npm run build-internal:docs",
     "clean:docs": "rimraf ../../docs",

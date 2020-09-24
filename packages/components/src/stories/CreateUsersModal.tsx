@@ -17,7 +17,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 
-import { CreateUsersModal } from '../components/user/CreateUsersModal';
+import { CreateUsersModal } from '../internal/components/user/CreateUsersModal';
 import { SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../test/data/constants';
 import './stories.scss';
 

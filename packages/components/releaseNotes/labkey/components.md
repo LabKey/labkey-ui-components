@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.96.1
+*Released*: 24 September 2020
+* Move components, query, renderers, utils, url, etc. to /src/internal
+* Move QueryModel to /src/public
+* Remove a few unused exports from the package index.ts file
+* Update typedoc build configs regarding new /src dir structure
+
 ### version 0.96.0
 *Released*: 23 September 2020
 * Add AssayRunDeleteModal and AssayResultDeleteModal components

@@ -18,12 +18,12 @@ import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { SearchResultCard } from '../components/search/SearchResultCard';
-import { SearchResultsPanel } from '../components/search/SearchResultsPanel';
-import { SearchResultCardData, SearchResultsModel } from '../components/search/models';
+import { SearchResultCard } from '../internal/components/search/SearchResultCard';
+import { SearchResultsPanel } from '../internal/components/search/SearchResultsPanel';
+import { SearchResultCardData, SearchResultsModel } from '../internal/components/search/models';
 import entitiesJSON from '../test/data/searchResults.json';
 
-import { getProcessedSearchHits } from '../components/search/actions';
+import { getProcessedSearchHits } from '../internal/components/search/actions';
 
 import { ICON_URL } from './mock';
 import './stories.scss';

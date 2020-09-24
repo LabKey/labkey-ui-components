@@ -5,7 +5,7 @@
 import { Record } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
-import { Container, User } from '../../components/base/models/model';
+import { Container, User } from '../components/base/models/model';
 
 const user = new User(getServerContext().user);
 

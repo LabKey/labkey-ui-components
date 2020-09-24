@@ -17,7 +17,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { List } from 'immutable';
 
-import { UserActivateChangeConfirmModal } from '../components/user/UserActivateChangeConfirmModal';
+import { UserActivateChangeConfirmModal } from '../internal/components/user/UserActivateChangeConfirmModal';
 import './stories.scss';
 
 storiesOf('UserActivateChangeConfirmModal', module)

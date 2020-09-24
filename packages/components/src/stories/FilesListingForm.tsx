@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { FilesListingForm } from '../components/files/FilesListingForm';
+import { FilesListingForm } from '../internal/components/files/FilesListingForm';
 import { FILES_DATA, FILES_DATA_2 } from '../test/data/constants';
 import { IFile } from '..';
 

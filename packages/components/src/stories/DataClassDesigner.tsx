@@ -17,8 +17,8 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, boolean, withKnobs } from '@storybook/addon-knobs';
 
-import { DataClassDesigner } from '../components/domainproperties/dataclasses/DataClassDesigner';
-import { DataClassModel } from '../components/domainproperties/dataclasses/models';
+import { DataClassDesigner } from '../internal/components/domainproperties/dataclasses/DataClassDesigner';
+import { DataClassModel } from '../internal/components/domainproperties/dataclasses/models';
 import getDomainDetailsJSON from '../test/data/dataclass-getDomainDetails.json';
 import './stories.scss';
 import { IDomainField } from '..';

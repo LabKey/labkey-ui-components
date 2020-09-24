@@ -17,7 +17,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { EntityTypeDeleteConfirmModal } from '../components/entities/EntityTypeDeleteConfirmModal';
+import { EntityTypeDeleteConfirmModal } from '../internal/components/entities/EntityTypeDeleteConfirmModal';
 
 import './stories.scss';
 

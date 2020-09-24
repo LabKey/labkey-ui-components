@@ -9,8 +9,8 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { PageHeader } from '../components/base/PageHeader';
-import { Page } from '../components/base/Page';
+import { PageHeader } from '../internal/components/base/PageHeader';
+import { Page } from '../internal/components/base/Page';
 
 storiesOf('Page', module)
     .addDecorator(withKnobs)

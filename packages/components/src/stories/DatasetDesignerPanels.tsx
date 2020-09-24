@@ -19,8 +19,8 @@ import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { NEW_DATASET_MODEL_WITH_DATASPACE, NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../test/data/constants';
-import { DatasetDesignerPanels } from '../components/domainproperties/dataset/DatasetDesignerPanels';
-import { DatasetModel } from '../components/domainproperties/dataset/models';
+import { DatasetDesignerPanels } from '../internal/components/domainproperties/dataset/DatasetDesignerPanels';
+import { DatasetModel } from '../internal/components/domainproperties/dataset/models';
 import getDatasetDesign from '../test/data/dataset-getDatasetDesign.json';
 import getDatasetDesignSharedStudy from '../test/data/dataset-getDatasetDesignSharedStudy.json';
 

@@ -17,17 +17,17 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { Location } from '../util/URL';
+import { Location } from '../internal/util/URL';
 
-import { EntityInsertPanel } from '../components/entities/EntityInsertPanel';
+import { EntityInsertPanel } from '../internal/components/entities/EntityInsertPanel';
 
 import './stories.scss';
 import { helpLinkNode } from '..';
 
 import { List } from 'immutable';
 
-import { DataClassDataType, SampleTypeDataType } from '../components/entities/constants';
-import { EntityDataType } from '../components/entities/models';
+import { DataClassDataType, SampleTypeDataType } from '../internal/components/entities/constants';
+import { EntityDataType } from '../internal/components/entities/models';
 
 storiesOf('EntityInsertPanel', module)
     .addDecorator(withKnobs)

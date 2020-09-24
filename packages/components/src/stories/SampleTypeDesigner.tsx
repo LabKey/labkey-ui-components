@@ -19,8 +19,8 @@ import { storiesOf } from '@storybook/react';
 import { text, boolean, withKnobs } from '@storybook/addon-knobs';
 import { Domain } from '@labkey/api';
 
-import { DomainDetails } from '../components/domainproperties/models';
-import { SampleTypeDesigner } from '../components/domainproperties/samples/SampleTypeDesigner';
+import { DomainDetails } from '../internal/components/domainproperties/models';
+import { SampleTypeDesigner } from '../internal/components/domainproperties/samples/SampleTypeDesigner';
 import domainData from '../test/data/property-getDomain-sampleType.json';
 import './stories.scss';
 

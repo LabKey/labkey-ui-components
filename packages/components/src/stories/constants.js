@@ -5,7 +5,7 @@
  */
 import {fromJS, List} from 'immutable'
 
-import {GridColumn} from '../components/base/Grid'
+import {GridColumn} from '../internal/components/base/Grid'
 
 export const gridData = fromJS([{
     name: 'Dee Gordon',

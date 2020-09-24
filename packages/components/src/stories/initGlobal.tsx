@@ -15,12 +15,12 @@
  */
 import { fromJS } from 'immutable';
 
-import { initQueryGridState } from '../global';
-import { initBrowserHistoryState } from '../util/global';
+import { initQueryGridState } from '../internal/global';
+import { initBrowserHistoryState } from '../internal/util/global';
 
-import { FileColumnRenderer } from '../renderers/FileColumnRenderer';
-import { SCHEMAS } from '../components/base/models/schemas';
-import { initNotificationsState } from '../components/notifications/global';
+import { FileColumnRenderer } from '../internal/renderers/FileColumnRenderer';
+import { SCHEMAS } from '../internal/components/base/models/schemas';
+import { initNotificationsState } from '../internal/components/notifications/global';
 
 import { initMocks } from './mock';
 

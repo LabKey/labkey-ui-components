@@ -15,11 +15,11 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
-import { SCHEMAS } from './components/base/models/schemas';
-import { getUserProperties, inferDomainFromFile } from './components/base/actions';
-import { QueryInfo } from './components/base/models/QueryInfo';
-import { QuerySort } from './components/base/models/QuerySort';
+import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
+import { SCHEMAS } from './internal/components/base/models/schemas';
+import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
+import { QueryInfo } from './internal/components/base/models/QueryInfo';
+import { QuerySort } from './internal/components/base/models/QuerySort';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -39,7 +39,7 @@ import {
     SchemaQuery,
     User,
     ViewInfo,
-} from './components/base/models/model';
+} from './internal/components/base/models/model';
 import {
     applyDevTools,
     capitalizeFirstChar,
@@ -53,70 +53,73 @@ import {
     naturalSort,
     naturalSortByProperty,
     resolveKey,
-    resolveKeyFromJson,
     resolveSchemaQuery,
     toggleDevTools,
     valueIsEmpty,
-} from './util/utils';
-import { BeforeUnload } from './util/BeforeUnload';
-import { getActionErrorMessage, resolveErrorMessage } from './util/messaging';
-import { buildURL, hasParameter, imageURL, toggleParameter } from './url/ActionURL';
-import { WHERE_FILTER_TYPE } from './url/WhereFilterType';
-import { AddEntityButton } from './components/buttons/AddEntityButton';
-import { RemoveEntityButton } from './components/buttons/RemoveEntityButton';
-import { AppURL, spliceURL } from './url/AppURL';
-import { Alert } from './components/base/Alert';
-import { DeleteIcon } from './components/base/DeleteIcon';
-import { DragDropHandle } from './components/base/DragDropHandle';
-import { FieldExpansionToggle } from './components/base/FieldExpansionToggle';
-import { MultiMenuButton } from './components/menus/MultiMenuButton';
-import { MenuOption, SubMenu } from './components/menus/SubMenu';
-import { ISubItem, SubMenuItem, SubMenuItemProps } from './components/menus/SubMenuItem';
-import { SelectionMenuItem } from './components/menus/SelectionMenuItem';
-import { LoadingModal } from './components/base/LoadingModal';
-import { LoadingSpinner } from './components/base/LoadingSpinner';
-import { InsufficientPermissionsPage } from './components/permissions/InsufficientPermissionsPage';
-import { BasePermissionsCheckPage } from './components/permissions/BasePermissionsCheckPage';
-import { NotFound } from './components/base/NotFound';
-import { Page, PageProps } from './components/base/Page';
-import { LoadingPage, LoadingPageProps } from './components/base/LoadingPage';
-import { PageHeader } from './components/base/PageHeader';
-import { Progress } from './components/base/Progress';
-import { LabelHelpTip } from './components/base/LabelHelpTip';
-import { Tip } from './components/base/Tip';
-import { Grid, GridColumn, GridProps } from './components/base/Grid';
-import { FormSection } from './components/base/FormSection';
-import { Section } from './components/base/Section';
-import { FileAttachmentForm } from './components/files/FileAttachmentForm';
-import { DEFAULT_FILE, FileAttachmentFormModel, IFile, FileSizeLimitProps } from './components/files/models';
-import { FilesListing } from './components/files/FilesListing';
-import { FilesListingForm } from './components/files/FilesListingForm';
-import { FileAttachmentEntry } from './components/files/FileAttachmentEntry';
-import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './components/files/WebDav';
-import { FileTree } from './components/files/FileTree';
-import { Notification } from './components/notifications/Notification';
-import { createNotification } from './components/notifications/actions';
-import { addNotification, dismissNotifications, initNotificationsState } from './components/notifications/global';
-import { ConfirmModal } from './components/base/ConfirmModal';
-import { datePlaceholder, formatDate, formatDateTime, getDateFormat, getUnFormattedNumber } from './util/Date';
-import { SVGIcon, Theme } from './components/base/SVGIcon';
-import { CreatedModified } from './components/base/CreatedModified';
+} from './internal/util/utils';
+import { BeforeUnload } from './internal/util/BeforeUnload';
+import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
+import { buildURL, hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
+import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
+import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
+import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
+import { AppURL, spliceURL } from './internal/url/AppURL';
+import { Alert } from './internal/components/base/Alert';
+import { DeleteIcon } from './internal/components/base/DeleteIcon';
+import { DragDropHandle } from './internal/components/base/DragDropHandle';
+import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
+import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
+import { MenuOption, SubMenu } from './internal/components/menus/SubMenu';
+import { ISubItem, SubMenuItem, SubMenuItemProps } from './internal/components/menus/SubMenuItem';
+import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
+import { LoadingModal } from './internal/components/base/LoadingModal';
+import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
+import { InsufficientPermissionsPage } from './internal/components/permissions/InsufficientPermissionsPage';
+import { BasePermissionsCheckPage } from './internal/components/permissions/BasePermissionsCheckPage';
+import { NotFound } from './internal/components/base/NotFound';
+import { Page, PageProps } from './internal/components/base/Page';
+import { LoadingPage, LoadingPageProps } from './internal/components/base/LoadingPage';
+import { PageHeader } from './internal/components/base/PageHeader';
+import { Progress } from './internal/components/base/Progress';
+import { LabelHelpTip } from './internal/components/base/LabelHelpTip';
+import { Tip } from './internal/components/base/Tip';
+import { Grid, GridColumn, GridProps } from './internal/components/base/Grid';
+import { FormSection } from './internal/components/base/FormSection';
+import { Section } from './internal/components/base/Section';
+import { FileAttachmentForm } from './internal/components/files/FileAttachmentForm';
+import { DEFAULT_FILE, FileAttachmentFormModel, IFile, FileSizeLimitProps } from './internal/components/files/models';
+import { FilesListing } from './internal/components/files/FilesListing';
+import { FilesListingForm } from './internal/components/files/FilesListingForm';
+import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
+import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './internal/components/files/WebDav';
+import { FileTree } from './internal/components/files/FileTree';
+import { Notification } from './internal/components/notifications/Notification';
+import { createNotification } from './internal/components/notifications/actions';
+import {
+    addNotification,
+    dismissNotifications,
+    initNotificationsState,
+} from './internal/components/notifications/global';
+import { ConfirmModal } from './internal/components/base/ConfirmModal';
+import { formatDate, formatDateTime, getDateFormat } from './internal/util/Date';
+import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
+import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
     MessageFunction,
     NotificationItemModel,
     NotificationItemProps,
     Persistence,
-} from './components/notifications/model';
-import { PermissionAllowed, PermissionNotAllowed } from './components/base/Permissions';
-import { PaginationButtons, PaginationButtonsProps } from './components/buttons/PaginationButtons';
-import { ManageDropdownButton } from './components/buttons/ManageDropdownButton';
-import { WizardNavButtons } from './components/buttons/WizardNavButtons';
-import { SplitButtonGroup } from './components/buttons/SplitButtonGroup';
-import { ToggleButtons } from './components/buttons/ToggleButtons';
-import { Cards } from './components/base/Cards';
-import { Footer } from './components/base/Footer';
+} from './internal/components/notifications/model';
+import { PermissionAllowed, PermissionNotAllowed } from './internal/components/base/Permissions';
+import { PaginationButtons, PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
+import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
+import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
+import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
+import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
+import { Cards } from './internal/components/base/Cards';
+import { Footer } from './internal/components/base/Footer';
 
-import { EditorModel, getStateModelId, getStateQueryGridModel, IDataViewInfo } from './models';
+import { EditorModel, getStateModelId, getStateQueryGridModel, IDataViewInfo } from './internal/models';
 import {
     clearSelected,
     createQueryGridModelFilteredBySample,
@@ -132,8 +135,8 @@ import {
     schemaGridInvalidate,
     setSelected,
     unselectAll,
-} from './actions';
-import { cancelEvent } from './events';
+} from './internal/actions';
+import { cancelEvent } from './internal/events';
 import {
     getEditorModel,
     getQueryGridModel,
@@ -142,7 +145,7 @@ import {
     invalidateUsers,
     removeQueryGridModel,
     updateEditorModel,
-} from './global';
+} from './internal/global';
 import {
     deleteRows,
     getQueryDetails,
@@ -157,8 +160,8 @@ import {
     searchRows,
     selectRows,
     updateRows,
-} from './query/api';
-import { flattenBrowseDataTreeResponse, loadReports } from './query/reports';
+} from './internal/query/api';
+import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
     DataViewInfoTypes,
     IMPORT_DATA_FORM_TYPES,
@@ -166,74 +169,81 @@ import {
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     EXPORT_TYPES,
-} from './constants';
-import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './util/URL';
-import { URL_MAPPERS, URLResolver } from './util/URLResolver';
-import { ActionMapper, URLService } from './util/URLService';
-import { DATA_IMPORT_TOPIC, DELETE_SAMPLES_TOPIC, getHelpLink, helpLinkNode } from './util/helpLinks';
+} from './internal/constants';
+import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
+import { URL_MAPPERS, URLResolver } from './internal/util/URLResolver';
+import { ActionMapper, URLService } from './internal/util/URLService';
+import { getHelpLink, helpLinkNode } from './internal/util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
     AssayRunResolver,
     ListResolver,
     SamplesResolver,
-} from './util/AppURLResolver';
-import { QueryGridPanel } from './components/QueryGridPanel';
-import { EditableGridPanel } from './components/editable/EditableGridPanel';
-import { EditableGridPanelForUpdate } from './components/editable/EditableGridPanelForUpdate';
-import { EditableGridLoader } from './components/editable/EditableGridLoader';
-import { EditableGridLoaderFromSelection } from './components/editable/EditableGridLoaderFromSelection';
-import { EditableGridModal } from './components/editable/EditableGridModal';
-import { EditableColumnMetadata } from './components/editable/EditableGrid';
-import { CollapsiblePanel } from './components/CollapsiblePanel';
-import { ErrorBoundary } from './components/error/ErrorBoundary';
-import { AliasRenderer } from './renderers/AliasRenderer';
-import { StorageStatusRenderer } from './renderers/StorageStatusRenderer';
-import { AppendUnits } from './renderers/AppendUnits';
-import { DefaultRenderer } from './renderers/DefaultRenderer';
-import { FileColumnRenderer } from './renderers/FileColumnRenderer';
-import { MultiValueRenderer } from './renderers/MultiValueRenderer';
-import { LabelColorRenderer } from './renderers/LabelColorRenderer';
-import { BulkAddUpdateForm } from './components/forms/BulkAddUpdateForm';
-import { BulkUpdateForm } from './components/forms/BulkUpdateForm';
-import { LabelOverlay } from './components/forms/LabelOverlay';
-import { resolveDetailFieldValue, resolveRenderer } from './components/forms/renderers';
-import { getQueryFormLabelFieldName, isQueryFormLabelField, QueryFormInputs } from './components/forms/QueryFormInputs';
-import { LookupSelectInput } from './components/forms/input/LookupSelectInput';
-import { SelectInput, SelectInputProps } from './components/forms/input/SelectInput';
-import { DatePickerInput } from './components/forms/input/DatePickerInput';
-import { DateInput } from './components/forms/input/DateInput';
-import { FileInput } from './components/forms/input/FileInput';
-import { TextInput } from './components/forms/input/TextInput';
-import { TextAreaInput } from './components/forms/input/TextAreaInput';
-import { FieldEditForm, FieldEditProps } from './components/forms/input/FieldEditInput';
-import { ColorPickerInput } from './components/forms/input/ColorPickerInput';
-import { ColorIcon } from './components/base/ColorIcon';
-import { QuerySelect, QuerySelectOwnProps } from './components/forms/QuerySelect';
-import { PageDetailHeader } from './components/forms/PageDetailHeader';
-import { DetailEditing } from './components/forms/detail/DetailEditing';
+} from './internal/util/AppURLResolver';
+import { QueryGridPanel } from './internal/components/QueryGridPanel';
+import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
+import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
+import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
+import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
+import { EditableGridModal } from './internal/components/editable/EditableGridModal';
+import { EditableColumnMetadata } from './internal/components/editable/EditableGrid';
+import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
+import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
+import { AliasRenderer } from './internal/renderers/AliasRenderer';
+import { StorageStatusRenderer } from './internal/renderers/StorageStatusRenderer';
+import { AppendUnits } from './internal/renderers/AppendUnits';
+import { DefaultRenderer } from './internal/renderers/DefaultRenderer';
+import { FileColumnRenderer } from './internal/renderers/FileColumnRenderer';
+import { MultiValueRenderer } from './internal/renderers/MultiValueRenderer';
+import { LabelColorRenderer } from './internal/renderers/LabelColorRenderer';
+import { BulkAddUpdateForm } from './internal/components/forms/BulkAddUpdateForm';
+import { BulkUpdateForm } from './internal/components/forms/BulkUpdateForm';
+import { LabelOverlay } from './internal/components/forms/LabelOverlay';
+import { resolveDetailFieldValue, resolveRenderer } from './internal/components/forms/renderers';
+import {
+    getQueryFormLabelFieldName,
+    isQueryFormLabelField,
+    QueryFormInputs,
+} from './internal/components/forms/QueryFormInputs';
+import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
+import { SelectInput, SelectInputProps } from './internal/components/forms/input/SelectInput';
+import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
+import { DateInput } from './internal/components/forms/input/DateInput';
+import { FileInput } from './internal/components/forms/input/FileInput';
+import { TextInput } from './internal/components/forms/input/TextInput';
+import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
+import { FieldEditForm, FieldEditProps } from './internal/components/forms/input/FieldEditInput';
+import { ColorPickerInput } from './internal/components/forms/input/ColorPickerInput';
+import { ColorIcon } from './internal/components/base/ColorIcon';
+import { QuerySelect, QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
+import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
+import { DetailEditing } from './internal/components/forms/detail/DetailEditing';
 
 import {
     resolveDetailEditRenderer,
     resolveDetailRenderer,
     titleRenderer,
-} from './components/forms/detail/DetailEditRenderer';
-import { Detail } from './components/forms/detail/Detail';
-import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './components/forms/actions';
-import { ISelectInitData } from './components/forms/model';
-import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './components/forms/FormStep';
-import { SchemaListing } from './components/listing/SchemaListing';
-import { QueriesListing } from './components/listing/QueriesListing';
-import { QueriesListingPage } from './components/listing/pages/QueriesListingPage';
-import { QueryDetailPage } from './components/listing/pages/QueryDetailPage';
-import { QueryListingPage } from './components/listing/pages/QueryListingPage';
-import { SchemaListingPage } from './components/listing/pages/SchemaListingPage';
-import { HeatMap } from './components/heatmap/HeatMap';
-import { addDateRangeFilter, last12Months, monthSort } from './components/heatmap/utils';
-import { EntityInsertPanel } from './components/entities/EntityInsertPanel';
-import { EntityDeleteModal } from './components/entities/EntityDeleteModal';
-import { ParentEntityEditPanel } from './components/entities/ParentEntityEditPanel';
-import { createDeleteErrorNotification, createDeleteSuccessNotification } from './components/notifications/messaging';
+} from './internal/components/forms/detail/DetailEditRenderer';
+import { Detail } from './internal/components/forms/detail/Detail';
+import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './internal/components/forms/actions';
+import { ISelectInitData } from './internal/components/forms/model';
+import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './internal/components/forms/FormStep';
+import { SchemaListing } from './internal/components/listing/SchemaListing';
+import { QueriesListing } from './internal/components/listing/QueriesListing';
+import { QueriesListingPage } from './internal/components/listing/pages/QueriesListingPage';
+import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
+import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
+import { SchemaListingPage } from './internal/components/listing/pages/SchemaListingPage';
+import { HeatMap } from './internal/components/heatmap/HeatMap';
+import { addDateRangeFilter, last12Months, monthSort } from './internal/components/heatmap/utils';
+import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
+import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
+import { ParentEntityEditPanel } from './internal/components/entities/ParentEntityEditPanel';
+import {
+    createDeleteErrorNotification,
+    createDeleteSuccessNotification,
+} from './internal/components/notifications/messaging';
 import {
     EntityDataType,
     EntityInputProps,
@@ -242,29 +252,29 @@ import {
     IEntityTypeOption,
     IParentOption,
     MaterialOutput,
-} from './components/entities/models';
-import { SearchResultCard } from './components/search/SearchResultCard';
-import { SearchResultsPanel } from './components/search/SearchResultsPanel';
-import { searchUsingIndex } from './components/search/actions';
-import { SearchResultCardData, SearchResultsModel } from './components/search/models';
+} from './internal/components/entities/models';
+import { SearchResultCard } from './internal/components/search/SearchResultCard';
+import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
+import { searchUsingIndex } from './internal/components/search/actions';
+import { SearchResultCardData, SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
     fetchSamples,
     getSampleSet,
     getSampleTypeDetails,
     loadSelectedSamples,
-} from './components/samples/actions';
-import { DataClassDesigner } from './components/domainproperties/dataclasses/DataClassDesigner';
-import { DataClassModel } from './components/domainproperties/dataclasses/models';
-import { deleteDataClass, fetchDataClass } from './components/domainproperties/dataclasses/actions';
-import { AssayImportPanels } from './components/assay/AssayImportPanels';
-import { AssayContextConsumer, AssayProvider, AssayProviderProps } from './components/assay/AssayProvider';
-import { AssayDesignDeleteConfirmModal } from './components/assay/AssayDesignDeleteConfirmModal';
-import { AssayResultDeleteModal } from './components/assay/AssayResultDeleteModal';
-import { AssayRunDeleteModal } from './components/assay/AssayRunDeleteModal';
-import { AssayImportSubMenuItem } from './components/assay/AssayImportSubMenuItem';
-import { AssayReimportRunButton } from './components/assay/AssayReimportRunButton';
-import { AssayStateModel, AssayUploadResultModel } from './components/assay/models';
+} from './internal/components/samples/actions';
+import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
+import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
+import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
+import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
+import { AssayContextConsumer, AssayProvider, AssayProviderProps } from './internal/components/assay/AssayProvider';
+import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
+import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
+import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
+import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
+import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
+import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
 import {
     deleteAssayDesign,
     deleteAssayRuns,
@@ -276,41 +286,50 @@ import {
     getRunPropertiesModel,
     getRunPropertiesRow,
     importAssayRun,
-} from './components/assay/actions';
-import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './components/assay/constants';
-import { BaseBarChart } from './components/chart/BaseBarChart';
-import { processChartData } from './components/chart/utils';
-import { ReportItemModal, ReportList, ReportListItem } from './components/report-list/ReportList';
-import { invalidateLineageResults } from './components/lineage/actions';
+} from './internal/components/assay/actions';
+import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
+import { BaseBarChart } from './internal/components/chart/BaseBarChart';
+import { processChartData } from './internal/components/chart/utils';
+import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
+import { invalidateLineageResults } from './internal/components/lineage/actions';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
     LineageFilter,
     LineageURLResolvers,
-} from './components/lineage/types';
-import { VisGraphNode } from './components/lineage/vis/VisGraphGenerator';
-import { LineageGraph } from './components/lineage/LineageGraph';
-import { LineageGrid, LineageGridFromLocation } from './components/lineage/grid/LineageGrid';
-import { EntityDeleteConfirmModal } from './components/entities/EntityDeleteConfirmModal';
-import { EntityTypeDeleteConfirmModal } from './components/entities/EntityTypeDeleteConfirmModal';
-import { SampleTypeLineageCounts } from './components/lineage/SampleTypeLineageCounts';
-import { HeaderWrapper } from './components/navigation/HeaderWrapper';
-import { NavigationBar } from './components/navigation/NavigationBar';
-import { MenuSectionConfig } from './components/navigation/ProductMenuSection';
-import { ITab, SubNav } from './components/navigation/SubNav';
-import { Breadcrumb } from './components/navigation/Breadcrumb';
-import { BreadcrumbCreate } from './components/navigation/BreadcrumbCreate';
-import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './components/navigation/model';
-import { confirmLeaveWhenDirty, createProductUrl, createProductUrlFromParts } from './components/navigation/utils';
-import { UserSelectInput } from './components/forms/input/UserSelectInput';
-import { UserDetailHeader } from './components/user/UserDetailHeader';
-import { UserProfile } from './components/user/UserProfile';
-import { ChangePasswordModal } from './components/user/ChangePasswordModal';
-import { SiteUsersGridPanel } from './components/user/SiteUsersGridPanel';
-import { UserProvider, UserProviderProps } from './components/user/UserProvider';
-import { FieldEditorOverlay } from './components/forms/FieldEditorOverlay';
+} from './internal/components/lineage/types';
+import { VisGraphNode } from './internal/components/lineage/vis/VisGraphGenerator';
+import { LineageGraph } from './internal/components/lineage/LineageGraph';
+import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
+import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
+import { EntityTypeDeleteConfirmModal } from './internal/components/entities/EntityTypeDeleteConfirmModal';
+import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
+import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
+import { NavigationBar } from './internal/components/navigation/NavigationBar';
+import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
+import { ITab, SubNav } from './internal/components/navigation/SubNav';
+import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
+import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
+import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
+import {
+    confirmLeaveWhenDirty,
+    createProductUrl,
+    createProductUrlFromParts,
+} from './internal/components/navigation/utils';
+import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
+import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
+import { UserProfile } from './internal/components/user/UserProfile';
+import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
+import { SiteUsersGridPanel } from './internal/components/user/SiteUsersGridPanel';
+import { UserProvider, UserProviderProps } from './internal/components/user/UserProvider';
+import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
 
-import { createFormInputId, fetchDomain, saveDomain, setDomainFields } from './components/domainproperties/actions';
+import {
+    createFormInputId,
+    fetchDomain,
+    saveDomain,
+    setDomainFields,
+} from './internal/components/domainproperties/actions';
 import {
     DomainDesign,
     DomainDetails,
@@ -320,46 +339,51 @@ import {
     IDomainField,
     IFieldChange,
     SAMPLE_TYPE,
-} from './components/domainproperties/models';
-import DomainForm from './components/domainproperties/DomainForm';
-import { BasePropertiesPanel } from './components/domainproperties/BasePropertiesPanel';
-import { DomainFieldsDisplay } from './components/domainproperties/DomainFieldsDisplay';
-import { fetchProtocol, saveAssayDesign } from './components/domainproperties/assay/actions';
-import { AssayProtocolModel } from './components/domainproperties/assay/models';
-import { AssayPropertiesPanel } from './components/domainproperties/assay/AssayPropertiesPanel';
-import { AssayDesignerPanels } from './components/domainproperties/assay/AssayDesignerPanels';
-import { ListDesignerPanels } from './components/domainproperties/list/ListDesignerPanels';
-import { ListModel } from './components/domainproperties/list/models';
-import { IssuesListDefModel } from './components/domainproperties/issues/models';
-import { IssuesListDefDesignerPanels } from './components/domainproperties/issues/IssuesListDefDesignerPanels';
-import { DatasetDesignerPanels } from './components/domainproperties/dataset/DatasetDesignerPanels';
-import { DatasetModel } from './components/domainproperties/dataset/models';
-import { fetchListDesign } from './components/domainproperties/list/actions';
-import { fetchIssuesListDefDesign } from './components/domainproperties/issues/actions';
-import { fetchDatasetDesign } from './components/domainproperties/dataset/actions';
+} from './internal/components/domainproperties/models';
+import DomainForm from './internal/components/domainproperties/DomainForm';
+import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
+import { DomainFieldsDisplay } from './internal/components/domainproperties/DomainFieldsDisplay';
+import { fetchProtocol, saveAssayDesign } from './internal/components/domainproperties/assay/actions';
+import { AssayProtocolModel } from './internal/components/domainproperties/assay/models';
+import { AssayPropertiesPanel } from './internal/components/domainproperties/assay/AssayPropertiesPanel';
+import { AssayDesignerPanels } from './internal/components/domainproperties/assay/AssayDesignerPanels';
+import { ListDesignerPanels } from './internal/components/domainproperties/list/ListDesignerPanels';
+import { ListModel } from './internal/components/domainproperties/list/models';
+import { IssuesListDefModel } from './internal/components/domainproperties/issues/models';
+import { IssuesListDefDesignerPanels } from './internal/components/domainproperties/issues/IssuesListDefDesignerPanels';
+import { DatasetDesignerPanels } from './internal/components/domainproperties/dataset/DatasetDesignerPanels';
+import { DatasetModel } from './internal/components/domainproperties/dataset/models';
+import { fetchListDesign } from './internal/components/domainproperties/list/actions';
+import { fetchIssuesListDefDesign } from './internal/components/domainproperties/issues/actions';
+import { fetchDatasetDesign } from './internal/components/domainproperties/dataset/actions';
 import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
-} from './components/domainproperties/constants';
-import { ExpandableContainer } from './components/ExpandableContainer';
-import { PermissionAssignments } from './components/permissions/PermissionAssignments';
-import { PermissionsPageContextProvider } from './components/permissions/PermissionsContextProvider';
-import { PermissionsProviderProps, Principal, SecurityPolicy, SecurityRole } from './components/permissions/models';
-import { fetchContainerSecurityPolicy } from './components/permissions/actions';
+} from './internal/components/domainproperties/constants';
+import { ExpandableContainer } from './internal/components/ExpandableContainer';
+import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
+import { PermissionsPageContextProvider } from './internal/components/permissions/PermissionsContextProvider';
+import {
+    PermissionsProviderProps,
+    Principal,
+    SecurityPolicy,
+    SecurityRole,
+} from './internal/components/permissions/models';
+import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
     getDataDeleteConfirmationData,
     getSampleDeleteConfirmationData,
-} from './components/entities/actions';
-import { DataClassDataType, SampleTypeDataType } from './components/entities/constants';
-import { SampleTypeModel } from './components/domainproperties/samples/models';
-import { SampleTypeDesigner } from './components/domainproperties/samples/SampleTypeDesigner';
+} from './internal/components/entities/actions';
+import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
+import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
+import { SampleTypeDesigner } from './internal/components/domainproperties/samples/SampleTypeDesigner';
 
-import { makeTestActions, makeTestQueryModel } from './QueryModel/testUtils';
-import { QueryConfig, QueryModel } from './QueryModel/QueryModel';
-import { QueryModelLoader } from './QueryModel/QueryModelLoader';
+import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
+import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
+import { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
 import {
     Actions,
     InjectedQueryModels,
@@ -368,19 +392,19 @@ import {
     QueryModelMap,
     RequiresModelAndActions,
     withQueryModels,
-} from './QueryModel/withQueryModels';
-import { GridPanel, GridPanelWithModel } from './QueryModel/GridPanel';
-import { DetailPanel, DetailPanelWithModel } from './QueryModel/DetailPanel';
-import { EditableDetailPanel } from './QueryModel/EditableDetailPanel';
-import { Pagination, PaginationData } from './components/pagination/Pagination';
-import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './components/auditlog/models';
-import { AuditQueriesListingPage } from './components/auditlog/AuditQueriesListingPage';
-import { AuditDetails } from './components/auditlog/AuditDetails';
-import { TimelineView } from './components/auditlog/TimelineView';
-import { getEventDataValueDisplay, getTimelineEntityUrl } from './components/auditlog/utils';
+} from './public/QueryModel/withQueryModels';
+import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
+import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
+import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
+import { Pagination, PaginationData } from './internal/components/pagination/Pagination';
+import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
+import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
+import { AuditDetails } from './internal/components/auditlog/AuditDetails';
+import { TimelineView } from './internal/components/auditlog/TimelineView';
+import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
+import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './public/QueryModel/utils';
+import { withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
 import * as App from './internal/app';
-import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './QueryModel/utils';
-import { withRouteLeave, RouteLeaveProps } from './util/RouteLeave';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -659,7 +683,7 @@ export {
     inferDomainFromFile,
     InferDomainResponse,
     IFieldChange,
-    IBannerMessage, // TODO remove usages of this in platform and remove from export list here
+    IBannerMessage,
     IAppDomainHeader,
     BasePropertiesPanel,
     AssayPropertiesPanel,
@@ -696,17 +720,14 @@ export {
     WebDavFile,
     getWebDavFiles,
     uploadWebDavFile,
-    // util functions (TODO: need to see if all of these are still being used outside of this package)
-    datePlaceholder,
+    // util functions
     getDateFormat,
     getDisambiguatedSelectInputOptions,
-    getUnFormattedNumber,
     formatDate,
     formatDateTime,
     caseInsensitive,
     capitalizeFirstChar,
     resolveKey,
-    resolveKeyFromJson,
     naturalSort,
     naturalSortByProperty,
     generateId,
@@ -788,8 +809,6 @@ export {
     LastActionStatus,
     LoadingState,
     SCHEMAS,
-    DATA_IMPORT_TOPIC, // TODO looks like this isn't used outside this package
-    DELETE_SAMPLES_TOPIC, // TODO looks like this isn't used outside this package
     getSchemaQuery,
     resolveSchemaQuery,
     insertColumnFilter,

@@ -20,7 +20,7 @@ import './stories.scss';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
 import { EntityDeleteConfirmModal } from '..';
-import { SampleTypeDataType } from '../components/entities/constants';
+import { SampleTypeDataType } from '../internal/components/entities/constants';
 
 storiesOf('EntityDeleteConfirmModal', module)
     .addDecorator(withKnobs)

@@ -1,5 +1,5 @@
 import { QueryInfo, QueryModel, QueryModelLoader } from '..';
-import { RowsResponse } from '../QueryModel/QueryModelLoader';
+import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
 
 export class MockQueryModelLoader implements QueryModelLoader {
     queryInfo: QueryInfo;

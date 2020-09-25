@@ -1,5 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### versioin TBD
+*Released*: TBD
+* FieldEditorOverlay updates
+  * Allow user to choose field of focus
+  * Change input placeholder text to avoid some awkard grammar problems
 
 ### version 0.96.1
 *Released*: 24 September 2020

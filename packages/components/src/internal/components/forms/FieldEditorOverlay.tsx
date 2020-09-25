@@ -103,7 +103,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                         caption: column.caption,
                         data,
                         fieldKey: column.fieldKey,
-                        inputPlaceholder: 'Enter a ' + column.caption.toLowerCase() + '...',
+                        inputPlaceholder: 'Enter ' + column.caption.toLowerCase() + '...',
                         inputType,
                         value,
                     });

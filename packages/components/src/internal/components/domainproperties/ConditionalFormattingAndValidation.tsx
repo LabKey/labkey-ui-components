@@ -226,12 +226,14 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
         const RangeValidator = ValidatorModal(RangeValidationOptions);
         const RegexValidator = ValidatorModal(RegexValidationOptions);
 
-        const title = hideConditionalFormatting
-            ? 'Validation Options'
-            : 'Conditional Formatting and Validation Options';
         const showCondFormatSection = !hideConditionalFormatting;
         const showRegexSection = DomainField.hasRegExValidation(field);
         const showRangeSection = DomainField.hasRangeValidation(field);
+        const showValidation = showRegexSection || showRangeSection;
+        const title = (showCondFormatSection ? 'Conditional Formatting' : '')
+            + (showCondFormatSection && showValidation ? ' and ' : '')
+            + (showValidation ? 'Validation' : '')
+            + (' Options');
 
         // don't render anything for this component if none of the sections apply
         if (!showCondFormatSection && !showRegexSection && !showRangeSection) {
@@ -253,8 +255,7 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
                         {showCondFormat && (
                             <CondFormatModal
                                 title={'Conditional Formatting ' + (field.name ? 'for ' + field.name : '')}
-                                subTitle="Add New Formatting:"
-                                addName="formatting"
+                                addName="Formatting"
                                 index={index}
                                 show={showCondFormat}
                                 type={DOMAIN_COND_FORMAT}
@@ -268,9 +269,8 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
                         )}
                         {showRegex && (
                             <RegexValidator
-                                title={'Regular Expression Validator ' + (field.name ? 'for ' + field.name : '')}
-                                subTitle="Add New Validation Criteria:"
-                                addName="Regex Validator"
+                                title={'Regular Expression Validator(s) ' + (field.name ? 'for ' + field.name : '')}
+                                addName="Validator"
                                 index={index}
                                 show={showRegex}
                                 type={DOMAIN_REGEX_VALIDATOR}
@@ -284,9 +284,8 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
                         )}
                         {showRange && (
                             <RangeValidator
-                                title={'Range Validator ' + (field.name ? 'for ' + field.name : '')}
-                                subTitle="Add New Validation Criteria:"
-                                addName="Range Validator"
+                                title={'Range Validator(s) ' + (field.name ? 'for ' + field.name : '')}
+                                addName="Validator"
                                 index={index}
                                 show={showRange}
                                 type={DOMAIN_RANGE_VALIDATOR}

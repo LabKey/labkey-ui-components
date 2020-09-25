@@ -997,12 +997,12 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                     >
                       <SectionHeading
                         cls="domain-field-section-hdr"
-                        title="Conditional Formatting and Validation Options"
+                        title="Conditional Formatting Options"
                       >
                         <div
                           className="domain-field-section-heading domain-field-section-hdr"
                         >
-                          Conditional Formatting and Validation Options
+                          Conditional Formatting Options
                         </div>
                       </SectionHeading>
                     </div>

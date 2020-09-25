@@ -1988,12 +1988,12 @@ exports[`DomainRow Sample Field 1`] = `
                                                     >
                                                       <SectionHeading
                                                         cls="domain-field-section-hdr"
-                                                        title="Conditional Formatting and Validation Options"
+                                                        title="Conditional Formatting Options"
                                                       >
                                                         <div
                                                           className="domain-field-section-heading domain-field-section-hdr"
                                                         >
-                                                          Conditional Formatting and Validation Options
+                                                          Conditional Formatting Options
                                                         </div>
                                                       </SectionHeading>
                                                     </div>
@@ -4109,12 +4109,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                                     >
                                                       <SectionHeading
                                                         cls="domain-field-section-hdr"
-                                                        title="Conditional Formatting and Validation Options"
+                                                        title="Conditional Formatting Options"
                                                       >
                                                         <div
                                                           className="domain-field-section-heading domain-field-section-hdr"
                                                         >
-                                                          Conditional Formatting and Validation Options
+                                                          Conditional Formatting Options
                                                         </div>
                                                       </SectionHeading>
                                                     </div>
@@ -13064,12 +13064,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                     >
                                                       <SectionHeading
                                                         cls="domain-field-section-hdr"
-                                                        title="Conditional Formatting and Validation Options"
+                                                        title="Conditional Formatting Options"
                                                       >
                                                         <div
                                                           className="domain-field-section-heading domain-field-section-hdr"
                                                         >
-                                                          Conditional Formatting and Validation Options
+                                                          Conditional Formatting Options
                                                         </div>
                                                       </SectionHeading>
                                                     </div>

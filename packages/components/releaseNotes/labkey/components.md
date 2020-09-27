@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Update timeline icons for inventory events
+
 ### version 0.96.1
 *Released*: 24 September 2020
 * Move components, query, renderers, utils, url, etc. to /src/internal

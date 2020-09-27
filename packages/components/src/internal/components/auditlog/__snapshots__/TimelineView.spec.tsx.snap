@@ -157,11 +157,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </div>
           <SVGIcon
             activeTheme={2}
-            alt="default"
+            alt="storage_insert"
             className="timeline-event-icon"
             height="100%"
             iconDir="_images"
-            iconSrc="default"
+            iconSrc="storage_insert"
             theme={0}
             width="100%"
           />
@@ -482,11 +482,11 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </div>
           <SVGIcon
             activeTheme={2}
-            alt="default"
+            alt="storage_checkout"
             className="timeline-event-icon"
             height="100%"
             iconDir="_images"
-            iconSrc="default"
+            iconSrc="storage_checkout"
             theme={0}
             width="100%"
           />
@@ -679,11 +679,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </div>
           <SVGIcon
             activeTheme={2}
-            alt="default"
+            alt="storage_insert"
             className="timeline-event-icon"
             height="100%"
             iconDir="_images"
-            iconSrc="default"
+            iconSrc="storage_insert"
             theme={0}
             width="100%"
           />
@@ -984,11 +984,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </div>
           <SVGIcon
             activeTheme={2}
-            alt="default"
+            alt="storage_checkout"
             className="timeline-event-icon"
             height="100%"
             iconDir="_images"
-            iconSrc="default"
+            iconSrc="storage_checkout"
             theme={0}
             width="100%"
           />
@@ -1191,11 +1191,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </div>
           <SVGIcon
             activeTheme={2}
-            alt="default"
+            alt="storage_insert"
             className="timeline-event-icon"
             height="100%"
             iconDir="_images"
-            iconSrc="default"
+            iconSrc="storage_insert"
             theme={0}
             width="100%"
           />
@@ -1522,11 +1522,11 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </div>
           <SVGIcon
             activeTheme={2}
-            alt="default"
+            alt="storage_checkout"
             className="timeline-event-icon"
             height="100%"
             iconDir="_images"
-            iconSrc="default"
+            iconSrc="storage_checkout"
             theme={0}
             width="100%"
           />
@@ -1733,11 +1733,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </div>
           <SVGIcon
             activeTheme={2}
-            alt="default"
+            alt="storage_insert"
             className="timeline-event-icon"
             height="100%"
             iconDir="_images"
-            iconSrc="default"
+            iconSrc="storage_insert"
             theme={0}
             width="100%"
           />
@@ -2064,11 +2064,11 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </div>
           <SVGIcon
             activeTheme={2}
-            alt="default"
+            alt="storage_checkout"
             className="timeline-event-icon"
             height="100%"
             iconDir="_images"
-            iconSrc="default_orange"
+            iconSrc="storage_checkout_orange"
             theme={0}
             width="100%"
           />

@@ -230,10 +230,11 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
         const showRegexSection = DomainField.hasRegExValidation(field);
         const showRangeSection = DomainField.hasRangeValidation(field);
         const showValidation = showRegexSection || showRangeSection;
-        const title = (showCondFormatSection ? 'Conditional Formatting' : '')
-            + (showCondFormatSection && showValidation ? ' and ' : '')
-            + (showValidation ? 'Validation' : '')
-            + (' Options');
+        const title =
+            (showCondFormatSection ? 'Conditional Formatting' : '') +
+            (showCondFormatSection && showValidation ? ' and ' : '') +
+            (showValidation ? 'Validation' : '') +
+            ' Options';
 
         // don't render anything for this component if none of the sections apply
         if (!showCondFormatSection && !showRegexSection && !showRangeSection) {

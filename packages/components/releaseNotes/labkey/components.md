@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.96.2
+*Released*: 27 September 2020
 * Issue 41431: Misc test fixes on domain designer conditional format dialog and buttons
 
 ### version 0.96.1

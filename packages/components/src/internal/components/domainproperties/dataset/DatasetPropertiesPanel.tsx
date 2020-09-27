@@ -205,7 +205,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
     };
 
     render() {
-        const { model, keyPropertyIndex, visitDatePropertyIndex } = this.props;
+        const { model, keyPropertyIndex, visitDatePropertyIndex, successBsStyle } = this.props;
 
         const { isValid } = this.state;
 
@@ -248,6 +248,7 @@ export class DatasetPropertiesPanelImpl extends React.PureComponent<
                             model={model}
                             applyAdvancedProperties={this.applyAdvancedProperties}
                             visitDatePropertyIndex={visitDatePropertyIndex}
+                            successBsStyle={successBsStyle}
                         />
                     </Col>
                 </Row>

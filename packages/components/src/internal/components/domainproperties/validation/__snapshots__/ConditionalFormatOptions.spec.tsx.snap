@@ -1107,7 +1107,7 @@ exports[`ConditionalFormatOptions Format 1 - expanded 1`] = `
                   onClick={[Function]}
                   type="button"
                 >
-                  Remove Validator
+                  Remove Formatting
                 </button>
               </Button>
             </div>

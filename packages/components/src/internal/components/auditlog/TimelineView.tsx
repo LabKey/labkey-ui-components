@@ -53,13 +53,6 @@ export class TimelineView extends React.Component<Props, any> {
             });
         }
 
-        // TODO update with inventory icon when available
-        const icon =
-            event.eventType === App.ASSAYS_KEY
-                ? 'assay'
-                : event.eventType === 'inventory'
-                ? 'default'
-                : event.eventType;
         return (
             <tr
                 key={event.getRowKey()}
@@ -69,7 +62,7 @@ export class TimelineView extends React.Component<Props, any> {
                 className={classNames('timeline-event-row', { 'timeline-row-selected': eventSelected })}
             >
                 {this.renderTimestampCol(event.timestamp)}
-                {this.renderIconCol(icon, eventSelected, isFirstEvent, isLastEvent, isEventCompleted, isConnection)}
+                {this.renderIconCol(event.getIcon(), eventSelected, isFirstEvent, isLastEvent, isEventCompleted, isConnection)}
                 {this.renderDetailCol(event.summary, event.user, event.entity, event.getComment())}
             </tr>
         );

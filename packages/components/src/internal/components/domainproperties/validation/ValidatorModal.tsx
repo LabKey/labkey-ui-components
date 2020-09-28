@@ -14,7 +14,6 @@ import { AddEntityButton } from '../../buttons/AddEntityButton';
 
 export interface ValidatorModalProps {
     title: string;
-    subTitle: string;
     addName: string;
     index: number;
     show: boolean;
@@ -132,7 +131,7 @@ export function ValidatorModal(WrappedComponent: any) {
         };
 
         render() {
-            const { show, title, subTitle, onHide, addName, index, dataType, mvEnabled, successBsStyle } = this.props;
+            const { show, title, onHide, addName, index, dataType, mvEnabled, successBsStyle } = this.props;
             const { expanded, validators } = this.state;
 
             return (
@@ -142,7 +141,6 @@ export function ValidatorModal(WrappedComponent: any) {
                     </Modal.Header>
                     <Modal.Body>
                         <div className="domain-modal">
-                            <div className="domain-validation-subtitle">{subTitle}</div>
                             {validators.map((validator, i) => (
                                 <div key={i}>
                                     <WrappedComponent

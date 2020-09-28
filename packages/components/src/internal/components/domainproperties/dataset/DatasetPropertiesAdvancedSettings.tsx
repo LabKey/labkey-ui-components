@@ -132,6 +132,7 @@ interface AdvancedSettingsProps {
     title: string;
     applyAdvancedProperties: (datasetAdvancedSettingsForm: DatasetAdvancedSettingsForm) => void;
     visitDatePropertyIndex?: number;
+    successBsStyle?: string;
 }
 
 interface AdvancedSettingsState extends DatasetAdvancedSettingsForm {
@@ -235,7 +236,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
     render() {
         const { modalOpen, datasetId, cohortId, tag, showByDefault, dataSharing, availableCohorts } = this.state;
 
-        const { model, title } = this.props;
+        const { model, title, successBsStyle } = this.props;
 
         const showDataspace = model.definitionIsShared && model.getDataRowSetting() === 0;
         const showDataspaceCls = showDataspace ? 'dataset_data_row_element_show' : 'dataset_data_row_element_hide';
@@ -355,7 +356,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
 
                             <Button
                                 onClick={this.applyChanges}
-                                bsStyle="success"
+                                bsStyle={successBsStyle || 'success'}
                                 className="domain-adv-footer domain-adv-apply-btn"
                             >
                                 Apply

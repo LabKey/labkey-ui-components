@@ -1,14 +1,13 @@
-# LabKey Components (@labkey/components)
+# @labkey/components
 
-This package contains Components, models, actions, and utility functions for LabKey applications and pages.
+[API Docs](https://labkey.github.io/labkey-ui-components/) | [Change Log](./releaseNotes/labkey/components.md) | [License](./LICENSE.txt) | [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)
+
+This package contains React components, models, actions, and utility functions for LabKey applications and pages.
 
 :construction: **Warning** :construction:
 This package is under development, so these components should be considered unstable and are very likely to change.
 Once they're ready, we'll officially push the components as version 1.0.0.
 :construction: **Warning** :construction:
-
-## Release Notes
-Release notes for this package are available [here](releaseNotes/labkey/components.md).
 
 ## Development
 

@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.96.3
+*Released*: 28 September 2020
+* Remove bootstrap scss variables copied straight over from bootstrap. Just have overrides.
+* Don't look for audit queries in global variable as this relies on server context which isn't always present
+* Don't try to resolve URLs if no URL mappers defined. Can use URLs directly from server
+* Update labkey/api version
+
 ### version 0.96.2
 *Released*: 27 September 2020
 * Issue 41431: Misc test fixes on domain designer conditional format dialog and buttons

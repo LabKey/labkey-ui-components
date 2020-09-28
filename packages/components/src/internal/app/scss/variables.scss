@@ -1,4 +1,4 @@
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";
+
 
 //
 // Bootstrap Variable Overrides
@@ -20,7 +20,8 @@ $font-family-sans-serif:  "Roboto", "Helvetica Neue", Helvetica, Arial, sans-ser
 $border-radius-small:       2px !default;
 
 //== Container sizes
-$container-desktop:            (970px + $grid-gutter-width) !default;
+$grid-gutter-width:             30px !default;
+$container-desktop:             (970px + $grid-gutter-width) !default;
 
 //== Navbar links
 $navbar-default-link-active-color:         $cyan !default;
@@ -43,3 +44,5 @@ $breadcrumb-bg:                 transparent;
 $breadcrumb-color:              $gray !default;
 //** Textual separator for between breadcrumb elements
 $breadcrumb-separator:          ">" !default;
+
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";

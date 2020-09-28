@@ -362,56 +362,61 @@ export class URLResolver {
         return new Promise(resolve => {
             let resolved = fromJS(JSON.parse(JSON.stringify(json)));
 
-            if (resolved.get('rows').count()) {
-                const schema = resolved.get('schemaName').toJS().join('.');
-                const query = resolved.get('queryName');
-                const fields = resolved.getIn(['metaData', 'fields']).reduce((fields, column) => {
-                    return fields.set(column.get('fieldKey'), column);
-                }, Map());
+            // If no url mappers defined then this is a noop. Using URLs as they are.
+            if (URLService.getUrlMappers()?.size > 0) {
 
-                const rows = resolved.get('rows').map(row => {
-                    return row.map((cell, fieldKey) => {
-                        // single-value cells
-                        if (Map.isMap(cell) && cell.has('url')) {
-                            return cell.set(
-                                'url',
-                                this.mapURL({
-                                    url: cell.get('url'),
-                                    row: cell,
-                                    column: fields.get(fieldKey),
-                                    schema,
-                                    query,
-                                })
-                            );
-                        }
+                if (resolved.get('rows').count()) {
+                    const schema = resolved.get('schemaName').toJS().join('.');
+                    const query = resolved.get('queryName');
+                    const fields = resolved.getIn(['metaData', 'fields']).reduce((fields, column) => {
+                        return fields.set(column.get('fieldKey'), column);
+                    }, Map());
 
-                        // multi-value cells
-                        if (List.isList(cell) && cell.size > 0) {
-                            return cell
-                                .map(innerCell => {
-                                    if (Map.isMap(innerCell) && innerCell.has('url')) {
-                                        return innerCell.set(
-                                            'url',
-                                            this.mapURL({
-                                                url: innerCell.get('url'),
-                                                row: innerCell,
-                                                column: fields.get(fieldKey),
-                                                schema,
-                                                query,
-                                            })
-                                        );
-                                    }
+                    const rows = resolved.get('rows').map(row => {
+                        return row.map((cell, fieldKey) => {
+                            // single-value cells
+                            if (Map.isMap(cell) && cell.has('url')) {
+                                return cell.set(
+                                    'url',
+                                    this.mapURL({
+                                        url: cell.get('url'),
+                                        row: cell,
+                                        column: fields.get(fieldKey),
+                                        schema,
+                                        query,
+                                    })
+                                );
+                            }
 
-                                    return innerCell;
-                                })
-                                .toList();
-                        }
+                            // multi-value cells
+                            if (List.isList(cell) && cell.size > 0) {
+                                return cell
+                                    .map(innerCell => {
+                                        if (Map.isMap(innerCell) && innerCell.has('url'))
+                                        {
+                                            return innerCell.set(
+                                                'url',
+                                                this.mapURL({
+                                                    url: innerCell.get('url'),
+                                                    row: innerCell,
+                                                    column: fields.get(fieldKey),
+                                                    schema,
+                                                    query,
+                                                })
+                                            );
+                                        }
 
-                        return cell;
+                                        return innerCell;
+                                    })
+                                    .toList();
+                            }
+
+                            return cell;
+                        });
                     });
-                });
 
-                resolved = resolved.set('rows', rows);
+                    resolved = resolved.set('rows', rows);
+                }
             }
 
             resolve(resolved.toJS());

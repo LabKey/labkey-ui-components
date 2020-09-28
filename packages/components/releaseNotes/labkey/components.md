@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.96.5
+*Released*: 28 September 2020
+* Fix for Bootstrap SCSS variable overrides.
+
 ### version 0.96.4
 *Released*: 28 September 2020
 * Update timeline icons for inventory events

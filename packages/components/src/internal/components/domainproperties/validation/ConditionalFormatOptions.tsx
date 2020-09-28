@@ -71,7 +71,7 @@ export class ConditionalFormatOptions extends React.PureComponent<
                         id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
                         onClick={this.onDelete}
                     >
-                        Remove Validator
+                        Remove Formatting
                     </Button>
                 </Col>
             </Row>

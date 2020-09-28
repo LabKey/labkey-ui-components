@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
   * Allow user to choose field of focus
   * Change input placeholder text to avoid some awkard grammar problems
 
+### version 0.96.5
+*Released*: 28 September 2020
+* Fix for Bootstrap SCSS variable overrides.
+
 ### version 0.96.4
 *Released*: 28 September 2020
 * Update timeline icons for inventory events

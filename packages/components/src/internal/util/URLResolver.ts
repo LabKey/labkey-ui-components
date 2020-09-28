@@ -20,7 +20,6 @@ import { AppURL } from '../url/AppURL';
 import { LineageLinkMetadata } from '../components/lineage/types';
 
 import { ActionMapper, URLMapper, URLService } from './URLService';
-import {getServerContext} from "../../../../../../labkey-api-js/src";
 
 interface MapURLOptions {
     column: any;

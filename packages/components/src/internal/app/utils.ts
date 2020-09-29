@@ -126,7 +126,7 @@ export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<
         // TODO icon, text and exact URLs to be determined
         let locationsMenuConfig = new MenuSectionConfig({
             emptyText: 'No freezers have been defined',
-            iconURL: imageURL('_images', 'freezer.svg'),
+            iconURL: imageURL('_images', 'freezer_menu.svg'),
             maxColumns: 1,
             maxItemsPerColumn: 12,
             seeAllURL: fmAppBase + AppURL.create(HOME_KEY).toHref(),

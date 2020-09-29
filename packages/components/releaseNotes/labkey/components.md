@@ -5,6 +5,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 * FieldEditorOverlay updates
   * Allow user to choose field of focus
   * Change input placeholder text to avoid some awkard grammar problems
+* Freezer icon updates
+  * Update menu icon
+  * Update timeline storage update icon
 
 ### version 0.96.5
 *Released*: 28 September 2020

@@ -39,23 +39,83 @@ export interface GridMessage {
 
 // Note: if you add/remove fields on QueryConfig make sure to update utils.hashQueryConfig
 export interface QueryConfig {
+    /**
+     * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)
+     * filters to be applied to the [[QueryModel]]. These base filters will be concatenated with URL filters, they keyValue
+     * filter, and view filters when applicable.
+     */
     baseFilters?: Filter.IFilter[];
+    /**
+     * Flag used to indicate whether or not filters/sorts/etc. should be persisted on the URL. Defaults to false.
+     */
     bindURL?: boolean;
+    /**
+     * One of the values of [Query.ContainerFilter](https://labkey.github.io/labkey-api-js/enums/_query_utils_.containerfilter.html)
+     * that sets the scope of this query. Defaults to ContainerFilter.current, and is interpreted relative to
+     * config.containerPath.
+     */
     containerFilter?: Query.ContainerFilter;
+    /**
+     * The path to the container in which the schema and query are defined, if different than the current container.
+     * If not supplied, the current container's path will be used.
+     */
     containerPath?: string;
+    /**
+     * Id value to use for referencing a given [[QueryModel]]. If not provided, one will be generated for this [[QueryModel]]
+     * instance based on the [[SchemaQuery]] and keyValue where applicable.
+     */
     id?: string;
+    /**
+     * Include the Details link column in the set of columns (defaults to false). If included, the column will
+     * have the name "\~\~Details\~\~". The underlying table/query must support details links or the column will
+     * be omitted in the response.
+     */
     includeDetailsColumn?: boolean;
+    /**
+     * Include the Update (or edit) link column in the set of columns (defaults to false). If included, the column
+     * will have the name "\~\~Update\~\~". The underlying table/query must support update links or the column
+     * will be omitted in the response.
+     */
     includeUpdateColumn?: boolean;
+    /**
+     * Primary key value, used when loading/rendering details pages to get a single row of data in a [[QueryModel]].
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    keyValue?: any; // Should be a Primary Key Value, used when loading/rendering details pages.
+    keyValue?: any;
+    /**
+     * The maximum number of rows to return from the server (defaults to 100000).
+     * If you want to return all possible rows, set this config property to -1.
+     */
     maxRows?: number;
+    /**
+     * The index of the first row to return from the server (defaults to 0). Use this along with the
+     * maxRows config property to request pages of data.
+     */
     offset?: number;
+    /**
+     * Array of column names to be explicitly excluded from the column list in the [[QueryModel]] data load.
+     */
     omittedColumns?: string[];
+    /**
+     * Query parameters used as input to a parameterized query.
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    queryParameters?: { [key: string]: any }; // These are the parameters used as input to a parameterized query
+    queryParameters?: { [key: string]: any };
+    /**
+     * Array of column names to be explicitly included from the column list in the [[QueryModel]] data load.
+     */
     requiredColumns?: string[];
+    /**
+     * Definition of the [[SchemaQuery]] (i.e. schema, query, and optionally view name) to use for the [[QueryModel]] data load.
+     */
     schemaQuery: SchemaQuery;
+    /**
+     * Array of [[QuerySort]] objects to use for the [[QueryModel]] data load.
+     */
     sorts?: QuerySort[];
+    /**
+     * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
+     */
     urlPrefix?: string;
 }
 

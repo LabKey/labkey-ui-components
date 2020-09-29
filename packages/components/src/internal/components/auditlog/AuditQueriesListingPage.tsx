@@ -28,8 +28,6 @@ import { AuditDetailsModel } from './models';
 import { getAuditDetail } from './actions';
 import { AuditQuery, getAuditQueries } from './utils';
 
-const AUDIT_QUERIES = getAuditQueries();
-
 interface Props {
     params: any;
     user: User;
@@ -38,6 +36,7 @@ interface Props {
 interface State {
     selected: string;
     selectedRowId: number;
+    auditQueries: AuditQuery[];
     detail?: AuditDetailsModel;
     error?: ReactNode;
 }
@@ -49,6 +48,7 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
         this.state = {
             selected: props.params.query,
             selectedRowId: undefined,
+            auditQueries: getAuditQueries()
         };
     }
 
@@ -132,7 +132,9 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
     };
 
     get selectedQuery(): AuditQuery {
-        return AUDIT_QUERIES.find(q => q.value === this.state.selected);
+        const { auditQueries } = this.state;
+
+        return auditQueries.find(q => q.value === this.state.selected);
     }
 
     get containerFilter(): Query.ContainerFilter {
@@ -235,6 +237,7 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
 
     render = (): ReactNode => {
         const title = 'Audit Log';
+        const { auditQueries } = this.state;
 
         return (
             <Page title={title} hasHeader={true}>
@@ -252,7 +255,7 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
                     valueKey="value"
                     labelKey="label"
                     onChange={this.onSelectionChange}
-                    options={AUDIT_QUERIES}
+                    options={auditQueries}
                 />
                 {this.hasDetailView() ? this.renderMasterDetailGrid() : this.renderSingleGrid()}
             </Page>

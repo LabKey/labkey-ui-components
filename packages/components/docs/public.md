@@ -2,9 +2,12 @@
 # Public API Documentation
 
 This package contains React components, models, actions, and utility functions for LabKey applications and pages.
-Note that the code in this package in the `/src` directory is split between `internal` and `public`.
-With version 1.0 of this package, we have focused on several key components and models that will be most beneficial
-for external development / usage. Move components will be added to this list in future `@labkey/component` package versions.
+Note that the code in this package in the `/src` directory is split into two main directories: `internal` and `public`.
+
+With version 1.0 of this package, the `public` directory will be focused on several key components and models that will
+be most beneficial for external development / usage. More components will be added to this list in future
+`@labkey/component` package versions.
+
 Those components, models, etc. in the `internal` directory should be considered unstable at this time and are very
 likely to change in future versions of this package.
 
@@ -39,7 +42,10 @@ import { QueryModel, GridPanel } from '@labkey/components';
 
 ## Related documentation
 
-* [QueryModel API and GridPanel](./QueryModel.md)
-* [Immer for immutability](./immer.md)
-* [Jest Testing Recommendations](./jest.md)
+* [Demo Module](https://github.com/LabKey/tutorialModules/tree/develop/demo) - LabKey demo module with React page and
+component usage examples
+* [QueryModel API and GridPanel](./QueryModel.md) - how to use QueryModel as a selectRows API wrapper and display data
+in a GridPanel component
+* [Immer for Immutability](./immer.md) - information and examples on using the Immer library for JavaScript object immutability
+* [Jest Testing Recommendations](./jest.md) - recommendations and examples for adding Jest tests for your UI components code
 

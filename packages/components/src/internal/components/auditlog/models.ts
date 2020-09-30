@@ -4,6 +4,7 @@
  */
 import { fromJS, Map, Record, List } from 'immutable';
 import { App } from "../../..";
+import { SAMPLES_KEY } from "../../app";
 
 export class AuditDetailsModel extends Record({
     rowId: undefined,
@@ -150,6 +151,8 @@ export class TimelineEventModel extends Record({
                 icon = 'storage_checkout';
             else if (summary.indexOf('moved') > -1)
                 icon = 'storage_move';
+            else // for storage update events not associated with check in, use samples icon
+                icon = SAMPLES_KEY;
         }
 
         return icon;

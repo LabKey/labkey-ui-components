@@ -34,6 +34,7 @@ export class FieldEditProps extends Record({
     step: undefined,
     key: undefined,
     value: undefined,
+    autoFocus: true,
 }) {
     caption: string;
     fieldKey: string;
@@ -43,6 +44,7 @@ export class FieldEditProps extends Record({
     step: number; // used for number input types; default is 1
     key: string;
     value?: string;
+    autoFocus?: boolean;
 
     getFieldEditInputName(): string {
         return 'fieldEditInput_' + this.fieldKey;
@@ -96,6 +98,7 @@ export class FieldEditForm extends React.Component<Props, any> {
                             step={field.step}
                             minValue={field.minValue}
                             hideOverlayFn={hideOverlayFn}
+                            autoFocus={field.autoFocus}
                         />
                     ))}
                 </Formsy>
@@ -106,6 +109,7 @@ export class FieldEditForm extends React.Component<Props, any> {
 
 interface FieldEditInputProps {
     caption?: string;
+    autoFocus?: boolean
     fieldCaption?: string;
     inputPlaceholder?: string;
     inputType?: any;
@@ -134,10 +138,10 @@ class FieldEditInputImpl extends React.Component<FieldEditInputProps, any> {
     }
 
     resolveFormElement() {
-        const { inputPlaceholder, inputType, value, step, minValue } = this.props;
+        const { autoFocus, inputPlaceholder, inputType, value, step, minValue } = this.props;
 
         const props = {
-            autoFocus: true,
+            autoFocus,
             className: 'form-control',
             defaultValue: value,
             onChange: this.handleChange.bind(this),

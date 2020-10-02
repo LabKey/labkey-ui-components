@@ -42,7 +42,7 @@ export interface QueryConfig {
     /**
      * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)
      * filters to be applied to the [[QueryModel]] data load. These base filters will be concatenated with URL filters,
-     * they keyValue filter, and view filters when applicable.
+     * the keyValue filter, and view filters when applicable.
      */
     baseFilters?: Filter.IFilter[];
     /**
@@ -102,7 +102,7 @@ export interface QueryConfig {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     queryParameters?: { [key: string]: any };
     /**
-     * Array of column names to be explicitly included from the column list in the [[QueryModel]] data load.
+     * Array of column names to be explicitly included in the column list in the [[QueryModel]] data load.
      */
     requiredColumns?: string[];
     /**
@@ -124,10 +124,11 @@ const DEFAULT_MAX_ROWS = 20;
 
 /**
  * This is the base model used to store all the data for a query. At a high level the QueryModel API is a wrapper around
- * the selectRows API. If you need to retrieve data from a LabKey table or query, so you can render it in a React
+ * the [selectRows](https://labkey.github.io/labkey-api-js/modules/_query_selectrows_.html#selectrows) API.
+ * If you need to retrieve data from a LabKey table or query, so you can render it in a React
  * component, then the QueryModel API is most likely what you want.
  *
- * This model stores some client-side only data as well as data retrieved by the server. You can manually instantiate a
+ * This model stores some client-side only data as well as data retrieved from the server. You can manually instantiate a
  * QueryModel, but you will almost never do this, instead you will use the [[withQueryModels]] HOC to inject the needed
  * QueryModel(s) into your component. To create a QueryModel you will need to define a [[QueryConfig]] object. At a
  * minimum, your [[QueryConfig]] must have a valid [[SchemaQuery]], but we also support many other attributes that
@@ -272,9 +273,8 @@ export class QueryModel {
     readonly selectedReportId: string;
     /**
      * Array of row keys for row selections in the QueryModel.
-     * Note: ES6 Set is being used here, not Immutable Set.
      */
-    readonly selections?: Set<string>;
+    readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set.
     /**
      * Error message from API call to load the row selections.
      */
@@ -409,7 +409,7 @@ export class QueryModel {
     }
 
     /**
-     * Get an array of filters to use for the details view which includes the base filters but explicitly excludes
+     * Get an array of filters to use for the details view, which includes the base filters but explicitly excludes
      * the "replaced" column filter for the assay run case. For internal use only.
      *
      * Issue 39765: When viewing details for assays, we need to apply an "is not blank" filter on the "Replaced" column
@@ -456,7 +456,7 @@ export class QueryModel {
     }
 
     /**
-     * Comma delimited string of fieldKeys for requiredColumns, keyColumns, and displayColumns. If provided, the
+     * Comma-delimited string of fieldKeys for requiredColumns, keyColumns, and displayColumns. If provided, the
      * omittedColumns will be removed from this list.
      */
     get columnString(): string {
@@ -483,14 +483,15 @@ export class QueryModel {
     }
 
     /**
-     * Comma delimited string of displayColumns fieldKeys.
+     * Comma-delimited string of fields that appear in an export. These are the same as the display columns but
+     * do not exclude omitted columns.
      */
     get exportColumnString(): string {
         return this.displayColumns.map(column => column.fieldKey).join(',');
     }
 
     /**
-     * Comma delimited string of sorts from the [[QueryInfo]] sorts property. If the view has defined sorts, they
+     * Comma-delimited string of sorts from the [[QueryInfo]] sorts property. If the view has defined sorts, they
      * will be concatenated with the sorts property.
      */
     get sortString(): string {
@@ -624,7 +625,7 @@ export class QueryModel {
     }
 
     /**
-     * Get the total page count for the results rows in this QueryModel by dividing the total row count by the
+     * Get the total page count for the results rows in this QueryModel based on the total row count and the
      * max rows per page value.
      */
     get pageCount(): number {

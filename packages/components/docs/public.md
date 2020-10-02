@@ -18,7 +18,7 @@ you'll want to make sure you set the appropriate registry for the `@labkey` scop
 
 #### Setting the Registry Scope
 
-This package is currently available on LabKey's Artifactory package registry. To include this package set the registry
+This package is currently available on LabKey's Artifactory package registry. To include this package, set the registry
 in npm for the `@labkey` scope. This can be done via command line using `npm config`:
 ```
 npm config set @labkey:registry https://artifactory.labkey.com/artifactory/api/npm/libs-client

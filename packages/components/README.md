@@ -107,7 +107,7 @@ from the server for various Ajax calls that are required.
 
 #### Getting @labkey/components packages to the application
 
-While you can [publish](#publishing) a pre-release version of the glass packages and then update your application's `package.json`
+While you can [publish](#publishing) a pre-release version of the components packages and then update your application's `package.json`
 to reference the new pre-release version in order to view the changes within the application, you will likely want to
 be able to do this without publishing for quicker development iteration.
 

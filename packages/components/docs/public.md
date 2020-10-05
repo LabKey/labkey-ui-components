@@ -1,15 +1,9 @@
 
-# Public API Documentation
+# Public API
 
 This package contains React components, models, actions, and utility functions for LabKey applications and pages.
-Note that the code in this package in the `/src` directory is split into two main directories: `internal` and `public`.
-
-With version 1.0 of this package, the `public` directory will be focused on several key components and models that will
-be most beneficial for external development / usage. More components will be added to this list in future
-`@labkey/component` package versions.
-
-Those components, models, etc. in the `internal` directory should be considered unstable at this time and are very
-likely to change in future versions of this package.
+We have documented here those items in the package that comprise the public API. Other items will be added as time
+allows, demand dictates, and stability suggests.
 
 ## Installation
 
@@ -40,7 +34,7 @@ You can then import `@labkey/components` in your application as follows:
 import { QueryModel, GridPanel } from '@labkey/components';
 ```
 
-## Related documentation
+## Related Documentation
 
 * [Demo Module](https://github.com/LabKey/tutorialModules/tree/develop/demo) - LabKey demo module with React page and
 component usage examples
@@ -49,3 +43,9 @@ in a GridPanel component
 * [Immer for Immutability](./immer.md) - information and examples on using the Immer library for JavaScript object immutability
 * [Jest Testing Recommendations](./jest.md) - recommendations and examples for adding Jest tests for your UI components code
 
+## Code Organization
+
+The source code in this package is split into two main directories under the `/src` directory: `internal` and `public`.
+The React components, models, etc. in the `internal` directory are either purely for implementation purposes or not yet
+stable enough to be included as part of the public API. As components become more stable they will be moved to the
+`public` directory and added to the public API documentation with future `@labkey/component` package versions.

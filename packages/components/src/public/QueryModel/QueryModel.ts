@@ -409,6 +409,8 @@ export class QueryModel {
     }
 
     /**
+     * @hidden
+     *
      * Get an array of filters to use for the details view, which includes the base filters but explicitly excludes
      * the "replaced" column filter for the assay run case. For internal use only.
      *

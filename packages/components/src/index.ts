@@ -50,6 +50,7 @@ import {
     getDisambiguatedSelectInputOptions,
     getSchemaQuery,
     hasAllPermissions,
+    isLoading,
     naturalSort,
     naturalSortByProperty,
     resolveKey,
@@ -269,7 +270,7 @@ import { DataClassDesigner } from './internal/components/domainproperties/datacl
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { AssayContextConsumer, AssayProvider, AssayProviderProps } from './internal/components/assay/AssayProvider';
+import { AssayContextConsumer, AssayProvider, AssayProviderProps, InjectedAssayModel } from './internal/components/assay/AssayProvider';
 import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
@@ -602,6 +603,7 @@ export {
     AssayStateModel,
     AssayImportPanels,
     AssayProvider,
+    InjectedAssayModel,
     AssayProviderProps,
     AssayContextConsumer,
     AssayImportSubMenuItem,
@@ -731,6 +733,7 @@ export {
     caseInsensitive,
     capitalizeFirstChar,
     resolveKey,
+    isLoading,
     naturalSort,
     naturalSortByProperty,
     generateId,

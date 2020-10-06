@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, OrderedMap, Record } from 'immutable';
+import { immerable } from 'immer';
+import { List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
 import { AssayDOM } from '@labkey/api';
 
 import { getEditorModel } from '../../global';
@@ -31,7 +32,7 @@ export interface AssayPropertiesPanelProps {
 }
 
 export class AssayWizardModel
-    extends Record({
+    extends ImmutableRecord({
         assayDef: undefined,
         isError: undefined,
         isWarning: false,
@@ -236,51 +237,60 @@ export function parseDataTextToRunRows(rawData: string): any[] {
     return rows.length > 0 ? rows : null;
 }
 
-export class AssayUploadResultModel extends Record({
-    assayId: undefined,
-    batchId: undefined,
-    runId: undefined,
-    success: undefined,
-    successurl: undefined,
-}) {
+export class AssayUploadResultModel {
+    [immerable] = true;
+
     assayId: number;
     batchId: number;
     runId: number;
     success: boolean;
     successurl?: string;
+
+    constructor(values?: Partial<AssayUploadResultModel>) {
+        Object.assign(this, values);
+    }
 }
 
-export class AssayStateModel extends Record({
-    byId: Map<number, AssayDefinitionModel>(),
-    byName: Map<string, number>(),
-    errorMsg: undefined,
-    hasError: false,
-    isLoaded: false,
-    isLoading: false,
-    protocolsById: Map<number, AssayProtocolModel>(),
-}) {
-    byId: Map<number, AssayDefinitionModel>;
-    byName: Map<string, number>;
+export class AssayStateModel {
+    [immerable] = true;
+
+    byId: Record<number, AssayDefinitionModel>;
+    byName: Record<string, number>;
     errorMsg: string;
     hasError: boolean;
-    isLoaded: boolean;
-    isLoading: boolean;
-    protocolsById: Map<number, AssayProtocolModel>;
+    protocolsById: Record<number, AssayProtocolModel>;
+
+    static create(protocols: AssayDefinitionModel[]): AssayStateModel {
+        return new AssayStateModel({
+            byId: protocols.reduce((rec, p) => {
+                rec[p.id] = p;
+                return rec;
+            }, {}),
+            byName: protocols.reduce((rec, p) => {
+                rec[p.name.toLowerCase()] = p.id;
+                return rec;
+            }, {}),
+        });
+    }
+
+    constructor(values?: Partial<AssayStateModel>) {
+        Object.assign(this, values);
+
+        this.byId = this.byId ?? {};
+        this.byName = this.byName ?? {};
+        this.hasError = this.hasError ?? false;
+        this.protocolsById = this.protocolsById ?? {};
+    }
 
     getById(assayRowId: number): AssayDefinitionModel {
-        return this.byId.get(assayRowId);
+        return this.byId[assayRowId];
     }
 
     getByName(assayName: string): AssayDefinitionModel {
-        if (assayName) {
-            const assayRowId = this.byName.get(assayName.toLowerCase());
-            if (assayRowId !== undefined) {
-                return this.byId.get(assayRowId);
-            }
-        }
+        return this.getById(this.byName[assayName?.toLowerCase()]);
     }
 
     getProtocol(assayRowId: number): AssayProtocolModel {
-        return this.protocolsById.get(assayRowId);
+        return this.protocolsById[assayRowId];
     }
 }

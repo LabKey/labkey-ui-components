@@ -1,96 +1,132 @@
-import React from 'react';
-
+import React, { ComponentType, createContext, PureComponent, ReactNode } from 'react';
+import { Draft, produce } from 'immer';
 import { WithRouterProps } from 'react-router';
 
-import { Alert, AssayDefinitionModel, AssayProtocolModel, getActionErrorMessage, LoadingPage, NotFound } from '../../..';
+import {
+    Alert,
+    AssayDefinitionModel,
+    AssayProtocolModel,
+    AssayStateModel,
+    fetchAllAssays,
+    fetchProtocol,
+    getActionErrorMessage,
+    isLoading,
+    LoadingPage,
+    LoadingState,
+    NotFound,
+} from '../../..';
 
-import { AssayStateModel } from './models';
-
-interface IContext {
+interface AssayProviderContext {
     assayDefinition: AssayDefinitionModel;
     assayProtocol: AssayProtocolModel;
 }
 
-interface AssayLoadProps {
-    loadAssay: (protocolName: string) => any;
-    assay: AssayStateModel;
+export type AssayProviderProps = AssayProviderContext & WithRouterProps;
+
+export interface InjectedAssayModel extends AssayProviderContext {
+    assays: AssayStateModel;
 }
 
-export interface AssayProviderProps extends WithRouterProps {
-    assayDefinition: AssayDefinitionModel;
-    assayProtocol: AssayProtocolModel;
+interface State {
+    context: AssayProviderContext;
+    definitions: AssayStateModel;
+    definitionsLoadingState: LoadingState;
+    loadError?: string;
+    protocolLoadingState: LoadingState;
 }
 
-type Props = AssayProviderProps & AssayLoadProps;
-
-type State = IContext;
-
-const Context = React.createContext<IContext>(undefined);
+const Context = createContext<AssayProviderContext>(undefined);
 const AssayContextProvider = Context.Provider;
 export const AssayContextConsumer = Context.Consumer;
 
-export const AssayProvider = (Component: React.ComponentType) => {
-    return class AssayProviderImpl extends React.Component<Props, State> {
-        constructor(props: Props) {
+export function AssayProvider<Props>(ComponentToWrap: ComponentType<Props & InjectedAssayModel>): ComponentType<Props> {
+    type WrappedProps = Props & AssayProviderProps;
+
+    return class AssayProviderImpl extends PureComponent<WrappedProps, State> {
+        constructor(props: WrappedProps) {
             super(props);
 
-            this.state = {
-                assayDefinition: undefined,
-                assayProtocol: undefined,
-            };
-        }
-
-        static getDerivedStateFromProps(nextProps: Props, prevState: State): State {
-            const { assay, params } = nextProps;
-            const { protocol } = params;
-            const assayDefinition = assay.getByName(protocol);
-
-            if (assay.isLoaded && assayDefinition) {
-                const assayProtocol = assay.getProtocol(assayDefinition.id);
-                // we need to load the assay protocol if it has changed
-                if (!assayProtocol && prevState.assayProtocol) nextProps.loadAssay(nextProps.params.protocol);
-
-                return {
-                    assayDefinition,
-                    assayProtocol,
-                };
-            } else {
-                return {
-                    assayDefinition,
+            this.state = produce({}, () => ({
+                context: {
+                    assayDefinition: undefined,
                     assayProtocol: undefined,
-                };
+                },
+                definitions: undefined,
+                definitionsLoadingState: LoadingState.INITIALIZED,
+                loadError: undefined,
+                protocolLoadingState: LoadingState.INITIALIZED,
+            }));
+        }
+
+        componentDidMount(): void {
+            this.load();
+        }
+
+        componentDidUpdate(prevProps: WrappedProps): void {
+            if (this.props.params.protocol !== prevProps.params.protocol) {
+                this.load();
             }
         }
 
-        componentDidMount() {
-            this.props.loadAssay(this.props.params.protocol);
-        }
+        load = async (): Promise<void> => {
+            await this.loadDefinitions();
+            await this.loadProtocol(this.props.params.protocol);
+        };
 
-        componentDidUpdate(nextProps: Props) {
-            if (this.props.params.protocol !== nextProps.params.protocol) {
-                this.props.loadAssay(nextProps.params.protocol);
+        loadDefinitions = async (): Promise<void> => {
+            if (this.state.definitionsLoadingState === LoadingState.LOADED) {
+                return;
             }
-        }
 
-        render() {
-            const { assay, params } = this.props;
-            const { protocol } = params;
-            const assayDefinition = assay.getByName(protocol);
+            this.update({ loadError: undefined, definitionsLoadingState: LoadingState.LOADING });
 
-            if (assay.isLoaded && assayDefinition) {
-                if (!assay.getProtocol(assayDefinition.id)) {
-                    return <LoadingPage />;
-                }
+            try {
+                const definitionsList = await fetchAllAssays();
 
-                return (
-                    <AssayContextProvider value={this.state}>
-                        <Component {...this.props} {...this.state} />
-                    </AssayContextProvider>
-                );
-            } else if (assay.isLoading || !assay.isLoaded) {
+                this.update({
+                    definitions: AssayStateModel.create(definitionsList.toArray()),
+                    definitionsLoadingState: LoadingState.LOADED,
+                });
+            } catch (error) {
+                this.update({ loadError: error, definitionsLoadingState: LoadingState.LOADED });
+            }
+        };
+
+        loadProtocol = async (assayName: string): Promise<void> => {
+            this.update({ protocolLoadingState: LoadingState.LOADING, loadError: undefined });
+
+            try {
+                const assayDefinition = this.state.definitions.getByName(assayName);
+                const assayProtocol = await fetchProtocol(assayDefinition.id);
+
+                this.update({
+                    context: {
+                        assayDefinition,
+                        assayProtocol,
+                    },
+                    protocolLoadingState: LoadingState.LOADED,
+                });
+            } catch (error) {
+                this.update({ loadError: error, protocolLoadingState: LoadingState.LOADED });
+            }
+        };
+
+        update = (newState: Partial<State>): void => {
+            this.setState(
+                produce((draft: Draft<State>) => {
+                    Object.assign(draft, newState);
+                })
+            );
+        };
+
+        render(): ReactNode {
+            const { context, definitions, definitionsLoadingState, loadError, protocolLoadingState } = this.state;
+
+            if (isLoading(definitionsLoadingState) || isLoading(protocolLoadingState)) {
                 return <LoadingPage />;
-            } else if (assay.hasError) {
-                console.error(assay.errorMsg);
+            }
+
+            if (loadError) {
                 return (
                     <Alert>
                         {getActionErrorMessage('There was a problem loading the assay design.', 'assay design')}
@@ -98,7 +134,14 @@ export const AssayProvider = (Component: React.ComponentType) => {
                 );
             }
 
-            return <NotFound />;
+            return (
+                <AssayContextProvider value={context}>
+                    <ComponentToWrap {...this.props} {...context} assays={definitions} />
+                </AssayContextProvider>
+            );
+
+            // TODO: Consider not found
+            // return <NotFound />;
         }
     };
-};
+}

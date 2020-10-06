@@ -428,7 +428,7 @@ export class QueryModel {
     }
 
     get hasSelections(): boolean {
-        return this.selections !== undefined;
+        return this.selections?.size > 0;
     }
 
     get selectedState(): GRID_CHECKBOX_OPTIONS {

@@ -16,16 +16,14 @@ import {
     NotFound,
 } from '../../..';
 
-interface AssayProviderContext {
+export interface AssayProviderContext {
     assayDefinition: AssayDefinitionModel;
     assayProtocol: AssayProtocolModel;
 }
 
-interface OwnProps {
+export interface AssayProviderProps {
     loadProtocol?: boolean;
 }
-
-export type AssayProviderProps = AssayProviderContext & WithRouterProps;
 
 export interface InjectedAssayModel extends AssayProviderContext {
     assays: AssayStateModel;
@@ -45,9 +43,9 @@ export const AssayContextConsumer = Context.Consumer;
 
 export function AssayProvider<Props>(
     ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
-    defaultProps?: OwnProps
-): ComponentType<Props & OwnProps> {
-    type WrappedProps = Props & OwnProps & WithRouterProps;
+    defaultProps?: AssayProviderProps
+): ComponentType<Props & AssayProviderProps> {
+    type WrappedProps = Props & AssayProviderProps & WithRouterProps;
 
     class ComponentWithAssays extends PureComponent<WrappedProps, State> {
         static defaultProps;
@@ -163,5 +161,5 @@ export function AssayProvider<Props>(
         loadProtocol: defaultProps?.loadProtocol ?? true,
     };
 
-    return withRouter(ComponentWithAssays) as ComponentType<Props & OwnProps>;
+    return withRouter(ComponentWithAssays) as ComponentType<Props & AssayProviderProps>;
 }

@@ -1,43 +1,44 @@
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
-import { List } from 'immutable';
 
+import {
+    AssayProvider,
+    getImportItemsForAssayDefinitions,
+    InjectedAssayModel,
+    ISubItem,
+    SubMenuItem,
+    SubMenuItemProps,
+    QueryGridModel,
+} from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import { ISubItem, SubMenuItem, SubMenuItemProps } from '../menus/SubMenuItem';
-import { AssayDefinitionModel, QueryGridModel } from '../base/models/model';
-
-import { getImportItemsForAssayDefinitions } from './actions';
 
 interface Props extends SubMenuItemProps {
-    isLoaded: boolean;
-    assayDefModels: List<AssayDefinitionModel>;
-    model: QueryGridModel;
+    isLoaded?: boolean;
+    model?: QueryGridModel;
     requireSelection: boolean;
     nounPlural?: string;
 }
 
-export class AssayImportSubMenuItem extends React.Component<Props, any> {
+class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAssayModel> {
     static defaultProps = {
-        text: 'Upload Assay Data',
+        isLoaded: true,
         nounPlural: 'items',
+        text: 'Upload Assay Data',
     };
 
-    getItems(): ISubItem[] {
-        const { assayDefModels, model } = this.props;
-        const items = getImportItemsForAssayDefinitions(assayDefModels, model);
+    getItems = (): ISubItem[] => {
+        const { assays, model } = this.props;
 
-        const subItems = [];
-        items.forEach((href: string, assay: AssayDefinitionModel) => {
+        return getImportItemsForAssayDefinitions(assays, model).reduce((subItems, href, assay) => {
             subItems.push({
                 text: assay.name,
                 href,
             });
-        });
+            return subItems;
+        }, []);
+    };
 
-        return subItems;
-    }
-
-    render() {
+    render(): ReactNode {
         const { isLoaded, model, requireSelection, nounPlural } = this.props;
 
         if (!isLoaded) {
@@ -82,3 +83,5 @@ export class AssayImportSubMenuItem extends React.Component<Props, any> {
         return null;
     }
 }
+
+export const AssayImportSubMenuItem = AssayProvider<Props>(AssayImportSubMenuItemImpl, { loadProtocol: false });

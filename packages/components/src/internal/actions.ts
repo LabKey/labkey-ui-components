@@ -2990,10 +2990,13 @@ export function createQueryGridModelFilteredBySample(
     omitSampleCols?: boolean,
     singleFilterValue?: any
 ): QueryGridModel {
-    const schemaQuery = SchemaQuery.create(model.protocolSchemaName, 'Data');
     const sampleColumns = model.getSampleColumnFieldKeys();
 
-    if (sampleColumns && !sampleColumns.isEmpty()) {
+    if (sampleColumns.isEmpty()) {
+        return undefined;
+    }
+
+    return getStateQueryGridModel(gridId, SchemaQuery.create(model.protocolSchemaName, 'Data'), () => {
         const filter = model.createSampleFilter(
             sampleColumns,
             value,
@@ -3002,12 +3005,13 @@ export function createQueryGridModelFilteredBySample(
             useLsid,
             singleFilterValue
         );
-        return getStateQueryGridModel(gridId, schemaQuery, () => ({
+
+        return {
             baseFilters: List([filter]),
             isPaged: true,
+            omittedColumns: omitSampleCols ? sampleColumns : List<string>(),
             title: model.name,
             urlPrefix: model.name,
-            omittedColumns: omitSampleCols ? sampleColumns : List<string>(),
-        }));
-    }
+        };
+    });
 }

@@ -16,6 +16,7 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
+import { AssayStateModel } from '../../..';
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
 import { buildURL } from '../../url/ActionURL';
@@ -204,30 +205,27 @@ export function deleteAssayRuns(
 }
 
 export function getImportItemsForAssayDefinitions(
-    assayDefModels: List<AssayDefinitionModel>,
-    sampleModel: QueryGridModel
+    assayStateModel: AssayStateModel,
+    sampleModel?: QueryGridModel
 ): OrderedMap<AssayDefinitionModel, string> {
-    let items = OrderedMap<AssayDefinitionModel, string>();
     let targetSQ;
     const selectionKey = sampleModel ? sampleModel.selectionKey : undefined;
 
-    if (sampleModel && sampleModel.queryInfo) {
+    if (sampleModel?.queryInfo) {
         targetSQ = sampleModel.queryInfo.schemaQuery;
     }
 
-    assayDefModels
-        .sortBy(a => a.name, naturalSort)
+    return List(Object.values(assayStateModel.byId))
         .filter(assay => !targetSQ || assay.hasLookup(targetSQ))
-        .forEach(assay => {
+        .sortBy(a => a.name, naturalSort)
+        .reduce((items, assay) => {
             const href = assay.getImportUrl(
                 selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
                 selectionKey,
                 sampleModel ? sampleModel.getFilters() : undefined
             );
-            items = items.set(assay, href);
-        });
-
-    return items;
+            return items.set(assay, href);
+        }, OrderedMap<AssayDefinitionModel, string>());
 }
 
 export interface DuplicateFilesResponse {

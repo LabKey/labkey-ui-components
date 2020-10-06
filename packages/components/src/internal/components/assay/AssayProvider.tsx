@@ -1,6 +1,6 @@
 import React, { ComponentType, createContext, PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
-import { WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 
 import {
     Alert,
@@ -21,6 +21,10 @@ interface AssayProviderContext {
     assayProtocol: AssayProtocolModel;
 }
 
+interface OwnProps {
+    loadProtocol?: boolean;
+}
+
 export type AssayProviderProps = AssayProviderContext & WithRouterProps;
 
 export interface InjectedAssayModel extends AssayProviderContext {
@@ -39,10 +43,15 @@ const Context = createContext<AssayProviderContext>(undefined);
 const AssayContextProvider = Context.Provider;
 export const AssayContextConsumer = Context.Consumer;
 
-export function AssayProvider<Props>(ComponentToWrap: ComponentType<Props & InjectedAssayModel>): ComponentType<Props> {
-    type WrappedProps = Props & AssayProviderProps;
+export function AssayProvider<Props>(
+    ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
+    defaultProps?: OwnProps
+): ComponentType<Props & OwnProps> {
+    type WrappedProps = Props & OwnProps & WithRouterProps;
 
-    return class AssayProviderImpl extends PureComponent<WrappedProps, State> {
+    class ComponentWithAssays extends PureComponent<WrappedProps, State> {
+        static defaultProps;
+
         constructor(props: WrappedProps) {
             super(props);
 
@@ -58,19 +67,19 @@ export function AssayProvider<Props>(ComponentToWrap: ComponentType<Props & Inje
             }));
         }
 
-        componentDidMount(): void {
+        componentDidMount = (): void => {
             this.load();
-        }
+        };
 
-        componentDidUpdate(prevProps: WrappedProps): void {
-            if (this.props.params.protocol !== prevProps.params.protocol) {
+        componentDidUpdate = (prevProps: WrappedProps): void => {
+            if (this.props.loadProtocol && this.props.params?.protocol !== prevProps.params?.protocol) {
                 this.load();
             }
-        }
+        };
 
         load = async (): Promise<void> => {
             await this.loadDefinitions();
-            await this.loadProtocol(this.props.params.protocol);
+            await this.loadProtocol(this.props.params?.protocol);
         };
 
         loadDefinitions = async (): Promise<void> => {
@@ -93,6 +102,10 @@ export function AssayProvider<Props>(ComponentToWrap: ComponentType<Props & Inje
         };
 
         loadProtocol = async (assayName: string): Promise<void> => {
+            if (!this.props.loadProtocol) {
+                return;
+            }
+
             this.update({ protocolLoadingState: LoadingState.LOADING, loadError: undefined });
 
             try {
@@ -119,10 +132,11 @@ export function AssayProvider<Props>(ComponentToWrap: ComponentType<Props & Inje
             );
         };
 
-        render(): ReactNode {
+        render = (): ReactNode => {
+            const { loadProtocol } = this.props;
             const { context, definitions, definitionsLoadingState, loadError, protocolLoadingState } = this.state;
 
-            if (isLoading(definitionsLoadingState) || isLoading(protocolLoadingState)) {
+            if (isLoading(definitionsLoadingState) || (loadProtocol && isLoading(protocolLoadingState))) {
                 return <LoadingPage />;
             }
 
@@ -142,6 +156,12 @@ export function AssayProvider<Props>(ComponentToWrap: ComponentType<Props & Inje
 
             // TODO: Consider not found
             // return <NotFound />;
-        }
+        };
+    }
+
+    ComponentWithAssays.defaultProps = {
+        loadProtocol: defaultProps?.loadProtocol ?? true,
     };
+
+    return withRouter(ComponentWithAssays) as ComponentType<Props & OwnProps>;
 }

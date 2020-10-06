@@ -26,24 +26,34 @@ import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, Sch
 import { AssayUploadResultModel, IAssayUploadOptions } from './models';
 import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 
+let assayDefinitionCache: { [key: string]: Promise<List<AssayDefinitionModel>> } = {};
+
+export function clearAssayDefinitionCache(): void {
+    assayDefinitionCache = {};
+}
+
 export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
-    return new Promise((res, rej) => {
-        Assay.getAll({
-            parameters: {
-                type,
-            },
-            success: (rawModels: any[]) => {
-                let models = List<AssayDefinitionModel>();
-                rawModels.forEach(rawModel => {
-                    models = models.push(AssayDefinitionModel.create(rawModel));
-                });
-                res(models);
-            },
-            failure: error => {
-                rej(error);
-            },
+    const key = type ?? 'undefined';
+
+    if (!assayDefinitionCache[key]) {
+        assayDefinitionCache[key] = new Promise((res, rej) => {
+            Assay.getAll({
+                parameters: { type },
+                success: (rawModels: any[]) => {
+                    const models = rawModels.reduce(
+                        (list, raw) => list.push(AssayDefinitionModel.create(raw)),
+                        List<AssayDefinitionModel>()
+                    );
+                    res(models);
+                },
+                failure: error => {
+                    rej(error);
+                },
+            });
         });
-    });
+    }
+
+    return assayDefinitionCache[key];
 }
 
 export function importAssayRun(config: Partial<AssayDOM.IImportRunOptions>): Promise<AssayUploadResultModel> {

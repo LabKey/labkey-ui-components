@@ -373,7 +373,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                             inputClass="sampleset-metric-unit-select"
                                             name="metricUnit"
                                             options={metricUnitOptions}
-                                            onChange={this.onFieldChange}
+                                            onChange={(name, formValue, option) => {this.onFieldChange(name, formValue === undefined && option ? option.id : formValue)}}
                                             placeholder={`Select a unit...`}
                                             value={model.metricUnit}
                                         /> :

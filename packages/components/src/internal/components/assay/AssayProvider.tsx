@@ -88,14 +88,6 @@ export function AssayProvider<Props>(
                 const definitions = await fetchAllAssays();
 
                 this.updateModel({
-                    byId: definitions.reduce((rec, p) => {
-                        rec[p.id] = p;
-                        return rec;
-                    }, {}),
-                    byName: definitions.reduce((rec, p) => {
-                        rec[p.name.toLowerCase()] = p.id;
-                        return rec;
-                    }, {}),
                     definitions: definitions.toArray(),
                     definitionsLoadingState: LoadingState.LOADED,
                 });

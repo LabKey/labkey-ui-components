@@ -254,8 +254,6 @@ export class AssayUploadResultModel {
 export class AssayStateModel {
     [immerable] = true;
 
-    byId: Record<number, AssayDefinitionModel>;
-    byName: Record<string, number>;
     definitions: AssayDefinitionModel[];
     definitionsError: string;
     definitionsLoadingState: LoadingState;
@@ -265,19 +263,18 @@ export class AssayStateModel {
     constructor(values?: Partial<AssayStateModel>) {
         Object.assign(this, values);
 
-        this.byId = this.byId ?? {};
-        this.byName = this.byName ?? {};
         this.definitions = this.definitions ?? [];
         this.definitionsLoadingState = this.definitionsLoadingState ?? LoadingState.INITIALIZED;
         this.protocolLoadingState = this.protocolLoadingState ?? LoadingState.INITIALIZED;
     }
 
     getById(assayRowId: number): AssayDefinitionModel {
-        return this.byId[assayRowId];
+        return this.definitions.find(def => def.id === assayRowId);
     }
 
     getByName(assayName: string): AssayDefinitionModel {
-        return this.getById(this.byName[assayName?.toLowerCase()]);
+        const lowerName = assayName.toLowerCase();
+        return this.definitions.find(def => def.name.toLowerCase() === lowerName);
     }
 
     mutate(props: Partial<AssayStateModel>): AssayStateModel {

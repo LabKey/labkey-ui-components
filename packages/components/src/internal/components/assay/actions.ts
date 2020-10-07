@@ -16,11 +16,10 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
-import { AssayStateModel } from '../../..';
+import { AssayStateModel, naturalSortByProperty } from '../../..';
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
 import { buildURL } from '../../url/ActionURL';
-import { naturalSort } from '../../util/utils';
 import { SCHEMAS } from '../base/models/schemas';
 import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
 
@@ -215,9 +214,9 @@ export function getImportItemsForAssayDefinitions(
         targetSQ = sampleModel.queryInfo.schemaQuery;
     }
 
-    return List(Object.values(assayStateModel.byId))
+    return assayStateModel.definitions
         .filter(assay => !targetSQ || assay.hasLookup(targetSQ))
-        .sortBy(a => a.name, naturalSort)
+        .sort(naturalSortByProperty('name'))
         .reduce((items, assay) => {
             const href = assay.getImportUrl(
                 selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,

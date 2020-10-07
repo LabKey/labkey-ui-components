@@ -278,6 +278,7 @@ import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportS
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
 import {
+    clearAssayDefinitionCache,
     deleteAssayDesign,
     deleteAssayRuns,
     fetchAllAssays,
@@ -620,6 +621,7 @@ export {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
+    clearAssayDefinitionCache,
     fetchAllAssays,
     RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,

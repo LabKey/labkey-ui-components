@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { immerable } from 'immer';
+import { Draft, immerable, produce } from 'immer';
 import { List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
 import { AssayDOM } from '@labkey/api';
 
@@ -23,7 +23,7 @@ import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel } fr
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { AssayProtocolModel } from '../../..';
+import { AssayProtocolModel, LoadingState } from '../../..';
 
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel;
@@ -256,30 +256,20 @@ export class AssayStateModel {
 
     byId: Record<number, AssayDefinitionModel>;
     byName: Record<string, number>;
-    errorMsg: string;
-    hasError: boolean;
-    protocolsById: Record<number, AssayProtocolModel>;
-
-    static create(protocols: AssayDefinitionModel[]): AssayStateModel {
-        return new AssayStateModel({
-            byId: protocols.reduce((rec, p) => {
-                rec[p.id] = p;
-                return rec;
-            }, {}),
-            byName: protocols.reduce((rec, p) => {
-                rec[p.name.toLowerCase()] = p.id;
-                return rec;
-            }, {}),
-        });
-    }
+    definitions: AssayDefinitionModel[];
+    definitionsError: string;
+    definitionsLoadingState: LoadingState;
+    protocolError: string;
+    protocolLoadingState: LoadingState;
 
     constructor(values?: Partial<AssayStateModel>) {
         Object.assign(this, values);
 
         this.byId = this.byId ?? {};
         this.byName = this.byName ?? {};
-        this.hasError = this.hasError ?? false;
-        this.protocolsById = this.protocolsById ?? {};
+        this.definitions = this.definitions ?? [];
+        this.definitionsLoadingState = this.definitionsLoadingState ?? LoadingState.INITIALIZED;
+        this.protocolLoadingState = this.protocolLoadingState ?? LoadingState.INITIALIZED;
     }
 
     getById(assayRowId: number): AssayDefinitionModel {
@@ -290,7 +280,9 @@ export class AssayStateModel {
         return this.getById(this.byName[assayName?.toLowerCase()]);
     }
 
-    getProtocol(assayRowId: number): AssayProtocolModel {
-        return this.protocolsById[assayRowId];
+    mutate(props: Partial<AssayStateModel>): AssayStateModel {
+        return produce(this, (draft: Draft<AssayStateModel>) => {
+            Object.assign(draft, props);
+        });
     }
 }

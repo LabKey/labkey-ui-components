@@ -1,5 +1,9 @@
 # @labkey/components
 
+### version TBD
+*Released*: TBD
+* add optional transactionAuditId in InsertRowsResponse and as argument after file import
+
 ### version 0.97.0
 *Released*: 29 September 2020
 * FieldEditorOverlay updates

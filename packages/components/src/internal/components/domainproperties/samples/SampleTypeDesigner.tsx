@@ -80,6 +80,13 @@ interface Props {
     appPropertiesOnly?: boolean;
     successBsStyle?: string;
     saveBtnText?: string;
+
+    // metric unit props
+    includeMetricUnitProperty?: boolean;
+    metricUnitLabel?: string;
+    metricUnitRequired?: boolean;
+    metricUnitHelpMsg?: string;
+    metricUnitOptions?: any[];
 }
 
 interface State {
@@ -319,9 +326,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     onFinish = (): void => {
-        const { defaultSampleFieldConfig, setSubmitting } = this.props;
+        const { defaultSampleFieldConfig, setSubmitting, metricUnitRequired } = this.props;
         const { model } = this.state;
-        const isValid = model.isValid(defaultSampleFieldConfig);
+        const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
         this.props.onFinish(isValid, this.saveDomain);
 
@@ -335,6 +342,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     ' field name is reserved for imported or generated sample ids.';
             } else if (model.getDuplicateAlias(true).size > 0) {
                 exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
+            } else if (!model.isMetricUnitValid(metricUnitRequired)) {
+                exception = 'Metric unit is required.';
             } else {
                 exception = model.domain.getFirstFieldError();
             }
@@ -349,7 +358,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     saveDomain = () => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
-        const { name, domain, description, nameExpression, labelColor } = model;
+        const { name, domain, description, nameExpression, labelColor, metricUnit } = model;
 
         if (beforeFinish) {
             beforeFinish(model);
@@ -364,6 +373,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             name,
             nameExpression,
             labelColor,
+            metricUnit,
             importAliases: this.getImportAliasesAsMap(model).toJS(),
         };
 
@@ -425,6 +435,11 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             dataClassAliasCaption,
             dataClassTypeCaption,
             dataClassParentageLabel,
+            includeMetricUnitProperty,
+            metricUnitLabel,
+            metricUnitHelpMsg,
+            metricUnitOptions,
+            metricUnitRequired
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -473,6 +488,11 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     onToggle={(collapsed, callback) => onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
+                    includeMetricUnitProperty={includeMetricUnitProperty}
+                    metricUnitLabel={metricUnitLabel}
+                    metricUnitHelpMsg={metricUnitHelpMsg}
+                    metricUnitOptions={metricUnitOptions}
+                    metricUnitRequired={metricUnitRequired}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

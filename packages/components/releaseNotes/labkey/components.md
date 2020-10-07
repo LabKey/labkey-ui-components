@@ -1,5 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version XXX
+*Released*: XXX
+* SampleTypeDesigner update to add "Metric Unit" property to Sample Manager
+
 ### version 0.97.0
 *Released*: 29 September 2020
 * FieldEditorOverlay updates

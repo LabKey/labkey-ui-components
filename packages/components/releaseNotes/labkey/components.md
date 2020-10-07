@@ -1,5 +1,5 @@
 # @labkey/components
-Components, models, actions, and utility functions for LabKey applications and pages.
+
 ### version 0.97.0
 *Released*: 29 September 2020
 * FieldEditorOverlay updates

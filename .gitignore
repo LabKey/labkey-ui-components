@@ -3,6 +3,7 @@
 /node_modules
 /packages/*/.rpt2_cache
 /packages/*/dist
+/packages/*/staging
 /packages/*/node_modules
 *.log
 *.cache

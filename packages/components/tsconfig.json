@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "staging",
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "esModuleInterop": true,

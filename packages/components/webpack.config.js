@@ -62,7 +62,7 @@ module.exports = {
         minimize: false
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'staging'),
         filename: 'components.js',
         library: '@labkey/components',
         libraryTarget: 'umd'

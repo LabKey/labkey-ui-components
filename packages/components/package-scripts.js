@@ -4,25 +4,33 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 const npsUtils = require('nps-utils');
-const { rimraf, series } = npsUtils;
+const { rimraf, series, ncp } = npsUtils;
 
 module.exports = {
     scripts: {
         build: {
             default: series(
+                rimraf('staging'),
+                'webpack --config webpack.config.js',
                 rimraf('dist'),
-                'webpack --config webpack.config.js'
+                "ncp staging dist",
             ),
-            description: 'Clean dist directory and run all builds'
+            description: 'Clean dist and staging directories and run all builds'
         },
         clean: {
-            default: rimraf('dist')
+            default: series(
+                rimraf('dist'),
+                rimraf('staging')
+            ),
+            description: 'Remove the dist and staging directories'
         },
         cleanAll: {
             default: series(
                 rimraf('dist'),
+                rimraf('staging'),
                 rimraf('node_modules')
-            )
+            ),
+            description: 'Remove the dist, staging, and node_modules directories'
         }
     }
 };

@@ -16,8 +16,7 @@
 import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { QueryInfo } from './QueryInfo';
-import { SchemaDetails, SchemaQuery } from './model';
+import { QueryInfo, SchemaDetails, SchemaQuery } from '../../../..';
 
 // Created By / Modified By
 export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedBy']);

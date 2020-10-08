@@ -17,14 +17,11 @@ import { fromJS, List, Map } from 'immutable';
 import { Option } from 'react-select';
 import { Filter, Security, PermissionTypes, User, Utils } from '@labkey/api';
 
-import { getQueryDetails, ISelectRowsResult, searchRows, selectRows } from '../../query/api';
-
 import { getUsers, setUsers } from '../../global';
-import { naturalSort, similaritySortFactory } from '../../util/utils';
-import { QueryInfo } from '../base/models/QueryInfo';
+import { similaritySortFactory } from '../../util/utils';
+import { getQueryDetails, ISelectRowsResult, naturalSort, QueryInfo, QuerySelectOwnProps, searchRows, selectRows } from '../../..';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
-import { QuerySelectOwnProps } from './QuerySelect';
 import { FOCUS_FLAG } from './constants';
 
 const emptyMap = Map<string, any>();

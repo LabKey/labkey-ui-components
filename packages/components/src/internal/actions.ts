@@ -58,19 +58,24 @@ import {
     updateSelections,
 } from './global';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
-import { QueryInfo } from './components/base/models/QueryInfo';
 import {
     AssayDefinitionModel,
+    buildURL,
+    caseInsensitive,
+    GRID_CHECKBOX_OPTIONS,
     IGridResponse,
     insertColumnFilter,
+    naturalSort,
     QueryColumn,
     QueryGridModel,
+    QueryInfo,
+    resolveKey,
     SchemaQuery,
-    ViewInfo,
-} from './components/base/models/model';
-import { buildURL, getSortFromUrl } from './url/ActionURL';
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
-import { caseInsensitive, intersect, naturalSort, not, resolveKey } from './util/utils';
+    ViewInfo
+} from '..';
+import { getSortFromUrl } from './url/ActionURL';
+import { GRID_EDIT_INDEX } from './components/base/models/constants';
+import { intersect, not } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 
 const EMPTY_ROW = Map<string, any>();

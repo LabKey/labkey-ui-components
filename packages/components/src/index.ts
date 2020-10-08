@@ -18,8 +18,8 @@ import { enableMapSet, enablePatches } from 'immer';
 import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
 import { SCHEMAS } from './internal/components/base/models/schemas';
 import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
-import { QueryInfo } from './internal/components/base/models/QueryInfo';
-import { QuerySort } from './internal/components/base/models/QuerySort';
+import { QueryInfo } from './public/QueryInfo';
+import { QuerySort } from './public/QuerySort';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,

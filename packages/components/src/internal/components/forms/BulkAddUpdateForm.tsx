@@ -1,13 +1,10 @@
 import React from 'react';
 import { List } from 'immutable';
 
-import { capitalizeFirstChar, getCommonDataValues } from '../../util/utils';
-import { QueryInfo } from '../base/models/QueryInfo';
-import { QueryColumn, QueryGridModel } from '../base/models/model';
-import { getEditorModel } from '../../global';
-import { EditorModel } from '../../models';
+import { capitalizeFirstChar, EditorModel, getEditorModel, QueryColumn, QueryGridModel, QueryInfo } from '../../..';
 
 import { QueryInfoForm } from './QueryInfoForm';
+import { getCommonDataValues } from '../../util/utils';
 
 interface Props {
     selectedRowIndexes: List<number>;

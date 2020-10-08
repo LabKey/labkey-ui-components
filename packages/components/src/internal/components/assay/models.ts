@@ -17,10 +17,15 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 import { AssayDOM } from '@labkey/api';
 
 import { getEditorModel } from '../../global';
-import { QueryInfo } from '../base/models/QueryInfo';
-import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel } from '../base/models/model';
-import { FileAttachmentFormModel } from '../files/models';
-import { AppURL } from '../../url/AppURL';
+import {
+    AppURL,
+    AssayDefinitionModel,
+    FileAttachmentFormModel,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo
+} from '../../..';
+import { AssayUploadTabs } from '../base/models/model';
 import { generateNameWithTimestamp } from '../../util/Date';
 import { AssayProtocolModel } from '../../..';
 

@@ -25,19 +25,22 @@ import {
 } from '@labkey/api';
 
 import {
-    getSchemaQuery,
-    hasAllPermissions,
     intersect,
-    resolveKey,
-    resolveSchemaQuery,
     toLowerSafe,
 } from '../../../util/utils';
-import { AppURL } from '../../../url/AppURL';
-import { WHERE_FILTER_TYPE } from '../../../url/WhereFilterType';
 
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
-import { QueryInfo } from './QueryInfo';
-import { QuerySort } from './QuerySort';
+import { GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
+import {
+    AppURL,
+    getSchemaQuery,
+    GRID_CHECKBOX_OPTIONS,
+    hasAllPermissions,
+    QueryInfo,
+    QuerySort,
+    resolveKey,
+    resolveSchemaQuery,
+    WHERE_FILTER_TYPE
+} from '../../../..';
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();

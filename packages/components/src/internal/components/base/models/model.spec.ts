@@ -31,8 +31,14 @@ import {
     TEST_USER_APP_ADMIN,
 } from '../../../../test/data/users';
 
-import { AssayDefinitionModel, AssayDomainTypes, QueryColumn, QueryGridModel, SchemaQuery } from './model';
-import { QueryInfo } from './QueryInfo';
+import {
+    AssayDefinitionModel,
+    AssayDomainTypes,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    SchemaQuery
+} from '../../../..';
 
 describe('QueryGridModel', () => {
     test('createParam no prefix', () => {

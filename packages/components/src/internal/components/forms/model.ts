@@ -17,11 +17,7 @@ import { List, Map, Record } from 'immutable';
 import { Option } from 'react-select';
 import { Filter } from '@labkey/api';
 
-import { ISelectRowsResult } from '../../query/api';
-
-import { QueryInfo } from '../base/models/QueryInfo';
-
-import { SchemaQuery } from '../base/models/model';
+import { ISelectRowsResult, QueryInfo, SchemaQuery } from '../../..';
 
 import { DELIMITER } from './input/SelectInput';
 import * as actions from './actions';

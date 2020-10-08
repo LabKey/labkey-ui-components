@@ -15,16 +15,18 @@
  */
 import { List, Map, OrderedMap } from 'immutable';
 
+import { resetQueryGridState, updateQueryGridModel } from './global';
 import {
+    EditorModel,
     getEditorModel,
     getQueryGridModel,
-    resetQueryGridState,
-    updateEditorModel,
-    updateQueryGridModel,
-} from './global';
-import { QueryInfo } from './components/base/models/QueryInfo';
-import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
-import { CellMessage, EditorModel, ValueDescriptor } from './models';
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    SchemaQuery,
+    updateEditorModel
+} from '..';
+import { CellMessage, ValueDescriptor } from './models';
 import { addColumns, changeColumn, removeColumn, updateEditorData } from './actions';
 
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';

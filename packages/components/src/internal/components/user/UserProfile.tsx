@@ -7,15 +7,18 @@ import { List, Map, OrderedMap } from 'immutable';
 import { Col, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 
-import { getQueryDetails } from '../../query/api';
-import { FileInput } from '../forms/input/FileInput';
 import { QueryInfoForm } from '../forms/QueryInfoForm';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { QueryInfo } from '../base/models/QueryInfo';
-import { QueryColumn, User } from '../base/models/model';
-import { SCHEMAS } from '../base/models/schemas';
-import { getActionErrorMessage } from '../../util/messaging';
-import { Alert } from '../base/Alert';
+import {
+    Alert,
+    FileInput,
+    getActionErrorMessage,
+    getQueryDetails,
+    LoadingSpinner,
+    QueryInfo,
+    QueryColumn,
+    SCHEMAS,
+    User
+} from '../../../';
 
 import { getUserDetailsRowData, updateUserDetails } from './actions';
 

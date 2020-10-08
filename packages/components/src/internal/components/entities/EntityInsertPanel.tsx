@@ -23,46 +23,51 @@ import { Link } from 'react-router';
 
 import { IMPORT_DATA_FORM_TYPES, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import { addColumns, changeColumn, gridInit, gridShowError, queryGridInvalidate, removeColumn } from '../../actions';
-import { getEditorModel, getQueryGridModel, removeQueryGridModel } from '../../global';
+import { addColumns, changeColumn, removeColumn } from '../../actions';
 
-import { getStateQueryGridModel } from '../../models';
-
-import { EditableColumnMetadata } from '../editable/EditableGrid';
-import { EditableGridPanel } from '../editable/EditableGridPanel';
-import { getQueryDetails, InsertRowsResponse } from '../../query/api';
-import { Location } from '../../util/URL';
-import { SelectInput } from '../forms/input/SelectInput';
-
-import { Progress } from '../base/Progress';
-import { AppURL } from '../../url/AppURL';
-import { QueryInfo } from '../base/models/QueryInfo';
 import {
+    AddEntityButton,
+    Alert,
+    AppURL,
+    capitalizeFirstChar,
+    EditableColumnMetadata,
+    EditableGridPanel,
+    FileAttachmentForm,
+    FileSizeLimitProps,
+    FormStep,
+    FormTabs,
+    generateId,
+    getActionErrorMessage,
+    getEditorModel,
+    getQueryDetails,
+    getQueryGridModel,
+    getStateQueryGridModel,
+    gridInit,
+    gridShowError,
+    helpLinkNode,
     IGridLoader,
     IGridResponse,
     insertColumnFilter,
+    InsertRowsResponse,
+    LabelHelpTip,
+    LoadingSpinner,
+    Location,
+    Progress,
     QueryColumn,
     QueryGridModel,
+    queryGridInvalidate,
+    QueryInfo,
+    RemoveEntityButton,
+    removeQueryGridModel,
+    resolveErrorMessage,
     SchemaQuery,
-} from '../base/models/model';
-import { capitalizeFirstChar, generateId } from '../../util/utils';
-import { AddEntityButton } from '../buttons/AddEntityButton';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
-import { Alert } from '../base/Alert';
-import { PlacementType } from '../editable/Controls';
-import {
-    FileAttachmentForm,
-    getActionErrorMessage,
-    helpLinkNode,
-    LabelHelpTip,
+    SelectInput,
     withFormSteps,
     WithFormStepsProps,
     WizardNavButtons,
 } from '../../..';
-import { FormStep, FormTabs } from '../forms/FormStep';
-import { FileSizeLimitProps } from '../files/models';
-import { resolveErrorMessage } from '../../util/messaging';
+
+import { PlacementType } from '../editable/Controls';
 
 import {
     EntityDataType,

@@ -16,6 +16,7 @@
 import { Draft, immerable, produce } from 'immer';
 
 import { AssayDefinitionModel, LoadingState } from '../../..';
+
 import { AssayWizardModel } from './AssayWizardModel';
 
 export interface AssayPropertiesPanelProps {

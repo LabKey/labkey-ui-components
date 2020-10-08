@@ -16,37 +16,37 @@ import {
     LoadingState,
 } from '../../..';
 
-export interface AssayProviderContext {
+export interface AssayContext {
     assayDefinition: AssayDefinitionModel;
     assayProtocol: AssayProtocolModel;
 }
 
-export interface AssayProviderProps {
+export interface WithAssayModelProps {
     displayLoading?: boolean;
     handleErrors?: boolean;
     loadProtocol?: boolean;
     waitForLoaded?: boolean;
 }
 
-export interface InjectedAssayModel extends AssayProviderContext {
+export interface InjectedAssayModel extends AssayContext {
     assayModel: AssayStateModel;
     reloadAssays: () => void;
 }
 
 interface State {
-    context: AssayProviderContext;
+    context: AssayContext;
     model: AssayStateModel;
 }
 
-const Context = createContext<AssayProviderContext>(undefined);
+const Context = createContext<AssayContext>(undefined);
 const AssayContextProvider = Context.Provider;
 export const AssayContextConsumer = Context.Consumer;
 
-export function AssayProvider<Props>(
+export function withAssayModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
-    defaultProps?: AssayProviderProps
-): ComponentType<Props & AssayProviderProps> {
-    type WrappedProps = Props & AssayProviderProps & WithRouterProps;
+    defaultProps?: WithAssayModelProps
+): ComponentType<Props & WithAssayModelProps> {
+    type WrappedProps = Props & WithAssayModelProps & WithRouterProps;
 
     class ComponentWithAssays extends PureComponent<WrappedProps, State> {
         static defaultProps;
@@ -200,5 +200,5 @@ export function AssayProvider<Props>(
         waitForLoaded: defaultProps?.waitForLoaded ?? true,
     };
 
-    return withRouter(ComponentWithAssays) as ComponentType<Props & AssayProviderProps>;
+    return withRouter(ComponentWithAssays) as ComponentType<Props & WithAssayModelProps>;
 }

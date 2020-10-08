@@ -2,13 +2,13 @@ import React, { PureComponent, ReactNode } from 'react';
 import { MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import {
-    AssayProvider,
     getImportItemsForAssayDefinitions,
     InjectedAssayModel,
     ISubItem,
     SubMenuItem,
     SubMenuItemProps,
     QueryGridModel,
+    withAssayModels,
 } from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
@@ -84,4 +84,4 @@ class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAssayMode
     }
 }
 
-export const AssayImportSubMenuItem = AssayProvider<Props>(AssayImportSubMenuItemImpl, { loadProtocol: false });
+export const AssayImportSubMenuItem = withAssayModels<Props>(AssayImportSubMenuItemImpl, { loadProtocol: false });

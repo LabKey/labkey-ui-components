@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Draft, immerable, produce } from 'immer';
-import { List, Map, OrderedMap, Record as ImmutableRecord } from 'immutable';
+import { List, Map, OrderedMap, Record } from 'immutable';
 import { AssayDOM } from '@labkey/api';
 
 import { getEditorModel } from '../../global';
@@ -23,7 +23,7 @@ import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel } fr
 import { FileAttachmentFormModel } from '../files/models';
 import { AppURL } from '../../url/AppURL';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { AssayProtocolModel, LoadingState } from '../../..';
+import { LoadingState } from '../../..';
 
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel;
@@ -32,7 +32,7 @@ export interface AssayPropertiesPanelProps {
 }
 
 export class AssayWizardModel
-    extends ImmutableRecord({
+    extends Record({
         assayDef: undefined,
         isError: undefined,
         isWarning: false,

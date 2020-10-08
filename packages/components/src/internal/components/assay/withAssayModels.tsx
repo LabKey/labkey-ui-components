@@ -51,16 +51,15 @@ export function withAssayModels<Props>(
     class ComponentWithAssays extends PureComponent<WrappedProps, State> {
         static defaultProps;
 
-        constructor(props: WrappedProps) {
-            super(props);
+        state: Readonly<State> = produce({}, () => ({
+            context: { assayDefinition: undefined, assayProtocol: undefined },
+            model: new AssayStateModel(),
+        }));
 
-            this.state = produce({}, () => ({
-                context: { assayDefinition: undefined, assayProtocol: undefined },
-                model: new AssayStateModel(),
-            }));
-        }
+        private _mounted = false;
 
         componentDidMount = (): void => {
+            this._mounted = true;
             this.load();
         };
 
@@ -68,6 +67,10 @@ export function withAssayModels<Props>(
             if (this.props.loadProtocol && this.props.params?.protocol !== prevProps.params?.protocol) {
                 this.load();
             }
+        };
+
+        componentWillUnmount = (): void => {
+            this._mounted = false;
         };
 
         load = async (): Promise<void> => {
@@ -139,31 +142,45 @@ export function withAssayModels<Props>(
             }
         };
 
-        reload = (): void => {
+        reload = async (): Promise<void> => {
             clearAssayDefinitionCache();
 
-            this.update({
+            await this.update({
                 context: { assayDefinition: undefined, assayProtocol: undefined },
                 model: new AssayStateModel(),
             });
 
-            this.load();
+            await this.load();
         };
 
-        update = (newState: Partial<State>): void => {
-            this.setState(
-                produce((draft: Draft<State>) => {
-                    Object.assign(draft, newState);
-                })
-            );
+        update = (newState: Partial<State>): Promise<void> => {
+            return new Promise(resolve => {
+                if (this._mounted) {
+                    this.setState(
+                        produce((draft: Draft<State>) => {
+                            Object.assign(draft, newState);
+                        }),
+                        () => {
+                            resolve();
+                        }
+                    );
+                }
+            });
         };
 
-        updateModel = (newModel: Partial<AssayStateModel>): void => {
-            this.setState(
-                produce((draft: Draft<State>) => {
-                    Object.assign(draft.model, newModel);
-                })
-            );
+        updateModel = (newModel: Partial<AssayStateModel>): Promise<void> => {
+            return new Promise(resolve => {
+                if (this._mounted) {
+                    this.setState(
+                        produce((draft: Draft<State>) => {
+                            Object.assign(draft.model, newModel);
+                        }),
+                        () => {
+                            resolve();
+                        }
+                    );
+                }
+            });
         };
 
         render = (): ReactNode => {

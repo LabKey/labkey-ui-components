@@ -17,8 +17,6 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { mount } from 'enzyme';
 
-import { boolean, text } from '@storybook/addon-knobs';
-
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { Alert } from '../base/Alert';

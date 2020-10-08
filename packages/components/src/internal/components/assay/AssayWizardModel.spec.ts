@@ -24,7 +24,7 @@ import { gridInit } from '../../actions';
 import { QueryInfo } from '../base/models/QueryInfo';
 import { AssayUploadTabs, SchemaQuery } from '../base/models/model';
 
-import { AssayWizardModel, parseDataTextToRunRows } from './models';
+import { AssayWizardModel, parseDataTextToRunRows } from './AssayWizardModel';
 
 const DATA_TEXT = 'test1\ttest2\n1\t2';
 

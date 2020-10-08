@@ -270,7 +270,12 @@ import { DataClassDesigner } from './internal/components/domainproperties/datacl
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { AssayContextConsumer, InjectedAssayModel, withAssayModels, WithAssayModelProps } from './internal/components/assay/WithAssayModels';
+import {
+    AssayContextConsumer,
+    InjectedAssayModel,
+    withAssayModels,
+    WithAssayModelProps,
+} from './internal/components/assay/withAssayModels';
 import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
@@ -405,7 +410,11 @@ import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQue
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
-import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './public/QueryModel/utils';
+import {
+    getQueryModelExportParams,
+    runDetailsColumnsForQueryModel,
+    flattenValuesFromRow,
+} from './public/QueryModel/utils';
 import { withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
 import * as App from './internal/app';
 

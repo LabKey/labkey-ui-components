@@ -23,7 +23,8 @@ import { buildURL } from '../../url/ActionURL';
 import { SCHEMAS } from '../base/models/schemas';
 import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
 
-import { AssayUploadResultModel, IAssayUploadOptions } from './models';
+import { AssayUploadResultModel } from './models';
+import { IAssayUploadOptions } from './AssayWizardModel';
 import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 
 let assayDefinitionCache: { [key: string]: Promise<List<AssayDefinitionModel>> } = {};

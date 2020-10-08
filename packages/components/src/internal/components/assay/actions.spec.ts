@@ -15,13 +15,13 @@
  */
 import { fromJS } from 'immutable';
 
+import { AssayStateModel, QueryInfo, SchemaQuery } from '../../..';
 import { getStateQueryGridModel } from '../../models';
 import { initQueryGridState } from '../../global';
 import { ASSAY_DEFINITION_MODEL } from '../../../test/data/constants';
-import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
-import { AssayStateModel, QueryInfo, SchemaQuery } from '../../..';
-
 import { getImportItemsForAssayDefinitions, getRunPropertiesFileName } from './actions';
+
+import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
 
 beforeAll(() => {
     initQueryGridState();
@@ -35,7 +35,7 @@ describe('getImportItemsForAssayDefinitions', () => {
     });
 
     test('with expected match', () => {
-        const assayStateModel = AssayStateModel.create([ASSAY_DEFINITION_MODEL]);
+        const assayStateModel = new AssayStateModel({ definitions: [ASSAY_DEFINITION_MODEL] });
         let queryInfo = QueryInfo.create(sampleSet2QueryInfo);
 
         // with a query name that DOES NOT match the assay def sampleColumn lookup

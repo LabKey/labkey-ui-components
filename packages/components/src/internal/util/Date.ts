@@ -17,7 +17,7 @@ import moment from 'moment-jdateformatparser';
 import momentTZ from 'moment-timezone';
 import numeral from 'numeral';
 
-import { QueryColumn } from '../components/base/models/model';
+import { QueryColumn } from '../..';
 
 export function datePlaceholder(col: QueryColumn): string {
     let placeholder;

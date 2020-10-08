@@ -1,11 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { SchemaQuery } from '../base/models/model';
+import { SchemaQuery } from '../../..';
 import { initUnitTestMocks, sleep } from '../../testHelpers';
-import { getStateQueryGridModel } from '../../models';
-import { gridInit } from '../../actions';
-import { getQueryGridModel } from '../../global';
+import { getStateQueryGridModel } from '../../..';
+import { gridInit } from '../../..';
+import { getQueryGridModel } from '../../..';
 
 import { QueryGridBar } from './QueryGridBar';
 

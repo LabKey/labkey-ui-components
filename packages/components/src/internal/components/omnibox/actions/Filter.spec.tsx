@@ -19,7 +19,7 @@ import { Filter } from '@labkey/api';
 
 import { JsonType } from '@labkey/api/dist/labkey/filter/Types';
 
-import { QueryColumn, QueryGridModel } from '../../base/models/model';
+import { QueryColumn, QueryGridModel } from '../../../..';
 
 import mixturesQueryInfo from '../../../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../../../test/data/mixtures-getQuery.json';

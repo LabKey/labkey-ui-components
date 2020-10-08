@@ -16,13 +16,20 @@
 import { Iterable, List, Map, OrderedMap, Record, Set } from 'immutable';
 
 import { genCellKey } from './actions';
-import { getQueryColumnRenderers, getQueryGridModel, getQueryMetadata } from './global';
+import { getQueryColumnRenderers, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
-import { IQueryGridModel, QueryColumn, QueryGridModel, SchemaQuery, ViewInfo } from './components/base/models/model';
-import { resolveSchemaQuery } from './util/utils';
-import { AppURL } from './url/AppURL';
+import {
+    AppURL,
+    DataViewInfoTypes,
+    getQueryGridModel,
+    QueryColumn,
+    QueryGridModel,
+    resolveSchemaQuery,
+    SchemaQuery,
+    ViewInfo
+} from '../';
 import { GRID_EDIT_INDEX } from './components/base/models/constants';
-import { DataViewInfoTypes, VISUALIZATION_REPORTS } from './constants';
+import { IQueryGridModel } from './components/base/models/model';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];

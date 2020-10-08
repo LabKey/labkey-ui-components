@@ -16,7 +16,7 @@
 import { List, Map, Set } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { QueryColumn } from '../../base/models/model';
+import { QueryColumn } from '../../../..';
 
 import { parseColumns, resolveFieldKey } from '../utils';
 

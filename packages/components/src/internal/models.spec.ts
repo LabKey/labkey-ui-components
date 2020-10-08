@@ -20,7 +20,7 @@ import { CellMessage, EditorModel, ValueDescriptor } from './models';
 
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
 import { QueryInfo } from '..';
-import { QueryGridModel, SchemaQuery } from './components/base/models/model';
+import { QueryGridModel, SchemaQuery } from '..';
 
 const schemaQ = new SchemaQuery({
     schemaName: 'samples',

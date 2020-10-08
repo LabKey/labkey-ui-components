@@ -17,9 +17,9 @@ import React from 'react';
 import { OverlayTrigger } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { updateRows } from '../../query/api';
+import { updateRows } from '../../..';
 
-import { QueryColumn } from '../base/models/model';
+import { QueryColumn } from '../../..';
 
 import { FieldEditForm, FieldEditProps } from './input/FieldEditInput';
 import { QueryInfo, resolveErrorMessage } from '../../..';

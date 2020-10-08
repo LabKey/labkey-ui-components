@@ -19,7 +19,7 @@ import { User } from '@labkey/api';
 
 import { initBrowserHistoryState } from './util/global';
 import { EditorModel, LookupStore } from './models';
-import { QueryColumn, QueryGridModel, SchemaQuery } from './components/base/models/model';
+import { QueryColumn, QueryGridModel, SchemaQuery } from '..';
 import { naturalSort, resolveSchemaQuery } from './util/utils';
 import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 

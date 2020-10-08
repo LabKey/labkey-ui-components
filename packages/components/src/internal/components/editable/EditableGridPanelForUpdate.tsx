@@ -3,9 +3,9 @@ import { List, Map } from 'immutable';
 
 import { getEditorModel } from '../../global';
 
-import { QueryGridModel, SchemaQuery } from '../base/models/model';
+import { QueryGridModel, SchemaQuery } from '../../..';
 import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
+import { WizardNavButtons } from '../../..';
 
 import { EditableGridPanel } from './EditableGridPanel';
 

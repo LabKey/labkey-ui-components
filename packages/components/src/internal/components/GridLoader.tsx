@@ -16,10 +16,11 @@
 import React from 'react';
 import { fromJS, List } from 'immutable';
 
-import { selectRows } from '../query/api';
+import { selectRows } from '../..';
 import { getSelected } from '../actions';
 
-import { IGridLoader, IGridResponse, IGridSelectionResponse, QueryGridModel } from './base/models/model';
+import { IGridLoader, IGridResponse, QueryGridModel } from '../..';
+import { IGridSelectionResponse } from './base/models/model';
 
 class GridLoader implements IGridLoader {
     fetch(model: QueryGridModel): Promise<IGridResponse> {

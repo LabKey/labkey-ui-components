@@ -18,33 +18,39 @@ import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { Location } from '../../util/URL';
-import { loadSelectedSamples } from '../samples/actions';
 
-import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
-import { getQueryGridModel, removeQueryGridModel } from '../../global';
-
-import { getStateQueryGridModel } from '../../models';
-import { gridInit } from '../../actions';
-import { getQueryDetails } from '../../query/api';
-
-import {
-    AssayDefinitionModel,
-    AssayDomainTypes,
-    AssayUploadTabs,
-    QueryColumn,
-    QueryGridModel,
-    SchemaQuery,
-} from '../base/models/model';
-import { getActionErrorMessage, resolveErrorMessage } from '../../util/messaging';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from '../base/Alert';
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
-import { Progress } from '../base/Progress';
-import { FileSizeLimitProps } from '../files/models';
 import { IMPORT_DATA_FORM_TYPES } from '../../constants';
 
-import { dismissNotifications } from '../../..';
+import {
+    Alert,
+    AssayDefinitionModel,
+    AssayDomainTypes,
+    AssayUploadResultModel,
+    dismissNotifications,
+    FileSizeLimitProps,
+    getActionErrorMessage,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow,
+    getQueryDetails,
+    getQueryGridModel,
+    getRunPropertiesModel,
+    getRunPropertiesRow,
+    getStateQueryGridModel,
+    gridInit,
+    importAssayRun,
+    loadSelectedSamples,
+    LoadingSpinner,
+    Location,
+    Progress,
+    QueryColumn,
+    QueryGridModel,
+    removeQueryGridModel,
+    resolveErrorMessage,
+    SchemaQuery,
+    withFormSteps,
+    WithFormStepsProps,
+    WizardNavButtons,
+} from '../../..';
 
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
@@ -52,19 +58,15 @@ import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
-import { AssayUploadResultModel, AssayWizardModel, IAssayUploadOptions } from './models';
+import { AssayWizardModel, IAssayUploadOptions } from './models';
 import {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
     flattenQueryGridModelRow,
-    getBatchPropertiesModel,
-    getBatchPropertiesRow,
     getRunPropertiesFileName,
-    getRunPropertiesModel,
-    getRunPropertiesRow,
-    importAssayRun,
     uploadAssayRunFiles,
 } from './actions';
+import { AssayUploadTabs } from '../base/models/model';
 
 let assayUploadTimer: number;
 const INIT_WIZARD_MODEL = new AssayWizardModel({ isInit: false });

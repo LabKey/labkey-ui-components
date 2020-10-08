@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { capitalizeFirstChar } from '../../util/utils';
-import { ConfirmModal } from '../base/ConfirmModal';
+import { capitalizeFirstChar } from '../../..';
+import { ConfirmModal } from '../../..';
 
-import { Progress } from '../base/Progress';
-import {QueryGridModel, SchemaQuery} from '../base/models/model';
-import { createDeleteErrorNotification, createDeleteSuccessNotification } from '../notifications/messaging';
+import { Progress } from '../../..';
+import {QueryGridModel, SchemaQuery} from '../../..';
+import { createDeleteErrorNotification, createDeleteSuccessNotification } from '../../..';
 
 import {deleteRows, NotificationItemProps} from '../../..';
 

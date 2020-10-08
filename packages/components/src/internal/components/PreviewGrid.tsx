@@ -4,10 +4,10 @@ import { Alert } from 'react-bootstrap';
 
 import { resolveErrorMessage } from '../..';
 
-import { SchemaQuery } from './base/models/model';
+import { SchemaQuery } from '../..';
 import { getQueryDetails, QueryInfo, selectRows } from '../..';
-import { LoadingSpinner } from './base/LoadingSpinner';
-import { Grid } from './base/Grid';
+import { LoadingSpinner } from '../..';
+import { Grid } from '../..';
 
 interface PreviewGridProps {
     schemaQuery: SchemaQuery;

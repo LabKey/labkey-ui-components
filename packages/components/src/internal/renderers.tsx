@@ -20,10 +20,10 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
-import { GridColumn } from './components/base/Grid';
+import { GridColumn } from '..';
 import { CustomToggle } from './components/base/CustomToggle';
-import { QueryColumn } from './components/base/models/model';
-import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
+import { QueryColumn } from '..';
+import { GRID_CHECKBOX_OPTIONS } from '..';
 
 export function headerCell(
     handleSort: (column: QueryColumn, dir: string) => any,

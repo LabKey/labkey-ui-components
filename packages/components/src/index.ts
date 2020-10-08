@@ -18,6 +18,7 @@ import { enableMapSet, enablePatches } from 'immer';
 import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
 import { SCHEMAS } from './internal/components/base/models/schemas';
 import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
+import { SchemaQuery } from './public/SchemaQuery';
 import { QueryInfo } from './public/QueryInfo';
 import { QuerySort } from './public/QuerySort';
 import {
@@ -36,7 +37,6 @@ import {
     QueryInfoStatus,
     QueryLookup,
     SchemaDetails,
-    SchemaQuery,
     User,
     ViewInfo,
 } from './internal/components/base/models/model';

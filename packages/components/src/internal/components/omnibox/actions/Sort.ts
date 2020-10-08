@@ -16,7 +16,7 @@
 import { List } from 'immutable';
 
 import { parseColumns, resolveFieldKey } from '../utils';
-import { QueryColumn } from '../../base/models/model';
+import { QueryColumn } from '../../../..';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
 import { QuerySort } from '../../../..';

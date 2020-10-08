@@ -21,9 +21,9 @@ import { mount } from 'enzyme';
 
 import { initUnitTestMocks } from '../../testHelpers';
 
-import { getQueryDetails } from '../../query/api';
+import { getQueryDetails } from '../../..';
 
-import { SchemaQuery } from '../base/models/model';
+import { SchemaQuery } from '../../..';
 
 import { QueryFormInputs } from './QueryFormInputs';
 import { TextInput } from './input/TextInput';

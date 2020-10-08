@@ -23,9 +23,7 @@ import { getQueryGridModel } from '../../../global';
 
 import sampleDetailsQuery from '../../../../test/data/sampleDetails-getQuery.json';
 import { initUnitTestMocks } from '../../../testHelpers';
-import { SCHEMAS } from '../../base/models/schemas';
-import { gridInit } from '../../../actions';
-import { SchemaQuery } from '../../base/models/model';
+import { gridInit, SCHEMAS, SchemaQuery } from '../../../..';
 
 import { DetailEditing } from './DetailEditing';
 

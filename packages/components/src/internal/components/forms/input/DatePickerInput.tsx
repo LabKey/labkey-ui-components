@@ -20,7 +20,7 @@ import DatePicker from 'react-datepicker';
 import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
-import { QueryColumn } from '../../base/models/model';
+import { QueryColumn } from '../../../..';
 import { datePlaceholder, formatDate, isDateTimeCol, parseDate } from '../../../util/Date';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';

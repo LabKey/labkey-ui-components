@@ -3,13 +3,9 @@ import { OrderedMap } from 'immutable';
 import { mount } from 'enzyme';
 
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
-import { TextInput } from '../forms/input/TextInput';
-import { DatePickerInput } from '../forms/input/DatePickerInput';
-import { CheckboxInput } from '../forms/input/CheckboxInput';
-import { SelectInput } from '../forms/input/SelectInput';
+import { TextInput, DatePickerInput, SelectInput, QueryFormInputs, QueryColumn } from '../../..';
 
-import { QueryFormInputs } from '../forms/QueryFormInputs';
-import { QueryColumn } from '../base/models/model';
+import { CheckboxInput } from '../forms/input/CheckboxInput';
 
 import { AssayWizardModel } from './models';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';

@@ -19,10 +19,10 @@ import { List } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { blurActiveElement, generateId } from '../../util/utils';
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel } from '../../..';
 import { DataViewInfo } from '../../models';
 import { setReportId } from '../../actions';
-import { DataViewInfoTypes } from '../../constants';
+import { DataViewInfoTypes } from '../../..';
 
 import { ChartModal } from './ChartModal';
 import { ChartMenuItem } from './ChartMenuItem';

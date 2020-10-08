@@ -21,10 +21,10 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { SVGIcon } from '../base/SVGIcon';
-import { SchemaQuery } from '../base/models/model';
-import { Alert } from '../base/Alert';
+import { LoadingSpinner } from '../../..';
+import { SVGIcon } from '../../..';
+import { SchemaQuery } from '../../..';
+import { Alert } from '../../..';
 import { DataViewInfo, IDataViewInfo } from '../../models';
 import { DataViewInfoTypes, GRID_REPORTS, VISUALIZATION_REPORTS } from '../../constants';
 

@@ -27,9 +27,9 @@ import { QueryGrid } from './QueryGrid';
 import { QueryGridBar, QueryGridBarButtons } from './gridbar/QueryGridBar';
 
 import '../../theme/index.scss';
-import { QueryGridModel } from './base/models/model';
-import { LoadingSpinner } from './base/LoadingSpinner';
-import { Alert } from './base/Alert';
+import { QueryGridModel } from '../..';
+import { LoadingSpinner } from '../..';
+import { Alert } from '../..';
 import { EXPORT_TYPES } from '../constants';
 
 interface Props {

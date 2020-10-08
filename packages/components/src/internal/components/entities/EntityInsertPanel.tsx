@@ -95,7 +95,7 @@ class EntityGridLoader implements IGridLoader {
 
 interface OwnProps {
     disableMerge?: boolean;
-    afterEntityCreation?: (entityTypetName, filter, entityCount, actionStr, transactionAuditId?) => void;
+    afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?) => void;
     getFileTemplateUrl?: (queryInfo: QueryInfo) => string;
     location?: Location;
     onCancel?: () => void;

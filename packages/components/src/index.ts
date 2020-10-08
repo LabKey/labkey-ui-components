@@ -132,6 +132,7 @@ import {
     gridInvalidate,
     gridShowError,
     queryGridInvalidate,
+    replaceSelected,
     schemaGridInvalidate,
     setSelected,
     unselectAll,
@@ -437,6 +438,7 @@ export {
     gridExport,
     gridInit,
     gridShowError,
+    replaceSelected,
     setSelected,
     unselectAll,
     // query related items

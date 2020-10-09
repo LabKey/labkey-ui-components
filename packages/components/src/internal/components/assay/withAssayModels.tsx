@@ -234,7 +234,10 @@ export function assayPage<Props>(
         const assayName = params?.protocol;
         const hasProtocol = assayName !== undefined;
 
-        if (isLoading(assayModel.definitionsLoadingState) || (hasProtocol && isLoading(assayModel.protocolLoadingState))) {
+        if (
+            isLoading(assayModel.definitionsLoadingState) ||
+            (hasProtocol && isLoading(assayModel.protocolLoadingState))
+        ) {
             return <LoadingPage />;
         }
 

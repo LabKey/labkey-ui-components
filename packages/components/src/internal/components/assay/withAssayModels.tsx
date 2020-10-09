@@ -1,4 +1,5 @@
 import React, { ComponentType, createContext, PureComponent, ReactNode } from 'react';
+import { List } from 'immutable';
 import { Draft, produce } from 'immer';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -16,12 +17,18 @@ import {
     LoadingState,
 } from '../../..';
 
+export interface AssayLoader {
+    loadDefinitions: () => Promise<List<AssayDefinitionModel>>;
+    loadProtocol: (protocolId: number) => Promise<AssayProtocolModel>;
+}
+
 export interface AssayContext {
     assayDefinition: AssayDefinitionModel;
     assayProtocol: AssayProtocolModel;
 }
 
 export interface WithAssayModelProps {
+    assayLoader?: AssayLoader;
     displayLoading?: boolean;
     handleErrors?: boolean;
     loadProtocol?: boolean;
@@ -41,6 +48,11 @@ interface State {
 const Context = createContext<AssayContext>(undefined);
 const AssayContextProvider = Context.Provider;
 export const AssayContextConsumer = Context.Consumer;
+
+const DefaultAssayLoader: AssayLoader = {
+    loadDefinitions: fetchAllAssays,
+    loadProtocol: fetchProtocol,
+};
 
 export function withAssayModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
@@ -79,6 +91,7 @@ export function withAssayModels<Props>(
         };
 
         loadDefinitions = async (): Promise<void> => {
+            const { assayLoader } = this.props;
             const { model } = this.state;
 
             if (model.definitionsLoadingState === LoadingState.LOADED) {
@@ -88,10 +101,10 @@ export function withAssayModels<Props>(
             this.updateModel({ definitionsError: undefined, definitionsLoadingState: LoadingState.LOADING });
 
             try {
-                const definitions = await fetchAllAssays();
+                const definitions = await assayLoader.loadDefinitions();
 
                 this.updateModel({
-                    definitions: definitions.toArray(),
+                    definitions: definitions?.toArray(),
                     definitionsLoadingState: LoadingState.LOADED,
                 });
             } catch (definitionsError) {
@@ -101,11 +114,12 @@ export function withAssayModels<Props>(
         };
 
         loadProtocol = async (assayName: string): Promise<void> => {
-            if (!this.props.loadProtocol) {
+            const { assayLoader, loadProtocol } = this.props;
+            const { model } = this.state;
+
+            if (!loadProtocol) {
                 return;
             }
-
-            const { model } = this.state;
 
             const assayDefinition = model.getByName(assayName);
             let modelProps: Partial<AssayStateModel>;
@@ -130,7 +144,7 @@ export function withAssayModels<Props>(
             }
 
             try {
-                const assayProtocol = await fetchProtocol(assayDefinition.id);
+                const assayProtocol = await assayLoader.loadProtocol(assayDefinition.id);
 
                 this.update({
                     context: { assayDefinition, assayProtocol },
@@ -211,6 +225,7 @@ export function withAssayModels<Props>(
     }
 
     ComponentWithAssays.defaultProps = {
+        assayLoader: defaultProps?.assayLoader ?? DefaultAssayLoader,
         displayLoading: defaultProps?.displayLoading ?? true,
         handleErrors: defaultProps?.handleErrors ?? true,
         loadProtocol: defaultProps?.loadProtocol ?? true,

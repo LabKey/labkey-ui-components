@@ -17,17 +17,9 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 import { AssayDOM } from '@labkey/api';
 
 import { getEditorModel } from '../../global';
-import {
-    AppURL,
-    AssayDefinitionModel,
-    FileAttachmentFormModel,
-    QueryColumn,
-    QueryGridModel,
-    QueryInfo
-} from '../../..';
-import { AssayUploadTabs } from '../base/models/model';
+import { AssayUploadTabs, AssayDefinitionModel, QueryColumn, QueryGridModel } from '../base/models/model';
 import { generateNameWithTimestamp } from '../../util/Date';
-import { AssayProtocolModel } from '../../..';
+import { AppURL, AssayProtocolModel, FileAttachmentFormModel, QueryInfo } from '../../..';
 
 export interface AssayPropertiesPanelProps {
     model: AssayWizardModel;

@@ -11,7 +11,7 @@ import { List, Map } from 'immutable';
 import { MenuSectionConfig } from '../internal/components/navigation/ProductMenuSection';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from '../internal/components/navigation/model';
 import { NavigationBar } from '../internal/components/navigation/NavigationBar';
-import { User } from '../internal/components/base/models/model';
+import { User } from '..';
 import { AppURL } from '../internal/url/AppURL';
 
 import { ICON_URL } from './mock';

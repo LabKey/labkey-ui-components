@@ -19,7 +19,7 @@ import renderer from 'react-test-renderer';
 
 import { mount, shallow } from 'enzyme';
 
-import { User } from '../base/models/model';
+import { User } from '../../..';
 
 import { notificationInit } from '../../../test/setupUtils';
 

@@ -17,7 +17,7 @@ import React from 'react';
 
 import { shallow } from 'enzyme';
 
-import { User } from '../base/models/model';
+import { User } from '../../..';
 
 import { NotificationItemModel } from './model';
 import { NotificationItem } from './NotificationItem';

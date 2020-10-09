@@ -9,7 +9,7 @@ import { AppURL } from '../url/AppURL';
 import { buildURL, imageURL } from '../url/ActionURL';
 import { hasAllPermissions } from '../util/utils';
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
-import { User } from '../components/base/models/model';
+import { User } from '../..';
 
 import {
     ASSAYS_KEY,

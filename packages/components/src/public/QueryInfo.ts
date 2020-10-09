@@ -3,9 +3,15 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { insertColumnFilter, LastActionStatus, QueryColumn, QueryInfoStatus, SchemaQuery, ViewInfo } from '..';
+import { insertColumnFilter, LastActionStatus, QueryColumn, SchemaQuery, ViewInfo } from '..';
 import { QuerySort } from './QuerySort';
 import { toLowerSafe } from '../internal/util/utils';
+
+export enum QueryInfoStatus {
+    ok,
+    notFound,
+    unknown,
+}
 
 export class QueryInfo extends Record({
     // canEdit: false,

@@ -19,8 +19,9 @@ import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constan
 import { SCHEMAS } from './internal/components/base/models/schemas';
 import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
 import { SchemaQuery } from './public/SchemaQuery';
-import { QueryInfo } from './public/QueryInfo';
+import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { QuerySort } from './public/QuerySort';
+import { User } from './internal/components/base/models/User';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -34,10 +35,8 @@ import {
     MessageLevel,
     QueryColumn,
     QueryGridModel,
-    QueryInfoStatus,
     QueryLookup,
     SchemaDetails,
-    User,
     ViewInfo,
 } from './internal/components/base/models/model';
 import {

@@ -15,12 +15,9 @@
  */
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
 import {
-    ActionURL,
     Container as IContainer,
     Filter,
-    PermissionTypes,
     Query,
-    UserWithPermissions,
     Utils,
 } from '@labkey/api';
 
@@ -45,11 +42,6 @@ const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
 const emptyRow = Map<string, any>();
 
-export enum QueryInfoStatus {
-    ok,
-    notFound,
-    unknown,
-}
 export enum MessageLevel {
     info,
     warning,
@@ -91,88 +83,6 @@ export class Container extends Record(defaultContainer) implements Partial<ICont
     type: string;
 }
 
-interface IUserProps extends Partial<UserWithPermissions> {
-    permissionsList: List<string>;
-}
-
-const defaultUser: IUserProps = {
-    id: 0,
-
-    canDelete: false,
-    canDeleteOwn: false,
-    canInsert: false,
-    canUpdate: false,
-    canUpdateOwn: false,
-
-    displayName: 'guest',
-    email: 'guest',
-    phone: null,
-    avatar: ActionURL.getContextPath() + '/_images/defaultavatar.png',
-
-    isAdmin: false,
-    isGuest: true,
-    isSignedIn: false,
-    isSystemAdmin: false,
-
-    permissionsList: List(),
-};
-
-/**
- * Model for org.labkey.api.security.User as returned by User.getUserProps()
- */
-export class User extends Record(defaultUser) implements IUserProps {
-    id: number;
-
-    canDelete: boolean;
-    canDeleteOwn: boolean;
-    canInsert: boolean;
-    canUpdate: boolean;
-    canUpdateOwn: boolean;
-
-    displayName: string;
-    email: string;
-    phone: string;
-    avatar: string;
-
-    isAdmin: boolean;
-    isGuest: boolean;
-    isSignedIn: boolean;
-    isSystemAdmin: boolean;
-
-    permissionsList: List<string>;
-
-    static getDefaultUser(): User {
-        return new User(defaultUser);
-    }
-
-    hasUpdatePermission(): boolean {
-        return hasAllPermissions(this, [PermissionTypes.Update]);
-    }
-
-    hasInsertPermission(): boolean {
-        return hasAllPermissions(this, [PermissionTypes.Insert]);
-    }
-
-    hasDeletePermission(): boolean {
-        return hasAllPermissions(this, [PermissionTypes.Delete]);
-    }
-
-    hasDesignAssaysPermission(): boolean {
-        return hasAllPermissions(this, [PermissionTypes.DesignAssay]);
-    }
-
-    hasDesignSampleSetsPermission(): boolean {
-        return hasAllPermissions(this, [PermissionTypes.DesignSampleSet]);
-    }
-
-    hasManageUsersPermission(): boolean {
-        return hasAllPermissions(this, [PermissionTypes.UserManagement], false);
-    }
-
-    isAppAdmin(): boolean {
-        return hasAllPermissions(this, [PermissionTypes.ApplicationAdmin], false);
-    }
-}
 
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
@@ -353,8 +263,10 @@ export class QueryColumn extends Record({
         }
 
         const lookupSQ = SchemaQuery.create(this.lookup.schemaName, this.lookup.queryName);
+        // materialsSQ can't be a constant declared at the top of the file due to circular imports.
+        const materialsSQ = SchemaQuery.create('exp', 'Materials');
 
-        return MATERIALS_SQ.isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
+        return materialsSQ.isEqual(lookupSQ) || lookupSQ.hasSchema('samples');
     }
 
     isMaterialInput(): boolean {
@@ -387,8 +299,7 @@ export class QueryColumn extends Record({
     }
 }
 
-// MATERIALS_SQ defined here to prevent compiler error "Class 'SchemaQuery' used before its declaration"
-const MATERIALS_SQ = SchemaQuery.create('exp', 'Materials');
+
 
 export class QueryLookup extends Record({
     // server defaults

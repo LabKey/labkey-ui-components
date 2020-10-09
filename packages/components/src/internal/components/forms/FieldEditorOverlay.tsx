@@ -99,11 +99,12 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                     if (column.jsonType === 'int' || column.jsonType === 'float') {
                         inputType = "number";
                     }
-                    let props = Object.assign({}, field, {
+                    let props = Object.assign({
                         caption: column.caption,
+                        inputPlaceholder: 'Enter ' + column.caption.toLowerCase() + '...',
+                    }, field, {
                         data,
                         fieldKey: column.fieldKey,
-                        inputPlaceholder: 'Enter ' + column.caption.toLowerCase() + '...',
                         inputType,
                         value,
                     });

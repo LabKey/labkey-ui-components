@@ -1,4 +1,4 @@
-import { SCHEMAS } from '../base/models/schemas';
+import { SCHEMAS } from '../../..';
 
 import { EntityDataType } from './models';
 import { DELETE_SAMPLES_TOPIC } from "../../util/helpLinks";

@@ -6,9 +6,10 @@ import { decodeLookup, encodeLookup, PropDescType } from '../models';
 
 import { createFormInputName } from '../actions';
 import { DOMAIN_FIELD_LOOKUP_CONTAINER, DOMAIN_FIELD_LOOKUP_QUERY, DOMAIN_FIELD_LOOKUP_SCHEMA } from '../constants';
-import { Container, SchemaDetails } from '../../base/models/model';
+import { SchemaDetails } from '../../base/models/model';
 
 import { ILookupContext, LookupContextConsumer } from './Context';
+import { Container } from '../../../..';
 
 interface ILookupProps {
     context: ILookupContext;

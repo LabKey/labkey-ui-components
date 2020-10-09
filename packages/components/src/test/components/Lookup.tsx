@@ -8,7 +8,8 @@ import { QueryInfoLite } from '../../internal/components/domainproperties/models
 import containerData from '../data/project-getContainers.json';
 import queryData from '../data/query-getQueries.json';
 import schemaData from '../data/query-getSchemas.json';
-import { Container, SchemaDetails } from '../../internal/components/base/models/model';
+import { SchemaDetails } from '../../internal/components/base/models/model';
+import { Container } from '../..';
 
 export class MockLookupProvider extends React.Component<any, ILookupContext> {
     constructor(props) {

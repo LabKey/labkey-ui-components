@@ -17,16 +17,15 @@ import { enableMapSet, enablePatches } from 'immer';
 
 import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
 import { SCHEMAS } from './internal/components/base/models/schemas';
-import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
 import { SchemaQuery } from './public/SchemaQuery';
-import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { QuerySort } from './public/QuerySort';
+import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
+import { Container } from './internal/components/base/models/Container';
 import { User } from './internal/components/base/models/User';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    Container,
     IGridLoader,
     IGridResponse,
     InferDomainResponse,
@@ -56,6 +55,7 @@ import {
     toggleDevTools,
     valueIsEmpty,
 } from './internal/util/utils';
+import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
 import { buildURL, hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';

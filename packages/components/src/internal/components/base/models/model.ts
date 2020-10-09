@@ -15,7 +15,6 @@
  */
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
 import {
-    Container as IContainer,
     Filter,
     Query,
     Utils,
@@ -30,7 +29,6 @@ import { GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
 import {
     AppURL,
     GRID_CHECKBOX_OPTIONS,
-    hasAllPermissions,
     QueryInfo,
     QuerySort,
     resolveKey,
@@ -47,42 +45,6 @@ export enum MessageLevel {
     warning,
     error,
 }
-
-const defaultContainer: Partial<IContainer> = {
-    activeModules: [],
-    folderType: '',
-    hasRestrictedActiveModule: false,
-    id: '',
-    isContainerTab: false,
-    isWorkbook: false,
-    name: '',
-    parentId: '',
-    parentPath: '',
-    path: '',
-    sortOrder: 0,
-    title: '',
-    type: '',
-};
-
-/**
- * Model for org.labkey.api.data.Container as returned by Container.toJSON()
- */
-export class Container extends Record(defaultContainer) implements Partial<IContainer> {
-    activeModules: string[];
-    folderType: string;
-    hasRestrictedActiveModule: boolean;
-    id: string;
-    isContainerTab: boolean;
-    isWorkbook: boolean;
-    name: string;
-    parentId: string;
-    parentPath: string;
-    path: string;
-    sortOrder: number;
-    title: string;
-    type: string;
-}
-
 
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app

@@ -19,6 +19,7 @@ import {
 } from '../../..';
 
 export interface AssayLoader {
+    clearDefinitionsCache: () => void;
     loadDefinitions: () => Promise<List<AssayDefinitionModel>>;
     loadProtocol: (protocolId: number) => Promise<AssayProtocolModel>;
 }
@@ -48,6 +49,7 @@ const AssayContextProvider = Context.Provider;
 export const AssayContextConsumer = Context.Consumer;
 
 const DefaultAssayLoader: AssayLoader = {
+    clearDefinitionsCache: clearAssayDefinitionCache,
     loadDefinitions: fetchAllAssays,
     loadProtocol: fetchProtocol,
 };
@@ -102,11 +104,10 @@ export function withAssayModels<Props>(
                 const definitions = await assayLoader.loadDefinitions();
 
                 this.updateModel({
-                    definitions: definitions?.toArray(),
+                    definitions: definitions.toArray(),
                     definitionsLoadingState: LoadingState.LOADED,
                 });
             } catch (definitionsError) {
-                console.error('definitions error', definitionsError);
                 this.updateModel({ definitionsError, definitionsLoadingState: LoadingState.LOADED });
             }
         };
@@ -148,13 +149,12 @@ export function withAssayModels<Props>(
                     model: model.mutate({ protocolLoadingState: LoadingState.LOADED }),
                 });
             } catch (protocolError) {
-                console.error('protocol error', protocolError);
                 this.updateModel({ protocolError, protocolLoadingState: LoadingState.LOADED });
             }
         };
 
         reload = async (): Promise<void> => {
-            clearAssayDefinitionCache();
+            this.props.assayLoader.clearDefinitionsCache();
 
             await this.update({
                 context: { assayDefinition: undefined, assayProtocol: undefined },
@@ -216,7 +216,7 @@ export function withAssayModels<Props>(
 
 export function withAssayModelsFromLocation<Props>(
     ComponentToWrap: ComponentType<Props & InjectedAssayModel>
-): ComponentType<Props & WithRouterProps> {
+): ComponentType<Props & WithAssayModelProps & WithRouterProps> {
     const WrappedComponent = withAssayModels<Props>(ComponentToWrap);
 
     const AssayFromLocation: FC<Props & WithRouterProps> = props => {
@@ -228,7 +228,7 @@ export function withAssayModelsFromLocation<Props>(
 
 export function assayPage<Props>(
     ComponentToWrap: ComponentType<Props & InjectedAssayModel>
-): ComponentType<Props & WithRouterProps> {
+): ComponentType<Props & WithAssayModelProps & WithRouterProps> {
     const AssayPageImpl: FC<Props & InjectedAssayModel & WithRouterProps> = props => {
         const { assayModel, params } = props;
         const assayName = params?.protocol;

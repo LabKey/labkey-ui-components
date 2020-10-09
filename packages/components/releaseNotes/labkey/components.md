@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version XXX
 *Released*: XXX
-* SampleTypeDesigner update to add "Metric Unit" property to Sample Manager
+* SampleTypeDesigner updates
+    * add "Metric Unit" property to Sample Manager
+    * add validateProperties prop to allow caller to validate sample domain properties before save
 
 ### version 0.97.0
 *Released*: 29 September 2020

@@ -87,6 +87,8 @@ interface Props {
     metricUnitRequired?: boolean;
     metricUnitHelpMsg?: string;
     metricUnitOptions?: any[];
+
+    validateProperties?: (designerDetails?: any) => Promise<any>
 }
 
 interface State {
@@ -355,7 +357,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         }
     };
 
-    saveDomain = () => {
+    saveDomain = async () => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
         const { name, domain, description, nameExpression, labelColor, metricUnit } = model;
@@ -384,6 +386,25 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             };
 
             domainDesign = addDomainField(domainDesign, nameCol);
+        }
+
+        try{
+            if (this.props.validateProperties) {
+                const response = await this.props.validateProperties(details);
+                if (response.error) {
+                    const updatedModel = model.set('exception', response.error) as SampleTypeModel;
+                    setSubmitting(false, () => {
+                        this.setState(() => ({ model: updatedModel }));
+                    });
+                    return;
+                }
+            }
+        } catch (error) {
+            const exception = resolveErrorMessage(error);
+            setSubmitting(false, () => {
+                this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel }));
+            });
+            return;
         }
 
         saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name)

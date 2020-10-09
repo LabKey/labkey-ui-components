@@ -84,4 +84,4 @@ class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAssayMode
     }
 }
 
-export const AssayImportSubMenuItem = withAssayModels<Props>(AssayImportSubMenuItemImpl, { loadProtocol: false });
+export const AssayImportSubMenuItem = withAssayModels<Props>(AssayImportSubMenuItemImpl);

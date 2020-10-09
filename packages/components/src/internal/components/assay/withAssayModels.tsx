@@ -1,4 +1,4 @@
-import React, { ComponentType, createContext, PureComponent, ReactNode } from 'react';
+import React, { ComponentType, createContext, FC, PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { Draft, produce } from 'immer';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -15,6 +15,7 @@ import {
     isLoading,
     LoadingPage,
     LoadingState,
+    NotFound,
 } from '../../..';
 
 export interface AssayLoader {
@@ -29,10 +30,7 @@ export interface AssayContext {
 
 export interface WithAssayModelProps {
     assayLoader?: AssayLoader;
-    displayLoading?: boolean;
-    handleErrors?: boolean;
-    loadProtocol?: boolean;
-    waitForLoaded?: boolean;
+    assayName?: string;
 }
 
 export interface InjectedAssayModel extends AssayContext {
@@ -58,7 +56,7 @@ export function withAssayModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedAssayModel>,
     defaultProps?: WithAssayModelProps
 ): ComponentType<Props & WithAssayModelProps> {
-    type WrappedProps = Props & WithAssayModelProps & WithRouterProps;
+    type WrappedProps = Props & WithAssayModelProps;
 
     class ComponentWithAssays extends PureComponent<WrappedProps, State> {
         static defaultProps;
@@ -76,7 +74,7 @@ export function withAssayModels<Props>(
         };
 
         componentDidUpdate = (prevProps: WrappedProps): void => {
-            if (this.props.loadProtocol && this.props.params?.protocol !== prevProps.params?.protocol) {
+            if (this.props.assayName !== prevProps.assayName) {
                 this.load();
             }
         };
@@ -87,7 +85,7 @@ export function withAssayModels<Props>(
 
         load = async (): Promise<void> => {
             await this.loadDefinitions();
-            await this.loadProtocol(this.props.params?.protocol);
+            await this.loadProtocol();
         };
 
         loadDefinitions = async (): Promise<void> => {
@@ -113,18 +111,17 @@ export function withAssayModels<Props>(
             }
         };
 
-        loadProtocol = async (assayName: string): Promise<void> => {
-            const { assayLoader, loadProtocol } = this.props;
+        loadProtocol = async (): Promise<void> => {
+            const { assayLoader, assayName } = this.props;
             const { model } = this.state;
 
-            if (!loadProtocol) {
+            if (!assayName && model.protocolLoadingState === LoadingState.INITIALIZED) {
                 return;
             }
 
             const assayDefinition = model.getByName(assayName);
             let modelProps: Partial<AssayStateModel>;
 
-            // TODO: This is the "not found" case. Determine if this provider should provide handling or just report as error
             if (assayDefinition) {
                 modelProps = { protocolError: undefined, protocolLoadingState: LoadingState.LOADING };
             } else {
@@ -198,23 +195,9 @@ export function withAssayModels<Props>(
         };
 
         render = (): ReactNode => {
-            const { displayLoading, handleErrors, loadProtocol, waitForLoaded, ...props } = this.props;
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { assayLoader, assayName, ...props } = this.props;
             const { context, model } = this.state;
-
-            if (
-                waitForLoaded &&
-                (isLoading(model.definitionsLoadingState) || (loadProtocol && isLoading(model.protocolLoadingState)))
-            ) {
-                return displayLoading ? <LoadingPage /> : null;
-            }
-
-            if (handleErrors && (model.definitionsError || model.protocolError)) {
-                return (
-                    <Alert>
-                        {getActionErrorMessage('There was a problem loading the assay design.', 'assay design')}
-                    </Alert>
-                );
-            }
 
             return (
                 <AssayContextProvider value={context}>
@@ -226,11 +209,47 @@ export function withAssayModels<Props>(
 
     ComponentWithAssays.defaultProps = {
         assayLoader: defaultProps?.assayLoader ?? DefaultAssayLoader,
-        displayLoading: defaultProps?.displayLoading ?? true,
-        handleErrors: defaultProps?.handleErrors ?? true,
-        loadProtocol: defaultProps?.loadProtocol ?? true,
-        waitForLoaded: defaultProps?.waitForLoaded ?? true,
     };
 
-    return withRouter(ComponentWithAssays) as ComponentType<Props & WithAssayModelProps>;
+    return ComponentWithAssays;
+}
+
+export function withAssayModelsFromLocation<Props>(
+    ComponentToWrap: ComponentType<Props & InjectedAssayModel>
+): ComponentType<Props & WithRouterProps> {
+    const WrappedComponent = withAssayModels<Props>(ComponentToWrap);
+
+    const AssayFromLocation: FC<Props & WithRouterProps> = props => {
+        return <WrappedComponent {...props} assayName={props.params?.protocol} />;
+    };
+
+    return withRouter(AssayFromLocation);
+}
+
+export function assayPage<Props>(
+    ComponentToWrap: ComponentType<Props & InjectedAssayModel>
+): ComponentType<Props & WithRouterProps> {
+    const AssayPageImpl: FC<Props & InjectedAssayModel & WithRouterProps> = props => {
+        const { assayModel, params } = props;
+        const assayName = params?.protocol;
+        const hasProtocol = assayName !== undefined;
+
+        if (isLoading(assayModel.definitionsLoadingState) || (hasProtocol && isLoading(assayModel.protocolLoadingState))) {
+            return <LoadingPage />;
+        }
+
+        if (assayModel.definitionsError || assayModel.protocolError) {
+            if (hasProtocol && assayModel.getByName(assayName) === undefined) {
+                return <NotFound />;
+            }
+
+            return (
+                <Alert>{getActionErrorMessage('There was a problem loading the assay design.', 'assay design')}</Alert>
+            );
+        }
+
+        return <ComponentToWrap {...props} />;
+    };
+
+    return withAssayModelsFromLocation(AssayPageImpl);
 }

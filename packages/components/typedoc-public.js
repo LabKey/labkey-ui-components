@@ -7,7 +7,9 @@ module.exports = {
     name: "@labkey/components (public)",
     readme: "./docs/public.md",
     toc: [
+        "DetailPanel",
         "DetailPanelWithModel",
+        "EditableDetailPanel",
         "GridPanel",
         "GridPanelWithModel",
         "QueryConfig",

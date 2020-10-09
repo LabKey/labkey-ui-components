@@ -39,75 +39,269 @@ export interface GridMessage {
 
 // Note: if you add/remove fields on QueryConfig make sure to update utils.hashQueryConfig
 export interface QueryConfig {
+    /**
+     * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)
+     * filters to be applied to the [[QueryModel]] data load. These base filters will be concatenated with URL filters,
+     * the keyValue filter, and view filters when applicable.
+     */
     baseFilters?: Filter.IFilter[];
+    /**
+     * Flag used to indicate whether or not filters/sorts/etc. should be persisted on the URL. Defaults to false.
+     */
     bindURL?: boolean;
+    /**
+     * One of the values of [Query.ContainerFilter](https://labkey.github.io/labkey-api-js/enums/_query_utils_.containerfilter.html)
+     * that sets the scope of this query. Defaults to ContainerFilter.current, and is interpreted relative to
+     * config.containerPath.
+     */
     containerFilter?: Query.ContainerFilter;
+    /**
+     * The path to the container in which the schema and query are defined, if different than the current container.
+     * If not supplied, the current container's path will be used.
+     */
     containerPath?: string;
+    /**
+     * Id value to use for referencing a given [[QueryModel]]. If not provided, one will be generated for this [[QueryModel]]
+     * instance based on the [[SchemaQuery]] and keyValue where applicable.
+     */
     id?: string;
+    /**
+     * Include the Details link column in the set of columns (defaults to false). If included, the column will
+     * have the name "\~\~Details\~\~". The underlying table/query must support details links or the column will
+     * be omitted in the response.
+     */
     includeDetailsColumn?: boolean;
+    /**
+     * Include the Update (or edit) link column in the set of columns (defaults to false). If included, the column
+     * will have the name "\~\~Update\~\~". The underlying table/query must support update links or the column
+     * will be omitted in the response.
+     */
     includeUpdateColumn?: boolean;
+    /**
+     * Primary key value, used when loading/rendering details pages to get a single row of data in a [[QueryModel]].
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    keyValue?: any; // Should be a Primary Key Value, used when loading/rendering details pages.
+    keyValue?: any;
+    /**
+     * The maximum number of rows to return from the server (defaults to 100000).
+     * If you want to return all possible rows, set this config property to -1.
+     */
     maxRows?: number;
+    /**
+     * The index of the first row to return from the server (defaults to 0). Use this along with the
+     * maxRows config property to request pages of data.
+     */
     offset?: number;
+    /**
+     * Array of column names to be explicitly excluded from the column list in the [[QueryModel]] data load.
+     */
     omittedColumns?: string[];
+    /**
+     * Query parameters used as input to a parameterized query.
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    queryParameters?: { [key: string]: any }; // These are the parameters used as input to a parameterized query
+    queryParameters?: { [key: string]: any };
+    /**
+     * Array of column names to be explicitly included in the column list in the [[QueryModel]] data load.
+     */
     requiredColumns?: string[];
+    /**
+     * Definition of the [[SchemaQuery]] (i.e. schema, query, and optionally view name) to use for the [[QueryModel]] data load.
+     */
     schemaQuery: SchemaQuery;
+    /**
+     * Array of [[QuerySort]] objects to use for the [[QueryModel]] data load.
+     */
     sorts?: QuerySort[];
+    /**
+     * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
+     */
     urlPrefix?: string;
 }
 
 const DEFAULT_OFFSET = 0;
 const DEFAULT_MAX_ROWS = 20;
 
+/**
+ * This is the base model used to store all the data for a query. At a high level the QueryModel API is a wrapper around
+ * the [selectRows](https://labkey.github.io/labkey-api-js/modules/_query_selectrows_.html#selectrows) API.
+ * If you need to retrieve data from a LabKey table or query, so you can render it in a React
+ * component, then the QueryModel API is most likely what you want.
+ *
+ * This model stores some client-side only data as well as data retrieved from the server. You can manually instantiate a
+ * QueryModel, but you will almost never do this, instead you will use the [[withQueryModels]] HOC to inject the needed
+ * QueryModel(s) into your component. To create a QueryModel you will need to define a [[QueryConfig]] object. At a
+ * minimum, your [[QueryConfig]] must have a valid [[SchemaQuery]], but we also support many other attributes that
+ * allow you to configure the model before it is loaded, all of the attributes can be found on the [[QueryConfig]]
+ * interface.
+ */
 export class QueryModel {
+    /**
+     * @hidden
+     */
     [immerable] = true;
 
     // Fields from QueryConfig
     // Some of the fields we have in common with QueryConfig are not optional because we give them default values.
+    /**
+     * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)
+     * filters to be applied to the QueryModel data load. These base filters will be concatenated with URL filters,
+     * they keyValue filter, and view filters when applicable.
+     */
     readonly baseFilters: Filter.IFilter[];
-    // bindURL is a flag used to indicate whether or not filters/sorts/etc. should be persisted on the URL. It is a
-    // client-only flag.
+    /**
+     * Flag used to indicate whether or not filters/sorts/etc. should be persisted on the URL. Defaults to false.
+     */
     readonly bindURL: boolean;
+    /**
+     * One of the values of [Query.ContainerFilter](https://labkey.github.io/labkey-api-js/enums/_query_utils_.containerfilter.html)
+     * that sets the scope of this query. Defaults to ContainerFilter.current, and is interpreted relative to
+     * config.containerPath.
+     */
     readonly containerFilter?: Query.ContainerFilter;
+    /**
+     * The path to the container in which the schema and query are defined, if different than the current container.
+     * If not supplied, the current container's path will be used.
+     */
     readonly containerPath?: string;
+    /**
+     * Id value to use for referencing a given QueryModel. If not provided, one will be generated for this QueryModel
+     * instance based on the [[SchemaQuery]] and keyValue where applicable.
+     */
     readonly id: string;
+    /**
+     * Include the Details link column in the set of columns (defaults to false). If included, the column will
+     * have the name "\~\~Details\~\~". The underlying table/query must support details links or the column will
+     * be omitted in the response.
+     */
     readonly includeDetailsColumn: boolean;
+    /**
+     * Include the Update (or edit) link column in the set of columns (defaults to false). If included, the column
+     * will have the name "\~\~Update\~\~". The underlying table/query must support update links or the column
+     * will be omitted in the response.
+     */
     readonly includeUpdateColumn: boolean;
+    /**
+     * Primary key value, used when loading/rendering details pages to get a single row of data in a QueryModel.
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly keyValue?: any;
+    /**
+     * The maximum number of rows to return from the server (defaults to 100000).
+     * If you want to return all possible rows, set this config property to -1.
+     */
     readonly maxRows: number;
+    /**
+     * The index of the first row to return from the server (defaults to 0). Use this along with the
+     * maxRows config property to request pages of data.
+     */
     readonly offset: number;
+    /**
+     * Array of column names to be explicitly excluded from the column list in the QueryModel data load.
+     */
     readonly omittedColumns: string[];
+    /**
+     * Query parameters used as input to a parameterized query.
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly queryParameters?: { [key: string]: any };
+    /**
+     * Array of column names to be explicitly included from the column list in the QueryModel data load.
+     */
     readonly requiredColumns: string[];
+    /**
+     * Definition of the [[SchemaQuery]] (i.e. schema, query, and optionally view name) to use for the QueryModel data load.
+     */
     readonly schemaQuery: SchemaQuery;
+    /**
+     * Array of [[QuerySort]] objects to use for the QueryModel data load.
+     */
     readonly sorts: QuerySort[];
+    /**
+     * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
+     */
     readonly urlPrefix?: string;
 
     // QueryModel only fields
+    /**
+     * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)
+     * filters to be applied to the QueryModel data load. These filters will be concatenated with base filters, URL filters,
+     * they keyValue filter, and view filters when applicable.
+     */
     readonly filterArray: Filter.IFilter[];
+    /**
+     * Array of [[GridMessage]]. When used with a [[GridPanel]], these message will be shown above the table of data rows.
+     */
     readonly messages?: GridMessage[];
+    /**
+     * Array of row key values in sort order from the loaded data rows object.
+     */
     readonly orderedRows?: string[];
+    /**
+     * [[QueryInfo]] object for the given QueryModel.
+     */
     readonly queryInfo?: QueryInfo;
+    /**
+     * Error message from API call to load the query info.
+     */
     readonly queryInfoError?: string;
+    /**
+     * [[LoadingState]] for the API call to load the query info.
+     */
     readonly queryInfoLoadingState: LoadingState;
+    /**
+     * Object containing the data rows loaded for the given QueryModel. The object key is the primary key value for the row
+     * and the object values is the row values for the given key.
+     */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly rows?: { [key: string]: any };
+    /**
+     * The total count of rows for the given QueryModel.
+     */
     readonly rowCount?: number;
+    /**
+     * Error message from API call to load the data rows.
+     */
     readonly rowsError?: string;
+    /**
+     * [[LoadingState]] for the API call to load the data rows.
+     */
     readonly rowsLoadingState: LoadingState;
+    /**
+     * ReportId, from the URL, to be used for showing a chart via the [[ChartMenu]].
+     */
     readonly selectedReportId: string;
-    readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set
+    /**
+     * Array of row keys for row selections in the QueryModel.
+     */
+    readonly selections?: Set<string>; // Note: ES6 Set is being used here, not Immutable Set.
+    /**
+     * Error message from API call to load the row selections.
+     */
     readonly selectionsError?: string;
+    /**
+     * [[LoadingState]] for the API call to load the row selections.
+     */
     readonly selectionsLoadingState: LoadingState;
+    /**
+     * Array of [[DataViewInfo]] objects that define the charts attached to the given QueryModel.
+     */
     readonly charts: DataViewInfo[];
+    /**
+     * Error message from API call to load the chart definitions.
+     */
     readonly chartsError: string;
+    /**
+     * [[LoadingState]] for the API call to load the chart definitions.
+     */
     readonly chartsLoadingState: LoadingState;
 
+    /**
+     * Constructor which takes a [[QueryConfig]] definition and creates a new QueryModel, applying default values
+     * to those properties not defined in the [[QueryConfig]]. Note that we default to the Details view if we have a
+     * keyValue and the user hasn't specified a view.
+     * @param queryConfig
+     */
     constructor(queryConfig: QueryConfig) {
         const { schemaQuery, keyValue } = queryConfig;
         this.baseFilters = queryConfig.baseFilters ?? [];
@@ -175,27 +369,51 @@ export class QueryModel {
         return this.schemaQuery.viewName;
     }
 
+    /**
+     * Array of [[QueryColumn]] objects from the [[QueryInfo]] "\~\~DETAILS\~\~" view. This will exclude those columns listed
+     * in omittedColumns.
+     */
     get detailColumns(): QueryColumn[] {
         return this.queryInfo?.getDetailDisplayColumns(ViewInfo.DETAIL_NAME, List(this.omittedColumns)).toArray();
     }
 
+    /**
+     * Array of [[QueryColumn]] objects from the [[QueryInfo]] view. This will exclude those columns listed
+     * in omittedColumns.
+     */
     get displayColumns(): QueryColumn[] {
         return this.queryInfo?.getDisplayColumns(this.viewName, List(this.omittedColumns)).toArray();
     }
 
+    /**
+     * Array of all [[QueryColumn]] objects from the [[QueryInfo]] view. This will exclude those columns listed
+     * in omittedColumns.
+     */
     get allColumns(): QueryColumn[] {
         return this.queryInfo?.getAllColumns(this.viewName, List(this.omittedColumns)).toArray();
     }
 
+    /**
+     * Array of [[QueryColumn]] objects from the [[QueryInfo]] "\~\~UPDATE\~\~" view. This will exclude those columns listed
+     * in omittedColumns.
+     */
     get updateColumns(): QueryColumn[] {
         return this.queryInfo?.getUpdateDisplayColumns(ViewInfo.UPDATE_NAME, List(this.omittedColumns)).toArray();
     }
 
+    /**
+     * Array of primary key [[QueryColumn]] objects from the [[QueryInfo]].
+     */
     get keyColumns(): QueryColumn[] {
         return this.queryInfo?.getPkCols().toArray();
     }
 
     /**
+     * @hidden
+     *
+     * Get an array of filters to use for the details view, which includes the base filters but explicitly excludes
+     * the "replaced" column filter for the assay run case. For internal use only.
+     *
      * Issue 39765: When viewing details for assays, we need to apply an "is not blank" filter on the "Replaced" column
      * in order to see replaced assay runs.  So this is the one case (we know of) where we want to apply base filters
      * when viewing details since the default view restricts the set of items found.
@@ -207,6 +425,11 @@ export class QueryModel {
         return this.baseFilters.filter(filter => filter.getColumnName().toLowerCase() === 'replaced');
     }
 
+    /**
+     * An array of [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html) objects
+     * for the QueryModel. If a keyValue is provided, this will be a filter on the primary key column concatenated with
+     * the detailFilters. Otherwise, this will be a concatenation of the baseFilters, filterArray, and [[QueryInfo]] view filters.
+     */
     get filters(): Filter.IFilter[] {
         const { baseFilters, filterArray, queryInfo, keyValue, viewName } = this;
 
@@ -234,6 +457,10 @@ export class QueryModel {
         return [...baseFilters, ...filterArray, ...queryInfo.getFilters(viewName).toArray()];
     }
 
+    /**
+     * Comma-delimited string of fieldKeys for requiredColumns, keyColumns, and displayColumns. If provided, the
+     * omittedColumns will be removed from this list.
+     */
     get columnString(): string {
         const { queryInfo, requiredColumns, omittedColumns } = this;
 
@@ -257,10 +484,18 @@ export class QueryModel {
         return fieldKeys.join(',');
     }
 
+    /**
+     * Comma-delimited string of fields that appear in an export. These are the same as the display columns but
+     * do not exclude omitted columns.
+     */
     get exportColumnString(): string {
         return this.displayColumns.map(column => column.fieldKey).join(',');
     }
 
+    /**
+     * Comma-delimited string of sorts from the [[QueryInfo]] sorts property. If the view has defined sorts, they
+     * will be concatenated with the sorts property.
+     */
     get sortString(): string {
         const { sorts, viewName, queryInfo } = this;
 
@@ -391,20 +626,34 @@ export class QueryModel {
         return flattenValues ? flattenValuesFromRow(row, this.queryInfo.getColumnFieldKeys()) : row;
     }
 
+    /**
+     * Get the total page count for the results rows in this QueryModel based on the total row count and the
+     * max rows per page value.
+     */
     get pageCount(): number {
         const { maxRows, rowCount } = this;
         return maxRows > 0 ? Math.ceil(rowCount / maxRows) : 1;
     }
 
+    /**
+     * Get the current page number based off of the results offset and max rows per page values.
+     */
     get currentPage(): number {
         const { offset, maxRows } = this;
         return offset > 0 ? Math.floor(offset / maxRows) + 1 : 1;
     }
 
+    /**
+     * Get the last page offset value for the given QueryModel rows.
+     */
     get lastPageOffset(): number {
         return (this.pageCount - 1) * this.maxRows;
     }
 
+    /**
+     * An array of [[ViewInfo]] objects for the saved views for the given QueryModel. Note that the returned array
+     * will be sorted by view label.
+     */
     get views(): ViewInfo[] {
         return this.queryInfo?.views.sortBy(v => v.label, naturalSort).toArray() || [];
     }
@@ -423,14 +672,23 @@ export class QueryModel {
         return this.hasData && Object.keys(this.rows).length > 0;
     }
 
+    /**
+     * True if the charts have been loaded, even if there are no saved charts returned.
+     */
     get hasCharts(): boolean {
         return this.charts !== undefined;
     }
 
+    /**
+     * True if the QueryModel has row selections.
+     */
     get hasSelections(): boolean {
         return this.selections?.size > 0;
     }
 
+    /**
+     * Get the row selection state (ALL, SOME, or NONE) for the QueryModel.
+     */
     get selectedState(): GRID_CHECKBOX_OPTIONS {
         const { hasSelections, hasData, isLoading, maxRows, orderedRows, selections, rowCount } = this;
 
@@ -449,6 +707,9 @@ export class QueryModel {
         return GRID_CHECKBOX_OPTIONS.NONE;
     }
 
+    /**
+     * True if either the query info or rows of the QueryModel are still loading.
+     */
     get isLoading(): boolean {
         const { queryInfoLoadingState, rowsLoadingState } = this;
         return (
@@ -459,26 +720,38 @@ export class QueryModel {
         );
     }
 
+    /**
+     * True if the QueryModel is loading its chart definitions.
+     */
     get isLoadingCharts(): boolean {
         const { chartsLoadingState } = this;
         return chartsLoadingState === LoadingState.INITIALIZED || chartsLoadingState === LoadingState.LOADING;
     }
 
+    /**
+     * True if the QueryModel is loading its row selections.
+     */
     get isLoadingSelections(): boolean {
         const { selectionsLoadingState } = this;
         return selectionsLoadingState === LoadingState.INITIALIZED || selectionsLoadingState === LoadingState.LOADING;
     }
 
+    /**
+     * True if the current page is the last page for the given QueryModel rows.
+     */
     get isLastPage(): boolean {
         return this.currentPage === this.pageCount;
     }
 
+    /**
+     * True if the current page is the first page for the given QueryModel rows.
+     */
     get isFirstPage(): boolean {
         return this.currentPage === 1;
     }
 
     /**
-     * Returns the data needed for pagination by the Pagination component.
+     * Returns the data needed for pagination by the [[Pagination]] component.
      */
     get paginationData(): PaginationData {
         return {

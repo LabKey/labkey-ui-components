@@ -138,7 +138,7 @@ export function runDetailsColumnsForQueryModel(model: QueryModel, reRunSupport: 
 
 export function getQueryModelExportParams(model: QueryModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): any {
     const {id, filters, hasSelections, schemaQuery, exportColumnString, sortString, selections} = model;
-    const showRows = hasSelections && selections.size > 0 ? 'SELECTED' : 'ALL'
+    const showRows = hasSelections ? 'SELECTED' : 'ALL'
     const exportOptions: ExportOptions = {
         filters: List(filters),
         columns: exportColumnString,

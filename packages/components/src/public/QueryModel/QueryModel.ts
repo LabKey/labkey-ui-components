@@ -520,12 +520,12 @@ export class QueryModel {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     get gridData(): Array<{ [key: string]: any }> {
-        const { hasSelections, selections } = this;
+        const { selections } = this;
 
         return this.orderedRows.map(value => {
             const row = this.rows[value];
 
-            if (hasSelections) {
+            if (selections) {
                 return {
                     ...row,
                     [GRID_SELECTION_INDEX]: selections.has(value),
@@ -690,9 +690,9 @@ export class QueryModel {
      * Get the row selection state (ALL, SOME, or NONE) for the QueryModel.
      */
     get selectedState(): GRID_CHECKBOX_OPTIONS {
-        const { hasSelections, hasData, isLoading, maxRows, orderedRows, selections, rowCount } = this;
+        const { hasData, isLoading, maxRows, orderedRows, selections, rowCount } = this;
 
-        if (!isLoading && hasData && hasSelections) {
+        if (!isLoading && hasData && selections) {
             const selectedOnPage = orderedRows.filter(rowId => selections.has(rowId)).length;
 
             if (selectedOnPage === maxRows && rowCount > 0) {

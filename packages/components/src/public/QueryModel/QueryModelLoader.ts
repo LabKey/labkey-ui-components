@@ -8,6 +8,7 @@ import {
     loadReports,
     naturalSortByProperty,
     QueryInfo,
+    replaceSelected,
     selectRows,
     setSelected,
 } from '../..';
@@ -51,6 +52,14 @@ export interface QueryModelLoader {
      * @param model: QueryModel
      */
     loadSelections: (model: QueryModel) => Promise<Set<string>>;
+
+    /**
+     * Replaces the currently selected items with the given set of selections.
+     * @param model: QueryModel
+     * @param checked: boolean, the checked status of the ids
+     * @param selections: A list of stringified RowIds.
+     */
+    replaceSelections: (model: QueryModel, selections: string[]) => Promise<ISelectResponse>;
 
     /**
      * Sets the selected status for the list of selections.
@@ -121,6 +130,10 @@ export const DefaultQueryModelLoader: QueryModelLoader = {
     setSelections(model, checked: boolean, selections: string[]) {
         const { id, containerPath } = model;
         return setSelected(id, checked, selections, containerPath);
+    },
+    replaceSelections(model, selections: string[]) {
+        const { id, containerPath } = model;
+        return replaceSelected(id, selections, containerPath);
     },
     async selectAllRows(model) {
         const { id, schemaName, queryName, filters, containerPath, queryParameters } = model;

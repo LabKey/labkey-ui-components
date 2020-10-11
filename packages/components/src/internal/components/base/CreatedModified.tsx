@@ -13,28 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { Component } from 'react';
 import classNames from 'classnames';
 import { Map } from 'immutable';
 import moment from 'moment';
 import { Query } from '@labkey/api';
 
-import { LoadingSpinner } from './LoadingSpinner';
+import { caseInsensitive, LoadingSpinner } from '../../..';
 
-interface IRowConfig {
+interface ICreatedModified {
     createdBy: string;
     createdTS: any;
+    modifiedBy: string;
+    modifiedTS: any;
+}
+
+interface IRowConfig extends ICreatedModified {
     display: boolean;
     hasCreated: boolean;
     hasModified: boolean;
-    modifiedBy: string;
-    modifiedTS: any;
     useCreated: boolean;
 }
 
 interface CreatedModifiedProps {
     className?: string;
-    row: Map<string, any>;
+    row: Map<string, any> | Record<string, any>;
     useServerDate?: boolean;
 }
 
@@ -43,7 +46,7 @@ interface State {
     loading: boolean;
 }
 
-export class CreatedModified extends React.Component<CreatedModifiedProps, State> {
+export class CreatedModified extends Component<CreatedModifiedProps, State> {
     static defaultProps = {
         useServerDate: true,
     };
@@ -60,8 +63,8 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
     componentDidMount(): void {
         if (this.props.useServerDate) {
             Query.getServerDate({
-                success: serverDate => this.setState(() => ({ serverDate, loading: false })),
-                failure: error => this.setState(() => ({ loading: false })),
+                success: serverDate => this.setState({ serverDate, loading: false }),
+                failure: error => this.setState({ loading: false }),
             });
         }
     }
@@ -94,15 +97,33 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
         return '';
     }
 
-    processRow(): IRowConfig {
+    processCreatedModified = (): ICreatedModified => {
+        const { row } = this.props;
+
+        // Map<string, any>
+        if (Map.isMap(row)) {
+            return {
+                createdBy: row.getIn(['CreatedBy', 'displayValue']) || row.getIn(['createdby', 'displayValue']),
+                createdTS: row.getIn(['Created', 'value']) || row.getIn(['created', 'value']),
+                modifiedBy: row.getIn(['ModifiedBy', 'displayValue']) || row.getIn(['modifiedby', 'displayValue']),
+                modifiedTS: row.getIn(['Modified', 'value']) || row.getIn(['modified', 'value']),
+            };
+        }
+
+        // Record<string, any>
+        return {
+            createdBy: caseInsensitive(row, 'createdBy')?.displayValue,
+            createdTS: caseInsensitive(row, 'created')?.value,
+            modifiedBy: caseInsensitive(row, 'modifiedBy')?.displayValue,
+            modifiedTS: caseInsensitive(row, 'modified')?.value,
+        };
+    };
+
+    processRow = (): IRowConfig => {
         const { row } = this.props;
 
         if (row) {
-            const createdBy = row.getIn(['CreatedBy', 'displayValue']) || row.getIn(['createdby', 'displayValue']);
-            const createdTS = row.getIn(['Created', 'value']) || row.getIn(['created', 'value']);
-
-            const modifiedBy = row.getIn(['ModifiedBy', 'displayValue']) || row.getIn(['modifiedby', 'displayValue']);
-            const modifiedTS = row.getIn(['Modified', 'value']) || row.getIn(['modified', 'value']);
+            const { createdBy, createdTS, modifiedBy, modifiedTS } = this.processCreatedModified();
 
             const hasCreated = createdTS !== undefined;
             const hasModified = modifiedTS !== undefined;
@@ -129,7 +150,7 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
             modifiedTS: undefined,
             useCreated: false,
         };
-    }
+    };
 
     render() {
         const { className } = this.props;

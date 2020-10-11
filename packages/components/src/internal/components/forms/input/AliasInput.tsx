@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import { generateId, QueryColumn, SelectInput } from '../../../..';
 
 interface AliasInputProps {
     col: QueryColumn;
     editing?: boolean;
-    value?: string | Array<Record<string, any>>;
+    value?: string | Record<string, any>[];
     allowDisable?: boolean;
     initiallyDisabled: boolean;
-    onToggleDisable?: (boolean) => void;
+    onToggleDisable?: (disabled: boolean) => void;
 }
 
-export class AliasInput extends React.Component<AliasInputProps> {
+export class AliasInput extends Component<AliasInputProps> {
     _id: string;
     _labelKey: string;
 

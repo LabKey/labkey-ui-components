@@ -126,6 +126,8 @@ export function withAssayModels<Props>(
             const { assayLoader, assayName } = this.props;
             const { model } = this.state;
 
+            // If an "assayName" is not provided and one has not ever been loaded by this instance,
+            // then do not attempt to process the "assayName" as it is an optional behavior to load the protocol.
             if (!assayName && model.protocolLoadingState === LoadingState.INITIALIZED) {
                 return;
             }
@@ -227,7 +229,7 @@ export function withAssayModels<Props>(
 /**
  * Provides a [[withAssayModels]] wrapped component that is additionally wrapped by react-router's withRouter.
  * This additional wrapping allows for sourcing the "assayName" property from the URL. NOTE: This is specifically
- * configured to expect a route param called "protocol" which is expected to a (string) name of a specific assay
+ * configured to expect a route param called "protocol" which is expected to a be (string) name of a specific assay
  * protocol.
  * @param ComponentToWrap: The component definition (e.g. class, function) to wrap.
  * This will have [[InjectedAssayModel]] props injected into it when instantiated.

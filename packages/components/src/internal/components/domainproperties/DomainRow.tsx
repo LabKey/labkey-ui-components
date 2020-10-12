@@ -53,9 +53,9 @@ import {
     DomainFieldError,
     IDomainFormDisplayOptions,
     IFieldChange,
-    PropDescType,
     resolveAvailableTypes,
 } from './models';
+import { PropDescType } from './PropDescType';
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName, isPrimaryKeyFieldLocked } from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';

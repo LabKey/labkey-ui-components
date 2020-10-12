@@ -3,7 +3,7 @@ import { List } from 'immutable';
 
 import { Button } from 'react-bootstrap';
 
-import { Alert } from '../base/Alert';
+import { Alert } from '../../..';
 
 import { getDomainBottomErrorMessage, getDomainHeaderName, getUpdatedVisitedPanelsList } from './actions';
 import { SEVERITY_LEVEL_ERROR } from './constants';

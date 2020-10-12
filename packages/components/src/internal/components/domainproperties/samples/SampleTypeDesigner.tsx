@@ -2,29 +2,28 @@ import React from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import {
-    Alert,
-    DomainDesign,
-    DomainDetails,
-    generateId,
-    IDomainField,
-    initQueryGridState,
-    naturalSort,
-    resolveErrorMessage,
-    SAMPLE_TYPE,
-    saveDomain,
-    SCHEMAS,
-} from '../../../..';
+import { DomainDesign, DomainDetails, IDomainField } from '../models';
 import DomainForm from '../DomainForm';
-import { IParentOption } from '../../entities/models';
+import { IParentOption } from '../../../..';
 
-import { addDomainField, getDomainPanelStatus } from '../actions';
+
+import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
+import {
+    Alert,
+    generateId,
+    initQueryGridState,
+    naturalSort,
+    resolveErrorMessage,
+} from '../../../..';
+import { SCHEMAS } from '../../base/models/schemas';
+import { SAMPLE_TYPE } from '../PropDescType';
+
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,

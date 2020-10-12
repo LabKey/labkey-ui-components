@@ -2,12 +2,11 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Draft, produce } from 'immer';
 import { List } from 'immutable';
 
+import { resolveErrorMessage } from '../../../..';
 import { DomainDesign, IDomainField } from '../models';
 import DomainForm from '../DomainForm';
-
 import { getDomainPanelStatus, saveDomain } from '../actions';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
-import { resolveErrorMessage } from '../../../util/messaging';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel, DataClassModelConfig } from './models';

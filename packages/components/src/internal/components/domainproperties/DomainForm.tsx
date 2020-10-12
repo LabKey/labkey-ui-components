@@ -47,24 +47,26 @@ import {
 } from './actions';
 import { DomainRow } from './DomainRow';
 import {
-    ATTACHMENT_TYPE,
     DomainDesign,
     DomainException,
     DomainField,
     DomainFieldError,
     DomainPanelStatus,
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
-    FILE_TYPE,
-    FLAG_TYPE,
     HeaderRenderer,
     IAppDomainHeader,
     IDomainField,
     IDomainFormDisplayOptions,
     IFieldChange,
-    PROP_DESC_TYPES,
-    PropDescType,
     DomainFieldIndexChange,
 } from './models';
+import {
+    ATTACHMENT_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    PROP_DESC_TYPES,
+    PropDescType,
+} from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
 

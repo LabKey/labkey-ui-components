@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { INTEGER_TYPE, TEXT_TYPE } from '../models';
+import { INTEGER_TYPE, TEXT_TYPE } from '../PropDescType';
 import { createFormInputId } from '../actions';
 import {
     DOMAIN_FIRST_FILTER_VALUE,

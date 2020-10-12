@@ -14,10 +14,10 @@ import {
     encodeLookup,
     IDomainField,
     ITypeDependentProps,
-    PropDescType,
     QueryInfoLite,
     SAMPLE_TYPE_OPTION_VALUE,
 } from './models';
+import { PropDescType } from './PropDescType';
 
 import { SectionHeading } from './SectionHeading';
 

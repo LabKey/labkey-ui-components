@@ -14,13 +14,12 @@ import {
 } from '../../util/helpLinks';
 
 import {
-    DATETIME_TYPE,
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DomainField,
     IDomainFormDisplayOptions,
     IFieldChange,
-    PropDescType,
 } from './models';
+import { DATETIME_TYPE, PropDescType } from './PropDescType';
 import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
 import {
     DOMAIN_DEFAULT_TYPES,

@@ -2,14 +2,14 @@ import React from 'react';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
+import { importData } from '../../../..';
+import { Progress } from '../../../..';
+import { resolveErrorMessage } from '../../../..';
 import { DomainDesign, DomainFieldIndexChange, IAppDomainHeader } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';
-import { importData } from '../../../query/api';
 
-import { Progress } from '../../base/Progress';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
-import { resolveErrorMessage } from '../../../util/messaging';
 
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { ListModel } from './models';

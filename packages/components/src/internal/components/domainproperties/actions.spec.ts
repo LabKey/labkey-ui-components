@@ -30,14 +30,16 @@ import {
     updateDomainException,
 } from './actions';
 import {
-    DATETIME_TYPE,
     DomainDesign,
     DomainException,
     DomainField,
+} from './models';
+import {
+    DATETIME_TYPE,
     DOUBLE_TYPE,
     INTEGER_TYPE,
     TEXT_TYPE,
-} from './models';
+} from './PropDescType';
 import {
     DOMAIN_FIELD_PREFIX,
     FIELD_NAME_CHAR_WARNING_INFO,

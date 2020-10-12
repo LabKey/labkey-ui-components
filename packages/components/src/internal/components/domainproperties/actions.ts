@@ -33,10 +33,10 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
-    PROP_DESC_TYPES,
     QueryInfoLite,
     updateSampleField,
 } from './models';
+import { PROP_DESC_TYPES } from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,

@@ -1,5 +1,5 @@
 import { Record } from 'immutable';
-import { getSchemaQuery, resolveSchemaQuery } from '..';
+import { decodePart, resolveKey } from '../internal/util/utils';
 
 const APP_SELECTION_PREFIX = 'appkey';
 
@@ -65,4 +65,16 @@ export class SchemaQuery extends Record({
     toString(): string {
         return [this.schemaName, this.queryName, this.viewName].join('|');
     }
+}
+
+// TODO: resolveSchemaQuery should have a better name, and it should be added as a property on the SchemaQuery record
+//  class. I'm really not sure what resolve is supposed to mean in this context, but I think we can add this as a
+//  property called "key", or something similar since it mostly seems to be used as a state key.
+export function resolveSchemaQuery(schemaQuery: SchemaQuery): string {
+    return schemaQuery ? resolveKey(schemaQuery.getSchema(), schemaQuery.getQuery()) : null;
+}
+
+export function getSchemaQuery(encodedKey: string): SchemaQuery {
+    const [encodedSchema, encodedQuery] = encodedKey.split('/');
+    return SchemaQuery.create(decodePart(encodedSchema), decodePart(encodedQuery));
 }

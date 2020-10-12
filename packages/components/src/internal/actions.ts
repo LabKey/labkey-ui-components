@@ -1059,7 +1059,7 @@ export function clearSelected(
  * @param key the selection key for the grid
  * @param checked whether to set selected or unselected
  * @param ids ids to change selection for
- * @param containerPath optional path to the conatiner for this grid.  Default is the current container path
+ * @param containerPath optional path to the container for this grid.  Default is the current container path
  */
 export function setSelected(
     key: string,
@@ -1072,17 +1072,16 @@ export function setSelected(
             url: buildURL(
                 'query',
                 'setSelected.api',
-                {
-                    key,
-                    checked,
-                },
+                undefined,
                 {
                     container: containerPath,
                 }
             ),
             method: 'POST',
-            params: {
+            jsonData: {
                 id: ids,
+                key,
+                checked,
             },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
@@ -1114,15 +1113,14 @@ export function replaceSelected(
             url: buildURL(
                 'query',
                 'replaceSelected.api',
-                {
-                    key
-                },
+                undefined,
                 {
                     container: containerPath,
                 }
             ),
             method: 'POST',
-            params: {
+            jsonData: {
+                key,
                 id: ids,
             },
             success: Utils.getCallbackWrapper(response => {

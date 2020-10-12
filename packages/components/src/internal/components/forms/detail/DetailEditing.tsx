@@ -21,7 +21,7 @@ import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
 import { updateRows } from '../../../query/api';
 
-import { QueryColumn, QueryGridModel } from '../../base/models/model';
+import { QueryGridModel } from '../../base/models/model';
 
 import { Alert } from '../../base/Alert';
 
@@ -31,6 +31,7 @@ import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from 
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
+import { QueryColumn } from '../../../..';
 
 interface DetailEditingProps {
     queryModel: QueryGridModel;

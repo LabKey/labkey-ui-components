@@ -17,12 +17,14 @@ import { enableMapSet, enablePatches } from 'immer';
 
 import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
+import { QueryColumn, QueryLookup } from './public/QueryColumn';
 import { SchemaDetails } from './internal/SchemaDetails';
 import { getSchemaQuery, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
 import { SCHEMAS } from './internal/schemas';
 import { QuerySort } from './public/QuerySort';
+import { LoadingState } from './public/LoadingState';
 import { Container } from './internal/components/base/models/Container';
-import { User } from './internal/components/base/models/User';
+import { hasAllPermissions, User } from './internal/components/base/models/User';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -33,9 +35,7 @@ import {
     insertColumnFilter,
     LastActionStatus,
     MessageLevel,
-    QueryColumn,
     QueryGridModel,
-    QueryLookup,
     ViewInfo,
 } from './internal/components/base/models/model';
 import {
@@ -46,7 +46,6 @@ import {
     devToolsActive,
     generateId,
     getDisambiguatedSelectInputOptions,
-    hasAllPermissions,
     naturalSort,
     naturalSortByProperty,
     resolveKey,
@@ -162,7 +161,6 @@ import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/rep
 import {
     DataViewInfoTypes,
     IMPORT_DATA_FORM_TYPES,
-    LoadingState,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     EXPORT_TYPES,

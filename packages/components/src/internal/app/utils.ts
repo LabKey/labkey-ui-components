@@ -7,9 +7,8 @@ import { getServerContext, PermissionTypes } from '@labkey/api';
 
 import { AppURL } from '../url/AppURL';
 import { buildURL, imageURL } from '../url/ActionURL';
-import { hasAllPermissions } from '../util/utils';
 import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
-import { User } from '../..';
+import { hasAllPermissions, User } from '../..';
 
 import {
     ASSAYS_KEY,

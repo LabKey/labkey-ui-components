@@ -249,32 +249,6 @@ export function debounce(func, wait, immediate?: boolean): () => void {
     };
 }
 
-/**
- * Determines if a user has all of the permissions given.  If the user has only some
- * of these permissions, returns false.
- * @param user the user in question
- * @param perms the list of permission strings (See models/constants)
- * @param checkIsAdmin boolean indicating if user.isAdmin should be used as a fallback check
- */
-export function hasAllPermissions(user: User, perms: string[], checkIsAdmin = true): boolean {
-    let allow = false;
-
-    if (perms) {
-        const allPerms = user.get('permissionsList');
-
-        let hasAll = true;
-        for (let i = 0; i < perms.length; i++) {
-            if (allPerms.indexOf(perms[i]) === -1) {
-                hasAll = false;
-                break;
-            }
-        }
-        allow = hasAll || (checkIsAdmin && user.isAdmin);
-    }
-
-    return allow;
-}
-
 export function contains(s: string, token: string, caseSensitive?: boolean): boolean {
     return indexOf(s, token, caseSensitive) > -1;
 }

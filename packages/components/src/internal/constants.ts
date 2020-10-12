@@ -220,11 +220,3 @@ export enum IMPORT_DATA_FORM_TYPES {
     OTHER,
 }
 
-export enum LoadingState {
-    // The model has been initialized but not loaded
-    INITIALIZED = 'INITIALIZED',
-    // The model is currently loading
-    LOADING = 'LOADING',
-    // The model is loaded
-    LOADED = 'LOADED',
-}

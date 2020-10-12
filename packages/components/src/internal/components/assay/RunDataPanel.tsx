@@ -20,19 +20,24 @@ import { Map } from 'immutable';
 
 import { Button } from 'react-bootstrap';
 
-import { EditableGridPanel } from '../editable/EditableGridPanel';
-
-import { handleTabKeyOnTextArea } from '../forms/actions';
-import { FormStep, FormTabs } from '../forms/FormStep';
+import {
+    EditableGridPanel,
+    handleTabKeyOnTextArea,
+    FormStep,
+    FormTabs,
+    getActionErrorMessage,
+    LoadingSpinner,
+    FileAttachmentForm,
+    Alert,
+    FileSizeLimitProps,
+    getEditorModel,
+    helpLinkNode,
+    IMPORT_DATA_FORM_TYPES,
+} from '../../..';
 
 import { AssayUploadTabs, InferDomainResponse, QueryGridModel } from '../base/models/model';
 import { getServerFilePreview } from '../base/actions';
-import { getActionErrorMessage } from '../../util/messaging';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { FileAttachmentForm } from '../files/FileAttachmentForm';
-import { Alert } from '../base/Alert';
-import { FileSizeLimitProps } from '../files/models';
-import { getEditorModel, helpLinkNode, IMPORT_DATA_FORM_TYPES } from '../../..';
+
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
 import { getRunPropertiesFileName, getRunPropertiesRow } from './actions';

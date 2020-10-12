@@ -30,8 +30,19 @@ import {
 } from '../../..';
 
 import { IAssayUploadOptions } from './models';
-import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 import { AssayUploadTabs } from '../base/models/model';
+
+export const RUN_PROPERTIES_GRID_ID = 'assay-run-details';
+
+export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
+    'Name',
+    'RowId',
+    'ReplacesRun',
+    'ReplacedByRun',
+    'DataOutputs',
+    'DataOutputs/DataFileUrl',
+    'Batch'
+).toList();
 
 export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
     return new Promise((res, rej) => {

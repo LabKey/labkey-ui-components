@@ -261,7 +261,6 @@ import {
     getSampleTypeDetails,
     loadSelectedSamples,
 } from './internal/components/samples/actions';
-import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { AssayContextConsumer, AssayProvider, AssayProviderProps } from './internal/components/assay/AssayProvider';
 import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
@@ -280,8 +279,9 @@ import {
     getRunPropertiesModel,
     getRunPropertiesRow,
     importAssayRun,
+    RUN_PROPERTIES_GRID_ID,
+    RUN_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/actions';
-import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
@@ -402,6 +402,7 @@ import { ListDesignerPanels } from './internal/components/domainproperties/list/
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
+import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();

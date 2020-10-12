@@ -11,10 +11,9 @@ import {
 
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
-import { DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR } from './constants';
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR } from './constants';
 import {
     ConditionalFormat,
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DomainField,
     IDomainFormDisplayOptions,
     PropertyValidator,

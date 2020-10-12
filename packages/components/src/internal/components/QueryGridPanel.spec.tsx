@@ -61,6 +61,7 @@ describe('QueryGridPanel render', () => {
         });
         const model = getStateQueryGridModel(modelId, schemaQuery);
 
+        TESTS_ONLY_RESET_DOM_COUNT();
         const tree = renderer.create(<QueryGridPanel model={model} />);
 
         await sleep();

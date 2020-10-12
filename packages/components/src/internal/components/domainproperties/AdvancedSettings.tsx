@@ -14,7 +14,6 @@ import {
 } from '../../util/helpLinks';
 
 import {
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DomainField,
     IDomainFormDisplayOptions,
     IFieldChange,
@@ -22,6 +21,7 @@ import {
 import { DATETIME_TYPE, PropDescType } from './PropDescType';
 import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
 import {
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_DEFAULT_TYPES,
     DOMAIN_EDITABLE_DEFAULT,
     DOMAIN_FIELD_DEFAULT_VALUE_TYPE,

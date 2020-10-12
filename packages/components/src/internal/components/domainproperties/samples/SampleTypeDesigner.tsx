@@ -20,8 +20,8 @@ import {
     initQueryGridState,
     naturalSort,
     resolveErrorMessage,
+    SCHEMAS
 } from '../../../..';
-import { SCHEMAS } from '../../base/models/schemas';
 import { SAMPLE_TYPE } from '../PropDescType';
 
 

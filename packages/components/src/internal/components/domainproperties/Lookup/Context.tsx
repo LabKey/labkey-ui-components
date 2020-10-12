@@ -2,10 +2,9 @@ import React from 'react';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
+import { Container, SchemaDetails } from '../../../..';
 import { fetchContainers, fetchQueries, fetchSchemas } from '../actions';
 import { QueryInfoLite } from '../models';
-import { SchemaDetails } from '../../base/models/model';
-import { Container } from '../../../..';
 
 export interface ILookupContext {
     activeContainer: Container;

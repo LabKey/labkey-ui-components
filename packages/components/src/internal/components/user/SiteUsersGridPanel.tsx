@@ -7,17 +7,10 @@ import { List, Map } from 'immutable';
 import { Button, Row, Col, MenuItem } from 'react-bootstrap';
 import { Filter, ActionURL } from '@labkey/api';
 
-import { QueryGridModel } from '../base/models/model';
-import { SCHEMAS } from '../base/models/schemas';
-import { getStateQueryGridModel } from '../../models';
-import { getQueryGridModel } from '../../global';
-import { ManageDropdownButton } from '../buttons/ManageDropdownButton';
-import { SelectionMenuItem } from '../menus/SelectionMenuItem';
+import { capitalizeFirstChar, getQueryGridModel, getStateQueryGridModel, ManageDropdownButton, QueryGridModel, SecurityPolicy, SecurityRole, SelectionMenuItem, SCHEMAS } from '../../..';
 import { QueryGridPanel } from '../QueryGridPanel';
 
-import { SecurityPolicy, SecurityRole } from '../permissions/models';
 
-import { capitalizeFirstChar } from '../../util/utils';
 import { getLocation, getRouteFromLocationHash, replaceParameter } from '../../util/URL';
 import { getBrowserHistory } from '../../util/global';
 

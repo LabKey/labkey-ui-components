@@ -18,7 +18,7 @@ import { Link } from 'react-router';
 import { List } from 'immutable';
 
 import { Alert, AppURL, Grid, GridColumn, LoadingSpinner, QueryInfo } from '../../..';
-import { fetchGetQueries } from '../base/models/schemas';
+import { fetchGetQueries } from '../../schemas';
 import { SchemaListing } from './SchemaListing';
 
 const columns = List([

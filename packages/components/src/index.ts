@@ -16,10 +16,11 @@
 import { enableMapSet, enablePatches } from 'immer';
 
 import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
-import { SCHEMAS } from './internal/components/base/models/schemas';
-import { getSchemaQuery, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
-import { QuerySort } from './public/QuerySort';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
+import { SchemaDetails } from './internal/SchemaDetails';
+import { getSchemaQuery, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
+import { SCHEMAS } from './internal/schemas';
+import { QuerySort } from './public/QuerySort';
 import { Container } from './internal/components/base/models/Container';
 import { User } from './internal/components/base/models/User';
 import {
@@ -35,7 +36,6 @@ import {
     QueryColumn,
     QueryGridModel,
     QueryLookup,
-    SchemaDetails,
     ViewInfo,
 } from './internal/components/base/models/model';
 import {

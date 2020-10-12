@@ -53,18 +53,6 @@ export interface ITypeDependentProps {
     lockType: string;
 }
 
-
-export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
-    hideRequired: false,
-    hideValidators: false,
-    isDragDisabled: false,
-    hideTextOptions: false,
-    phiLevelDisabled: false,
-    hideAddFieldsButton: false,
-    disableMvEnabled: false,
-    hideImportData: false,
-};
-
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
 
 interface IDomainDesign {

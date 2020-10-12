@@ -18,10 +18,10 @@ import { List, Map } from 'immutable';
 import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 
 import { Container } from '../../..'
-import { QueryColumn, SchemaDetails } from '../base/models/model';
-import { naturalSort } from '../../util/utils';
-import { processSchemas } from '../base/models/schemas';
-import { buildURL } from '../../url/ActionURL';
+import { QueryColumn, SchemaDetails } from '../../..';
+import { naturalSort } from '../../..';
+import { buildURL } from '../../..';
+import { processSchemas } from '../../../internal/schemas';
 
 import {
     decodeLookup,

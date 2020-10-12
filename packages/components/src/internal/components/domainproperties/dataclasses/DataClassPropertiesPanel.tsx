@@ -3,8 +3,7 @@ import { Col, Row } from 'react-bootstrap';
 import { Draft, produce } from 'immer';
 
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
-import { QuerySelect } from '../../forms/QuerySelect';
-import { SCHEMAS } from '../../base/models/schemas';
+import { QuerySelect, SCHEMAS } from '../../../..';
 import { DEFINE_DATA_CLASS_TOPIC, DATA_CLASS_NAME_EXPRESSION_TOPIC, getHelpLink } from '../../../util/helpLinks';
 import { ENTITY_FORM_ID_PREFIX } from '../entities/constants';
 import { getFormNameFromId } from '../entities/actions';

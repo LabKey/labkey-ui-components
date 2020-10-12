@@ -1,5 +1,5 @@
 import React from 'react';
-import {List, Map, OrderedMap} from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { getSelectedData } from '../../actions';
@@ -17,7 +17,11 @@ interface Props {
     onComplete: (data: any, submitForEdit: boolean) => any;
     onCancel: () => any;
     onError?: (message: string) => any;
-    onSubmitForEdit: (updateData: OrderedMap<string, any>, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
+    onSubmitForEdit: (
+        updateData: OrderedMap<string, any>,
+        dataForSelection: Map<string, any>,
+        dataIdsForSelection: List<any>
+    ) => any;
     pluralNoun?: string;
     queryInfo: QueryInfo;
     readOnlyColumns?: List<string>;
@@ -114,9 +118,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
 
     bulkUpdateSelectedRows = (data): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
-        const rows = !Utils.isEmptyObj(data)
-            ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols)
-            : [];
+        const rows = !Utils.isEmptyObj(data) ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols) : [];
 
         return updateRows(queryInfo.schemaQuery, rows);
     };

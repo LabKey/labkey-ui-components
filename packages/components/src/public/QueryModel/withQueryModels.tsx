@@ -690,7 +690,9 @@ export function withQueryModels<Props>(
                     let queryModel = new QueryModel(queryConfig);
                     id = queryModel.id;
                     if (queryModel.bindURL && this.props.location) {
-                        queryModel = queryModel.mutate(queryModel.attributesForURLQueryParams(this.props.location.query));
+                        queryModel = queryModel.mutate(
+                            queryModel.attributesForURLQueryParams(this.props.location.query)
+                        );
                     }
                     draft.queryModels[queryModel.id] = queryModel;
                 }),

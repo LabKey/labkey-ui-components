@@ -5,9 +5,10 @@
  */
 import { Filter } from '@labkey/api';
 
+import { List } from 'immutable';
+
 import { EXPORT_TYPES, QueryColumn, QueryModel, QuerySort } from '../..';
 import { ActionValue } from '../../internal/components/omnibox/actions/Action';
-import { List } from 'immutable';
 import { ExportOptions, getExportParams } from '../../internal/actions';
 
 export function filterToString(filter: Filter.IFilter): string {
@@ -50,7 +51,7 @@ export function sortArraysEqual(a: QuerySort[], b: QuerySort[]): boolean {
 }
 
 export function flattenValuesFromRow(row: any, keys: string[]): { [key: string]: any } {
-    let values = {};
+    const values = {};
     if (row && keys) {
         keys.forEach((key: string) => {
             if (row[key]) {
@@ -113,7 +114,10 @@ export function runDetailsColumnsForQueryModel(model: QueryModel, reRunSupport: 
     if (replacedByIndex > -1) {
         if (includeRerunColumns) {
             // Direct manipulation by index is ok here because displayColumns returns a new array every time.
-            columns[replacedByIndex] = columns[replacedByIndex].set('detailRenderer', 'assayrunreference') as QueryColumn;
+            columns[replacedByIndex] = columns[replacedByIndex].set(
+                'detailRenderer',
+                'assayrunreference'
+            ) as QueryColumn;
         } else {
             columns = columns.filter((col, index): boolean => replacedByIndex !== index);
         }
@@ -136,9 +140,13 @@ export function runDetailsColumnsForQueryModel(model: QueryModel, reRunSupport: 
     return columns;
 }
 
-export function getQueryModelExportParams(model: QueryModel, type: EXPORT_TYPES, advancedOptions?: Record<string, any>): any {
-    const {id, filters, hasSelections, schemaQuery, exportColumnString, sortString, selections} = model;
-    const showRows = hasSelections ? 'SELECTED' : 'ALL'
+export function getQueryModelExportParams(
+    model: QueryModel,
+    type: EXPORT_TYPES,
+    advancedOptions?: Record<string, any>
+): any {
+    const { id, filters, hasSelections, schemaQuery, exportColumnString, sortString, selections } = model;
+    const showRows = hasSelections ? 'SELECTED' : 'ALL';
     const exportOptions: ExportOptions = {
         filters: List(filters),
         columns: exportColumnString,

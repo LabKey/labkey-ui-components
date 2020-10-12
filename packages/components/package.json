@@ -190,6 +190,5 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  },
-  "gitHead": "4edd31c934e5bea492455ec2cedc7b083cff4ba5"
+  }
 }

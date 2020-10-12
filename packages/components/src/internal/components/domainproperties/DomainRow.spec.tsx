@@ -20,16 +20,19 @@ import { mount } from 'enzyme';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import {
-    ATTACHMENT_TYPE,
-    DATETIME_TYPE,
     DomainField,
     DomainFieldError,
+} from './models';
+import {
+    ATTACHMENT_TYPE,
+    DATETIME_TYPE,
     DOUBLE_TYPE,
     PARTICIPANT_TYPE,
     PROP_DESC_TYPES,
     SAMPLE_TYPE,
     TEXT_TYPE,
-} from './models';
+} from './PropDescType';
+
 import { DomainRow } from './DomainRow';
 import {
     ATTACHMENT_RANGE_URI,

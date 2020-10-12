@@ -16,7 +16,6 @@
     "storybook": "start-storybook -p 9001 -s ./static -c .storybook",
     "build-storybook": "NODE_OPTIONS=--max_old_space_size=4096 build-storybook -c .storybook -o .storybook-out",
     "test": "cross-env NODE_ENV=test jest",
-    "test_teamcity": "cross-env NODE_ENV=test jest --testResultsProcessor=jest-teamcity-reporter && yarn run build-storybook && yarn run build:docs",
     "watch:build": "watch 'yarn build' ./src",
     "watch": "npm run watch:build",
     "build-public:docs": "npm run clean:docs && typedoc --out ../../docs --tsconfig tsconfig.json --options typedoc-public.js ./src/public && touch ../../docs/.nojekyll",
@@ -187,9 +186,9 @@
       "/node_modules/"
     ],
     "testRegex": "(\\.(test|spec))\\.(ts|tsx)$",
+    "testResultsProcessor": "jest-teamcity-reporter",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     }
-  },
-  "gitHead": "4edd31c934e5bea492455ec2cedc7b083cff4ba5"
+  }
 }

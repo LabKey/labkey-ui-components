@@ -4,6 +4,7 @@
 *Released*: TBD
 * add optional transactionAuditId in InsertRowsResponse and as argument after file import
 * add new replaceSelected method (for new action in QueryController)
+* Fix styling of links in notifications
 
 ### version 0.97.0
 *Released*: 29 September 2020

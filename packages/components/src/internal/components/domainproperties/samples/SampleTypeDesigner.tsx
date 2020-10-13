@@ -328,7 +328,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     onFinish = (): void => {
-        const { defaultSampleFieldConfig, setSubmitting, metricUnitRequired } = this.props;
+        const { defaultSampleFieldConfig, setSubmitting, metricUnitRequired, metricUnitLabel } = this.props;
         const { model } = this.state;
         const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
@@ -345,7 +345,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             } else if (model.getDuplicateAlias(true).size > 0) {
                 exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
             } else if (!model.isMetricUnitValid(metricUnitRequired)) {
-                exception = 'Metric unit is required.';
+                exception = metricUnitLabel + ' field is required.';
             } else {
                 exception = model.domain.getFirstFieldError();
             }

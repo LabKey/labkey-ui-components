@@ -60,13 +60,13 @@ export function userCanDesignLocations(user: User): boolean {
 export function isFreezerManagementEnabled(): boolean {
     const smEnabled = isSampleManagerEnabled();
     return (
-        getServerContext().moduleContext.inventory &&
-        (!smEnabled || getServerContext().moduleContext.samplemanagement.hasFreezerManagementEnabled === true)
+        getServerContext().moduleContext?.inventory &&
+        (!smEnabled || getServerContext().moduleContext?.samplemanagement.hasFreezerManagementEnabled === true)
     );
 }
 
 export function isSampleManagerEnabled(): boolean {
-    return getServerContext().moduleContext.samplemanagement !== undefined;
+    return getServerContext().moduleContext?.samplemanagement !== undefined;
 }
 
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {

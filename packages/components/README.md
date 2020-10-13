@@ -1,14 +1,13 @@
-# LabKey Components (@labkey/components)
+# @labkey/components
 
-This package contains Components, models, actions, and utility functions for LabKey applications and pages.
+[API Docs](https://labkey.github.io/labkey-ui-components/) | [Change Log](./releaseNotes/labkey/components.md) | [License](./LICENSE.txt) | [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)
+
+This package contains React components, models, actions, and utility functions for LabKey applications and pages.
 
 :construction: **Warning** :construction:
 This package is under development, so these components should be considered unstable and are very likely to change.
 Once they're ready, we'll officially push the components as version 1.0.0.
 :construction: **Warning** :construction:
-
-## Release Notes
-Release notes for this package are available [here](releaseNotes/labkey/components.md).
 
 ## Development
 
@@ -108,7 +107,7 @@ from the server for various Ajax calls that are required.
 
 #### Getting @labkey/components packages to the application
 
-While you can [publish](#publishing) a pre-release version of the glass packages and then update your application's `package.json`
+While you can [publish](#publishing) a pre-release version of the components packages and then update your application's `package.json`
 to reference the new pre-release version in order to view the changes within the application, you will likely want to
 be able to do this without publishing for quicker development iteration.
 

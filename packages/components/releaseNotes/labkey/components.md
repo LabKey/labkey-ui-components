@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * add validateProperties prop to allow caller to validate sample domain properties before save
 * Allow custom caption and placeholder text for fields in FieldEditorOverlay
 
+
 ### version 0.97.0
 *Released*: 29 September 2020
 * FieldEditorOverlay updates

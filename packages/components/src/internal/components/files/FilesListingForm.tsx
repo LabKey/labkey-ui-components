@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { Component, ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import { Map, Set, List } from 'immutable';
 
@@ -7,34 +7,33 @@ import { FileAttachmentForm } from './FileAttachmentForm';
 import { FilesListing } from './FilesListing';
 
 interface Props {
-    files?: List<IFile>;
-    headerText?: string;
-    readOnlyFiles?: List<IFile>;
-    readOnlyHeaderText?: string;
     addFileText?: string;
+    canDelete?: boolean;
+    canInsert?: boolean;
+    files?: List<IFile>;
+    getFilePropertiesEditTrigger?: (file: IFile) => ReactNode;
+    handleDelete?: (file: string) => void;
+    handleDownload?: (files: Set<string>) => void;
+    handleFileChange?: (cancel: boolean) => void;
+    handleUpload?: (files: Map<string, File>) => Promise<void>;
+    headerText?: string;
     noFilesMessage?: string;
     noReadOnlyFilesMessage?: string;
-
-    handleUpload?: (files: Map<string, File>, cb: () => any) => any;
-    handleDelete?: (file: string) => any;
-    handleDownload?: (files: Set<string>) => any;
-    handleFileChange?: (cancel: boolean) => any;
-    canInsert?: boolean;
-    canDelete?: boolean;
+    onPropertyUpdate?: () => void;
+    onSubmit?: () => void;
+    onUploadFiles?: () => void;
+    readOnlyFiles?: List<IFile>;
+    readOnlyHeaderText?: string;
     useFilePropertiesEditTrigger?: boolean;
-    onPropertyUpdate?: () => any;
-    onSubmit?: () => any;
-    onUploadFiles?: () => any;
-    getFilePropertiesEditTrigger?: (file: IFile) => React.ReactNode;
 }
 
 interface State {
-    selectedFiles?: Set<string>;
     confirmDeletionSet: Set<string>;
+    selectedFiles?: Set<string>;
     showFileUploadPanel?: boolean;
 }
 
-export class FilesListingForm extends React.Component<Props, State> {
+export class FilesListingForm extends Component<Props, State> {
     static defaultProps = {
         addFileText: 'Attach File',
     };
@@ -43,107 +42,114 @@ export class FilesListingForm extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            selectedFiles: Set<string>(),
             confirmDeletionSet: Set<string>(),
+            selectedFiles: Set<string>(),
             showFileUploadPanel: false,
         };
     }
 
-    toggleUploadSection = () => {
-        this.setState({ showFileUploadPanel: !this.state.showFileUploadPanel });
-        if (this.props.handleFileChange) this.props.handleFileChange(true);
+    toggleUploadSection = (): void => {
+        this.setState(state => ({ showFileUploadPanel: !state.showFileUploadPanel }));
+        this.props.handleFileChange?.(true);
     };
 
-    toggleFileSelection = event => {
-        const target = event.target;
-        const name = target.name;
-        this.setState({
-            selectedFiles: target.checked ? this.state.selectedFiles.add(name) : this.state.selectedFiles.delete(name),
-        });
+    toggleFileSelection = (event): void => {
+        const { name, target } = event;
+        this.setState(state => ({
+            selectedFiles: target.checked ? state.selectedFiles.add(name) : state.selectedFiles.delete(name),
+        }));
     };
 
-    onFinishUploadFiles = () => {
-        if (this.props.onUploadFiles) this.props.onUploadFiles();
+    uploadAttachedFiles = async (files: Map<string, File>): Promise<void> => {
+        const { handleUpload, onSubmit, onUploadFiles } = this.props;
+
+        if (!handleUpload) {
+            throw new Error(
+                'FilesListingForm configuration error. Must specify "handleUpload" handler if uploading files is allowed.'
+            );
+        }
+
+        // Before upload
+        onSubmit?.();
+
+        // Upload
+        try {
+            await handleUpload(files);
+        } catch (err) {
+            // handleUpload expected to handle failures
+        }
+
+        // After upload
+        onUploadFiles?.();
         this.toggleUploadSection();
     };
 
-    uploadAttachedFiles = (files: Map<string, File>) => {
-        if (this.props.onSubmit) this.props.onSubmit();
-        if (this.props.handleUpload) this.props.handleUpload(files, this.onFinishUploadFiles);
+    downloadSelectedFiles = (): void => {
+        this.props.handleDownload?.(this.state.selectedFiles);
     };
 
-    downloadSelectedFiles = () => {
-        if (this.props.handleDownload) this.props.handleDownload(this.state.selectedFiles);
+    handleFileChange = (): void => {
+        this.props.handleFileChange?.(false);
     };
 
-    handleFileChange = () => {
-        if (this.props.handleFileChange) this.props.handleFileChange(false);
-    };
-
-    renderButtons() {
-        const { addFileText, canInsert, files, readOnlyFiles } = this.props;
-        const haveFiles = (files && files.size > 0) || (readOnlyFiles && readOnlyFiles.size > 0);
-        return (
-            <div className="row bottom-spacing">
-                <div className="col-md-7">
-                    {canInsert && (
-                        <Button onClick={this.toggleUploadSection} bsStyle="primary" title={addFileText}>
-                            {addFileText}
-                        </Button>
-                    )}
-                </div>
-                <div className="col-md-5">
-                    {haveFiles && (
-                        <div className="pull-right">
-                            <Button
-                                disabled={this.state.selectedFiles.size == 0}
-                                onClick={this.downloadSelectedFiles}
-                                title="Download selected files"
-                            >
-                                <i className="fa fa-download" />
-                            </Button>
-                        </div>
-                    )}
-                </div>
-            </div>
-        );
-    }
-
-    toggleDeleteConfirmation(fileName: string) {
-        const { confirmDeletionSet } = this.state;
-
-        this.setState({
+    toggleDeleteConfirmation = (fileName: string): void => {
+        this.setState(({ confirmDeletionSet }) => ({
             confirmDeletionSet: confirmDeletionSet.has(fileName)
                 ? confirmDeletionSet.delete(fileName)
                 : confirmDeletionSet.add(fileName),
-        });
-    }
-
-    deleteFile = (fileName: string) => {
-        const { handleDelete } = this.props;
-        this.setState({
-            selectedFiles: this.state.selectedFiles.delete(fileName),
-        });
-        handleDelete(fileName);
+        }));
     };
 
-    render() {
+    deleteFile = (fileName: string): void => {
+        this.setState(state => ({ selectedFiles: state.selectedFiles.delete(fileName) }));
+        this.props.handleDelete?.(fileName);
+    };
+
+    render(): ReactNode {
         const {
+            addFileText,
+            canDelete,
+            canInsert,
             files,
+            getFilePropertiesEditTrigger,
             headerText,
             noFilesMessage,
+            readOnlyFiles,
+            readOnlyHeaderText,
             noReadOnlyFilesMessage,
             useFilePropertiesEditTrigger,
-            getFilePropertiesEditTrigger,
-            canDelete,
         } = this.props;
         const { selectedFiles, showFileUploadPanel } = this.state;
 
-        const hasReadOnly = this.props.readOnlyFiles && !this.props.readOnlyFiles.isEmpty();
-        const hasEditable = this.props.files && !this.props.files.isEmpty();
+        const hasEditable = files?.size > 0;
+        const hasReadOnly = readOnlyFiles?.size > 0;
+        const hasFiles = hasEditable || hasReadOnly;
+
         return (
             <>
-                {this.renderButtons()}
+                <div className="row bottom-spacing">
+                    <div className="col-md-7">
+                        {canInsert && (
+                            <Button onClick={this.toggleUploadSection} bsStyle="primary" title={addFileText}>
+                                {addFileText}
+                            </Button>
+                        )}
+                    </div>
+                    <div className="col-md-5">
+                        {hasFiles && (
+                            <div className="pull-right">
+                                <Button
+                                    disabled={selectedFiles.size === 0}
+                                    onClick={this.downloadSelectedFiles}
+                                    title="Download selected files"
+                                >
+                                    <i className="fa fa-download" />
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
                 {showFileUploadPanel && (
                     <FileAttachmentForm
                         allowDirectories={false}
@@ -157,12 +163,13 @@ export class FilesListingForm extends React.Component<Props, State> {
                         showProgressBar={true}
                     />
                 )}
+
                 {(hasReadOnly || noReadOnlyFilesMessage) && (
                     <>
                         {hasEditable && <hr />}
                         <FilesListing
-                            files={this.props.readOnlyFiles}
-                            headerText={this.props.readOnlyHeaderText}
+                            files={readOnlyFiles}
+                            headerText={readOnlyHeaderText}
                             noFilesMessage={noReadOnlyFilesMessage}
                             onFileSelection={this.toggleFileSelection}
                             selectedFiles={selectedFiles}
@@ -171,6 +178,7 @@ export class FilesListingForm extends React.Component<Props, State> {
                         {hasEditable && <hr />}
                     </>
                 )}
+
                 {(hasEditable || noFilesMessage) && (
                     <FilesListing
                         files={files}

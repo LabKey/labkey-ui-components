@@ -67,7 +67,7 @@ class DetailBodyImpl extends PureComponent<BodyProps & InjectedQueryModels> {
         const { name, plural, schemaLabel, schemaName } = queryInfo;
         const title = this.title;
         const pageTitle = schemaLabel + ' - ' + plural + ' ' + title;
-        const row = fromJS(model.gridData[0]);
+        const row = model.gridData[0];
 
         return (
             <Page hasHeader={true} title={pageTitle}>

@@ -94,7 +94,7 @@ import { FileAttachmentEntry } from './internal/components/files/FileAttachmentE
 import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './internal/components/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
-import { createNotification } from './internal/components/notifications/actions';
+import { createNotification, NotificationCreatable } from './internal/components/notifications/actions';
 import {
     addNotification,
     dismissNotifications,
@@ -132,6 +132,7 @@ import {
     gridInvalidate,
     gridShowError,
     queryGridInvalidate,
+    replaceSelected,
     schemaGridInvalidate,
     setSelected,
     unselectAll,
@@ -437,6 +438,7 @@ export {
     gridExport,
     gridInit,
     gridShowError,
+    replaceSelected,
     setSelected,
     unselectAll,
     // query related items
@@ -662,6 +664,7 @@ export {
     NotificationItemProps,
     NotificationItemModel,
     Notification,
+    NotificationCreatable,
     Persistence,
     MessageFunction,
     createNotification,

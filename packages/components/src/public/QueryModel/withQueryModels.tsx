@@ -389,8 +389,7 @@ export function withQueryModels<Props>(
             );
 
             try {
-                await modelLoader.clearSelections(this.state.queryModels[id]);
-                await modelLoader.setSelections(this.state.queryModels[id], true, selections);
+                await modelLoader.replaceSelections(this.state.queryModels[id], selections);
                 this.setState(
                     produce((draft: Draft<State>) => {
                         const model = draft.queryModels[id];

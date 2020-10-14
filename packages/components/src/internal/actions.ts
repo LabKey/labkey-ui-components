@@ -1059,6 +1059,7 @@ export function clearSelected(
  * @param key the selection key for the grid
  * @param checked whether to set selected or unselected
  * @param ids ids to change selection for
+ * @param containerPath optional path to the container for this grid.  Default is the current container path
  */
 export function setSelected(
     key: string,
@@ -1071,16 +1072,55 @@ export function setSelected(
             url: buildURL(
                 'query',
                 'setSelected.api',
-                {
-                    key,
-                    checked,
-                },
+                undefined,
                 {
                     container: containerPath,
                 }
             ),
             method: 'POST',
-            params: {
+            jsonData: {
+                id: ids,
+                key,
+                checked,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(
+                response => {
+                    reject(response);
+                },
+                this,
+                true
+            ),
+        });
+    });
+}
+
+/**
+ * Selects individual ids for a particular view
+ * @param key the selection key for the grid
+ * @param ids ids to change selection for
+ * @param containerPath optional path to the container for this grid.  Default is the current container path
+ */
+export function replaceSelected(
+    key: string,
+    ids: string[] | string,
+    containerPath?: string
+): Promise<ISelectResponse> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL(
+                'query',
+                'replaceSelected.api',
+                undefined,
+                {
+                    container: containerPath,
+                }
+            ),
+            method: 'POST',
+            jsonData: {
+                key,
                 id: ids,
             },
             success: Utils.getCallbackWrapper(response => {
@@ -1096,6 +1136,7 @@ export function setSelected(
         });
     });
 }
+
 
 function removeAll(selected: List<string>, toDelete: List<string>): List<string> {
     toDelete.forEach(id => {

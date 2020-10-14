@@ -1,5 +1,15 @@
 # @labkey/components
 
+### version 0.99.0
+*Released*: 14 October 2020
+* Introduce new mechanisms for loading assay resources; `withAssayModels`, `withAssayModelsFromLocation` and `asayPage`.
+* `withAssayModels` replaces implementation of `AssayProvider`.
+* Added unit test coverage for `withAssayModels` and `withAssayModelsFromLocation`.
+* Converted `AssayStateModel` and `AssayUploadResultModel` to Immer from ImmutableJS Records.
+* Streamlined `AssayStateModel` to be more straight-forward for getting and setting `AssayDefinitionModel`s.
+* `<AssayImportSubMenuItem/>` switched to use `withAssayModels`.
+* Add `isLoading` as a utility method for working with `LoadingState`.
+
 ### version 0.98.0
 *Released*: 13 October 2020
 * add optional transactionAuditId in InsertRowsResponse and as argument after file import
@@ -9,8 +19,8 @@
 ### version 0.97.0
 *Released*: 29 September 2020
 * FieldEditorOverlay updates
-  * Allow user to choose field of focus
-  * Change input placeholder text to avoid some awkard grammar problems
+  * Allow user to choose the field of focus
+  * Change input placeholder text to avoid some awkward grammar problems
 * Freezer icon updates
   * Update menu icon
   * Update timeline storage update icon

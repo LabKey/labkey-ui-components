@@ -50,6 +50,7 @@ import {
     getDisambiguatedSelectInputOptions,
     getSchemaQuery,
     hasAllPermissions,
+    isLoading,
     naturalSort,
     naturalSortByProperty,
     resolveKey,
@@ -269,7 +270,14 @@ import { DataClassDesigner } from './internal/components/domainproperties/datacl
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
-import { AssayContextConsumer, AssayProvider, AssayProviderProps } from './internal/components/assay/AssayProvider';
+import {
+    AssayContextConsumer,
+    assayPage,
+    InjectedAssayModel,
+    withAssayModels,
+    withAssayModelsFromLocation,
+    WithAssayModelProps,
+} from './internal/components/assay/withAssayModels';
 import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
@@ -277,6 +285,7 @@ import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportS
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
 import {
+    clearAssayDefinitionCache,
     deleteAssayDesign,
     deleteAssayRuns,
     fetchAllAssays,
@@ -403,7 +412,11 @@ import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQue
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
 import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
-import { getQueryModelExportParams, runDetailsColumnsForQueryModel, flattenValuesFromRow } from './public/QueryModel/utils';
+import {
+    getQueryModelExportParams,
+    runDetailsColumnsForQueryModel,
+    flattenValuesFromRow,
+} from './public/QueryModel/utils';
 import { withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
 import * as App from './internal/app';
 
@@ -601,8 +614,11 @@ export {
     AssayRunDeleteModal,
     AssayStateModel,
     AssayImportPanels,
-    AssayProvider,
-    AssayProviderProps,
+    assayPage,
+    withAssayModels,
+    withAssayModelsFromLocation,
+    InjectedAssayModel,
+    WithAssayModelProps,
     AssayContextConsumer,
     AssayImportSubMenuItem,
     AssayReimportRunButton,
@@ -618,6 +634,7 @@ export {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
+    clearAssayDefinitionCache,
     fetchAllAssays,
     RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
@@ -731,6 +748,7 @@ export {
     caseInsensitive,
     capitalizeFirstChar,
     resolveKey,
+    isLoading,
     naturalSort,
     naturalSortByProperty,
     generateId,

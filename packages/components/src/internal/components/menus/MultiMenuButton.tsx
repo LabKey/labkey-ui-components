@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { List } from 'immutable';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-interface MultiMenuButtonProps {
+interface Props {
     bsStyle?: string;
     currentSubMenuKey?: any;
     currentSubMenuChoice?: string;
@@ -30,35 +30,25 @@ interface MultiMenuButtonProps {
 
 interface State {
     // flag if the child <DropdownButton/> has ever been opened -- used to optimize render performance
-    opened?: boolean;
+    opened: boolean;
 }
 
-export class MultiMenuButton extends React.Component<MultiMenuButtonProps, State> {
+export class MultiMenuButton extends PureComponent<Props, State> {
     static defaultProps = {
         bsStyle: 'success',
         id: 'multi-menu-dropdown',
     };
 
-    constructor(props: MultiMenuButtonProps) {
-        super(props);
+    state: Readonly<State> = { opened: false };
 
-        this.onToggle = this.onToggle.bind(this);
-
-        this.state = {
-            opened: false,
-        };
-    }
-
-    onToggle() {
+    onToggle = (): void => {
         // set it and forget it
         if (!this.state.opened) {
-            this.setState({
-                opened: true,
-            });
+            this.setState({ opened: true });
         }
-    }
+    };
 
-    renderMenuItems() {
+    renderMenuItems = (): ReactNode => {
         const { currentSubMenuKey, currentSubMenuChoice, menuKeys, renderMenuItem } = this.props;
 
         const items = [];
@@ -73,9 +63,9 @@ export class MultiMenuButton extends React.Component<MultiMenuButtonProps, State
             });
 
         return items;
-    }
+    };
 
-    render() {
+    render(): ReactNode {
         const { id, bsStyle, pullRight, title } = this.props;
         const { opened } = this.state;
 

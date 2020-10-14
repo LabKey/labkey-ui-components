@@ -16,34 +16,45 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
+import { AssayStateModel, naturalSortByProperty } from '../../..';
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
 import { buildURL } from '../../url/ActionURL';
-import { naturalSort } from '../../util/utils';
 import { SCHEMAS } from '../base/models/schemas';
 import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
 
-import { AssayUploadResultModel, IAssayUploadOptions } from './models';
+import { AssayUploadResultModel } from './models';
+import { IAssayUploadOptions } from './AssayWizardModel';
 import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
 
+let assayDefinitionCache: { [key: string]: Promise<List<AssayDefinitionModel>> } = {};
+
+export function clearAssayDefinitionCache(): void {
+    assayDefinitionCache = {};
+}
+
 export function fetchAllAssays(type?: string): Promise<List<AssayDefinitionModel>> {
-    return new Promise((res, rej) => {
-        Assay.getAll({
-            parameters: {
-                type,
-            },
-            success: (rawModels: any[]) => {
-                let models = List<AssayDefinitionModel>();
-                rawModels.forEach(rawModel => {
-                    models = models.push(AssayDefinitionModel.create(rawModel));
-                });
-                res(models);
-            },
-            failure: error => {
-                rej(error);
-            },
+    const key = type ?? 'undefined';
+
+    if (!assayDefinitionCache[key]) {
+        assayDefinitionCache[key] = new Promise((res, rej) => {
+            Assay.getAll({
+                parameters: { type },
+                success: (rawModels: any[]) => {
+                    const models = rawModels.reduce(
+                        (list, raw) => list.push(AssayDefinitionModel.create(raw)),
+                        List<AssayDefinitionModel>()
+                    );
+                    res(models);
+                },
+                failure: error => {
+                    rej(error);
+                },
+            });
         });
-    });
+    }
+
+    return assayDefinitionCache[key];
 }
 
 export function importAssayRun(config: Partial<AssayDOM.IImportRunOptions>): Promise<AssayUploadResultModel> {
@@ -194,30 +205,27 @@ export function deleteAssayRuns(
 }
 
 export function getImportItemsForAssayDefinitions(
-    assayDefModels: List<AssayDefinitionModel>,
-    sampleModel: QueryGridModel
+    assayStateModel: AssayStateModel,
+    sampleModel?: QueryGridModel
 ): OrderedMap<AssayDefinitionModel, string> {
-    let items = OrderedMap<AssayDefinitionModel, string>();
     let targetSQ;
     const selectionKey = sampleModel ? sampleModel.selectionKey : undefined;
 
-    if (sampleModel && sampleModel.queryInfo) {
+    if (sampleModel?.queryInfo) {
         targetSQ = sampleModel.queryInfo.schemaQuery;
     }
 
-    assayDefModels
-        .sortBy(a => a.name, naturalSort)
+    return assayStateModel.definitions
         .filter(assay => !targetSQ || assay.hasLookup(targetSQ))
-        .forEach(assay => {
+        .sort(naturalSortByProperty('name'))
+        .reduce((items, assay) => {
             const href = assay.getImportUrl(
                 selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
                 selectionKey,
                 sampleModel ? sampleModel.getFilters() : undefined
             );
-            items = items.set(assay, href);
-        });
-
-    return items;
+            return items.set(assay, href);
+        }, OrderedMap<AssayDefinitionModel, string>());
 }
 
 export interface DuplicateFilesResponse {

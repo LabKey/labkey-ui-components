@@ -12,7 +12,7 @@ import { SelectInput } from '../forms/input/SelectInput';
 import { QueryFormInputs } from '../forms/QueryFormInputs';
 import { QueryColumn } from '../base/models/model';
 
-import { AssayWizardModel } from './models';
+import { AssayWizardModel } from './AssayWizardModel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 
 beforeAll(() => {

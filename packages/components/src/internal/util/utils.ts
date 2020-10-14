@@ -16,6 +16,7 @@
 import { List, Map, Set, Iterable } from 'immutable';
 import { Utils } from '@labkey/api';
 
+import { LoadingState } from '../constants';
 import { SchemaQuery, User } from '../components/base/models/model';
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 
@@ -334,6 +335,10 @@ export function similaritySortFactory(token: string, caseSensitive?: boolean): (
         return naturalSort(rawA, rawB);
     };
 }
+
+export const isLoading = (loadingState: LoadingState): boolean => {
+    return loadingState === LoadingState.INITIALIZED || loadingState === LoadingState.LOADING;
+};
 
 /**
  * Performs an equality check on two arrays, returning true of the arrays are the same size

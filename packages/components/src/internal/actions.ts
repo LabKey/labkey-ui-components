@@ -1069,14 +1069,9 @@ export function setSelected(
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL(
-                'query',
-                'setSelected.api',
-                undefined,
-                {
-                    container: containerPath,
-                }
-            ),
+            url: buildURL('query', 'setSelected.api', undefined, {
+                container: containerPath,
+            }),
             method: 'POST',
             jsonData: {
                 id: ids,
@@ -1103,21 +1098,12 @@ export function setSelected(
  * @param ids ids to change selection for
  * @param containerPath optional path to the container for this grid.  Default is the current container path
  */
-export function replaceSelected(
-    key: string,
-    ids: string[] | string,
-    containerPath?: string
-): Promise<ISelectResponse> {
+export function replaceSelected(key: string, ids: string[] | string, containerPath?: string): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL(
-                'query',
-                'replaceSelected.api',
-                undefined,
-                {
-                    container: containerPath,
-                }
-            ),
+            url: buildURL('query', 'replaceSelected.api', undefined, {
+                container: containerPath,
+            }),
             method: 'POST',
             jsonData: {
                 key,
@@ -1136,7 +1122,6 @@ export function replaceSelected(
         });
     });
 }
-
 
 function removeAll(selected: List<string>, toDelete: List<string>): List<string> {
     toDelete.forEach(id => {

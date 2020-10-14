@@ -1,7 +1,7 @@
 # @labkey/components
 
-### version 0.##.#
-*Released*: ## October 2020
+### version 0.99.0
+*Released*: 14 October 2020
 * Introduce new mechanisms for loading assay resources; `withAssayModels`, `withAssayModelsFromLocation` and `asayPage`.
 * `withAssayModels` replaces implementation of `AssayProvider`.
 * Added unit test coverage for `withAssayModels` and `withAssayModelsFromLocation`.
@@ -19,8 +19,8 @@
 ### version 0.97.0
 *Released*: 29 September 2020
 * FieldEditorOverlay updates
-  * Allow user to choose field of focus
-  * Change input placeholder text to avoid some awkard grammar problems
+  * Allow user to choose the field of focus
+  * Change input placeholder text to avoid some awkward grammar problems
 * Freezer icon updates
   * Update menu icon
   * Update timeline storage update icon

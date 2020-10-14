@@ -13,18 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
 import { Map } from 'immutable';
 
-import {
-    AssayDefinitionModel,
-    AssayDomainTypes,
-    IGridLoader,
-    IGridResponse,
-    QueryGridModel,
-} from '../base/models/model';
+import { AssayDefinitionModel, AssayDomainTypes, IGridLoader, IGridResponse } from '../../..';
 
-import { AssayWizardModel } from './models';
+import { AssayWizardModel } from './AssayWizardModel';
 
 export class AssayUploadGridLoader implements IGridLoader {
     model: AssayWizardModel;
@@ -35,7 +28,7 @@ export class AssayUploadGridLoader implements IGridLoader {
         this.assayDefinition = assayDefinition;
     }
 
-    fetch(gridModel: QueryGridModel): Promise<IGridResponse> {
+    fetch(): Promise<IGridResponse> {
         return new Promise(resolve => {
             const sampleColumnData = this.assayDefinition.getSampleColumn();
             const sampleColInResults = sampleColumnData && sampleColumnData.domain === AssayDomainTypes.RESULT;

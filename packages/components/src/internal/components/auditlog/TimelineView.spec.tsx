@@ -2,8 +2,6 @@ import React from 'react';
 
 import { shallow } from 'enzyme';
 
-import { boolean } from '@storybook/addon-knobs';
-
 import { TIMELINE_DATA } from '../../../test/data/constants';
 
 import { TimelineView } from './TimelineView';
@@ -69,7 +67,7 @@ describe('<TimelineView />', () => {
                 selectionDisabled={true}
                 onEventSelection={jest.fn()}
                 selectedEvent={events[7]}
-                showUserLinks={boolean('showUserLinks', true)}
+                showUserLinks={true}
                 selectedEntityConnectionInfo={[{ firstEvent: events[2], lastEvent: events[7], isCompleted: false }]}
             />
         );

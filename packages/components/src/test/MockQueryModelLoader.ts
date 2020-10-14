@@ -56,6 +56,11 @@ export class MockQueryModelLoader implements QueryModelLoader {
     };
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    replaceSelections = (model: QueryModel, selections): Promise<never> => {
+        return Promise.reject('Not implemented!');
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     selectAllRows = (model: QueryModel): Promise<never> => {
         return Promise.reject('Not implemented!');
     };

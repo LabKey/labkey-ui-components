@@ -1,7 +1,7 @@
 # @labkey/components
 
-### version TBD
-*Released*: TBD
+### version 0.98.0
+*Released*: 13 October 2020
 * add optional transactionAuditId in InsertRowsResponse and as argument after file import
 * add new replaceSelected method (for new action in QueryController)
 * Fix styling of links in notifications

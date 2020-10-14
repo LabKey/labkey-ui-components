@@ -9,6 +9,7 @@ import {
     generateId,
     IDomainField,
     initQueryGridState,
+    MetricUnitProps,
     naturalSort,
     resolveErrorMessage,
     SAMPLE_TYPE,
@@ -81,12 +82,7 @@ interface Props {
     successBsStyle?: string;
     saveBtnText?: string;
 
-    // metric unit props
-    includeMetricUnitProperty?: boolean;
-    metricUnitLabel?: string;
-    metricUnitRequired?: boolean;
-    metricUnitHelpMsg?: string;
-    metricUnitOptions?: any[];
+    metricUnitProps?: MetricUnitProps
 
     validateProperties?: (designerDetails?: any) => Promise<any>
 }
@@ -328,8 +324,11 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     onFinish = (): void => {
-        const { defaultSampleFieldConfig, setSubmitting, metricUnitRequired, metricUnitLabel } = this.props;
+        const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
         const { model } = this.state;
+
+        let metricUnitLabel = metricUnitProps ? metricUnitProps.metricUnitLabel : undefined;
+        let metricUnitRequired = metricUnitProps ? metricUnitProps.metricUnitRequired : undefined;
         const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
         this.props.onFinish(isValid, this.saveDomain);
@@ -401,6 +400,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             }
         } catch (error) {
             const exception = resolveErrorMessage(error);
+            console.error(exception);
             setSubmitting(false, () => {
                 this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel }));
             });
@@ -456,11 +456,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             dataClassAliasCaption,
             dataClassTypeCaption,
             dataClassParentageLabel,
-            includeMetricUnitProperty,
-            metricUnitLabel,
-            metricUnitHelpMsg,
-            metricUnitOptions,
-            metricUnitRequired
+            metricUnitProps
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -509,11 +505,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     onToggle={(collapsed, callback) => onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
-                    includeMetricUnitProperty={includeMetricUnitProperty}
-                    metricUnitLabel={metricUnitLabel}
-                    metricUnitHelpMsg={metricUnitHelpMsg}
-                    metricUnitOptions={metricUnitOptions}
-                    metricUnitRequired={metricUnitRequired}
+                    metricUnitProps={metricUnitProps}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

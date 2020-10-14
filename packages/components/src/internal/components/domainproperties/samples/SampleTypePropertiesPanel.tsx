@@ -10,7 +10,7 @@ import {
     ColorPickerInput,
     generateId,
     getHelpLink,
-    helpLinkNode,
+    helpLinkNode, MetricUnitProps,
     SCHEMAS,
     SelectInput
 } from '../../../..';
@@ -41,8 +41,6 @@ interface OwnProps {
     onRemoveParentAlias: (id: string) => void;
     updateDupeParentAliases?: (id: string) => void;
     appPropertiesOnly?: boolean;
-    includeMetricUnitProperty?: boolean;
-    metricUnitRequired?: boolean;
     headerText?: string;
     helpTopic?: string;
     includeDataClasses?: boolean;
@@ -52,9 +50,7 @@ interface OwnProps {
     dataClassAliasCaption?: string;
     dataClassTypeCaption?: string;
     dataClassParentageLabel?: string;
-    metricUnitLabel?: string;
-    metricUnitHelpMsg?: string;
-    metricUnitOptions?: any[];
+    metricUnitProps?: MetricUnitProps;
 }
 
 // Splitting these out to clarify where they end-up
@@ -103,8 +99,10 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         dataClassAliasCaption: 'Data Class Alias',
         dataClassTypeCaption: 'Data Class',
         dataClassParentageLabel: 'data class',
-        metricUnitLabel: 'Metric Unit',
-        metricUnitHelpMsg: 'The unit of measurement used for the sample type.',
+        metricUnitProps: {
+            metricUnitLabel: 'Metric Unit',
+            metricUnitHelpMsg: 'The unit of measurement used for the sample type.'
+        }
     };
 
     constructor(props) {
@@ -264,12 +262,17 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             sampleAliasCaption,
             dataClassParentageLabel,
             appPropertiesOnly,
-            includeMetricUnitProperty,
-            metricUnitLabel,
-            metricUnitHelpMsg,
-            metricUnitOptions,
-            metricUnitRequired,
+            metricUnitProps
         } = this.props;
+
+        let includeMetricUnitProperty = undefined, metricUnitLabel = undefined, metricUnitHelpMsg = undefined, metricUnitOptions = undefined, metricUnitRequired = undefined;
+        if (metricUnitProps) {
+            includeMetricUnitProperty = metricUnitProps.includeMetricUnitProperty;
+            metricUnitLabel = metricUnitProps.metricUnitLabel ? metricUnitProps.metricUnitLabel : 'Metric Unit';
+            metricUnitHelpMsg = metricUnitProps.metricUnitHelpMsg ? metricUnitProps.metricUnitHelpMsg : 'The unit of measurement used for the sample type.';
+            metricUnitOptions = metricUnitProps.metricUnitOptions;
+            metricUnitRequired = metricUnitProps.metricUnitRequired;
+        }
         const { isValid } = this.state;
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();

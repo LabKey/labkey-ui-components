@@ -1429,8 +1429,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           dataClassTypeCaption="Data Class"
           helpTopic="createSampleSet"
           includeDataClasses={false}
-          metricUnitHelpMsg="The unit of measurement used for the sample type."
-          metricUnitLabel="Metric Unit"
+          metricUnitProps={
+            Object {
+              "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
+              "metricUnitLabel": "Metric Unit",
+            }
+          }
           model={
             Immutable.Record {
               "rowId": undefined,
@@ -1574,8 +1578,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             helpTopic="createSampleSet"
             includeDataClasses={false}
             isValid={true}
-            metricUnitHelpMsg="The unit of measurement used for the sample type."
-            metricUnitLabel="Metric Unit"
+            metricUnitProps={
+              Object {
+                "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
+                "metricUnitLabel": "Metric Unit",
+              }
+            }
             model={
               Immutable.Record {
                 "rowId": undefined,

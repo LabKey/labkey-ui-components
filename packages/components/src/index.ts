@@ -379,7 +379,7 @@ import {
     getSampleDeleteConfirmationData,
 } from './internal/components/entities/actions';
 import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
-import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
+import { SampleTypeModel, MetricUnitProps } from './internal/components/domainproperties/samples/models';
 import { SampleTypeDesigner } from './internal/components/domainproperties/samples/SampleTypeDesigner';
 
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
@@ -562,6 +562,7 @@ export {
     deleteDataClass,
     fetchDataClass,
     SampleTypeModel,
+    MetricUnitProps,
     deleteSampleSet,
     fetchSamples,
     getSampleSet,

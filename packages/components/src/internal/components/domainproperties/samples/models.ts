@@ -133,3 +133,11 @@ export interface IParentAlias {
     ignoreSelectError: boolean;
     isDupe?: boolean;
 }
+
+export interface MetricUnitProps {
+    includeMetricUnitProperty?: boolean;
+    metricUnitLabel?: string;
+    metricUnitRequired?: boolean;
+    metricUnitHelpMsg?: string;
+    metricUnitOptions?: any[];
+}

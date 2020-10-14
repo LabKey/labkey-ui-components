@@ -50,11 +50,13 @@ storiesOf('SampleTypeDesigner', module)
                 nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
                 nameExpressionPlaceholder={text('nameExpressionPlaceholder', undefined)}
                 helpTopic={text('helpTopic', undefined)}
-                includeMetricUnitProperty={boolean('includeMetricUnitProperty', true)}
-                metricUnitRequired={boolean('metricUnitRequired', true)}
-                metricUnitLabel={text('metricUnitLabel', "Display stored amount in")}
-                metricUnitHelpMsg={text('metricUnitHelpMsg', "Sample storage volume will be displayed using the selected metric unit.")}
-                metricUnitOptions={boolean('metricUnitOptions', true) ? [{id: 'mL', label: 'ml'}, {id: 'L', label: 'L'}, {id: 'ug', label: 'ug'}, {id: 'g', label: 'g'}] : undefined}
+                metricUnitProps={{
+                    includeMetricUnitProperty: boolean('includeMetricUnitProperty', true),
+                    metricUnitLabel: text('metricUnitLabel', "Display stored amount in"),
+                    metricUnitRequired: boolean('metricUnitRequired', true),
+                    metricUnitHelpMsg: text('metricUnitHelpMsg', "Sample storage volume will be displayed using the selected metric unit."),
+                    metricUnitOptions: boolean('metricUnitOptions', true) ? [{id: 'mL', label: 'ml'}, {id: 'L', label: 'L'}, {id: 'ug', label: 'ug'}, {id: 'g', label: 'g'}] : undefined
+                }}
             />
         );
     })

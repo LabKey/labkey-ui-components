@@ -167,7 +167,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 appPropertiesOnly={true}
-                includeMetricUnitProperty={true}
+                metricUnitProps={{includeMetricUnitProperty: true}}
                 model={SampleTypeModel.create()}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
@@ -187,11 +187,13 @@ describe('<SampleTypePropertiesPanel/>', () => {
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 appPropertiesOnly={true}
-                includeMetricUnitProperty={true}
-                metricUnitLabel={'Display stored amount in'}
-                metricUnitRequired={true}
-                metricUnitHelpMsg={"Sample storage volume will be displayed using the selected metric unit."}
-                metricUnitOptions={[{id: 'mL', label: 'ml'}, {id: 'L', label: 'L'}, {id: 'ug', label: 'ug'}, {id: 'g', label: 'g'}]}
+                metricUnitProps={{
+                    includeMetricUnitProperty: true,
+                    metricUnitLabel: 'Display stored amount in',
+                    metricUnitRequired: true,
+                    metricUnitHelpMsg: "Sample storage volume will be displayed using the selected metric unit.",
+                    metricUnitOptions: [{id: 'mL', label: 'ml'}, {id: 'L', label: 'L'}, {id: 'ug', label: 'ug'}, {id: 'g', label: 'g'}]
+                }}
                 model={SampleTypeModel.create()}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { List } from 'immutable';
 
+import { Container, SchemaDetails } from '../..';
 import { ILookupContext, LookupContextProvider } from '../../internal/components/domainproperties/Lookup/Context';
 import { handleSchemas, processContainers, processQueries } from '../../internal/components/domainproperties/actions';
 import { QueryInfoLite } from '../../internal/components/domainproperties/models';
@@ -8,7 +9,6 @@ import { QueryInfoLite } from '../../internal/components/domainproperties/models
 import containerData from '../data/project-getContainers.json';
 import queryData from '../data/query-getQueries.json';
 import schemaData from '../data/query-getSchemas.json';
-import { Container, SchemaDetails } from '../../internal/components/base/models/model';
 
 export class MockLookupProvider extends React.Component<any, ILookupContext> {
     constructor(props) {

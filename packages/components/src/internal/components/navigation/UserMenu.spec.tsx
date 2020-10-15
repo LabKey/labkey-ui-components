@@ -17,7 +17,7 @@ import React from 'react';
 import { List } from 'immutable';
 import renderer from 'react-test-renderer';
 
-import { User } from '../base/models/model';
+import { User } from '../../..';
 
 import { UserMenu } from './UserMenu';
 import { MenuSectionModel, ProductMenuModel } from './model';

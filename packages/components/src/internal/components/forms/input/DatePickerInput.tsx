@@ -20,7 +20,7 @@ import DatePicker from 'react-datepicker';
 import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
-import { QueryColumn } from '../../base/models/model';
+import { QueryColumn } from '../../../..';
 import { datePlaceholder, formatDate, isDateTimeCol, parseDate } from '../../../util/Date';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
@@ -84,16 +84,19 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
     toggleDisabled = () => {
         const { selectedDate } = this.state;
 
-        this.setState(state => {
-            return {
-                isDisabled: !state.isDisabled,
-                selectedDate: state.isDisabled ? selectedDate : this.getInitDate(this.props),
-            };
-        }, () => {
-            if (this.props.onToggleDisable) {
-                this.props.onToggleDisable(this.state.isDisabled);
+        this.setState(
+            state => {
+                return {
+                    isDisabled: !state.isDisabled,
+                    selectedDate: state.isDisabled ? selectedDate : this.getInitDate(this.props),
+                };
+            },
+            () => {
+                if (this.props.onToggleDisable) {
+                    this.props.onToggleDisable(this.state.isDisabled);
+                }
             }
-        });
+        );
     };
 
     getInitDate(props: DatePickerInputProps) {

@@ -19,12 +19,11 @@ import { Filter } from '@labkey/api';
 
 import { JsonType } from '@labkey/api/dist/labkey/filter/Types';
 
-import { QueryColumn, QueryGridModel } from '../../base/models/model';
+import { QueryColumn, QueryGridModel, QueryInfo } from '../../../..';
 
 import mixturesQueryInfo from '../../../../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../../../../test/data/mixtures-getQuery.json';
 import { initUnitTests, makeQueryInfo, makeTestData } from '../../../testHelpers';
-import { QueryInfo } from '../../../..';
 
 import { FilterAction, getURLSuffix } from './Filter';
 import { ActionOption, Value } from './Action';
@@ -43,7 +42,7 @@ beforeAll(() => {
             dataIds: fromJS(mockData.orderedRows),
             totalRows: mockData.rowCount,
         });
-        getColumns = (all?) => all ? model.getAllColumns() : model.getDisplayColumns();
+        getColumns = (all?) => (all ? model.getAllColumns() : model.getDisplayColumns());
     });
 });
 

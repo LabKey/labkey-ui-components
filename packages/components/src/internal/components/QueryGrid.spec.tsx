@@ -18,8 +18,9 @@ import renderer from 'react-test-renderer';
 
 import { initQueryGridState, updateQueryGridModel } from '../global';
 
+import { QueryGridModel, SchemaQuery } from '../..';
+
 import { QueryGrid } from './QueryGrid';
-import { QueryGridModel, SchemaQuery } from './base/models/model';
 
 beforeAll(() => {
     initQueryGridState();

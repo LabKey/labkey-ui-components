@@ -18,7 +18,7 @@ import { fromJS, List } from 'immutable';
 import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api';
 
-import { QueryColumn, SchemaQuery } from '../base/models/model';
+import { QueryColumn, SchemaQuery } from '../../..';
 
 import { DELIMITER, SelectInput } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';

@@ -4,7 +4,7 @@ import { number, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
 import { PreviewGrid } from '../internal/components/PreviewGrid';
-import { SchemaQuery } from '../internal/components/base/models/model';
+import { SchemaQuery } from '..';
 
 storiesOf('PreviewGrid', module)
     .addDecorator(withKnobs)

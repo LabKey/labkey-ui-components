@@ -3,8 +3,9 @@ import renderer from 'react-test-renderer';
 
 import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../testHelpers';
 
+import { SchemaQuery } from '../..';
+
 import { PreviewGrid } from './PreviewGrid';
-import { SchemaQuery } from './base/models/model';
 
 beforeAll(() => {
     initUnitTestMocks();

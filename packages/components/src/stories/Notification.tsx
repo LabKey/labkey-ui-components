@@ -13,7 +13,7 @@ import { Notification } from '../internal/components/notifications/Notification'
 
 import { notificationInit } from '../test/setupUtils';
 import { createNotification } from '../internal/components/notifications/actions';
-import { User } from '../internal/components/base/models/model';
+import { User } from '..';
 import { NotificationItemModel } from '../internal/components/notifications/model';
 import { generateId } from '../internal/util/utils';
 

@@ -18,19 +18,27 @@ import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
+import { IMPORT_DATA_FORM_TYPES } from '../../constants';
+
 import {
     Alert,
     AssayDefinitionModel,
+    AssayDomainTypes,
     AssayUploadResultModel,
     dismissNotifications,
     FileSizeLimitProps,
     getActionErrorMessage,
+    getBatchPropertiesModel,
+    getBatchPropertiesRow,
     getQueryDetails,
     getQueryGridModel,
+    getRunPropertiesModel,
+    getRunPropertiesRow,
     getStateQueryGridModel,
     gridInit,
-    LoadingSpinner,
+    importAssayRun,
     loadSelectedSamples,
+    LoadingSpinner,
     Location,
     Progress,
     QueryColumn,
@@ -43,8 +51,7 @@ import {
     WizardNavButtons,
 } from '../../..';
 
-import { AssayDomainTypes, AssayUploadTabs } from '../base/models/model';
-import { IMPORT_DATA_FORM_TYPES } from '../../constants';
+import { AssayUploadTabs } from '../base/models/model';
 
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
@@ -57,12 +64,7 @@ import {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
     flattenQueryGridModelRow,
-    getBatchPropertiesModel,
-    getBatchPropertiesRow,
     getRunPropertiesFileName,
-    getRunPropertiesModel,
-    getRunPropertiesRow,
-    importAssayRun,
     uploadAssayRunFiles,
 } from './actions';
 

@@ -18,7 +18,7 @@ import { Textarea } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { QueryColumn } from '../../base/models/model';
+import { QueryColumn } from '../../../..';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -89,15 +89,7 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
     };
 
     render() {
-        const {
-            cols,
-            elementWrapperClassName,
-            labelClassName,
-            name,
-            queryColumn,
-            rowClassName,
-            rows,
-        } = this.props;
+        const { cols, elementWrapperClassName, labelClassName, name, queryColumn, rowClassName, rows } = this.props;
 
         return (
             <Textarea

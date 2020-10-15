@@ -37,7 +37,6 @@ export interface GridMessage {
     content: string;
 }
 
-// Note: if you add/remove fields on QueryConfig make sure to update utils.hashQueryConfig
 export interface QueryConfig {
     /**
      * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)

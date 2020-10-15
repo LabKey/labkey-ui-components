@@ -18,11 +18,8 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 import { Option } from 'react-select';
 
 import { getEditorModel } from '../../global';
-import { insertRows } from '../../query/api';
 import { gridShowError } from '../../actions';
-import { SCHEMAS } from '../base/models/schemas';
-import { QueryInfo } from '../base/models/QueryInfo';
-import { QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
+import { insertRows, QueryColumn, QueryGridModel, QueryInfo, SCHEMAS, SchemaQuery } from '../../..';
 import { capitalizeFirstChar, decodePart, encodePart, generateId } from '../../util/utils';
 import { IEntityDetails } from '../domainproperties/entities/models';
 

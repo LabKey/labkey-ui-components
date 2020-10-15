@@ -17,7 +17,7 @@ import React from 'react';
 
 import { Notification } from '../notifications/Notification';
 
-import { User } from './models/model';
+import { User } from './models/User';
 
 interface PageHeaderProps {
     iconCls?: string;

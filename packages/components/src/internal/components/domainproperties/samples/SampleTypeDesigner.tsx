@@ -2,26 +2,24 @@ import React from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Domain } from '@labkey/api';
 
+import { DomainDesign, DomainDetails, IDomainField } from '../models';
+import DomainForm from '../DomainForm';
 import {
+    IParentOption,
     Alert,
-    DomainDesign,
-    DomainDetails,
     generateId,
-    IDomainField,
     initQueryGridState,
     naturalSort,
     resolveErrorMessage,
-    SAMPLE_TYPE,
-    saveDomain,
     SCHEMAS,
 } from '../../../..';
-import DomainForm from '../DomainForm';
-import { IParentOption } from '../../entities/models';
 
-import { addDomainField, getDomainPanelStatus } from '../actions';
+import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
+
+import { SAMPLE_TYPE } from '../PropDescType';
 
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';

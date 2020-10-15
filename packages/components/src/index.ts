@@ -16,28 +16,27 @@
 import { enableMapSet, enablePatches } from 'immer';
 
 import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
-import { SCHEMAS } from './internal/components/base/models/schemas';
-import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
-import { QueryInfo } from './internal/components/base/models/QueryInfo';
-import { QuerySort } from './internal/components/base/models/QuerySort';
+import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
+import { QueryColumn, QueryLookup } from './public/QueryColumn';
+import { SchemaDetails } from './internal/SchemaDetails';
+import { getSchemaQuery, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
+import { SCHEMAS } from './internal/schemas';
+import { QuerySort } from './public/QuerySort';
+import { isLoading, LoadingState } from './public/LoadingState';
+import { Container } from './internal/components/base/models/Container';
+import { hasAllPermissions, User } from './internal/components/base/models/User';
+import { naturalSort, naturalSortByProperty } from './public/sort';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    Container,
     IGridLoader,
     IGridResponse,
     InferDomainResponse,
     insertColumnFilter,
     LastActionStatus,
     MessageLevel,
-    QueryColumn,
     QueryGridModel,
-    QueryInfoStatus,
-    QueryLookup,
-    SchemaDetails,
-    SchemaQuery,
-    User,
     ViewInfo,
 } from './internal/components/base/models/model';
 import {
@@ -48,16 +47,11 @@ import {
     devToolsActive,
     generateId,
     getDisambiguatedSelectInputOptions,
-    getSchemaQuery,
-    hasAllPermissions,
-    isLoading,
-    naturalSort,
-    naturalSortByProperty,
     resolveKey,
-    resolveSchemaQuery,
     toggleDevTools,
     valueIsEmpty,
 } from './internal/util/utils';
+import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
 import { buildURL, hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
@@ -167,7 +161,6 @@ import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/rep
 import {
     DataViewInfoTypes,
     IMPORT_DATA_FORM_TYPES,
-    LoadingState,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     EXPORT_TYPES,
@@ -266,10 +259,6 @@ import {
     getSampleTypeDetails,
     loadSelectedSamples,
 } from './internal/components/samples/actions';
-import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
-import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
-import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
-import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import {
     AssayContextConsumer,
     assayPage,
@@ -296,8 +285,9 @@ import {
     getRunPropertiesModel,
     getRunPropertiesRow,
     importAssayRun,
+    RUN_PROPERTIES_GRID_ID,
+    RUN_PROPERTIES_REQUIRED_COLUMNS,
 } from './internal/components/assay/actions';
-import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './internal/components/assay/constants';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
@@ -333,39 +323,6 @@ import { ChangePasswordModal } from './internal/components/user/ChangePasswordMo
 import { SiteUsersGridPanel } from './internal/components/user/SiteUsersGridPanel';
 import { UserProvider, UserProviderProps } from './internal/components/user/UserProvider';
 import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
-
-import {
-    createFormInputId,
-    fetchDomain,
-    saveDomain,
-    setDomainFields,
-} from './internal/components/domainproperties/actions';
-import {
-    DomainDesign,
-    DomainDetails,
-    DomainField,
-    IAppDomainHeader,
-    IBannerMessage,
-    IDomainField,
-    IFieldChange,
-    SAMPLE_TYPE,
-} from './internal/components/domainproperties/models';
-import DomainForm from './internal/components/domainproperties/DomainForm';
-import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
-import { DomainFieldsDisplay } from './internal/components/domainproperties/DomainFieldsDisplay';
-import { fetchProtocol, saveAssayDesign } from './internal/components/domainproperties/assay/actions';
-import { AssayProtocolModel } from './internal/components/domainproperties/assay/models';
-import { AssayPropertiesPanel } from './internal/components/domainproperties/assay/AssayPropertiesPanel';
-import { AssayDesignerPanels } from './internal/components/domainproperties/assay/AssayDesignerPanels';
-import { ListDesignerPanels } from './internal/components/domainproperties/list/ListDesignerPanels';
-import { ListModel } from './internal/components/domainproperties/list/models';
-import { IssuesListDefModel } from './internal/components/domainproperties/issues/models';
-import { IssuesListDefDesignerPanels } from './internal/components/domainproperties/issues/IssuesListDefDesignerPanels';
-import { DatasetDesignerPanels } from './internal/components/domainproperties/dataset/DatasetDesignerPanels';
-import { DatasetModel } from './internal/components/domainproperties/dataset/models';
-import { fetchListDesign } from './internal/components/domainproperties/list/actions';
-import { fetchIssuesListDefDesign } from './internal/components/domainproperties/issues/actions';
-import { fetchDatasetDesign } from './internal/components/domainproperties/dataset/actions';
 import {
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_TYPE,
@@ -389,7 +346,6 @@ import {
 } from './internal/components/entities/actions';
 import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
-import { SampleTypeDesigner } from './internal/components/domainproperties/samples/SampleTypeDesigner';
 
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
@@ -419,6 +375,43 @@ import {
 } from './public/QueryModel/utils';
 import { withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
 import * as App from './internal/app';
+import {
+    createFormInputId,
+    fetchDomain,
+    saveDomain,
+    setDomainFields,
+} from './internal/components/domainproperties/actions';
+import {
+    DomainDesign,
+    DomainDetails,
+    DomainField,
+    IAppDomainHeader,
+    IBannerMessage,
+    IDomainField,
+    IFieldChange,
+} from './internal/components/domainproperties/models';
+import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType';
+import DomainForm from './internal/components/domainproperties/DomainForm';
+import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
+import { DomainFieldsDisplay } from './internal/components/domainproperties/DomainFieldsDisplay';
+import { fetchProtocol, saveAssayDesign } from './internal/components/domainproperties/assay/actions';
+import { AssayProtocolModel } from './internal/components/domainproperties/assay/models';
+import { AssayPropertiesPanel } from './internal/components/domainproperties/assay/AssayPropertiesPanel';
+import { AssayDesignerPanels } from './internal/components/domainproperties/assay/AssayDesignerPanels';
+import { ListModel } from './internal/components/domainproperties/list/models';
+import { IssuesListDefModel } from './internal/components/domainproperties/issues/models';
+import { IssuesListDefDesignerPanels } from './internal/components/domainproperties/issues/IssuesListDefDesignerPanels';
+import { DatasetDesignerPanels } from './internal/components/domainproperties/dataset/DatasetDesignerPanels';
+import { DatasetModel } from './internal/components/domainproperties/dataset/models';
+import { fetchListDesign } from './internal/components/domainproperties/list/actions';
+import { fetchIssuesListDefDesign } from './internal/components/domainproperties/issues/actions';
+import { fetchDatasetDesign } from './internal/components/domainproperties/dataset/actions';
+import { SampleTypeDesigner } from './internal/components/domainproperties/samples/SampleTypeDesigner';
+import { ListDesignerPanels } from './internal/components/domainproperties/list/ListDesignerPanels';
+import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
+import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
+import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
+import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();

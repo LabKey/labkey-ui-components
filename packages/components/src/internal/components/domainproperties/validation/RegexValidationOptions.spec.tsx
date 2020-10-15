@@ -1,7 +1,8 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { INTEGER_TYPE, PropertyValidator } from '../models';
+import { PropertyValidator } from '../models';
+import { INTEGER_TYPE } from '../PropDescType';
 import { createFormInputId } from '../actions';
 import {
     DOMAIN_VALIDATOR_DESCRIPTION,

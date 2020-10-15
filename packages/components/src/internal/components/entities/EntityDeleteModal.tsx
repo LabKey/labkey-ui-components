@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 
 import { AuditBehaviorTypes } from '@labkey/api';
 
-import { capitalizeFirstChar } from '../../util/utils';
-import { ConfirmModal } from '../base/ConfirmModal';
-
-import { Progress } from '../base/Progress';
-import {QueryGridModel, SchemaQuery} from '../base/models/model';
-import { createDeleteErrorNotification, createDeleteSuccessNotification } from '../notifications/messaging';
-
-import {deleteRows, NotificationItemProps} from '../../..';
+import {
+    capitalizeFirstChar,
+    ConfirmModal,
+    Progress,
+    QueryGridModel,
+    SchemaQuery,
+    createDeleteErrorNotification,
+    createDeleteSuccessNotification,
+    deleteRows,
+    NotificationItemProps,
+} from '../../..';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
@@ -23,10 +26,10 @@ interface Props {
     onCancel: () => any;
     entityDataType: EntityDataType;
     auditBehavior?: AuditBehaviorTypes;
-    verb?: string
+    verb?: string;
 }
 
-export const EntityDeleteModal: React.FC<Props> = (props) => {
+export const EntityDeleteModal: React.FC<Props> = props => {
     const {
         auditBehavior,
         model,
@@ -73,7 +76,8 @@ export const EntityDeleteModal: React.FC<Props> = (props) => {
             schemaQuery,
             rows: rowsToDelete,
             auditBehavior,
-        }).then(() => {
+        })
+            .then(() => {
                 afterDelete(rowsToKeep);
                 createDeleteSuccessNotification(noun, rowsToDelete.length, undefined);
             })
@@ -115,4 +119,4 @@ export const EntityDeleteModal: React.FC<Props> = (props) => {
             />
         </>
     );
-}
+};

@@ -16,10 +16,9 @@
 import { List } from 'immutable';
 
 import { parseColumns, resolveFieldKey } from '../utils';
-import { QueryColumn } from '../../base/models/model';
+import { QueryColumn, QuerySort } from '../../../..';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
-import { QuerySort } from '../../../..';
 
 export class SortAction implements Action {
     iconCls = 'sort';
@@ -76,7 +75,7 @@ export class SortAction implements Action {
                 isValid: !!fieldKey,
                 param: `${paramDir}${fieldKey}`,
                 value: `${fieldKey} ${dir === 'DESC' ? 'DESC' : 'ASC'}`,
-                valueObject: new QuerySort({dir: paramDir, fieldKey}),
+                valueObject: new QuerySort({ dir: paramDir, fieldKey }),
             });
         });
     }

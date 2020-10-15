@@ -2,7 +2,7 @@ import React from 'react';
 import { Map } from 'immutable';
 
 import { PageDetailHeader } from '../forms/PageDetailHeader';
-import { User } from '../base/models/model';
+import { User } from '../../..';
 
 import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
 

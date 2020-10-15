@@ -4,7 +4,7 @@
  */
 import React from 'react';
 
-import { QueryColumn } from '../base/models/model';
+import { QueryColumn } from '../../..';
 
 import { ToggleWithInputField, ToggleWithInputFieldProps } from './input/ToggleWithInputField';
 import { getFieldEnabledFieldName } from './QueryFormInputs';

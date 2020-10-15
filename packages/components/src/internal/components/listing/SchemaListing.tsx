@@ -17,11 +17,8 @@ import React, { Component, ReactNode } from 'react';
 import { Link } from 'react-router';
 import { List, Map } from 'immutable';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { SchemaDetails } from '../base/models/model';
-import { AppURL } from '../../url/AppURL';
-import { Grid, GridColumn } from '../base/Grid';
-import { fetchSchemas } from '../base/models/schemas';
+import { AppURL, Grid, GridColumn, LoadingSpinner, SchemaDetails } from '../../..';
+import { fetchSchemas } from '../../schemas';
 
 const columns = List([
     new GridColumn({

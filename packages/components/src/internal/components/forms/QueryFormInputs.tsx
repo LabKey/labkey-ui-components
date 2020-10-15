@@ -20,11 +20,7 @@ import { Utils } from '@labkey/api';
 
 import { initLookup } from '../../actions';
 
-import { QueryInfo } from '../base/models/QueryInfo';
-
-import { insertColumnFilter, QueryColumn, SchemaQuery } from '../base/models/model';
-
-import { caseInsensitive } from '../../util/utils';
+import { caseInsensitive, insertColumnFilter, QueryColumn, QueryInfo, SchemaQuery } from '../../..';
 
 import { resolveRenderer } from './renderers';
 import { QuerySelect } from './QuerySelect';

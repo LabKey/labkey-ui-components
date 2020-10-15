@@ -16,7 +16,7 @@
 import React, { ReactNode } from 'react';
 import { List, Map } from 'immutable';
 
-import { User } from '../base/models/model';
+import { User } from '../../..';
 
 import { ProductMenu } from './ProductMenu';
 import { SearchBox } from './SearchBox';

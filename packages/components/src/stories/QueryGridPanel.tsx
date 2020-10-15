@@ -19,12 +19,16 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 
 import { List } from 'immutable';
 
-import { QueryGridPanel } from '../internal/components/QueryGridPanel';
+import {
+    QueryGridPanel,
+    ManageDropdownButton,
+    QueryGridModel,
+    SchemaQuery,
+    SelectionMenuItem,
+    DataViewInfoTypes,
+} from '..';
 import { DataViewInfo, getStateQueryGridModel } from '../internal/models';
-import { ManageDropdownButton } from '../internal/components/buttons/ManageDropdownButton';
-import { QueryGridModel, SchemaQuery } from '../internal/components/base/models/model';
-import { SelectionMenuItem } from '../internal/components/menus/SelectionMenuItem';
-import { DataViewInfoTypes } from '../internal/constants';
+
 import './stories.scss';
 
 class QueryGridPanelWrapper extends React.Component {

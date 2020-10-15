@@ -22,16 +22,11 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { FieldExpansionToggle } from '../base/FieldExpansionToggle';
-
-import { DeleteIcon } from '../base/DeleteIcon';
-
-import { DragDropHandle } from '../base/DragDropHandle';
-
-import { SCHEMAS } from '../base/models/schemas';
+import { DeleteIcon, DragDropHandle, FieldExpansionToggle, SCHEMAS } from '../../..';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_FIELD_ADV,
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_DELETE,
@@ -48,14 +43,13 @@ import {
     SEVERITY_LEVEL_WARN,
 } from './constants';
 import {
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DomainField,
     DomainFieldError,
     IDomainFormDisplayOptions,
     IFieldChange,
-    PropDescType,
     resolveAvailableTypes,
 } from './models';
+import { PropDescType } from './PropDescType';
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
 import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName, isPrimaryKeyFieldLocked } from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';

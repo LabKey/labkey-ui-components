@@ -17,7 +17,7 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { Input } from 'formsy-react-components';
 
-import { QueryColumn } from '../base/models/model';
+import { QueryColumn } from '../../..';
 
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';

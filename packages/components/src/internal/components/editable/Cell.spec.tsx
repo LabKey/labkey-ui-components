@@ -17,11 +17,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import mock from 'xhr-mock';
 
-import { getStateQueryGridModel } from '../../models';
+import { getStateQueryGridModel, gridInit, QueryColumn, SchemaQuery } from '../../..';
 import * as constants from '../../../test/data/constants';
-import { gridInit } from '../../actions';
+
 import { initUnitTestMocks, sleep } from '../../testHelpers';
-import { QueryColumn, SchemaQuery } from '../base/models/model';
 
 import { Cell } from './Cell';
 

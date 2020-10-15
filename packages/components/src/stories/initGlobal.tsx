@@ -15,12 +15,8 @@
  */
 import { fromJS } from 'immutable';
 
-import { initQueryGridState } from '../internal/global';
+import { FileColumnRenderer, initNotificationsState, initQueryGridState, SCHEMAS } from '..';
 import { initBrowserHistoryState } from '../internal/util/global';
-
-import { FileColumnRenderer } from '../internal/renderers/FileColumnRenderer';
-import { SCHEMAS } from '../internal/components/base/models/schemas';
-import { initNotificationsState } from '../internal/components/notifications/global';
 
 import { initMocks } from './mock';
 

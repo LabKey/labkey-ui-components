@@ -2,7 +2,7 @@ import React from 'react';
 import { List } from 'immutable';
 import { mount } from 'enzyme';
 
-import { Alert } from '../base/Alert';
+import { Alert } from '../../..';
 
 import { BaseDomainDesigner } from './BaseDomainDesigner';
 import { DomainDesign } from './models';

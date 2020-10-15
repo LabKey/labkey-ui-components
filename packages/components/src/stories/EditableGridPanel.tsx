@@ -18,16 +18,21 @@ import { storiesOf } from '@storybook/react';
 import { boolean, number, select, text, withKnobs } from '@storybook/addon-knobs';
 import { List, Map } from 'immutable';
 
-import { gridInit } from '../internal/actions';
-import { getStateQueryGridModel } from '../internal/models';
-import { EditableGridPanel } from '../internal/components/editable/EditableGridPanel';
+import {
+    gridInit,
+    getStateQueryGridModel,
+    EditableGridPanel,
+    EditableColumnMetadata,
+    SchemaQuery,
+    GridColumn,
+} from '..';
+
 import * as constants from '../test/data/constants';
 
 import './stories.scss';
-import { EditableColumnMetadata } from '../internal/components/editable/EditableGrid';
-import { SchemaQuery } from '../internal/components/base/models/model';
+
 import { PlacementType } from '../internal/components/editable/Controls';
-import { GridColumn } from '..';
+
 import { GRID_EDIT_INDEX } from '../internal/components/base/models/constants';
 
 const CONTROLS_GROUP = 'Grid controls';

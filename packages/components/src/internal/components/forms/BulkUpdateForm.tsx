@@ -5,9 +5,8 @@ import { Utils } from '@labkey/api';
 import { getSelectedData } from '../../actions';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
 
-import { capitalizeFirstChar, getCommonDataValues, getUpdatedData } from '../../util/utils';
-import { QueryInfo } from '../base/models/QueryInfo';
-import { QueryColumn, SchemaQuery } from '../base/models/model';
+import { getCommonDataValues, getUpdatedData } from '../../util/utils';
+import { capitalizeFirstChar, QueryColumn, QueryInfo, SchemaQuery } from '../../..';
 
 import { QueryInfoForm } from './QueryInfoForm';
 
@@ -114,9 +113,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
 
     bulkUpdateSelectedRows = (data): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
-        const rows = !Utils.isEmptyObj(data)
-            ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols)
-            : [];
+        const rows = !Utils.isEmptyObj(data) ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols) : [];
 
         return updateRows(queryInfo.schemaQuery, rows);
     };

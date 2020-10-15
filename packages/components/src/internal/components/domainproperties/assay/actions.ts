@@ -21,7 +21,7 @@ import { DomainException } from '../models';
 
 import { buildURL } from '../../../url/ActionURL';
 import { setDomainException } from '../actions';
-import { Container } from '../../base/models/model';
+import { Container } from '../../../..';
 
 import { AssayProtocolModel } from './models';
 

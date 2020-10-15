@@ -17,10 +17,9 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 
-import { Container, QueryColumn, SchemaDetails } from '../base/models/model';
-import { naturalSort } from '../../util/utils';
-import { processSchemas } from '../base/models/schemas';
-import { buildURL } from '../../url/ActionURL';
+import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL } from '../../..';
+
+import { processSchemas } from '../../schemas';
 
 import {
     decodeLookup,
@@ -32,10 +31,10 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
-    PROP_DESC_TYPES,
     QueryInfoLite,
     updateSampleField,
 } from './models';
+import { PROP_DESC_TYPES } from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,

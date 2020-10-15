@@ -2,7 +2,8 @@ import React from 'react';
 import { List } from 'immutable';
 import { Button, Modal } from 'react-bootstrap';
 
-import { ConditionalFormat, PropDescType, PropertyValidator } from '../models';
+import { ConditionalFormat, PropertyValidator } from '../models';
+import { PropDescType } from '../PropDescType';
 import {
     DOMAIN_COND_FORMAT,
     DOMAIN_COND_FORMATS,

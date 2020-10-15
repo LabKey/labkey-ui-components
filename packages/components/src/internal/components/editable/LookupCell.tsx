@@ -22,7 +22,7 @@ import { initLookup, modifyCell, searchLookup } from '../../actions';
 import { cancelEvent } from '../../events';
 import { LookupStore, ValueDescriptor } from '../../models';
 import { KEYS, LOOKUP_DEFAULT_SIZE, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
-import { QueryColumn } from '../base/models/model';
+import { QueryColumn } from '../../..';
 
 const emptyList = List<ValueDescriptor>();
 

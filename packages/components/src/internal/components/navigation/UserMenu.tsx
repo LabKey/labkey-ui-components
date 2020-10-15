@@ -17,7 +17,7 @@
 import React from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
 
-import { User } from '../base/models/model';
+import { User } from '../../..';
 import { devToolsActive, toggleDevTools } from '../../util/utils';
 import { buildURL } from '../../url/ActionURL';
 import { AppURL } from '../../url/AppURL';

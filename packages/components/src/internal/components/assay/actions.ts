@@ -16,16 +16,35 @@
 import { List, Map, OrderedMap } from 'immutable';
 import { ActionURL, Ajax, Assay, AssayDOM, Filter, Utils } from '@labkey/api';
 
-import { AssayStateModel, naturalSortByProperty } from '../../..';
-import { getStateQueryGridModel } from '../../models';
-import { getQueryGridModel } from '../../global';
-import { buildURL } from '../../url/ActionURL';
-import { SCHEMAS } from '../base/models/schemas';
-import { AssayDefinitionModel, AssayUploadTabs, QueryColumn, QueryGridModel, SchemaQuery } from '../base/models/model';
+import {
+    AssayDefinitionModel,
+    AssayStateModel,
+    buildURL,
+    getQueryGridModel,
+    getStateQueryGridModel,
+    naturalSortByProperty,
+    QueryColumn,
+    QueryGridModel,
+    SCHEMAS,
+    SchemaQuery,
+} from '../../..';
+
+import { AssayUploadTabs } from '../base/models/model';
 
 import { AssayUploadResultModel } from './models';
 import { IAssayUploadOptions } from './AssayWizardModel';
-import { RUN_PROPERTIES_GRID_ID, RUN_PROPERTIES_REQUIRED_COLUMNS } from './constants';
+
+export const RUN_PROPERTIES_GRID_ID = 'assay-run-details';
+
+export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
+    'Name',
+    'RowId',
+    'ReplacesRun',
+    'ReplacedByRun',
+    'DataOutputs',
+    'DataOutputs/DataFileUrl',
+    'Batch'
+).toList();
 
 let assayDefinitionCache: { [key: string]: Promise<List<AssayDefinitionModel>> } = {};
 

@@ -16,7 +16,7 @@
 import { List, Map } from 'immutable';
 
 import { AssayDefinitionModel, AssayDomainTypes, IFile, QueryInfo } from '../..';
-import { AssayWizardModel } from '../../internal/components/assay/models';
+import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
 
 import assayWizardJSON from './assayWizardModel.json';
 

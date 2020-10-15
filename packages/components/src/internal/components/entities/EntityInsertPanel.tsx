@@ -100,7 +100,7 @@ class EntityGridLoader implements IGridLoader {
 
 interface OwnProps {
     disableMerge?: boolean;
-    afterEntityCreation?: (entityTypetName, filter, entityCount, actionStr) => void;
+    afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?) => void;
     getFileTemplateUrl?: (queryInfo: QueryInfo) => string;
     location?: Location;
     onCancel?: () => void;
@@ -694,7 +694,8 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                             insertModel.getTargetEntityTypeName(),
                             response.getFilter(),
                             response.rows.length,
-                            'created'
+                            'created',
+                            response.transactionAuditId
                         );
                     }
                 } else {
@@ -968,7 +969,8 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                         insertModel.getTargetEntityTypeName(),
                         null,
                         response.rowCount,
-                        'imported'
+                        'imported',
+                        response.transactionAuditId,
                     );
                 }
             })

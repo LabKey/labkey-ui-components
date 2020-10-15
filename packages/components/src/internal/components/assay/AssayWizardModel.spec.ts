@@ -21,7 +21,7 @@ import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 import { getStateQueryGridModel, gridInit, initQueryGridState, QueryInfo, SchemaQuery } from '../../..';
 import { AssayUploadTabs } from '../base/models/model';
 
-import { AssayWizardModel, parseDataTextToRunRows } from './models';
+import { AssayWizardModel, parseDataTextToRunRows } from './AssayWizardModel';
 
 const DATA_TEXT = 'test1\ttest2\n1\t2';
 

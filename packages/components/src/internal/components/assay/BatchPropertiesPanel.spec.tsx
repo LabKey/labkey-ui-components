@@ -7,7 +7,7 @@ import { TextInput, DatePickerInput, SelectInput, QueryFormInputs, QueryColumn }
 
 import { CheckboxInput } from '../forms/input/CheckboxInput';
 
-import { AssayWizardModel } from './models';
+import { AssayWizardModel } from './AssayWizardModel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 
 beforeAll(() => {

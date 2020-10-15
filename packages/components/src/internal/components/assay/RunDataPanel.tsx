@@ -41,7 +41,7 @@ import { getServerFilePreview } from '../base/actions';
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
 import { getRunPropertiesFileName, getRunPropertiesRow } from './actions';
-import { AssayWizardModel } from './models';
+import { AssayWizardModel } from './AssayWizardModel';
 
 const TABS = ['Upload Files', 'Copy-and-Paste Data', 'Enter Data Into Grid'];
 const PREVIEW_ROW_COUNT = 3;

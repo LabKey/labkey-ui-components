@@ -632,10 +632,12 @@ export class InsertRowsResponse extends Record({
     rows: Array<any>(),
     schemaQuery: undefined,
     error: undefined,
+    transactionAuditId: undefined
 }) {
     rows: any[];
     schemaQuery: SchemaQuery;
     error: InsertRowsErrorResponse;
+    transactionAuditId?: number;
 
     getFilter(): Filter.IFilter {
         const rowIds = [];
@@ -670,6 +672,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
                     new InsertRowsResponse({
                         schemaQuery,
                         rows: response.rows,
+                        transactionAuditId: response.transactionAuditId
                     })
                 );
             },

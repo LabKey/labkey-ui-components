@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { Component, ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
@@ -58,7 +58,7 @@ import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
-import { AssayWizardModel, IAssayUploadOptions } from './models';
+import { AssayWizardModel } from './AssayWizardModel';
 import {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
@@ -67,9 +67,6 @@ import {
     uploadAssayRunFiles,
 } from './actions';
 import { AssayUploadTabs } from '../base/models/model';
-
-let assayUploadTimer: number;
-const INIT_WIZARD_MODEL = new AssayWizardModel({ isInit: false });
 
 interface OwnProps {
     assayDefinition: AssayDefinitionModel;
@@ -93,43 +90,35 @@ type Props = OwnProps & WithFormStepsProps;
 interface State {
     schemaQuery: SchemaQuery;
     model: AssayWizardModel;
-    error: React.ReactNode;
+    error: ReactNode;
     showRenameModal: boolean;
     duplicateFileResponse?: DuplicateFilesResponse;
     importAgain?: boolean;
 }
 
-class AssayImportPanelsImpl extends React.Component<Props, State> {
+class AssayImportPanelsImpl extends Component<Props, State> {
     static defaultProps = {
         loadSelections: loadSelectedSamples,
     };
+
+    assayUploadTimer: number;
 
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
-            model: AssayImportPanelsImpl.getInitWizardModel(props),
-            showRenameModal: false,
             error: undefined,
+            model: this.getInitWizardModel(props),
+            schemaQuery: SchemaQuery.create(props.assayDefinition.protocolSchemaName, 'Data'),
+            showRenameModal: false,
         };
-    }
-
-    static getInitWizardModel(props: Props): AssayWizardModel {
-        return INIT_WIZARD_MODEL.merge({
-            runId: props.runId,
-        }) as AssayWizardModel;
-    }
-
-    isReimport(props: Props): boolean {
-        return props.runId !== undefined;
     }
 
     UNSAFE_componentWillMount(): void {
         const { location, selectStep } = this.props;
 
-        if (location && location.query && location.query.dataTab) {
-            selectStep(parseInt(location.query.dataTab));
+        if (location?.query?.dataTab) {
+            selectStep(parseInt(location.query.dataTab, 10));
         }
 
         this.initModel(this.props);
@@ -146,7 +135,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             this.setState(
                 () => ({
                     schemaQuery: SchemaQuery.create(nextProps.assayDefinition.protocolSchemaName, 'Data'),
-                    model: AssayImportPanelsImpl.getInitWizardModel(nextProps),
+                    model: this.getInitWizardModel(nextProps),
                 }),
                 () => {
                     this.initModel(nextProps);
@@ -158,6 +147,14 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
     componentWillUnmount() {
         // remove the QueryGridModel from the global state so it will reload for new assay on next mount
         removeQueryGridModel(this.getDataGridModel());
+    }
+
+    getInitWizardModel(props: Props): AssayWizardModel {
+        return new AssayWizardModel({ isInit: false, runId: props.runId });
+    }
+
+    isReimport(props: Props): boolean {
+        return props.runId !== undefined;
     }
 
     getRunPropertiesModel(props: Props): QueryGridModel {
@@ -190,7 +187,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         return !this.isReimport(props) || (runModel && runModel.isLoaded && batchModel && batchModel.isLoaded);
     }
 
-    initModel(props: Props) {
+    initModel = (props: Props): void => {
         const { assayDefinition, runId } = props;
 
         if (this.state.model.isInit) {
@@ -220,7 +217,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                 this.onGetQueryDetailsComplete
             );
         });
-    }
+    };
 
     initializeGridModels(props: Props) {
         const { model } = this.state;
@@ -275,7 +272,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         return runProperties;
     }
 
-    onGetQueryDetailsComplete() {
+    onGetQueryDetailsComplete = (): void => {
         const { assayDefinition, location } = this.props;
         const sampleColumnData = assayDefinition.getSampleColumn();
 
@@ -326,7 +323,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                 this.onInitModelComplete
             );
         }
-    }
+    };
 
     onInitModelComplete() {
         const runPropsData = this.getRunPropertiesRow(this.props, false);
@@ -359,10 +356,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         return getQueryGridModel(gridModel.getId()) || gridModel;
     }
 
-    handleFileChange = (attachments: Map<string, File>) => {
-        if (this.props.onDataChange) {
-            this.props.onDataChange(attachments.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
-        }
+    handleFileChange = (attachments: Map<string, File>): void => {
+        this.props.onDataChange?.(attachments.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
+
         this.setState(state => ({
             error: undefined,
             model: state.model.merge({
@@ -372,22 +368,19 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }));
     };
 
-    handleFileRemove = (attachmentName: string) => {
-        if (this.props.onDataChange) {
-            this.props.onDataChange(false, IMPORT_DATA_FORM_TYPES.FILE);
-        }
-        this.setState(state => {
-            return {
-                error: undefined,
-                model: state.model.merge({
-                    attachedFiles: Map<string, File>(),
-                    usePreviousRunFile: false,
-                }) as AssayWizardModel,
-            };
-        });
+    handleFileRemove = (): void => {
+        this.props.onDataChange?.(false, IMPORT_DATA_FORM_TYPES.FILE);
+
+        this.setState(state => ({
+            error: undefined,
+            model: state.model.merge({
+                attachedFiles: Map<string, File>(),
+                usePreviousRunFile: false,
+            }) as AssayWizardModel,
+        }));
     };
 
-    handleBatchChange = (fieldValues: any) => {
+    handleBatchChange = (fieldValues: any): void => {
         // Here we have to merge incoming values with model.batchProperties because of the way Formsy works.
         // FileInput fields are not Formsy components, so when they send updates they only send the value for their
         // field. When formsy sends updates it sends the entire form (but not file fields). So we need to merge
@@ -396,21 +389,18 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             ...this.state.model.batchProperties.toObject(),
             ...fieldValues,
         };
-        if (this.props.onDataChange) {
-            this.props.onDataChange(true, IMPORT_DATA_FORM_TYPES.OTHER);
-        }
+        this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
         this.handleChange('batchProperties', Map<string, any>(values ? values : {}));
     };
 
-    handleRunChange = (fieldValues: any) => {
+    handleRunChange = (fieldValues: any): void => {
         // See the note in handleBatchChange for why this method exists.
         const values = {
             ...this.state.model.runProperties.toObject(),
             ...fieldValues,
         };
 
-        let comment = this.state.model.comment;
-        let runName = this.state.model.runName;
+        let { comment, runName } = this.state.model;
 
         const cleanedValues = Object.keys(values).reduce((result, key) => {
             const value = values[key];
@@ -424,9 +414,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             return result;
         }, {});
 
-        if (this.props.onDataChange) {
-            this.props.onDataChange(true, IMPORT_DATA_FORM_TYPES.OTHER);
-        }
+        this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
             this.setState(state => ({
                 model: state.model.merge({
@@ -437,30 +425,26 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         });
     };
 
-    handleDataTextChange = (inputName: string, fieldValues: any) => {
-        if (this.props.onDataChange) {
-            this.props.onDataChange(fieldValues !== undefined && fieldValues !== '', IMPORT_DATA_FORM_TYPES.TEXT);
-        }
+    handleDataTextChange = (inputName: string, fieldValues: any): void => {
+        this.props.onDataChange?.(fieldValues !== undefined && fieldValues !== '', IMPORT_DATA_FORM_TYPES.TEXT);
         // use '' to clear out text area
         this.handleChange('dataText', fieldValues !== undefined ? fieldValues : '');
     };
 
-    handleChange(prop: string, value: any, onComplete?: Function) {
-        clearTimeout(assayUploadTimer);
+    handleChange = (prop: string, value: any, onComplete?: () => void): void => {
+        clearTimeout(this.assayUploadTimer);
 
-        assayUploadTimer = window.setTimeout(() => {
-            assayUploadTimer = null;
+        this.assayUploadTimer = window.setTimeout(() => {
+            this.assayUploadTimer = null;
             this.setState(state => ({
                 model: state.model.set(prop, value) as AssayWizardModel,
             }));
 
-            if (onComplete) {
-                onComplete();
-            }
+            onComplete?.();
         }, 250);
-    }
+    };
 
-    checkForDuplicateFiles(importAgain: boolean) {
+    checkForDuplicateFiles = (importAgain: boolean): void => {
         checkForDuplicateAssayFiles(this.state.model.attachedFiles.keySeq().toArray())
             .then(response => {
                 if (response.duplicate) {
@@ -478,9 +462,9 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     error: getActionErrorMessage('There was a problem checking for duplicate file names.', 'assay run'),
                 }));
             });
-    }
+    };
 
-    onSaveClick = (importAgain: boolean) => {
+    onSaveClick = (importAgain: boolean): void => {
         if (this.state.model.isFilesTab(this.props.currentStep)) {
             this.checkForDuplicateFiles(importAgain);
         } else {
@@ -488,7 +472,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
     };
 
-    onFinish(importAgain: boolean) {
+    onFinish = (importAgain: boolean): void => {
         const { currentStep, onSave, maxInsertRows } = this.props;
         const { model } = this.state;
         const data = model.prepareFormData(currentStep, this.getDataGridModel());
@@ -509,7 +493,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             dismissNotifications();
             const errorPrefix = 'There was a problem importing the assay results.';
             uploadAssayRunFiles(data)
-                .then((processedData: IAssayUploadOptions) => {
+                .then(processedData => {
                     importAssayRun(processedData)
                         .then((response: AssayUploadResultModel) => {
                             if (this.props.onDataChange) {
@@ -541,12 +525,10 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     );
                 });
         }
-    }
+    };
 
-    onSuccessContinue = (response: AssayUploadResultModel) => {
-        if (this.props.onSave) {
-            this.props.onSave(response);
-        }
+    onSuccessContinue = (response: AssayUploadResultModel): void => {
+        this.props.onSave?.(response);
 
         // update the local state model so that it clears the data
         this.setState(
@@ -572,25 +554,23 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         );
     };
 
-    onSuccessComplete = (response: AssayUploadResultModel) => {
+    onSuccessComplete = (response: AssayUploadResultModel): void => {
         this.setModelState(false, undefined);
         this.props.onComplete(response);
     };
 
-    onFailure = (error: any) => {
+    onFailure = (error: any): void => {
         this.setModelState(false, error);
     };
 
-    setModelState(isSubmitting: boolean, errorMsg: React.ReactNode) {
-        this.setState(state => {
-            return {
-                error: errorMsg,
-                model: state.model.merge({
-                    isSubmitting,
-                    errorMsg,
-                }) as AssayWizardModel,
-            };
-        });
+    setModelState(isSubmitting: boolean, errorMsg: ReactNode) {
+        this.setState(state => ({
+            error: errorMsg,
+            model: state.model.merge({
+                isSubmitting,
+                errorMsg,
+            }) as AssayWizardModel,
+        }));
     }
 
     getProgressSizeEstimate(): number {
@@ -611,7 +591,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
     }
 
-    onCancelRename = () => {
+    onCancelRename = (): void => {
         this.setState(() => ({
             showRenameModal: false,
             duplicateFileResponse: undefined,
@@ -619,7 +599,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }));
     };
 
-    onRenameConfirm = () => {
+    onRenameConfirm = (): void => {
         const { showRenameModal, importAgain } = this.state;
 
         if (showRenameModal) {
@@ -636,20 +616,7 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
         }
     };
 
-    renderFileRenameModal() {
-        const { model, duplicateFileResponse } = this.state;
-
-        return (
-            <ImportWithRenameConfirmModal
-                onConfirm={this.onRenameConfirm}
-                onCancel={this.onCancelRename}
-                originalName={model.attachedFiles.keySeq().get(0)}
-                newName={duplicateFileResponse.newFileNames[0]}
-            />
-        );
-    }
-
-    render() {
+    render(): ReactNode {
         const {
             currentStep,
             onCancel,
@@ -659,9 +626,10 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
             allowBulkUpdate,
             onSave,
         } = this.props;
-        const { model, showRenameModal } = this.state;
+        const { duplicateFileResponse, model, showRenameModal } = this.state;
 
         if (!model.isInit) {
+            // TODO: Remove this call. We should not be attempting to initialize/mutate during render()
             this.initializeGridModels(this.props);
             return <LoadingSpinner />;
         }
@@ -729,7 +697,14 @@ class AssayImportPanelsImpl extends React.Component<Props, State> {
                     title={isReimport ? 'Re-importing assay run' : 'Importing assay run'}
                     toggle={model.isSubmitting}
                 />
-                {showRenameModal && this.renderFileRenameModal()}
+                {showRenameModal && (
+                    <ImportWithRenameConfirmModal
+                        onConfirm={this.onRenameConfirm}
+                        onCancel={this.onCancelRename}
+                        originalName={model.attachedFiles.keySeq().get(0)}
+                        newName={duplicateFileResponse.newFileNames[0]}
+                    />
+                )}
             </>
         );
     }

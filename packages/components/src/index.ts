@@ -25,6 +25,7 @@ import { QuerySort } from './public/QuerySort';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, User } from './internal/components/base/models/User';
+import { naturalSort, naturalSortByProperty } from './public/sort';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
@@ -46,8 +47,6 @@ import {
     devToolsActive,
     generateId,
     getDisambiguatedSelectInputOptions,
-    naturalSort,
-    naturalSortByProperty,
     resolveKey,
     toggleDevTools,
     valueIsEmpty,

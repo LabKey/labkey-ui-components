@@ -18,7 +18,6 @@ import { Option } from 'react-select';
 import { Filter, Security, PermissionTypes, User, Utils } from '@labkey/api';
 
 import { getUsers, setUsers } from '../../global';
-import { similaritySortFactory } from '../../util/utils';
 import {
     getQueryDetails,
     ISelectRowsResult,
@@ -31,6 +30,7 @@ import {
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
 import { FOCUS_FLAG } from './constants';
+import { similaritySortFactory } from '../../util/similaritySortFactory';
 
 const emptyMap = Map<string, any>();
 

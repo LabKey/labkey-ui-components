@@ -8,11 +8,10 @@ import { List } from 'immutable';
 
 import { ExpandableContainer } from '../ExpandableContainer';
 
-import { naturalSort } from '../../util/utils';
-
 import { Principal, SecurityAssignment, SecurityRole } from './models';
 import { RemovableButton } from './RemovableButton';
 import { AddRoleAssignmentInput } from './AddRoleAssignmentInput';
+import { naturalSort } from '../../..';
 
 interface Props {
     role: SecurityRole;

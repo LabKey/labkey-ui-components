@@ -17,6 +17,7 @@ import { List, Map, Set, Iterable } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL';
+import { naturalSort } from '../..';
 
 const emptyList = List<string>();
 
@@ -66,59 +67,6 @@ export function resolveKeyFromJson(json: { schemaName: string[]; queryName: stri
             .join('.'),
         json.queryName
     );
-}
-
-/**
- * Compares two string objects for doing alphanumeric (natural) sorting.
- * Returns a positive number if the first string comes after the second in a natural sort; 0 if they are equal
- * and a negative number if the second comes after the first.
- * @param aso
- * @param bso
- */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function naturalSort(aso: any, bso: any): number {
-    // http://stackoverflow.com/questions/19247495/alphanumeric-sorting-an-array-in-javascript
-    if (aso === bso) return 0;
-    if (aso === undefined || aso === null || aso === '') return 1;
-    if (bso === undefined || bso === null || bso === '') return -1;
-
-    let a,
-        b,
-        a1,
-        b1,
-        i = 0,
-        n,
-        L,
-        rx = /(\.\d+)|(\d+(\.\d+)?)|([^\d.]+)|(\.\D+)|(\.$)/g;
-
-    a = aso.toString().toLowerCase().match(rx);
-    b = bso.toString().toLowerCase().match(rx);
-
-    L = a.length;
-    while (i < L) {
-        if (!b[i]) return 1;
-        a1 = a[i];
-        b1 = b[i++];
-        if (a1 !== b1) {
-            n = a1 - b1;
-            if (!isNaN(n)) return n;
-            return a1 > b1 ? 1 : -1;
-        }
-    }
-    return b[i] ? -1 : 0;
-}
-
-type SortFn<T> = (a: T, b: T) => number;
-
-/**
- * Creates a sort function that will natural sort an array of objects by property.
- * Ex:`
- *  const myArray = [{ displayName: 'Nick' }, { displayName: 'Alan' }, { displayName: 'Susan' }];
- *  myArray.sort(naturalSortByProperty('displayName'));
- * @param property: string, the property you want to sort on.
- */
-export function naturalSortByProperty<T>(property: keyof T): SortFn<T> {
-    return (a, b) => naturalSort(a[property], b[property]);
 }
 
 // Case insensitive Object reference. Returns undefined if either object or prop does not resolve.
@@ -245,54 +193,6 @@ export function debounce(func, wait, immediate?: boolean): () => void {
         clearTimeout(timeout);
         timeout = window.setTimeout(later, wait);
         if (callNow) func.apply(context, args);
-    };
-}
-
-export function contains(s: string, token: string, caseSensitive?: boolean): boolean {
-    return indexOf(s, token, caseSensitive) > -1;
-}
-
-export function hasPrefix(s: string, prefix: string, caseSensitive?: boolean): boolean {
-    return indexOf(s, prefix, caseSensitive) === 0;
-}
-
-function indexOf(source: string, token: string, caseSensitive?: boolean): number {
-    if (!source || !token) return -1;
-
-    const ss = caseSensitive === true ? source : source.toLowerCase();
-    const tt = caseSensitive === true ? token : token.toLowerCase();
-
-    return ss.indexOf(tt);
-}
-
-export function similaritySortFactory(token: string, caseSensitive?: boolean): (rawA: any, rawB: any) => number {
-    if (!token) return naturalSort;
-
-    // Derived from https://stackoverflow.com/a/47132167
-    return (rawA, rawB) => {
-        if (!rawA) return 1;
-        if (!rawB) return -1;
-
-        const a = caseSensitive === true ? rawA : rawA.toLowerCase();
-        const b = caseSensitive === true ? rawB : rawB.toLowerCase();
-
-        if (a === b) return 0;
-        if (a === token && b !== token) return -1;
-
-        const ahp = hasPrefix(a, token, caseSensitive);
-        const bhp = hasPrefix(b, token, caseSensitive);
-
-        if (ahp && !bhp) return -1;
-        if (!ahp && bhp) return 1;
-        if (ahp && bhp) return naturalSort(rawA, rawB);
-
-        const ac = contains(a, token, caseSensitive);
-        const bc = contains(b, token, caseSensitive);
-
-        if (ac && !bc) return -1;
-        if (!ac && bc) return 1;
-
-        return naturalSort(rawA, rawB);
     };
 }
 

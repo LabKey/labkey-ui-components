@@ -84,16 +84,19 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
     toggleDisabled = () => {
         const { selectedDate } = this.state;
 
-        this.setState(state => {
-            return {
-                isDisabled: !state.isDisabled,
-                selectedDate: state.isDisabled ? selectedDate : this.getInitDate(this.props),
-            };
-        }, () => {
-            if (this.props.onToggleDisable) {
-                this.props.onToggleDisable(this.state.isDisabled);
+        this.setState(
+            state => {
+                return {
+                    isDisabled: !state.isDisabled,
+                    selectedDate: state.isDisabled ? selectedDate : this.getInitDate(this.props),
+                };
+            },
+            () => {
+                if (this.props.onToggleDisable) {
+                    this.props.onToggleDisable(this.state.isDisabled);
+                }
             }
-        });
+        );
     };
 
     getInitDate(props: DatePickerInputProps) {

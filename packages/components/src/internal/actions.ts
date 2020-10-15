@@ -17,6 +17,22 @@ import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { Ajax, Filter, Query, Utils } from '@labkey/api';
 import $ from 'jquery';
 
+import {
+    AssayDefinitionModel,
+    buildURL,
+    caseInsensitive,
+    GRID_CHECKBOX_OPTIONS,
+    IGridResponse,
+    insertColumnFilter,
+    naturalSort,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    resolveKey,
+    SchemaQuery,
+    ViewInfo,
+} from '..';
+
 import { getQueryDetails, searchRows, selectRows } from './query/api';
 import { isEqual } from './query/filter';
 import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
@@ -58,21 +74,6 @@ import {
     updateSelections,
 } from './global';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
-import {
-    AssayDefinitionModel,
-    buildURL,
-    caseInsensitive,
-    GRID_CHECKBOX_OPTIONS,
-    IGridResponse,
-    insertColumnFilter,
-    naturalSort,
-    QueryColumn,
-    QueryGridModel,
-    QueryInfo,
-    resolveKey,
-    SchemaQuery,
-    ViewInfo
-} from '..';
 import { getSortFromUrl } from './url/ActionURL';
 import { GRID_EDIT_INDEX } from './components/base/models/constants';
 import { intersect, not } from './util/utils';

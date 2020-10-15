@@ -18,15 +18,13 @@ import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { getLocation, Location, replaceParameters } from '../../..';
+import { getLocation, Location, replaceParameters, QueryColumn, QueryGridModel, QueryInfo } from '../../..';
 import { OmniBox } from '../omnibox/OmniBox';
 import { Action, ActionValue, ActionValueCollection } from '../omnibox/actions/Action';
 import { FilterAction } from '../omnibox/actions/Filter';
 import { SearchAction } from '../omnibox/actions/Search';
 import { SortAction } from '../omnibox/actions/Sort';
 import { ViewAction } from '../omnibox/actions/View';
-import { QueryColumn, QueryGridModel } from '../../..';
-import { QueryInfo } from '../../..';
 
 /**
  * This is a mapping of actions with their associated URL param. It is keyed by the name of action

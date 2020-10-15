@@ -1,6 +1,7 @@
 // Consider having this implement Query.QueryColumn from @labkey/api
 // commented out attributes are not used in app
 import { Record } from 'immutable';
+
 import { SchemaQuery } from './SchemaQuery';
 
 export class QueryLookup extends Record({

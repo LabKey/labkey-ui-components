@@ -1,9 +1,7 @@
 import React from 'react';
 import { Button, Col, Form, FormControl, Modal, Row } from 'react-bootstrap';
 
-import { User } from '../../..';
-import { LabelHelpTip } from '../../..';
-import { Alert } from '../../..';
+import { User, LabelHelpTip, Alert } from '../../..';
 
 import { ChangePasswordModel } from './models';
 import { changePassword, getPasswordRuleInfo } from './actions';

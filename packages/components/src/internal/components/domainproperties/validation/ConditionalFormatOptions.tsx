@@ -19,7 +19,7 @@ import {
 } from '../constants';
 
 import { PropertyValidator } from '../models';
-import { PropDescType  } from '../PropDescType';
+import { PropDescType } from '../PropDescType';
 
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 

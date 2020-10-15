@@ -17,8 +17,8 @@ import {
     QueryInfo,
     QueryColumn,
     SCHEMAS,
-    User
-} from '../../../';
+    User,
+} from '../../..';
 
 import { getUserDetailsRowData, updateUserDetails } from './actions';
 

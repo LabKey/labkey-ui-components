@@ -16,10 +16,9 @@
 import React from 'react';
 import { fromJS, List } from 'immutable';
 
-import { selectRows } from '../..';
+import { selectRows, IGridLoader, IGridResponse, QueryGridModel } from '../..';
 import { getSelected } from '../actions';
 
-import { IGridLoader, IGridResponse, QueryGridModel } from '../..';
 import { IGridSelectionResponse } from './base/models/model';
 
 class GridLoader implements IGridLoader {

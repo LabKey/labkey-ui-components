@@ -16,11 +16,9 @@
 import { List, Map, Set } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
-import { QueryColumn } from '../../../..';
+import { QueryColumn, QueryInfo } from '../../../..';
 
 import { parseColumns, resolveFieldKey } from '../utils';
-
-import { QueryInfo } from '../../../..';
 
 import { Action, ActionOption, ActionValue, Value } from './Action';
 

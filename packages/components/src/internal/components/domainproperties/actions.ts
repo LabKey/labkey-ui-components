@@ -17,11 +17,9 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
 
-import { Container } from '../../..'
-import { QueryColumn, SchemaDetails } from '../../..';
-import { naturalSort } from '../../..';
-import { buildURL } from '../../..';
-import { processSchemas } from '../../../internal/schemas';
+import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL } from '../../..';
+
+import { processSchemas } from '../../schemas';
 
 import {
     decodeLookup,

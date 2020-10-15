@@ -16,8 +16,7 @@
 import React from 'react';
 import { Record } from 'immutable';
 
-import { generateId } from '../../..';
-import { User } from '../../..';
+import { generateId, User } from '../../..';
 
 export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;
 

@@ -113,9 +113,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
 
     bulkUpdateSelectedRows = (data): Promise<any> => {
         const { queryInfo, updateRows } = this.props;
-        const rows = !Utils.isEmptyObj(data)
-            ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols)
-            : [];
+        const rows = !Utils.isEmptyObj(data) ? getUpdatedData(this.state.dataForSelection, data, queryInfo.pkCols) : [];
 
         return updateRows(queryInfo.schemaQuery, rows);
     };

@@ -15,12 +15,11 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
-import { resetQueryGridState } from './global';
-import { CellMessage, EditorModel, ValueDescriptor } from './models';
-
 import sampleSet2QueryInfo from '../test/data/sampleSet2-getQueryDetails.json';
-import { QueryInfo } from '..';
-import { QueryGridModel, SchemaQuery } from '..';
+import { QueryInfo, QueryGridModel, SchemaQuery } from '..';
+
+import { CellMessage, EditorModel, ValueDescriptor } from './models';
+import { resetQueryGridState } from './global';
 
 const schemaQ = new SchemaQuery({
     schemaName: 'samples',

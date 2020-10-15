@@ -19,7 +19,15 @@ import { Filter, Security, PermissionTypes, User, Utils } from '@labkey/api';
 
 import { getUsers, setUsers } from '../../global';
 import { similaritySortFactory } from '../../util/utils';
-import { getQueryDetails, ISelectRowsResult, naturalSort, QueryInfo, QuerySelectOwnProps, searchRows, selectRows } from '../../..';
+import {
+    getQueryDetails,
+    ISelectRowsResult,
+    naturalSort,
+    QueryInfo,
+    QuerySelectOwnProps,
+    searchRows,
+    selectRows,
+} from '../../..';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
 import { FOCUS_FLAG } from './constants';

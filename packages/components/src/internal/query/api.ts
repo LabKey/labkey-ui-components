@@ -27,7 +27,7 @@ import {
     resolveSchemaQuery,
     SchemaQuery,
     URLResolver,
-    ViewInfo
+    ViewInfo,
 } from '../..';
 
 const queryDetailsCache: { [key: string]: Promise<QueryInfo> } = {};
@@ -632,7 +632,7 @@ export class InsertRowsResponse extends Record({
     rows: Array<any>(),
     schemaQuery: undefined,
     error: undefined,
-    transactionAuditId: undefined
+    transactionAuditId: undefined,
 }) {
     rows: any[];
     schemaQuery: SchemaQuery;
@@ -672,7 +672,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
                     new InsertRowsResponse({
                         schemaQuery,
                         rows: response.rows,
-                        transactionAuditId: response.transactionAuditId
+                        transactionAuditId: response.transactionAuditId,
                     })
                 );
             },

@@ -2,9 +2,8 @@ import React from 'react';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
-import { importData } from '../../../..';
-import { Progress } from '../../../..';
-import { resolveErrorMessage } from '../../../..';
+import { importData, Progress, resolveErrorMessage } from '../../../..';
+
 import { DomainDesign, DomainFieldIndexChange, IAppDomainHeader } from '../models';
 import DomainForm from '../DomainForm';
 import { getDomainPanelStatus, saveDomain } from '../actions';

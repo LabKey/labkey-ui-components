@@ -27,11 +27,12 @@ import { Alert } from '../../base/Alert';
 
 import { resolveErrorMessage } from '../../../util/messaging';
 
+import { QueryColumn } from '../../../..';
+
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
-import { QueryColumn } from '../../../..';
 
 interface DetailEditingProps {
     queryModel: QueryGridModel;

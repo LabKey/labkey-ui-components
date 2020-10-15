@@ -21,10 +21,8 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { PreviewGrid } from '../PreviewGrid';
 import { Chart } from '../chart/Chart';
-import { LoadingSpinner } from '../../..';
-import { SVGIcon } from '../../..';
-import { SchemaQuery } from '../../..';
-import { Alert } from '../../..';
+import { LoadingSpinner, SVGIcon, SchemaQuery, Alert } from '../../..';
+
 import { DataViewInfo, IDataViewInfo } from '../../models';
 import { DataViewInfoTypes, GRID_REPORTS, VISUALIZATION_REPORTS } from '../../constants';
 

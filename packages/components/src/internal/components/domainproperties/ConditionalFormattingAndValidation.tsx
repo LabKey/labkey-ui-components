@@ -11,13 +11,13 @@ import {
 
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
-import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_COND_FORMAT, DOMAIN_RANGE_VALIDATOR, DOMAIN_REGEX_VALIDATOR } from './constants';
 import {
-    ConditionalFormat,
-    DomainField,
-    IDomainFormDisplayOptions,
-    PropertyValidator,
-} from './models';
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    DOMAIN_COND_FORMAT,
+    DOMAIN_RANGE_VALIDATOR,
+    DOMAIN_REGEX_VALIDATOR,
+} from './constants';
+import { ConditionalFormat, DomainField, IDomainFormDisplayOptions, PropertyValidator } from './models';
 import { ValidatorModal } from './validation/ValidatorModal';
 import { RegexValidationOptions } from './validation/RegexValidationOptions';
 import { RangeValidationOptions } from './validation/RangeValidationOptions';

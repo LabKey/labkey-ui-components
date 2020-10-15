@@ -1,12 +1,15 @@
 import { PermissionTypes } from '@labkey/api';
-import { hasAllPermissions } from './User';
+
 import {
     TEST_USER_APP_ADMIN,
     TEST_USER_ASSAY_DESIGNER,
     TEST_USER_AUTHOR,
-    TEST_USER_EDITOR, TEST_USER_FOLDER_ADMIN,
+    TEST_USER_EDITOR,
+    TEST_USER_FOLDER_ADMIN,
     TEST_USER_READER,
 } from '../../../../test/data/users';
+
+import { hasAllPermissions } from './User';
 
 describe('hasAllPermissions', () => {
     test('user without permission', () => {

@@ -29,9 +29,10 @@ import {
     SchemaQuery,
 } from '../../..';
 
+import { AssayUploadTabs } from '../base/models/model';
+
 import { AssayUploadResultModel } from './models';
 import { IAssayUploadOptions } from './AssayWizardModel';
-import { AssayUploadTabs } from '../base/models/model';
 
 export const RUN_PROPERTIES_GRID_ID = 'assay-run-details';
 

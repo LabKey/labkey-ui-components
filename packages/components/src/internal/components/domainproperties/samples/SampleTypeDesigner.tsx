@@ -4,26 +4,25 @@ import { Domain } from '@labkey/api';
 
 import { DomainDesign, DomainDetails, IDomainField } from '../models';
 import DomainForm from '../DomainForm';
-import { IParentOption } from '../../../..';
-
+import {
+    IParentOption,
+    Alert,
+    generateId,
+    initQueryGridState,
+    naturalSort,
+    resolveErrorMessage,
+    SCHEMAS,
+} from '../../../..';
 
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { IParentAlias, SampleTypeModel } from './models';
-import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
-import {
-    Alert,
-    generateId,
-    initQueryGridState,
-    naturalSort,
-    resolveErrorMessage,
-    SCHEMAS
-} from '../../../..';
 import { SAMPLE_TYPE } from '../PropDescType';
 
+import { IParentAlias, SampleTypeModel } from './models';
+import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 
 const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,

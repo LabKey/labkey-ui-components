@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 import { fromJS, List, Map, OrderedMap, OrderedSet, Record } from 'immutable';
-import {
-    Filter,
-    Query,
-    Utils,
-} from '@labkey/api';
+import { Filter, Query, Utils } from '@labkey/api';
 
-import {
-    intersect,
-    toLowerSafe,
-} from '../../../util/utils';
+import { intersect, toLowerSafe } from '../../../util/utils';
 
-import { GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
 import {
     AppURL,
     GRID_CHECKBOX_OPTIONS,
@@ -36,6 +28,8 @@ import {
     SchemaQuery,
     WHERE_FILTER_TYPE,
 } from '../../../..';
+
+import { GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();

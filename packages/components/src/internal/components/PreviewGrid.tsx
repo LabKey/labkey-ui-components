@@ -2,12 +2,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { resolveErrorMessage } from '../..';
-
-import { SchemaQuery } from '../..';
-import { getQueryDetails, QueryInfo, selectRows } from '../..';
-import { LoadingSpinner } from '../..';
-import { Grid } from '../..';
+import { resolveErrorMessage, SchemaQuery, getQueryDetails, QueryInfo, selectRows, LoadingSpinner, Grid } from '../..';
 
 interface PreviewGridProps {
     schemaQuery: SchemaQuery;

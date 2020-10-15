@@ -7,9 +7,18 @@ import { List, Map } from 'immutable';
 import { Button, Row, Col, MenuItem } from 'react-bootstrap';
 import { Filter, ActionURL } from '@labkey/api';
 
-import { capitalizeFirstChar, getQueryGridModel, getStateQueryGridModel, ManageDropdownButton, QueryGridModel, SecurityPolicy, SecurityRole, SelectionMenuItem, SCHEMAS } from '../../..';
+import {
+    capitalizeFirstChar,
+    getQueryGridModel,
+    getStateQueryGridModel,
+    ManageDropdownButton,
+    QueryGridModel,
+    SecurityPolicy,
+    SecurityRole,
+    SelectionMenuItem,
+    SCHEMAS,
+} from '../../..';
 import { QueryGridPanel } from '../QueryGridPanel';
-
 
 import { getLocation, getRouteFromLocationHash, replaceParameter } from '../../util/URL';
 import { getBrowserHistory } from '../../util/global';

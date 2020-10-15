@@ -18,7 +18,7 @@ import { Set } from 'immutable';
 export const QUERY_GRID_PREFIX = 'labkey-querygrid-';
 export const FASTA_EXPORT_CONTROLLER = 'biologics';
 export const GENBANK_EXPORT_CONTROLLER = 'biologics';
-export const BARTENDER_EXPORT_CONTROLLER = "sampleManager";
+export const BARTENDER_EXPORT_CONTROLLER = 'sampleManager';
 export const SAMPLE_SET_DISPLAY_TEXT = 'Sample Type';
 
 export const MAX_EDITABLE_GRID_ROWS = 1000;
@@ -30,7 +30,7 @@ export enum EXPORT_TYPES {
     TSV,
     FASTA,
     GENBANK,
-    LABEL
+    LABEL,
 }
 
 export enum MODIFICATION_TYPES {
@@ -219,4 +219,3 @@ export enum IMPORT_DATA_FORM_TYPES {
     FILE,
     OTHER,
 }
-

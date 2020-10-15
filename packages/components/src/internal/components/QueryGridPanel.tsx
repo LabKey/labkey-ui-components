@@ -23,14 +23,13 @@ import { Utils } from '@labkey/api';
 import { gridInit } from '../actions';
 import { getQueryGridModel } from '../global';
 
-import { QueryGrid } from './QueryGrid';
-import { QueryGridBar, QueryGridBarButtons } from './gridbar/QueryGridBar';
-
 import '../../theme/index.scss';
-import { QueryGridModel } from '../..';
-import { LoadingSpinner } from '../..';
-import { Alert } from '../..';
+import { QueryGridModel, LoadingSpinner, Alert } from '../..';
+
 import { EXPORT_TYPES } from '../constants';
+
+import { QueryGridBar, QueryGridBarButtons } from './gridbar/QueryGridBar';
+import { QueryGrid } from './QueryGrid';
 
 interface Props {
     model: QueryGridModel | List<QueryGridModel>;

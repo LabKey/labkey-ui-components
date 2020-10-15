@@ -15,9 +15,6 @@
  */
 import { Iterable, List, Map, OrderedMap, Record, Set } from 'immutable';
 
-import { genCellKey } from './actions';
-import { getQueryColumnRenderers, getQueryMetadata } from './global';
-import { DefaultGridLoader } from './components/GridLoader';
 import {
     AppURL,
     DataViewInfoTypes,
@@ -26,8 +23,12 @@ import {
     QueryGridModel,
     resolveSchemaQuery,
     SchemaQuery,
-    ViewInfo
-} from '../';
+    ViewInfo,
+} from '..';
+
+import { genCellKey } from './actions';
+import { getQueryColumnRenderers, getQueryMetadata } from './global';
+import { DefaultGridLoader } from './components/GridLoader';
 import { GRID_EDIT_INDEX } from './components/base/models/constants';
 import { IQueryGridModel } from './components/base/models/model';
 

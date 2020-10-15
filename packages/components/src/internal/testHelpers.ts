@@ -4,9 +4,11 @@ import mock, { proxy } from 'xhr-mock';
 
 import { initLineageMocks, initQueryGridMocks, initUserPropsMocks } from '../stories/mock';
 import { initQueryGridState, QueryInfo } from '..';
+
+import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
+
 import { applyQueryMetadata, handle132Response } from './query/api';
 import { bindColumnRenderers } from './renderers';
-import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
 import { URLService } from './util/URLService';
 import { URL_MAPPERS } from './util/URLResolver';
 

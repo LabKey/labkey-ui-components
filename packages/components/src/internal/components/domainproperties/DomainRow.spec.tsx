@@ -19,10 +19,7 @@ import { List } from 'immutable';
 import { mount } from 'enzyme';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
-import {
-    DomainField,
-    DomainFieldError,
-} from './models';
+import { DomainField, DomainFieldError } from './models';
 import {
     ATTACHMENT_TYPE,
     DATETIME_TYPE,

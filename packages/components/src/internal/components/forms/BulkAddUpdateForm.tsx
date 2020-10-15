@@ -3,8 +3,9 @@ import { List } from 'immutable';
 
 import { capitalizeFirstChar, EditorModel, getEditorModel, QueryColumn, QueryGridModel, QueryInfo } from '../../..';
 
-import { QueryInfoForm } from './QueryInfoForm';
 import { getCommonDataValues } from '../../util/utils';
+
+import { QueryInfoForm } from './QueryInfoForm';
 
 interface Props {
     selectedRowIndexes: List<number>;

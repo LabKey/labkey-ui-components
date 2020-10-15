@@ -69,6 +69,8 @@ import {
 
 import { PlacementType } from '../editable/Controls';
 
+import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -79,7 +81,6 @@ import {
 } from './models';
 
 import { getEntityTypeData } from './actions';
-import { DATA_IMPORT_TOPIC } from "../../util/helpLinks";
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -970,7 +971,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                         null,
                         response.rowCount,
                         'imported',
-                        response.transactionAuditId,
+                        response.transactionAuditId
                     );
                 }
             })

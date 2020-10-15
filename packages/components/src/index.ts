@@ -348,7 +348,6 @@ import {
 import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
 import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
-
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
 import { QueryModelLoader } from './public/QueryModel/QueryModelLoader';

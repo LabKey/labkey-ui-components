@@ -29,17 +29,8 @@ import {
     setDomainFields,
     updateDomainException,
 } from './actions';
-import {
-    DomainDesign,
-    DomainException,
-    DomainField,
-} from './models';
-import {
-    DATETIME_TYPE,
-    DOUBLE_TYPE,
-    INTEGER_TYPE,
-    TEXT_TYPE,
-} from './PropDescType';
+import { DomainDesign, DomainException, DomainField } from './models';
+import { DATETIME_TYPE, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from './PropDescType';
 import {
     DOMAIN_FIELD_PREFIX,
     FIELD_NAME_CHAR_WARNING_INFO,

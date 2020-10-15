@@ -1,4 +1,5 @@
 import { Record } from 'immutable';
+
 import { decodePart, resolveKey } from '../internal/util/utils';
 
 const APP_SELECTION_PREFIX = 'appkey';

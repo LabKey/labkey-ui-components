@@ -18,7 +18,6 @@ import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
-
 import { IMPORT_DATA_FORM_TYPES } from '../../constants';
 
 import {
@@ -52,6 +51,8 @@ import {
     WizardNavButtons,
 } from '../../..';
 
+import { AssayUploadTabs } from '../base/models/model';
+
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';
 import { RunDataPanel } from './RunDataPanel';
@@ -66,7 +67,6 @@ import {
     getRunPropertiesFileName,
     uploadAssayRunFiles,
 } from './actions';
-import { AssayUploadTabs } from '../base/models/model';
 
 interface OwnProps {
     assayDefinition: AssayDefinitionModel;

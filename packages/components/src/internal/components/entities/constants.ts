@@ -1,7 +1,8 @@
 import { SCHEMAS } from '../../schemas';
 
+import { DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
+
 import { EntityDataType } from './models';
-import { DELETE_SAMPLES_TOPIC } from "../../util/helpLinks";
 
 export const DATA_DELETE_CONFIRMATION_ACTION = 'getDataDeleteConfirmationData.api';
 export const SAMPLE_DELETE_CONFIRMATION_ACTION = 'getMaterialDeleteConfirmationData.api';

@@ -15,8 +15,7 @@
  */
 import React from 'react';
 
-import { ConfirmModal } from '../../..';
-import { helpLinkNode } from '../../..';
+import { ConfirmModal, helpLinkNode } from '../../..';
 
 import { DeleteConfirmationData } from './actions';
 import { EntityDataType } from './models';
@@ -26,7 +25,7 @@ interface Props {
     onCancel: () => any;
     confirmationData: DeleteConfirmationData;
     entityDataType: EntityDataType;
-    verb?: string
+    verb?: string;
 }
 
 /**
@@ -37,8 +36,8 @@ interface Props {
  */
 export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any> {
     static defaultProps = {
-        verb: 'deleted'
-    }
+        verb: 'deleted',
+    };
 
     getConfirmationProperties(): { message: any; title: string; canDelete: boolean } {
         const { confirmationData, entityDataType, verb } = this.props;
@@ -73,7 +72,16 @@ export class EntityDeleteConfirmModalDisplay extends React.Component<Props, any>
                 text += ' because they have ' + dependencyText + '.';
             }
         } else {
-            text = "You've selected " + totalNum + ' ' + totalNoun + ' but only ' + numCanDelete + ' can be ' + verb + '. ';
+            text =
+                "You've selected " +
+                totalNum +
+                ' ' +
+                totalNoun +
+                ' but only ' +
+                numCanDelete +
+                ' can be ' +
+                verb +
+                '. ';
             text += numCannotDelete + ' ' + cannotDeleteNoun + ' cannot be deleted because ';
             text += (numCannotDelete === 1 ? ' it has ' : ' they have ') + dependencyText + '.';
         }

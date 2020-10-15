@@ -47,9 +47,10 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { EditorModel, ValueDescriptor } from '../../models';
 import { BulkAddUpdateForm } from '../forms/BulkAddUpdateForm';
 
+import { QueryColumn } from '../../..';
+
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell } from './Cell';
-import { QueryColumn } from '../../..';
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,

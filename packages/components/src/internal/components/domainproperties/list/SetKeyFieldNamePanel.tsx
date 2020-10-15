@@ -9,8 +9,9 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
 
-import { ListModel } from './models';
 import { AUTOINT_TYPE, PropDescType } from '../PropDescType';
+
+import { ListModel } from './models';
 
 const AUTO_INC_KEY_OPTION_TEXT = 'Auto integer key';
 const AUTO_INC_KEY_OPTION_VALUE = -1;

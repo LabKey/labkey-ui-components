@@ -24,11 +24,7 @@ import * as constants from '../test/data/constants';
 
 import { List, Map } from 'immutable';
 
-import { EditableGridModal } from '..';
-import { gridInit } from '..';
-import { EditableColumnMetadata } from '..';
-import { EditableGridLoader } from '..';
-import { SchemaQuery } from '..';
+import { EditableGridModal, gridInit, EditableColumnMetadata, EditableGridLoader, SchemaQuery } from '..';
 
 storiesOf('EditableGridModal', module)
     .addDecorator(withKnobs)

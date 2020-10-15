@@ -17,14 +17,11 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 
-import { getStateQueryGridModel } from '..';
+import { getStateQueryGridModel, gridInit, getQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '..';
 import { QueryInfoForm } from '../internal/components/forms/QueryInfoForm';
 import * as constants from '../test/data/constants';
-import { gridInit } from '..';
+
 import './stories.scss';
-import { getQueryGridModel } from '..';
-import { LoadingSpinner } from '..';
-import { QueryGridModel, SchemaQuery } from '..';
 
 function formSubmit(data: any): Promise<any> {
     console.log(data);

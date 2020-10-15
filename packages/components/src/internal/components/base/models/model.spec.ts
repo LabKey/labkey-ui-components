@@ -37,7 +37,7 @@ import {
     QueryColumn,
     QueryGridModel,
     QueryInfo,
-    SchemaQuery
+    SchemaQuery,
 } from '../../../..';
 
 describe('QueryGridModel', () => {

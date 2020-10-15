@@ -13,11 +13,7 @@ import {
     MISSING_VALUES_TOPIC,
 } from '../../util/helpLinks';
 
-import {
-    DomainField,
-    IDomainFormDisplayOptions,
-    IFieldChange,
-} from './models';
+import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { DATETIME_TYPE, PropDescType } from './PropDescType';
 import { createFormInputId, createFormInputName, getCheckedValue, getNameFromId } from './actions';
 import {

@@ -19,8 +19,8 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 
 import { QueryGrid } from '../internal/components/QueryGrid';
 import { updateQueryGridModel } from '../internal/global';
-import { getStateQueryGridModel } from '..';
-import { QueryGridModel, SchemaQuery } from '..';
+import { getStateQueryGridModel, QueryGridModel, SchemaQuery } from '..';
+
 import './stories.scss';
 
 storiesOf('QueryGrid', module)

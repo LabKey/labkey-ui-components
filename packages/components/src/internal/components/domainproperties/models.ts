@@ -33,7 +33,22 @@ import {
     UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
-import { ATTACHMENT_TYPE, DATETIME_TYPE, DOUBLE_TYPE, FILE_TYPE, FLAG_TYPE, INTEGER_TYPE, LOOKUP_TYPE, PARTICIPANT_TYPE, PropDescType, PROP_DESC_TYPES, READONLY_DESC_TYPES, SAMPLE_TYPE, TEXT_TYPE, USERS_TYPE } from './PropDescType';
+import {
+    ATTACHMENT_TYPE,
+    DATETIME_TYPE,
+    DOUBLE_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    INTEGER_TYPE,
+    LOOKUP_TYPE,
+    PARTICIPANT_TYPE,
+    PropDescType,
+    PROP_DESC_TYPES,
+    READONLY_DESC_TYPES,
+    SAMPLE_TYPE,
+    TEXT_TYPE,
+    USERS_TYPE,
+} from './PropDescType';
 
 export interface IFieldChange {
     id: string;

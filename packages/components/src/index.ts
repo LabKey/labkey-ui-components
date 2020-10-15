@@ -22,7 +22,7 @@ import { SchemaDetails } from './internal/SchemaDetails';
 import { getSchemaQuery, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
 import { SCHEMAS } from './internal/schemas';
 import { QuerySort } from './public/QuerySort';
-import { LoadingState } from './public/LoadingState';
+import { isLoading, LoadingState } from './public/LoadingState';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, User } from './internal/components/base/models/User';
 import {

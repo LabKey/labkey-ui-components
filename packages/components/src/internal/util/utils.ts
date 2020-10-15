@@ -16,7 +16,6 @@
 import { List, Map, Set, Iterable } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { LoadingState } from '../..';
 import { hasParameter, toggleParameter } from '../url/ActionURL';
 
 const emptyList = List<string>();
@@ -296,11 +295,6 @@ export function similaritySortFactory(token: string, caseSensitive?: boolean): (
         return naturalSort(rawA, rawB);
     };
 }
-
-// TODO: move to LoadingState.ts
-export const isLoading = (loadingState: LoadingState): boolean => {
-    return loadingState === LoadingState.INITIALIZED || loadingState === LoadingState.LOADING;
-};
 
 /**
  * Performs an equality check on two arrays, returning true of the arrays are the same size

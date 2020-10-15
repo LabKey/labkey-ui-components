@@ -74,7 +74,7 @@ class ExampleComponentImpl extends PureComponent<Props> {
 export const ExampleComponent = withQueryModels<MyComponentProps>(ExampleComponentImpl);
 
 // The component returned from withQueryModels, ExampleComponent in this case, now has the following props type:
-// MyComponentProps & MakeQueryModels. To use the component you pass it a queryConfig and it will isntantiate the
+// MyComponentProps & MakeQueryModels. To use the component you pass it a queryConfig and it will instantiate the
 // models you want and pass them to ExampleComponentImpl:
 const queryConfigs = { assayModel: { schemaQuery: SchemaQuery.create('assay.general.amino acids', 'Runs') }};
 <ExampleComponent title="My Example Component" queryConfigs={queryConfigs} autoLoad />

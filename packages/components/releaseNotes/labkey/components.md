@@ -1,12 +1,16 @@
 # @labkey/components
 
+### version TBD
+*Released*: TBD
+* Add new application URL in App for managing storage units
+
 ### version 0.99.0
 *Released*: 14 October 2020
 * Introduce new mechanisms for loading assay resources; `withAssayModels`, `withAssayModelsFromLocation` and `asayPage`.
 * `withAssayModels` replaces implementation of `AssayProvider`.
 * Added unit test coverage for `withAssayModels` and `withAssayModelsFromLocation`.
 * Converted `AssayStateModel` and `AssayUploadResultModel` to Immer from ImmutableJS Records.
-* Streamlined `AssayStateModel` to be more straight-forward for getting and setting `AssayDefinitionModel`s.
+* Streamlined `AssayStateModel` to be more straightforward for getting and setting `AssayDefinitionModel`s.
 * `<AssayImportSubMenuItem/>` switched to use `withAssayModels`.
 * Add `isLoading` as a utility method for working with `LoadingState`.
 

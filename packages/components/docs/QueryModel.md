@@ -142,9 +142,16 @@ function MyComponent(props: MyComponentProps) {
 
 
 ### DetailPanel
-A common use case is to render the details of a single row from a SchemaQuery, we provide a component, DetailPanel, that does this for you. There are two versions of this component: `DetailPanel` and `DetailPanelWithModel`. `DetailPanel` expects you to have a `QueryModel` already and will render the details for you. `DetailPanelWithModel` takes a QueryConfig object and will instantiate and load the QueryModel for you. `DetailPanel` and `DetailPanelWithModel` can be rendered as a Bootstrap panel by setting the `asPanel` prop to true.
+A common use case is to render the details of a single row from a SchemaQuery, we provide a component, DetailPanel, that
+does this for you. There are two versions of this component: `DetailPanel` and `DetailPanelWithModel`. `DetailPanel`
+expects you to have a `QueryModel` already and will render the details for you. `DetailPanelWithModel` takes a
+QueryConfig object and will instantiate and load the QueryModel for you. `DetailPanel` and `DetailPanelWithModel` can be
+rendered as a Bootstrap panel by setting the `asPanel` prop to true.
 
-When using the `DetailPanel` components you need to ensure that your QueryConfig objects have a value for the `keyValue` attribute. The `keyValue` attribute is the value of the primary key for the specified Schema/Query, this is typically value of the `RowId` column. If there is not a single primary key column you can instead set the `baseFilters` attribute of your QueryConfig to an array of `Filter` objects that will filter the Schema/Query to a single row of data.
+When using the `DetailPanel` components you need to ensure that your QueryConfig objects have a value for the `keyValue`
+attribute. The `keyValue` attribute is the value of the primary key for the specified Schema/Query, this is typically
+value of the `RowId` column. If there is not a single primary key column you can instead set the `baseFilters` attribute
+of your QueryConfig to an array of `Filter` objects that will filter the Schema/Query to a single row of data.
 
 #### Examples:
 **DetailPanelWithModel**

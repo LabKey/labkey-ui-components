@@ -181,12 +181,6 @@ Which would render something like:
 
 ![](detail_panel_as_panel.png)
 
-### EditableDetailPanel
-
-`EditableDetailPanel` is a version of `DetailPanel` that allows users to edit the row of data.
-
-[QueryColumn](../src/public/QueryColumn.ts#L30)
-
 ## Frequently asked Questions
 
 - I have changed my `queryConfigs` object but `withQueryModels` isn't updating my models, how to I fix this?

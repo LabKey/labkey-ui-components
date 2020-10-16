@@ -17,11 +17,9 @@ import React, { FC, memo, useMemo } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { LoadingSpinner, QueryColumn, QueryConfig, RequiresModelAndActions } from '../..';
+import { InjectedQueryModels, LoadingSpinner, QueryColumn, QueryConfig, RequiresModelAndActions, withQueryModels } from '../..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../../internal/components/forms/detail/DetailDisplay';
-
-import { InjectedQueryModels, withQueryModels } from './withQueryModels';
 
 interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
     queryColumns?: QueryColumn[];
@@ -48,21 +46,26 @@ export const DetailPanel: FC<DetailPanelProps> = memo(({ actions, model, queryCo
     return <DetailDisplay {...detailDisplayProps} data={fromJS(model.gridData)} displayColumns={displayColumns} />;
 });
 
-interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
+interface DetailPanelBodyProps extends DetailDisplaySharedProps {
     queryColumns?: QueryColumn[];
 }
 
-const DetailPanelWithModelBodyImpl: FC<DetailPanelWithModelProps & InjectedQueryModels> = memo(({ queryModels, ...rest }) => {
+const DetailPanelWithModelBodyImpl: FC<DetailPanelBodyProps & InjectedQueryModels> = memo(({ queryModels, ...rest }) => {
     return <DetailPanel {...rest} model={queryModels.model} />;
 });
 
-const DetailPanelWithModelBody = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelBodyImpl);
+const DetailPanelWithModelBody = withQueryModels<DetailPanelBodyProps>(DetailPanelWithModelBodyImpl);
 
-export const DetailPanelWithModel: FC<QueryConfig & DetailDisplaySharedProps> = memo(({ asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, ...queryConfig }) => {
+interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
+    queryConfig: QueryConfig;
+}
+
+export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(({ asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, queryConfig }) => {
     const queryConfigs = useMemo(() => ({ model: queryConfig }), [ queryConfig ]);
     const { keyValue, schemaQuery } = queryConfig;
+    const { schemaName, queryName } = schemaQuery;
     // Key is used here to ensure we re-mount the DetailPanel when the queryConfig changes
-    const key = useMemo(() => `${schemaQuery.schemaName}.${schemaQuery.queryName}.${keyValue}`, [schemaQuery, keyValue]);
+    const key = useMemo(() => `${schemaName}.${queryName}.${keyValue}`, [schemaQuery, keyValue]);
 
     return (
         <DetailPanelWithModelBody
@@ -77,6 +80,3 @@ export const DetailPanelWithModel: FC<QueryConfig & DetailDisplaySharedProps> = 
         />
     );
 });
-
-
-// TODO: convert props to match GridPanelWithModel so that DetailPanelWithModel takes a queryConfig instead union QueryConfig

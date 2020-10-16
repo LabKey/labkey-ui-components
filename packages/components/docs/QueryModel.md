@@ -140,6 +140,53 @@ function MyComponent(props: MyComponentProps) {
 }
 ```
 
+
+### DetailPanel
+A common use case is to render the details of a single row from a SchemaQuery, we provide a component, DetailPanel, that does this for you. There are two versions of this component: `DetailPanel` and `DetailPanelWithModel`. `DetailPanel` expects you to have a `QueryModel` already and will render the details for you. `DetailPanelWithModel` takes a QueryConfig object and will instantiate and load the QueryModel for you. `DetailPanel` and `DetailPanelWithModel` can be rendered as a Bootstrap panel by setting the `asPanel` prop to true.
+
+When using the `DetailPanel` components you need to ensure that your QueryConfig objects have a value for the `keyValue` attribute. The `keyValue` attribute is the value of the primary key for the specified Schema/Query, this is typically value of the `RowId` column. If there is not a single primary key column you can instead set the `baseFilters` attribute of your QueryConfig to an array of `Filter` objects that will filter the Schema/Query to a single row of data.
+
+#### Examples:
+**DetailPanelWithModel**
+```tsx
+interface SampleDetailProps {
+    asPanel?: boolean;
+    rowId: number;
+}
+
+const SampleDetail: FC<SampleDetailProps> = ({ asPanel = false, rowId }) => {
+    const queryConfig = {
+        schemaQuery: SchemaQuery.create('samples', 'samples'),
+        keyValue: rowId,
+    };
+
+    return <DetailPanelWithModel asPanel={asPanel} queryConfig={queryConfig} />;
+};
+
+// Use the component later:
+<SampleDetail id={123} />
+```
+
+Which would render something like:
+
+![](detail_panel.png)
+
+With the asPanel prop:
+
+```tsx
+<SampleDetail id={123} asPanel />
+```
+
+Which would render something like:
+
+![](detail_panel_as_panel.png)
+
+### EditableDetailPanel
+
+`EditableDetailPanel` is a version of `DetailPanel` that allows users to edit the row of data.
+
+[QueryColumn](../src/public/QueryColumn.ts#L30)
+
 ## Frequently asked Questions
 
 - I have changed my `queryConfigs` object but `withQueryModels` isn't updating my models, how to I fix this?

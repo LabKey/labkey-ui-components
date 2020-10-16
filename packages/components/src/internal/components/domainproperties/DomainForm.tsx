@@ -20,6 +20,7 @@ import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 
 import { Sticky, StickyContainer } from 'react-sticky';
 
+import { ActionButton } from '../buttons/ActionButton';
 import { AddEntityButton } from '../buttons/AddEntityButton';
 import { ConfirmModal } from '../base/ConfirmModal';
 import { InferDomainResponse } from '../base/models/model';
@@ -358,6 +359,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         } else this.applyAddField();
     };
 
+    onExportFields = () => {
+        console.log('Not Yet Implemented');
+    };
+
     onAddField = () => {
         this.applyAddField();
     };
@@ -525,21 +530,21 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         if (!domainFormDisplayOptions.hideAddFieldsButton) {
             if (this.shouldShowInferFromFile()) {
                 return (
-                    <div className="margin-top">
-                        or&nbsp;
-                        <span className="domain-form-add-link" onClick={this.initNewDesign}>
-                            manually define fields
-                        </span>
+                    <div className="margin-top domain-form-manual-section">
+                        <p>Or</p>
+                        <ActionButton buttonClass="domain-form-manual-btn" onClick={this.initNewDesign}>
+                            Manually Define Fields
+                        </ActionButton>
                     </div>
                 );
             } else {
-                // TODO remove domain-form-add-btn after use in 19.3
                 return (
                     <Row className="domain-add-field-row">
                         <Col xs={12}>
                             <AddEntityButton
                                 entity="Field"
                                 buttonClass="domain-form-add-btn"
+                                containerClass="pull-right"
                                 onClick={this.onAddField}
                             />
                         </Col>
@@ -687,7 +692,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         } else {
             return (
                 <Panel className="domain-form-no-field-panel">
-                    No fields created yet. Add some using the button below.
+                    No fields created yet. Click the 'Add Field' button to get started.
                 </Panel>
             );
         }
@@ -746,28 +751,45 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     }
 
-    renderSearchField() {
+    renderToolbar() {
         const { domain, domainIndex } = this.props;
         const { fields } = domain;
 
         return (
             <Row>
-                <Col xs={3}>
-                    <FormControl
-                        id={'domain-search-name-' + domainIndex}
-                        type="text"
-                        placeholder="Search Fields"
-                        onChange={this.onSearch}
+                <Col xs={4}>
+                    <AddEntityButton
+                        entity="Field"
+                        containerClass="container--toolbar-button"
+                        buttonClass="domain-toolbar-add-btn"
+                        onClick={this.onAddField}
                     />
+                    <ActionButton
+                        containerClass="container--toolbar-button"
+                        buttonClass="domain-toolbar-export-btn"
+                        onClick={this.onExportFields}
+                        disabled={true}
+                    >
+                        <i className="fa fa-download" /> Export
+                    </ActionButton>
                 </Col>
-                {this.state.filtered && (
-                    <Col xs={9}>
-                        <div className="domain-search-text">
-                            Showing {fields.filter(f => f.visible).size} of {fields.size} field
-                            {fields.size > 1 ? 's' : ''}.
-                        </div>
-                    </Col>
-                )}
+                <Col xs={8}>
+                    <div className="pull-right">
+                        {this.state.filtered && (
+                            <span className="domain-search-text">
+                                Showing {fields.filter(f => f.visible).size} of {fields.size} field
+                                {fields.size > 1 ? 's' : ''}.
+                            </span>
+                        )}
+                        <FormControl
+                            id={'domain-search-name-' + domainIndex}
+                            className="domain-search-input"
+                            type="text"
+                            placeholder="Search Fields"
+                            onChange={this.onSearch}
+                        />
+                    </div>
+                </Col>
             </Row>
         );
     }
@@ -803,7 +825,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             <>
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && this.renderAppDomainHeader()}
-                {(filtered || domain.fields.size > 1) && this.renderSearchField()}
+                {/* TODO need to figure out where the header goes in relation to the panel header and app headers above*/}
+                {!this.shouldShowInferFromFile() && this.renderToolbar()}
                 {domain.fields.size > 0 ? (
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>

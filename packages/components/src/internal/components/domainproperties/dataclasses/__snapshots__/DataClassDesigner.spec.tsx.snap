@@ -391,15 +391,26 @@ Array [
           </div>
         </div>
         <div
-          className="margin-top"
+          className="margin-top domain-form-manual-section"
         >
-          or 
-          <span
-            className="domain-form-add-link"
-            onClick={[Function]}
+          <p>
+            Or
+          </p>
+          <div
+            className="form-group"
           >
-            manually define fields
-          </span>
+            <div
+              className="domain-form-manual-btn"
+            >
+              <span
+                className="container--action-button btn btn-default"
+                onClick={[Function]}
+              >
+                Manually Define Fields
+              </span>
+              
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -987,15 +998,26 @@ Array [
           </div>
         </div>
         <div
-          className="margin-top"
+          className="margin-top domain-form-manual-section"
         >
-          or 
-          <span
-            className="domain-form-add-link"
-            onClick={[Function]}
+          <p>
+            Or
+          </p>
+          <div
+            className="form-group"
           >
-            manually define fields
-          </span>
+            <div
+              className="domain-form-manual-btn"
+            >
+              <span
+                className="container--action-button btn btn-default"
+                onClick={[Function]}
+              >
+                Manually Define Fields
+              </span>
+              
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -4958,27 +4980,99 @@ exports[`DataClassDesigner initModel 1`] = `
                                     <Col
                                       bsClass="col"
                                       componentClass="div"
-                                      xs={3}
+                                      xs={4}
                                     >
                                       <div
-                                        className="col-xs-3"
+                                        className="col-xs-4"
                                       >
-                                        <FormControl
-                                          bsClass="form-control"
-                                          componentClass="input"
-                                          id="domain-search-name-0"
-                                          onChange={[Function]}
-                                          placeholder="Search Fields"
-                                          type="text"
+                                        <AddEntityButton
+                                          buttonClass="domain-toolbar-add-btn"
+                                          containerClass="container--toolbar-button"
+                                          entity="Field"
+                                          onClick={[Function]}
                                         >
-                                          <input
-                                            className="form-control"
+                                          <ActionButton
+                                            buttonClass="domain-toolbar-add-btn"
+                                            containerClass="container--toolbar-button"
+                                            entity="Field"
+                                            helperTitle="More Info"
+                                            onClick={[Function]}
+                                          >
+                                            <div
+                                              className="container--toolbar-button"
+                                            >
+                                              <div
+                                                className="domain-toolbar-add-btn"
+                                              >
+                                                <span
+                                                  className="container--action-button btn btn-default"
+                                                  onClick={[Function]}
+                                                >
+                                                  <i
+                                                    className="fa fa-plus-circle container--addition-icon"
+                                                  />
+                                                   Add 
+                                                  Field
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </ActionButton>
+                                        </AddEntityButton>
+                                        <ActionButton
+                                          buttonClass="domain-toolbar-export-btn"
+                                          containerClass="container--toolbar-button"
+                                          disabled={true}
+                                          helperTitle="More Info"
+                                          onClick={[Function]}
+                                        >
+                                          <div
+                                            className="container--toolbar-button"
+                                          >
+                                            <div
+                                              className="domain-toolbar-export-btn"
+                                            >
+                                              <span
+                                                className="container--action-button btn btn-default disabled"
+                                              >
+                                                <i
+                                                  className="fa fa-download"
+                                                />
+                                                 Export
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </ActionButton>
+                                      </div>
+                                    </Col>
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      xs={8}
+                                    >
+                                      <div
+                                        className="col-xs-8"
+                                      >
+                                        <div
+                                          className="pull-right"
+                                        >
+                                          <FormControl
+                                            bsClass="form-control"
+                                            className="domain-search-input"
+                                            componentClass="input"
                                             id="domain-search-name-0"
                                             onChange={[Function]}
                                             placeholder="Search Fields"
                                             type="text"
-                                          />
-                                        </FormControl>
+                                          >
+                                            <input
+                                              className="domain-search-input form-control"
+                                              id="domain-search-name-0"
+                                              onChange={[Function]}
+                                              placeholder="Search Fields"
+                                              type="text"
+                                            />
+                                          </FormControl>
+                                        </div>
                                       </div>
                                     </Col>
                                   </div>
@@ -12211,29 +12305,36 @@ exports[`DataClassDesigner initModel 1`] = `
                                       >
                                         <AddEntityButton
                                           buttonClass="domain-form-add-btn"
-                                          containerClass="form-group"
+                                          containerClass="pull-right"
                                           entity="Field"
-                                          helperTitle="More Info"
                                           onClick={[Function]}
                                         >
-                                          <div
-                                            className="form-group"
+                                          <ActionButton
+                                            buttonClass="domain-form-add-btn"
+                                            containerClass="pull-right"
+                                            entity="Field"
+                                            helperTitle="More Info"
+                                            onClick={[Function]}
                                           >
                                             <div
-                                              className="domain-form-add-btn"
+                                              className="pull-right"
                                             >
-                                              <span
-                                                className="container--action-button btn btn-default"
-                                                onClick={[Function]}
+                                              <div
+                                                className="domain-form-add-btn"
                                               >
-                                                <i
-                                                  className="fa fa-plus-circle container--addition-icon"
-                                                />
-                                                 Add 
-                                                Field
-                                              </span>
+                                                <span
+                                                  className="container--action-button btn btn-default"
+                                                  onClick={[Function]}
+                                                >
+                                                  <i
+                                                    className="fa fa-plus-circle container--addition-icon"
+                                                  />
+                                                   Add 
+                                                  Field
+                                                </span>
+                                              </div>
                                             </div>
-                                          </div>
+                                          </ActionButton>
                                         </AddEntityButton>
                                       </div>
                                     </Col>

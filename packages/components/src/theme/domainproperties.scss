@@ -31,7 +31,12 @@
 };
 
 .domain-search-text {
-  padding-top: 5px;
+  padding: 5px 10px 0 0;
+}
+
+.domain-search-input {
+    width: 300px;
+    display: inline-block;
 }
 
 .domain-form-hdr-center {
@@ -181,18 +186,8 @@
   cursor: pointer;
 }
 
-.domain-form-add-btn {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.domain-form-add-link {
-  color: $brand-primary;
-  cursor: pointer;
-
-  &:hover {
-    color: $brand-secondary;
-  }
+.domain-form-manual-section {
+    text-align: center;
 }
 
 .domain-form-expand-btn {

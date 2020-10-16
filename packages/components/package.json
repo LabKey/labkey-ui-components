@@ -15,7 +15,7 @@
     "prepublishOnly": "yarn build",
     "storybook": "start-storybook -p 9001 -s ./static -c .storybook",
     "build-storybook": "NODE_OPTIONS=--max_old_space_size=4096 build-storybook -c .storybook -o .storybook-out",
-    "test": "cross-env NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
     "watch:build": "watch 'yarn build' ./src",
     "watch": "npm run watch:build",
     "lint": "eslint",

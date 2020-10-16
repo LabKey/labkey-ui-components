@@ -1,5 +1,9 @@
 # @labkey/components
 
+### version TBD
+*Released*: TBD
+* Item 7984: DomainForm component support for export/import field definitions from .json file
+
 ### version 0.99.0
 *Released*: 14 October 2020
 * Introduce new mechanisms for loading assay resources; `withAssayModels`, `withAssayModelsFromLocation` and `asayPage`.

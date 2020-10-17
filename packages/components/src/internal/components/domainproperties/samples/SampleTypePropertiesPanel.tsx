@@ -264,16 +264,13 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             appPropertiesOnly,
             metricUnitProps
         } = this.props;
-
-        let includeMetricUnitProperty = undefined, metricUnitLabel = undefined, metricUnitHelpMsg = undefined, metricUnitOptions = undefined, metricUnitRequired = undefined;
-        if (metricUnitProps) {
-            includeMetricUnitProperty = metricUnitProps.includeMetricUnitProperty;
-            metricUnitLabel = metricUnitProps.metricUnitLabel ? metricUnitProps.metricUnitLabel : 'Metric Unit';
-            metricUnitHelpMsg = metricUnitProps.metricUnitHelpMsg ? metricUnitProps.metricUnitHelpMsg : 'The unit of measurement used for the sample type.';
-            metricUnitOptions = metricUnitProps.metricUnitOptions;
-            metricUnitRequired = metricUnitProps.metricUnitRequired;
-        }
         const { isValid } = this.state;
+
+        const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
+            metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',
+            metricUnitHelpMsg = metricUnitProps?.metricUnitHelpMsg || 'The unit of measurement used for the sample type.',
+            metricUnitOptions = metricUnitProps?.metricUnitOptions,
+            metricUnitRequired = metricUnitProps?.metricUnitRequired;
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
         return (

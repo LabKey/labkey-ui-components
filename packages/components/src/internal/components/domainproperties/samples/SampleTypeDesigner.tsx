@@ -325,8 +325,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
         const { model } = this.state;
 
-        let metricUnitLabel = metricUnitProps ? metricUnitProps.metricUnitLabel : undefined;
-        let metricUnitRequired = metricUnitProps ? metricUnitProps.metricUnitRequired : undefined;
+        let metricUnitLabel = metricUnitProps?.metricUnitLabel;
+        let metricUnitRequired = metricUnitProps?.metricUnitRequired;
         const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
         this.props.onFinish(isValid, this.saveDomain);
@@ -397,8 +397,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 }
             }
         } catch (error) {
+            console.error(error);
             const exception = resolveErrorMessage(error);
-            console.error(exception);
             setSubmitting(false, () => {
                 this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel }));
             });

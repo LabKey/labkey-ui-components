@@ -264,7 +264,7 @@ export function withQueryModels<Props>(
                     Object.assign(model, model.attributesForURLQueryParams(query));
                     // If we have selections or previously attempted to load them we'll want to reload them when the
                     // model is updated from the URL because it can affect selections.
-                    loadSelections = model.hasSelections || model.selectionsError !== undefined;
+                    loadSelections = !!model.selections || !!model.selectionsError;
                 }),
                 () => {
                     this.maybeLoad(id, false, true, loadSelections);
@@ -689,7 +689,9 @@ export function withQueryModels<Props>(
                     let queryModel = new QueryModel(queryConfig);
                     id = queryModel.id;
                     if (queryModel.bindURL && this.props.location) {
-                        queryModel = queryModel.mutate(queryModel.attributesForURLQueryParams(this.props.location.query));
+                        queryModel = queryModel.mutate(
+                            queryModel.attributesForURLQueryParams(this.props.location.query)
+                        );
                     }
                     draft.queryModels[queryModel.id] = queryModel;
                 }),

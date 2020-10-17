@@ -1,5 +1,5 @@
 import React from 'react';
-import { List, Map } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import { Utils } from '@labkey/api';
 
 import { getSelectedData } from '../../actions';
@@ -16,7 +16,11 @@ interface Props {
     onComplete: (data: any, submitForEdit: boolean) => any;
     onCancel: () => any;
     onError?: (message: string) => any;
-    onSubmitForEdit: (updateData: any, dataForSelection: Map<string, any>, dataIdsForSelection: List<any>) => any;
+    onSubmitForEdit: (
+        updateData: OrderedMap<string, any>,
+        dataForSelection: Map<string, any>,
+        dataIdsForSelection: List<any>
+    ) => any;
     pluralNoun?: string;
     queryInfo: QueryInfo;
     readOnlyColumns?: List<string>;
@@ -118,7 +122,7 @@ export class BulkUpdateForm extends React.Component<Props, State> {
         return updateRows(queryInfo.schemaQuery, rows);
     };
 
-    onEditWithGrid = (updateData: any) => {
+    onEditWithGrid = (updateData: OrderedMap<string, any>) => {
         const { onSubmitForEdit } = this.props;
         const { dataForSelection, dataIdsForSelection } = this.state;
         return onSubmitForEdit(updateData, dataForSelection, dataIdsForSelection);

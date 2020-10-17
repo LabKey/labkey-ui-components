@@ -17,7 +17,7 @@ import React from 'react';
 
 import { datePlaceholder } from '../../../util/Date';
 
-import { QueryColumn } from '../../base/models/model';
+import { QueryColumn } from '../../../..';
 
 import { TextInput, TextInputProps } from './TextInput';
 import { DisableableInput, DisableableInputProps } from './DisableableInput';

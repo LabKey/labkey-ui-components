@@ -8,6 +8,19 @@ Components, models, actions, and utility functions for LabKey applications and p
     * add validateProperties prop to allow caller to validate sample domain properties before save
 * Allow custom caption and placeholder text for fields in FieldEditorOverlay
 
+### version 0.99.1
+*Released*: 17 October 2020
+* Update QueryModel.hasSelections to check selection count as well if array exists.
+
+### version 0.99.0
+*Released*: 14 October 2020
+* Introduce new mechanisms for loading assay resources; `withAssayModels`, `withAssayModelsFromLocation` and `asayPage`.
+* `withAssayModels` replaces implementation of `AssayProvider`.
+* Added unit test coverage for `withAssayModels` and `withAssayModelsFromLocation`.
+* Converted `AssayStateModel` and `AssayUploadResultModel` to Immer from ImmutableJS Records.
+* Streamlined `AssayStateModel` to be more straight-forward for getting and setting `AssayDefinitionModel`s.
+* `<AssayImportSubMenuItem/>` switched to use `withAssayModels`.
+* Add `isLoading` as a utility method for working with `LoadingState`.
 
 ### version 0.98.0
 *Released*: 13 October 2020
@@ -18,8 +31,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 0.97.0
 *Released*: 29 September 2020
 * FieldEditorOverlay updates
-  * Allow user to choose field of focus
-  * Change input placeholder text to avoid some awkard grammar problems
+  * Allow user to choose the field of focus
+  * Change input placeholder text to avoid some awkward grammar problems
 * Freezer icon updates
   * Update menu icon
   * Update timeline storage update icon

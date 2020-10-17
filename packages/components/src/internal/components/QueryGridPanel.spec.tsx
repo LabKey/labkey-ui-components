@@ -19,11 +19,8 @@ import { List } from 'immutable';
 
 import { TESTS_ONLY_RESET_DOM_COUNT } from '../util/utils';
 
-import { getStateQueryGridModel } from '../models';
+import { getStateQueryGridModel, QueryGridModel, SchemaQuery, QueryGridPanel } from '../../..';
 import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../testHelpers';
-
-import { QueryGridModel, SchemaQuery } from './base/models/model';
-import { QueryGridPanel } from './QueryGridPanel';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -61,6 +58,7 @@ describe('QueryGridPanel render', () => {
         });
         const model = getStateQueryGridModel(modelId, schemaQuery);
 
+        TESTS_ONLY_RESET_DOM_COUNT();
         const tree = renderer.create(<QueryGridPanel model={model} />);
 
         await sleep();

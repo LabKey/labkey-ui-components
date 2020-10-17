@@ -16,8 +16,8 @@
 import { List, Map } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { QueryInfo } from './QueryInfo';
-import { SchemaDetails, SchemaQuery } from './model';
+// Have to import SchemaQuery like this or SchemaQuery.create fails because SchemaQuery is undefined.
+import { QueryInfo, SchemaDetails, SchemaQuery } from '..';
 
 // Created By / Modified By
 export const CBMB = List<string>(['Created', 'CreatedBy', 'Modified', 'ModifiedBy']);

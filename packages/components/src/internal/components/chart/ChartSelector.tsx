@@ -16,13 +16,11 @@
 import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 
-import { QueryGridModel, SchemaQuery } from '../base/models/model';
-import { DataViewInfo, IDataViewInfo } from '../../models';
+import { DataViewInfoTypes, IDataViewInfo, naturalSort, QueryGridModel, SchemaQuery, loadReports } from '../../..';
+import { DataViewInfo } from '../../models';
 
 import { fetchCharts } from '../../actions';
-import { naturalSort } from '../../..';
-import { DataViewInfoTypes, VISUALIZATION_REPORTS } from '../../constants';
-import { loadReports } from '../../query/reports';
+import { VISUALIZATION_REPORTS } from '../../constants';
 
 import { ChartMenu } from './ChartMenu';
 

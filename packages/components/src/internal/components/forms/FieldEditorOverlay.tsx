@@ -17,13 +17,11 @@ import React from 'react';
 import { OverlayTrigger } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { updateRows } from '../../query/api';
+import { getServerContext } from '@labkey/api';
 
-import { QueryColumn } from '../base/models/model';
+import { updateRows, QueryColumn, QueryInfo, resolveErrorMessage } from '../../..';
 
 import { FieldEditForm, FieldEditProps } from './input/FieldEditInput';
-import { QueryInfo, resolveErrorMessage } from '../../..';
-import { getServerContext } from '@labkey/api';
 
 export interface FieldEditorOverlayProps {
     canUpdate?: boolean;
@@ -64,7 +62,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
 
         this.state = {
             fields: List<FieldEditProps>(),
-            iconField: props.iconField ? props.iconField : props.fieldProps[0].key
+            iconField: props.iconField ? props.iconField : props.fieldProps[0].key,
         };
     }
 
@@ -97,9 +95,9 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                     let inputType = column.inputType;
                     // TODO handle date and checkbox inputs.
                     if (column.jsonType === 'int' || column.jsonType === 'float') {
-                        inputType = "number";
+                        inputType = 'number';
                     }
-                    let props = Object.assign({
+                    const props = Object.assign({
                         caption: column.caption,
                         inputPlaceholder: 'Enter ' + column.caption.toLowerCase() + '...',
                     }, field, {
@@ -109,7 +107,6 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                         value,
                     });
                     fields = fields.push(new FieldEditProps(props));
-
                 } else if (getServerContext().devMode) {
                     const sq = queryInfo.schemaQuery;
                     console.warn(
@@ -119,7 +116,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
             });
 
             this.setState({
-                fields
+                fields,
             });
         }
     }
@@ -129,7 +126,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
         this.setState({
             error: undefined,
         });
-    }
+    };
 
     fieldValuesChanged(submittedValues): boolean {
         const { fields } = this.state;
@@ -140,13 +137,13 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
         );
     }
 
-    getRowId() : string | number {
+    getRowId(): string | number {
         const { queryInfo, row } = this.props;
-        const pkCols :List<QueryColumn> = queryInfo.getPkCols();
+        const pkCols: List<QueryColumn> = queryInfo.getPkCols();
         return row[pkCols.get(0).fieldKey].value;
     }
 
-    updateFields = (submittedValues) => {
+    updateFields = submittedValues => {
         const { containerPath, row, queryInfo, onUpdate, handleUpdateRows } = this.props;
 
         const name = row.Name?.value;
@@ -187,17 +184,17 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                     });
                 });
         }
-    }
+    };
 
     render() {
-        const { canUpdate,  showIconText, showValueOnNotAllowed } = this.props;
+        const { canUpdate, showIconText, showValueOnNotAllowed } = this.props;
         const { error, fields, iconField } = this.state;
 
         const caption = this.props.caption
             ? this.props.caption
             : fields && fields.size > 0
-                ? fields.get(0).caption
-                : 'Fields';
+            ? fields.get(0).caption
+            : 'Fields';
         let haveValues = false;
 
         let fieldValue;
@@ -241,7 +238,11 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                         </span>
                     </OverlayTrigger>
                 )}
-                {!canUpdate && showValueOnNotAllowed && <span className="detail-display" title={fieldValue}>{fieldValue}</span>}
+                {!canUpdate && showValueOnNotAllowed && (
+                    <span className="detail-display" title={fieldValue}>
+                        {fieldValue}
+                    </span>
+                )}
             </>
         );
     }

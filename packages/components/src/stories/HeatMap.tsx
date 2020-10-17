@@ -17,10 +17,8 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { HeatMap } from '../internal/components/heatmap/HeatMap';
+import { AppURL, HeatMap, SCHEMAS } from '..';
 import './stories.scss';
-import { SCHEMAS } from '../internal/components/base/models/schemas';
-import { AppURL } from '../internal/url/AppURL';
 
 storiesOf('HeatMap', module)
     .addDecorator(withKnobs)

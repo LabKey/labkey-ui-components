@@ -18,7 +18,7 @@ import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 import moment from 'moment';
 
-import { User } from '../base/models/model';
+import { User } from '../../..';
 
 import { getDateFormat } from '../../util/Date';
 

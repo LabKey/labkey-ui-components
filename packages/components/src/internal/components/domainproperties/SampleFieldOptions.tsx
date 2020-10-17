@@ -10,14 +10,8 @@ import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLi
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, fetchQueries } from './actions';
 import { ALL_SAMPLES_DISPLAY_TEXT, DOMAIN_FIELD_SAMPLE_TYPE } from './constants';
-import {
-    encodeLookup,
-    IDomainField,
-    ITypeDependentProps,
-    PropDescType,
-    QueryInfoLite,
-    SAMPLE_TYPE_OPTION_VALUE,
-} from './models';
+import { encodeLookup, IDomainField, ITypeDependentProps, QueryInfoLite, SAMPLE_TYPE_OPTION_VALUE } from './models';
+import { PropDescType } from './PropDescType';
 
 import { SectionHeading } from './SectionHeading';
 

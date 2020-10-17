@@ -18,12 +18,11 @@ import classNames from 'classnames';
 import { OrderedMap, Map } from 'immutable';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 
+import { GridColumn, QueryColumn, GRID_CHECKBOX_OPTIONS } from '..';
+
 import { DefaultRenderer } from './renderers/DefaultRenderer';
 import { getQueryColumnRenderers } from './global';
-import { GridColumn } from './components/base/Grid';
 import { CustomToggle } from './components/base/CustomToggle';
-import { QueryColumn } from './components/base/models/model';
-import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
 
 export function headerCell(
     handleSort: (column: QueryColumn, dir: string) => any,
@@ -96,7 +95,12 @@ export function headerCell(
     );
 }
 
-export function headerSelectionCell(handleSelection: any, selectedState: GRID_CHECKBOX_OPTIONS, disabled: boolean, className?) {
+export function headerSelectionCell(
+    handleSelection: any,
+    selectedState: GRID_CHECKBOX_OPTIONS,
+    disabled: boolean,
+    className?
+) {
     const isChecked = selectedState === GRID_CHECKBOX_OPTIONS.ALL;
     const isIndeterminate = selectedState === GRID_CHECKBOX_OPTIONS.SOME;
 

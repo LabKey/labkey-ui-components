@@ -15,7 +15,8 @@ import {
     DOMAIN_VALIDATOR_REMOVE,
 } from '../constants';
 
-import { PropDescType, PropertyValidator } from '../models';
+import { PropertyValidator } from '../models';
+import { PropDescType } from '../PropDescType';
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 
 interface RegexValidationOptionsProps {

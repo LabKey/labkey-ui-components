@@ -14,35 +14,16 @@
  * limitations under the License.
  */
 import { fromJS, List, Map } from 'immutable';
-import { PermissionTypes } from '@labkey/api';
-
-import { SchemaQuery } from '../components/base/models/model';
-
-import {
-    TEST_USER_APP_ADMIN,
-    TEST_USER_ASSAY_DESIGNER,
-    TEST_USER_AUTHOR,
-    TEST_USER_EDITOR,
-    TEST_USER_FOLDER_ADMIN,
-    TEST_USER_READER,
-} from '../../test/data/users';
 
 import {
     caseInsensitive,
-    contains,
     getCommonDataValues,
     getDisambiguatedSelectInputOptions,
-    getSchemaQuery,
     getUpdatedData,
     getUpdatedDataFromGrid,
-    hasAllPermissions,
-    hasPrefix,
     intersect,
-    naturalSort,
     resolveKey,
     resolveKeyFromJson,
-    resolveSchemaQuery,
-    similaritySortFactory,
     toLowerSafe,
     unorderedEqual,
 } from './utils';
@@ -72,69 +53,6 @@ describe('resolveKeyFromJson', () => {
         expect(resolveKeyFromJson({ schemaName: ['one', 'Two', 'thrEE$'], queryName: 'four' })).toBe(
             'one$ptwo$pthree$dd/four'
         );
-    });
-});
-
-describe('resolveSchemaQuery', () => {
-    test('handle undefined schemaQuery', () => {
-        expect(resolveSchemaQuery(undefined)).toBeNull();
-    });
-
-    test('schema without encoding required', () => {
-        const schemaQuery = new SchemaQuery({
-            schemaName: 'name',
-            queryName: 'my favorite query',
-        });
-        expect(resolveSchemaQuery(schemaQuery)).toBe('name/my favorite query');
-    });
-});
-
-describe('getSchemaQuery', () => {
-    test('no decoding required', () => {
-        const expected = new SchemaQuery({
-            schemaName: 'name',
-            queryName: 'query',
-        });
-        expect(getSchemaQuery('name/query')).toEqual(expected);
-    });
-
-    test('decoding required', () => {
-        expect(getSchemaQuery('my$Sname/just$pask')).toEqual(
-            new SchemaQuery({
-                schemaName: 'my/name',
-                queryName: 'just.ask',
-            })
-        );
-        expect(getSchemaQuery('one$ptwo$pthree$d/q1')).toEqual(
-            new SchemaQuery({
-                schemaName: 'one.two.three$',
-                queryName: 'q1',
-            })
-        );
-    });
-});
-
-describe('naturalSort', () => {
-    test('alphabetic', () => {
-        expect(naturalSort('', 'anything')).toBe(1);
-        expect(naturalSort('anything', '')).toBe(-1);
-        expect(naturalSort(undefined, 'anything')).toBe(1);
-        expect(naturalSort('a', 'a')).toBe(0);
-        expect(naturalSort('alpha', 'aLPha')).toBe(0);
-        expect(naturalSort(' ', 'anything')).toBe(-1);
-        expect(naturalSort('a', 'b')).toBe(-1);
-        expect(naturalSort('A', 'b')).toBe(-1);
-        expect(naturalSort('A', 'Z')).toBe(-1);
-        expect(naturalSort('alpha', 'zeta')).toBe(-1);
-        expect(naturalSort('zeta', 'atez')).toBe(1);
-        expect(naturalSort('Zeta', 'Atez')).toBe(1);
-    });
-
-    test('alphanumeric', () => {
-        expect(naturalSort('a1.2', 'a1.3')).toBeLessThan(0);
-        expect(naturalSort('1.431', '14.31')).toBeLessThan(0);
-        expect(naturalSort('10', '1.0')).toBeGreaterThan(0);
-        expect(naturalSort('1.2ABC', '1.2XY')).toBeLessThan(0);
     });
 });
 
@@ -200,35 +118,6 @@ describe('toLowerSafe', () => {
         ).toEqual(
             List<string>(['test ', ' test', 'test', 'test'])
         );
-    });
-});
-
-describe('hasAllPermissions', () => {
-    test('user without permission', () => {
-        expect(hasAllPermissions(TEST_USER_READER, [PermissionTypes.Insert])).toBe(false);
-    });
-
-    test('user has some but not all permissions', () => {
-        expect(hasAllPermissions(TEST_USER_READER, [PermissionTypes.Insert, PermissionTypes.Read])).toBe(false);
-    });
-
-    test('user has only required permission', () => {
-        expect(hasAllPermissions(TEST_USER_AUTHOR, [PermissionTypes.Insert])).toBe(true);
-    });
-
-    test('user has more permission', () => {
-        expect(hasAllPermissions(TEST_USER_EDITOR, [PermissionTypes.Insert])).toBe(true);
-    });
-
-    test('user permissions do not intersect', () => {
-        expect(hasAllPermissions(TEST_USER_ASSAY_DESIGNER, [PermissionTypes.Insert])).toBe(false);
-    });
-
-    test('user permissions admin prop', () => {
-        expect(hasAllPermissions(TEST_USER_FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
-        expect(hasAllPermissions(TEST_USER_FOLDER_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(false);
-        expect(hasAllPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], true)).toBe(true);
-        expect(hasAllPermissions(TEST_USER_APP_ADMIN, [PermissionTypes.ApplicationAdmin], false)).toBe(true);
     });
 });
 
@@ -1059,83 +948,6 @@ describe('CaseInsensitive', () => {
     });
 });
 
-describe('contains', () => {
-    test('Empty values', () => {
-        expect(contains(undefined, undefined, undefined)).toBe(false);
-        expect(contains('', '')).toBe(false);
-        expect(contains('first', undefined)).toBe(false);
-        expect(contains('', 'second')).toBe(false);
-    });
-
-    test('Case sensitivity', () => {
-        expect(contains('S', 's')).toBe(true);
-        expect(contains('S', 's', false)).toBe(true);
-        expect(contains('S', 's', true)).toBe(false);
-    });
-});
-
-describe('hasPrefix', () => {
-    test('Empty values', () => {
-        expect(hasPrefix(undefined, undefined, undefined)).toBe(false);
-        expect(hasPrefix('', '')).toBe(false);
-        expect(hasPrefix('here', '')).toBe(false);
-        expect(hasPrefix('', 'there')).toBe(false);
-    });
-
-    test('Case sensitivity', () => {
-        expect(hasPrefix('The', 't')).toBe(true);
-        expect(hasPrefix('The', 't', true)).toBe(false);
-        expect(hasPrefix('The', 'he')).toBe(false);
-        expect(hasPrefix('The', 'he', true)).toBe(false);
-        expect(hasPrefix('The', 'th', false)).toBe(true);
-    });
-});
-
-describe('similaritySortFactory', () => {
-    const values = ['S-11', '2015_08_09_13', '2015_08_09_12', 'S-1X', 'S-111', 'S-1', '6S-1', 'S-211'];
-
-    function getValues(): string[] {
-        return Array.from(values);
-    }
-
-    test('Empty token', () => {
-        expect([].sort(similaritySortFactory(undefined))).toMatchObject([]);
-
-        expect(getValues().sort(similaritySortFactory(''))).toMatchObject(getValues().sort(naturalSort));
-    });
-
-    test('Undefined/null', () => {
-        expect([].sort(similaritySortFactory('no results'))).toMatchObject([]);
-        expect([undefined].sort(similaritySortFactory('no results'))).toMatchObject([undefined]);
-        expect(['cool', undefined, 'coolest', null, 'lame'].sort(similaritySortFactory(''))).toMatchObject([
-            'cool',
-            'coolest',
-            'lame',
-            null,
-            undefined,
-        ]);
-    });
-
-    test('Exact matching', () => {
-        let result = getValues().sort(similaritySortFactory(''));
-        expect(result[0]).toEqual('6S-1'); // degrade to natural sort
-
-        // case-insensitive
-        result = getValues().sort(similaritySortFactory('s-'));
-        expect(result[0]).toEqual('S-1');
-        expect(result[1]).toEqual('S-1X');
-
-        result = getValues().sort(similaritySortFactory('S-1'));
-        expect(result[0]).toEqual('S-1');
-
-        result = getValues().sort(similaritySortFactory('S-11'));
-        expect(result[0]).toEqual('S-11');
-
-        // case-sensitive
-        result = getValues().sort(similaritySortFactory('s-1', true));
-        expect(result[0]).toEqual('6S-1'); // degrade to natural sort
-    });
-});
 
 const sourceOptions = [
     {

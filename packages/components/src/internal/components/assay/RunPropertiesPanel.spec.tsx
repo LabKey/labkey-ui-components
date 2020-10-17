@@ -10,9 +10,9 @@ import { CheckboxInput } from '../forms/input/CheckboxInput';
 import { SelectInput } from '../forms/input/SelectInput';
 
 import { QueryFormInputs } from '../forms/QueryFormInputs';
-import { QueryColumn } from '../base/models/model';
+import { QueryColumn } from '../../..';
 
-import { AssayWizardModel } from './models';
+import { AssayWizardModel } from './AssayWizardModel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 
 beforeAll(() => {

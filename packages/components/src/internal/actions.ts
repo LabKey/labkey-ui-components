@@ -17,6 +17,22 @@ import { fromJS, List, Map, OrderedMap, Set } from 'immutable';
 import { Ajax, Filter, Query, Utils } from '@labkey/api';
 import $ from 'jquery';
 
+import {
+    AssayDefinitionModel,
+    buildURL,
+    caseInsensitive,
+    GRID_CHECKBOX_OPTIONS,
+    IGridResponse,
+    insertColumnFilter,
+    naturalSort,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    resolveKey,
+    SchemaQuery,
+    ViewInfo,
+} from '..';
+
 import { getQueryDetails, searchRows, selectRows } from './query/api';
 import { isEqual } from './query/filter';
 import { buildQueryString, getLocation, Location, replaceParameter, replaceParameters } from './util/URL';
@@ -58,19 +74,9 @@ import {
     updateSelections,
 } from './global';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
-import { QueryInfo } from './components/base/models/QueryInfo';
-import {
-    AssayDefinitionModel,
-    IGridResponse,
-    insertColumnFilter,
-    QueryColumn,
-    QueryGridModel,
-    SchemaQuery,
-    ViewInfo,
-} from './components/base/models/model';
-import { buildURL, getSortFromUrl } from './url/ActionURL';
-import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX } from './components/base/models/constants';
-import { caseInsensitive, intersect, naturalSort, not, resolveKey } from './util/utils';
+import { getSortFromUrl } from './url/ActionURL';
+import { GRID_EDIT_INDEX } from './components/base/models/constants';
+import { intersect, not } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 
 const EMPTY_ROW = Map<string, any>();
@@ -1069,14 +1075,9 @@ export function setSelected(
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL(
-                'query',
-                'setSelected.api',
-                undefined,
-                {
-                    container: containerPath,
-                }
-            ),
+            url: buildURL('query', 'setSelected.api', undefined, {
+                container: containerPath,
+            }),
             method: 'POST',
             jsonData: {
                 id: ids,
@@ -1103,21 +1104,12 @@ export function setSelected(
  * @param ids ids to change selection for
  * @param containerPath optional path to the container for this grid.  Default is the current container path
  */
-export function replaceSelected(
-    key: string,
-    ids: string[] | string,
-    containerPath?: string
-): Promise<ISelectResponse> {
+export function replaceSelected(key: string, ids: string[] | string, containerPath?: string): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL(
-                'query',
-                'replaceSelected.api',
-                undefined,
-                {
-                    container: containerPath,
-                }
-            ),
+            url: buildURL('query', 'replaceSelected.api', undefined, {
+                container: containerPath,
+            }),
             method: 'POST',
             jsonData: {
                 key,
@@ -1136,7 +1128,6 @@ export function replaceSelected(
         });
     });
 }
-
 
 function removeAll(selected: List<string>, toDelete: List<string>): List<string> {
     toDelete.forEach(id => {
@@ -2990,10 +2981,13 @@ export function createQueryGridModelFilteredBySample(
     omitSampleCols?: boolean,
     singleFilterValue?: any
 ): QueryGridModel {
-    const schemaQuery = SchemaQuery.create(model.protocolSchemaName, 'Data');
     const sampleColumns = model.getSampleColumnFieldKeys();
 
-    if (sampleColumns && !sampleColumns.isEmpty()) {
+    if (sampleColumns.isEmpty()) {
+        return undefined;
+    }
+
+    return getStateQueryGridModel(gridId, SchemaQuery.create(model.protocolSchemaName, 'Data'), () => {
         const filter = model.createSampleFilter(
             sampleColumns,
             value,
@@ -3002,12 +2996,13 @@ export function createQueryGridModelFilteredBySample(
             useLsid,
             singleFilterValue
         );
-        return getStateQueryGridModel(gridId, schemaQuery, () => ({
+
+        return {
             baseFilters: List([filter]),
             isPaged: true,
+            omittedColumns: omitSampleCols ? sampleColumns : List<string>(),
             title: model.name,
             urlPrefix: model.name,
-            omittedColumns: omitSampleCols ? sampleColumns : List<string>(),
-        }));
-    }
+        };
+    });
 }

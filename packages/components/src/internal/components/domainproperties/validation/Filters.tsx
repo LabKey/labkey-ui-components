@@ -12,7 +12,7 @@ import {
     DOMAIN_SECOND_FILTER_VALUE,
 } from '../constants';
 
-import { JsonType } from '../models';
+import { JsonType } from '../PropDescType';
 
 export const NO_FILTER_TYPE = 'None';
 

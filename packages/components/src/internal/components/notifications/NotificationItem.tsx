@@ -15,7 +15,7 @@
  */
 import React from 'react';
 
-import { User } from '../base/models/model';
+import { User } from '../../..';
 
 import { NotificationItemModel } from './model';
 import { dismissNotifications } from './global';

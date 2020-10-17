@@ -20,10 +20,7 @@ import { fromJS, List, Map } from 'immutable';
 import { gridInit } from '../../actions';
 import { getStateQueryGridModel } from '../../models';
 import { getQueryGridModel } from '../../global';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { AppURL } from '../../url/AppURL';
-import { QueryGridModel, SchemaQuery } from '../base/models/model';
-import { naturalSort } from '../../util/utils';
+import { LoadingSpinner, AppURL, QueryGridModel, SchemaQuery, naturalSort } from '../../..';
 
 import { addDateRangeFilter, last12Months, monthSort } from './utils';
 import { HeatMapDisplay } from './HeatMapDisplay';

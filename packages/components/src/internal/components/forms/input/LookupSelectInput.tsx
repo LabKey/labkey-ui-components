@@ -17,11 +17,17 @@ import React from 'react';
 import { fromJS, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { ISelectRowsResult, selectRows } from '../../../query/api';
+import {
+    ISelectRowsResult,
+    selectRows,
+    LoadingSpinner,
+    QueryColumn,
+    QueryLookup,
+    generateId,
+    naturalSort,
+    resolveKey,
+} from '../../../..';
 import { LabelOverlay } from '../LabelOverlay';
-import { LoadingSpinner } from '../../base/LoadingSpinner';
-import { QueryColumn, QueryLookup } from '../../base/models/model';
-import { generateId, naturalSort, resolveKey } from '../../../util/utils';
 
 import { SelectInput, SelectInputProps } from './SelectInput';
 

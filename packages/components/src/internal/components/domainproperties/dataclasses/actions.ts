@@ -15,7 +15,7 @@
  */
 import { ActionURL, Ajax, Domain, Utils } from '@labkey/api';
 
-import { SCHEMAS } from '../../base/models/schemas';
+import { SCHEMAS } from '../../../schemas';
 import { deleteEntityType } from '../../entities/actions';
 
 import { DataClassModel } from './models';

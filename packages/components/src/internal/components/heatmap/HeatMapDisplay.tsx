@@ -17,9 +17,8 @@ import React from 'react';
 import { List, Map, Set } from 'immutable';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { naturalSort } from '../../util/utils';
-
 import { HeatMapProps } from './HeatMap';
+import { naturalSort } from '../../..';
 
 interface HeatMapDisplayProps extends HeatMapProps {
     data: List<Map<string, any>>;

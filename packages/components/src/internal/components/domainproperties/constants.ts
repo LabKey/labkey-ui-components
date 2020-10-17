@@ -15,8 +15,7 @@
  */
 import { List } from 'immutable';
 
-import { Domain } from '@labkey/api';
-
+// This import cannot be shortened or it leads to test failures.
 import { GridColumn } from '../base/Grid';
 
 export const DOMAIN_FIELD_PREFIX = 'domainpropertiesrow';
@@ -198,3 +197,14 @@ export const FIELD_NAME_CHAR_WARNING_INFO =
     'SPSS, and MATLAB.';
 
 export const PROPERTIES_PANEL_ERROR_MSG = 'Contains errors or is missing required values.';
+
+export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
+    hideRequired: false,
+    hideValidators: false,
+    isDragDisabled: false,
+    hideTextOptions: false,
+    phiLevelDisabled: false,
+    hideAddFieldsButton: false,
+    disableMvEnabled: false,
+    hideImportData: false,
+};

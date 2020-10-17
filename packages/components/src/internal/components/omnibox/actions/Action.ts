@@ -15,7 +15,7 @@
  */
 import { List } from 'immutable';
 
-import { QueryColumn } from '../../base/models/model';
+import { QueryColumn } from '../../../..';
 
 /**
  * The Action interface specifies the functionality that must be implemented for an Action to participate

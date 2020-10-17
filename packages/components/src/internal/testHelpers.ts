@@ -2,12 +2,13 @@ import { Map } from 'immutable';
 import { LabKey, Query } from '@labkey/api';
 import mock, { proxy } from 'xhr-mock';
 
-import { initQueryGridState } from './global';
 import { initLineageMocks, initQueryGridMocks, initUserPropsMocks } from '../stories/mock';
-import { QueryInfo } from './components/base/models/QueryInfo';
+import { initQueryGridState, QueryInfo } from '..';
+
+import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
+
 import { applyQueryMetadata, handle132Response } from './query/api';
 import { bindColumnRenderers } from './renderers';
-import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
 import { URLService } from './util/URLService';
 import { URL_MAPPERS } from './util/URLResolver';
 

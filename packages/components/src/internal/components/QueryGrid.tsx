@@ -23,15 +23,21 @@ import { getStateModelId, getStateQueryGridModel } from '../models';
 import { headerCell, headerSelectionCell } from '../renderers';
 import { getBrowserHistory } from '../util/global';
 
-import { generateId } from '../util/utils';
+import {
+    generateId,
+    QueryColumn,
+    QueryGridModel,
+    SchemaQuery,
+    Grid,
+    GridColumn,
+    GridProps,
+    LoadingSpinner,
+    Alert,
+} from '../..';
 
 import { getRouteFromLocationHash } from '../util/URL';
 
-import { QueryColumn, QueryGridModel, SchemaQuery } from './base/models/model';
-import { Grid, GridColumn, GridProps } from './base/Grid';
 import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './base/models/constants';
-import { LoadingSpinner } from './base/LoadingSpinner';
-import { Alert } from './base/Alert';
 
 interface QueryGridProps {
     model?: QueryGridModel;

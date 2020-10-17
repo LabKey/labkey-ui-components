@@ -18,7 +18,8 @@ import {
     DOMAIN_VALIDATOR_STRIKETHROUGH,
 } from '../constants';
 
-import { PropDescType, PropertyValidator } from '../models';
+import { PropertyValidator } from '../models';
+import { PropDescType } from '../PropDescType';
 
 import { LabelHelpTip } from '../../base/LabelHelpTip';
 

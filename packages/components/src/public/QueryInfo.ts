@@ -3,10 +3,16 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { toLowerSafe } from '../../../util/utils';
-
-import { insertColumnFilter, LastActionStatus, QueryColumn, QueryInfoStatus, SchemaQuery, ViewInfo } from './model';
+import { insertColumnFilter, LastActionStatus, QueryColumn, ViewInfo } from '..';
 import { QuerySort } from './QuerySort';
+import { SchemaQuery } from './SchemaQuery';
+import { toLowerSafe } from '../internal/util/utils';
+
+export enum QueryInfoStatus {
+    ok,
+    notFound,
+    unknown,
+}
 
 export class QueryInfo extends Record({
     // canEdit: false,

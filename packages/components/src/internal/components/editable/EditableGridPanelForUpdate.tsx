@@ -3,9 +3,8 @@ import { List, Map } from 'immutable';
 
 import { getEditorModel } from '../../global';
 
-import { QueryGridModel, SchemaQuery } from '../base/models/model';
+import { QueryGridModel, SchemaQuery, WizardNavButtons } from '../../..';
 import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
 
 import { EditableGridPanel } from './EditableGridPanel';
 
@@ -58,7 +57,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                 this.setState(() => ({ isSubmitting: true }));
             }
             updateRows(model.queryInfo.schemaQuery, updatedRows).then(() => {
-                this.setState(() => ({isSubmitting: false}),  onComplete())
+                this.setState(() => ({ isSubmitting: false }), onComplete());
             });
         }
     };

@@ -2,12 +2,14 @@ import React from 'react';
 import { Alert, Col, FormControl, Row } from 'react-bootstrap';
 import { Utils } from '@labkey/api';
 
-import { AUTOINT_TYPE, DomainField, IAppDomainHeader, IDomainField, PropDescType } from '../models';
+import { DomainField, IAppDomainHeader, IDomainField } from '../models';
 import { createNewDomainField } from '../actions';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
 import { DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from '../constants';
+
+import { AUTOINT_TYPE, PropDescType } from '../PropDescType';
 
 import { ListModel } from './models';
 

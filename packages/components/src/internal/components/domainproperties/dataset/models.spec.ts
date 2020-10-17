@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { BOOLEAN_TYPE, DATETIME_TYPE, DECIMAL_TYPE, FILE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../models';
+import { BOOLEAN_TYPE, DATETIME_TYPE, DECIMAL_TYPE, FILE_TYPE, INTEGER_TYPE, TEXT_TYPE } from '../PropDescType';
 
 import { DatasetModel } from './models';
 

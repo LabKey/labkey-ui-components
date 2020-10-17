@@ -351,7 +351,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
                 aria-haspopup={true}
                 className="dropdown-toggle btn btn-default"
                 disabled={false}
-                id="chartselector-0"
+                id="chartselector-2"
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 role="button"
@@ -364,7 +364,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
                 />
               </button>
               <ul
-                aria-labelledby="chartselector-0"
+                aria-labelledby="chartselector-2"
                 className="dropdown-menu"
                 role="menu"
               >
@@ -638,7 +638,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
                   aria-haspopup={true}
                   className="dropdown-toggle btn btn-default"
                   disabled={true}
-                  id="viewselector-1"
+                  id="viewselector-3"
                   onClick={[Function]}
                   onKeyDown={[Function]}
                   role="button"
@@ -651,7 +651,7 @@ exports[`QueryGridPanel render query grid error 1`] = `
                   />
                 </button>
                 <ul
-                  aria-labelledby="viewselector-1"
+                  aria-labelledby="viewselector-3"
                   className="dropdown-menu dropdown-menu-right"
                   role="menu"
                 />
@@ -781,7 +781,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
                 aria-haspopup={true}
                 className="dropdown-toggle btn btn-default"
                 disabled={true}
-                id="chartselector-0"
+                id="chartselector-4"
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 role="button"
@@ -796,7 +796,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
                 />
               </button>
               <ul
-                aria-labelledby="chartselector-0"
+                aria-labelledby="chartselector-4"
                 className="dropdown-menu"
                 role="menu"
               />
@@ -908,7 +908,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
                   aria-haspopup={true}
                   className="dropdown-toggle btn btn-default"
                   disabled={true}
-                  id="viewselector-1"
+                  id="viewselector-5"
                   onClick={[Function]}
                   onKeyDown={[Function]}
                   role="button"
@@ -921,7 +921,7 @@ exports[`QueryGridPanel render with header and message props 1`] = `
                   />
                 </button>
                 <ul
-                  aria-labelledby="viewselector-1"
+                  aria-labelledby="viewselector-5"
                   className="dropdown-menu dropdown-menu-right"
                   role="menu"
                 />
@@ -1093,7 +1093,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
                 aria-haspopup={true}
                 className="dropdown-toggle btn btn-default"
                 disabled={true}
-                id="chartselector-0"
+                id="chartselector-6"
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 role="button"
@@ -1108,7 +1108,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
                 />
               </button>
               <ul
-                aria-labelledby="chartselector-0"
+                aria-labelledby="chartselector-6"
                 className="dropdown-menu"
                 role="menu"
               />
@@ -1220,7 +1220,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
                   aria-haspopup={true}
                   className="dropdown-toggle btn btn-default"
                   disabled={true}
-                  id="viewselector-1"
+                  id="viewselector-7"
                   onClick={[Function]}
                   onKeyDown={[Function]}
                   role="button"
@@ -1233,7 +1233,7 @@ exports[`QueryGridPanel render with showAllTabs and one empty grid tab (we never
                   />
                 </button>
                 <ul
-                  aria-labelledby="viewselector-1"
+                  aria-labelledby="viewselector-7"
                   className="dropdown-menu dropdown-menu-right"
                   role="menu"
                 />
@@ -1402,7 +1402,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
                 aria-haspopup={true}
                 className="dropdown-toggle btn btn-default"
                 disabled={true}
-                id="chartselector-0"
+                id="chartselector-8"
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 role="button"
@@ -1417,7 +1417,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
                 />
               </button>
               <ul
-                aria-labelledby="chartselector-0"
+                aria-labelledby="chartselector-8"
                 className="dropdown-menu"
                 role="menu"
               />
@@ -1529,7 +1529,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
                   aria-haspopup={true}
                   className="dropdown-toggle btn btn-default"
                   disabled={true}
-                  id="viewselector-1"
+                  id="viewselector-9"
                   onClick={[Function]}
                   onKeyDown={[Function]}
                   role="button"
@@ -1542,7 +1542,7 @@ exports[`QueryGridPanel render with showAllTabs and two empty grid tabs (both sh
                   />
                 </button>
                 <ul
-                  aria-labelledby="viewselector-1"
+                  aria-labelledby="viewselector-9"
                   className="dropdown-menu dropdown-menu-right"
                   role="menu"
                 />
@@ -1739,7 +1739,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                 aria-haspopup={true}
                 className="dropdown-toggle btn btn-default"
                 disabled={false}
-                id="chartselector-0"
+                id="chartselector-10"
                 onClick={[Function]}
                 onKeyDown={[Function]}
                 role="button"
@@ -1752,7 +1752,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                 />
               </button>
               <ul
-                aria-labelledby="chartselector-0"
+                aria-labelledby="chartselector-10"
                 className="dropdown-menu"
                 role="menu"
               >
@@ -2026,7 +2026,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   aria-haspopup={true}
                   className="dropdown-toggle btn btn-default"
                   disabled={true}
-                  id="viewselector-1"
+                  id="viewselector-11"
                   onClick={[Function]}
                   onKeyDown={[Function]}
                   role="button"
@@ -2039,7 +2039,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   />
                 </button>
                 <ul
-                  aria-labelledby="viewselector-1"
+                  aria-labelledby="viewselector-11"
                   className="dropdown-menu dropdown-menu-right"
                   role="menu"
                 >
@@ -3138,7 +3138,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <a
-                    href="#/rd/assayrun/650"
+                    href="/labkey/Sample%20Management/assay-assayDetailRedirect.view?runId=650"
                   >
                     GPAT 1_2019-08-07_13-18-06
                   </a>
@@ -3164,7 +3164,7 @@ exports[`QueryGridPanel render with showTabs and two grid tabs with one empty (s
                   }
                 >
                   <a
-                    href="#/q/core/siteusers/1005"
+                    href="/labkey/Sample%20Management/user-details.view?schemaName=core&query.queryName=Users&userId=1005"
                   >
                     susanh
                   </a>

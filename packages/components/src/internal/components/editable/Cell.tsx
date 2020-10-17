@@ -23,7 +23,7 @@ import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from 
 import { CellMessage, ValueDescriptor } from '../../models';
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
-import { QueryColumn } from '../base/models/model';
+import { QueryColumn } from '../../..';
 
 import { getQueryColumnRenderers } from '../../global';
 

@@ -17,11 +17,18 @@ import { fromJS, List, Map, OrderedMap, Record, Set } from 'immutable';
 import { normalize, schema } from 'normalizr';
 import { AuditBehaviorTypes, Filter, Query, QueryDOM } from '@labkey/api';
 
-import { URLResolver } from '../util/URLResolver';
 import { getQueryMetadata } from '../global';
-import { caseInsensitive, resolveKeyFromJson, resolveSchemaQuery } from '../util/utils';
-import { QueryInfo } from '../components/base/models/QueryInfo';
-import { QueryColumn, QueryInfoStatus, SchemaQuery, ViewInfo } from '../components/base/models/model';
+import { resolveKeyFromJson } from '../util/utils';
+import {
+    caseInsensitive,
+    QueryColumn,
+    QueryInfo,
+    QueryInfoStatus,
+    resolveSchemaQuery,
+    SchemaQuery,
+    URLResolver,
+    ViewInfo,
+} from '../..';
 
 const queryDetailsCache: { [key: string]: Promise<QueryInfo> } = {};
 
@@ -625,7 +632,7 @@ export class InsertRowsResponse extends Record({
     rows: Array<any>(),
     schemaQuery: undefined,
     error: undefined,
-    transactionAuditId: undefined
+    transactionAuditId: undefined,
 }) {
     rows: any[];
     schemaQuery: SchemaQuery;
@@ -665,7 +672,7 @@ export function insertRows(options: InsertRowsOptions): Promise<InsertRowsRespon
                     new InsertRowsResponse({
                         schemaQuery,
                         rows: response.rows,
-                        transactionAuditId: response.transactionAuditId
+                        transactionAuditId: response.transactionAuditId,
                     })
                 );
             },

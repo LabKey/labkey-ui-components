@@ -3,9 +3,7 @@ import { Option } from 'react-select';
 import { storiesOf } from '@storybook/react';
 
 import './stories.scss';
-import { SelectInput } from '../internal/components/forms/input/SelectInput';
-import { QuerySelect } from '../internal/components/forms/QuerySelect';
-import { SchemaQuery } from '../internal/components/base/models/model';
+import { SelectInput, QuerySelect, SchemaQuery } from '..';
 
 const DATA_CLASSES = {
     INGREDIENTS: SchemaQuery.create('exp.data', 'expressionsystem'),

@@ -17,10 +17,7 @@ import {
     ATTACHMENT_TYPE,
     BOOLEAN_TYPE,
     DATETIME_TYPE,
-    DomainDesign,
-    DomainField,
     DOUBLE_TYPE,
-    FieldErrors,
     FILE_TYPE,
     FLAG_TYPE,
     INTEGER_TYPE,
@@ -31,7 +28,9 @@ import {
     SAMPLE_TYPE,
     TEXT_TYPE,
     USERS_TYPE,
-} from './models';
+} from './PropDescType';
+
+import { DomainDesign, DomainField, FieldErrors } from './models';
 import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, INT_RANGE_URI } from './constants';
 
 describe('PropDescType', () => {

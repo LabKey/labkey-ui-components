@@ -622,12 +622,6 @@ class GridPanelWithModelBodyImpl<T> extends PureComponent<GridPaneWithModelBodyP
     }
 }
 
-/**
- * GridPanelWithModel is a GridPanel component that also accepts the props for withQueryModels, however it assumes
- * that there will only ever be one model.
- *
- * In the future when GridPanel supports multiple models we will render tabs.
- */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps<any>>(GridPanelWithModelBodyImpl);
 
@@ -636,8 +630,8 @@ interface GridPanelWithModelProps<T> extends GridPanelProps<T> {
 }
 
 /**
- * GridPanelWithModel is the same as a GridPanel component, but is wrapped with withQueryModels so it can convert the
- * queryConfig object into a model and load it for you.
+ * GridPanelWithModel is the same as a [[GridPanel]] component, but it takes a single [[QueryConfig]] and loads the
+ * model for you.
  */
 export class GridPanelWithModel<T> extends PureComponent<GridPanelWithModelProps<T>> {
     render() {

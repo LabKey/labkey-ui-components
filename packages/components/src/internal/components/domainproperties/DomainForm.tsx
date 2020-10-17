@@ -29,7 +29,13 @@ import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { blurActiveElement } from '../../util/utils';
 
-import { EXPAND_TRANSITION, EXPAND_TRANSITION_FAST, PHILEVEL_NOT_PHI, SEVERITY_LEVEL_ERROR } from './constants';
+import {
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    EXPAND_TRANSITION,
+    EXPAND_TRANSITION_FAST,
+    PHILEVEL_NOT_PHI,
+    SEVERITY_LEVEL_ERROR,
+} from './constants';
 import { LookupProvider } from './Lookup/Context';
 import {
     addDomainField,
@@ -47,24 +53,19 @@ import {
 } from './actions';
 import { DomainRow } from './DomainRow';
 import {
-    ATTACHMENT_TYPE,
     DomainDesign,
     DomainException,
     DomainField,
     DomainFieldError,
     DomainPanelStatus,
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
-    FILE_TYPE,
-    FLAG_TYPE,
     HeaderRenderer,
     IAppDomainHeader,
     IDomainField,
     IDomainFormDisplayOptions,
     IFieldChange,
-    PROP_DESC_TYPES,
-    PropDescType,
     DomainFieldIndexChange,
 } from './models';
+import { ATTACHMENT_TYPE, FILE_TYPE, FLAG_TYPE, PROP_DESC_TYPES, PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
 

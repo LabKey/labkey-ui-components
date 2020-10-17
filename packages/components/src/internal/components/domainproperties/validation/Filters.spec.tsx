@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { JsonType } from '../models';
+import { JsonType } from '../PropDescType';
 import { createFormInputId } from '../actions';
 import {
     DOMAIN_FIRST_FILTER_TYPE,

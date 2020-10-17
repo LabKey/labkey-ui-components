@@ -1,7 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { INTEGER_TYPE, TEXT_TYPE } from '../models';
 import { createFormInputId } from '../actions';
 import {
     DOMAIN_FIRST_FILTER_VALUE,
@@ -10,6 +9,7 @@ import {
     DOMAIN_VALIDATOR_ITALIC,
     DOMAIN_VALIDATOR_STRIKETHROUGH,
 } from '../constants';
+import { INTEGER_TYPE, TEXT_TYPE } from '../PropDescType';
 
 import conditionalFormat1 from '../../../../test/data/conditionalFormat1.json';
 import conditionalFormat2 from '../../../../test/data/conditionalFormat2.json';

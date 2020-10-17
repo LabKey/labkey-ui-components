@@ -6,7 +6,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount, shallow } from 'enzyme';
 
-import { QueryColumn } from '../base/models/model';
+import { QueryColumn } from '../../..';
 
 import { FieldLabel } from './FieldLabel';
 import { LabelOverlay } from './LabelOverlay';

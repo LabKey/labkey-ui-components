@@ -37,7 +37,6 @@ export interface GridMessage {
     content: string;
 }
 
-// Note: if you add/remove fields on QueryConfig make sure to update utils.hashQueryConfig
 export interface QueryConfig {
     /**
      * An array of base [Filter.IFilter](https://labkey.github.io/labkey-api-js/interfaces/_filter_filter_.ifilter.html)
@@ -520,12 +519,12 @@ export class QueryModel {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     get gridData(): Array<{ [key: string]: any }> {
-        const { hasSelections, selections } = this;
+        const { selections } = this;
 
         return this.orderedRows.map(value => {
             const row = this.rows[value];
 
-            if (hasSelections) {
+            if (selections) {
                 return {
                     ...row,
                     [GRID_SELECTION_INDEX]: selections.has(value),
@@ -683,16 +682,16 @@ export class QueryModel {
      * True if the QueryModel has row selections.
      */
     get hasSelections(): boolean {
-        return this.selections !== undefined;
+        return this.selections?.size > 0;
     }
 
     /**
      * Get the row selection state (ALL, SOME, or NONE) for the QueryModel.
      */
     get selectedState(): GRID_CHECKBOX_OPTIONS {
-        const { hasSelections, hasData, isLoading, maxRows, orderedRows, selections, rowCount } = this;
+        const { hasData, isLoading, maxRows, orderedRows, selections, rowCount } = this;
 
-        if (!isLoading && hasData && hasSelections) {
+        if (!isLoading && hasData && selections) {
             const selectedOnPage = orderedRows.filter(rowId => selections.has(rowId)).length;
 
             if (selectedOnPage === maxRows && rowCount > 0) {

@@ -17,19 +17,22 @@ import React from 'react';
 import { Checkbox, Input, Textarea } from 'formsy-react-components';
 
 import { LabelOverlay } from '../LabelOverlay';
-import { DateInput } from '../input/DateInput';
-import { DatePickerInput } from '../input/DatePickerInput';
+import {
+    DateInput,
+    DatePickerInput,
+    MultiValueRenderer,
+    AliasRenderer,
+    AppendUnits,
+    LookupSelectInput,
+    QueryColumn,
+    LabelColorRenderer,
+} from '../../../..';
 
 import { resolveDetailFieldValue, resolveRenderer } from '../renderers';
-import { MultiValueRenderer } from '../../../renderers/MultiValueRenderer';
-import { AliasRenderer } from '../../../renderers/AliasRenderer';
-import { AppendUnits } from '../../../renderers/AppendUnits';
-import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
-import { LookupSelectInput } from '../input/LookupSelectInput';
-import { QueryColumn } from '../../base/models/model';
-import { getUnFormattedNumber } from '../../../util/Date';
 
-import { LabelColorRenderer } from '../../../renderers/LabelColorRenderer';
+import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
+
+import { getUnFormattedNumber } from '../../../util/Date';
 
 import { _defaultRenderer } from './DetailDisplay';
 

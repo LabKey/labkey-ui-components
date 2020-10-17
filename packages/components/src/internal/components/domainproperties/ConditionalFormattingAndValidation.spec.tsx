@@ -6,7 +6,8 @@ import propertyValidatorRegex from '../../../test/data/propertyValidator-regex.j
 import conditionalFormat1 from '../../../test/data/conditionalFormat1.json';
 import conditionalFormat2 from '../../../test/data/conditionalFormat2.json';
 
-import { BOOLEAN_TYPE, DATETIME_TYPE, DomainField, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from './models';
+import { DomainField } from './models';
+import { BOOLEAN_TYPE, DATETIME_TYPE, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from './PropDescType';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 
 describe('ConditionalFormattingAndValidation', () => {

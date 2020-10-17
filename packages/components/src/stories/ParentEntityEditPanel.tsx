@@ -17,14 +17,19 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { getStateQueryGridModel } from '../internal/models';
-import { gridInit } from '../internal/actions';
-import { getQueryGridModel } from '../internal/global';
+import {
+    getStateQueryGridModel,
+    gridInit,
+    getQueryGridModel,
+    LoadingSpinner,
+    SCHEMAS,
+    QueryGridModel,
+    SchemaQuery,
+    DataClassDataType,
+    ParentEntityEditPanel,
+} from '..';
+
 import './stories.scss';
-import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
-import { SCHEMAS } from '../internal/components/base/models/schemas';
-import { QueryGridModel, SchemaQuery } from '../internal/components/base/models/model';
-import { DataClassDataType, ParentEntityEditPanel } from '..';
 
 interface Props {
     canUpdate: boolean;

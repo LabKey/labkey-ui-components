@@ -15,11 +15,8 @@
  */
 import { List, Map } from 'immutable';
 
-import { AssayWizardModel } from '../../internal/components/assay/models';
-
-import { QueryInfo } from '../../internal/components/base/models/QueryInfo';
-import { AssayDefinitionModel, AssayDomainTypes } from '../../internal/components/base/models/model';
-import { IFile } from '../../internal/components/files/models';
+import { AssayDefinitionModel, AssayDomainTypes, IFile, QueryInfo } from '../..';
+import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
 
 import assayWizardJSON from './assayWizardModel.json';
 

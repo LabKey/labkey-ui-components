@@ -19,14 +19,18 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import { Panel } from 'react-bootstrap';
 
-import { getStateQueryGridModel } from '../internal/models';
-import { gridInit } from '../internal/actions';
-import { DetailEditing } from '../internal/components/forms/detail/DetailEditing';
-import { getQueryGridModel } from '../internal/global';
+import {
+    getStateQueryGridModel,
+    gridInit,
+    DetailEditing,
+    getQueryGridModel,
+    LoadingSpinner,
+    SCHEMAS,
+    QueryGridModel,
+    SchemaQuery,
+} from '..';
+
 import './stories.scss';
-import { LoadingSpinner } from '../internal/components/base/LoadingSpinner';
-import { SCHEMAS } from '../internal/components/base/models/schemas';
-import { QueryGridModel, SchemaQuery } from '../internal/components/base/models/model';
 
 interface Props {
     canUpdate: boolean;

@@ -1,5 +1,9 @@
 # @labkey/components
 
+### version 0.99.1
+*Released*: 17 October 2020
+* Update QueryModel.hasSelections to check selection count as well if array exists.
+
 ### version 0.99.0
 *Released*: 14 October 2020
 * Introduce new mechanisms for loading assay resources; `withAssayModels`, `withAssayModelsFromLocation` and `asayPage`.

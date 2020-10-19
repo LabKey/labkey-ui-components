@@ -1,5 +1,9 @@
 # @labkey/components
 
+### version XXX
+*Released*: XXX
+* Issue 41493: Allow appendToCurrentNode to work around page scroll issue
+
 ### version 0.99.1
 *Released*: 17 October 2020
 * Update QueryModel.hasSelections to check selection count as well if array exists.

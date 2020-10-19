@@ -43,7 +43,7 @@ export class ExportMenu extends PureComponent<ExportMenuProps> {
                         >
                             <MenuItem header>
                                 Export
-                                {hasSelections && selections.size > 0 ? ' Selected' : ''}
+                                {hasSelections ? ' Selected' : ''}
                             </MenuItem>
 
                             {ExportMenu.exportOptions.map(option => (

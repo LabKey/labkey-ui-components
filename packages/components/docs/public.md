@@ -36,7 +36,7 @@ import { QueryModel, GridPanel } from '@labkey/components';
 
 #### API
 * [QueryModel API and GridPanel](./QueryModel.md) - how to use QueryModel as a selectRows API wrapper and display data
-* [naturalSort and naturalSortByProperty](./sort.md) - utilities to sort data the way users expect it to be
+* [Sorting Utilities](./sort.md) - utilities to sort data the way users expect it to be
 sorted.
 
 

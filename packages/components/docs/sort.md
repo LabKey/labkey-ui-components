@@ -1,11 +1,13 @@
-# naturalSort & naturalSortByProperty
+# Sorting Utilities
 
 By default JavaScript does not sort strings alphanumerically, which can lead to confusing experiences when rendering
 data for users. We provide two utilities for sorting data, `naturalSort` and `naturalSortByProperty` to sort data
 alphanumerically.
 
-#### naturalSort
+## naturalSort
 ```js
+import { naturalSort } from "@labkey/components";
+
 const data = [
     'z1',
     'z10',
@@ -26,7 +28,7 @@ const data = [
 
 // Default JavaScript sorting:
 console.log(data.sort());
-// Logs:
+// Output:
 [
    "z",
    "z1",
@@ -47,7 +49,7 @@ console.log(data.sort());
 
 // naturalSort:
 console.log(data.sort(naturalSort));
-// Logs:
+// Output:
 [
   "z",
   "z1",
@@ -67,12 +69,14 @@ console.log(data.sort(naturalSort));
 ]
 ```
 
-#### naturalSortByProperty
+## naturalSortByProperty
 
 `naturalSortByProperty` allows you to sort an array of objects alphanumerically. You can create a sorter for a specific
 property of an object by calling `naturalSortByProperty(propertyName)`.
 
 ```js
+import { naturalSortByProperty } from "@labkey/components";
+
 const data = [
     { value: 'z' },
     { value: 'z2' },
@@ -82,9 +86,11 @@ const data = [
     { value: 'z14' },
     { value: 'z48' },
 ];
+
 // Here we pass 'value' to naturalSortByProperty becuase we want to sort by the value property of each object.
-console.log(data.sort(naturalSortByProperty('value')));
-// Logs:
+const sortByValue = naturalSortByProperty('value');
+console.log(data.sort(sortByValue));
+// Output:
 [
   { value: "z" },
   { value: "z2" },

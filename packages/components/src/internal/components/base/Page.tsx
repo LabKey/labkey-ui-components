@@ -23,6 +23,7 @@ export interface PageProps {
     hasHeader?: boolean;
     title?: string;
     productName?: string;
+    showNotifications?: boolean;
 }
 
 export class Page extends React.Component<PageProps, any> {
@@ -61,7 +62,7 @@ export class Page extends React.Component<PageProps, any> {
     }
 
     render() {
-        const { children, notFound } = this.props;
+        const { children, notFound, showNotifications } = this.props;
 
         if (notFound) {
             return <NotFound />;
@@ -81,7 +82,7 @@ export class Page extends React.Component<PageProps, any> {
 
             return (
                 <>
-                    {!hasHeader && <PageHeader />}
+                    {!hasHeader && <PageHeader showNotifications={showNotifications}/>}
                     {children}
                 </>
             );

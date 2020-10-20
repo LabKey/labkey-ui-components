@@ -1,5 +1,9 @@
 # @labkey/components
 
+### version TBD
+*Released*: TBD
+* Make visual updates to FileTree.
+
 ### version 0.99.1
 *Released*: 17 October 2020
 * Update QueryModel.hasSelections to check selection count as well if array exists.

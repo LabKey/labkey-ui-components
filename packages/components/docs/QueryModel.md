@@ -3,7 +3,7 @@
 At a high level the QueryModel API is a wrapper around the selectRows API. If you need to retrieve data from a LabKey
 table or query so you can render it in a React component, then the QueryModel API is most likely what you want.
 
-### QueryModel / QueryConfig
+### [QueryModel](../src/public/QueryModel/QueryModel.ts#L137) & [QueryConfig](../src/public/QueryModel/QueryModel.ts#L40)
 
 This is the base model used to store all the data for a query. This stores some client-side only data as well as data
 retrieved by the server. You can manually instantiate a `QueryModel`, but you will almost never do this, instead you will
@@ -12,7 +12,7 @@ to define a `QueryConfig` object. At a minimum, your `QueryConfig` must have a v
 many other attributes that allow you to configure the model before it is loaded, all of the attributes can be found
 on the [`QueryConfig` interface](../src/public/QueryModel/QueryModel.ts#L40).
 
-### withQueryModels
+### [withQueryModels](..src/public/QueryModel/withQueryModels.tsx#L131)
 
 `withQueryModels` is a [Higher Order Component](https://reactjs.org/docs/higher-order-components.html), a function that
 takes a component and returns a new component. In short, `withQueryModels` takes a component that implements the
@@ -47,13 +47,13 @@ interface MyComponentProps {
     title: string;
 }
 
-// Here we create a type that includes InjectedQueryModels because 
-// we're wrapping the component with withQueryModels which will inject 
+// Here we create a type that includes InjectedQueryModels because
+// we're wrapping the component with withQueryModels which will inject
 // queryModels and actions objects.
 type Props = MyComponentProps & InjectedQueryModels;
 
-// Here we use the name ExampleComponentImpl, users will not use this 
-// component directly, only the wrapped version below which we expose 
+// Here we use the name ExampleComponentImpl, users will not use this
+// component directly, only the wrapped version below which we expose
 // to users as ExampleComponent.
 class ExampleComponentImpl extends PureComponent<Props> {
     render() {
@@ -72,18 +72,18 @@ class ExampleComponentImpl extends PureComponent<Props> {
     }
 }
 
-// Next wrap your component with withQueryModels, here we set the type 
-// to MyComponentProps so the returned component, ExampleComponent, can 
-// be used in a type safe manner. In this case, if the user forgets to 
+// Next wrap your component with withQueryModels, here we set the type
+// to MyComponentProps so the returned component, ExampleComponent, can
+// be used in a type safe manner. In this case, if the user forgets to
 // pass in a title we'll get a compiler error as intended.
 export const ExampleComponent = withQueryModels<MyComponentProps>(ExampleComponentImpl);
 
-// The component returned from withQueryModels, ExampleComponent in this 
-// case, now has the following props type: MyComponentProps & MakeQueryModels. 
+// The component returned from withQueryModels, ExampleComponent in this
+// case, now has the following props type: MyComponentProps & MakeQueryModels.
 // To use the component you pass it a queryConfig and it will instantiate the
 // models you want and pass them to ExampleComponentImpl:
-const queryConfigs = { 
-    assayModel: { 
+const queryConfigs = {
+    assayModel: {
         schemaQuery: SchemaQuery.create('assay.general.amino acids', 'Runs'),
     }
 };
@@ -100,7 +100,7 @@ To summarize:
     add a model later via `actions.addModel(queryConfig: QueryConfig)`, this is often done if a schema name or query
     name comes from user input (e.g. from a `<select>` menu).
 
-### GridPanel
+### [GridPanel](../src/public/QueryModel/GridPanel.tsx#L165)
 
 A common use case for QueryModel is rendering data into a grid. We provide an easy way to render a grid
 via the `GridPanel` component. `GridPanel` has many props, but the only props you need to pass are a `model` which is
@@ -151,17 +151,18 @@ function MyComponent(props: MyComponentProps) {
 ```
 
 
-### DetailPanel
-Another common use case is to render the details of a single row from a SchemaQuery. We provide a component, `DetailPanel`, that
-does this for you. There are two versions of this component: `DetailPanel` and `DetailPanelWithModel`. `DetailPanel`
-expects you to have a `QueryModel` already and will render the details for you. `DetailPanelWithModel` takes a
-QueryConfig object and will instantiate and load the QueryModel for you. `DetailPanel` and `DetailPanelWithModel` can be
-rendered as a Bootstrap panel by setting the `asPanel` prop to true.
+### [DetailPanel](../src/public/QueryModel/DetailPanel.tsx#L28)
+Another common use case is to render the details of a single row from a SchemaQuery. We provide a component,
+`DetailPanel`, that does this for you. There are two versions of this component: `DetailPanel` and
+`DetailPanelWithModel`. `DetailPanel` expects you to have a `QueryModel` already and will render the details for you.
+`DetailPanelWithModel` takes a QueryConfig object and will instantiate and load the QueryModel for you. `DetailPanel`
+and `DetailPanelWithModel` can be rendered as a Bootstrap panel by setting the `asPanel` prop to true.
 
 When using the `DetailPanel` components you need to ensure that your QueryConfig objects have a value for the `keyValue`
-attribute. The `keyValue` attribute is the value of the primary key for the specified schema/query, this is typically the
-value of the `RowId` column. If there is not a single primary key column, you can instead set the `baseFilters` attribute
-of your `QueryConfig` to an array of `Filter` objects that will filter the schema/query to a single row of data.
+attribute. The `keyValue` attribute is the value of the primary key for the specified schema/query, this is typically
+the value of the `RowId` column. If there is not a single primary key column, you can instead set the `baseFilters`
+attribute of your `QueryConfig` to an array of `Filter` objects that will filter the schema/query to a single row of
+data.
 
 #### Examples:
 **DetailPanelWithModel**

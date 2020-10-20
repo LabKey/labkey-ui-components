@@ -147,10 +147,6 @@ yarn outdated
 command to show which packages are out of date and then compare to the spreadsheet to determine if there has already
 been investigation into the cost of upgrading packages that are out of date.
 
-### Documentation
-
-The documentation for our public API can be found [here](./docs/public.md).
-
 ### Storybook
 
 A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories".

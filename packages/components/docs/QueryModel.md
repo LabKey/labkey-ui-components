@@ -159,9 +159,9 @@ QueryConfig object and will instantiate and load the QueryModel for you. `Detail
 rendered as a Bootstrap panel by setting the `asPanel` prop to true.
 
 When using the `DetailPanel` components you need to ensure that your QueryConfig objects have a value for the `keyValue`
-attribute. The `keyValue` attribute is the value of the primary key for the specified Schema/Query, this is typically
-value of the `RowId` column. If there is not a single primary key column you can instead set the `baseFilters` attribute
-of your QueryConfig to an array of `Filter` objects that will filter the Schema/Query to a single row of data.
+attribute. The `keyValue` attribute is the value of the primary key for the specified schema/query, this is typically the
+value of the `RowId` column. If there is not a single primary key column, you can instead set the `baseFilters` attribute
+of your `QueryConfig` to an array of `Filter` objects that will filter the schema/query to a single row of data.
 
 #### Examples:
 **DetailPanelWithModel**

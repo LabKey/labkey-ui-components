@@ -74,7 +74,7 @@ import { BasePermissionsCheckPage } from './internal/components/permissions/Base
 import { NotFound } from './internal/components/base/NotFound';
 import { Page, PageProps } from './internal/components/base/Page';
 import { LoadingPage, LoadingPageProps } from './internal/components/base/LoadingPage';
-import { PageHeader } from './internal/components/base/PageHeader';
+import { PageHeader, PageHeaderProps } from './internal/components/base/PageHeader';
 import { Progress } from './internal/components/base/Progress';
 import { LabelHelpTip } from './internal/components/base/LabelHelpTip';
 import { Tip } from './internal/components/base/Tip';
@@ -775,6 +775,7 @@ export {
     Page,
     PageProps,
     PageHeader,
+    PageHeaderProps,
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,

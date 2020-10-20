@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { Component } from 'react';
 
 import { Notification } from '../notifications/Notification';
 
 import { User } from './models/User';
 
-interface PageHeaderProps {
+export interface PageHeaderProps {
     iconCls?: string;
     showNotifications?: boolean;
     title?: string;
     user?: User;
 }
 
-export class PageHeader extends React.Component<PageHeaderProps, any> {
+export class PageHeader extends Component<PageHeaderProps> {
     static defaultProps = {
         showNotifications: true,
     };

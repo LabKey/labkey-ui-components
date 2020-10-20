@@ -100,7 +100,7 @@ To summarize:
     add a model later via `actions.addModel(queryConfig: QueryConfig)`, this is often done if a schema name or query
     name comes from user input (e.g. from a `<select>` menu).
 
-### [GridPanel](../src/public/QueryModel/GridPanel.tsx#L165)
+### [GridPanel](../src/public/QueryModel/GridPanel.tsx#L168)
 
 A common use case for QueryModel is rendering data into a grid. We provide an easy way to render a grid
 via the `GridPanel` component. `GridPanel` has many props, but the only props you need to pass are a `model` which is
@@ -151,7 +151,7 @@ function MyComponent(props: MyComponentProps) {
 ```
 
 
-### [DetailPanel](../src/public/QueryModel/DetailPanel.tsx#L28)
+### [DetailPanel](../src/public/QueryModel/DetailPanel.tsx#L32)
 Another common use case is to render the details of a single row from a SchemaQuery. We provide a component,
 `DetailPanel`, that does this for you. There are two versions of this component: `DetailPanel` and
 `DetailPanelWithModel`. `DetailPanel` expects you to have a `QueryModel` already and will render the details for you.

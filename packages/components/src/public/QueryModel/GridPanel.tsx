@@ -162,6 +162,9 @@ interface State {
     actionValues: ActionValue[];
 }
 
+/**
+ * Render a QueryModel as an interactive grid. For in depth documentation and examples see components/docs/QueryModel.md
+ */
 export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     static defaultProps = {
         allowSelections: true,

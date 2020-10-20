@@ -25,6 +25,10 @@ interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndAct
     queryColumns?: QueryColumn[];
 }
 
+/**
+ * Render a QueryModel with a single row of a data. For in depth documentation and examples see
+ * components/docs/QueryModel.md
+ */
 export const DetailPanel: FC<DetailPanelProps> = memo(({ actions, model, queryColumns, ...detailDisplayProps }) => {
     // ignoring actions so we don't pass to DetailDisplay
     const { editingMode } = detailDisplayProps;

@@ -124,7 +124,7 @@ const paramsEqual = (oldParams, newParams): boolean => {
 };
 
 /**
- * For in depth documentation and examples see components/docs/QueryModel.md
+ * A wrapper for LabKey selectRows API. For in depth documentation and examples see components/docs/QueryModel.md
  * @param ComponentToWrap: A component that implements generic Props and InjectedQueryModels.
  * @returns A react ComponentType that implements generic Props and MakeQueryModels.
  */

@@ -4,7 +4,7 @@ By default JavaScript does not sort strings alphanumerically, which can lead to 
 data for users. We provide two utilities for sorting data, `naturalSort` and `naturalSortByProperty` to sort data
 alphanumerically.
 
-## naturalSort
+## [naturalSort](../src/public/sort.ts#L10)
 ```js
 import { naturalSort } from "@labkey/components";
 
@@ -69,7 +69,7 @@ console.log(data.sort(naturalSort));
 ]
 ```
 
-## naturalSortByProperty
+## [naturalSortByProperty](../src/public/sort.ts#L52)
 
 `naturalSortByProperty` allows you to sort an array of objects alphanumerically. You can create a sorter for a specific
 property of an object by calling `naturalSortByProperty(propertyName)`.

@@ -152,7 +152,7 @@ function MyComponent(props: MyComponentProps) {
 
 
 ### DetailPanel
-A common use case is to render the details of a single row from a SchemaQuery, we provide a component, DetailPanel, that
+Another common use case is to render the details of a single row from a SchemaQuery. We provide a component, `DetailPanel`, that
 does this for you. There are two versions of this component: `DetailPanel` and `DetailPanelWithModel`. `DetailPanel`
 expects you to have a `QueryModel` already and will render the details for you. `DetailPanelWithModel` takes a
 QueryConfig object and will instantiate and load the QueryModel for you. `DetailPanel` and `DetailPanelWithModel` can be

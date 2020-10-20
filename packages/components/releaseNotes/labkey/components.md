@@ -1,5 +1,9 @@
 # @labkey/components
 
+### version TBD
+*Released*: TBD
+* Issue 41574: Dataset designer file import column mapping fix for demographics dataset creation case
+
 ### version 0.100.0
 *Released*: 20 Oct 2020
 * DetailPanel/DetailPanelWithModel now take QueryConfig as a prop instead of QueryConfig & DetailDisplaySharedProps

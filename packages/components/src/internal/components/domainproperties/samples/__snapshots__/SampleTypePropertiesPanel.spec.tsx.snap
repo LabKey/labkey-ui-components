@@ -1591,7 +1591,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
             className="sampleset-metric-unit-select"
           >
             <div
-              className="Select Select--single is-clearable is-searchable"
+              className="Select Select--single is-searchable"
             >
               <div
                 className="Select-control"
@@ -1627,7 +1627,7 @@ exports[`<SampleTypePropertiesPanel/> metricUnitOptions 1`] = `
                       onBlur={[Function]}
                       onChange={[Function]}
                       onFocus={[Function]}
-                      required={false}
+                      required={true}
                       role="combobox"
                       style={
                         Object {

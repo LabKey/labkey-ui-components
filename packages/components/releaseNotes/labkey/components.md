@@ -1,5 +1,9 @@
 # @labkey/components
 
+### version TBD
+*Released*: TBD
+* Issue 41621: Grid column fieldKey with special character wasn't being decoded when getting data for table cell
+
 ### version 0.100.1
 *Released*: 21 Oct 2020
 * Issue 41574: Dataset designer file import column mapping fix for demographics dataset creation case

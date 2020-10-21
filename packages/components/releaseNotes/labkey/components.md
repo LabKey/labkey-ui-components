@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 0.101.0
+*Released*: 21 Oct 2020
 * SampleTypeDesigner updates
     * add "Metric Unit" property to Sample Manager
     * add validateProperties prop to allow caller to validate sample domain properties before save

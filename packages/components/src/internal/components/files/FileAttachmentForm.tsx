@@ -51,6 +51,7 @@ interface FileAttachmentFormProps {
     onCancel?: () => any;
     onFileChange?: (files: Map<string, File>) => any;
     onFileRemoval?: (attachmentName: string) => any;
+    importFieldsFromJson?: (file: File) => void;
     onSubmit?: (files: Map<string, File>) => any;
     isSubmitting?: boolean;
     showButtons?: boolean;
@@ -86,6 +87,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         showProgressBar: false,
         submitText: 'Upload',
         compact: false,
+        importFieldsFromJson: undefined,
     };
 
     fileAttachmentContainerRef: React.RefObject<FileAttachmentContainer>;
@@ -143,7 +145,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 if (this.isShowPreviewGrid()) {
                     // if showing preview, there can be only one attached file
                     const sizeCheck = fileSizeLimitCompare(attachedFiles.valueSeq().first(), sizeLimits);
-                    if (!sizeCheck.isOversizedForPreview) this.uploadDataFileForPreview();
+                    if (!sizeCheck.isOversizedForPreview) this.processDataFile();
                     else {
                         this.setState(() => ({
                             errorMessage:
@@ -263,23 +265,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.setState(() => ({ errorMessage }));
     }
 
-    uploadDataFileForPreview() {
+    uploadDataFileForPreview = (file) => {
         const { previewGridProps } = this.props;
-        const { attachedFiles } = this.state;
-
-        // just take the first file, since we only support 1 file at this time
-        const file = attachedFiles.first();
-
-        // check if this usage has a set of formats which are supported for preview
-        if (previewGridProps.acceptedFormats) {
-            const fileCheck = fileMatchesAcceptedFormat(file.name, previewGridProps.acceptedFormats);
-            // if the file extension doesn't match the accepted preview formats, return without trying to get preview data
-            if (!fileCheck.get('isMatch')) {
-                return;
-            }
-        }
-
-        this.updatePreviewStatus('Uploading file...');
 
         inferDomainFromFile(file, previewGridProps.previewCount)
             .then((response: InferDomainResponse) => {
@@ -308,6 +295,31 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                     'There was a problem determining the fields in the uploaded file.  Please check the format of the file.'
                 );
             });
+    }
+
+    processDataFile() {
+        const { previewGridProps, importFieldsFromJson } = this.props;
+        const { attachedFiles } = this.state;
+
+        // just take the first file, since we only support 1 file at this time
+        const file = attachedFiles.first();
+
+        // check if this usage has a set of formats which are supported for preview
+        if (previewGridProps.acceptedFormats) {
+            const fileCheck = fileMatchesAcceptedFormat(file.name, previewGridProps.acceptedFormats);
+            // if the file extension doesn't match the accepted preview formats, return without trying to get preview data
+            if (!fileCheck.get('isMatch')) {
+                return;
+            }
+        }
+
+        this.updatePreviewStatus('Uploading file...');
+
+        if (importFieldsFromJson) {
+            importFieldsFromJson(file);
+        } else {
+            this.uploadDataFileForPreview(file);
+        }
     }
 
     shouldRenderAcceptedFormats(): boolean {

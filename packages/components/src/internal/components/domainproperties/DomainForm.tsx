@@ -47,7 +47,7 @@ import {
     getDomainPanelHeaderId,
     getIndexFromId,
     getMaxPhiLevel,
-    handleDomainUpdates,
+    handleDomainUpdates, mergeDomainFields,
     removeField,
     setDomainFields,
     updateDomainPanelClassList,
@@ -361,25 +361,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onExportFields = () => {
         const { domain } = this.props;
-
-        // Route1
         let fields = domain.fields;
         let filteredFields = fields.filter((field: DomainField) => field.visible);
         let fieldData = filteredFields.map(DomainField.serialize).toArray();
-
-        // Route2
-        // const { filteredString } = this.state;
-        // let fieldData = DomainDesign.serialize(domain).fields;
-        // if (filteredString) {
-        //     fieldData = fieldData.filter((field) => field.name && field.name.toLowerCase().indexOf(filteredString.toLowerCase()) !== -1);
-        // }
-
         const fieldsJson = JSON.stringify(fieldData, null, 4);
 
         // This looks hacky, but it's actually the recommended way to download a file using raw JS
         let downloadLink = document.createElement('a');
         downloadLink.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(fieldsJson);
-        downloadLink.download = 'tempName';
+        downloadLink.download = domain.name ? domain.name + 'Fields' : 'fields';
         downloadLink.style.display = 'none';
 
         document.body.appendChild(downloadLink);
@@ -693,6 +683,24 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
+    // return errors....
+    importFieldsFromJson = (file: File): void => {
+        const { domain, onChange } = this.props;
+
+        file.text()
+            .then(text => {
+                const jsFields = JSON.parse(text);
+                const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
+
+                if (onChange) {
+                    onChange(mergeDomainFields(domain, tsFields), true);
+                }
+            })
+            .catch(error => {
+                console.log("error", error);
+            });
+    }
+
     renderEmptyDomain() {
         if (this.shouldShowInferFromFile()) {
             return (
@@ -709,6 +717,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             skipPreviewGrid: true,
                             onPreviewLoad: this.handleFilePreviewLoad,
                         }}
+                        importFieldsFromJson={this.importFieldsFromJson}
                     />
                     {this.state.filePreviewMsg && <Alert bsStyle="info">{this.state.filePreviewMsg}</Alert>}
                 </>

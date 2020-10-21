@@ -290,6 +290,12 @@ export function createNewDomainField(domain: DomainDesign, fieldConfig: Partial<
     return DomainField.create(fieldConfig, true);
 }
 
+export function mergeDomainFields(domain: DomainDesign, newfields: List<DomainField>): DomainDesign {
+    return domain.merge({
+        fields: domain.fields.merge(newfields),
+    }) as DomainDesign;
+}
+
 export function addDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainDesign {
     const newField = createNewDomainField(domain, fieldConfig);
 

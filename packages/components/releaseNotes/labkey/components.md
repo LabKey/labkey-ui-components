@@ -1,7 +1,7 @@
 # @labkey/components
 
-### version TBD
-*Released*: TBD
+### version 0.100.1
+*Released*: 21 Oct 2020
 * Issue 41574: Dataset designer file import column mapping fix for demographics dataset creation case
 
 ### version 0.100.0

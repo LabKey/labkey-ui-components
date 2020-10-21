@@ -9,6 +9,7 @@ import {
     Alert,
     generateId,
     initQueryGridState,
+    MetricUnitProps,
     naturalSort,
     resolveErrorMessage,
     SCHEMAS,
@@ -78,6 +79,10 @@ interface Props {
     appPropertiesOnly?: boolean;
     successBsStyle?: string;
     saveBtnText?: string;
+
+    metricUnitProps?: MetricUnitProps
+
+    validateProperties?: (designerDetails?: any) => Promise<any>
 }
 
 interface State {
@@ -317,9 +322,12 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     onFinish = (): void => {
-        const { defaultSampleFieldConfig, setSubmitting } = this.props;
+        const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
         const { model } = this.state;
-        const isValid = model.isValid(defaultSampleFieldConfig);
+
+        let metricUnitLabel = metricUnitProps?.metricUnitLabel;
+        let metricUnitRequired = metricUnitProps?.metricUnitRequired;
+        const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
         this.props.onFinish(isValid, this.saveDomain);
 
@@ -333,6 +341,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     ' field name is reserved for imported or generated sample ids.';
             } else if (model.getDuplicateAlias(true).size > 0) {
                 exception = 'Duplicate parent alias header found: ' + model.getDuplicateAlias(true).join(', ');
+            } else if (!model.isMetricUnitValid(metricUnitRequired)) {
+                exception = metricUnitLabel + ' field is required.';
             } else {
                 exception = model.domain.getFirstFieldError();
             }
@@ -344,10 +354,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         }
     };
 
-    saveDomain = () => {
+    saveDomain = async () => {
         const { beforeFinish, setSubmitting } = this.props;
         const { model } = this.state;
-        const { name, domain, description, nameExpression, labelColor } = model;
+        const { name, domain, description, nameExpression, labelColor, metricUnit } = model;
 
         if (beforeFinish) {
             beforeFinish(model);
@@ -362,6 +372,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             name,
             nameExpression,
             labelColor,
+            metricUnit,
             importAliases: this.getImportAliasesAsMap(model).toJS(),
         };
 
@@ -372,6 +383,26 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             };
 
             domainDesign = addDomainField(domainDesign, nameCol);
+        }
+
+        try{
+            if (this.props.validateProperties) {
+                const response = await this.props.validateProperties(details);
+                if (response.error) {
+                    const updatedModel = model.set('exception', response.error) as SampleTypeModel;
+                    setSubmitting(false, () => {
+                        this.setState(() => ({ model: updatedModel }));
+                    });
+                    return;
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            const exception = resolveErrorMessage(error);
+            setSubmitting(false, () => {
+                this.setState(() => ({ model: model.set('exception', exception) as SampleTypeModel }));
+            });
+            return;
         }
 
         saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name)
@@ -423,6 +454,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             dataClassAliasCaption,
             dataClassTypeCaption,
             dataClassParentageLabel,
+            metricUnitProps
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -471,6 +503,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     onToggle={(collapsed, callback) => onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
+                    metricUnitProps={metricUnitProps}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}

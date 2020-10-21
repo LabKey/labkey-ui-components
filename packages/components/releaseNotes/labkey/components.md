@@ -1,5 +1,9 @@
 # @labkey/components
 
+### version 0.100.??
+*Released*: ?? Oct 2020
+* Issue 40917: Unable to select plate template for import in Biologics general plate assay
+
 ### version 0.100.1
 *Released*: 21 Oct 2020
 * Issue 41574: Dataset designer file import column mapping fix for demographics dataset creation case

@@ -4,6 +4,12 @@
 *Released*: TBD
 * Add new application URL in App for managing storage units
 
+### version 0.100.0
+*Released*: 20 Oct 2020
+* DetailPanel/DetailPanelWithModel now take QueryConfig as a prop instead of QueryConfig & DetailDisplaySharedProps
+* Add docs for DetailPanel and DetailPanelWithModel
+* Add docs for naturalSort and naturalSortByProperty
+
 ### version 0.99.1
 *Released*: 17 October 2020
 * Update QueryModel.hasSelections to check selection count as well if array exists.

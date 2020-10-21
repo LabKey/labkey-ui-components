@@ -3,6 +3,7 @@
 ### version TBD
 *Released*: TBD
 * Add new application URL in App for managing storage units
+* Add isDirty method to RouteLeaveInjectedProps
 
 ### version 0.100.0
 *Released*: 20 Oct 2020

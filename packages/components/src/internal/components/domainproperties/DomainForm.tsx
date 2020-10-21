@@ -360,7 +360,31 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onExportFields = () => {
-        console.log('Not Yet Implemented');
+        const { domain } = this.props;
+
+        // Route1
+        let fields = domain.fields;
+        let filteredFields = fields.filter((field: DomainField) => field.visible);
+        let fieldData = filteredFields.map(DomainField.serialize).toArray();
+
+        // Route2
+        // const { filteredString } = this.state;
+        // let fieldData = DomainDesign.serialize(domain).fields;
+        // if (filteredString) {
+        //     fieldData = fieldData.filter((field) => field.name && field.name.toLowerCase().indexOf(filteredString.toLowerCase()) !== -1);
+        // }
+
+        const fieldsJson = JSON.stringify(fieldData, null, 4);
+
+        // This looks hacky, but it's actually the recommended way to download a file using raw JS
+        let downloadLink = document.createElement('a');
+        downloadLink.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(fieldsJson);
+        downloadLink.download = 'tempName';
+        downloadLink.style.display = 'none';
+
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
     };
 
     onAddField = () => {
@@ -674,7 +698,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return (
                 <>
                     <FileAttachmentForm
-                        acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
+                        acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx, .json"
                         showAcceptedFormats={true}
                         allowDirectories={false}
                         allowMultiple={false}
@@ -754,6 +778,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     renderToolbar() {
         const { domain, domainIndex } = this.props;
         const { fields } = domain;
+        const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
 
         return (
             <Row>
@@ -767,10 +792,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <ActionButton
                         containerClass="container--toolbar-button"
                         buttonClass="domain-toolbar-export-btn"
+                        spanClass="domain-toolbar-export-span"
                         onClick={this.onExportFields}
-                        disabled={true}
+                        disabled={disableExport}
                     >
-                        <i className="fa fa-download" /> Export
+                        <i className="fa fa-download domain-toolbar-export-btn-icon" /> Export
                     </ActionButton>
                 </Col>
                 <Col xs={8}>

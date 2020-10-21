@@ -20,6 +20,7 @@ import { LabelHelpTip } from '../base/LabelHelpTip';
 
 export interface ActionButtonProps {
     buttonClass?: string;
+    spanClass?: string;
     containerClass?: string;
     disabled?: boolean;
     title?: string;
@@ -35,9 +36,9 @@ export class ActionButton extends React.PureComponent<ActionButtonProps> {
     };
 
     render() {
-        const { buttonClass, containerClass, disabled, onClick, title, helperBody, helperTitle, children } = this.props;
+        const { buttonClass, containerClass, disabled, onClick, title, helperBody, helperTitle, children, spanClass } = this.props;
 
-        const buttonClasses = classNames('container--action-button btn btn-default', { disabled });
+        const buttonClasses = classNames('container--action-button btn btn-default', spanClass, { disabled });
 
         return (
             <div className={containerClass} title={title}>

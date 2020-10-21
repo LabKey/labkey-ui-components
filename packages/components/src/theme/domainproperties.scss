@@ -30,6 +30,23 @@
   margin-bottom: 20px;
 };
 
+.domain-toolbar-export-btn {
+    color: $brand-primary;
+};
+
+.domain-toolbar-export-btn-icon {
+    color: $brand-primary;
+}
+
+.domain-toolbar-export-btn:hover .domain-toolbar-export-btn-icon {
+    color: white;
+}
+
+.domain-toolbar-export-btn:hover .domain-toolbar-export-span {
+    background-color: $brand-primary;
+    color: white;
+}
+
 .domain-search-text {
   padding: 5px 10px 0 0;
 }

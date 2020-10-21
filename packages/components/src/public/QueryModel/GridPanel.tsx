@@ -163,7 +163,7 @@ interface State {
 }
 
 /**
- * Render a QueryModel as an interactive grid. For in depth documentation and examples see components/docs/QueryModel.md
+ * Render a QueryModel as an interactive grid. For in-depth documentation and examples see components/docs/QueryModel.md.
  */
 export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     static defaultProps = {

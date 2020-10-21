@@ -12,7 +12,7 @@ to define a `QueryConfig` object. At a minimum, your `QueryConfig` must have a v
 many other attributes that allow you to configure the model before it is loaded, all of the attributes can be found
 on the [`QueryConfig` interface](../src/public/QueryModel/QueryModel.ts#L40).
 
-### [withQueryModels](..src/public/QueryModel/withQueryModels.tsx#L131)
+### [withQueryModels](../src/public/QueryModel/withQueryModels.tsx#L131)
 
 `withQueryModels` is a [Higher Order Component](https://reactjs.org/docs/higher-order-components.html), a function that
 takes a component and returns a new component. In short, `withQueryModels` takes a component that implements the
@@ -165,7 +165,7 @@ attribute of your `QueryConfig` to an array of `Filter` objects that will filter
 data.
 
 #### Examples:
-**DetailPanelWithModel**
+**[DetailPanelWithModel](../src/public/QueryModel/DetailPanel.tsx#L67)**
 ```tsx
 import React, { FC } from 'react';
 import { DetailPanelWithModel, SchemaQuery } from '@labkey/components';

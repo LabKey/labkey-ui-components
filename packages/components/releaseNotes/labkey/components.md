@@ -14,6 +14,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 0.100.1
 *Released*: 21 Oct 2020
+* Issue 41068: GridPanel does not respect the hideEmptyChartSelector and hideEmptyViewSelector properties set in a
+global query metadata override
+* Renamed global settings 'hideEmptyViewSelector', 'hideEmptyChartSelector' to 'hideEmptyViewMenu', 'hideEmptyChartMenu'
+
+### version 0.100.1
+*Released*: 21 Oct 2020
 * Issue 41574: Dataset designer file import column mapping fix for demographics dataset creation case
 
 ### version 0.100.0

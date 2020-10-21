@@ -169,15 +169,15 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     onFinish = () => {
         const { setSubmitting } = this.props;
         const { model, shouldImportData } = this.state;
+        const missingRequiredTimepointMapping = !model.demographicData && !this._sequenceNum;
 
-        if (shouldImportData && !(this._participantId && this._sequenceNum)) {
+        if (shouldImportData && (!this._participantId || missingRequiredTimepointMapping)) {
             this.setState(
                 produce((draft: Draft<State>) => {
                     draft.model.exception =
                         'You must select a column mapping field for ' +
                         getStudySubjectProp('nounPlural') +
-                        ' and ' +
-                        getStudyTimepointLabel() +
+                        (missingRequiredTimepointMapping ? ' and ' + getStudyTimepointLabel() : '') +
                         ' in the fields panel.';
                 }),
                 () => {

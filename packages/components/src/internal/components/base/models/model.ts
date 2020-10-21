@@ -966,6 +966,12 @@ export class AssayDefinitionModel extends Record({
 
             if (domainColumns && domainColumns.size) {
                 domainColumns.forEach(dc => {
+                    if (dc.getIn(['lookup', 'table']) === 'Plate') {
+                        // Issue 40917
+                        // We need to override the queryName to be PlateTemplate instead of Plate because Plate is the
+                        // physical table, PlateTemplate is the exposed virtual table.
+                        dc = dc.setIn(['lookup', 'queryName'], 'PlateTemplate') as QueryColumn;
+                    }
                     columns = columns.set(dc.fieldKey.toLowerCase(), dc);
                 });
             }

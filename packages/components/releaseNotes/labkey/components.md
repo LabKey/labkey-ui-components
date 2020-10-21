@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.101.1
+*Released*: 21 Oct 2020
+* Make visual updates to FileTree.
+
 ### version 0.101.0
 *Released*: 21 Oct 2020
 * SampleTypeDesigner updates

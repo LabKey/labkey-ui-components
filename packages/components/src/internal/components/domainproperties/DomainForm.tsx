@@ -66,6 +66,7 @@ import {
     IFieldChange,
     DomainFieldIndexChange,
 } from './models';
+import { SimpleResponse } from "../files/models";
 import { ATTACHMENT_TYPE, FILE_TYPE, FLAG_TYPE, PROP_DESC_TYPES, PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
@@ -683,21 +684,50 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
-    // return errors....
-    importFieldsFromJson = (file: File): void => {
+    importFieldsFromJson2 = (file: File): SimpleResponse => {
         const { domain, onChange } = this.props;
+        const reader = new FileReader();
+        reader.readAsText(file);
 
-        file.text()
-            .then(text => {
-                const jsFields = JSON.parse(text);
+        reader.onload = function() {
+            try {
+                const jsFields = JSON.parse(reader.result as string);
+                if (jsFields.length < 1) return {success: false, msg: 'No fields found.'};
                 const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
 
                 if (onChange) {
                     onChange(mergeDomainFields(domain, tsFields), true);
                 }
+
+                return {success: true};
+            } catch (error) {
+                return {success: false, msg: error.toString()}
+            }
+        };
+
+        reader.onerror = function() {
+            return {success: false, msg: reader.error};
+        };
+
+        return {success: false, loading: true};
+    }
+
+    importFieldsFromJson = (file: File): Promise<SimpleResponse> => {
+        const { domain, onChange } = this.props;
+
+        return file.text()
+            .then(text => {
+                const jsFields = JSON.parse(text);
+                if (jsFields.length < 1) return {success: false, msg: 'No fields found.'};
+                const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
+
+                if (onChange) {
+                    onChange(mergeDomainFields(domain, tsFields), true);
+                }
+                return {success: true};
             })
             .catch(error => {
-                console.log("error", error);
+                return {success: false, msg: error.toString()};
             });
     }
 

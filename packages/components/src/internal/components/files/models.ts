@@ -82,4 +82,11 @@ export interface FileSizeLimitProps {
         displayValue: string;
     };
 }
+
+export interface SimpleResponse {
+    success: boolean;
+    msg?: string;
+    loading?: boolean;
+}
+
 export const ALL_FILES_LIMIT_KEY = 'all';

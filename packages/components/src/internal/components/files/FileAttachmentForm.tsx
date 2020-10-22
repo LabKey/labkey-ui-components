@@ -51,7 +51,7 @@ interface FileAttachmentFormProps {
     onCancel?: () => any;
     onFileChange?: (files: Map<string, File>) => any;
     onFileRemoval?: (attachmentName: string) => any;
-    importFieldsFromJson?: (file: File) => void;
+    importFieldsFromJson?: (file: File) => Promise<{success: boolean, msg?: string}>;
     onSubmit?: (files: Map<string, File>) => any;
     isSubmitting?: boolean;
     showButtons?: boolean;
@@ -316,7 +316,8 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.updatePreviewStatus('Uploading file...');
 
         if (importFieldsFromJson) {
-            importFieldsFromJson(file);
+            importFieldsFromJson(file)
+                .then(res => { if (!res.success) this.updateErrors(res.msg);})
         } else {
             this.uploadDataFileForPreview(file);
         }

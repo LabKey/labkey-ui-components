@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 0.101.2
-*Released*: 21 Oct 2020
+*Released*: 22 Oct 2020
 * Issue 41068: GridPanel does not respect the hideEmptyChartSelector and hideEmptyViewSelector properties set in a
 global query metadata override
 * Renamed global settings 'hideEmptyViewSelector', 'hideEmptyChartSelector' to 'hideEmptyViewMenu', 'hideEmptyChartMenu'

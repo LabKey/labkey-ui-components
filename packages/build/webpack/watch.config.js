@@ -16,7 +16,7 @@ __dirname = lkModule;
 
 const devServer = {
     host: 'localhost',
-    port: process.env.WATCH_PORT || 3001,
+    port: constants.watchPort,
 
     // enable the HMR on the server
     hot: true,
@@ -71,6 +71,7 @@ module.exports = {
             // Adjust the relative path for your enlistment to enable hot reloading of the app when
             // new builds happen in @labkey/components
             '@labkey/components': constants.labkeyUIComponentsPath,
+            // '@labkey/freezermanager': constants.freezerManagerPath, // TODO
 
             // This assures there is only one copy of react and react-dom in the application
             react: path.resolve(__dirname, "../node_modules/react"),

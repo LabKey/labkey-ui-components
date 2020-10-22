@@ -15,8 +15,16 @@ const labkeyUIComponentsRelPath = (lkModuleContainer ? "../../../../../" : "../.
 const labkeyUIComponentsPath = !process.env.LINK ? path.resolve("./node_modules/@labkey/components") : path.resolve(labkeyUIComponentsRelPath);
 console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
 
+// TODO hmm....
+// const freezerManagerPath = path.resolve(__dirname, "../packages/freezermanager");
+// console.log("Using @labkey/freezermanager path: " + freezerManagerPath);
+
+const watchPort = process.env.WATCH_PORT || 3001;
+
 module.exports = {
     labkeyUIComponentsPath: labkeyUIComponentsPath,
+    // freezerManagerPath: freezerManagerPath,
+    watchPort: watchPort,
     context: function(dir) {
         return path.resolve(dir, '..');
     },
@@ -157,6 +165,7 @@ module.exports = {
                         name: app.name,
                         title: app.title,
                         permission: app.permission,
+                        viewTemplate: app.template,
                         filename: '../../../web/' + lkModule + '/gen/' + app.name + '.lib.xml',
                         template: 'node_modules/@labkey/build/webpack/lib.template.xml'
                     }),
@@ -169,6 +178,7 @@ module.exports = {
                         name: app.name,
                         title: app.title,
                         permission: app.permission,
+                        viewTemplate: app.template,
                         filename: '../../../views/' + app.name + '.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
@@ -184,12 +194,14 @@ module.exports = {
                         name: app.name,
                         title: app.title,
                         permission: app.permission,
+                        viewTemplate: app.template,
                         filename: '../../../views/' + app.name + 'Dev.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
                         mode: 'dev',
+                        port: watchPort,
                         name: app.name,
                         filename: '../../../views/' + app.name + 'Dev.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html'

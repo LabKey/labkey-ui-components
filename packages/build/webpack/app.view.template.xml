@@ -1,12 +1,22 @@
-<view xmlns="http://labkey.org/data/xml/view" frame="none" title="<%= htmlWebpackPlugin.options.title %>">
+<% const { files, options } = htmlWebpackPlugin; %>
+<view xmlns="http://labkey.org/data/xml/view"
+    <% if (options.viewTemplate !== undefined) { %>
+      template="<%= options.viewTemplate %>"
+    <% } %>
+      frame="none"
+      title="<%= htmlWebpackPlugin.options.title %>"
+>
     <permissions>
         <permission name="<%= htmlWebpackPlugin.options.permission %>"/>
     </permissions>
-    <% const { files, options } = htmlWebpackPlugin; %>
-    <% if (options.mode !== 'dev') { %>
     <dependencies>
+        <dependency path="clientapi"/>
+        <dependency path="vis/vis"/>
+        <dependency path="vis/genericChart/genericChartHelper.js"/>
+    <% if (options.mode !== 'dev') { %>
         <%
-            const publicPath = files.publicPath, modulePath = options.module + '/gen/';
+            const publicPath = files.publicPath;
+            const modulePath = options.module + '/gen/';
             [...files.css, ...files.js].forEach((filePath) => {
                 // It would be preferred to map these by entryPoint rather than hard code the file paths.
                 // This could theoretically be done by poking the "compilation" object from webpack but I could not
@@ -18,6 +28,6 @@
         %>
         <dependency path="<%= filePath.replace(publicPath, modulePath) %>"/>
         <%  }}); %>
-    </dependencies>
     <% } %>
+    </dependencies>
 </view>

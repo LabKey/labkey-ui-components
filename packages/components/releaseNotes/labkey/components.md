@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add new application URL in App for managing storage units
 * Add isDirty method to RouteLeaveInjectedProps
+* Moved isIntegerInRange, isNonNegativeFloat, isNonNegativeInteger utility methods over from inventory
 
 ### version 0.101.1
 *Released*: 21 Oct 2020

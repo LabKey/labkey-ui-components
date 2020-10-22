@@ -8,7 +8,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LabKey/shared-configs.git"
+    "url": "git+https://github.com/LabKey/labkey-ui-components.git"
   },
   "author": "kevink@labkey.com",
   "license": "Apache-2.0",

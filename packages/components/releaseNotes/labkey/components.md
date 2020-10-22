@@ -7,6 +7,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add isDirty method to RouteLeaveInjectedProps
 * Moved isIntegerInRange, isNonNegativeFloat, isNonNegativeInteger utility methods over from inventory
 
+### version 0.101.2
+*Released*: 22 Oct 2020
+* Issue 41068: GridPanel does not respect the hideEmptyChartSelector and hideEmptyViewSelector properties set in a
+global query metadata override
+* Renamed global settings 'hideEmptyViewSelector', 'hideEmptyChartSelector' to 'hideEmptyViewMenu', 'hideEmptyChartMenu'
+
 ### version 0.101.1
 *Released*: 21 Oct 2020
 * Make visual updates to FileTree.

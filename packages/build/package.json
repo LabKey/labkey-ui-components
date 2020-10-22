@@ -1,0 +1,14 @@
+{
+  "name": "@labkey/build",
+  "version": "0.0.1-fb-labkeyBuildPackage.1",
+  "description": "LabKey client side build assets",
+  "files": [
+    "webpack/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LabKey/labkey-ui-components.git"
+  },
+  "author": "LabKey",
+  "license": "SEE LICENSE IN LICENSE.txt"
+}

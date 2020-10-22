@@ -34,11 +34,15 @@ You can then import `@labkey/components` in your application as follows:
 import { QueryModel, GridPanel } from '@labkey/components';
 ```
 
+#### API
+* [QueryModel API](./QueryModel.md) - how to use `QueryModel`, `withQueryModels`, `GridPanel`, and `DetailsPanel`, to
+fetch and render data from LabKey server.
+* [Sorting Utilities](./sort.md) - utilities to sort data the way users expect it to be sorted.
+
 ## Related Documentation
 
 * [Demo Module](https://github.com/LabKey/tutorialModules/tree/develop/demo) - LabKey demo module with React page and
 component usage examples
-* [QueryModel API and GridPanel](./QueryModel.md) - how to use QueryModel as a selectRows API wrapper and display data
 in a GridPanel component
 * [Immer for Immutability](./immer.md) - information and examples on using the Immer library for JavaScript object immutability
 * [Jest Testing Recommendations](./jest.md) - recommendations and examples for adding Jest tests for your UI components code

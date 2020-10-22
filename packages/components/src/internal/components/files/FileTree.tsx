@@ -10,6 +10,7 @@ import classNames from 'classnames';
 
 import { LoadingSpinner } from '../../..';
 
+const fileTree_color = '#777';
 const customStyle = {
     tree: {
         base: {
@@ -17,7 +18,7 @@ const customStyle = {
             backgroundColor: 'white',
             margin: 0,
             padding: 0,
-            color: '#777',
+            color: fileTree_color,
             fontFamily: 'lucida grande ,tahoma,verdana,arial,sans-serif',
             fontSize: '14px',
         },
@@ -29,7 +30,7 @@ const customStyle = {
                 cursor: 'pointer',
                 position: 'relative',
                 padding: '0px 5px',
-                display: 'block',
+                display: 'flex',
             },
             activeLink: {
                 borderRadius: '5px'
@@ -53,7 +54,7 @@ const customStyle = {
                 height: 10,
                 width: 10,
                 arrow: {
-                    fill: '#777',
+                    fill: fileTree_color,
                     strokeWidth: 0,
                 },
             },
@@ -61,7 +62,7 @@ const customStyle = {
                 base: {
                     display: 'inline-block',
                     verticalAlign: 'top',
-                    color: '#777',
+                    color: fileTree_color,
                 },
                 connector: {
                     width: '2px',
@@ -82,7 +83,7 @@ const customStyle = {
                 paddingLeft: '19px',
             },
             loading: {
-                color: '#777',
+                color: fileTree_color,
             },
         },
     },

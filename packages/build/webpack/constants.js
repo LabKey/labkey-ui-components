@@ -12,7 +12,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // This path assumes the enlistment in labkey-ui-components is a sibling of the root of the LabKey enlistment.
 const labkeyUIComponentsRelPath = (lkModuleContainer ? "../../../../../" : "../../../../") + "labkey-ui-components/packages/components";
-const labkeyUIComponentsPath = path.resolve(labkeyUIComponentsRelPath);
+const labkeyUIComponentsPath = !process.env.LINK ? path.resolve("./node_modules/@labkey/components") : path.resolve(labkeyUIComponentsRelPath);
 console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
 
 module.exports = {

@@ -5,13 +5,14 @@
  */
 const devMode = process.env.NODE_ENV !== 'production';
 const lkModule = process.env.LK_MODULE;
+const lkModuleContainer = process.env.LK_MODULE_CONTAINER;
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // This path assumes the enlistment in labkey-ui-components is a sibling of the root of the LabKey enlistment.
-// Adjust as necessary for your enlistment in order to use hot reloading that picks up changes from @labkey/components
-const labkeyUIComponentsPath = path.resolve("../../../../../labkey-ui-components/packages/components");
+const labkeyUIComponentsRelPath = (lkModuleContainer ? "../../../../../" : "../../../../") + "labkey-ui-components/packages/components";
+const labkeyUIComponentsPath = path.resolve(labkeyUIComponentsRelPath);
 console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
 
 module.exports = {

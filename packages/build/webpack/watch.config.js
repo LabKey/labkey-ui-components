@@ -16,7 +16,7 @@ __dirname = lkModule;
 
 const devServer = {
     host: 'localhost',
-    port: 3001,
+    port: process.env.WATCH_PORT || 3001,
 
     // enable the HMR on the server
     hot: true,

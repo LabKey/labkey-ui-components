@@ -157,7 +157,7 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         filename: '../../../web/' + lkModule + '/gen/' + app.name + '.lib.xml',
-                        template: '../webpack/lib.template.xml'
+                        template: 'node_modules/@labkey/build/webpack/lib.template.xml'
                     }),
                 ]);
             } else {
@@ -169,12 +169,12 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         filename: '../../../views/' + app.name + '.view.xml',
-                        template: '../webpack/app.view.template.xml'
+                        template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
                         filename: '../../../views/' + app.name + '.html',
-                        template: '../webpack/app.template.html'
+                        template: 'node_modules/@labkey/build/webpack/app.template.html'
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
@@ -184,14 +184,14 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         filename: '../../../views/' + app.name + 'Dev.view.xml',
-                        template: '../webpack/app.view.template.xml'
+                        template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
                         mode: 'dev',
                         name: app.name,
                         filename: '../../../views/' + app.name + 'Dev.html',
-                        template: '../webpack/app.template.html'
+                        template: 'node_modules/@labkey/build/webpack/app.template.html'
                     })
                 ]);
             }

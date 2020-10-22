@@ -1,9 +1,21 @@
 # @labkey/components
+Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version TBD
 *Released*: TBD
 * Add new application URL in App for managing storage units
 * Add isDirty method to RouteLeaveInjectedProps
+
+### version 0.101.1
+*Released*: 21 Oct 2020
+* Make visual updates to FileTree.
+
+### version 0.101.0
+*Released*: 21 Oct 2020
+* SampleTypeDesigner updates
+    * add "Metric Unit" property to Sample Manager
+    * add validateProperties prop to allow caller to validate sample domain properties before save
+* Allow custom caption and placeholder text for fields in FieldEditorOverlay
 
 ### version 0.100.1
 *Released*: 21 Oct 2020

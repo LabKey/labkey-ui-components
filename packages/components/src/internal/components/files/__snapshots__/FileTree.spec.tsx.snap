@@ -16,7 +16,7 @@ exports[`FileTree with data 1`] = `
           Object {
             "borderRadius": "5px",
             "cursor": "pointer",
-            "display": "block",
+            "display": "flex",
             "padding": "0px 5px",
             "position": "relative",
           }
@@ -117,7 +117,7 @@ exports[`FileTree with data 1`] = `
               style={
                 Object {
                   "cursor": "pointer",
-                  "display": "block",
+                  "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
                 }
@@ -216,7 +216,7 @@ exports[`FileTree with data 1`] = `
               style={
                 Object {
                   "cursor": "pointer",
-                  "display": "block",
+                  "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
                 }
@@ -315,7 +315,7 @@ exports[`FileTree with data 1`] = `
               style={
                 Object {
                   "cursor": "pointer",
-                  "display": "block",
+                  "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
                 }
@@ -414,7 +414,7 @@ exports[`FileTree with data 1`] = `
               style={
                 Object {
                   "cursor": "pointer",
-                  "display": "block",
+                  "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
                 }
@@ -528,7 +528,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
           Object {
             "borderRadius": "5px",
             "cursor": "pointer",
-            "display": "block",
+            "display": "flex",
             "padding": "0px 5px",
             "position": "relative",
           }
@@ -615,7 +615,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
               style={
                 Object {
                   "cursor": "pointer",
-                  "display": "block",
+                  "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
                 }
@@ -698,7 +698,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
               style={
                 Object {
                   "cursor": "pointer",
-                  "display": "block",
+                  "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
                 }
@@ -781,7 +781,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
               style={
                 Object {
                   "cursor": "pointer",
-                  "display": "block",
+                  "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
                 }
@@ -864,7 +864,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
               style={
                 Object {
                   "cursor": "pointer",
-                  "display": "block",
+                  "display": "flex",
                   "padding": "0px 5px",
                   "position": "relative",
                 }

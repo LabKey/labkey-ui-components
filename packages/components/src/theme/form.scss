@@ -236,6 +236,7 @@ div.react-datepicker__current-month {
     position: absolute;
     top: 48px;
     left: 0;
+    z-index: 100;
 }
 .color-picker__mask {
     position: fixed;

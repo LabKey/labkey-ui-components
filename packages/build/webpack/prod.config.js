@@ -4,7 +4,7 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 const lkModule = process.env.LK_MODULE;
-const entryPoints = require('../' + lkModule + '/src/client/entryPoints');
+const entryPoints = require('../../../../src/client/entryPoints');
 const constants = require('./constants');
 
 // set based on the lk module calling this config

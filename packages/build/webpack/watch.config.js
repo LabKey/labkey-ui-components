@@ -5,7 +5,7 @@
  */
 const lkModule = process.env.LK_MODULE;
 const webpack = require('webpack');
-const entryPoints = require('../' + lkModule + '/src/client/entryPoints');
+const entryPoints = require('../../../../src/client/entryPoints');
 const constants = require('./constants');
 const path = require('path');
 

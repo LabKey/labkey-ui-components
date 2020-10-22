@@ -684,34 +684,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
-    importFieldsFromJson2 = (file: File): SimpleResponse => {
-        const { domain, onChange } = this.props;
-        const reader = new FileReader();
-        reader.readAsText(file);
-
-        reader.onload = function() {
-            try {
-                const jsFields = JSON.parse(reader.result as string);
-                if (jsFields.length < 1) return {success: false, msg: 'No fields found.'};
-                const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
-
-                if (onChange) {
-                    onChange(mergeDomainFields(domain, tsFields), true);
-                }
-
-                return {success: true};
-            } catch (error) {
-                return {success: false, msg: error.toString()}
-            }
-        };
-
-        reader.onerror = function() {
-            return {success: false, msg: reader.error};
-        };
-
-        return {success: false, loading: true};
-    }
-
     importFieldsFromJson = (file: File): Promise<SimpleResponse> => {
         const { domain, onChange } = this.props;
 
@@ -719,8 +691,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             .then(text => {
                 const jsFields = JSON.parse(text);
                 if (jsFields.length < 1) return {success: false, msg: 'No fields found.'};
-                const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
 
+                // Convert to TS and merge entire List
+                const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
                 if (onChange) {
                     onChange(mergeDomainFields(domain, tsFields), true);
                 }

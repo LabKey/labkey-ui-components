@@ -5,9 +5,11 @@
  */
 const lkModule = process.env.LK_MODULE;
 const webpack = require('webpack');
-const entryPoints = require('../../../../src/client/entryPoints');
 const constants = require('./constants');
 const path = require('path');
+
+// relative to the <lk_module>/node_modules/@labkey/build/webpack dir
+const entryPoints = require('../../../../src/client/entryPoints');
 
 // set based on the lk module calling this config
 __dirname = lkModule;
@@ -66,12 +68,13 @@ module.exports = {
 
     resolve: {
         alias: {
-            // uncomment and adjust the relative path for your enlistment to enable hot reloading of the app when
+            // Adjust the relative path for your enlistment to enable hot reloading of the app when
             // new builds happen in @labkey/components
-            // '@labkey/components': constants.labkeyUIComponentsPath,
+            '@labkey/components': !process.env.LINK ? path.resolve(__dirname, "../node_modules/@labkey/components") : constants.labkeyUIComponentsPath,
 
-            // This assures there is only one copy of react in the application
-            react: path.resolve(__dirname, "../node_modules/react")
+            // This assures there is only one copy of react and react-dom in the application
+            react: path.resolve(__dirname, "../node_modules/react"),
+            // 'react-dom': require.resolve('@hot-loader/react-dom'), // TODO this is needed for some modules but not all
         },
 
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')

@@ -1,6 +1,6 @@
 # @labkey/components
 
-[API Docs](https://labkey.github.io/labkey-ui-components/) | [Change Log](./releaseNotes/labkey/components.md) | [License](./LICENSE.txt) | [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)
+[API Docs](./docs/public.md) | [Change Log](./releaseNotes/labkey/components.md) | [License](./LICENSE.txt) | [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)
 
 This package contains React components, models, actions, and utility functions for LabKey applications and pages.
 
@@ -146,23 +146,6 @@ yarn outdated
 ```
 command to show which packages are out of date and then compare to the spreadsheet to determine if there has already
 been investigation into the cost of upgrading packages that are out of date.
-
-### Documentation
-We use [typedoc](https://www.npmjs.com/package/typedoc) for generating our documentation.  This documentation is published to [GitHub pages](https://labkey.github.io/labkey-ui-components/).
-
-All exported components, methods, interfaces, etc. should include
-documentation.  You can use the supported [JavaDoc tags](https://typedoc.org/guides/doccomments/) to provide additional explanations for parameters, return values, etc. as well as for indicating that some objects should not have documentation generated for them.
-
-You can generate the docs locally by running the following command in the ```labkey-ui-components/packages/components``` directory.
-* ``yarn run build:docs``
-
-**N.B.** This command produces a good number of errors from Typescript not being able to resolve classes and such.
-Try to eliminate as many of these as possible before deploying the docs.
-
-To publish the documentation to [GitHub pages](https://labkey.github.io/labkey-ui-components/) use the following command in the ```labkey-ui-components/packages/components``` directory:
-* ``yarn run deploy:docs``
-
-This deployment of docs should be done after each pull request is merged into ```master```.
 
 ### Storybook
 

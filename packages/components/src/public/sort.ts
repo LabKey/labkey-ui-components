@@ -2,6 +2,7 @@
  * Compares two string objects for doing alphanumeric (natural) sorting.
  * Returns a positive number if the first string comes after the second in a natural sort; 0 if they are equal
  * and a negative number if the second comes after the first.
+ * For in-depth documentation and examples see components/docs/sort.md.
  * @param aso
  * @param bso
  */
@@ -42,6 +43,7 @@ type SortFn<T> = (a: T, b: T) => number;
 
 /**
  * Creates a sort function that will natural sort an array of objects by property.
+ * For in-depth documentation and examples see components/docs/sort.md.
  * Ex:`
  *  const myArray = [{ displayName: 'Nick' }, { displayName: 'Alan' }, { displayName: 'Susan' }];
  *  myArray.sort(naturalSortByProperty('displayName'));

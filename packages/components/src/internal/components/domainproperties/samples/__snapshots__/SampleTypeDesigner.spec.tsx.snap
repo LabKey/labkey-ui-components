@@ -1324,6 +1324,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "nameExpression": undefined,
             "description": undefined,
             "labelColor": undefined,
+            "metricUnit": undefined,
             "parentAliases": undefined,
             "importAliases": Immutable.Map {},
             "domainId": undefined,
@@ -1450,6 +1451,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           dataClassTypeCaption="Data Class"
           helpTopic="createSampleSet"
           includeDataClasses={false}
+          metricUnitProps={
+            Object {
+              "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
+              "metricUnitLabel": "Metric Unit",
+            }
+          }
           model={
             Immutable.Record {
               "rowId": undefined,
@@ -1458,6 +1465,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "nameExpression": undefined,
               "description": undefined,
               "labelColor": undefined,
+              "metricUnit": undefined,
               "parentAliases": undefined,
               "importAliases": Immutable.Map {},
               "domainId": undefined,
@@ -1592,6 +1600,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             helpTopic="createSampleSet"
             includeDataClasses={false}
             isValid={true}
+            metricUnitProps={
+              Object {
+                "metricUnitHelpMsg": "The unit of measurement used for the sample type.",
+                "metricUnitLabel": "Metric Unit",
+              }
+            }
             model={
               Immutable.Record {
                 "rowId": undefined,
@@ -1600,6 +1614,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "nameExpression": undefined,
                 "description": undefined,
                 "labelColor": undefined,
+                "metricUnit": undefined,
                 "parentAliases": undefined,
                 "importAliases": Immutable.Map {},
                 "domainId": undefined,
@@ -1940,6 +1955,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       "nameExpression": undefined,
                                       "description": undefined,
                                       "labelColor": undefined,
+                                      "metricUnit": undefined,
                                       "parentAliases": undefined,
                                       "importAliases": Immutable.Map {},
                                       "domainId": undefined,

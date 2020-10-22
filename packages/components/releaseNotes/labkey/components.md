@@ -1,4 +1,30 @@
 # @labkey/components
+Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version 0.101.1
+*Released*: 21 Oct 2020
+* Make visual updates to FileTree.
+
+### version 0.101.0
+*Released*: 21 Oct 2020
+* SampleTypeDesigner updates
+    * add "Metric Unit" property to Sample Manager
+    * add validateProperties prop to allow caller to validate sample domain properties before save
+* Allow custom caption and placeholder text for fields in FieldEditorOverlay
+
+### version 0.100.1
+*Released*: 21 Oct 2020
+* Issue 41574: Dataset designer file import column mapping fix for demographics dataset creation case
+
+### version 0.100.0
+*Released*: 20 Oct 2020
+* DetailPanel/DetailPanelWithModel now take QueryConfig as a prop instead of QueryConfig & DetailDisplaySharedProps
+* Add docs for DetailPanel and DetailPanelWithModel
+* Add docs for naturalSort and naturalSortByProperty
+
+### version 0.99.1
+*Released*: 17 October 2020
+* Update QueryModel.hasSelections to check selection count as well if array exists.
 
 ### version TBD
 *Released*: TBD

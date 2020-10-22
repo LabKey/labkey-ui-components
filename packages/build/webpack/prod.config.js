@@ -15,7 +15,6 @@ module.exports = {
 
     mode: 'production',
 
-    // TODO set platform to use 'PROD_SOURCE_MAP=source-map'
     devtool: process.env.PROD_SOURCE_MAP || 'nosources-source-map',
 
     entry: constants.processEntries(entryPoints),

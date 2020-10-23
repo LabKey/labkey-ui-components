@@ -13,34 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, useMemo } from 'react';
 
-interface PermissionProps {
-    isAllowed: boolean;
+import { hasAllPermissions, useServerContext } from '../../..';
+
+interface Props {
+    perms: string | string[];
 }
 
 /**
- * Used in conjunction with RequiresPermissionHOC and PermissionNotAllowed to selectively render content based on permissions.
+ * This component is intended to be used to wrap other components which should only be displayed when the
+ * user has specific permissions. Permissions are defined on the application user and can be specified by
+ * importing PermissionTypes. The component uses "useServerContext to access the current user so it
+ * requires access to the "ServerContext".
  */
-export class PermissionAllowed extends React.Component<PermissionProps, any> {
-    static defaultProps = {
-        isAllowed: true,
-    };
+export const RequiresPermission: FC<Props> = ({ children, perms }) => {
+    const { user } = useServerContext();
 
-    render() {
-        return React.Children.only(this.props.children);
-    }
-}
+    const allow = useMemo<boolean>(() => hasAllPermissions(user, typeof perms === 'string' ? [perms] : perms), [
+        perms,
+        user,
+    ]);
 
-/**
- * Used in conjunction with RequiresPermissionHOC and PermissionNotAllows to selectively render content based on permissions.
- */
-export class PermissionNotAllowed extends React.Component<PermissionProps, any> {
-    static defaultProps = {
-        isAllowed: false,
-    };
-
-    render() {
-        return React.Children.only(this.props.children);
-    }
-}
+    return (
+        <>
+            {React.Children.map(children, (child: any) => {
+                const isNotAllowed = child && child.props.isAllowed === false;
+                if (allow) {
+                    return !isNotAllowed ? child : null;
+                }
+                return isNotAllowed ? child : null;
+            })}
+        </>
+    );
+};

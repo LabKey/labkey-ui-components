@@ -423,6 +423,7 @@ import { DataClassDesigner } from './internal/components/domainproperties/datacl
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
+import { mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -886,4 +887,8 @@ export {
     TimelineEventModel,
     TimelineGroupedEventInfo,
     TimelineView,
+    // Test Helpers
+    mountWithServerContext,
+    sleep,
+    waitForLifecycle,
 };

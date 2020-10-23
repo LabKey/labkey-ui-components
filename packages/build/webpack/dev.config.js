@@ -30,7 +30,7 @@ module.exports = {
     },
 
     resolve: {
-        extensions: constants.extensions.TYPESCRIPT.concat('.scss')
+        extensions: constants.extensions.TYPESCRIPT
     },
 
     plugins: constants.processPlugins(entryPoints),

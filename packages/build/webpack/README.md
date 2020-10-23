@@ -1,62 +1,81 @@
 # LabKey Module React Page Development
 
-The platform repository has been setup so that it contains the shared configurations needed to develop
-[React] pages within a LabKey module. These shared configurations include [webpack] configurations for 
-building both production and development mode LabKey React Pages in a standard way as well as the 
-`package.json devDependencies` that those build steps rely on. This removes the need for each LabKey 
-module to redefine those pieces when adding a new LabKey React page. 
+This directory contains the shared [webpack] configurations to develop and build
+[React] pages within a LabKey module. These files include configurations for
+building both production and development mode LabKey React Pages in a standard way.
 
-Note that if build customizations are needed for a given module, they can opt out of these shared 
-configurations by setting up their own webpack config files and changing their build scripts in the 
-relevant module's `package.json` file.  
+Note that if build customizations are needed for a given module, they can opt out of these shared
+configurations by setting up their own webpack config files and pointing their build scripts in the
+relevant module's `package.json` file at them.
+
+### How to use the shared webpack config files
+
+1. Add the `@labkey/build` package to your module's `package.json` dependencies.
+1. Add/update the `scripts` in your `package.json` to reference the relevant config file in
+    `node_modules/@labkey/build/webpack`. See examples from the [demo] module.
+    1. use one of the three configuration files based on your script target: `prod.config.js`, `dev.config.js`,
+        or `watch.config.js`
+    1. make sure to include the following environment variables:
+        1.  `NODE_ENV` - development or production
+        1. `LK_MODULE_CONTAINER` - if your module is in a module container repository with other modules,
+            this is the name of the repository
+        1.  `LK_MODULE` - module name
 
 ### How it works
 
-Each new LabKey React page `entryPoint` will be defined within the module where the relevant actions 
-and code will live. Each `entryPoint` will get a set of files generated as part of the 
-[LabKey Gradle build] steps for that module. The artifacts will be generated and placed into the 
-standard LabKey `views` directory to make the pages available to the server through the module's 
-controller. The generated `<entryPoint>.html` and `<entryPoint>.view.xml` files will be placed in the 
-`<module>/resources/views` directory and the generated JS/CSS artifacts will be placed in the 
-`<module>/resources/web/<module>/gen` directory. 
+Each new LabKey React page `entryPoint` will be defined within the module where the relevant actions
+and code lives. Each `entryPoint` will have output files generated as part of the
+[LabKey Gradle build] steps for that module. The artifacts will be generated and placed into the
+standard LabKey `views` directory to make the pages available to the server through the module's
+controller. The generated `<entryPoint>.html` and `<entryPoint>.view.xml` files will be placed in the
+`<module>/resources/views` directory and the generated JS/CSS artifacts will be placed in the
+`<module>/resources/web/<module>/gen` directory.
+
+If your `entryPoint` is to be used in a JSP or included in another LabKey page and you don't want to expose it
+directly as its own `view`, you can set the `generateLib` property for your `entryPoint`. This will generate
+the same JS/CSS artifacts in the `<module>/resources/web/<module>/gen` directory but will skip the `resources/views`
+generation step and instead create an `<entryPoint>.lib.xml` file in the `<module>/resources/web/<module>/gen` directory.
+This lib.xml can then be used in your JSP or other LabKey page. See example of this in the experiment [entryPoints.js]
+file.
 
 ### Setting up a LabKey module
 
-To configure a LabKey module to participant in the React page build process and use the shared 
-configurations from the platform repository:
-1. Add the following files to your module's main directory: 
-    1. `package.json` - Defines your module's npm build scripts and npm package dependencies.
+To configure a LabKey module to participant in the React page build process:
+1. Add the following files to your module's main directory:
+    1. `package.json` - Defines your module's npm build scripts, see above, and npm package dependencies.
         Note that after your first successful build of this module after adding this,
         a new `package-lock.json` file will be generated. You will want to add that file to your git repo
-        and check it in as well. Note that in this file the `LK_MODULE` value will need to be set 
-        to match your module name and the `npm clean` command might need to be adjusted if your module
-        already has file in the `resources/views` directory.
-    1. `.npmrc` - Defines the Artifactory registry path for the `@labkey` scope, if you 
+        and check it in as well. Note that in this file the `npm clean` command might need to be adjusted
+        if your module already has file in the `resources/views` directory.
+    1. `.npmrc` - Defines the Artifactory registry path for the `@labkey` scope, if you
         plan to use any of the Labkey npm packages for your page.
-    1. `tsconfig.json` - Typescript configuration file that extends the `tsconfig.json` file at the
-        platform level. This will ensure that your module's `node_modules` and `resources` directories
-        are excluded during the client-side build process.
+    1. `tsconfig.json` - Typescript configuration file. This will ensure that your module's `node_modules`
+        and `resources` directories are excluded during the client-side build process.
     1. `README.md` - Add your own README file for your module and have it point back to this page
         for the steps in the "Adding a new entryPoint" section of this document.
 1. Create the `<module>/src/client` directories and add a file named `entryPoints.js`, more on this in
     the "Adding a new entryPoint" section of this doc.
-1. Update your module's `build.gradle` file to add a line so that it's `npmInstall` command is dependent
-    on the `npmInstall` command finishing at the platform repository level. See example at 
-    `platform/experiment/build.gradle`. 
-1. Update the `platform/.gitignore` file so that it knows to ignore your module's `node_modules` directory
+    <!---
+    1. Update your module's `build.gradle` file to add a line so that it's `npmInstall` command is dependent
+        on the `npmInstall` command finishing at the platform repository level. See example at
+        `platform/experiment/build.gradle`.
+    --->
+1. Update the `<module>/.gitignore` file so that it knows to ignore your module's `node_modules` directory
     and generated JS/CSS artifacts.
 
-You can see examples of each of these files in the following LabKey modules: 
+You can see examples of each of these files in the following LabKey modules:
 [assay], [experiment], and [list].
 
 ### Building LabKey React pages
 
 You can install the necessary npm packages and build the module by running the standard module
-gradlew tasks, `./gradlew deployApp` or `./gradlew :server:modules:platform:<module>>:deployModule`. 
+gradlew tasks, `./gradlew deployApp` or `./gradlew :server:modules:<module>:deployModule`.
 You can also run one of the following npm commands directly from the module's main directory:
 ```
 npm run setup
 npm run build
+npm run build-dev
+npm run build-prod
 ```
 
 To clean the generated client-side artifacts from the module:
@@ -76,35 +95,57 @@ To add a new `entryPoint` for a LabKey React page:
     1. `permission=<view.xml perm class>`
     1. `path=<entryPoint code path from step #1>`
 1. In your `src/client/<ENTRYPOINT_NAME>` dir, create an `app.tsx` file and a `dev.tsx` file based on
-    an example from one of the existing app pages. Add your main app React component file, 
-    `<ENTRYPOINT_NAME>.tsx`, and any other components, models, actions, 
+    an example from one of the existing app pages. Add your main app React component file,
+    `<ENTRYPOINT_NAME>.tsx`, and any other components, models, actions,
     etc. in the `<module>/src/client/<ENTRYPOINT_NAME>` directory.
-1. Update the `platform/.gitignore` file for your new entrypoint's generated views / files
+1. Update the `<module>/.gitignore` file for your new entryPoint's generated views / files
 1. Run the `./gradlew deployModule` command for your module and verify that your new generated files
     are created in your module's `resources` directory.
 
 ### Developing with Hot Module Reloading (HMR)
 
 To allow updates made to TypeScript, JavaScript, CSS, and SCSS files to take effect on your LabKey
-React page without having to manually build the changes each time, you can develop with Hot Module 
-Reloading enabled via a webpack development server. You can run the HMR server from the 
-`trunk/server/modules/platform/<module>` directory via the `npm start` command. Once started, you 
-will need to access your page via an alternate action name to view the changes. The server action 
+React page without having to manually build the changes each time, you can develop with Hot Module
+Reloading enabled via a webpack development server. You can run the HMR server from the
+`trunk/server/modules/<module>` directory via the `npm start` command. Once started, you
+will need to access your page via an alternate action name to view the changes. The server action
 is `module-entryPointDev.view` instead of the normal `module-entryPoint.view`.
 
-Note that since modules in the platform repository share configurations for the webpack development
-server, they are set to us the same port number for the HMR environment. This means that you can only
+Note that by default modules that use this share configurations package for the webpack development
+server, they are set to use the same port number for the HMR environment. This means that you can only
 have one module's HMR mode enabled at a time. If you try to run `npm start` for a second module, you
 will get an error message saying that the `address is already in use`.
- 
+
+To enable HMR:
 ```
-cd trunk/server/modules/platform/<module>
-npm start
-```  
+cd trunk/server/modules/<module>
+npm run start
+```
+
+For those modules that use other @labkey packages (i.e. `@labkey/components`), you can run the start command
+with linking enabled so that the HMR environment will alias to the source repository `/dist` directory so that
+you don't have to do a copy of the re-built `/dist` directory for that package in order for the changes to be
+picked up.
+
+To enable HMR with @labkey/components linking:
+```
+npm run start-link
+```
+
+### Making changes to these webpack configuration files
+
+If you need to make changes to these webpack configuration files and want to test them in your module client-side
+build before publishing a new `@labkey/build` version, you can do one of the following:
+
+1. Make direct edits in your module's `node_modules/@labkey/build/webpack` directory
+2. Make changes in this directory and then copy the `/webpack` directory contents to your module's
+    `node_modules/@labkey/build/webpack` directory
 
 [React]: https://reactjs.org
 [webpack]: https://webpack.js.org/
 [LabKey Gradle build]: https://www.labkey.org/Documentation/wiki-page.view?name=gradleBuild
 [assay]: https://github.com/LabKey/platform/tree/develop/assay
 [experiment]: https://github.com/LabKey/platform/tree/develop/experiment
-[list]: https://github.com/LabKey/platform/tree/develop/list   
+[list]: https://github.com/LabKey/platform/tree/develop/list
+[demo]: https://github.com/LabKey/tutorialModules/blob/develop/demo/package.json
+[entryPoints.js]: https://github.com/LabKey/platform/blob/develop/experiment/src/client/entryPoints.js

@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.101.4
+*Released*: 22 Oct 2020
+* Issue 41493: Allow appendToCurrentNode to work around page scroll issue
+
+### version 0.101.3
+*Released*: 22 Oct 2020
+* Add showNotifications prop to Page.tsx
+* Expose PageHeaderProps interface
+
 ### version 0.101.2
 *Released*: 22 Oct 2020
 * Issue 41068: GridPanel does not respect the hideEmptyChartSelector and hideEmptyViewSelector properties set in a
@@ -27,10 +36,6 @@ global query metadata override
 * DetailPanel/DetailPanelWithModel now take QueryConfig as a prop instead of QueryConfig & DetailDisplaySharedProps
 * Add docs for DetailPanel and DetailPanelWithModel
 * Add docs for naturalSort and naturalSortByProperty
-
-### version XXX
-*Released*: XXX
-* Issue 41493: Allow appendToCurrentNode to work around page scroll issue
 
 ### version 0.99.1
 *Released*: 17 October 2020

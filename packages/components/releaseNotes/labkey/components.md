@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.10#.0
+*Released*: ## Oct 2020
+* Add `RequiresPermission` (formerly known in apps as `RequiresPermissionHOC`).
+* Add `ServerContext` to allow retrieving up-to-date server context via React.Context.
+* Remove `<PermissionAllowed/>` and `<PermissionNotAllowed/>` as they are no longer utilized.
+* Unit tests for `RequiresPermission`.
+* Add `mountWithServerContext` and `waitForLifecycle` test utility methods.
+
 ### version 0.102.1
 *Released*: 23 Oct 2020
 * Switch `IUserProps` to fully extend `UserWithPermissions`

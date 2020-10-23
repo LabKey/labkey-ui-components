@@ -123,6 +123,11 @@ const paramsEqual = (oldParams, newParams): boolean => {
     return false;
 };
 
+/**
+ * A wrapper for LabKey selectRows API. For in-depth documentation and examples see components/docs/QueryModel.md.
+ * @param ComponentToWrap: A component that implements generic Props and InjectedQueryModels.
+ * @returns A react ComponentType that implements generic Props and MakeQueryModels.
+ */
 export function withQueryModels<Props>(
     ComponentToWrap: ComponentType<Props & InjectedQueryModels>
 ): ComponentType<Props & MakeQueryModels> {
@@ -193,7 +198,7 @@ export function withQueryModels<Props>(
          * in the future and add/update/remove models as you see changes, but this introduces a bunch of other problems
          * for child components, so don't do this. Problems include:
          *  - Child components will no longer be guaranteed that there will always be a model, so they'll have to check
-         *  if model is undefined before accessing any properties on it. This annoying.
+         *  if model is undefined before accessing any properties on it. This is annoying and error prone.
          *  - Child components will need to listen for when models are re-instantiated, and potentially re-initialize
          *  their state. For example, GridPanel will need to call loadSelections and ChartMenu will need to call
          *  loadCharts
@@ -264,7 +269,7 @@ export function withQueryModels<Props>(
                     Object.assign(model, model.attributesForURLQueryParams(query));
                     // If we have selections or previously attempted to load them we'll want to reload them when the
                     // model is updated from the URL because it can affect selections.
-                    loadSelections = model.hasSelections || model.selectionsError !== undefined;
+                    loadSelections = !!model.selections || !!model.selectionsError;
                 }),
                 () => {
                     this.maybeLoad(id, false, true, loadSelections);
@@ -689,7 +694,9 @@ export function withQueryModels<Props>(
                     let queryModel = new QueryModel(queryConfig);
                     id = queryModel.id;
                     if (queryModel.bindURL && this.props.location) {
-                        queryModel = queryModel.mutate(queryModel.attributesForURLQueryParams(this.props.location.query));
+                        queryModel = queryModel.mutate(
+                            queryModel.attributesForURLQueryParams(this.props.location.query)
+                        );
                     }
                     draft.queryModels[queryModel.id] = queryModel;
                 }),

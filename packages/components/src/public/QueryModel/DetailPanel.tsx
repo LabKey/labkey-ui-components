@@ -13,77 +13,74 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { LoadingSpinner, QueryColumn, QueryConfig, RequiresModelAndActions } from '../..';
+import { InjectedQueryModels, LoadingSpinner, QueryColumn, QueryConfig, RequiresModelAndActions, withQueryModels } from '../..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../../internal/components/forms/detail/DetailDisplay';
-
-import { InjectedQueryModels, withQueryModels } from './withQueryModels';
 
 interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
     queryColumns?: QueryColumn[];
 }
 
-export class DetailPanel extends PureComponent<DetailPanelProps> {
-    render(): ReactNode {
-        // ignoring actions so we don't pass to DetailDisplay
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { actions, model, queryColumns, ...detailDisplayProps } = this.props;
-        const { editingMode } = detailDisplayProps;
-        const error = model.queryInfoError ?? model.rowsError;
-        let displayColumns: List<QueryColumn>;
+/**
+ * Render a QueryModel with a single row of a data. For in-depth documentation and examples see
+ * components/docs/QueryModel.md.
+ */
+export const DetailPanel: FC<DetailPanelProps> = memo(({ actions, model, queryColumns, ...detailDisplayProps }) => {
+    // ignoring actions so we don't pass to DetailDisplay
+    const { editingMode } = detailDisplayProps;
+    const error = model.queryInfoError ?? model.rowsError;
+    let displayColumns: List<QueryColumn>;
 
-        if (error !== undefined) {
-            return <Alert>{error}</Alert>;
-        } else if (model.isLoading) {
-            return <LoadingSpinner />;
-        }
-
-        if (queryColumns !== undefined) {
-            displayColumns = List(queryColumns);
-        } else {
-            displayColumns = List(editingMode ? model.updateColumns : model.detailColumns);
-        }
-
-        return <DetailDisplay {...detailDisplayProps} data={fromJS(model.gridData)} displayColumns={displayColumns} />;
+    if (error !== undefined) {
+        return <Alert>{error}</Alert>;
+    } else if (model.isLoading) {
+        return <LoadingSpinner />;
     }
-}
 
-interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
+    if (queryColumns !== undefined) {
+        displayColumns = List(queryColumns);
+    } else {
+        displayColumns = List(editingMode ? model.updateColumns : model.detailColumns);
+    }
+
+    return <DetailDisplay {...detailDisplayProps} data={fromJS(model.gridData)} displayColumns={displayColumns} />;
+});
+
+interface DetailPanelBodyProps extends DetailDisplaySharedProps {
     queryColumns?: QueryColumn[];
 }
 
-class DetailPanelWithModelBodyImpl extends PureComponent<DetailPanelWithModelProps & InjectedQueryModels> {
-    render(): ReactNode {
-        const { queryModels, ...rest } = this.props;
-        return <DetailPanel {...rest} model={queryModels.model} />;
-    }
+const DetailPanelWithModelBodyImpl: FC<DetailPanelBodyProps & InjectedQueryModels> = memo(({ queryModels, ...rest }) => {
+    return <DetailPanel {...rest} model={queryModels.model} />;
+});
+
+const DetailPanelWithModelBody = withQueryModels<DetailPanelBodyProps>(DetailPanelWithModelBodyImpl);
+
+interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
+    queryConfig: QueryConfig;
 }
 
-const DetailPanelWithModelBody = withQueryModels<DetailPanelWithModelProps>(DetailPanelWithModelBodyImpl);
+export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(({ asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, queryConfig }) => {
+    const queryConfigs = useMemo(() => ({ model: queryConfig }), [ queryConfig ]);
+    const { keyValue, schemaQuery } = queryConfig;
+    const { schemaName, queryName } = schemaQuery;
+    // Key is used here to ensure we re-mount the DetailPanel when the queryConfig changes
+    const key = useMemo(() => `${schemaName}.${queryName}.${keyValue}`, [schemaQuery, keyValue]);
 
-export class DetailPanelWithModel extends PureComponent<QueryConfig & DetailDisplaySharedProps> {
-    render(): ReactNode {
-        const { asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, ...queryConfig } = this.props;
-        const queryConfigs = { model: queryConfig };
-        const { keyValue, schemaQuery } = queryConfig;
-        // Key is used here to ensure we re-mount the DetailPanel when the queryConfig changes
-        const key = `${schemaQuery.schemaName}.${schemaQuery.queryName}.${keyValue}`;
-
-        return (
-            <DetailPanelWithModelBody
-                asPanel={asPanel}
-                autoLoad
-                detailRenderer={detailRenderer}
-                editingMode={editingMode}
-                key={key}
-                queryConfigs={queryConfigs}
-                titleRenderer={titleRenderer}
-                useDatePicker={useDatePicker}
-            />
-        );
-    }
-}
+    return (
+        <DetailPanelWithModelBody
+            asPanel={asPanel}
+            autoLoad
+            detailRenderer={detailRenderer}
+            editingMode={editingMode}
+            key={key}
+            queryConfigs={queryConfigs}
+            titleRenderer={titleRenderer}
+            useDatePicker={useDatePicker}
+        />
+    );
+});

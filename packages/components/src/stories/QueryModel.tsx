@@ -4,6 +4,7 @@ import { Button, MenuItem } from 'react-bootstrap';
 import { createMemoryHistory, Route, Router, WithRouterProps } from 'react-router';
 
 import {
+    DetailPanelWithModel,
     EditableDetailPanel,
     GridPanel,
     GridPanelWithModel,
@@ -256,6 +257,18 @@ storiesOf('QueryModel', module)
         return (
             <div className="query-model-example">
                 <EditableDetailsPanelExample autoLoad queryConfigs={queryConfigs} />
+            </div>
+        );
+    })
+    .add('DetailPanelWithModel', () => {
+        const queryConfig: QueryConfig = {
+            schemaQuery: SchemaQuery.create(SCHEMAS.SAMPLE_SETS.SCHEMA, 'Samples'),
+            keyValue: 123,
+        };
+
+        return (
+            <div className="query-model-example">
+                <DetailPanelWithModel queryConfig={queryConfig} />
             </div>
         );
     });

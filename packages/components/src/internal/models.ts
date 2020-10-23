@@ -79,8 +79,8 @@ export function getStateQueryGridModel(
         schema: schemaQuery.schemaName,
         query: schemaQuery.queryName,
         view: schemaQuery.viewName,
-        hideEmptyChartSelector: metadata.get('hideEmptyChartSelector'),
-        hideEmptyViewSelector: metadata.get('hideEmptyViewSelector'),
+        hideEmptyChartSelector: metadata.get('hideEmptyChartMenu'),
+        hideEmptyViewSelector: metadata.get('hideEmptyViewMenu'),
     };
 
     if (keyValue !== undefined && schemaQuery.viewName === undefined) {

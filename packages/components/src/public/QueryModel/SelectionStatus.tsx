@@ -28,9 +28,9 @@ export class SelectionStatus extends PureComponent<RequiresModelAndActions> {
 
     render(): ReactNode {
         const { model } = this.props;
-        const { hasSelections, isLoading, isLoadingSelections, maxRows, rowCount, selections } = model;
+        const { isLoading, isLoadingSelections, maxRows, rowCount, selections } = model;
 
-        if (isLoading || isLoadingSelections || !hasSelections) {
+        if (isLoading || isLoadingSelections || !selections) {
             return null;
         }
 

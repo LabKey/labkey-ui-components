@@ -1,4 +1,4 @@
-import React, { ComponentType, PureComponent, ReactNode } from 'react';
+import React, { ComponentType, FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
 import { Query } from '@labkey/api';
@@ -162,6 +162,9 @@ interface State {
     actionValues: ActionValue[];
 }
 
+/**
+ * Render a QueryModel as an interactive grid. For in-depth documentation and examples see components/docs/QueryModel.md.
+ */
 export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     static defaultProps = {
         allowSelections: true,
@@ -610,34 +613,25 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
     }
 }
 
-interface GridPaneWithModelBodyProps<T> extends GridPanelProps<T> {
+interface GridPaneWithModelBodyProps<T = {}> extends GridPanelProps<T> {
     id: string;
 }
 
-class GridPanelWithModelBodyImpl<T> extends PureComponent<GridPaneWithModelBodyProps<T> & InjectedQueryModels> {
-    render(): ReactNode {
-        const { actions, id, queryModels, ...props } = this.props;
-        const model = queryModels[id];
-        return <GridPanel actions={actions} model={model} {...props} />;
-    }
-}
+const GridPanelWithModelBodyImpl: FC<GridPaneWithModelBodyProps & InjectedQueryModels> = memo(({ actions, id, queryModels, ...props }) => {
+    return <GridPanel actions={actions} model={queryModels[id]} {...props} />;
+});
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps<any>>(GridPanelWithModelBodyImpl);
+const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps>(GridPanelWithModelBodyImpl);
 
-interface GridPanelWithModelProps<T> extends GridPanelProps<T> {
+interface GridPanelWithModelProps<T = {}> extends GridPanelProps<T> {
     queryConfig: QueryConfig;
 }
 
 /**
- * GridPanelWithModel is the same as a [[GridPanel]] component, but it takes a single [[QueryConfig]] and loads the
- * model for you.
+ * GridPanelWithModel is the same as a GridPanel component, but it takes a single QueryConfig and loads the model.
  */
-export class GridPanelWithModel<T> extends PureComponent<GridPanelWithModelProps<T>> {
-    render() {
-        const { queryConfig, ...props } = this.props;
-        const id = queryConfig.id ?? createQueryModelId(queryConfig.schemaQuery);
-        const queryConfigs = { [id]: queryConfig };
-        return <GridPanelWithModelBody {...props} id={id} key={id} queryConfigs={queryConfigs} />;
-    }
-}
+export const GridPanelWithModel: FC<GridPanelWithModelProps> = memo(({ queryConfig, ...props }) => {
+    const id = useMemo(() => queryConfig.id ?? createQueryModelId(queryConfig.schemaQuery), [queryConfig]);
+    const queryConfigs = useMemo(() => ({ [id]: queryConfig }), [id, queryConfig]);
+    return <GridPanelWithModelBody {...props} id={id} key={id} queryConfigs={queryConfigs} />;
+});

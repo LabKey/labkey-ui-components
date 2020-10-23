@@ -161,4 +161,51 @@ describe('<SampleTypePropertiesPanel/>', () => {
 
         expect(tree).toMatchSnapshot();
     });
+
+    test('includeMetricUnitProperty', async () => {
+        const tree = renderer.create(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                appPropertiesOnly={true}
+                metricUnitProps={{includeMetricUnitProperty: true}}
+                model={SampleTypeModel.create()}
+                updateModel={jest.fn}
+                onAddParentAlias={jest.fn}
+                onRemoveParentAlias={jest.fn}
+                onParentAliasChange={jest.fn}
+                parentOptions={[]}
+            />
+        );
+
+        await sleep();
+
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('metricUnitOptions', async () => {
+        const tree = renderer.create(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                appPropertiesOnly={true}
+                metricUnitProps={{
+                    includeMetricUnitProperty: true,
+                    metricUnitLabel: 'Display stored amount in',
+                    metricUnitRequired: true,
+                    metricUnitHelpMsg: "Sample storage volume will be displayed using the selected metric unit.",
+                    metricUnitOptions: [{id: 'mL', label: 'ml'}, {id: 'L', label: 'L'}, {id: 'ug', label: 'ug'}, {id: 'g', label: 'g'}]
+                }}
+                model={SampleTypeModel.create()}
+                updateModel={jest.fn}
+                onAddParentAlias={jest.fn}
+                onRemoveParentAlias={jest.fn}
+                onParentAliasChange={jest.fn}
+                parentOptions={[]}
+            />
+        );
+
+        await sleep();
+
+        expect(tree).toMatchSnapshot();
+    });
+
 });

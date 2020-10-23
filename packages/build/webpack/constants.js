@@ -14,15 +14,15 @@ const labkeyUIComponentsRelPath = (lkModuleContainer ? "../../../../../" : "../.
 const labkeyUIComponentsPath = !process.env.LINK ? path.resolve("./node_modules/@labkey/components") : path.resolve(labkeyUIComponentsRelPath);
 console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
 
-// TODO hmm....
-// const freezerManagerPath = path.resolve(__dirname, "../packages/freezermanager");
-// console.log("Using @labkey/freezermanager path: " + freezerManagerPath);
+const freezerManagerRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "inventory/packages/freezermanager";
+const freezerManagerPath = !process.env.LINK ? path.resolve("./node_modules/@labkey/freezermanager") : path.resolve(__dirname, freezerManagerRelPath);
+console.log("Using @labkey/freezermanager path: " + freezerManagerPath);
 
 const watchPort = process.env.WATCH_PORT || 3001;
 
 module.exports = {
     labkeyUIComponentsPath: labkeyUIComponentsPath,
-    // freezerManagerPath: freezerManagerPath,
+    freezerManagerPath: freezerManagerPath,
     watchPort: watchPort,
     context: function(dir) {
         return path.resolve(dir, '..');

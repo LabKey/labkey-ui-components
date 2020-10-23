@@ -69,13 +69,15 @@ module.exports = {
     resolve: {
         alias: {
             // Adjust the relative path for your enlistment to enable hot reloading of the app when
-            // new builds happen in @labkey/components
+            // new builds happen in @labkey/components and @labkey/freezermanager.
+            // Note that for modules that don't have these packages, the aliases are just ignored and don't
+            // seem to cause any problems.
             '@labkey/components': constants.labkeyUIComponentsPath,
-            // '@labkey/freezermanager': constants.freezerManagerPath, // TODO
+            '@labkey/freezermanager': constants.freezerManagerPath,
 
             // This assures there is only one copy of react and react-dom in the application
             react: path.resolve(__dirname, "../node_modules/react"),
-            // 'react-dom': require.resolve('@hot-loader/react-dom'), // TODO this is needed for some modules but not all
+            'react-dom': require.resolve('@hot-loader/react-dom'),
         },
 
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')

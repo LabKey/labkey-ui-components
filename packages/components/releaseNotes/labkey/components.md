@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.101.3
+*Released*: 22 Oct 2020
+* Add showNotifications prop to Page.tsx
+* Expose PageHeaderProps interface
+
 ### version 0.101.2
 *Released*: 22 Oct 2020
 * Issue 41068: GridPanel does not respect the hideEmptyChartSelector and hideEmptyViewSelector properties set in a

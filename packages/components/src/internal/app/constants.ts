@@ -27,6 +27,7 @@ export const WORKFLOW_HOME_HREF = AppURL.create(WORKFLOW_KEY)
     .addParam('mine.sort', 'DueDate')
     .addParam('active.sort', 'DueDate');
 export const NEW_FREEZER_DESIGN_HREF = AppURL.create(FREEZERS_KEY, 'new');
+export const MANAGE_STORAGE_UNITS_HREF = AppURL.create(BOXES_KEY, 'types', 'update');
 
 export const USER_PERMISSIONS_REQUEST = '/app/USER_PERMISSIONS_REQUEST';
 export const USER_PERMISSIONS_SUCCESS = '/app/USER_PERMISSIONS_SUCCESS';

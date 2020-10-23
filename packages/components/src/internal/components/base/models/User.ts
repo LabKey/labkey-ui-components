@@ -1,7 +1,7 @@
 import { List, Record } from 'immutable';
 import { ActionURL, PermissionTypes, UserWithPermissions } from '@labkey/api';
 
-interface IUserProps extends Partial<UserWithPermissions> {
+interface IUserProps extends UserWithPermissions {
     permissionsList: List<string>;
 }
 
@@ -20,9 +20,13 @@ const defaultUser: IUserProps = {
     avatar: ActionURL.getContextPath() + '/_images/defaultavatar.png',
 
     isAdmin: false,
+    isAnalyst: false,
+    isDeveloper: false,
     isGuest: true,
+    isRootAdmin: false,
     isSignedIn: false,
     isSystemAdmin: false,
+    isTrusted: false,
 
     permissionsList: List(),
 };
@@ -45,9 +49,13 @@ export class User extends Record(defaultUser) implements IUserProps {
     avatar: string;
 
     isAdmin: boolean;
+    isAnalyst: boolean;
+    isDeveloper: boolean;
     isGuest: boolean;
+    isRootAdmin: boolean;
     isSignedIn: boolean;
     isSystemAdmin: boolean;
+    isTrusted: boolean;
 
     permissionsList: List<string>;
 

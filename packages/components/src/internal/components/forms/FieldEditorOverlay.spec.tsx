@@ -81,7 +81,7 @@ describe('<FieldEditorOverlay/>', () => {
         );
         const wrapper = mount(component);
         expect(wrapper.find(".field-edit__icon").prop("title")).toBe("Edit Description");
-        expect(wrapper.find("span")).toHaveLength(2);
+        expect(wrapper.find("span")).toHaveLength(3);
         expect(wrapper.text()).toBe("");
         wrapper.unmount();
     });
@@ -99,7 +99,7 @@ describe('<FieldEditorOverlay/>', () => {
         );
         const wrapper = mount(component);
         expect(wrapper.find(".field-edit__icon").prop("title")).toBe("Edit Description");
-        expect(wrapper.find("span").at(2).text()).toBe("Click to add Description");
+        expect(wrapper.find("span").at(3).text()).toBe("Click to add Description");
         wrapper.unmount();
     });
 

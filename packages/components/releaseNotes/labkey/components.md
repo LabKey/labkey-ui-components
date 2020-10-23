@@ -1,6 +1,33 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.103.0
+*Released*: 23 Oct 2020
+* Add `RequiresPermission` (formerly known in apps as `RequiresPermissionHOC`).
+* Add `ServerContext` to allow retrieving up-to-date server context via React.Context.
+* Remove `<PermissionAllowed/>` and `<PermissionNotAllowed/>` as they are no longer utilized.
+* Unit tests for `RequiresPermission`.
+* Add `mountWithServerContext` and `waitForLifecycle` test utility methods.
+
+### version 0.102.1
+*Released*: 23 Oct 2020
+* Switch `IUserProps` to fully extend `UserWithPermissions`
+
+### version 0.102.0
+*Released*: 23 October 2020
+* Add new application URL in App for managing storage units
+* Add isDirty method to RouteLeaveInjectedProps
+* Moved isIntegerInRange, isNonNegativeFloat, isNonNegativeInteger utility methods over from inventory
+
+### version 0.101.4
+*Released*: 22 Oct 2020
+* Issue 41493: Allow appendToCurrentNode to work around page scroll issue
+
+### version 0.101.3
+*Released*: 22 Oct 2020
+* Add showNotifications prop to Page.tsx
+* Expose PageHeaderProps interface
+
 ### version 0.101.2
 *Released*: 22 Oct 2020
 * Issue 41068: GridPanel does not respect the hideEmptyChartSelector and hideEmptyViewSelector properties set in a
@@ -38,7 +65,7 @@ global query metadata override
 * `withAssayModels` replaces implementation of `AssayProvider`.
 * Added unit test coverage for `withAssayModels` and `withAssayModelsFromLocation`.
 * Converted `AssayStateModel` and `AssayUploadResultModel` to Immer from ImmutableJS Records.
-* Streamlined `AssayStateModel` to be more straight-forward for getting and setting `AssayDefinitionModel`s.
+* Streamlined `AssayStateModel` to be more straightforward for getting and setting `AssayDefinitionModel`s.
 * `<AssayImportSubMenuItem/>` switched to use `withAssayModels`.
 * Add `isLoading` as a utility method for working with `LoadingState`.
 

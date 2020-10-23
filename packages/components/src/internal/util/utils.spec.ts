@@ -22,6 +22,9 @@ import {
     getUpdatedData,
     getUpdatedDataFromGrid,
     intersect,
+    isIntegerInRange,
+    isNonNegativeFloat,
+    isNonNegativeInteger,
     resolveKey,
     resolveKeyFromJson,
     toLowerSafe,
@@ -948,7 +951,6 @@ describe('CaseInsensitive', () => {
     });
 });
 
-
 const sourceOptions = [
     {
         value: 'urn:lsid:labkey.com:Data.Folder-8:81c1e0b7-c884-1038-ba3d-f653126805a6',
@@ -1033,5 +1035,101 @@ describe('getDisambiguatedSelectInputOptions', () => {
                 expect.objectContaining(sourceOptions[2]),
             ])
         );
+    });
+});
+
+describe('isNonNegativeInteger and isNonNegativeFloat', () => {
+    test('check numeric input', () => {
+        // empty input
+        expect(isNonNegativeFloat(null)).toBe(false);
+        expect(isNonNegativeFloat(undefined)).toBe(false);
+        expect(isNonNegativeFloat('')).toBe(false);
+        expect(isNonNegativeInteger(null)).toBe(false);
+        expect(isNonNegativeInteger(undefined)).toBe(false);
+        expect(isNonNegativeInteger('')).toBe(false);
+
+        // not number
+        expect(isNonNegativeFloat(NaN)).toBe(false);
+        expect(isNonNegativeFloat('abc')).toBe(false);
+        expect(isNonNegativeInteger(NaN)).toBe(false);
+        expect(isNonNegativeInteger('abc')).toBe(false);
+
+        // negative
+        expect(isNonNegativeFloat('-1.1')).toBe(false);
+        expect(isNonNegativeFloat(-1.1)).toBe(false);
+        expect(isNonNegativeFloat('-4e2')).toBe(false);
+        expect(isNonNegativeFloat(-4e2)).toBe(false);
+        expect(isNonNegativeInteger('-1')).toBe(false);
+        expect(isNonNegativeInteger(-1)).toBe(false);
+        expect(isNonNegativeInteger('-4e2')).toBe(false);
+        expect(isNonNegativeInteger(-4e2)).toBe(false);
+
+        // zero
+        expect(isNonNegativeFloat('0')).toBe(true);
+        expect(isNonNegativeFloat('0.0')).toBe(true);
+        expect(isNonNegativeFloat(0)).toBe(true);
+        expect(isNonNegativeFloat(0.0)).toBe(true);
+        expect(isNonNegativeInteger('0')).toBe(true);
+        expect(isNonNegativeInteger(0)).toBe(true);
+
+        // positive float
+        expect(isNonNegativeFloat('123.456')).toBe(true);
+        expect(isNonNegativeFloat('0.123')).toBe(true);
+        expect(isNonNegativeFloat(123.456)).toBe(true);
+        expect(isNonNegativeFloat(0.123)).toBe(true);
+        expect(isNonNegativeInteger('123.456')).toBe(false);
+        expect(isNonNegativeInteger('0.123')).toBe(false);
+        expect(isNonNegativeInteger(123.456)).toBe(false);
+        expect(isNonNegativeInteger(0.123)).toBe(false);
+
+        // positive int
+        expect(isNonNegativeFloat('123')).toBe(true);
+        expect(isNonNegativeFloat('123.0')).toBe(true);
+        expect(isNonNegativeFloat(123)).toBe(true);
+        expect(isNonNegativeFloat(123.0)).toBe(true);
+        expect(isNonNegativeInteger('123')).toBe(true);
+        expect(isNonNegativeInteger('123.0')).toBe(true);
+        expect(isNonNegativeInteger(123)).toBe(true);
+        expect(isNonNegativeInteger(123.0)).toBe(true);
+    });
+});
+
+describe('isIntegerInRange', () => {
+    test('check full range', () => {
+        expect(isIntegerInRange(4, 3, 5)).toBe(true);
+        expect(isIntegerInRange(5, 3, 5)).toBe(true);
+        expect(isIntegerInRange(5, 3.1, 5.4)).toBe(true);
+        expect(isIntegerInRange(4, 4, 40)).toBe(true);
+        expect(isIntegerInRange(1, 0, 10)).toBe(true);
+        expect(isIntegerInRange(0, 0, 10)).toBe(true);
+        expect(isIntegerInRange(10, 10, 10)).toBe(true);
+        expect(isIntegerInRange(-10, -11, -9)).toBe(true);
+    });
+
+    test('check inverted range', () => {
+        expect(isIntegerInRange(10, 11, 9)).toBe(false);
+    });
+
+    test('no maximum', () => {
+        expect(isIntegerInRange(10, 10)).toBe(true);
+        expect(isIntegerInRange(10, -1)).toBe(true);
+    });
+
+    test('no minimum', () => {
+        expect(isIntegerInRange(4, undefined, 5)).toBe(true);
+        expect(isIntegerInRange(4, null, 5)).toBe(true);
+        expect(isIntegerInRange(5, null, 5)).toBe(true);
+    });
+
+    test('no maximum or minimum', () => {
+        expect(isIntegerInRange(5, null, undefined)).toBe(true);
+    });
+
+    test('not an integer', () => {
+        expect(isIntegerInRange(5.4, null, undefined)).toBe(false);
+        expect(isIntegerInRange(5.4, 4.4, 7)).toBe(false);
+        expect(isIntegerInRange(5.4, 4, 7)).toBe(false);
+        expect(isIntegerInRange(undefined, 4, 7)).toBe(false);
+        expect(isIntegerInRange(null, 4, 7)).toBe(false);
     });
 });

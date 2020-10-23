@@ -7,6 +7,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add isDirty method to RouteLeaveInjectedProps
 * Moved isIntegerInRange, isNonNegativeFloat, isNonNegativeInteger utility methods over from inventory
 
+### version 0.101.4
+*Released*: 22 Oct 2020
+* Issue 41493: Allow appendToCurrentNode to work around page scroll issue
+
+### version 0.101.3
+*Released*: 22 Oct 2020
+* Add showNotifications prop to Page.tsx
+* Expose PageHeaderProps interface
+
 ### version 0.101.2
 *Released*: 22 Oct 2020
 * Issue 41068: GridPanel does not respect the hideEmptyChartSelector and hideEmptyViewSelector properties set in a

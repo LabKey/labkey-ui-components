@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.101.4
+*Released*: 22 Oct 2020
+* Issue 41493: Allow appendToCurrentNode to work around page scroll issue
+
 ### version 0.101.3
 *Released*: 22 Oct 2020
 * Add showNotifications prop to Page.tsx

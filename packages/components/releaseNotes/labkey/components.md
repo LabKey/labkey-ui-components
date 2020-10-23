@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 0.102.0
+*Released*: 23 October 2020
+* Add new application URL in App for managing storage units
+* Add isDirty method to RouteLeaveInjectedProps
+* Moved isIntegerInRange, isNonNegativeFloat, isNonNegativeInteger utility methods over from inventory
+
 ### version 0.101.4
 *Released*: 22 Oct 2020
 * Issue 41493: Allow appendToCurrentNode to work around page scroll issue
@@ -47,7 +53,7 @@ global query metadata override
 * `withAssayModels` replaces implementation of `AssayProvider`.
 * Added unit test coverage for `withAssayModels` and `withAssayModelsFromLocation`.
 * Converted `AssayStateModel` and `AssayUploadResultModel` to Immer from ImmutableJS Records.
-* Streamlined `AssayStateModel` to be more straight-forward for getting and setting `AssayDefinitionModel`s.
+* Streamlined `AssayStateModel` to be more straightforward for getting and setting `AssayDefinitionModel`s.
 * `<AssayImportSubMenuItem/>` switched to use `withAssayModels`.
 * Add `isLoading` as a utility method for working with `LoadingState`.
 

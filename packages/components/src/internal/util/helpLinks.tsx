@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { getServerContext } from '@labkey/api';
 
 export const CHART_MEASURES_AND_DIMENSIONS_TOPIC = 'chartTrouble';
 export const MISSING_VALUES_TOPIC = 'manageMissing';
@@ -28,19 +29,18 @@ export const DATASET_PROPERTIES_TOPIC = 'datasetProperties#advanced';
 export const DELETE_SAMPLES_TOPIC = 'viewSampleSets#delete';
 export const DERIVE_SAMPLES_TOPIC = 'deriveSamples';
 export const DERIVE_SAMPLES_ALIAS_TOPIC = DERIVE_SAMPLES_TOPIC + '#alias';
-// export const DERIVE_SAMPLES_GRAPH_TOPIC = DERIVE_SAMPLES_TOPIC + '#graph';
-// export const DERIVE_SAMPLES_GRID_TOPIC = DERIVE_SAMPLES_TOPIC + '#grid';
 
 export const URL_ENCODING_TOPIC = 'urlEncoding';
 
 export const SEARCH_SYNTAX_TOPIC = 'luceneSearch';
 export const DATA_IMPORT_TOPIC = 'dataImport';
 
-export function getHelpLink(topic: string) {
-    return LABKEY.helpLinkPrefix + topic;
+export function getHelpLink(topic: string): string {
+    return getServerContext().helpLinkPrefix + topic;
 }
 
-export function helpLinkNode(topic: string, text: React.ReactNode, className?: string): React.ReactNode {
+// TODO: This should be converted into a React.FC with arguments switched to props
+export function helpLinkNode(topic: string, text: ReactNode, className?: string): ReactNode {
     return (
         <a target="_blank" href={getHelpLink(topic)} className={className}>
             {text}

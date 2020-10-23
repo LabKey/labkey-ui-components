@@ -25,6 +25,14 @@ import { QuerySort } from './public/QuerySort';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, User } from './internal/components/base/models/User';
+import {
+    ServerContext,
+    ServerContextProvider,
+    ServerContextConsumer,
+    useServerContext,
+    useServerContextDispatch,
+    withAppUser,
+} from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
 import {
     AssayDefinitionModel,
@@ -108,7 +116,7 @@ import {
     NotificationItemProps,
     Persistence,
 } from './internal/components/notifications/model';
-import { PermissionAllowed, PermissionNotAllowed } from './internal/components/base/Permissions';
+import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
@@ -415,6 +423,7 @@ import { DataClassDesigner } from './internal/components/domainproperties/datacl
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
+import { mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -554,8 +563,7 @@ export {
     SiteUsersGridPanel,
     InsufficientPermissionsPage,
     BasePermissionsCheckPage,
-    PermissionAllowed,
-    PermissionNotAllowed,
+    RequiresPermission,
     hasAllPermissions,
     fetchContainerSecurityPolicy,
     PermissionAssignments,
@@ -819,6 +827,12 @@ export {
     // base models, enums, constants
     Container,
     User,
+    ServerContext,
+    ServerContextProvider,
+    ServerContextConsumer,
+    useServerContext,
+    useServerContextDispatch,
+    withAppUser,
     QueryColumn,
     QueryInfo,
     QueryLookup,
@@ -873,4 +887,8 @@ export {
     TimelineEventModel,
     TimelineGroupedEventInfo,
     TimelineView,
+    // Test Helpers
+    mountWithServerContext,
+    sleep,
+    waitForLifecycle,
 };

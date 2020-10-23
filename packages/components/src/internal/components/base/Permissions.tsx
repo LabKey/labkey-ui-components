@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 LabKey Corporation
+ * Copyright (c) 2019-2020 LabKey Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ interface Props {
 /**
  * This component is intended to be used to wrap other components which should only be displayed when the
  * user has specific permissions. Permissions are defined on the application user and can be specified by
- * importing PermissionTypes. The component uses "useServerContext to access the current user so it
+ * importing PermissionTypes. The component uses "useServerContext" to access the current user so it
  * requires access to the "ServerContext".
  */
 export const RequiresPermission: FC<Props> = ({ children, perms }) => {
@@ -35,15 +35,5 @@ export const RequiresPermission: FC<Props> = ({ children, perms }) => {
         user,
     ]);
 
-    return (
-        <>
-            {React.Children.map(children, (child: any) => {
-                const isNotAllowed = child && child.props.isAllowed === false;
-                if (allow) {
-                    return !isNotAllowed ? child : null;
-                }
-                return isNotAllowed ? child : null;
-            })}
-        </>
-    );
+    return <>{React.Children.map(children, child => (allow ? child : null))}</>;
 };

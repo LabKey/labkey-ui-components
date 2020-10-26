@@ -1,6 +1,6 @@
 # @labkey/build
 
-This package contains LabKey client side build assets.
+This package contains LabKey client-side build assets.
 
 ## Installation
 

@@ -4,9 +4,9 @@ This directory contains the shared [webpack] configurations to develop and build
 [React] pages within a LabKey module. These files include configurations for
 building both production and development mode LabKey React Pages in a standard way.
 
-Note that if build customizations are needed for a given module, they can opt out of these shared
-configurations by setting up their own webpack config files and pointing their build scripts in the
-relevant module's `package.json` file at them.
+Note that if build customizations are needed for a given module, the module can opt out of these shared
+configurations by setting up its own webpack config files and pointing the build scripts in the
+module's `package.json` file at them.
 
 ### How to use the shared webpack config files
 
@@ -15,7 +15,7 @@ relevant module's `package.json` file at them.
     `node_modules/@labkey/build/webpack`. See examples from the [demo] module.
     1. use one of the three configuration files based on your script target: `prod.config.js`, `dev.config.js`,
         or `watch.config.js`
-    1. make sure to include the following environment variables:
+    1. make sure to pass the following environment variables as part of your webpack command:
         1.  `NODE_ENV` - development or production
         1. `LK_MODULE_CONTAINER` - if your module is in a module container repository with other modules,
             this is the name of the repository
@@ -24,7 +24,7 @@ relevant module's `package.json` file at them.
 ### How it works
 
 Each new LabKey React page `entryPoint` will be defined within the module where the relevant actions
-and code lives. Each `entryPoint` will have output files generated as part of the
+and code live. Each `entryPoint` will have output files generated as part of the
 [LabKey Gradle build] steps for that module. The artifacts will be generated and placed into the
 standard LabKey `views` directory to make the pages available to the server through the module's
 controller. The generated `<entryPoint>.html` and `<entryPoint>.view.xml` files will be placed in the
@@ -35,8 +35,8 @@ If your `entryPoint` is to be used in a JSP or included in another LabKey page a
 directly as its own `view`, you can set the `generateLib` property for your `entryPoint`. This will generate
 the same JS/CSS artifacts in the `<module>/resources/web/<module>/gen` directory but will skip the `resources/views`
 generation step and instead create an `<entryPoint>.lib.xml` file in the `<module>/resources/web/<module>/gen` directory.
-This lib.xml can then be used in your JSP or other LabKey page. See example of this in the experiment [entryPoints.js]
-file.
+This lib.xml can then be used in your JSP or other LabKey page. You can see an example of this in the experiment
+[entryPoints.js] file.
 
 ### Setting up a LabKey module
 
@@ -46,7 +46,7 @@ To configure a LabKey module to participant in the React page build process:
         Note that after your first successful build of this module after adding this,
         a new `package-lock.json` file will be generated. You will want to add that file to your git repo
         and check it in as well. Note that in this file the `npm clean` command might need to be adjusted
-        if your module already has file in the `resources/views` directory.
+        if your module already has files in the `resources/views` directory.
     1. `.npmrc` - Defines the Artifactory registry path for the `@labkey` scope, if you
         plan to use any of the Labkey npm packages for your page.
     1. `tsconfig.json` - Typescript configuration file. This will ensure that your module's `node_modules`
@@ -86,9 +86,9 @@ npm run clean
 ### Adding a new entryPoint
 
 To add a new `entryPoint` for a LabKey React page:
-1. Create a new dir for your client code and React components at `<module>/src/client/<ENTRYPOINT_NAME>`.
+1. Create a new directory for your client code and React components at `<module>/src/client/<ENTRYPOINT_NAME>`.
 1. Add a new entry point definition to the `<module>/src/client/entryPoints.js` file. This will allow
-    for the client-side build process to pickup your new files and generated the relevant artifactos.
+    for the client-side build process to pick up your new files and generated the relevant artifacts.
     For the new entry point, set the following properties:
     1. `name=<action name for the entryPoint page>`
     1. `title=<page title>`
@@ -111,9 +111,9 @@ Reloading enabled via a webpack development server. You can run the HMR server f
 will need to access your page via an alternate action name to view the changes. The server action
 is `module-entryPointDev.view` instead of the normal `module-entryPoint.view`.
 
-Note that by default modules that use this share configurations package for the webpack development
-server, they are set to use the same port number for the HMR environment. This means that you can only
-have one module's HMR mode enabled at a time. If you try to run `npm start` for a second module, you
+Note that by default modules that use this shared configurations package for the webpack development
+server are set to use the same port number for the HMR environment. This means that you can have
+only one module's HMR mode enabled at a time. If you try to run `npm start` for a second module, you
 will get an error message saying that the `address is already in use`.
 
 To enable HMR:

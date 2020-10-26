@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // This path assumes the enlistment in labkey-ui-components is a sibling of the root of the LabKey enlistment.
+// TODO figure out how we can make this more flexible and get an absolute path from the dev based on their setup
 const labkeyUIComponentsRelPath = (lkModuleContainer ? "../../../../../" : "../../../../") + "labkey-ui-components/packages/components";
 const labkeyUIComponentsPath = process.env.LINK ? path.resolve(labkeyUIComponentsRelPath) : path.resolve("./node_modules/@labkey/components");
 console.log("Using @labkey/components path: " + labkeyUIComponentsPath);

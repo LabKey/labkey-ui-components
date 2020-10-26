@@ -124,7 +124,7 @@ cd trunk/server/modules/<module>
 npm run start
 ```
 
-For those modules that use other @labkey packages (i.e. `@labkey/components`), you can run the start command
+For those modules that use other @labkey packages (e.g., `@labkey/components`), you can run the start command
 with linking enabled so that the HMR environment will alias to the source repository `/dist` directory so that
 you don't have to do a copy of the re-built `/dist` directory for that package in order for the changes to be
 picked up.

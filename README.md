@@ -12,7 +12,7 @@ Once they're ready, we'll officially push the components as version 1.0.0.
 <!--- keep these alphabetical --->
 | Package | Status | Description |
 | --- | --- | --- |
-| [@labkey/build](packages/build/README.md) | | UI themes for LabKey Server.
+| [@labkey/build](packages/build/README.md) | | LabKey client-side build assets.
 | [@labkey/components](packages/components/README.md) | [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest) | All components, models, actions, and utility functions for LabKey applications and pages
 | [@labkey/eslint-config-base](packages/eslint-config-base/README.md) | | Base ESLint configuration with TypeScript and Prettier support.
 | [@labkey/eslint-config-react](packages/eslint-config-react/README.md) | | Extends the base configuration with React support.

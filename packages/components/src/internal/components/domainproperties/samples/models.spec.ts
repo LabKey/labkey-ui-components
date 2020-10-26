@@ -102,5 +102,20 @@ describe('SampleTypeModel', () => {
         ).toBe('#000000');
     });
 
+    test('metricUnit value', () => {
+        expect(SampleTypeModel.create({ options: fromJS({}) } as DomainDetails, undefined).metricUnit).toBe(undefined);
+        expect(
+            SampleTypeModel.create({ options: fromJS({ metricUnit: undefined }) } as DomainDetails, undefined)
+                .metricUnit
+        ).toBe(undefined);
+        expect(
+            SampleTypeModel.create({ options: fromJS({ metricUnit: null }) } as DomainDetails, undefined).metricUnit
+        ).toBe(undefined);
+        expect(
+            SampleTypeModel.create({ options: fromJS({ metricUnit: 'ml' }) } as DomainDetails, undefined)
+                .metricUnit
+        ).toBe('ml');
+    });
+
     // TODO add tests for getDuplicateAlias
 });

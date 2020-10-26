@@ -37,6 +37,7 @@ export interface FieldEditorOverlayProps {
     showValueOnNotAllowed?: boolean;
     onUpdate?: () => void;
     handleUpdateRows?: (any) => Promise<any>;
+    appendToCurrentNode?: boolean; // instead of appending to <body>, append to trigger element
 }
 
 interface State {
@@ -48,7 +49,7 @@ interface State {
 type Props = FieldEditorOverlayProps;
 
 export class FieldEditorOverlay extends React.PureComponent<Props, State> {
-    private fieldEditOverlayTrigger: React.RefObject<OverlayTrigger>;
+    private fieldEditOverlayTrigger: React.RefObject<any>;
 
     static defaultProps = {
         iconAlwaysVisible: true,
@@ -97,11 +98,12 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                     if (column.jsonType === 'int' || column.jsonType === 'float') {
                         inputType = 'number';
                     }
-                    const props = Object.assign({}, field, {
+                    const props = Object.assign({
                         caption: column.caption,
+                        inputPlaceholder: 'Enter ' + column.caption.toLowerCase() + '...',
+                    }, field, {
                         data,
                         fieldKey: column.fieldKey,
-                        inputPlaceholder: 'Enter ' + column.caption.toLowerCase() + '...',
                         inputType,
                         value,
                     });
@@ -186,7 +188,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { canUpdate, showIconText, showValueOnNotAllowed } = this.props;
+        const { canUpdate, showIconText, showValueOnNotAllowed, appendToCurrentNode } = this.props;
         const { error, fields, iconField } = this.state;
 
         const caption = this.props.caption
@@ -205,7 +207,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
         });
 
         return (
-            <>
+            <span ref={this.fieldEditOverlayTrigger}>
                 {canUpdate && (
                     <OverlayTrigger
                         delayShow={300}
@@ -220,8 +222,8 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                             />
                         }
                         trigger="click"
+                        container={appendToCurrentNode ? this.fieldEditOverlayTrigger.current : undefined}
                         rootClose
-                        ref={this.fieldEditOverlayTrigger}
                     >
                         <span className={haveValues ? 'field__set' : 'field__unset'}>
                             <span title={'Edit ' + caption} className="field-edit__icon fa fa-pencil-square-o" />
@@ -242,7 +244,7 @@ export class FieldEditorOverlay extends React.PureComponent<Props, State> {
                         {fieldValue}
                     </span>
                 )}
-            </>
+            </span>
         );
     }
 }

@@ -10,6 +10,7 @@ export class SampleTypeModel extends Record({
     nameExpression: undefined,
     description: undefined,
     labelColor: undefined,
+    metricUnit: undefined,
     parentAliases: undefined,
     importAliases: undefined,
     domainId: undefined,
@@ -22,6 +23,7 @@ export class SampleTypeModel extends Record({
     nameExpression: string;
     description: string;
     labelColor: string;
+    metricUnit: string;
     parentAliases?: OrderedMap<string, IParentAlias>;
     importAliases?: Map<string, string>;
     domainId?: number;
@@ -46,6 +48,7 @@ export class SampleTypeModel extends Record({
             nameReadOnly: raw.nameReadOnly,
             importAliases,
             labelColor: options.get('labelColor') || undefined, // helps to convert null to undefined
+            metricUnit: options.get('metricUnit') || undefined,
             domain,
         });
     }
@@ -59,13 +62,18 @@ export class SampleTypeModel extends Record({
         return !this.rowId;
     }
 
-    isValid(defaultNameFieldConfig?: Partial<IDomainField>) {
+    isValid(defaultNameFieldConfig?: Partial<IDomainField>, metricUnitRequired?: boolean) {
         return (
             this.hasValidProperties() &&
             !this.hasInvalidNameField(defaultNameFieldConfig) &&
             this.getDuplicateAlias(true).size === 0 &&
-            !this.domain.hasInvalidFields()
+            !this.domain.hasInvalidFields() &&
+            this.isMetricUnitValid(metricUnitRequired)
         );
+    }
+
+    isMetricUnitValid(metricUnitRequired?: boolean) {
+        return !metricUnitRequired || this.metricUnit != null
     }
 
     /**
@@ -124,4 +132,12 @@ export interface IParentAlias {
     ignoreAliasError: boolean;
     ignoreSelectError: boolean;
     isDupe?: boolean;
+}
+
+export interface MetricUnitProps {
+    includeMetricUnitProperty?: boolean;
+    metricUnitLabel?: string;
+    metricUnitRequired?: boolean;
+    metricUnitHelpMsg?: string;
+    metricUnitOptions?: any[];
 }

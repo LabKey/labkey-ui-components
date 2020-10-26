@@ -3,6 +3,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 
 import { QueryModel, ViewInfo } from '../..';
 import { blurActiveElement } from '../../internal/util/utils';
+import { getQueryMetadata } from '../../internal/global';
 
 interface ViewMenuProps {
     hideEmptyViewMenu: boolean;
@@ -20,7 +21,8 @@ export class ViewMenu extends PureComponent<ViewMenuProps> {
         const publicViews = validViews.filter(view => !view.isDefault && view.shared);
         const privateViews = validViews.filter(view => !view.isDefault && !view.shared);
         const noViews = publicViews.length === 0 && privateViews.length === 0;
-        const hidden = hideEmptyViewMenu && noViews;
+        const _hideEmptyViewMenu = getQueryMetadata().get('hideEmptyViewMenu', hideEmptyViewMenu);
+        const hidden = _hideEmptyViewMenu && noViews;
         const disabled = isLoading || noViews;
 
         const viewMapper = (viewInfo): ReactNode => {

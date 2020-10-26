@@ -25,6 +25,14 @@ import { QuerySort } from './public/QuerySort';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, User } from './internal/components/base/models/User';
+import {
+    ServerContext,
+    ServerContextProvider,
+    ServerContextConsumer,
+    useServerContext,
+    useServerContextDispatch,
+    withAppUser,
+} from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
 import {
     AssayDefinitionModel,
@@ -47,6 +55,9 @@ import {
     devToolsActive,
     generateId,
     getDisambiguatedSelectInputOptions,
+    isIntegerInRange,
+    isNonNegativeFloat,
+    isNonNegativeInteger,
     resolveKey,
     toggleDevTools,
     valueIsEmpty,
@@ -74,7 +85,7 @@ import { BasePermissionsCheckPage } from './internal/components/permissions/Base
 import { NotFound } from './internal/components/base/NotFound';
 import { Page, PageProps } from './internal/components/base/Page';
 import { LoadingPage, LoadingPageProps } from './internal/components/base/LoadingPage';
-import { PageHeader } from './internal/components/base/PageHeader';
+import { PageHeader, PageHeaderProps } from './internal/components/base/PageHeader';
 import { Progress } from './internal/components/base/Progress';
 import { LabelHelpTip } from './internal/components/base/LabelHelpTip';
 import { Tip } from './internal/components/base/Tip';
@@ -105,7 +116,7 @@ import {
     NotificationItemProps,
     Persistence,
 } from './internal/components/notifications/model';
-import { PermissionAllowed, PermissionNotAllowed } from './internal/components/base/Permissions';
+import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
@@ -345,7 +356,7 @@ import {
     getSampleDeleteConfirmationData,
 } from './internal/components/entities/actions';
 import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
-import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
+import { SampleTypeModel, MetricUnitProps } from './internal/components/domainproperties/samples/models';
 
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
@@ -412,6 +423,7 @@ import { DataClassDesigner } from './internal/components/domainproperties/datacl
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
+import { mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -551,8 +563,7 @@ export {
     SiteUsersGridPanel,
     InsufficientPermissionsPage,
     BasePermissionsCheckPage,
-    PermissionAllowed,
-    PermissionNotAllowed,
+    RequiresPermission,
     hasAllPermissions,
     fetchContainerSecurityPolicy,
     PermissionAssignments,
@@ -568,6 +579,7 @@ export {
     deleteDataClass,
     fetchDataClass,
     SampleTypeModel,
+    MetricUnitProps,
     deleteSampleSet,
     fetchSamples,
     getSampleSet,
@@ -741,6 +753,9 @@ export {
     caseInsensitive,
     capitalizeFirstChar,
     resolveKey,
+    isIntegerInRange,
+    isNonNegativeFloat,
+    isNonNegativeInteger,
     isLoading,
     naturalSort,
     naturalSortByProperty,
@@ -775,6 +790,7 @@ export {
     Page,
     PageProps,
     PageHeader,
+    PageHeaderProps,
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,
@@ -811,6 +827,12 @@ export {
     // base models, enums, constants
     Container,
     User,
+    ServerContext,
+    ServerContextProvider,
+    ServerContextConsumer,
+    useServerContext,
+    useServerContextDispatch,
+    withAppUser,
     QueryColumn,
     QueryInfo,
     QueryLookup,
@@ -865,4 +887,8 @@ export {
     TimelineEventModel,
     TimelineGroupedEventInfo,
     TimelineView,
+    // Test Helpers
+    mountWithServerContext,
+    sleep,
+    waitForLifecycle,
 };

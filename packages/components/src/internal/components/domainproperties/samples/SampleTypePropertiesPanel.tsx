@@ -1,11 +1,19 @@
 import React from 'react';
 import { OrderedMap } from 'immutable';
-import { Col, Row } from 'react-bootstrap';
+import {Col, FormControl, FormControlProps, Row} from 'react-bootstrap';
 
 import { getFormNameFromId } from '../entities/actions';
 import { IParentOption } from '../../entities/models';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
-import { AddEntityButton, ColorPickerInput, generateId, getHelpLink, helpLinkNode, SCHEMAS } from '../../../..';
+import {
+    AddEntityButton,
+    ColorPickerInput,
+    generateId,
+    getHelpLink,
+    helpLinkNode, MetricUnitProps,
+    SCHEMAS,
+    SelectInput
+} from '../../../..';
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { DERIVE_SAMPLES_ALIAS_TOPIC, DEFINE_SAMPLE_TYPE_TOPIC } from '../../../util/helpLinks';
 import { SampleSetParentAliasRow } from '../../samples/SampleSetParentAliasRow';
@@ -42,6 +50,7 @@ interface OwnProps {
     dataClassAliasCaption?: string;
     dataClassTypeCaption?: string;
     dataClassParentageLabel?: string;
+    metricUnitProps?: MetricUnitProps;
 }
 
 // Splitting these out to clarify where they end-up
@@ -90,6 +99,10 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         dataClassAliasCaption: 'Data Class Alias',
         dataClassTypeCaption: 'Data Class',
         dataClassParentageLabel: 'data class',
+        metricUnitProps: {
+            metricUnitLabel: 'Metric Unit',
+            metricUnitHelpMsg: 'The unit of measurement used for the sample type.'
+        }
     };
 
     constructor(props) {
@@ -249,8 +262,15 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             sampleAliasCaption,
             dataClassParentageLabel,
             appPropertiesOnly,
+            metricUnitProps
         } = this.props;
         const { isValid } = this.state;
+
+        const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
+            metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',
+            metricUnitHelpMsg = metricUnitProps?.metricUnitHelpMsg || 'The unit of measurement used for the sample type.',
+            metricUnitOptions = metricUnitProps?.metricUnitOptions,
+            metricUnitRequired = metricUnitProps?.metricUnitRequired;
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
         return (
@@ -336,6 +356,41 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                 />
                             </Col>
                         </Row>
+                        {includeMetricUnitProperty &&
+                            <Row className="margin-top">
+                                <Col xs={2}>
+                                    <DomainFieldLabel
+                                        label={metricUnitLabel}
+                                        required={metricUnitRequired}
+                                        helpTipBody={() => metricUnitHelpMsg}
+                                    />
+                                </Col>
+                                <Col xs={3}>
+                                    {metricUnitOptions ?
+                                        <SelectInput
+                                            formsy={false}
+                                            containerClass="sampleset-metric-unit-select-container"
+                                            inputClass="sampleset-metric-unit-select"
+                                            name="metricUnit"
+                                            options={metricUnitOptions}
+                                            required={metricUnitRequired}
+                                            clearable={!metricUnitRequired}
+                                            onChange={(name, formValue, option) => {this.onFieldChange(name, formValue === undefined && option ? option.id : formValue)}}
+                                            placeholder={`Select a unit...`}
+                                            value={model.metricUnit}
+                                        /> :
+                                        <FormControl
+                                            name="metricUnit"
+                                            type="text"
+                                            placeholder={`Enter a unit`}
+                                            value={model.metricUnit}
+                                            onChange={(e: React.ChangeEvent<FormControlProps>) => {this.onFieldChange(e.target.name, e.target.value)}}
+                                        />
+                                    }
+
+                                </Col>
+                            </Row>
+                        }
                     </>
                 )}
             </BasePropertiesPanel>

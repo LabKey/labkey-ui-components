@@ -15,6 +15,7 @@ const labkeyUIComponentsRelPath = (lkModuleContainer ? "../../../../../" : "../.
 const labkeyUIComponentsPath = process.env.LINK ? path.resolve(labkeyUIComponentsRelPath) : path.resolve("./node_modules/@labkey/components");
 console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
 
+// TODO not all modules will have this package as a dependency, how can we hide this behind an env var or set it locally for a module?
 const freezerManagerRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "inventory/packages/freezermanager";
 const freezerManagerPath = process.env.LINK ? path.resolve(__dirname, freezerManagerRelPath) : path.resolve("./node_modules/@labkey/freezermanager");
 console.log("Using @labkey/freezermanager path: " + freezerManagerPath);

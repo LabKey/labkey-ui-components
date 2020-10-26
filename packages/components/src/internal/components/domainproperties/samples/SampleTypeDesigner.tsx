@@ -526,6 +526,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
+                    allowImportExport={true}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
             </BaseDomainDesigner>

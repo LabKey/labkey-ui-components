@@ -90,7 +90,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
         const isAutoIncPk = pkField !== undefined && PropDescType.isAutoIncrement(pkField.dataType);
 
         return (
-            <Alert>
+            <Alert className="list__set-key-alert">
                 <div>
                     Select a key value for this list which uniquely identifies the item. You can use "
                     {AUTO_INC_KEY_OPTION_TEXT}" to define your own below.

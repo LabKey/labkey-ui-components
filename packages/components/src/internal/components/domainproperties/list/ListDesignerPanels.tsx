@@ -175,6 +175,11 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         } = this.props;
         const { model, file } = this.state;
 
+        console.log("bro", typeof model);
+        console.log("bro1", model.toJS());
+        console.log("bro1", model.constructor.name); // models_ListModel
+
+
         return (
             <BaseDomainDesigner
                 name={model.name}
@@ -231,6 +236,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
+                    allowImportExport={true}
                 />
                 <Progress
                     modal={true}

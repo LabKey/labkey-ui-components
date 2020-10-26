@@ -86,6 +86,7 @@ interface IDomainFormInput {
     panelStatus?: DomainPanelStatus;
     headerPrefix?: string; // used as a string to remove from the heading when using the domain.name
     headerTitle?: string;
+    allowImportExport?: boolean;
     todoIconHelpMsg?: string;
     showInferFromFile?: boolean;
     useTheme?: boolean;
@@ -705,11 +706,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderEmptyDomain() {
+        const { allowImportExport } = this.props;
         if (this.shouldShowInferFromFile()) {
             return (
                 <>
                     <FileAttachmentForm
-                        acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx, .json"
+                        acceptedFormats={".csv, .tsv, .txt, .xls, .xlsx" + (allowImportExport ? ", .json" : "")}
                         showAcceptedFormats={true}
                         allowDirectories={false}
                         allowMultiple={false}
@@ -788,28 +790,31 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderToolbar() {
-        const { domain, domainIndex } = this.props;
+        const { domain, domainIndex, allowImportExport } = this.props;
         const { fields } = domain;
         const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
 
         return (
-            <Row>
+            <Row className="domain-field-toolbar">
                 <Col xs={4}>
                     <AddEntityButton
                         entity="Field"
                         containerClass="container--toolbar-button"
                         buttonClass="domain-toolbar-add-btn"
+                        spanClass="domain-toolbar-add-span"
                         onClick={this.onAddField}
                     />
-                    <ActionButton
-                        containerClass="container--toolbar-button"
-                        buttonClass="domain-toolbar-export-btn"
-                        spanClass="domain-toolbar-export-span"
-                        onClick={this.onExportFields}
-                        disabled={disableExport}
-                    >
-                        <i className="fa fa-download domain-toolbar-export-btn-icon" /> Export
-                    </ActionButton>
+                    {allowImportExport &&
+                        <ActionButton
+                            containerClass="container--toolbar-button"
+                            buttonClass="domain-toolbar-export-btn"
+                            spanClass="domain-toolbar-export-span"
+                            onClick={this.onExportFields}
+                            disabled={disableExport}
+                        >
+                            <i className="fa fa-download domain-toolbar-export-btn-icon" /> Export
+                        </ActionButton>
+                    }
                 </Col>
                 <Col xs={8}>
                     <div className="pull-right">
@@ -861,10 +866,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <>
+                {!this.shouldShowInferFromFile() && this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && this.renderAppDomainHeader()}
-                {/* TODO need to figure out where the header goes in relation to the panel header and app headers above*/}
-                {!this.shouldShowInferFromFile() && this.renderToolbar()}
                 {domain.fields.size > 0 ? (
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>
@@ -977,7 +981,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             {children}
                         </CollapsiblePanelHeader>
                     )}
-                    <Panel.Body collapsible={collapsible || controlledCollapse}>
+                    <Panel.Body id={!this.shouldShowInferFromFile() && 'domain-field-top-noBuffer'} collapsible={collapsible || controlledCollapse}>
                         {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}
 
                         {fieldsAdditionalRenderer && fieldsAdditionalRenderer()}

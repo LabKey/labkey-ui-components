@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.103.1
+*Released*: 26 Oct 2020
 * Issue 41621: Grid column fieldKey with special character wasn't being decoded when getting data for table cell
 
 ### version 0.103.0

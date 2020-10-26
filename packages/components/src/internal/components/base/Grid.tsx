@@ -109,7 +109,7 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 align: c.align,
                 cell: c.cell,
                 format: c.jsonType === 'float' || c.jsonType === 'int' ? c.format : undefined,
-                index: c.index || c.fieldKey,
+                index: c.index || c.fieldKeyArray.join('/'),
                 raw: c,
                 tableCell: c.tableCell,
                 title: c.title || c.caption,

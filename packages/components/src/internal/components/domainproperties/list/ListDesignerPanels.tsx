@@ -175,11 +175,6 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         } = this.props;
         const { model, file } = this.state;
 
-        console.log("bro", typeof model);
-        console.log("bro1", model.toJS());
-        console.log("bro1", model.constructor.name); // models_ListModel
-
-
         return (
             <BaseDomainDesigner
                 name={model.name}

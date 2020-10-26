@@ -92,6 +92,7 @@ interface IDomainDesign {
 export class DomainDesign
     extends Record({
         name: undefined,
+        domainType: undefined,
         container: undefined,
         description: undefined,
         domainURI: undefined,
@@ -112,6 +113,7 @@ export class DomainDesign
     })
     implements IDomainDesign {
     name: string;
+    domainType: string;
     container: string;
     description: string;
     domainURI: string;

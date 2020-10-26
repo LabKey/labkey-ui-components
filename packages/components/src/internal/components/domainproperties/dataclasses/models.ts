@@ -49,7 +49,7 @@ export class DataClassModel implements DataClassModelConfig {
     }
 
     static create(raw: any): DataClassModel {
-        let domain = DomainDesign.create({});
+        let domain = DomainDesign.create({domainType: 'DataClass'});
         if (raw.domainDesign) {
             domain = DomainDesign.create(raw.domainDesign);
         }

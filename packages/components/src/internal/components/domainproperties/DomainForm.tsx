@@ -31,7 +31,7 @@ import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { blurActiveElement } from '../../util/utils';
 
 import {
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     PHILEVEL_NOT_PHI,
@@ -690,8 +690,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return file.text()
             .then(text => {
+                const domainType = domain.domainType;
                 const jsFields = JSON.parse(text);
                 if (jsFields.length < 1) return {success: false, msg: 'No fields found.'};
+                
+                if (domainType !== 'list') {
+                    const containsPK = jsFields.some(field => field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED);
+                    if (containsPK) {
+                        return {success: false, msg: `Import incompatible with domain type '${domainType}': Primary Key is defined.`};
+                    }
+                }
 
                 // Convert to TS and merge entire List
                 const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));

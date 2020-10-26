@@ -36,9 +36,13 @@ Array [
               "phone": null,
               "avatar": "/labkey/_images/defaultavatar.png",
               "isAdmin": false,
+              "isAnalyst": false,
+              "isDeveloper": false,
               "isGuest": true,
+              "isRootAdmin": false,
               "isSignedIn": false,
               "isSystemAdmin": false,
+              "isTrusted": false,
               "permissionsList": Immutable.List [],
             }
           }
@@ -73,9 +77,13 @@ Array [
               "phone": null,
               "avatar": "/labkey/_images/defaultavatar.png",
               "isAdmin": false,
+              "isAnalyst": false,
+              "isDeveloper": false,
               "isGuest": true,
+              "isRootAdmin": false,
               "isSignedIn": false,
               "isSystemAdmin": false,
+              "isTrusted": false,
               "permissionsList": Immutable.List [],
             }
           }
@@ -114,9 +122,13 @@ Array [
           "phone": null,
           "avatar": "/labkey/_images/defaultavatar.png",
           "isAdmin": false,
+          "isAnalyst": false,
+          "isDeveloper": false,
           "isGuest": true,
+          "isRootAdmin": false,
           "isSignedIn": false,
           "isSystemAdmin": false,
+          "isTrusted": false,
           "permissionsList": Immutable.List [],
         }
       }
@@ -153,9 +165,13 @@ Array [
           "phone": null,
           "avatar": "/labkey/_images/defaultavatar.png",
           "isAdmin": false,
+          "isAnalyst": false,
+          "isDeveloper": false,
           "isGuest": true,
+          "isRootAdmin": false,
           "isSignedIn": false,
           "isSystemAdmin": false,
+          "isTrusted": false,
           "permissionsList": Immutable.List [],
         }
       }
@@ -200,9 +216,13 @@ exports[`<Notification/> one notification 1`] = `
         "phone": null,
         "avatar": "/labkey/_images/defaultavatar.png",
         "isAdmin": false,
+        "isAnalyst": false,
+        "isDeveloper": false,
         "isGuest": true,
+        "isRootAdmin": false,
         "isSignedIn": false,
         "isSystemAdmin": false,
+        "isTrusted": false,
         "permissionsList": Immutable.List [],
       }
     }
@@ -225,9 +245,13 @@ exports[`<Notification/> with trial notification for admin 1`] = `
       "phone": null,
       "avatar": "/labkey/_images/defaultavatar.png",
       "isAdmin": true,
+      "isAnalyst": false,
+      "isDeveloper": false,
       "isGuest": true,
+      "isRootAdmin": false,
       "isSignedIn": false,
       "isSystemAdmin": false,
+      "isTrusted": false,
       "permissionsList": Immutable.List [],
     }
   }
@@ -263,9 +287,13 @@ exports[`<Notification/> with trial notification for admin 1`] = `
           "phone": null,
           "avatar": "/labkey/_images/defaultavatar.png",
           "isAdmin": true,
+          "isAnalyst": false,
+          "isDeveloper": false,
           "isGuest": true,
+          "isRootAdmin": false,
           "isSignedIn": false,
           "isSystemAdmin": false,
+          "isTrusted": false,
           "permissionsList": Immutable.List [],
         }
       }
@@ -311,9 +339,13 @@ exports[`<Notification/> with trial notification for non-admin 1`] = `
       "phone": null,
       "avatar": "/labkey/_images/defaultavatar.png",
       "isAdmin": false,
+      "isAnalyst": false,
+      "isDeveloper": false,
       "isGuest": true,
+      "isRootAdmin": false,
       "isSignedIn": false,
       "isSystemAdmin": false,
+      "isTrusted": false,
       "permissionsList": Immutable.List [],
     }
   }
@@ -349,9 +381,13 @@ exports[`<Notification/> with trial notification for non-admin 1`] = `
           "phone": null,
           "avatar": "/labkey/_images/defaultavatar.png",
           "isAdmin": false,
+          "isAnalyst": false,
+          "isDeveloper": false,
           "isGuest": true,
+          "isRootAdmin": false,
           "isSignedIn": false,
           "isSystemAdmin": false,
+          "isTrusted": false,
           "permissionsList": Immutable.List [],
         }
       }

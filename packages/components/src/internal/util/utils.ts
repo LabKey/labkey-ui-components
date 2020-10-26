@@ -488,3 +488,25 @@ export function getDisambiguatedSelectInputOptions(
 
     return options;
 }
+
+function isFloat(value: number | string): boolean {
+    return !isNaN(Number(value)) && !isNaN(parseFloat(value + ''));
+}
+
+function isInteger(value: number | string): boolean {
+    return !isNaN(Number(value)) &&
+        parseInt(value + '') == value &&
+        !isNaN(parseInt(value + '', 10));
+}
+
+export function isIntegerInRange(value: number, min: number, max?: number) : boolean {
+    return isInteger(value) && (!min || Number(value) >= min) && (!max || Number(value) <= max);
+}
+
+export function isNonNegativeInteger(value: number | string): boolean {
+    return isInteger(value) && Number(value) >= 0;
+}
+
+export function isNonNegativeFloat(value: number | string): boolean {
+    return isFloat(value) && Number(value) >= 0;
+}

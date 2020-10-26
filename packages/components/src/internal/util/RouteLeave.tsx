@@ -7,6 +7,7 @@ import { BeforeUnload } from './BeforeUnload';
 
 interface RouteLeaveInjectedProps {
     setDirty: (dirty: boolean) => void;
+    isDirty: () => boolean;
 }
 
 export type RouteLeaveProps = RouteLeaveInjectedProps & WithRouterProps;
@@ -35,10 +36,14 @@ export const withRouteLeave = (Component: React.ComponentType) => {
             this._dirty = dirty;
         };
 
+        isDirty = (): boolean => {
+            return this._dirty;
+        };
+
         render() {
             return (
                 <BeforeUnload beforeunload={this.onRouteLeave}>
-                    <Component setDirty={this.setDirty} {...this.props} />
+                    <Component setDirty={this.setDirty} isDirty={this.isDirty} {...this.props} />
                 </BeforeUnload>
             );
         }

@@ -9,6 +9,7 @@ import { ChartModal } from '../../internal/components/chart/ChartModal';
 import { blurActiveElement } from '../../internal/util/utils';
 
 import { RequiresModelAndActions } from './withQueryModels';
+import { getQueryMetadata } from '../../internal/global';
 
 interface Props extends RequiresModelAndActions {
     hideEmptyChartMenu: boolean;
@@ -75,12 +76,13 @@ export class ChartMenu extends PureComponent<Props> {
         const disabled = isLoading || isLoadingCharts || noCharts || hasError;
         const selectedChart = charts?.find(chart => chart.reportId === selectedReportId);
         const showChartModal = queryInfo !== undefined && selectedChart !== undefined;
+        const _hideEmptyChartMenu = getQueryMetadata().get('hideEmptyChartMenu', hideEmptyChartMenu);
 
         if (
             privateCharts.length === 0 &&
             publicCharts.length === 0 &&
             !showSampleComparisonReports &&
-            hideEmptyChartMenu
+            _hideEmptyChartMenu
         ) {
             return null;
         }

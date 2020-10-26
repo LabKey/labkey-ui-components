@@ -10,9 +10,9 @@ module's `package.json` file at them.
 
 ### How to use the shared webpack config files
 
-1. Add the `@labkey/build` package to your module's `package.json` dependencies.
+1. Add the `@labkey/build` package to your module's `package.json` devDependencies.
 1. Add/update the `scripts` in your `package.json` to reference the relevant config file in
-    `node_modules/@labkey/build/webpack`. See examples from the [demo] module.
+    `node_modules/@labkey/build/webpack`. See examples from the [study] module.
     1. use one of the three configuration files based on your script target: `prod.config.js`, `dev.config.js`,
         or `watch.config.js`
     1. make sure to pass the following environment variables as part of your webpack command:
@@ -42,19 +42,21 @@ This lib.xml can then be used in your JSP or other LabKey page. You can see an e
 
 To configure a LabKey module to participant in the React page build process:
 1. Add the following files to your module's main directory:
-    1. `package.json` - Defines your module's npm build scripts, see above, and npm package dependencies.
-        Note that after your first successful build of this module after adding this,
+    1. `package.json` - Defines your module's npm build scripts, see [study] module example, and npm package
+        dependencies. Note that after your first successful build of this module after adding this,
         a new `package-lock.json` file will be generated. You will want to add that file to your git repo
         and check it in as well. Note that in this file the `npm clean` command might need to be adjusted
         if your module already has files in the `resources/views` directory.
     1. `.npmrc` - Defines the Artifactory registry path for the `@labkey` scope, if you
         plan to use any of the Labkey npm packages for your page.
+        See example in study module's [.npmrc] file.
     1. `tsconfig.json` - Typescript configuration file. This will ensure that your module's `node_modules`
         and `resources` directories are excluded during the client-side build process.
+        See example in study module's [tsconfig.json] file.
     1. `README.md` - Add your own README file for your module and have it point back to this page
-        for the steps in the "Adding a new entryPoint" section of this document.
+        for the steps in the [Adding a new entryPoint](#adding-a-new-entrypoint) section of this document.
 1. Create the `<module>/src/client` directories and add a file named `entryPoints.js`, more on this in
-    the "Adding a new entryPoint" section of this doc.
+    the [Adding a new entryPoint](#adding-a-new-entrypoint) section of this doc.
     <!---
     1. Update your module's `build.gradle` file to add a line so that it's `npmInstall` command is dependent
         on the `npmInstall` command finishing at the platform repository level. See example at
@@ -147,5 +149,7 @@ build before publishing a new `@labkey/build` version, you can do one of the fol
 [assay]: https://github.com/LabKey/platform/tree/develop/assay
 [experiment]: https://github.com/LabKey/platform/tree/develop/experiment
 [list]: https://github.com/LabKey/platform/tree/develop/list
-[demo]: https://github.com/LabKey/tutorialModules/blob/develop/demo/package.json
+[study]: https://github.com/LabKey/platform/blob/develop/study/package.json
 [entryPoints.js]: https://github.com/LabKey/platform/blob/develop/experiment/src/client/entryPoints.js
+[.npmrc]: https://github.com/LabKey/platform/blob/develop/study/.npmrc
+[tsconfig.json]: https://github.com/LabKey/platform/blob/develop/study/tsconfig.json

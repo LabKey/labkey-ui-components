@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 41621: Grid column fieldKey with special character wasn't being decoded when getting data for table cell
+
 ### version 0.103.0
 *Released*: 23 Oct 2020
 * Add `RequiresPermission` (formerly known in apps as `RequiresPermissionHOC`).
@@ -44,10 +48,6 @@ global query metadata override
     * add "Metric Unit" property to Sample Manager
     * add validateProperties prop to allow caller to validate sample domain properties before save
 * Allow custom caption and placeholder text for fields in FieldEditorOverlay
-
-### version TBD
-*Released*: TBD
-* Issue 41621: Grid column fieldKey with special character wasn't being decoded when getting data for table cell
 
 ### version 0.100.1
 *Released*: 21 Oct 2020

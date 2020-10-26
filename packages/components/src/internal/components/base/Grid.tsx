@@ -16,7 +16,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
-import { QueryKey } from "@labkey/api";
 
 interface ColumnProps {
     align?: string;
@@ -110,7 +109,7 @@ function processColumns(columns: List<any>): List<GridColumn> {
                 align: c.align,
                 cell: c.cell,
                 format: c.jsonType === 'float' || c.jsonType === 'int' ? c.format : undefined,
-                index: c.index || QueryKey.decodePart(c.fieldKey),
+                index: c.index || c.fieldKeyArray.join('/'),
                 raw: c,
                 tableCell: c.tableCell,
                 title: c.title || c.caption,

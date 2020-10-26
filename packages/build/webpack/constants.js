@@ -11,11 +11,11 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // This path assumes the enlistment in labkey-ui-components is a sibling of the root of the LabKey enlistment.
 const labkeyUIComponentsRelPath = (lkModuleContainer ? "../../../../../" : "../../../../") + "labkey-ui-components/packages/components";
-const labkeyUIComponentsPath = !process.env.LINK ? path.resolve("./node_modules/@labkey/components") : path.resolve(labkeyUIComponentsRelPath);
+const labkeyUIComponentsPath = process.env.LINK ? path.resolve(labkeyUIComponentsRelPath) : path.resolve("./node_modules/@labkey/components");
 console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
 
 const freezerManagerRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "inventory/packages/freezermanager";
-const freezerManagerPath = !process.env.LINK ? path.resolve("./node_modules/@labkey/freezermanager") : path.resolve(__dirname, freezerManagerRelPath);
+const freezerManagerPath = process.env.LINK ? path.resolve(__dirname, freezerManagerRelPath) : path.resolve("./node_modules/@labkey/freezermanager");
 console.log("Using @labkey/freezermanager path: " + freezerManagerPath);
 
 const watchPort = process.env.WATCH_PORT || 3001;

@@ -1,0 +1,14 @@
+{
+  "name": "@labkey/build",
+  "version": "0.1.0",
+  "description": "LabKey client-side build assets",
+  "files": [
+    "webpack/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LabKey/labkey-ui-components.git"
+  },
+  "author": "LabKey",
+  "license": "Apache-2.0"
+}

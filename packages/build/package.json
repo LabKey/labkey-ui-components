@@ -10,5 +10,5 @@
     "url": "git+https://github.com/LabKey/labkey-ui-components.git"
   },
   "author": "LabKey",
-  "license": "SEE LICENSE IN LICENSE.txt"
+  "license": "Apache-2.0"
 }

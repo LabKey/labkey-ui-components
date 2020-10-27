@@ -30,30 +30,8 @@
   margin-bottom: 20px;
 };
 
-.domain-toolbar-export-btn {
-    color: $brand-primary;
-};
-
 .domain-toolbar-export-btn-icon {
     color: $brand-primary;
-}
-
-.domain-toolbar-export-btn:hover .domain-toolbar-export-btn-icon {
-    color: white;
-}
-
-.domain-toolbar-export-btn:hover .domain-toolbar-export-span {
-    background-color: $brand-primary;
-    color: white;
-}
-
-.domain-toolbar-add-btn:hover .container--addition-icon {
-    color: white;
-}
-
-.domain-toolbar-add-btn:hover .domain-toolbar-add-span{
-    background-color: $brand-success;
-    color: white;
 }
 
 .domain-search-text {
@@ -129,7 +107,7 @@
 
 .domain-field-toolbar {
     background-color: $gray-lighter;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #f5f5f5;
     border-top: none;
     padding: 7px 0 7px;
     margin-bottom: 15px;

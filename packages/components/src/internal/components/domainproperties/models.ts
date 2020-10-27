@@ -215,6 +215,10 @@ export class DomainDesign
         return invalid;
     }
 
+    hasDefaultValueOption(value: string): boolean {
+        return this.defaultValueOptions.some(option => option === value);
+    }
+
     hasInvalidNameField(defaultNameFieldConfig?: Partial<IDomainField>): boolean {
         if (this.fields && this.fields.size > 0 && defaultNameFieldConfig && defaultNameFieldConfig.name) {
             const nameField = this.fields.find(field => {

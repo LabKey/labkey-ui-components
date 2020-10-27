@@ -31,7 +31,8 @@ import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { blurActiveElement } from '../../util/utils';
 
 import {
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     PHILEVEL_NOT_PHI,
@@ -47,7 +48,8 @@ import {
     getDomainPanelHeaderId,
     getIndexFromId,
     getMaxPhiLevel,
-    handleDomainUpdates, mergeDomainFields,
+    handleDomainUpdates,
+    mergeDomainFields,
     removeField,
     setDomainFields,
     updateDomainPanelClassList,
@@ -371,7 +373,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         // This looks hacky, but it's actually the recommended way to download a file using raw JS
         let downloadLink = document.createElement('a');
         downloadLink.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(fieldsJson);
-        downloadLink.download = domain.name ? domain.name + 'Fields' : 'fields';
+        downloadLink.download = 'Fields';
         downloadLink.style.display = 'none';
 
         document.body.appendChild(downloadLink);
@@ -693,11 +695,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 const domainType = domain.domainType;
                 const jsFields = JSON.parse(text);
                 if (jsFields.length < 1) return {success: false, msg: 'No fields found.'};
-                
-                if (domainType !== 'list') {
-                    const containsPK = jsFields.some(field => field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED);
-                    if (containsPK) {
-                        return {success: false, msg: `Import incompatible with domain type '${domainType}': Primary Key is defined.`};
+
+                for (let i=0; i < jsFields.length; i++){
+                    let field = jsFields[i];
+
+                    if (field.defaultValueType && !domain.hasDefaultValueOption(field.defaultValueType)) {
+                        return {success: false, msg: `Error on importing field '${field.name}': Default value '${field.defaultValueType}' is invalid.`};
+                    }
+
+                    if (domainType !== 'list' && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
+                        return {success: false, msg: `Error on importing field '${field.name}': Domain type '${domainType}' does not support fields with an externally defined Primary Key.`};
                     }
                 }
 
@@ -809,14 +816,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         entity="Field"
                         containerClass="container--toolbar-button"
                         buttonClass="domain-toolbar-add-btn"
-                        spanClass="domain-toolbar-add-span"
                         onClick={this.onAddField}
                     />
                     {allowImportExport &&
                         <ActionButton
                             containerClass="container--toolbar-button"
                             buttonClass="domain-toolbar-export-btn"
-                            spanClass="domain-toolbar-export-span"
                             onClick={this.onExportFields}
                             disabled={disableExport}
                         >

@@ -1,5 +1,10 @@
 # @labkey/build
 
+### 0.2.0
+*Released*: 27 October 2020
+* Use a LABKEY_UI_COMPONENTS_HOME environment variable from the user's setup to define the
+    path for the webpack aliasing of @labkey packages when using "npm run start-link"
+
 ### version 0.1.0
 *Released*: 26 October 2020
 * Initial package contents with webpack config assets ported over from platform/webpack (with additions to fit scenarios from other modules)

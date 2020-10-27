@@ -1,4 +1,7 @@
 # @labkey/build
+### version TBD
+*Released*: TBD
+* Generate files into views/gen instead of views for better cleaning and caching possibilities
 
 ### version 0.1.0
 *Released*: 26 October 2020

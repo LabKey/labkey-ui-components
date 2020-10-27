@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 7984: DomainForm component support for export/import field definitions from .json file
 
+### version 0.103.1
+*Released*: 26 Oct 2020
+* Issue 41621: Grid column fieldKey with special character wasn't being decoded when getting data for table cell
+
 ### version 0.103.0
 *Released*: 23 Oct 2020
 * Add `RequiresPermission` (formerly known in apps as `RequiresPermissionHOC`).

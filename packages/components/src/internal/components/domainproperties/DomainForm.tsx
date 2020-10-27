@@ -707,7 +707,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         let field = jsFields[i];
 
                         if (field.defaultValueType && !domain.hasDefaultValueOption(field.defaultValueType)) {
-                            resolve({success: false, msg: `Error on importing field '${field.name}': Default value '${field.defaultValueType}' is invalid.`});
+                            resolve({success: false, msg: `Error on importing field '${field.name}': Default value type '${field.defaultValueType}' is invalid.`});
                         }
 
                         if (domainType !== 'list' && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {

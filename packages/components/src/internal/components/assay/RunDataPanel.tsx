@@ -35,8 +35,8 @@ import {
     IMPORT_DATA_FORM_TYPES,
 } from '../../..';
 
-import { AssayUploadTabs, InferDomainResponse, QueryGridModel } from '../base/models/model';
-import { getServerFilePreview } from '../base/actions';
+import { AssayUploadTabs, QueryGridModel } from '../base/models/model';
+import { getServerFilePreview, InferDomainResponse } from '../../InferDomainResponse';
 
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 

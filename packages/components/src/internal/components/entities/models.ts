@@ -19,8 +19,17 @@ import { Option } from 'react-select';
 
 import { getEditorModel } from '../../global';
 import { gridShowError } from '../../actions';
-import { insertRows, QueryColumn, QueryGridModel, QueryInfo, SCHEMAS, SchemaQuery } from '../../..';
-import { capitalizeFirstChar, decodePart, encodePart, generateId } from '../../util/utils';
+import {
+    capitalizeFirstChar,
+    generateId,
+    insertRows,
+    QueryColumn,
+    QueryGridModel,
+    QueryInfo,
+    SCHEMAS,
+    SchemaQuery,
+} from '../../..';
+import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
 
 export interface EntityInputProps {

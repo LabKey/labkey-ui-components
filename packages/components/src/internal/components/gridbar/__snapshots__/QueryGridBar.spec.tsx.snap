@@ -779,6 +779,929 @@ exports[`<QueryGridBar/> isPaged 1`] = `
 </div>
 `;
 
+exports[`<QueryGridBar/> isPaged 2`] = `
+<div
+  className="query-grid-bar"
+>
+  <div
+    className="row QueryGrid-bottom-spacing"
+  >
+    <div
+      className="col-xs-12"
+    >
+      <span
+        className="paging pull-right text-nowrap"
+      >
+        <span
+          className="gridbar-button-spacer"
+        >
+          <div
+            className="dropdown btn-group"
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-default"
+              disabled={false}
+              id="export-drop-querygridbarwithoutchartsviews|assay$pgeneral$pamino acids/data"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              role="button"
+              type="button"
+            >
+              <span
+                className="fa fa-download"
+              />
+            </button>
+            <ul
+              aria-labelledby="export-drop-querygridbarwithoutchartsviews|assay$pgeneral$pamino acids/data"
+              className="dropdown-menu dropdown-menu-right"
+              role="menu"
+            >
+              <li
+                className="dropdown-header"
+                onKeyDown={[Function]}
+                role="heading"
+              >
+                Export 
+                
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="fa fa-file-o"
+                  />
+                    CSV
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="fa fa-file-excel-o"
+                  />
+                    Excel
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="fa fa-file-text-o"
+                  />
+                    TSV
+                </a>
+              </li>
+            </ul>
+          </div>
+        </span>
+      </span>
+    </div>
+  </div>
+  <div
+    className="row QueryGrid-bottom-spacing"
+  >
+    <div
+      className="col-md-12 col-xs-12"
+    >
+      <div
+        className="OmniBox OmniBox--multi"
+      >
+        <div
+          className="OmniBox-control"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          <span
+            className="OmniBox-multi-value-wrapper"
+          >
+            <div
+              className="OmniBox-placeholder"
+            >
+              Select...
+            </div>
+            <div
+              className="OmniBox-input"
+              style={
+                Object {
+                  "display": "inline-block",
+                }
+              }
+            >
+              <input
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                style={
+                  Object {
+                    "boxSizing": "content-box",
+                    "width": "5pxpx",
+                  }
+                }
+                value=""
+              />
+              <div
+                style={
+                  Object {
+                    "height": 0,
+                    "left": 0,
+                    "overflow": "scroll",
+                    "position": "absolute",
+                    "top": 0,
+                    "visibility": "hidden",
+                    "whiteSpace": "pre",
+                  }
+                }
+              >
+                
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-12 col-xs-12"
+    >
+      <div
+        className="QueryGrid-bottom-spacing"
+      >
+        <span
+          className="QueryGrid-right-spacing"
+        >
+           
+          <button
+            className="btn btn-xs btn-default"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Select all 
+            34
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<QueryGridBar/> isPaged 3`] = `
+<div
+  className="query-grid-bar"
+>
+  <div
+    className="row QueryGrid-bottom-spacing"
+  >
+    <div
+      className="col-xs-12"
+    >
+      <span>
+        <div
+          className="dropdown disabled btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="dropdown-toggle btn btn-default"
+            disabled={true}
+            id="chartselector-2"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+            <span
+              className="fa fa-spinner fa-pulse"
+            />
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="chartselector-2"
+            className="dropdown-menu"
+            role="menu"
+          />
+        </div>
+      </span>
+      <span
+        className="paging pull-right text-nowrap"
+      >
+        <span
+          className="gridbar-button-spacer"
+        >
+          <div
+            className="dropdown btn-group"
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-default"
+              disabled={false}
+              id="export-drop-querygridbarwithoutomnibox|assay$pgeneral$pamino acids/data"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              role="button"
+              type="button"
+            >
+              <span
+                className="fa fa-download"
+              />
+            </button>
+            <ul
+              aria-labelledby="export-drop-querygridbarwithoutomnibox|assay$pgeneral$pamino acids/data"
+              className="dropdown-menu dropdown-menu-right"
+              role="menu"
+            >
+              <li
+                className="dropdown-header"
+                onKeyDown={[Function]}
+                role="heading"
+              >
+                Export 
+                
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="fa fa-file-o"
+                  />
+                    CSV
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="fa fa-file-excel-o"
+                  />
+                    Excel
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="fa fa-file-text-o"
+                  />
+                    TSV
+                </a>
+              </li>
+            </ul>
+          </div>
+        </span>
+        <span
+          className="gridbar-button-spacer"
+        >
+          <div
+            className="dropdown disabled btn-group"
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-default"
+              disabled={true}
+              id="viewselector-3"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+              type="button"
+            >
+              Grid Views
+               
+              <span
+                className="caret"
+              />
+            </button>
+            <ul
+              aria-labelledby="viewselector-3"
+              className="dropdown-menu dropdown-menu-right"
+              role="menu"
+            >
+              <li
+                className="active"
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  Default
+                </a>
+              </li>
+            </ul>
+          </div>
+        </span>
+      </span>
+    </div>
+  </div>
+  <div
+    className="row QueryGrid-bottom-spacing"
+  >
+    <div
+      className="col-md-12 col-xs-12"
+    />
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-12 col-xs-12"
+    >
+      <div
+        className="QueryGrid-bottom-spacing"
+      >
+        <span
+          className="QueryGrid-right-spacing"
+        >
+           
+          <button
+            className="btn btn-xs btn-default"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Select all 
+            34
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<QueryGridBar/> isPaged 4`] = `
+<div
+  className="query-grid-bar"
+>
+  <div
+    className="row QueryGrid-bottom-spacing"
+  >
+    <div
+      className="col-xs-12"
+    >
+      <span>
+        <div
+          className="dropdown disabled btn-group"
+        >
+          <button
+            aria-expanded={false}
+            aria-haspopup={true}
+            className="dropdown-toggle btn btn-default"
+            disabled={true}
+            id="chartselector-4"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            role="button"
+            type="button"
+          >
+            <span
+              className="fa fa-spinner fa-pulse"
+            />
+             
+            <span
+              className="caret"
+            />
+          </button>
+          <ul
+            aria-labelledby="chartselector-4"
+            className="dropdown-menu"
+            role="menu"
+          />
+        </div>
+      </span>
+      <span
+        className="paging pull-right text-nowrap"
+      >
+        <span
+          className="paging-counts-with-buttons"
+          data-max={20}
+          data-min={1}
+          data-total={34}
+        >
+          <span>
+            1
+             - 
+            20
+          </span>
+           
+          of 
+          34
+        </span>
+        <div
+          className="btn-group"
+        >
+          <button
+            className="pagination-button disabled-button-with-tooltip btn btn-default"
+            disabled={true}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="button"
+          >
+            <i
+              className="fa fa-chevron-left"
+            />
+          </button>
+          <div
+            className="dropdown btn-group"
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-default"
+              disabled={false}
+              id="current-page-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              role="button"
+              type="button"
+            >
+              1
+               
+              <span
+                className="caret"
+              />
+            </button>
+            <ul
+              aria-labelledby="current-page-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              className="dropdown-menu dropdown-menu-right"
+              role="menu"
+            >
+              <li
+                className="dropdown-header"
+                onKeyDown={[Function]}
+                role="heading"
+              >
+                Jump To
+              </li>
+              <li
+                className="disabled"
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  First Page
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  Last Page
+                </a>
+              </li>
+              <li
+                className="dropdown-header"
+                onKeyDown={[Function]}
+                role="heading"
+              >
+                2
+                 Total Pages
+              </li>
+            </ul>
+          </div>
+          <button
+            className="pagination-button btn btn-default"
+            disabled={false}
+            onBlur={[Function]}
+            onClick={[Function]}
+            onFocus={[Function]}
+            onMouseOut={[Function]}
+            onMouseOver={[Function]}
+            type="button"
+          >
+            <i
+              className="fa fa-chevron-right"
+            />
+          </button>
+        </div>
+        <span
+          className="gridbar-button-spacer"
+        >
+          <div
+            className="dropdown btn-group"
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-default"
+              disabled={false}
+              id="page-size-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              role="button"
+              type="button"
+            >
+              20
+               
+              <span
+                className="caret"
+              />
+            </button>
+            <ul
+              aria-labelledby="page-size-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              className="dropdown-menu dropdown-menu-right"
+              role="menu"
+            >
+              <li
+                className="dropdown-header"
+                onKeyDown={[Function]}
+                role="heading"
+              >
+                Page Size
+              </li>
+              <li
+                className="active"
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  20
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  40
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  100
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  250
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  400
+                </a>
+              </li>
+            </ul>
+          </div>
+        </span>
+        <span
+          className="gridbar-button-spacer"
+        >
+          <div
+            className="dropdown btn-group"
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-default"
+              disabled={false}
+              id="export-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              onBlur={[Function]}
+              onClick={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onMouseOut={[Function]}
+              onMouseOver={[Function]}
+              role="button"
+              type="button"
+            >
+              <span
+                className="fa fa-download"
+              />
+            </button>
+            <ul
+              aria-labelledby="export-drop-querygridbarispaged|assay$pgeneral$pamino acids/data"
+              className="dropdown-menu dropdown-menu-right"
+              role="menu"
+            >
+              <li
+                className="dropdown-header"
+                onKeyDown={[Function]}
+                role="heading"
+              >
+                Export 
+                
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="fa fa-file-o"
+                  />
+                    CSV
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="fa fa-file-excel-o"
+                  />
+                    Excel
+                </a>
+              </li>
+              <li
+                className=""
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  <span
+                    className="fa fa-file-text-o"
+                  />
+                    TSV
+                </a>
+              </li>
+            </ul>
+          </div>
+        </span>
+        <span
+          className="gridbar-button-spacer"
+        >
+          <div
+            className="dropdown disabled btn-group"
+          >
+            <button
+              aria-expanded={false}
+              aria-haspopup={true}
+              className="dropdown-toggle btn btn-default"
+              disabled={true}
+              id="viewselector-5"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              role="button"
+              type="button"
+            >
+              Grid Views
+               
+              <span
+                className="caret"
+              />
+            </button>
+            <ul
+              aria-labelledby="viewselector-5"
+              className="dropdown-menu dropdown-menu-right"
+              role="menu"
+            >
+              <li
+                className="active"
+                role="presentation"
+              >
+                <a
+                  href="#"
+                  onClick={[Function]}
+                  onKeyDown={[Function]}
+                  role="menuitem"
+                  tabIndex="-1"
+                >
+                  Default
+                </a>
+              </li>
+            </ul>
+          </div>
+        </span>
+      </span>
+    </div>
+  </div>
+  <div
+    className="row QueryGrid-bottom-spacing"
+  >
+    <div
+      className="col-md-12 col-xs-12"
+    >
+      <div
+        className="OmniBox OmniBox--multi"
+      >
+        <div
+          className="OmniBox-control"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+        >
+          <span
+            className="OmniBox-multi-value-wrapper"
+          >
+            <div
+              className="OmniBox-placeholder"
+            >
+              Select...
+            </div>
+            <div
+              className="OmniBox-input"
+              style={
+                Object {
+                  "display": "inline-block",
+                }
+              }
+            >
+              <input
+                onBlur={[Function]}
+                onChange={[Function]}
+                onFocus={[Function]}
+                style={
+                  Object {
+                    "boxSizing": "content-box",
+                    "width": "5pxpx",
+                  }
+                }
+                value=""
+              />
+              <div
+                style={
+                  Object {
+                    "height": 0,
+                    "left": 0,
+                    "overflow": "scroll",
+                    "position": "absolute",
+                    "top": 0,
+                    "visibility": "hidden",
+                    "whiteSpace": "pre",
+                  }
+                }
+              >
+                
+              </div>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col-md-12 col-xs-12"
+    >
+      <div
+        className="QueryGrid-bottom-spacing"
+      >
+        <span
+          className="QueryGrid-right-spacing"
+        >
+           
+          <button
+            className="btn btn-xs btn-default"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Select all 
+            34
+          </button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<QueryGridBar/> without charts and views 1`] = `
 <div
   className="query-grid-bar"

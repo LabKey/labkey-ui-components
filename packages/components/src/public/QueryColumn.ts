@@ -239,3 +239,13 @@ export class QueryColumn extends Record({
         return fieldKey;
     }
 }
+
+export function insertColumnFilter(col: QueryColumn): boolean {
+    return (
+        col &&
+        col.removeFromViews !== true &&
+        col.shownInInsertView === true &&
+        col.userEditable === true &&
+        col.fieldKeyArray.length === 1
+    );
+}

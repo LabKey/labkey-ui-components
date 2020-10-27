@@ -18,7 +18,7 @@ import { normalize, schema } from 'normalizr';
 import { AuditBehaviorTypes, Filter, Query, QueryDOM } from '@labkey/api';
 
 import { getQueryMetadata } from '../global';
-import { resolveKeyFromJson } from '../util/utils';
+import { resolveKeyFromJson } from '../../public/SchemaQuery';
 import {
     caseInsensitive,
     QueryColumn,

@@ -15,13 +15,15 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
-import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
-import { QueryColumn, QueryLookup } from './public/QueryColumn';
-import { SchemaDetails } from './internal/SchemaDetails';
-import { getSchemaQuery, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
-import { SCHEMAS } from './internal/schemas';
+import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
+import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
+import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
+import { inferDomainFromFile, InferDomainResponse } from './internal/InferDomainResponse';
+import { ViewInfo } from './internal/ViewInfo';
+import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
+import { SchemaDetails } from './internal/SchemaDetails';
+import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, User } from './internal/components/base/models/User';
@@ -34,18 +36,14 @@ import {
     withAppUser,
 } from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
+import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
     IGridLoader,
     IGridResponse,
-    InferDomainResponse,
-    insertColumnFilter,
-    LastActionStatus,
-    MessageLevel,
     QueryGridModel,
-    ViewInfo,
 } from './internal/components/base/models/model';
 import {
     applyDevTools,
@@ -58,11 +56,10 @@ import {
     isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
-    resolveKey,
     toggleDevTools,
     valueIsEmpty,
 } from './internal/util/utils';
-import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
+import { getUserProperties } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
 import { buildURL, hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';

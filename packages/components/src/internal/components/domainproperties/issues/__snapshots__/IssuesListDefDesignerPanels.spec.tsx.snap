@@ -500,16 +500,10 @@ Array [
     >
       <div
         className="panel-body"
+        id="domain-field-top-noBuffer"
       >
         <div
-          className="row"
-        >
-          <div
-            className="col-xs-12"
-          />
-        </div>
-        <div
-          className="row"
+          className="domain-field-toolbar row"
         >
           <div
             className="col-xs-4"
@@ -533,23 +527,6 @@ Array [
                 
               </div>
             </div>
-            <div
-              className="container--toolbar-button"
-            >
-              <div
-                className="domain-toolbar-export-btn"
-              >
-                <span
-                  className="container--action-button btn btn-default disabled"
-                >
-                  <i
-                    className="fa fa-download"
-                  />
-                   Export
-                </span>
-                
-              </div>
-            </div>
           </div>
           <div
             className="col-xs-8"
@@ -566,6 +543,13 @@ Array [
               />
             </div>
           </div>
+        </div>
+        <div
+          className="row"
+        >
+          <div
+            className="col-xs-12"
+          />
         </div>
         <div
           className="domain-form-no-field-panel panel panel-default"

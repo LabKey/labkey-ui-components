@@ -297,6 +297,7 @@ Array [
     >
       <div
         className="panel-body"
+        id={false}
       >
         <div
           className="row"
@@ -353,7 +354,7 @@ Array [
                       Select file or drag and drop here.
                     </label>
                     <input
-                      accept=".csv, .tsv, .txt, .xls, .xlsx"
+                      accept=".csv, .tsv, .txt, .xls, .xlsx, .json"
                       className="file-upload--input"
                       id="fileUpload"
                       multiple={false}
@@ -379,7 +380,7 @@ Array [
               <strong>
                 Supported formats include: 
               </strong>
-              .csv, .tsv, .txt, .xls, .xlsx
+              .csv, .tsv, .txt, .xls, .xlsx, .json
             </div>
           </div>
           <div
@@ -795,6 +796,7 @@ Array [
     >
       <div
         className="panel-body"
+        id={false}
       >
         <div
           className="row"
@@ -851,7 +853,7 @@ Array [
                       Select file or drag and drop here.
                     </label>
                     <input
-                      accept=".csv, .tsv, .txt, .xls, .xlsx"
+                      accept=".csv, .tsv, .txt, .xls, .xlsx, .json"
                       className="file-upload--input"
                       id="fileUpload"
                       multiple={false}
@@ -877,7 +879,7 @@ Array [
               <strong>
                 Supported formats include: 
               </strong>
-              .csv, .tsv, .txt, .xls, .xlsx
+              .csv, .tsv, .txt, .xls, .xlsx, .json
             </div>
           </div>
           <div
@@ -942,6 +944,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     Immutable.Record {
       "domainDesign": Immutable.Record {
         "name": "Test Name",
+        "domainType": undefined,
         "container": undefined,
         "description": undefined,
         "domainURI": undefined,
@@ -1085,6 +1088,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       Immutable.Record {
         "domainDesign": Immutable.Record {
           "name": "Test Name",
+          "domainType": undefined,
           "container": undefined,
           "description": undefined,
           "domainURI": undefined,
@@ -1203,6 +1207,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         Immutable.List [
           Immutable.Record {
             "name": "Test Name",
+            "domainType": undefined,
             "container": undefined,
             "description": undefined,
             "domainURI": undefined,
@@ -1330,6 +1335,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "domainId": undefined,
             "domain": Immutable.Record {
               "name": "Test Name",
+              "domainType": undefined,
               "container": undefined,
               "description": undefined,
               "domainURI": undefined,
@@ -1471,6 +1477,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "domainId": undefined,
               "domain": Immutable.Record {
                 "name": "Test Name",
+                "domainType": undefined,
                 "container": undefined,
                 "description": undefined,
                 "domainURI": undefined,
@@ -1620,6 +1627,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "domainId": undefined,
                 "domain": Immutable.Record {
                   "name": "Test Name",
+                  "domainType": undefined,
                   "container": undefined,
                   "description": undefined,
                   "domainURI": undefined,
@@ -1961,6 +1969,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       "domainId": undefined,
                                       "domain": Immutable.Record {
                                         "name": "Test Name",
+                                        "domainType": undefined,
                                         "container": undefined,
                                         "description": undefined,
                                         "domainURI": undefined,
@@ -2811,11 +2820,13 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         </SampleTypePropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
+        allowImportExport={true}
         appPropertiesOnly={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
             "name": "Test Name",
+            "domainType": undefined,
             "container": undefined,
             "description": undefined,
             "domainURI": undefined,
@@ -2929,11 +2940,13 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
+            allowImportExport={true}
             appPropertiesOnly={true}
             controlledCollapse={true}
             domain={
               Immutable.Record {
                 "name": "Test Name",
+                "domainType": undefined,
                 "container": undefined,
                 "description": undefined,
                 "domainURI": undefined,
@@ -3305,6 +3318,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     <PanelBody
                       bsClass="panel"
                       collapsible={true}
+                      id="domain-field-top-noBuffer"
                     >
                       <PanelCollapse
                         bsClass="panel"
@@ -3340,32 +3354,15 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                             >
                               <div
                                 className="panel-body"
+                                id="domain-field-top-noBuffer"
                               >
                                 <Row
                                   bsClass="row"
-                                  className=""
+                                  className="domain-field-toolbar"
                                   componentClass="div"
                                 >
                                   <div
-                                    className="row"
-                                  >
-                                    <Col
-                                      bsClass="col"
-                                      componentClass="div"
-                                      xs={12}
-                                    >
-                                      <div
-                                        className="col-xs-12"
-                                      />
-                                    </Col>
-                                  </div>
-                                </Row>
-                                <Row
-                                  bsClass="row"
-                                  componentClass="div"
-                                >
-                                  <div
-                                    className="row"
+                                    className="domain-field-toolbar row"
                                   >
                                     <Col
                                       bsClass="col"
@@ -3411,7 +3408,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         <ActionButton
                                           buttonClass="domain-toolbar-export-btn"
                                           containerClass="container--toolbar-button"
-                                          disabled={true}
+                                          disabled={false}
                                           helperTitle="More Info"
                                           onClick={[Function]}
                                         >
@@ -3422,10 +3419,11 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                               className="domain-toolbar-export-btn"
                                             >
                                               <span
-                                                className="container--action-button btn btn-default disabled"
+                                                className="container--action-button btn btn-default"
+                                                onClick={[Function]}
                                               >
                                                 <i
-                                                  className="fa fa-download"
+                                                  className="fa fa-download domain-toolbar-export-btn-icon"
                                                 />
                                                  Export
                                               </span>
@@ -3464,6 +3462,25 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                           </FormControl>
                                         </div>
                                       </div>
+                                    </Col>
+                                  </div>
+                                </Row>
+                                <Row
+                                  bsClass="row"
+                                  className=""
+                                  componentClass="div"
+                                >
+                                  <div
+                                    className="row"
+                                  >
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      xs={12}
+                                    >
+                                      <div
+                                        className="col-xs-12"
+                                      />
                                     </Col>
                                   </div>
                                 </Row>

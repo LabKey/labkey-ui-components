@@ -297,6 +297,7 @@ Array [
     >
       <div
         className="panel-body"
+        id={false}
       >
         <div
           className="row"
@@ -353,7 +354,7 @@ Array [
                       Select file or drag and drop here.
                     </label>
                     <input
-                      accept=".csv, .tsv, .txt, .xls, .xlsx"
+                      accept=".csv, .tsv, .txt, .xls, .xlsx, .json"
                       className="file-upload--input"
                       id="fileUpload"
                       multiple={false}
@@ -379,7 +380,7 @@ Array [
               <strong>
                 Supported formats include: 
               </strong>
-              .csv, .tsv, .txt, .xls, .xlsx
+              .csv, .tsv, .txt, .xls, .xlsx, .json
             </div>
           </div>
           <div
@@ -904,6 +905,7 @@ Array [
     >
       <div
         className="panel-body"
+        id={false}
       >
         <div
           className="row"
@@ -960,7 +962,7 @@ Array [
                       Select file or drag and drop here.
                     </label>
                     <input
-                      accept=".csv, .tsv, .txt, .xls, .xlsx"
+                      accept=".csv, .tsv, .txt, .xls, .xlsx, .json"
                       className="file-upload--input"
                       id="fileUpload"
                       multiple={false}
@@ -986,7 +988,7 @@ Array [
               <strong>
                 Supported formats include: 
               </strong>
-              .csv, .tsv, .txt, .xls, .xlsx
+              .csv, .tsv, .txt, .xls, .xlsx, .json
             </div>
           </div>
           <div
@@ -1053,6 +1055,7 @@ exports[`DataClassDesigner initModel 1`] = `
       "description": "with a description",
       "domain": Immutable.Record {
         "name": "test1",
+        "domainType": undefined,
         "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
         "description": null,
         "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1344,6 +1347,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "description": "with a description",
         "domain": Immutable.Record {
           "name": "test1",
+          "domainType": undefined,
           "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
           "description": null,
           "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1638,6 +1642,7 @@ exports[`DataClassDesigner initModel 1`] = `
         Immutable.List [
           Immutable.Record {
             "name": "test1",
+            "domainType": undefined,
             "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
             "description": null,
             "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1927,6 +1932,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "description": "with a description",
             "domain": Immutable.Record {
               "name": "test1",
+              "domainType": undefined,
               "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
               "description": null,
               "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2224,6 +2230,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "description": "with a description",
               "domain": Immutable.Record {
                 "name": "test1",
+                "domainType": undefined,
                 "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
                 "description": null,
                 "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2525,6 +2532,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "description": "with a description",
                 "domain": Immutable.Record {
                   "name": "test1",
+                  "domainType": undefined,
                   "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
                   "description": null,
                   "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -4160,10 +4168,12 @@ exports[`DataClassDesigner initModel 1`] = `
         </DataClassPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
+        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
             "name": "test1",
+            "domainType": undefined,
             "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
             "description": null,
             "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -4448,11 +4458,13 @@ exports[`DataClassDesigner initModel 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
+            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
               Immutable.Record {
                 "name": "test1",
+                "domainType": undefined,
                 "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
                 "description": null,
                 "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -4915,6 +4927,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     <PanelBody
                       bsClass="panel"
                       collapsible={true}
+                      id="domain-field-top-noBuffer"
                     >
                       <PanelCollapse
                         bsClass="panel"
@@ -4950,32 +4963,15 @@ exports[`DataClassDesigner initModel 1`] = `
                             >
                               <div
                                 className="panel-body"
+                                id="domain-field-top-noBuffer"
                               >
                                 <Row
                                   bsClass="row"
-                                  className=""
+                                  className="domain-field-toolbar"
                                   componentClass="div"
                                 >
                                   <div
-                                    className="row"
-                                  >
-                                    <Col
-                                      bsClass="col"
-                                      componentClass="div"
-                                      xs={12}
-                                    >
-                                      <div
-                                        className="col-xs-12"
-                                      />
-                                    </Col>
-                                  </div>
-                                </Row>
-                                <Row
-                                  bsClass="row"
-                                  componentClass="div"
-                                >
-                                  <div
-                                    className="row"
+                                    className="domain-field-toolbar row"
                                   >
                                     <Col
                                       bsClass="col"
@@ -5021,7 +5017,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                         <ActionButton
                                           buttonClass="domain-toolbar-export-btn"
                                           containerClass="container--toolbar-button"
-                                          disabled={true}
+                                          disabled={false}
                                           helperTitle="More Info"
                                           onClick={[Function]}
                                         >
@@ -5032,10 +5028,11 @@ exports[`DataClassDesigner initModel 1`] = `
                                               className="domain-toolbar-export-btn"
                                             >
                                               <span
-                                                className="container--action-button btn btn-default disabled"
+                                                className="container--action-button btn btn-default"
+                                                onClick={[Function]}
                                               >
                                                 <i
-                                                  className="fa fa-download"
+                                                  className="fa fa-download domain-toolbar-export-btn-icon"
                                                 />
                                                  Export
                                               </span>
@@ -5074,6 +5071,25 @@ exports[`DataClassDesigner initModel 1`] = `
                                           </FormControl>
                                         </div>
                                       </div>
+                                    </Col>
+                                  </div>
+                                </Row>
+                                <Row
+                                  bsClass="row"
+                                  className=""
+                                  componentClass="div"
+                                >
+                                  <div
+                                    className="row"
+                                  >
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      xs={12}
+                                    >
+                                      <div
+                                        className="col-xs-12"
+                                      />
                                     </Col>
                                   </div>
                                 </Row>

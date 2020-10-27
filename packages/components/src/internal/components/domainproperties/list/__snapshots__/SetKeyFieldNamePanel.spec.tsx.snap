@@ -2,7 +2,7 @@
 
 exports[`SetKeyFieldNamePanel existing list, given properties 1`] = `
 <div
-  className="alert alert-info"
+  className="list__set-key-alert alert alert-info"
   role="alert"
 >
   <div>
@@ -104,7 +104,7 @@ exports[`SetKeyFieldNamePanel existing list, given properties 1`] = `
 
 exports[`SetKeyFieldNamePanel list with auto integer key 1`] = `
 <div
-  className="alert alert-info"
+  className="list__set-key-alert alert alert-info"
   role="alert"
 >
   <div>
@@ -206,7 +206,7 @@ exports[`SetKeyFieldNamePanel list with auto integer key 1`] = `
 
 exports[`SetKeyFieldNamePanel new list, default properties 1`] = `
 <div
-  className="alert alert-info"
+  className="list__set-key-alert alert alert-info"
   role="alert"
 >
   <div>

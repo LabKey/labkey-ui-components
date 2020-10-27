@@ -318,6 +318,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         if (importFieldsFromJson) {
             importFieldsFromJson(file)
                 .then(res => { if (!res.success) this.updateErrors(res.msg);})
+                .catch(res => this.updateErrors(res.msg));
         } else {
             this.uploadDataFileForPreview(file);
         }

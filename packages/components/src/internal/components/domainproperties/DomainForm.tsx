@@ -689,35 +689,50 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     importFieldsFromJson = (file: File): Promise<SimpleResponse> => {
         const { domain, onChange } = this.props;
+        const domainType = domain.domainType;
 
-        return file.text()
-            .then(text => {
-                const domainType = domain.domainType;
-                const jsFields = JSON.parse(text);
-                if (jsFields.length < 1) return {success: false, msg: 'No fields found.'};
+        return new Promise((resolve, reject) => {
+            let content = '';
+            const reader = new FileReader();
 
-                for (let i=0; i < jsFields.length; i++){
-                    let field = jsFields[i];
+            // Waits until file is loaded
+            reader.onloadend = function(e: any) {
+                // Catches malformed JSON
+                try {
+                    content = e.target.result;
+                    const jsFields = JSON.parse(content as string);
+                    if (jsFields.length < 1) resolve({success: false, msg: 'No fields found.'});
 
-                    if (field.defaultValueType && !domain.hasDefaultValueOption(field.defaultValueType)) {
-                        return {success: false, msg: `Error on importing field '${field.name}': Default value '${field.defaultValueType}' is invalid.`};
+                    for (let i=0; i < jsFields.length; i++){
+                        let field = jsFields[i];
+
+                        if (field.defaultValueType && !domain.hasDefaultValueOption(field.defaultValueType)) {
+                            resolve({success: false, msg: `Error on importing field '${field.name}': Default value '${field.defaultValueType}' is invalid.`});
+                        }
+
+                        if (domainType !== 'list' && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
+                            resolve({success: false, msg: `Error on importing field '${field.name}': Domain type '${domainType}' does not support fields with an externally defined Primary Key.`});
+                        }
                     }
 
-                    if (domainType !== 'list' && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
-                        return {success: false, msg: `Error on importing field '${field.name}': Domain type '${domainType}' does not support fields with an externally defined Primary Key.`};
+                    // Convert to TS and merge entire List
+                    const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
+                    if (onChange) {
+                        onChange(mergeDomainFields(domain, tsFields), true);
                     }
+                    resolve({success: true});
+                } catch (e) {
+                    reject({success: false, msg: e.toString()});
                 }
+            };
 
-                // Convert to TS and merge entire List
-                const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
-                if (onChange) {
-                    onChange(mergeDomainFields(domain, tsFields), true);
-                }
-                return {success: true};
-            })
-            .catch(error => {
-                return {success: false, msg: error.toString()};
-            });
+            reader.onerror = function(error: any) {
+                console.log(error);
+                reject({success: false, msg: error.toString()});
+            };
+
+            reader.readAsText(file);
+        });
     }
 
     renderEmptyDomain() {

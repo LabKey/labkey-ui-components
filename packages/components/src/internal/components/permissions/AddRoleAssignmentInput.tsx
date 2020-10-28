@@ -5,7 +5,7 @@
 import React from 'react';
 import { List } from 'immutable';
 
-import { SelectInput } from '../forms/input/SelectInput';
+import { SelectInput } from '../../..';
 
 import { Principal, SecurityRole } from './models';
 

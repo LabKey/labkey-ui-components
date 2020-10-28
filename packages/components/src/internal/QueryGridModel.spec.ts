@@ -1,5 +1,6 @@
-import { QueryGridModel } from './QueryGridModel';
 import { fromJS, List } from 'immutable';
+
+import { QueryGridModel } from './QueryGridModel';
 
 describe('QueryGridModel', () => {
     test('createParam no prefix', () => {

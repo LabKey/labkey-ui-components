@@ -16,10 +16,9 @@
 import { List, Map, Set, Iterable } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { hasParameter, toggleParameter } from '../url/ActionURL';
+import { hasParameter, toggleParameter } from '../..';
 
 const emptyList = List<string>();
-
 
 // Case insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -446,12 +445,10 @@ function isFloat(value: number | string): boolean {
 }
 
 function isInteger(value: number | string): boolean {
-    return !isNaN(Number(value)) &&
-        parseInt(value + '') == value &&
-        !isNaN(parseInt(value + '', 10));
+    return !isNaN(Number(value)) && parseInt(value + '') == value && !isNaN(parseInt(value + '', 10));
 }
 
-export function isIntegerInRange(value: number, min: number, max?: number) : boolean {
+export function isIntegerInRange(value: number, min: number, max?: number): boolean {
     return isInteger(value) && (!min || Number(value) >= min) && (!max || Number(value) <= max);
 }
 

@@ -7,9 +7,7 @@ import { Button, Col, Panel, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { getServerContext, Security } from '@labkey/api';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
-
-import { Alert } from '../base/Alert';
+import { LoadingSpinner, Alert } from '../../..';
 
 import { UserDetailsPanel } from '../user/UserDetailsPanel';
 

@@ -18,9 +18,7 @@ import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 import moment from 'moment';
 
-import { User } from '../../..';
-
-import { getDateFormat } from '../../util/Date';
+import { User, getDateFormat } from '../../..';
 
 import { NotificationItemModel, NotificationItemProps, Persistence } from './model';
 import { createNotification, setTrialBannerDismissSessionKey } from './actions';

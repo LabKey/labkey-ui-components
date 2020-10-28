@@ -45,8 +45,7 @@ export class Export extends React.Component<Props, any> {
 
         if (onExport && onExport[type]) {
             onExport[type]();
-        }
-        else {
+        } else {
             gridExport(model, type, advancedOption);
         }
     }
@@ -114,11 +113,13 @@ export class Export extends React.Component<Props, any> {
                             ) : undefined}
                             {supportedTypes.includes(EXPORT_TYPES.LABEL) ? (
                                 <>
-                                <MenuItem header>Export and Print {model.selectedQuantity > 0 ? 'Selected' : ''}</MenuItem>
-                                <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.LABEL)}>
-                                    <span className="fa fa-tag"/>
-                                    &nbsp; Label
-                                </MenuItem>
+                                    <MenuItem header>
+                                        Export and Print {model.selectedQuantity > 0 ? 'Selected' : ''}
+                                    </MenuItem>
+                                    <MenuItem onClick={this.doExport.bind(this, EXPORT_TYPES.LABEL)}>
+                                        <span className="fa fa-tag" />
+                                        &nbsp; Label
+                                    </MenuItem>
                                 </>
                             ) : undefined}
                         </DropdownButton>

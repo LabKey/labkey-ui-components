@@ -2,12 +2,10 @@ import React from 'react';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import { Alert } from '../../base/Alert';
+import { Alert, FileAttachmentForm } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 import DomainForm from '../DomainForm';
-
-import { FileAttachmentForm } from '../../files/FileAttachmentForm';
 
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';

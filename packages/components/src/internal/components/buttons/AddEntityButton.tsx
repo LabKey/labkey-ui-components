@@ -16,7 +16,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { LabelHelpTip } from '../base/LabelHelpTip';
+import { LabelHelpTip } from '../../..';
 
 interface AddEntityButtonProps {
     buttonClass?: string;

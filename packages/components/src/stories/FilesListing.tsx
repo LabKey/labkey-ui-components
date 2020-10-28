@@ -6,8 +6,7 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import './stories.scss';
 
 import { FILES_DATA } from '../test/data/constants';
-import { IFile } from '..';
-import { FilesListing } from '../internal/components/files/FilesListing';
+import { IFile, FilesListing } from '..';
 
 storiesOf('FilesListing', module)
     .addDecorator(withKnobs)

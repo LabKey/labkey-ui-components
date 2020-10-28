@@ -12,8 +12,7 @@ import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
 
 import { applyQueryMetadata, handle132Response } from './query/api';
 import { bindColumnRenderers } from './renderers';
-import { URLService } from './util/URLService';
-import { URL_MAPPERS } from './util/URLResolver';
+import { URL_MAPPERS, URLService } from './url/URLResolver';
 
 declare let LABKEY: LabKey;
 

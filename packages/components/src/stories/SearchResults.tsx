@@ -18,9 +18,8 @@ import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { SearchResultCard } from '../internal/components/search/SearchResultCard';
-import { SearchResultsPanel } from '../internal/components/search/SearchResultsPanel';
-import { SearchResultCardData, SearchResultsModel } from '../internal/components/search/models';
+import { SearchResultCard, SearchResultsPanel, SearchResultCardData, SearchResultsModel } from '..';
+
 import entitiesJSON from '../test/data/searchResults.json';
 
 import { getProcessedSearchHits } from '../internal/components/search/actions';

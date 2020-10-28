@@ -20,7 +20,7 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import * as constants from './constants';
 
 import './stories.scss';
-import { Grid } from '../internal/components/base/Grid';
+import { Grid } from '..';
 
 storiesOf('Grid', module)
     .addDecorator(withKnobs)

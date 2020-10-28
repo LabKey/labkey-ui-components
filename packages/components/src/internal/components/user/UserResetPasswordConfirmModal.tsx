@@ -1,9 +1,6 @@
 import React from 'react';
 
-import { ConfirmModal } from '../base/ConfirmModal';
-
-import { Alert } from '../base/Alert';
-import { resolveErrorMessage } from '../../util/messaging';
+import { ConfirmModal, Alert, resolveErrorMessage } from '../../..';
 
 import { resetPassword } from './actions';
 

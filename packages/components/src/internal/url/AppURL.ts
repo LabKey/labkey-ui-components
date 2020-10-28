@@ -15,6 +15,7 @@
  */
 import { List, Map, Record } from 'immutable';
 import { Filter } from '@labkey/api';
+import { buildURL } from './ActionURL';
 
 export class AppURL extends Record({
     _baseUrl: undefined,
@@ -149,4 +150,28 @@ export function spliceURL(parts: any[], newParts: any[], startIndex: number, num
         decodedParts.push(decodeURIComponent(parts[i]));
     }
     return AppURL.create(...decodedParts);
+}
+
+export function createProductUrlFromParts(
+    urlProductId: string,
+    currentProductId: string,
+    params: { [key: string]: any },
+    ...parts
+): string | AppURL {
+    let appUrl = AppURL.create(...parts);
+    appUrl = appUrl.addParams(params);
+    return createProductUrl(urlProductId, currentProductId, appUrl);
+}
+
+export function createProductUrl(
+    urlProductId: string,
+    currentProductId: string,
+    appUrl: string | AppURL
+): string | AppURL {
+    if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
+        const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
+        return buildURL(urlProductId.toLowerCase(), 'app.view', undefined, { returnURL: false }) + href;
+    } else {
+        return appUrl;
+    }
 }

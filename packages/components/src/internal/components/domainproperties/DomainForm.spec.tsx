@@ -16,7 +16,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { FileAttachmentForm } from '../files/FileAttachmentForm';
+import { FileAttachmentForm } from '../../..';
 
 import { DomainDesign } from './models';
 import DomainForm from './DomainForm';

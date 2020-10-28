@@ -17,11 +17,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { SchemaListing } from '../internal/components/listing/SchemaListing';
-import { QueriesListing } from '../internal/components/listing/QueriesListing';
+import { SchemaListing, QueriesListing, PageHeader, Page } from '..';
+
 import './stories.scss';
-import { PageHeader } from '../internal/components/base/PageHeader';
-import { Page } from '../internal/components/base/Page';
 
 storiesOf('SchemaBrowser', module)
     .addDecorator(withKnobs)

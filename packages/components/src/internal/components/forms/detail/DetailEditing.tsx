@@ -15,17 +15,11 @@
  */
 import React from 'react';
 import { Button, Panel } from 'react-bootstrap';
-import { List, Map } from 'immutable';
+import { List } from 'immutable';
 import Formsy from 'formsy-react';
 import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
-import { updateRows } from '../../../query/api';
-
-import { Alert } from '../../base/Alert';
-
-import { resolveErrorMessage } from '../../../util/messaging';
-
-import { QueryColumn, QueryGridModel } from '../../../..';
+import { updateRows, Alert, resolveErrorMessage, QueryColumn, QueryGridModel } from '../../../..';
 
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
 import { Detail } from './Detail';

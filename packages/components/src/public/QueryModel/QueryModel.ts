@@ -11,9 +11,10 @@ import {
     QuerySort,
     SchemaQuery,
     ViewInfo,
+    PaginationData,
 } from '../..';
 import { GRID_SELECTION_INDEX } from '../../internal/constants';
-import { PaginationData } from '../..';
+
 import { DataViewInfo } from '../../internal/models';
 
 import { flattenValuesFromRow, offsetFromString, querySortsFromString, searchFiltersFromString } from './utils';

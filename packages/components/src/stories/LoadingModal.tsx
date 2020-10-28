@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { LoadingModal } from '../internal/components/base/LoadingModal';
+import { LoadingModal } from '..';
 
 storiesOf('LoadingModal', module)
     .addDecorator(withKnobs)

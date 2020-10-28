@@ -19,7 +19,7 @@ import { List } from 'immutable';
 
 import { TESTS_ONLY_RESET_DOM_COUNT } from '../util/utils';
 
-import { getStateQueryGridModel, QueryGridModel, SchemaQuery, QueryGridPanel } from '../../..';
+import { getStateQueryGridModel, QueryGridModel, SchemaQuery, QueryGridPanel } from '../..';
 import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../testHelpers';
 
 beforeAll(() => {

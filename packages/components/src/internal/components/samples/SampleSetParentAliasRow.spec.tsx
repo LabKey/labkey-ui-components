@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { IParentOption } from '../entities/models';
+import { IParentOption } from '../../..';
 import { IParentAlias } from '../domainproperties/samples/models';
 
 import { SampleSetParentAliasRow } from './SampleSetParentAliasRow';

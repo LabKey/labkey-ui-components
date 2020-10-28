@@ -3,10 +3,8 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
-import { Container } from '../../../..';
-import { LoadingSpinner } from '../../base/LoadingSpinner';
-import { RemoveEntityButton } from '../../buttons/RemoveEntityButton';
-import { AddEntityButton } from '../../buttons/AddEntityButton';
+import { Container, LoadingSpinner, RemoveEntityButton, AddEntityButton } from '../../../..';
+
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
     CONFIGURE_SCRIPTING_TOPIC,

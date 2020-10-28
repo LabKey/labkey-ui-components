@@ -1,6 +1,7 @@
-import { AppURL, QueryColumn, SchemaQuery, WHERE_FILTER_TYPE } from '..';
 import { fromJS, List, Map, OrderedMap, Record } from 'immutable';
 import { Filter } from '@labkey/api';
+
+import { AppURL, QueryColumn, SchemaQuery, WHERE_FILTER_TYPE } from '..';
 
 export enum AssayDomainTypes {
     BATCH = 'Batch',

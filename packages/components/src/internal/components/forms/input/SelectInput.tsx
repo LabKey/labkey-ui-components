@@ -20,7 +20,7 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { generateId } from '../../../util/utils';
+import { generateId } from '../../../..';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 

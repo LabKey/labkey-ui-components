@@ -617,9 +617,11 @@ interface GridPaneWithModelBodyProps<T = {}> extends GridPanelProps<T> {
     id: string;
 }
 
-const GridPanelWithModelBodyImpl: FC<GridPaneWithModelBodyProps & InjectedQueryModels> = memo(({ actions, id, queryModels, ...props }) => {
-    return <GridPanel actions={actions} model={queryModels[id]} {...props} />;
-});
+const GridPanelWithModelBodyImpl: FC<GridPaneWithModelBodyProps & InjectedQueryModels> = memo(
+    ({ actions, id, queryModels, ...props }) => {
+        return <GridPanel actions={actions} model={queryModels[id]} {...props} />;
+    }
+);
 
 const GridPanelWithModelBody = withQueryModels<GridPaneWithModelBodyProps>(GridPanelWithModelBodyImpl);
 

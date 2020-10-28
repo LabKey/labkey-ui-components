@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import renderer from 'react-test-renderer';
 
@@ -9,7 +9,7 @@ import getDomainDetailsJSON from '../../../../test/data/list-getDomainDetails.js
 
 import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
 
-import { Alert } from '../../base/Alert';
+import { Alert } from '../../../..';
 
 import { DomainPanelStatus } from '../models';
 

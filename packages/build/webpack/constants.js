@@ -229,12 +229,12 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         viewTemplate: app.template,
-                        filename: '../../../views/' + app.name + '.view.xml',
+                        filename: '../../../views/gen/' + app.name + '.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
-                        filename: '../../../views/' + app.name + '.html',
+                        filename: '../../../views/gen/' + app.name + '.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html'
                     }),
                     new HtmlWebpackPlugin({
@@ -245,7 +245,7 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         viewTemplate: app.template,
-                        filename: '../../../views/' + app.name + 'Dev.view.xml',
+                        filename: '../../../views/gen/' + app.name + 'Dev.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
                     new HtmlWebpackPlugin({
@@ -253,7 +253,7 @@ module.exports = {
                         mode: 'dev',
                         port: watchPort,
                         name: app.name,
-                        filename: '../../../views/' + app.name + 'Dev.html',
+                        filename: '../../../views/gen/' + app.name + 'Dev.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html'
                     })
                 ]);

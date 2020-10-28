@@ -16,8 +16,8 @@
 import { List, Record } from 'immutable';
 import { ActionURL, Ajax, Utils, QueryKey } from '@labkey/api';
 
-import { createProductUrl, createProductUrlFromParts, AppURL } from '../../url/AppURL';
-import { buildURL } from '../../url/ActionURL';
+// These imports cannot be shortened or tests will start failing.
+import { buildURL, createProductUrl, createProductUrlFromParts, AppURL } from '../../url/AppURL';
 
 export class MenuSectionModel extends Record({
     label: undefined,

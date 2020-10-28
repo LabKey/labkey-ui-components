@@ -15,7 +15,7 @@
  */
 import { Filter } from '@labkey/api';
 
-import { createProductUrl, createProductUrlFromParts, AppURL } from './AppURL';
+import { buildURL, createProductUrl, createProductUrlFromParts, AppURL } from './AppURL';
 
 describe('AppURL', () => {
     test('Empty values', () => {
@@ -71,6 +71,17 @@ describe('AppURL', () => {
         expect(actual).toContain('val=23');
         expect(actual).toContain('booze=gin');
         expect(actual).toContain('mix=tonic');
+    });
+
+    test('buildURL', () => {
+        let expected = '/labkey/controller/action.view?returnUrl=%2F';
+        expect(buildURL('controller', 'action')).toBe(expected);
+
+        expected = '/labkey/controller/action.view?p1=test1&returnUrl=%2F';
+        expect(buildURL('controller', 'action', { p1: 'test1' })).toBe(expected);
+
+        expected = '/labkey/controller/action.view?returnUrl=somewhere';
+        expect(buildURL('controller', 'action', {}, { returnURL: 'somewhere' })).toBe(expected);
     });
 });
 

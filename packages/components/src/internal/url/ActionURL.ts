@@ -16,64 +16,6 @@
 import { OrderedMap } from 'immutable';
 import { ActionURL, Utils } from '@labkey/api';
 
-import { AppURL } from './AppURL';
-
-export function applyURL(prop: string, options?: BuildURLOptions): string {
-    if (options) {
-        if (typeof options[prop] === 'string') {
-            return options[prop];
-        } else if (options[prop] instanceof AppURL) {
-            return window.location.pathname + options[prop].toHref();
-        }
-    }
-}
-
-interface BuildURLOptions {
-    cancelURL?: string | AppURL;
-    container?: string;
-    returnURL?: boolean | string | AppURL; // defaults to true when action does not end in '.api'
-    successURL?: string | AppURL;
-}
-
-export function buildURL(controller: string, action: string, params?: any, options?: BuildURLOptions): string {
-    const constructedParams = {
-        // server expects camel-case URL (e.g. Url)
-        cancelUrl: undefined,
-        returnUrl: undefined,
-        successUrl: undefined,
-    };
-
-    const applyReturnURL = !options || (options && options.returnURL !== false);
-
-    if (applyReturnURL) {
-        if (options && (typeof options.returnURL === 'string' || options.returnURL instanceof AppURL)) {
-            constructedParams.returnUrl = applyURL('returnURL', options);
-        } else if (action.toLowerCase().indexOf('.api') === -1 && action.toLowerCase().indexOf('.post') === -1) {
-            // use the current URL
-            constructedParams.returnUrl = window.location.pathname + (window.location.hash ? window.location.hash : '');
-        }
-    }
-
-    constructedParams.cancelUrl = applyURL('cancelURL', options);
-    constructedParams.successUrl = applyURL('successURL', options);
-
-    Object.keys(constructedParams).forEach(key => {
-        if (!constructedParams[key]) {
-            // remove any param keys that do not have values
-            delete constructedParams[key];
-        }
-    });
-
-    const parameters = Object.assign(params ? params : {}, constructedParams);
-
-    return ActionURL.buildURL(
-        controller,
-        action,
-        options && options.container ? options.container : LABKEY.container.path,
-        parameters
-    );
-}
-
 // This is similar to LABKEY.Filter.getSortFromUrl, however, it does not assume the urlPrefix.
 export function getSortFromUrl(queryString: string, urlPrefix?: string): string {
     const params = ActionURL.getParameters(queryString);

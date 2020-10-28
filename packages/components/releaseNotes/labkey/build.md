@@ -1,4 +1,9 @@
 # @labkey/build
+
+### version 0.4.0
+*Released*: 28 October 2020
+* Add explicit package.json dependencies for @labkey/build
+
 ### version 0.3.0
 *Released*: 28 October 2020
 * Generate files into views/gen instead of views for better cleaning and caching possibilities

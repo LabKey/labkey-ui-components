@@ -36,15 +36,12 @@ import {
     withAppUser,
 } from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
-import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
 import {
     AssayDefinitionModel,
     AssayDomainTypes,
     AssayLink,
-    IGridLoader,
-    IGridResponse,
-    QueryGridModel,
 } from './internal/components/base/models/model';
+import { IGridLoader, IGridResponse, QueryGridModel } from './internal/QueryGridModel';
 import {
     applyDevTools,
     capitalizeFirstChar,
@@ -168,6 +165,7 @@ import {
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
     DataViewInfoTypes,
+    GRID_CHECKBOX_OPTIONS,
     IMPORT_DATA_FORM_TYPES,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,

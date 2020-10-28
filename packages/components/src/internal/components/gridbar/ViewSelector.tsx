@@ -18,9 +18,7 @@ import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { gridSelectView } from '../../actions';
-import { QueryGridModel } from '../base/models/model';
-import { generateId } from '../../util/utils';
-import { naturalSort, ViewInfo } from '../../..';
+import { generateId, naturalSort, QueryGridModel, ViewInfo } from '../../..';
 
 const emptyList = List<ReactNode>();
 

@@ -21,7 +21,7 @@ import { naturalSort, QueryColumn, QueryGridModel, resolveSchemaQuery, SchemaQue
 
 import { initBrowserHistoryState } from './util/global';
 import { EditorModel, LookupStore } from './models';
-import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
+import { GRID_CHECKBOX_OPTIONS } from './constants';
 
 // Don't touch this directly, if you need access to it use getQueryMetadata, if you need to set the value use
 // setQueryMetadata

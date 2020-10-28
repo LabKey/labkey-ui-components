@@ -21,13 +21,11 @@ import { AuditBehaviorTypes, Utils } from '@labkey/api';
 
 import { updateRows } from '../../../query/api';
 
-import { QueryGridModel } from '../../base/models/model';
-
 import { Alert } from '../../base/Alert';
 
 import { resolveErrorMessage } from '../../../util/messaging';
 
-import { QueryColumn } from '../../../..';
+import { QueryColumn, QueryGridModel } from '../../../..';
 
 import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
 import { Detail } from './Detail';

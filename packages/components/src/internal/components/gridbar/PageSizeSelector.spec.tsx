@@ -1,9 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 import { List } from 'immutable';
 
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel } from '../../..';
 
 import { PageSizeSelector } from './PageSizeSelector';
 

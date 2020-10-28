@@ -19,8 +19,7 @@ import { Set } from 'immutable';
 
 import { gridExport } from '../../actions';
 import { EXPORT_TYPES } from '../../constants';
-import { Tip } from '../base/Tip';
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel, Tip } from '../../..';
 
 /**
  * @model the query grid model from which to export

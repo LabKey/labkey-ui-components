@@ -33,7 +33,7 @@ import {
 } from './global';
 
 import { EditorModel, LookupStore } from './models';
-import { GRID_CHECKBOX_OPTIONS } from './components/base/models/constants';
+import { GRID_CHECKBOX_OPTIONS } from './constants';
 
 beforeEach(() => {
     resetQueryGridState();

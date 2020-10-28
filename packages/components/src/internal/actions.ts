@@ -75,7 +75,7 @@ import {
 } from './global';
 import { EditableColumnMetadata } from './components/editable/EditableGrid';
 import { getSortFromUrl } from './url/ActionURL';
-import { GRID_EDIT_INDEX } from './components/base/models/constants';
+import { GRID_EDIT_INDEX } from './constants';
 import { intersect, not } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
 

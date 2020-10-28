@@ -19,7 +19,7 @@ import { List } from 'immutable';
 
 import { MenuItem, OverlayTrigger } from 'react-bootstrap';
 
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel } from '../../..';
 
 import { SelectionMenuItem } from './SelectionMenuItem';
 

@@ -19,7 +19,7 @@ import { fromJS, List } from 'immutable';
 import { selectRows, IGridLoader, IGridResponse, QueryGridModel } from '../..';
 import { getSelected } from '../actions';
 
-import { IGridSelectionResponse } from './base/models/model';
+import { IGridSelectionResponse } from '../QueryGridModel';
 
 class GridLoader implements IGridLoader {
     fetch(model: QueryGridModel): Promise<IGridResponse> {

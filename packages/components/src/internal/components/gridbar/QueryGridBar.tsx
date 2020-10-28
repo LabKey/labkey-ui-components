@@ -18,7 +18,7 @@ import { Map, Set } from 'immutable';
 
 import { ChartSelector } from '../chart/ChartSelector';
 
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel } from '../../..';
 
 import { Export } from './Export';
 import { QueryGridPaging } from './QueryGridPaging';

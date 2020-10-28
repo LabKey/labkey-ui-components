@@ -15,7 +15,7 @@ let labkeyUIComponentsPath = path.resolve("./node_modules/@labkey/components");
 let freezerManagerPath = path.resolve("./node_modules/@labkey/freezermanager");
 if (process.env.LINK) {
     if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
-        console.log("ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.")
+        throw "ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.";
     }
 
     labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + "/packages/components";

@@ -57,11 +57,6 @@ To configure a LabKey module to participant in the React page build process:
         for the steps in the [Adding a new entryPoint](#adding-a-new-entrypoint) section of this document.
 1. Create the `<module>/src/client` directories and add a file named `entryPoints.js`, more on this in
     the [Adding a new entryPoint](#adding-a-new-entrypoint) section of this doc.
-    <!---
-    1. Update your module's `build.gradle` file to add a line so that it's `npmInstall` command is dependent
-        on the `npmInstall` command finishing at the platform repository level. See example at
-        `platform/experiment/build.gradle`.
-    --->
 1. Update the `<module>/.gitignore` file so that it knows to ignore your module's `node_modules` directory
     and generated JS/CSS artifacts.
 

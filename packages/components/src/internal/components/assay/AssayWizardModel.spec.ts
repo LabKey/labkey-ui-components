@@ -19,7 +19,7 @@ import { Utils } from '@labkey/api';
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 
 import { getStateQueryGridModel, gridInit, initQueryGridState, QueryInfo, SchemaQuery } from '../../..';
-import { AssayUploadTabs } from '../base/models/model';
+import { AssayUploadTabs } from '../../AssayDefinitionModel';
 
 import { AssayWizardModel, parseDataTextToRunRows } from './AssayWizardModel';
 

@@ -36,11 +36,7 @@ import {
     withAppUser,
 } from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
-import {
-    AssayDefinitionModel,
-    AssayDomainTypes,
-    AssayLink,
-} from './internal/components/base/models/model';
+import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/AssayDefinitionModel';
 import { IGridLoader, IGridResponse, QueryGridModel } from './internal/QueryGridModel';
 import {
     applyDevTools,

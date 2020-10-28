@@ -33,7 +33,7 @@ import { ASSAY_WIZARD_MODEL } from '../test/data/constants';
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 
 import './stories.scss';
-import { AssayDefinitionModel, AssayUploadTabs } from '../internal/components/base/models/model';
+import { AssayDefinitionModel, AssayUploadTabs } from '../internal/AssayDefinitionModel';
 
 class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
     componentDidMount(): void {

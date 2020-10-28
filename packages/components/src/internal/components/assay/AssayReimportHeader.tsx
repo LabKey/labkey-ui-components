@@ -3,7 +3,7 @@ import { Panel } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { AppURL } from '../../url/AppURL';
-import { AssayDefinitionModel } from '../base/models/model';
+import { AssayDefinitionModel } from '../../AssayDefinitionModel';
 
 interface Props {
     hasBatchProperties?: boolean;

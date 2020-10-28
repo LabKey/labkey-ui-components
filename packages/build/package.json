@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "0.3.0-generatedViews.0",
+  "version": "0.3.0",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

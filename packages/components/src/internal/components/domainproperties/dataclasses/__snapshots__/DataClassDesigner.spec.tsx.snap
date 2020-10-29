@@ -318,7 +318,7 @@ Array [
                 className="control-label text-left"
               >
                 <strong>
-                  Infer fields from file
+                  Import or infer fields from file
                 </strong>
               </label>
             </div>
@@ -925,7 +925,7 @@ Array [
                 className="control-label text-left"
               >
                 <strong>
-                  Infer fields from file
+                  Import or infer fields from file
                 </strong>
               </label>
             </div>

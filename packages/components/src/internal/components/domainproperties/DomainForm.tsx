@@ -371,7 +371,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { domain } = this.props;
         let fields = domain.fields;
         let filteredFields = fields.filter((field: DomainField) => field.visible);
-        let fieldData = filteredFields.map(DomainField.serialize).toArray();
+        let fieldData = filteredFields.map(field => DomainField.serialize(field, false)).toArray();
         const fieldsJson = JSON.stringify(fieldData, null, 4);
 
         downloadJsonFile(fieldsJson, generateNameWithTimestamp('Fields') + '.fields.json');

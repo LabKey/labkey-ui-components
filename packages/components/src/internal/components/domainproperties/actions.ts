@@ -312,7 +312,7 @@ export function processJsonImport(jsFields: any, domain:DomainDesign): SimpleRes
     const domainType = domain.domainKindName;
 
     if (jsFields.length < 1) {
-        return {success: false, msg: 'No fields found.'};
+        return {success: false, msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.'};
     }
 
     for (let i=0; i < jsFields.length; i++){
@@ -335,7 +335,7 @@ export function processJsonImport(jsFields: any, domain:DomainDesign): SimpleRes
         }
     }
 
-    const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
+    const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, false)));
     return {success: true, fields: tsFields};
 }
 

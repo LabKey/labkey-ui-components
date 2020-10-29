@@ -71,7 +71,6 @@ storiesOf('DomainForm', module)
                 data={undefined}
                 helpNoun={text('helpNoun', undefined)}
                 helpTopic={text('helpTopic', undefined)}
-                allowImportExport={boolean('allowImportExport', true)}
             />
         );
     })
@@ -79,6 +78,13 @@ storiesOf('DomainForm', module)
         return <DomainFormContainer
             data={undefined}
             showInferFromFile={boolean('showInferFromFile', true)}
+            allowImportExport={boolean('allowImportExport', false)}
+        />;
+    })
+    .add('import from file', () => {
+        return <DomainFormContainer
+            data={undefined}
+            showInferFromFile={boolean('showInferFromFile', false)}
             allowImportExport={boolean('allowImportExport', true)}
         />;
     })
@@ -86,7 +92,6 @@ storiesOf('DomainForm', module)
         return <DomainFormContainer
             data={domainData}
             appPropertiesOnly={false}
-            allowImportExport={boolean('allowImportExport', true)}
         />;
     })
     .add('with server side errors and no file or flag types', () => {

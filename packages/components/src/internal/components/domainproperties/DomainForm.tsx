@@ -539,10 +539,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderAddFieldOption() {
-        const { domainFormDisplayOptions, allowImportExport } = this.props;
+        const { domain, domainFormDisplayOptions, allowImportExport } = this.props;
+        const hasFields = domain.fields.size > 0;
 
         if (!domainFormDisplayOptions.hideAddFieldsButton) {
-            if (this.shouldShowInferFromFile()) {
+            if (!hasFields && (this.shouldShowInferFromFile() || allowImportExport)) {
                 return (
                     <div className="margin-top domain-form-manual-section">
                         <p>Or</p>
@@ -718,33 +719,44 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
             reader.readAsText(file);
         });
-    }
+    };
 
     renderEmptyDomain() {
         const { allowImportExport } = this.props;
         const shouldShowInferFromFile = this.shouldShowInferFromFile();
         if (shouldShowInferFromFile || allowImportExport) {
-            const fileSpecificFnObj = {'.json': this.importFieldsFromJson};
-            const fileSpecificFunctions = Map(fileSpecificFnObj);
+            let acceptedFormats = [];
+            if (shouldShowInferFromFile) {
+                acceptedFormats = acceptedFormats.concat(['.csv', '.tsv', '.txt', '.xls', '.xlsx']);
+            }
+            if (allowImportExport) {
+                acceptedFormats = acceptedFormats.concat(['.json']);
+            }
 
-            const fileTypes = shouldShowInferFromFile ? ['.csv', '.tsv', '.txt', '.xls', '.xlsx'] : [];
-            const jsonType = allowImportExport ? ['.json'] : [];
-            const acceptedFormatsString = [...fileTypes, ...jsonType].join(', ');
+            let label;
+            if (allowImportExport && shouldShowInferFromFile) {
+                label = "Import or infer fields from file";
+            } else if (allowImportExport) {
+                label = "Import fields from file";
+            } else {
+                label = "Infer fields from file";
+            }
+
             return (
                 <>
                     <FileAttachmentForm
-                        acceptedFormats={acceptedFormatsString}
+                        acceptedFormats={acceptedFormats.join(', ')}
                         showAcceptedFormats={true}
                         allowDirectories={false}
                         allowMultiple={false}
-                        label="Infer fields from file"
+                        label={label}
                         onFileRemoval={() => this.setState(() => ({ filePreviewMsg: undefined }))}
                         previewGridProps={shouldShowInferFromFile && {
                             previewCount: 3,
                             skipPreviewGrid: true,
                             onPreviewLoad: this.handleFilePreviewLoad,
                         }}
-                        fileSpecificFunctions={fileSpecificFunctions}
+                        fileSpecificCallback={Map({'.json': this.importFieldsFromJson})}
                     />
                     {shouldShowInferFromFile && this.state.filePreviewMsg && <Alert bsStyle="info">{this.state.filePreviewMsg}</Alert>}
                 </>
@@ -812,19 +824,21 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderToolbar() {
-        const { domain, domainIndex, allowImportExport } = this.props;
+        const { domain, domainIndex, allowImportExport, domainFormDisplayOptions } = this.props;
         const { fields } = domain;
         const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
 
         return (
             <Row className="domain-field-toolbar">
                 <Col xs={4}>
-                    <AddEntityButton
-                        entity="Field"
-                        containerClass="container--toolbar-button"
-                        buttonClass="domain-toolbar-add-btn"
-                        onClick={this.onAddField}
-                    />
+                    {!domainFormDisplayOptions.hideAddFieldsButton &&
+                        <AddEntityButton
+                            entity="Field"
+                            containerClass="container--toolbar-button"
+                            buttonClass="domain-toolbar-add-btn"
+                            onClick={this.onAddField}
+                        />
+                    }
                     {allowImportExport &&
                         <ActionButton
                             containerClass="container--toolbar-button"
@@ -881,15 +895,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
+            allowImportExport
         } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
+        const hasFields = domain.fields.size > 0;
 
         return (
             <>
-                {!this.shouldShowInferFromFile() && this.renderToolbar()}
+                {(hasFields || !(this.shouldShowInferFromFile() || allowImportExport)) && this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && this.renderAppDomainHeader()}
-                {domain.fields.size > 0 ? (
+                {hasFields ? (
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>
                             <Sticky topOffset={containerTop ? -1 * containerTop : 0}>

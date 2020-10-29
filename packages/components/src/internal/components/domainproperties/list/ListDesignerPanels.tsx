@@ -13,6 +13,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { ListModel } from './models';
 import { ListPropertiesPanel } from './ListPropertiesPanel';
+import {PropDescType} from "../PropDescType";
 
 interface Props {
     initModel?: ListModel;
@@ -106,22 +107,57 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             });
     }
 
+    setAndValidateKeyDataAfterFieldImport = (): ListModel => {
+        const { model } = this.state;
+        const fields = model.domain.fields;
+        const pkIndex = fields.findIndex(i => i.isPrimaryKey);
+
+        if (pkIndex > -1 && !model.keyType) {
+            const pkField = fields.get(pkIndex);
+            const keyName = pkField.get("name");
+
+            const isAutoIncPk = PropDescType.isAutoIncrement(pkField.dataType);
+            const isInt = PropDescType.isInteger(pkField.dataType.rangeURI);
+            const isVarchar = PropDescType.isString(pkField.dataType.rangeURI);
+
+            if (isAutoIncPk) {
+                return(model.merge({ keyName, keyType: 'AutoIncrementInteger'}) as ListModel);
+            } else if (isInt) {
+                return(model.merge({ keyName, keyType: 'Integer'}) as ListModel);
+            } else if (isVarchar) {
+                return(model.merge({ keyName, keyType: 'Varchar'}) as ListModel);
+            } else {
+                return(model.merge({ keyType: 'invalid'}) as ListModel);
+            }
+        } else {
+            return(model);
+        }
+    }
+
     onFinish = () => {
         const { setSubmitting } = this.props;
-        const { model } = this.state;
-        const isValid = model.isValid();
+        const model = this.setAndValidateKeyDataAfterFieldImport();
 
-        this.props.onFinish(isValid, this.saveDomain);
+        this.setState(
+            () => ({ model }),
+            () => {
+                const isValid = model.isValid();
+                this.props.onFinish(isValid, this.saveDomain);
 
-        if (!isValid) {
-            const exception = !model.hasValidKeyType()
-                ? 'You must specify a key field for your list in the fields panel to continue.'
-                : model.domain.getFirstFieldError();
-            const updatedModel = model.set('exception', exception) as ListModel;
-            setSubmitting(false, () => {
-                this.setState(() => ({ model: updatedModel }));
-            });
-        }
+                if (!isValid) {
+                    const PKInvalidTypeError = 'The imported key field is of an invalid type.';
+                    const PKNotSpecifiedError = 'You must specify a key field for your list in the fields panel to continue.';
+                    const exception = !model.hasValidKeyType()
+                        ? (model.keyType) ? PKInvalidTypeError : PKNotSpecifiedError
+                        : model.domain.getFirstFieldError();
+
+                    const updatedModel = model.set('exception', exception) as ListModel;
+                    setSubmitting(false, () => {
+                        this.setState(() => ({ model: updatedModel }));
+                    });
+                }
+            }
+        );
     };
 
     saveDomain = () => {

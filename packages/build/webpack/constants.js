@@ -15,7 +15,7 @@ let labkeyUIComponentsPath = path.resolve("./node_modules/@labkey/components");
 let freezerManagerPath = path.resolve("./node_modules/@labkey/freezermanager");
 if (process.env.LINK) {
     if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
-        console.log("ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.")
+        throw "ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.";
     }
 
     labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + "/packages/components";
@@ -229,12 +229,12 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         viewTemplate: app.template,
-                        filename: '../../../views/' + app.name + '.view.xml',
+                        filename: '../../../views/gen/' + app.name + '.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
-                        filename: '../../../views/' + app.name + '.html',
+                        filename: '../../../views/gen/' + app.name + '.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html'
                     }),
                     new HtmlWebpackPlugin({
@@ -245,7 +245,7 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         viewTemplate: app.template,
-                        filename: '../../../views/' + app.name + 'Dev.view.xml',
+                        filename: '../../../views/gen/' + app.name + 'Dev.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
                     new HtmlWebpackPlugin({
@@ -253,7 +253,7 @@ module.exports = {
                         mode: 'dev',
                         port: watchPort,
                         name: app.name,
-                        filename: '../../../views/' + app.name + 'Dev.html',
+                        filename: '../../../views/gen/' + app.name + 'Dev.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html'
                     })
                 ]);

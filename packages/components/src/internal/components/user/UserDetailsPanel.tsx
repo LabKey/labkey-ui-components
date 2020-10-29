@@ -8,11 +8,9 @@ import { Panel, Row, Col, Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { SecurityPolicy, SecurityRole } from '../permissions/models';
+import { SecurityPolicy, SecurityRole, getUserProperties, LoadingSpinner, caseInsensitive } from '../../..';
 import { EffectiveRolesList } from '../permissions/EffectiveRolesList';
-import { getUserProperties } from '../base/actions';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { caseInsensitive } from '../../util/utils';
+
 import { getDateTimeFormat } from '../../util/Date';
 
 import { UserDeleteConfirmModal } from './UserDeleteConfirmModal';

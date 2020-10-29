@@ -1,7 +1,7 @@
 import React from 'react';
 import { Panel } from 'react-bootstrap';
 
-import { Alert } from '../base/Alert';
+import { Alert } from '../../..';
 
 import { DomainPanelStatus } from './models';
 import { getDomainAlertClasses, getDomainPanelClass, updateDomainPanelClassList } from './actions';

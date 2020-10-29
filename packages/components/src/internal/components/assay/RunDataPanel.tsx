@@ -33,10 +33,11 @@ import {
     getEditorModel,
     helpLinkNode,
     IMPORT_DATA_FORM_TYPES,
+    QueryGridModel,
 } from '../../..';
 
-import { AssayUploadTabs, InferDomainResponse, QueryGridModel } from '../base/models/model';
-import { getServerFilePreview } from '../base/actions';
+import { AssayUploadTabs } from '../../AssayDefinitionModel';
+import { getServerFilePreview, InferDomainResponse } from '../../InferDomainResponse';
 
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 

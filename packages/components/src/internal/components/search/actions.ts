@@ -1,11 +1,8 @@
 import { List, Map } from 'immutable';
 import { Ajax, Utils } from '@labkey/api';
 
-import { buildURL } from '../../url/ActionURL';
+import { buildURL, URLResolver } from '../../..';
 import { RELEVANT_SEARCH_RESULT_TYPES } from '../../constants';
-
-import { URLResolver } from '../../util/URLResolver';
-import { SCHEMAS } from '../../..';
 
 import { SearchIdData, SearchResultCardData } from './models';
 

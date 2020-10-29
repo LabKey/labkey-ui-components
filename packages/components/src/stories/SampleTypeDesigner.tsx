@@ -19,8 +19,8 @@ import { storiesOf } from '@storybook/react';
 import { text, boolean, withKnobs } from '@storybook/addon-knobs';
 import { Domain } from '@labkey/api';
 
-import { DomainDetails } from '../internal/components/domainproperties/models';
-import { SampleTypeDesigner } from '../internal/components/domainproperties/samples/SampleTypeDesigner';
+import { DomainDetails, SampleTypeDesigner } from '..';
+
 import domainData from '../test/data/property-getDomain-sampleType.json';
 import './stories.scss';
 
@@ -52,10 +52,20 @@ storiesOf('SampleTypeDesigner', module)
                 helpTopic={text('helpTopic', undefined)}
                 metricUnitProps={{
                     includeMetricUnitProperty: boolean('includeMetricUnitProperty', true),
-                    metricUnitLabel: text('metricUnitLabel', "Display stored amount in"),
+                    metricUnitLabel: text('metricUnitLabel', 'Display stored amount in'),
                     metricUnitRequired: boolean('metricUnitRequired', true),
-                    metricUnitHelpMsg: text('metricUnitHelpMsg', "Sample storage volume will be displayed using the selected metric unit."),
-                    metricUnitOptions: boolean('metricUnitOptions', true) ? [{id: 'mL', label: 'ml'}, {id: 'L', label: 'L'}, {id: 'ug', label: 'ug'}, {id: 'g', label: 'g'}] : undefined
+                    metricUnitHelpMsg: text(
+                        'metricUnitHelpMsg',
+                        'Sample storage volume will be displayed using the selected metric unit.'
+                    ),
+                    metricUnitOptions: boolean('metricUnitOptions', true)
+                        ? [
+                              { id: 'mL', label: 'ml' },
+                              { id: 'L', label: 'L' },
+                              { id: 'ug', label: 'ug' },
+                              { id: 'g', label: 'g' },
+                          ]
+                        : undefined,
                 }}
             />
         );

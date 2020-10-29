@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { fromJS, List } from 'immutable';
 
-import { GridColumn } from '../base/Grid';
+import { GridColumn } from '../../..';
 
 import { FilePreviewGrid } from './FilePreviewGrid';
 

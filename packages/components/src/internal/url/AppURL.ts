@@ -14,7 +14,87 @@
  * limitations under the License.
  */
 import { List, Map, Record } from 'immutable';
-import { Filter } from '@labkey/api';
+import { ActionURL, Filter } from '@labkey/api';
+
+export function createProductUrlFromParts(
+    urlProductId: string,
+    currentProductId: string,
+    params: { [key: string]: any },
+    ...parts
+): string | AppURL {
+    let appUrl = AppURL.create(...parts);
+    appUrl = appUrl.addParams(params);
+    return createProductUrl(urlProductId, currentProductId, appUrl);
+}
+
+export function createProductUrl(
+    urlProductId: string,
+    currentProductId: string,
+    appUrl: string | AppURL
+): string | AppURL {
+    if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
+        const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
+        return buildURL(urlProductId.toLowerCase(), 'app.view', undefined, { returnURL: false }) + href;
+    } else {
+        return appUrl;
+    }
+}
+
+export function applyURL(prop: string, options?: BuildURLOptions): string {
+    if (options) {
+        if (typeof options[prop] === 'string') {
+            return options[prop];
+        } else if (options[prop] instanceof AppURL) {
+            return window.location.pathname + options[prop].toHref();
+        }
+    }
+}
+
+interface BuildURLOptions {
+    cancelURL?: string | AppURL;
+    container?: string;
+    returnURL?: boolean | string | AppURL; // defaults to true when action does not end in '.api'
+    successURL?: string | AppURL;
+}
+
+export function buildURL(controller: string, action: string, params?: any, options?: BuildURLOptions): string {
+    const constructedParams = {
+        // server expects camel-case URL (e.g. Url)
+        cancelUrl: undefined,
+        returnUrl: undefined,
+        successUrl: undefined,
+    };
+
+    const applyReturnURL = !options || (options && options.returnURL !== false);
+
+    if (applyReturnURL) {
+        if (options && (typeof options.returnURL === 'string' || options.returnURL instanceof AppURL)) {
+            constructedParams.returnUrl = applyURL('returnURL', options);
+        } else if (action.toLowerCase().indexOf('.api') === -1 && action.toLowerCase().indexOf('.post') === -1) {
+            // use the current URL
+            constructedParams.returnUrl = window.location.pathname + (window.location.hash ? window.location.hash : '');
+        }
+    }
+
+    constructedParams.cancelUrl = applyURL('cancelURL', options);
+    constructedParams.successUrl = applyURL('successURL', options);
+
+    Object.keys(constructedParams).forEach(key => {
+        if (!constructedParams[key]) {
+            // remove any param keys that do not have values
+            delete constructedParams[key];
+        }
+    });
+
+    const parameters = Object.assign(params ? params : {}, constructedParams);
+
+    return ActionURL.buildURL(
+        controller,
+        action,
+        options && options.container ? options.container : LABKEY.container.path,
+        parameters
+    );
+}
 
 export class AppURL extends Record({
     _baseUrl: undefined,

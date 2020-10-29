@@ -16,11 +16,13 @@
 import React, { Component, ReactNode } from 'react';
 import { Record } from 'immutable';
 
-import { AppURL } from '../../url/AppURL';
+import { AppURL, naturalSort, createProductUrlFromParts } from '../../..';
 
 import { MenuSectionModel } from './model';
-import { createProductUrlFromParts, getHref } from './utils';
-import { naturalSort } from '../../..';
+
+function getHref(url: AppURL | string): string {
+    return typeof url === 'string' ? url : url.toHref();
+}
 
 export class MenuSectionConfig extends Record({
     emptyText: undefined,

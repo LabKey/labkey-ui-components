@@ -15,9 +15,7 @@
  */
 import React from 'react';
 
-import { ConfirmModal } from '../base/ConfirmModal';
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from '../base/Alert';
+import { ConfirmModal, LoadingSpinner, Alert } from '../../..';
 
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { DeleteConfirmationData, getDeleteConfirmationData } from './actions';
@@ -29,7 +27,7 @@ interface Props {
     entityDataType: EntityDataType;
     rowIds?: string[];
     selectionKey?: string;
-    verb?: string
+    verb?: string;
 }
 
 interface State {

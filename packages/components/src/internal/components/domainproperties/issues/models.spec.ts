@@ -17,7 +17,7 @@ import produce from 'immer';
 
 import getDomainDetailsJSON from '../../../../test/data/issuesListDef-getDomainDetails.json';
 
-import { DomainDesign, DomainField } from '../../../..';
+import { DomainDesign, DomainField } from '../models';
 
 import { IssuesListDefModel } from './models';
 

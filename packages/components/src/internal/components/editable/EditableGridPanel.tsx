@@ -19,8 +19,7 @@ import { Panel } from 'react-bootstrap';
 
 import { gridInit } from '../../actions';
 
-import { QueryGridModel } from '../base/models/model';
-import { LoadingSpinner } from '../base/LoadingSpinner';
+import { LoadingSpinner, QueryGridModel } from '../../..';
 
 import { EditableGrid, EditableGridProps } from './EditableGrid';
 

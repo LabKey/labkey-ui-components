@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { imageURL } from '../../url/ActionURL';
+import { imageURL } from '../../..';
 
 import { iconURL, Theme } from './SVGIcon';
 

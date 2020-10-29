@@ -1,8 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { mount } from 'enzyme';
 
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel } from '../../..';
 
 import { QueryGridPaging } from './QueryGridPaging';
 

@@ -9,18 +9,16 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { fromJS, List } from 'immutable';
 import { Query } from '@labkey/api';
 
-
 import { SearchAction } from '../internal/components/omnibox/actions/Search';
 import { FilterAction } from '../internal/components/omnibox/actions/Filter';
 import { SortAction } from '../internal/components/omnibox/actions/Sort';
 import './stories.scss';
 import { OmniBox } from '../internal/components/omnibox/OmniBox';
-import { Grid } from '../internal/components/base/Grid';
+import { Grid, LoadingSpinner, QueryColumn, QueryGridModel, QueryInfo } from '..';
 import { ViewAction } from '../internal/components/omnibox/actions/View';
 import { makeQueryInfo, makeTestData } from '../internal/testHelpers';
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQuery.json';
-import { LoadingSpinner, QueryColumn, QueryGridModel, QueryInfo } from '..';
 
 interface Props {
     actions: string[];
@@ -86,8 +84,8 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
             viewName: model.view,
             filterArray: model.getFilters().toJS(),
             parameters: model.queryParameters,
-        }
-    }
+        };
+    };
 
     getColumns = (all?): List<QueryColumn> => {
         const { model } = this.state;

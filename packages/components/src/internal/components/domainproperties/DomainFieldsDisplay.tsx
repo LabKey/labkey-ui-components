@@ -15,11 +15,38 @@
  */
 import React from 'react';
 import { Panel } from 'react-bootstrap';
+import { List } from 'immutable';
 
-import { Grid } from '../base/Grid';
+import { Grid, GridColumn } from '../../..';
 
 import { DomainDesign } from './models';
-import { DOMAIN_FIELD_COLS } from './constants';
+
+export const DOMAIN_FIELD_COLS = List([
+    new GridColumn({
+        index: 'name',
+        title: 'Name',
+    }),
+    new GridColumn({
+        index: 'label',
+        title: 'Label',
+    }),
+    new GridColumn({
+        index: 'rangeURI',
+        title: 'Range URI',
+    }),
+    new GridColumn({
+        index: 'conceptURI',
+        title: 'Concept URI',
+    }),
+    new GridColumn({
+        index: 'required',
+        title: 'Required',
+    }),
+    new GridColumn({
+        index: 'scale',
+        title: 'Scale',
+    }),
+]);
 
 type Props = {
     domain: DomainDesign;

@@ -29,7 +29,7 @@ import {
     SchemaQuery,
 } from '../../..';
 
-import { AssayUploadTabs } from '../base/models/model';
+import { AssayUploadTabs } from '../../AssayDefinitionModel';
 
 import { AssayUploadResultModel } from './models';
 import { IAssayUploadOptions } from './AssayWizardModel';

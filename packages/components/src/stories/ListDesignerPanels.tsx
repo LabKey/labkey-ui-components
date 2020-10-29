@@ -2,8 +2,8 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
-import { ListDesignerPanels } from '../internal/components/domainproperties/list/ListDesignerPanels';
-import { ListModel } from '../internal/components/domainproperties/list/models';
+import { ListDesignerPanels, ListModel } from '..';
+
 import getDomainDetailsJSON from '../test/data/list-getDomainDetails.json';
 import { DEFAULT_LIST_SETTINGS } from '../test/data/constants';
 import './stories.scss';

@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { LabelOverlay } from '../internal/components/forms/LabelOverlay';
+import { LabelOverlay } from '..';
 import './stories.scss';
 
 storiesOf('LabelOverlay', module)

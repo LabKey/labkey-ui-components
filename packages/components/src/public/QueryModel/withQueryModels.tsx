@@ -4,6 +4,8 @@ import { Filter } from '@labkey/api';
 // eslint-disable-next-line import/named
 import { Draft, produce } from 'immer';
 
+// eslint cannot find WithRouterProps for some reason, but Intellij can.
+// eslint-disable-next-line import/named
 import { withRouter, WithRouterProps } from 'react-router';
 
 import { LoadingState, naturalSort, QuerySort, resolveErrorMessage, SchemaQuery } from '../..';

@@ -17,7 +17,7 @@ import {
 
 import { PropertyValidator } from '../models';
 import { PropDescType } from '../PropDescType';
-import { LabelHelpTip } from '../../base/LabelHelpTip';
+import { LabelHelpTip } from '../../../..';
 
 interface RegexValidationOptionsProps {
     validator: any;

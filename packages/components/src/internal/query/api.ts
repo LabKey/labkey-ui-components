@@ -388,6 +388,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                         });
                     },
                     failure: (data, request) => {
+                        console.error('There was a problem retrieving the data', data);
                         reject({
                             exceptionClass: data.exceptionClass,
                             message: data.exception,
@@ -412,6 +413,7 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                         });
                     },
                     failure: (data, request) => {
+                        console.error('There was a problem retrieving the data', data);
                         reject({
                             exceptionClass: data.exceptionClass,
                             message: data.exception,
@@ -428,7 +430,10 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     details = d;
                     doResolve();
                 })
-                .catch(error => reject(error));
+                .catch(error => {
+                    console.error('There was a problem retrieving the data', error);
+                    reject(error);
+                });
         }
     });
 }

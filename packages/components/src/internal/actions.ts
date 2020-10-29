@@ -637,13 +637,15 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
         },
         payload => {
             if (payload.model) {
-                gridShowError(payload.model, payload.error, connectedComponent);
+                setError(payload.model, resolveErrorMessage(payload.error, 'data'), connectedComponent);
             } else {
                 console.error('No model available for loading.', payload.error || payload);
                 setError(model, resolveErrorMessage(payload.error, 'data'));
             }
         }
-    );
+    ).catch((reason) => {
+        setError(model, resolveErrorMessage(reason, 'data'));
+    });
 }
 
 function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
@@ -1380,13 +1382,12 @@ function setError(model: QueryGridModel, message: string, connectedComponent?: R
     );
 }
 
-// TODO update this to not show the status and use resolveErrorMessage
 export function gridShowError(model: QueryGridModel, error: any, connectedComponent?: React.Component): void {
     setError(
         model,
         error
-            ? (error.status ? error.status + ': ' : '') + (error.message ? error.message : error.exception)
-            : 'Query error',
+            ?  resolveErrorMessage(error)
+            : 'There was a problem retrieving the data.',
         connectedComponent
     );
 }

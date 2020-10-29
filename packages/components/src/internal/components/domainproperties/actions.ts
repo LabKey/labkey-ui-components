@@ -310,14 +310,16 @@ export function mergeDomainFields(domain: DomainDesign, newFields: List<DomainFi
 
 export function processJsonImport(content: string, domain:DomainDesign): SimpleResponse {
     const domainType = domain.domainKindName;
+    const emptinessError = {success: false, msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.'};
+
     if (content == "") {
-        return {success: false, msg: 'No fields found.'};
+        return emptinessError;
     }
 
     const jsFields = JSON.parse(content as string);
 
     if (jsFields.length < 1 || Object.keys(jsFields).length === 0) {
-        return {success: false, msg: 'No fields found.'};
+        return emptinessError;
     }
 
     for (let i=0; i < jsFields.length; i++){

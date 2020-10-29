@@ -96,7 +96,7 @@ export class ListModel extends Record({
 
     static create(raw: any, defaultSettings = null): ListModel {
         if (defaultSettings) {
-            const domain = DomainDesign.create({domainType: 'List'});
+            const domain = DomainDesign.create(undefined);
             return new ListModel({ ...defaultSettings, domain });
         } else {
             let domain = DomainDesign.create(raw.domainDesign);

@@ -21,40 +21,25 @@ import { shallow } from 'enzyme';
 import { AddEntityButton } from './AddEntityButton';
 
 describe('<AddEntityButton />', () => {
-    test('Default properties', () => {
+    test('Minimal properties', () => {
         const onClick = jest.fn();
-        const wrapper = shallow(<AddEntityButton onClick={onClick} />);
-        wrapper.find('span').simulate('click');
-        expect(onClick).toHaveBeenCalledTimes(1);
+        const wrapper = shallow(
+            <AddEntityButton
+                entity="EntityName"
+                onClick={onClick}
+            />);
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('Specify entity and classes', () => {
+    test('Typical properties', () => {
         const onClick = jest.fn();
-        const tree = renderer
-            .create(
-                <AddEntityButton
-                    entity="Test"
-                    onClick={onClick}
-                    containerClass="test-container-class"
-                    buttonClass="test-button-class"
-                />
-            )
-            .toJSON();
-        expect(tree).toMatchSnapshot();
-    });
-
-    test('Disabled', () => {
-        const onClick = jest.fn();
-        const wrapper = shallow(<AddEntityButton disabled={true} onClick={onClick} />);
-        wrapper.find('span').simulate('click');
-        expect(onClick).toHaveBeenCalledTimes(0);
+        const wrapper = shallow(
+            <AddEntityButton
+                entity="EntityName"
+                buttonClass="button-class-name"
+                containerClass="container-class-name"
+                onClick={onClick}
+            />);
         expect(wrapper).toMatchSnapshot();
-    });
-
-    test('With title', () => {
-        const onClick = jest.fn();
-        const tree = renderer.create(<AddEntityButton entity="Test" onClick={onClick} title="Test title" />).toJSON();
-        expect(tree).toMatchSnapshot();
     });
 });

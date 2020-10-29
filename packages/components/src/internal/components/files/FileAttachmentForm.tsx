@@ -29,9 +29,14 @@ import { inferDomainFromFile } from '../base/actions';
 
 import { FileAttachmentContainer } from './FileAttachmentContainer';
 import { FileGridPreviewProps, FilePreviewGrid } from './FilePreviewGrid';
-import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
+import {
+    convertRowDataIntoPreviewData,
+    fileMatchesAcceptedFormat,
+    fileSizeLimitCompare,
+    getFileExtension,
+} from './actions';
 
-import { FileSizeLimitProps } from './models';
+import {FileSizeLimitProps, SimpleResponse} from './models';
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -51,7 +56,7 @@ interface FileAttachmentFormProps {
     onCancel?: () => any;
     onFileChange?: (files: Map<string, File>) => any;
     onFileRemoval?: (attachmentName: string) => any;
-    importFieldsFromJson?: (file: File) => Promise<{success: boolean, msg?: string}>;
+    fileSpecificFunctions?: Map<string, (file: File) => Promise<SimpleResponse>>;
     onSubmit?: (files: Map<string, File>) => any;
     isSubmitting?: boolean;
     showButtons?: boolean;
@@ -135,23 +140,39 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         return attachedFiles.reduce((total, file) => (total += file.size), 0);
     }
 
+    reportFileOversized = (attachedFiles: Map<string, File>, sizeStr: string) => {
+        this.setState(() => ({
+            errorMessage:
+                'This file is too large to be previewed. The maximum size allowed for previewing files of this type is ' + sizeStr
+        }));
+    }
+
     handleFileChange = (fileList: { [key: string]: File }) => {
-        const { onFileChange, sizeLimits } = this.props;
+        const { onFileChange, sizeLimits, fileSpecificFunctions } = this.props;
         const attachedFiles = this.state.attachedFiles.merge(fileList);
 
         this.setState(
             () => ({ attachedFiles }),
             () => {
+                // currently only supporting 1 file
+                const firstFile = attachedFiles.valueSeq().first();
+                const sizeCheck = fileSizeLimitCompare(firstFile, sizeLimits);
+
+                const fileTypeFn = fileSpecificFunctions.get(getFileExtension(firstFile.name));
+                if (fileTypeFn) {
+                    if (!sizeCheck.isOversized) {
+                        this.processFileSpecificFunction(fileTypeFn);
+                    } else {
+                        this.reportFileOversized(attachedFiles, sizeCheck.limits.maxSize.displayValue);
+                    }
+                    return;
+                }
+
                 if (this.isShowPreviewGrid()) {
-                    // if showing preview, there can be only one attached file
-                    const sizeCheck = fileSizeLimitCompare(attachedFiles.valueSeq().first(), sizeLimits);
-                    if (!sizeCheck.isOversizedForPreview) this.processDataFile();
-                    else {
-                        this.setState(() => ({
-                            errorMessage:
-                                'This file is too large to be previewed. The maximum size allowed for previewing files of this type is ' +
-                                sizeCheck.limits.maxPreviewSize.displayValue,
-                        }));
+                    if (!sizeCheck.isOversizedForPreview) {
+                        this.uploadDataFileForPreview();
+                    } else {
+                        this.reportFileOversized(attachedFiles, sizeCheck.limits.maxPreviewSize.displayValue);
                     }
                 }
 
@@ -265,8 +286,34 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         this.setState(() => ({ errorMessage }));
     }
 
-    uploadDataFileForPreview = (file) => {
+    processFileSpecificFunction(fileFn: any) {
+        const { attachedFiles } = this.state;
+        const file = attachedFiles.first();
+
+        fileFn(file)
+            .then(res => {
+                if (!res.success) this.updateErrors(res.msg);
+            })
+            .catch(res => this.updateErrors(res.msg));
+    }
+
+    uploadDataFileForPreview() {
         const { previewGridProps } = this.props;
+        const { attachedFiles } = this.state;
+
+        // just take the first file, since we only support 1 file at this time
+        const file = attachedFiles.first();
+
+        // check if this usage has a set of formats which are supported for preview
+        if (previewGridProps.acceptedFormats) {
+            const fileCheck = fileMatchesAcceptedFormat(file.name, previewGridProps.acceptedFormats);
+            // if the file extension doesn't match the accepted preview formats, return without trying to get preview data
+            if (!fileCheck.get('isMatch')) {
+                return;
+            }
+        }
+
+        this.updatePreviewStatus('Uploading file...');
 
         inferDomainFromFile(file, previewGridProps.previewCount)
             .then((response: InferDomainResponse) => {
@@ -295,33 +342,6 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                     'There was a problem determining the fields in the uploaded file.  Please check the format of the file.'
                 );
             });
-    }
-
-    processDataFile() {
-        const { previewGridProps, importFieldsFromJson } = this.props;
-        const { attachedFiles } = this.state;
-
-        // just take the first file, since we only support 1 file at this time
-        const file = attachedFiles.first();
-
-        // check if this usage has a set of formats which are supported for preview
-        if (previewGridProps.acceptedFormats) {
-            const fileCheck = fileMatchesAcceptedFormat(file.name, previewGridProps.acceptedFormats);
-            // if the file extension doesn't match the accepted preview formats, return without trying to get preview data
-            if (!fileCheck.get('isMatch')) {
-                return;
-            }
-        }
-
-        this.updatePreviewStatus('Uploading file...');
-
-        if (importFieldsFromJson) {
-            importFieldsFromJson(file)
-                .then(res => { if (!res.success) this.updateErrors(res.msg);})
-                .catch(res => this.updateErrors(res.msg));
-        } else {
-            this.uploadDataFileForPreview(file);
-        }
     }
 
     shouldRenderAcceptedFormats(): boolean {

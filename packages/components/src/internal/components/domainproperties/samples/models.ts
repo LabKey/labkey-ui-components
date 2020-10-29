@@ -33,7 +33,7 @@ export class SampleTypeModel extends Record({
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {
         if (!raw) return new SampleTypeModel();
 
-        const domain = raw.domainDesign ? raw.domainDesign : DomainDesign.create({domainType: 'SampleType'});
+        const domain = raw.domainDesign ? raw.domainDesign : DomainDesign.create({});
 
         const { options } = raw;
         let importAliases = Map<string, string>();

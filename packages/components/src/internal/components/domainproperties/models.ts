@@ -87,12 +87,12 @@ interface IDomainDesign {
     domainException?: DomainException;
     newDesignFields?: List<DomainField>; // set of fields to initialize a manually created design
     instructions?: string;
+    domainKindName?: string;
 }
 
 export class DomainDesign
     extends Record({
         name: undefined,
-        domainType: undefined,
         container: undefined,
         description: undefined,
         domainURI: undefined,
@@ -110,10 +110,10 @@ export class DomainDesign
         reservedFieldNames: List<string>(),
         newDesignFields: undefined,
         instructions: undefined,
+        domainKindName: undefined,
     })
     implements IDomainDesign {
     name: string;
-    domainType: string;
     container: string;
     description: string;
     domainURI: string;
@@ -131,6 +131,7 @@ export class DomainDesign
     reservedFieldNames: List<string>;
     newDesignFields?: List<DomainField>; // Returns a set of fields to initialize a manually created design
     instructions: string;
+    domainKindName: string;
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();

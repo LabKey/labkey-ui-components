@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import React from 'react';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
+import classNames from 'classnames';
 
 import { Sticky, StickyContainer } from 'react-sticky';
 
@@ -42,6 +43,7 @@ import { LookupProvider } from './Lookup/Context';
 import {
     addDomainField,
     clearAllClientValidationErrors,
+    downloadJsonFile,
     getDomainAlertClasses,
     getDomainHeaderName,
     getDomainPanelClass,
@@ -50,6 +52,7 @@ import {
     getMaxPhiLevel,
     handleDomainUpdates,
     mergeDomainFields,
+    processJsonImport,
     removeField,
     setDomainFields,
     updateDomainPanelClassList,
@@ -72,6 +75,7 @@ import { SimpleResponse } from "../files/models";
 import { ATTACHMENT_TYPE, FILE_TYPE, FLAG_TYPE, PROP_DESC_TYPES, PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
+import {generateNameWithTimestamp} from "../../util/Date";
 
 interface IDomainFormInput {
     domain: DomainDesign;
@@ -370,15 +374,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         let fieldData = filteredFields.map(DomainField.serialize).toArray();
         const fieldsJson = JSON.stringify(fieldData, null, 4);
 
-        // This looks hacky, but it's actually the recommended way to download a file using raw JS
-        let downloadLink = document.createElement('a');
-        downloadLink.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(fieldsJson);
-        downloadLink.download = 'Fields';
-        downloadLink.style.display = 'none';
-
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+        downloadJsonFile(fieldsJson, generateNameWithTimestamp('Fields') + '.fields.json');
     };
 
     onAddField = () => {
@@ -543,7 +539,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderAddFieldOption() {
-        const { domainFormDisplayOptions } = this.props;
+        const { domainFormDisplayOptions, allowImportExport } = this.props;
 
         if (!domainFormDisplayOptions.hideAddFieldsButton) {
             if (this.shouldShowInferFromFile()) {
@@ -689,7 +685,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     importFieldsFromJson = (file: File): Promise<SimpleResponse> => {
         const { domain, onChange } = this.props;
-        const domainType = domain.domainType;
 
         return new Promise((resolve, reject) => {
             let content = '';
@@ -701,33 +696,23 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 try {
                     content = e.target.result;
                     const jsFields = JSON.parse(content as string);
-                    if (jsFields.length < 1) resolve({success: false, msg: 'No fields found.'});
 
-                    for (let i=0; i < jsFields.length; i++){
-                        let field = jsFields[i];
-
-                        if (field.defaultValueType && !domain.hasDefaultValueOption(field.defaultValueType)) {
-                            resolve({success: false, msg: `Error on importing field '${field.name}': Default value type '${field.defaultValueType}' is invalid.`});
+                    const response = processJsonImport(jsFields, domain);
+                    if (!response.success) {
+                        return resolve(response);
+                    } else {
+                        const tsFields = response.fields;
+                        if (onChange) {
+                            onChange(mergeDomainFields(domain, tsFields), true);
                         }
-
-                        if (domainType !== 'list' && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
-                            resolve({success: false, msg: `Error on importing field '${field.name}': Domain type '${domainType}' does not support fields with an externally defined Primary Key.`});
-                        }
+                        resolve({success: true});
                     }
-
-                    // Convert to TS and merge entire List
-                    const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
-                    if (onChange) {
-                        onChange(mergeDomainFields(domain, tsFields), true);
-                    }
-                    resolve({success: true});
                 } catch (e) {
                     reject({success: false, msg: e.toString()});
                 }
             };
 
             reader.onerror = function(error: any) {
-                console.log(error);
                 reject({success: false, msg: error.toString()});
             };
 
@@ -737,24 +722,31 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderEmptyDomain() {
         const { allowImportExport } = this.props;
-        if (this.shouldShowInferFromFile()) {
+        const shouldShowInferFromFile = this.shouldShowInferFromFile();
+        if (shouldShowInferFromFile || allowImportExport) {
+            const fileSpecificFnObj = {'.json': this.importFieldsFromJson};
+            const fileSpecificFunctions = Map(fileSpecificFnObj);
+
+            const fileTypes = shouldShowInferFromFile ? ['.csv', '.tsv', '.txt', '.xls', '.xlsx'] : [];
+            const jsonType = allowImportExport ? ['.json'] : [];
+            const acceptedFormatsString = [...fileTypes, ...jsonType].join(', ');
             return (
                 <>
                     <FileAttachmentForm
-                        acceptedFormats={".csv, .tsv, .txt, .xls, .xlsx" + (allowImportExport ? ", .json" : "")}
+                        acceptedFormats={acceptedFormatsString}
                         showAcceptedFormats={true}
                         allowDirectories={false}
                         allowMultiple={false}
                         label="Infer fields from file"
                         onFileRemoval={() => this.setState(() => ({ filePreviewMsg: undefined }))}
-                        previewGridProps={{
+                        previewGridProps={shouldShowInferFromFile && {
                             previewCount: 3,
                             skipPreviewGrid: true,
                             onPreviewLoad: this.handleFilePreviewLoad,
                         }}
-                        importFieldsFromJson={this.importFieldsFromJson}
+                        fileSpecificFunctions={fileSpecificFunctions}
                     />
-                    {this.state.filePreviewMsg && <Alert bsStyle="info">{this.state.filePreviewMsg}</Alert>}
+                    {shouldShowInferFromFile && this.state.filePreviewMsg && <Alert bsStyle="info">{this.state.filePreviewMsg}</Alert>}
                 </>
             );
         } else {
@@ -1009,7 +1001,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             {children}
                         </CollapsiblePanelHeader>
                     )}
-                    <Panel.Body id={!this.shouldShowInferFromFile() && 'domain-field-top-noBuffer'} collapsible={collapsible || controlledCollapse}>
+                    <Panel.Body className={classNames({'domain-field-top-noBuffer': !this.shouldShowInferFromFile()})} collapsible={collapsible || controlledCollapse}>
                         {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}
 
                         {fieldsAdditionalRenderer && fieldsAdditionalRenderer()}

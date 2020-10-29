@@ -74,7 +74,7 @@ export function fileMatchesAcceptedFormat(fileName: string, formatExtensionStr: 
     });
 }
 
-interface SizeLimitCheckResult {
+export interface SizeLimitCheckResult {
     isOversized: boolean;
     isOversizedForPreview: boolean;
     limits: FileSizeLimitProps;

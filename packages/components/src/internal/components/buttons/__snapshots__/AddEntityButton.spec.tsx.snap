@@ -10,7 +10,7 @@ exports[`<AddEntityButton /> Minimal properties 1`] = `
   <i
     className="fa fa-plus-circle container--addition-icon"
   />
-   Add
+   Add 
   EntityName
 </ActionButton>
 `;
@@ -26,7 +26,7 @@ exports[`<AddEntityButton /> Typical properties 1`] = `
   <i
     className="fa fa-plus-circle container--addition-icon"
   />
-   Add
+   Add 
   EntityName
 </ActionButton>
 `;

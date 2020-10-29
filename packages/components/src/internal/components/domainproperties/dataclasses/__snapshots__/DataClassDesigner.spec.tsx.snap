@@ -297,7 +297,6 @@ Array [
     >
       <div
         className="panel-body"
-        id={false}
       >
         <div
           className="row"
@@ -905,7 +904,6 @@ Array [
     >
       <div
         className="panel-body"
-        id={false}
       >
         <div
           className="row"
@@ -1055,7 +1053,6 @@ exports[`DataClassDesigner initModel 1`] = `
       "description": "with a description",
       "domain": Immutable.Record {
         "name": "test1",
-        "domainType": undefined,
         "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
         "description": null,
         "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1325,6 +1322,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "reservedFieldNames": Immutable.List [],
         "newDesignFields": undefined,
         "instructions": null,
+        "domainKindName": undefined,
       },
       "domainId": 0,
       "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1347,7 +1345,6 @@ exports[`DataClassDesigner initModel 1`] = `
         "description": "with a description",
         "domain": Immutable.Record {
           "name": "test1",
-          "domainType": undefined,
           "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
           "description": null,
           "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1617,6 +1614,7 @@ exports[`DataClassDesigner initModel 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": null,
+          "domainKindName": undefined,
         },
         "domainId": 0,
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1642,7 +1640,6 @@ exports[`DataClassDesigner initModel 1`] = `
         Immutable.List [
           Immutable.Record {
             "name": "test1",
-            "domainType": undefined,
             "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
             "description": null,
             "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1912,6 +1909,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": null,
+            "domainKindName": undefined,
           },
         ]
       }
@@ -1932,7 +1930,6 @@ exports[`DataClassDesigner initModel 1`] = `
             "description": "with a description",
             "domain": Immutable.Record {
               "name": "test1",
-              "domainType": undefined,
               "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
               "description": null,
               "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2202,6 +2199,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": null,
+              "domainKindName": undefined,
             },
             "domainId": 0,
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2230,7 +2228,6 @@ exports[`DataClassDesigner initModel 1`] = `
               "description": "with a description",
               "domain": Immutable.Record {
                 "name": "test1",
-                "domainType": undefined,
                 "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
                 "description": null,
                 "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2500,6 +2497,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "reservedFieldNames": Immutable.List [],
                 "newDesignFields": undefined,
                 "instructions": null,
+                "domainKindName": undefined,
               },
               "domainId": 0,
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2532,7 +2530,6 @@ exports[`DataClassDesigner initModel 1`] = `
                 "description": "with a description",
                 "domain": Immutable.Record {
                   "name": "test1",
-                  "domainType": undefined,
                   "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
                   "description": null,
                   "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2802,6 +2799,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "reservedFieldNames": Immutable.List [],
                   "newDesignFields": undefined,
                   "instructions": null,
+                  "domainKindName": undefined,
                 },
                 "domainId": 0,
                 "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -4173,7 +4171,6 @@ exports[`DataClassDesigner initModel 1`] = `
         domain={
           Immutable.Record {
             "name": "test1",
-            "domainType": undefined,
             "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
             "description": null,
             "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -4443,6 +4440,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": null,
+            "domainKindName": undefined,
           }
         }
         domainIndex={0}
@@ -4464,7 +4462,6 @@ exports[`DataClassDesigner initModel 1`] = `
             domain={
               Immutable.Record {
                 "name": "test1",
-                "domainType": undefined,
                 "container": "3E40EE5E-91B7-1036-BF18-F5B7057C168C",
                 "description": null,
                 "domainURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -4734,6 +4731,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "reservedFieldNames": Immutable.List [],
                 "newDesignFields": undefined,
                 "instructions": null,
+                "domainKindName": undefined,
               }
             }
             domainFormDisplayOptions={
@@ -4926,8 +4924,8 @@ exports[`DataClassDesigner initModel 1`] = `
                     </CollapsiblePanelHeader>
                     <PanelBody
                       bsClass="panel"
+                      className="domain-field-top-noBuffer"
                       collapsible={true}
-                      id="domain-field-top-noBuffer"
                     >
                       <PanelCollapse
                         bsClass="panel"
@@ -4962,8 +4960,7 @@ exports[`DataClassDesigner initModel 1`] = `
                               className="panel-collapse collapse"
                             >
                               <div
-                                className="panel-body"
-                                id="domain-field-top-noBuffer"
+                                className="domain-field-top-noBuffer panel-body"
                               >
                                 <Row
                                   bsClass="row"

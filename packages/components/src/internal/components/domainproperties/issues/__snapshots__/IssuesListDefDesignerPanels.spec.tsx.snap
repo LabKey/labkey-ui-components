@@ -499,8 +499,7 @@ Array [
       className="panel-collapse collapse"
     >
       <div
-        className="panel-body"
-        id="domain-field-top-noBuffer"
+        className="domain-field-top-noBuffer panel-body"
       >
         <div
           className="domain-field-toolbar row"

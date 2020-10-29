@@ -297,7 +297,6 @@ Array [
     >
       <div
         className="panel-body"
-        id={false}
       >
         <div
           className="row"
@@ -796,7 +795,6 @@ Array [
     >
       <div
         className="panel-body"
-        id={false}
       >
         <div
           className="row"
@@ -944,7 +942,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     Immutable.Record {
       "domainDesign": Immutable.Record {
         "name": "Test Name",
-        "domainType": undefined,
         "container": undefined,
         "description": undefined,
         "domainURI": undefined,
@@ -1042,6 +1039,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "reservedFieldNames": Immutable.List [],
         "newDesignFields": undefined,
         "instructions": undefined,
+        "domainKindName": undefined,
       },
       "options": Immutable.Map {},
       "domainKindName": "Unknown",
@@ -1088,7 +1086,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       Immutable.Record {
         "domainDesign": Immutable.Record {
           "name": "Test Name",
-          "domainType": undefined,
           "container": undefined,
           "description": undefined,
           "domainURI": undefined,
@@ -1186,6 +1183,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
         "options": Immutable.Map {},
         "domainKindName": "Unknown",
@@ -1207,7 +1205,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         Immutable.List [
           Immutable.Record {
             "name": "Test Name",
-            "domainType": undefined,
             "container": undefined,
             "description": undefined,
             "domainURI": undefined,
@@ -1305,6 +1302,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
         ]
       }
@@ -1335,7 +1333,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "domainId": undefined,
             "domain": Immutable.Record {
               "name": "Test Name",
-              "domainType": undefined,
               "container": undefined,
               "description": undefined,
               "domainURI": undefined,
@@ -1433,6 +1430,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
             "exception": undefined,
           }
@@ -1477,7 +1475,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "domainId": undefined,
               "domain": Immutable.Record {
                 "name": "Test Name",
-                "domainType": undefined,
                 "container": undefined,
                 "description": undefined,
                 "domainURI": undefined,
@@ -1575,6 +1572,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "reservedFieldNames": Immutable.List [],
                 "newDesignFields": undefined,
                 "instructions": undefined,
+                "domainKindName": undefined,
               },
               "exception": undefined,
             }
@@ -1627,7 +1625,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "domainId": undefined,
                 "domain": Immutable.Record {
                   "name": "Test Name",
-                  "domainType": undefined,
                   "container": undefined,
                   "description": undefined,
                   "domainURI": undefined,
@@ -1725,6 +1722,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "reservedFieldNames": Immutable.List [],
                   "newDesignFields": undefined,
                   "instructions": undefined,
+                  "domainKindName": undefined,
                 },
                 "exception": undefined,
               }
@@ -1969,7 +1967,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       "domainId": undefined,
                                       "domain": Immutable.Record {
                                         "name": "Test Name",
-                                        "domainType": undefined,
                                         "container": undefined,
                                         "description": undefined,
                                         "domainURI": undefined,
@@ -2067,6 +2064,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         "reservedFieldNames": Immutable.List [],
                                         "newDesignFields": undefined,
                                         "instructions": undefined,
+                                        "domainKindName": undefined,
                                       },
                                       "exception": undefined,
                                     }
@@ -2826,7 +2824,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         domain={
           Immutable.Record {
             "name": "Test Name",
-            "domainType": undefined,
             "container": undefined,
             "description": undefined,
             "domainURI": undefined,
@@ -2924,6 +2921,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           }
         }
         domainIndex={0}
@@ -2946,7 +2944,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             domain={
               Immutable.Record {
                 "name": "Test Name",
-                "domainType": undefined,
                 "container": undefined,
                 "description": undefined,
                 "domainURI": undefined,
@@ -3044,6 +3041,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "reservedFieldNames": Immutable.List [],
                 "newDesignFields": undefined,
                 "instructions": undefined,
+                "domainKindName": undefined,
               }
             }
             domainFormDisplayOptions={
@@ -3317,8 +3315,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     </CollapsiblePanelHeader>
                     <PanelBody
                       bsClass="panel"
+                      className="domain-field-top-noBuffer"
                       collapsible={true}
-                      id="domain-field-top-noBuffer"
                     >
                       <PanelCollapse
                         bsClass="panel"
@@ -3353,8 +3351,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                               className="panel-collapse collapse"
                             >
                               <div
-                                className="panel-body"
-                                id="domain-field-top-noBuffer"
+                                className="domain-field-top-noBuffer panel-body"
                               >
                                 <Row
                                   bsClass="row"

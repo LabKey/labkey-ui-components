@@ -308,10 +308,15 @@ export function mergeDomainFields(domain: DomainDesign, newFields: List<DomainFi
     return domain.set('fields', domain.fields.concat(newFields)) as DomainDesign;
 }
 
-export function processJsonImport(jsFields: any, domain:DomainDesign): SimpleResponse {
+export function processJsonImport(content: string, domain:DomainDesign): SimpleResponse {
     const domainType = domain.domainKindName;
+    if (content == "") {
+        return {success: false, msg: 'No fields found.'};
+    }
 
-    if (jsFields.length < 1) {
+    const jsFields = JSON.parse(content as string);
+
+    if (jsFields.length < 1 || Object.keys(jsFields).length === 0) {
         return {success: false, msg: 'No fields found.'};
     }
 

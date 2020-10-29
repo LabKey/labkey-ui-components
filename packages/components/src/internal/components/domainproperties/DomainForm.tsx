@@ -695,9 +695,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 // Catches malformed JSON
                 try {
                     content = e.target.result;
-                    const jsFields = JSON.parse(content as string);
+                    const response = processJsonImport(content, domain);
 
-                    const response = processJsonImport(jsFields, domain);
                     if (!response.success) {
                         return resolve(response);
                     } else {

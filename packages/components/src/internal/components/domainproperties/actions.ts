@@ -318,11 +318,11 @@ export function processJsonImport(jsFields: any, domain:DomainDesign): SimpleRes
     for (let i=0; i < jsFields.length; i++){
         const field = jsFields[i];
 
-        if (field.defaultValueType && !domain.hasDefaultValueOption(field.defaultValueType)) {
+        if (field.defaultValueType && domain.defaultValueOptions.size > 0 && !domain.hasDefaultValueOption(field.defaultValueType)) {
             return {success: false, msg: `Error on importing field '${field.name}': Default value type '${field.defaultValueType}' is invalid.`};
         }
 
-        if (!domainType.includes('List') && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
+        if (!domainType?.includes('List') && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
             return {success: false, msg: `Error on importing field '${field.name}': Domain type '${domainType}' does not support fields with an externally defined Primary Key.`};
         }
 

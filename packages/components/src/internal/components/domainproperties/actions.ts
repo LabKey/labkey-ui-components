@@ -321,13 +321,13 @@ export function processJsonImport(content: string, domain:DomainDesign): SimpleR
     }
 
     for (let i=0; i < jsFields.length; i++){
-        let field = jsFields[i] as any;
+        const field = jsFields[i];
 
-        if (field.defaultValueType && !domain.hasDefaultValueOption(field.defaultValueType)) {
+        if (field.defaultValueType && domain.defaultValueOptions.size > 0 && !domain.hasDefaultValueOption(field.defaultValueType)) {
             return {success: false, msg: `Error on importing field '${field.name}': Default value type '${field.defaultValueType}' is invalid.`};
         }
 
-        if (!domainType.includes('List') && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
+        if (!domainType?.includes('List') && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
             return {success: false, msg: `Error on importing field '${field.name}': Domain type '${domainType}' does not support fields with an externally defined Primary Key.`};
         }
 
@@ -340,7 +340,7 @@ export function processJsonImport(content: string, domain:DomainDesign): SimpleR
         }
     }
 
-    const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, true)));
+    const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, false)));
     return {success: true, fields: tsFields};
 }
 

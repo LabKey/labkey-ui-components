@@ -57,11 +57,6 @@ To configure a LabKey module to participant in the React page build process:
         for the steps in the [Adding a new entryPoint](#adding-a-new-entrypoint) section of this document.
 1. Create the `<module>/src/client` directories and add a file named `entryPoints.js`, more on this in
     the [Adding a new entryPoint](#adding-a-new-entrypoint) section of this doc.
-    <!---
-    1. Update your module's `build.gradle` file to add a line so that it's `npmInstall` command is dependent
-        on the `npmInstall` command finishing at the platform repository level. See example at
-        `platform/experiment/build.gradle`.
-    --->
 1. Update the `<module>/.gitignore` file so that it knows to ignore your module's `node_modules` directory
     and generated JS/CSS artifacts.
 
@@ -125,11 +120,14 @@ npm run start
 ```
 
 For those modules that use other @labkey packages (e.g., `@labkey/components`), you can run the start command
-with linking enabled so that the HMR environment will alias to the source repository `/dist` directory so that
-you don't have to do a copy of the re-built `/dist` directory for that package in order for the changes to be
-picked up.
+with linking enabled so that the HMR environment will alias to the source repository `/dist` directory.
+This means that you won't have to do a copy of the re-built `/dist` directory for that package in order for the
+changes to be picked up in your module.
 
-To enable HMR with @labkey/components linking:
+In order to use this linking option, you must set a `LABKEY_UI_COMPONENTS_HOME` environment variable on your
+machine with the absolute path to your `labkey-ui-components` enlistment.
+
+To enable HMR with @labkey package linking:
 ```
 npm run start-link
 ```

@@ -143,10 +143,6 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
         return appDomainHeaders.filter((v, k) => domain.isNameSuffixMatch(k)).first();
     };
 
-    // Right now, this dummy function is needed in order for correct file import component rendering.
-    // Refactor for clarity is incoming.
-    setFileImportData = (file: File, shouldImportData: boolean) => { };
-
     render() {
         const {
             appPropertiesOnly,
@@ -202,7 +198,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
 
                     // allow empty domain to be inferred from a file for Data Fields in General assay
                     const showInferFromFile =
-                        protocolModel.providerName === 'General';
+                        protocolModel.providerName === 'General' && domain.isNameSuffixMatch('Data');
                     const showFilePropertyType = domain.isNameSuffixMatch('Batch') || domain.isNameSuffixMatch('Run');
                     const appDomainHeaderRenderer = this.getAppDomainHeaderRenderer(domain);
 
@@ -221,7 +217,6 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                                     : 'COMPLETE'
                             }
                             showInferFromFile={showInferFromFile}
-                            setFileImportData={this.setFileImportData}
                             containerTop={containerTop}
                             helpTopic={null} // null so that we don't show the "learn more about this tool" link for these domains
                             onChange={(updatedDomain, dirty) => {

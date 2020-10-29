@@ -172,7 +172,7 @@ export class DomainDesign
 
     static serialize(dd: DomainDesign): any {
         const json = dd.toJS();
-        json.fields = dd.fields.map(DomainField.serialize).toArray();
+        json.fields = dd.fields.map(field => DomainField.serialize(field)).toArray();
 
         // remove non-serializable fields
         delete json.domainException;
@@ -686,7 +686,7 @@ export class DomainField
         return field;
     }
 
-    static serialize(df: DomainField): any {
+    static serialize(df: DomainField, fixCaseSensitivity = true): any {
         const json = df.toJS();
 
         if (!(df.dataType.isLookup() || df.dataType.isUser() || df.dataType.isSample())) {
@@ -700,13 +700,15 @@ export class DomainField
         }
 
         // for some reason the property binding server side cares about casing here for 'URL' and 'PHI'
-        if (json.URL !== undefined) {
-            json.url = json.URL;
-            delete json.URL;
-        }
-        if (json.PHI !== undefined) {
-            json.phi = json.PHI;
-            delete json.PHI;
+        if (fixCaseSensitivity) {
+            if (json.URL !== undefined) {
+                json.url = json.URL;
+                delete json.URL;
+            }
+            if (json.PHI !== undefined) {
+                json.phi = json.PHI;
+                delete json.PHI;
+            }
         }
 
         if (json.conditionalFormats) {

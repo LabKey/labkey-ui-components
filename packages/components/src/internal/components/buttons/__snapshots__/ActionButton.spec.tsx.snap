@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ActionButton /> Default properties 1`] = `
+<div
+  className="form-group"
+>
+  <div>
+    <span
+      className="container--action-button btn btn-default"
+      onClick={
+        [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<ActionButton /> Disabled 1`] = `
+<div
+  className="form-group"
+>
+  <div>
+    <span
+      className="container--action-button btn btn-default disabled"
+    />
+  </div>
+</div>
+`;
+
+exports[`<ActionButton /> Specify entity and classes 1`] = `
+<div
+  className="test-container-class"
+>
+  <div
+    className="test-button-class"
+  >
+    <span
+      className="container--action-button btn btn-default"
+      onClick={[MockFunction]}
+    />
+    
+  </div>
+</div>
+`;
+
+exports[`<ActionButton /> With title 1`] = `
+<div
+  className="form-group"
+  title="Test title"
+>
+  <div>
+    <span
+      className="container--action-button btn btn-default"
+      onClick={[MockFunction]}
+    />
+    
+  </div>
+</div>
+`;

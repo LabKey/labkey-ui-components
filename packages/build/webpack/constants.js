@@ -9,16 +9,26 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-// This path assumes the enlistment in labkey-ui-components is a sibling of the root of the LabKey enlistment.
-// TODO figure out how we can make this more flexible and get an absolute path from the dev based on their setup
-const labkeyUIComponentsRelPath = (lkModuleContainer ? "../../../../../" : "../../../../") + "labkey-ui-components/packages/components";
-const labkeyUIComponentsPath = process.env.LINK ? path.resolve(labkeyUIComponentsRelPath) : path.resolve("./node_modules/@labkey/components");
-console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
+// Conditionalize the path to use for the @labkey packages based on if the user wants to LINK their labkey-ui-components repo.
+// NOTE: the LABKEY_UI_COMPONENTS_HOME environment variable must be set for this to work.
+let labkeyUIComponentsPath = path.resolve("./node_modules/@labkey/components");
+let freezerManagerPath = path.resolve("./node_modules/@labkey/freezermanager");
+if (process.env.LINK) {
+    if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
+        throw "ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.";
+    }
 
-// TODO not all modules will have this package as a dependency, how can we hide this behind an env var or set it locally for a module?
-const freezerManagerRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "inventory/packages/freezermanager";
-const freezerManagerPath = process.env.LINK ? path.resolve(__dirname, freezerManagerRelPath) : path.resolve("./node_modules/@labkey/freezermanager");
-console.log("Using @labkey/freezermanager path: " + freezerManagerPath);
+    labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + "/packages/components";
+
+    const freezerManagerRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "inventory/packages/freezermanager";
+    freezerManagerPath = path.resolve(__dirname, freezerManagerRelPath);
+}
+if (process.env.npm_package_dependencies__labkey_components) {
+    console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
+}
+if (process.env.npm_package_dependencies__labkey_freezermanager) {
+    console.log("Using @labkey/freezermanager path: " + freezerManagerPath);
+}
 
 const watchPort = process.env.WATCH_PORT || 3001;
 
@@ -219,12 +229,12 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         viewTemplate: app.template,
-                        filename: '../../../views/' + app.name + '.view.xml',
+                        filename: '../../../views/gen/' + app.name + '.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
-                        filename: '../../../views/' + app.name + '.html',
+                        filename: '../../../views/gen/' + app.name + '.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html'
                     }),
                     new HtmlWebpackPlugin({
@@ -235,7 +245,7 @@ module.exports = {
                         title: app.title,
                         permission: app.permission,
                         viewTemplate: app.template,
-                        filename: '../../../views/' + app.name + 'Dev.view.xml',
+                        filename: '../../../views/gen/' + app.name + 'Dev.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
                     }),
                     new HtmlWebpackPlugin({
@@ -243,7 +253,7 @@ module.exports = {
                         mode: 'dev',
                         port: watchPort,
                         name: app.name,
-                        filename: '../../../views/' + app.name + 'Dev.html',
+                        filename: '../../../views/gen/' + app.name + 'Dev.html',
                         template: 'node_modules/@labkey/build/webpack/app.template.html'
                     })
                 ]);

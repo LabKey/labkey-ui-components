@@ -1017,7 +1017,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             {children}
                         </CollapsiblePanelHeader>
                     )}
-                    <Panel.Body className={classNames({'domain-field-top-noBuffer': !this.shouldShowInferFromFile()})} collapsible={collapsible || controlledCollapse}>
+                    <Panel.Body
+                        className={classNames({ 'domain-field-top-noBuffer': !this.shouldShowInferFromFile() })}
+                        collapsible={collapsible || controlledCollapse}
+                    >
                         {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}
 
                         {fieldsAdditionalRenderer && fieldsAdditionalRenderer()}

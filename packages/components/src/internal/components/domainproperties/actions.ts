@@ -316,7 +316,7 @@ export function processJsonImport(jsFields: any, domain:DomainDesign): SimpleRes
     }
 
     for (let i=0; i < jsFields.length; i++){
-        let field = jsFields[i] as any;
+        const field = jsFields[i];
 
         if (field.defaultValueType && !domain.hasDefaultValueOption(field.defaultValueType)) {
             return {success: false, msg: `Error on importing field '${field.name}': Default value type '${field.defaultValueType}' is invalid.`};

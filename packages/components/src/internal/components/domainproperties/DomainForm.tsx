@@ -980,6 +980,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             fieldsAdditionalRenderer,
             domainFormDisplayOptions,
             todoIconHelpMsg,
+            allowImportExport
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -987,6 +988,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domain.fields.size > 0
                 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1 ? 's' : '') + ' Defined'
                 : undefined;
+        const hasFields = domain.fields.size > 0;
+        const styleToolbar = !hasFields && (this.shouldShowInferFromFile() || allowImportExport);
 
         return (
             <>
@@ -1015,7 +1018,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         </CollapsiblePanelHeader>
                     )}
                     <Panel.Body
-                        className={classNames({ 'domain-field-top-noBuffer': !this.shouldShowInferFromFile() })}
+                        className={classNames({ 'domain-field-top-noBuffer': !styleToolbar })}
                         collapsible={collapsible || controlledCollapse}
                     >
                         {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}

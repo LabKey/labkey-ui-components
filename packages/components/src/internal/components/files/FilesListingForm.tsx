@@ -54,7 +54,8 @@ export class FilesListingForm extends Component<Props, State> {
     };
 
     toggleFileSelection = (event): void => {
-        const { name, target } = event;
+        const { target } = event;
+        const { name } = target;
         this.setState(state => ({
             selectedFiles: target.checked ? state.selectedFiles.add(name) : state.selectedFiles.delete(name),
         }));

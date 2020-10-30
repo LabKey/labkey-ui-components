@@ -1,8 +1,7 @@
 import React from 'react';
 import { Map } from 'immutable';
 
-import { PageDetailHeader } from '../forms/PageDetailHeader';
-import { User } from '../../..';
+import { PageDetailHeader, User } from '../../..';
 
 import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
 

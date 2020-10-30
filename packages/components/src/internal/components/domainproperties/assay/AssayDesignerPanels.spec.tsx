@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { Panel } from 'react-bootstrap';
 
 import { DomainDesign } from '../models';
-import { FileAttachmentForm } from '../../files/FileAttachmentForm';
+import { FileAttachmentForm } from '../../../..';
 
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';

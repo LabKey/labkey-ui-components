@@ -1,8 +1,8 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 
-import { getQueryModelExportParams, QueryModel, Tip } from '../..';
-import { EXPORT_TYPES } from '../../internal/constants';
+import { getQueryModelExportParams, QueryModel, Tip, EXPORT_TYPES } from '../..';
+
 import { exportRows } from '../../internal/actions';
 
 interface ExportMenuProps {

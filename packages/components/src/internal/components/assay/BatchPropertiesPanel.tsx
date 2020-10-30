@@ -17,7 +17,7 @@ import React from 'react';
 import Formsy from 'formsy-react';
 import { is } from 'immutable';
 
-import { QueryFormInputs } from '../forms/QueryFormInputs';
+import { QueryFormInputs } from '../../..';
 
 import { AssayPropertiesPanelProps } from './models';
 

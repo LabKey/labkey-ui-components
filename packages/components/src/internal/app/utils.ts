@@ -5,10 +5,7 @@
 import { List, Map } from 'immutable';
 import { getServerContext, PermissionTypes } from '@labkey/api';
 
-import { AppURL } from '../url/AppURL';
-import { buildURL, imageURL } from '../url/ActionURL';
-import { MenuSectionConfig } from '../components/navigation/ProductMenuSection';
-import { hasAllPermissions, User } from '../..';
+import { AppURL, buildURL, imageURL, MenuSectionConfig, hasAllPermissions, User } from '../..';
 
 import {
     ASSAYS_KEY,

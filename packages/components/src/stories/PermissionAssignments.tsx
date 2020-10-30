@@ -9,8 +9,7 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { List, Map } from 'immutable';
 import { Security } from '@labkey/api';
 
-import { PermissionAssignments } from '../internal/components/permissions/PermissionAssignments';
-import { SecurityPolicy, SecurityRole, Principal } from '../internal/components/permissions/models';
+import { PermissionAssignments, SecurityPolicy, SecurityRole, Principal } from '..';
 
 import {
     getInactiveUsers,

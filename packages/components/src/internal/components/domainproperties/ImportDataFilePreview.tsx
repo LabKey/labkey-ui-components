@@ -7,9 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { convertRowDataIntoPreviewData } from '../files/actions';
 import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 import { FilePreviewGrid } from '../files/FilePreviewGrid';
-import { InferDomainResponse } from '../base/models/model';
-
-import { DeleteIcon } from '../../..';
+import { InferDomainResponse, DeleteIcon } from '../../..';
 
 interface Props {
     noun: string;

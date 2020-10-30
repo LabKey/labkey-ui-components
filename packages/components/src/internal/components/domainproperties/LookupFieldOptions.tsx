@@ -2,7 +2,7 @@ import React from 'react';
 import { Checkbox, Col, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { LabelHelpTip } from '../base/LabelHelpTip';
+import { LabelHelpTip } from '../../..';
 
 import { createFormInputId, createFormInputName, getIndexFromId, getNameFromId } from './actions';
 import {

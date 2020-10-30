@@ -3,7 +3,7 @@ import { withKnobs, boolean } from '@storybook/addon-knobs';
 
 import React from 'react';
 
-import { FileTree } from '../internal/components/files/FileTree';
+import { FileTree } from '..';
 import { fetchFileTestTree } from '../internal/components/files/FileTreeTest';
 import './FileTree.scss';
 

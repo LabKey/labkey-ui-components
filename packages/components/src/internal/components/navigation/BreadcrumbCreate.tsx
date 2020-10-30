@@ -16,7 +16,7 @@
 import React from 'react';
 import { Map } from 'immutable';
 
-import { CreatedModified } from '../base/CreatedModified';
+import { CreatedModified } from '../../..';
 
 import { Breadcrumb } from './Breadcrumb';
 

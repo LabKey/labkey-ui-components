@@ -18,8 +18,7 @@ import Formsy from 'formsy-react';
 import { Input, Textarea } from 'formsy-react-components';
 import { is } from 'immutable';
 
-import { QueryFormInputs } from '../forms/QueryFormInputs';
-import { LabelOverlay } from '../forms/LabelOverlay';
+import { QueryFormInputs, LabelOverlay } from '../../..';
 
 import { AssayPropertiesPanelProps } from './models';
 

@@ -2,8 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { IssuesListDefDesignerPanels } from '../internal/components/domainproperties/issues/IssuesListDefDesignerPanels';
-import { IssuesListDefModel } from '../internal/components/domainproperties/issues/models';
+import { IssuesListDefDesignerPanels, IssuesListDefModel } from '..';
 
 import getDomainDetailsJSON from '../test/data/issuesListDef-getDomainDetails.json';
 

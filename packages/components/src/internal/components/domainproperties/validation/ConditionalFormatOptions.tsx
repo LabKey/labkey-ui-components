@@ -21,7 +21,7 @@ import {
 import { PropertyValidator } from '../models';
 import { PropDescType } from '../PropDescType';
 
-import { LabelHelpTip } from '../../base/LabelHelpTip';
+import { LabelHelpTip } from '../../../..';
 
 import { Filters } from './Filters';
 

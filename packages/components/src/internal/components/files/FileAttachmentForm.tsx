@@ -18,14 +18,7 @@ import { Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import classNames from 'classnames';
 
-import { FormSection } from '../base/FormSection';
-import { Progress } from '../base/Progress';
-
-import { LoadingSpinner } from '../base/LoadingSpinner';
-
-import { InferDomainResponse } from '../base/models/model';
-
-import { inferDomainFromFile } from '../base/actions';
+import { FormSection, Progress, LoadingSpinner, InferDomainResponse, inferDomainFromFile } from '../../..';
 
 import { FileAttachmentContainer } from './FileAttachmentContainer';
 import { FileGridPreviewProps, FilePreviewGrid } from './FilePreviewGrid';
@@ -210,7 +203,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
     manuallyClearFiles = (attachmentName: string) => {
         this.fileAttachmentContainerRef.current.handleRemove(attachmentName);
-    }
+    };
 
     handleSubmit = () => {
         const { onSubmit } = this.props;
@@ -225,20 +218,20 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     renderButtons() {
         const { cancelText, onCancel, submitText, compact } = this.props;
 
-        const button =
+        const button = (
             <Button
-                className={classNames('file-form-submit-btn', {'file-form-submit-btn--compact': compact})}
+                className={classNames('file-form-submit-btn', { 'file-form-submit-btn--compact': compact })}
                 onClick={this.handleSubmit}
                 bsStyle="success"
                 disabled={this.state.attachedFiles.size == 0}
                 title={submitText}
             >
                 {submitText}
-            </Button>;
-
+            </Button>
+        );
 
         if (compact) {
-            return (button)
+            return button;
         } else {
             return (
                 <div className="row top-spacing bottom-spacing">
@@ -248,9 +241,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                         </Button>
                     </div>
                     <div className="col-xs-6">
-                        <div className="pull-right">
-                            {button}
-                        </div>
+                        <div className="pull-right">{button}</div>
                     </div>
                 </div>
             );
@@ -404,7 +395,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             <>
                 <span className="translator--toggle__wizard">
                     <FormSection iconSpacer={false} label={label} showLabel={showLabel}>
-                        <div className={classNames({'file-upload--one-row': compact})}>
+                        <div className={classNames({ 'file-upload--one-row': compact })}>
                             <FileAttachmentContainer
                                 ref={this.fileAttachmentContainerRef}
                                 index={this.props.index}
@@ -420,7 +411,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                                 labelLong={labelLong}
                                 compact={compact}
                             />
-                                {compact && showButtons && this.renderButtons()}
+                            {compact && showButtons && this.renderButtons()}
                         </div>
                     </FormSection>
                 </span>

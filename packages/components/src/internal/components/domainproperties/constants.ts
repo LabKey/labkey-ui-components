@@ -15,9 +15,6 @@
  */
 import { List } from 'immutable';
 
-// This import cannot be shortened or it leads to test failures.
-import { GridColumn } from '../base/Grid';
-
 export const DOMAIN_FIELD_PREFIX = 'domainpropertiesrow';
 export const DOMAIN_FIELD_NAME = 'name';
 export const DOMAIN_FIELD_TYPE = 'type';
@@ -161,33 +158,6 @@ export const DOMAIN_DEFAULT_TYPES = {
     [DOMAIN_NON_EDITABLE_DEFAULT]: 'Fixed value',
     [DOMAIN_LAST_ENTERED_DEFAULT]: 'Last entered',
 };
-
-export const DOMAIN_FIELD_COLS = List([
-    new GridColumn({
-        index: 'name',
-        title: 'Name',
-    }),
-    new GridColumn({
-        index: 'label',
-        title: 'Label',
-    }),
-    new GridColumn({
-        index: 'rangeURI',
-        title: 'Range URI',
-    }),
-    new GridColumn({
-        index: 'conceptURI',
-        title: 'Concept URI',
-    }),
-    new GridColumn({
-        index: 'required',
-        title: 'Required',
-    }),
-    new GridColumn({
-        index: 'scale',
-        title: 'Scale',
-    }),
-]);
 
 export const FIELD_NAME_CHAR_WARNING_MSG = 'Field name contains special characters.';
 export const FIELD_NAME_CHAR_WARNING_INFO =

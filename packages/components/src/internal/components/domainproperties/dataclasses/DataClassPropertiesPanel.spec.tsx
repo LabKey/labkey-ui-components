@@ -2,10 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
-import { Alert } from '../../base/Alert';
+import { Alert, QuerySelect } from '../../../..';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 import { CollapsiblePanelHeader } from '../CollapsiblePanelHeader';
-import { QuerySelect } from '../../forms/QuerySelect';
+
 import { DomainPanelStatus } from '../models';
 import getDomainDetailsJSON from '../../../../test/data/dataclass-getDomainDetails.json';
 

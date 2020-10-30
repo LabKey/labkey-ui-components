@@ -4,9 +4,7 @@ import { Modal } from 'react-bootstrap';
 import { gridInit, schemaGridInvalidate } from '../../actions';
 import { getQueryGridModel } from '../../global';
 
-import { QueryGridModel } from '../base/models/model';
-
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
+import { QueryGridModel, WizardNavButtons } from '../../..';
 
 import { EditableGridPanel } from './EditableGridPanel';
 import { EditableGridProps } from './EditableGrid';

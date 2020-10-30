@@ -15,7 +15,7 @@
  */
 import React, { Component } from 'react';
 
-import { Notification } from '../notifications/Notification';
+import { Notification } from '../../..';
 
 import { User } from './models/User';
 

@@ -6,7 +6,7 @@ import { List, Map, fromJS } from 'immutable';
 
 import { Filter, Security } from '@labkey/api';
 
-import { ISelectRowsResult, selectRows } from '../../query/api';
+import { ISelectRowsResult, selectRows } from '../../..';
 
 import { Principal, SecurityPolicy, SecurityRole } from './models';
 

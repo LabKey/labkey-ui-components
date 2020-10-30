@@ -16,7 +16,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { SecurityPolicy } from '../permissions/models';
+import { SecurityPolicy } from '../../..';
 import { getRolesByUniqueName, processGetRolesResponse } from '../permissions/actions';
 import { initQueryGridState } from '../../global';
 import policyJSON from '../../../test/data/security-getPolicy.json';

@@ -1,23 +1,34 @@
-/*
- * Copyright (c) 2019 LabKey Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+import { fromJS, List, Record } from 'immutable';
+import { buildURL, QueryColumn } from '..';
 import { Ajax, Utils } from '@labkey/api';
 
-import { buildURL } from '../../url/ActionURL';
+export class InferDomainResponse extends Record({
+    data: List<any>(),
+    fields: List<QueryColumn>(),
+}) {
+    data: List<any>;
+    fields: List<QueryColumn>;
 
-import { InferDomainResponse } from './models/model';
+    static create(rawModel): InferDomainResponse {
+        let data = List<any>();
+        let fields = List<QueryColumn>();
+
+        if (rawModel) {
+            if (rawModel.data) {
+                data = fromJS(rawModel.data);
+            }
+
+            if (rawModel.fields) {
+                fields = List(rawModel.fields.map(field => QueryColumn.create(field)));
+            }
+        }
+
+        return new InferDomainResponse({
+            data,
+            fields,
+        });
+    }
+}
 
 export function inferDomainFromFile(file: File, numLinesToInclude: number): Promise<InferDomainResponse> {
     return new Promise((resolve, reject) => {
@@ -62,27 +73,6 @@ export function getServerFilePreview(file: string, numLinesToInclude: number): P
             failure: Utils.getCallbackWrapper(response => {
                 reject('There was a problem retrieving the preview data.');
                 console.error(response);
-            }),
-        });
-    });
-}
-
-export function getUserProperties(userId: number): Promise<any> {
-    return new Promise((resolve, reject) => {
-        return Ajax.request({
-            url: buildURL(
-                'user',
-                'getUserProps.api',
-                { userId },
-                {
-                    container: '/', // always use root container for this API call
-                }
-            ),
-            success: Utils.getCallbackWrapper(response => {
-                resolve(response);
-            }),
-            failure: Utils.getCallbackWrapper(response => {
-                reject(response);
             }),
         });
     });

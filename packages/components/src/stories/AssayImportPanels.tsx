@@ -18,22 +18,27 @@ import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, number, withKnobs } from '@storybook/addon-knobs';
 
-import { gridInit } from '../internal/actions';
-import { getStateQueryGridModel } from '../internal/models';
-import { getQueryGridModel } from '../internal/global';
-import { withFormSteps, WithFormStepsProps } from '../internal/components/forms/FormStep';
+import {
+    gridInit,
+    getStateQueryGridModel,
+    getQueryGridModel,
+    withFormSteps,
+    WithFormStepsProps,
+    AssayImportPanels,
+    getRunPropertiesModel,
+} from '..';
+
 import { RunDataPanel } from '../internal/components/assay/RunDataPanel';
 import { RunPropertiesPanel } from '../internal/components/assay/RunPropertiesPanel';
 import { BatchPropertiesPanel } from '../internal/components/assay/BatchPropertiesPanel';
-import { AssayImportPanels } from '../internal/components/assay/AssayImportPanels';
-import { getRunPropertiesModel } from '../internal/components/assay/actions';
+
 import { AssayReimportHeader } from '../internal/components/assay/AssayReimportHeader';
 
 import { ASSAY_WIZARD_MODEL } from '../test/data/constants';
 import assayDefJSON from '../test/data/assayDefinitionModel.json';
 
 import './stories.scss';
-import { AssayDefinitionModel, AssayUploadTabs } from '../internal/components/base/models/model';
+import { AssayDefinitionModel, AssayUploadTabs } from '../internal/AssayDefinitionModel';
 
 class RunDataPanelWrapperImpl extends React.Component<WithFormStepsProps, any> {
     componentDidMount(): void {

@@ -15,16 +15,21 @@
  */
 import { enableMapSet, enablePatches } from 'immer';
 
-import { GRID_CHECKBOX_OPTIONS } from './internal/components/base/models/constants';
-import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
-import { QueryColumn, QueryLookup } from './public/QueryColumn';
-import { SchemaDetails } from './internal/SchemaDetails';
-import { getSchemaQuery, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
-import { SCHEMAS } from './internal/schemas';
-import { QuerySort } from './public/QuerySort';
-import { isLoading, LoadingState } from './public/LoadingState';
+import { buildURL, createProductUrl, createProductUrlFromParts, AppURL, spliceURL } from './internal/url/AppURL';
+import { hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { Container } from './internal/components/base/models/Container';
 import { hasAllPermissions, User } from './internal/components/base/models/User';
+import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './public/SchemaQuery';
+import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
+import { QuerySort } from './public/QuerySort';
+import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
+import { inferDomainFromFile, InferDomainResponse } from './internal/InferDomainResponse';
+import { ViewInfo } from './internal/ViewInfo';
+import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
+import { SchemaDetails } from './internal/SchemaDetails';
+import { SCHEMAS } from './internal/schemas';
+import { isLoading, LoadingState } from './public/LoadingState';
+
 import {
     ServerContext,
     ServerContextProvider,
@@ -34,19 +39,8 @@ import {
     withAppUser,
 } from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
-import {
-    AssayDefinitionModel,
-    AssayDomainTypes,
-    AssayLink,
-    IGridLoader,
-    IGridResponse,
-    InferDomainResponse,
-    insertColumnFilter,
-    LastActionStatus,
-    MessageLevel,
-    QueryGridModel,
-    ViewInfo,
-} from './internal/components/base/models/model';
+import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/AssayDefinitionModel';
+import { IGridLoader, IGridResponse, QueryGridModel } from './internal/QueryGridModel';
 import {
     applyDevTools,
     capitalizeFirstChar,
@@ -58,18 +52,15 @@ import {
     isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
-    resolveKey,
     toggleDevTools,
     valueIsEmpty,
 } from './internal/util/utils';
-import { getUserProperties, inferDomainFromFile } from './internal/components/base/actions';
+import { getUserProperties } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
-import { buildURL, hasParameter, imageURL, toggleParameter } from './internal/url/ActionURL';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
 import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
-import { AppURL, spliceURL } from './internal/url/AppURL';
 import { Alert } from './internal/components/base/Alert';
 import { DeleteIcon } from './internal/components/base/DeleteIcon';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
@@ -171,14 +162,14 @@ import {
 import { flattenBrowseDataTreeResponse, loadReports } from './internal/query/reports';
 import {
     DataViewInfoTypes,
+    GRID_CHECKBOX_OPTIONS,
     IMPORT_DATA_FORM_TYPES,
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     EXPORT_TYPES,
 } from './internal/constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
-import { URL_MAPPERS, URLResolver } from './internal/util/URLResolver';
-import { ActionMapper, URLService } from './internal/util/URLService';
+import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { getHelpLink, helpLinkNode } from './internal/util/helpLinks';
 import {
     AppRouteResolver,
@@ -186,7 +177,7 @@ import {
     AssayRunResolver,
     ListResolver,
     SamplesResolver,
-} from './internal/util/AppURLResolver';
+} from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
@@ -238,8 +229,6 @@ import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './interna
 import { SchemaListing } from './internal/components/listing/SchemaListing';
 import { QueriesListing } from './internal/components/listing/QueriesListing';
 import { QueriesListingPage } from './internal/components/listing/pages/QueriesListingPage';
-import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
-import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
 import { SchemaListingPage } from './internal/components/listing/pages/SchemaListingPage';
 import { HeatMap } from './internal/components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './internal/components/heatmap/utils';
@@ -322,11 +311,7 @@ import { ITab, SubNav } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
-import {
-    confirmLeaveWhenDirty,
-    createProductUrl,
-    createProductUrlFromParts,
-} from './internal/components/navigation/utils';
+
 import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
 import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
@@ -358,34 +343,20 @@ import {
 import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
 import { SampleTypeModel, MetricUnitProps } from './internal/components/domainproperties/samples/models';
 
-import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
-import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
-import { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
-import {
-    Actions,
-    InjectedQueryModels,
-    MakeQueryModels,
-    QueryConfigMap,
-    QueryModelMap,
-    RequiresModelAndActions,
-    withQueryModels,
-} from './public/QueryModel/withQueryModels';
-import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
-import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
 import { Pagination, PaginationData } from './internal/components/pagination/Pagination';
-import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
-import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
-import { AuditDetails } from './internal/components/auditlog/AuditDetails';
-import { TimelineView } from './internal/components/auditlog/TimelineView';
-import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
 import {
     getQueryModelExportParams,
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
 } from './public/QueryModel/utils';
-import { withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
+import { confirmLeaveWhenDirty, withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
 import * as App from './internal/app';
+import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
+import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
+import { AuditDetails } from './internal/components/auditlog/AuditDetails';
+import { TimelineView } from './internal/components/auditlog/TimelineView';
+import { getEventDataValueDisplay, getTimelineEntityUrl } from './internal/components/auditlog/utils';
 import {
     createFormInputId,
     fetchDomain,
@@ -424,6 +395,22 @@ import { DataClassModel } from './internal/components/domainproperties/dataclass
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
+import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
+import { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
+import {
+    Actions,
+    InjectedQueryModels,
+    MakeQueryModels,
+    QueryConfigMap,
+    QueryModelMap,
+    RequiresModelAndActions,
+    withQueryModels,
+} from './public/QueryModel/withQueryModels';
+import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
+import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
+import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
+import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
+import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();

@@ -17,11 +17,10 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, boolean, withKnobs } from '@storybook/addon-knobs';
 
-import { DataClassDesigner } from '../internal/components/domainproperties/dataclasses/DataClassDesigner';
-import { DataClassModel } from '../internal/components/domainproperties/dataclasses/models';
+import { DataClassDesigner, DataClassModel, IDomainField } from '..';
+
 import getDomainDetailsJSON from '../test/data/dataclass-getDomainDetails.json';
 import './stories.scss';
-import { IDomainField } from '..';
 
 const DEFAULT_NAME_FIELD_CONFIG = {
     name: 'SourceId',

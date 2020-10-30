@@ -3,10 +3,7 @@ import { Utils } from '@labkey/api';
 
 import { List } from 'immutable';
 
-import { ConfirmModal } from '../base/ConfirmModal';
-
-import { Alert } from '../base/Alert';
-import { resolveErrorMessage } from '../../util/messaging';
+import { ConfirmModal, Alert, resolveErrorMessage } from '../../..';
 
 import { deleteUsers } from './actions';
 

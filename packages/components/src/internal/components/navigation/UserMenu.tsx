@@ -17,10 +17,7 @@
 import React from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
 
-import { User } from '../../..';
-import { devToolsActive, toggleDevTools } from '../../util/utils';
-import { buildURL } from '../../url/ActionURL';
-import { AppURL } from '../../url/AppURL';
+import { User, devToolsActive, toggleDevTools, buildURL, AppURL } from '../../..';
 
 import { ProductMenuModel } from './model';
 import { signOut, signIn } from './actions';

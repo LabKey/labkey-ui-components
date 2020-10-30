@@ -18,7 +18,7 @@ import { List, Map } from 'immutable';
 
 import { getSelectedData } from '../../actions';
 import { EditorModel } from '../../models';
-import { IGridLoader, IGridResponse, QueryGridModel } from '../base/models/model';
+import { IGridLoader, IGridResponse, QueryGridModel } from '../../..';
 
 export class EditableGridLoaderFromSelection implements IGridLoader {
     updateData: any;

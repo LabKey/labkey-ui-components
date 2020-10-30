@@ -16,7 +16,7 @@
 import React, { PureComponent } from 'react';
 import { Utils } from '@labkey/api';
 
-import { imageURL } from '../../url/ActionURL';
+import { imageURL } from '../../..';
 
 export enum Theme {
     DEFAULT,

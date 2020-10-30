@@ -2,9 +2,7 @@ import React from 'react';
 import { Checkbox, FormControl, Modal } from 'react-bootstrap';
 import { Security } from '@labkey/api';
 
-import { WizardNavButtons } from '../buttons/WizardNavButtons';
-import { Alert } from '../base/Alert';
-import { SelectInput } from '../forms/input/SelectInput';
+import { WizardNavButtons, Alert, SelectInput } from '../../..';
 
 interface Props {
     onCancel: () => void;

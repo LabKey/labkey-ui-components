@@ -6,6 +6,27 @@ import { buildURL, caseInsensitive, hasAllPermissions, QueryGridModel, SchemaQue
 
 import { ChangePasswordModel } from './models';
 
+export function getUserProperties(userId: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL(
+                'user',
+                'getUserProps.api',
+                { userId },
+                {
+                    container: '/', // always use root container for this API call
+                }
+            ),
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                reject(response);
+            }),
+        });
+    });
+}
+
 export function getUserPermissionsDisplay(user: User): string[] {
     const permissions = [];
 

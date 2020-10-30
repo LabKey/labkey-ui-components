@@ -16,58 +16,9 @@
 import { List, Map, Set, Iterable } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { hasParameter, toggleParameter } from '../url/ActionURL';
-import { naturalSort } from '../..';
+import { hasParameter, toggleParameter } from '../..';
 
 const emptyList = List<string>();
-
-// 36009: Case-insensitive variant of QueryKey.decodePart
-export function decodePart(s: string): string {
-    return s
-        .replace(/\$P/gi, '.')
-        .replace(/\$C/gi, ',')
-        .replace(/\$T/gi, '~')
-        .replace(/\$B/gi, '}')
-        .replace(/\$A/gi, '&')
-        .replace(/\$S/gi, '/')
-        .replace(/\$D/gi, '$');
-}
-
-// 36009: Case-insensitive variant of QueryKey.encodePart
-export function encodePart(s: string): string {
-    return s
-        .replace(/\$/gi, '$D')
-        .replace(/\//gi, '$S')
-        .replace(/\&/gi, '$A')
-        .replace(/\}/gi, '$B')
-        .replace(/\~/gi, '$T')
-        .replace(/\,/gi, '$C')
-        .replace(/\./gi, '$P');
-}
-
-export function resolveKey(schema: string, query: string): string {
-    /*
-       It's questionable if we really need to encodePart schema here and the suspicion is that this would result in double encoding.
-       Since schema is not recognisable by api when not encoded, it would be reasonable to assume the passed in schema is already QueryKey encoded.
-       Though it won't hurt to double encode as long as resolveKey, resolveKeyFromJson and getSchemaQuery have the same assumption on the need to encode/decode
-    */
-    return [encodePart(schema), encodePart(query)].join('/').toLowerCase();
-}
-
-export function resolveKeyFromJson(json: { schemaName: string[]; queryName: string }): string {
-    // if schema parts contain '.', replace with $P, to distinguish from '.' used to separate schema parts
-    // similarly, encode '/' in schema parts, to distinguish from '/' used to separate schema and query parts
-    // schemaName ['assay', 'general', 'a.b/c'] will be will processed to 'assay.general.a$pb$sc'
-    // resolveKey will then further encode schema to assay$pgeneral$pa$dpb$sc
-    return resolveKey(
-        json.schemaName
-            .map(schemaPart => {
-                return encodePart(schemaPart);
-            })
-            .join('.'),
-        json.queryName
-    );
-}
 
 // Case insensitive Object reference. Returns undefined if either object or prop does not resolve.
 // If both casings exist (e.g. 'x' and 'X' are props) then either value may be returned.
@@ -494,12 +445,10 @@ function isFloat(value: number | string): boolean {
 }
 
 function isInteger(value: number | string): boolean {
-    return !isNaN(Number(value)) &&
-        parseInt(value + '') == value &&
-        !isNaN(parseInt(value + '', 10));
+    return !isNaN(Number(value)) && parseInt(value + '') == value && !isNaN(parseInt(value + '', 10));
 }
 
-export function isIntegerInRange(value: number, min: number, max?: number) : boolean {
+export function isIntegerInRange(value: number, min: number, max?: number): boolean {
     return isInteger(value) && (!min || Number(value) >= min) && (!max || Number(value) <= max);
 }
 

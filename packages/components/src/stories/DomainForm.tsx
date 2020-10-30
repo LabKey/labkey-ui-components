@@ -7,7 +7,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { DomainDesign } from '../internal/components/domainproperties/models';
+import { DomainDesign } from '..';
 import { DomainFormImpl } from '../internal/components/domainproperties/DomainForm';
 import { MockLookupProvider } from '../test/components/Lookup';
 import { PHILEVEL_RESTRICTED_PHI } from '../internal/components/domainproperties/constants';

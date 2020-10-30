@@ -16,7 +16,8 @@
 import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
-import { AppURL, AssayProtocolModel, fetchProtocol, getQueryDetails, SCHEMAS, selectRows, spliceURL } from '../..';
+import { AssayProtocolModel, fetchProtocol, getQueryDetails, SCHEMAS, selectRows } from '../..';
+import { AppURL, spliceURL } from './AppURL';
 
 export interface AppRouteResolver {
     matches: (route: string) => boolean;

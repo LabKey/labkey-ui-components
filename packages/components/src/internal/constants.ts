@@ -219,3 +219,12 @@ export enum IMPORT_DATA_FORM_TYPES {
     FILE,
     OTHER,
 }
+
+export const GRID_EDIT_INDEX = '__editing__';
+export const GRID_SELECTION_INDEX = '__selection__';
+
+export enum GRID_CHECKBOX_OPTIONS {
+    ALL,
+    SOME,
+    NONE,
+}

@@ -6,9 +6,7 @@ import React from 'react';
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
-import { LoadingPage } from '../base/LoadingPage';
-
-import { resolveErrorMessage } from '../../..';
+import { LoadingPage, resolveErrorMessage } from '../../..';
 
 import { PermissionsProviderProps, Principal } from './models';
 import {

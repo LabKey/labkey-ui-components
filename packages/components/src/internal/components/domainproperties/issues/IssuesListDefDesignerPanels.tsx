@@ -4,7 +4,7 @@ import produce, { Draft } from 'immer';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 import { getDomainPanelStatus, saveDomain } from '../actions';
-import { resolveErrorMessage } from '../../../util/messaging';
+import { resolveErrorMessage } from '../../../..';
 import DomainForm from '../DomainForm';
 import { DomainDesign } from '../models';
 

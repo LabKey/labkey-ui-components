@@ -21,12 +21,8 @@ import classNames from 'classnames';
 
 import { Sticky, StickyContainer } from 'react-sticky';
 
-import { ActionButton } from '../buttons/ActionButton';
-import { AddEntityButton } from '../buttons/AddEntityButton';
-import { ConfirmModal } from '../base/ConfirmModal';
-import { InferDomainResponse } from '../base/models/model';
-import { FileAttachmentForm } from '../files/FileAttachmentForm';
-import { Alert } from '../base/Alert';
+import { AddEntityButton, ConfirmModal, InferDomainResponse, FileAttachmentForm, Alert } from '../../..';
+
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { blurActiveElement } from '../../util/utils';

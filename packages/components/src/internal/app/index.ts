@@ -45,14 +45,7 @@ import {
     NOTIFICATION_TIMEOUT,
 } from './constants';
 import { AppModel, LogoutReason } from './models';
-import {
-    AppReducers,
-    AppReducerState,
-    RoutingTableState,
-    RoutingTableReducers,
-    ProductMenuState,
-    ProductMenuReducers,
-} from './reducers';
+
 import {
     initWebSocketListeners,
     userCanDesignLocations,
@@ -62,6 +55,15 @@ import {
     getDateFormat,
     getMenuSectionConfigs,
 } from './utils';
+
+import {
+    AppReducers,
+    AppReducerState,
+    RoutingTableState,
+    RoutingTableReducers,
+    ProductMenuState,
+    ProductMenuReducers,
+} from './reducers';
 
 export {
     AppModel,

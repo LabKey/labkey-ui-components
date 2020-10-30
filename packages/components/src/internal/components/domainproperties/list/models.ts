@@ -43,6 +43,7 @@ export class ListModel extends Record({
     modified: undefined,
     containerId: undefined,
     name: undefined,
+    domainKindName: undefined,
     description: undefined,
     lastIndexed: undefined,
     keyName: undefined,
@@ -70,6 +71,7 @@ export class ListModel extends Record({
     exception: string;
     domain: DomainDesign;
     name: string;
+    domainKindName: string;
     description: string;
     lastIndexed: any;
     keyName: string;

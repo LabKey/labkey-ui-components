@@ -3,6 +3,7 @@
     "domainId" : 2280,
     "name" : "NIMHDemographics",
     "domainURI" : "urn:lsid:labkey.com:IntList.Folder-950:NIMHDemographics",
+    "domainKindName": "List",
     "description" : null,
     "container" : "ea23d322-acd6-1037-8e6d-25f311da6f8b",
     "allowFileLinkProperties" : false,

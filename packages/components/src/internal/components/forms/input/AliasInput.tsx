@@ -5,7 +5,7 @@ import { generateId, QueryColumn, SelectInput } from '../../../..';
 interface AliasInputProps {
     col: QueryColumn;
     editing?: boolean;
-    value?: string | Record<string, any>[];
+    value?: string | Array<Record<string, any>>;
     allowDisable?: boolean;
     initiallyDisabled: boolean;
     onToggleDisable?: (disabled: boolean) => void;

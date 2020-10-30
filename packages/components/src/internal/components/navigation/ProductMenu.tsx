@@ -17,7 +17,7 @@ import React from 'react';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
+import { LoadingSpinner } from '../../..';
 
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';

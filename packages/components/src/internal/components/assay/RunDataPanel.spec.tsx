@@ -4,10 +4,10 @@ import renderer from 'react-test-renderer';
 import { getQueryGridModel } from '../../global';
 import { getStateQueryGridModel } from '../../models';
 import { gridInit } from '../../actions';
-import { withFormSteps, WithFormStepsProps } from '../forms/FormStep';
+import { withFormSteps, WithFormStepsProps } from '../../..';
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 import { initUnitTestMocks } from '../../testHelpers';
-import { AssayUploadTabs } from '../base/models/model';
+import { AssayUploadTabs } from '../../AssayDefinitionModel';
 
 import { RunDataPanel } from './RunDataPanel';
 

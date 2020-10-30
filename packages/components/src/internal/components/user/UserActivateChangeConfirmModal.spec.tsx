@@ -17,8 +17,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { List } from 'immutable';
 
-import { QueryGridModel } from '../base/models/model';
-
 import { UserActivateChangeConfirmModal } from './UserActivateChangeConfirmModal';
 
 describe('<UserActivateChangeConfirmModal/>', () => {

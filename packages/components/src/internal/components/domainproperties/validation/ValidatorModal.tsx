@@ -11,7 +11,7 @@ import {
     DOMAIN_REGEX_VALIDATOR,
     DOMAIN_REGEX_VALIDATORS,
 } from '../constants';
-import { AddEntityButton } from '../../buttons/AddEntityButton';
+import { AddEntityButton } from '../../../..';
 
 export interface ValidatorModalProps {
     title: string;

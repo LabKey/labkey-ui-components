@@ -9,13 +9,9 @@ import { storiesOf } from '@storybook/react';
 import { boolean, radios, text, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { Notification } from '../internal/components/notifications/Notification';
+import { Notification, createNotification, User, NotificationItemModel, generateId } from '..';
 
 import { notificationInit } from '../test/setupUtils';
-import { createNotification } from '../internal/components/notifications/actions';
-import { User } from '..';
-import { NotificationItemModel } from '../internal/components/notifications/model';
-import { generateId } from '../internal/util/utils';
 
 // initialize the global state and the LABKEY object
 notificationInit();

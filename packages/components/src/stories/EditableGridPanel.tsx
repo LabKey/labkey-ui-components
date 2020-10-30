@@ -33,7 +33,7 @@ import './stories.scss';
 
 import { PlacementType } from '../internal/components/editable/Controls';
 
-import { GRID_EDIT_INDEX } from '../internal/components/base/models/constants';
+import { GRID_EDIT_INDEX } from '../internal/constants';
 
 const CONTROLS_GROUP = 'Grid controls';
 const PANEL_GROUP = 'Grid';

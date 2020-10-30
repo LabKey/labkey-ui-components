@@ -17,8 +17,7 @@ import React from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { Tip } from '../base/Tip';
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel, Tip } from '../../..';
 import { setMaxRows } from '../../actions';
 
 const DEFAULT_SIZE_OPTIONS = List.of(20, 40, 100, 250, 400);

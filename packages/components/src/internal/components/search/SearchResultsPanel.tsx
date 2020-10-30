@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Map } from 'immutable';
 import { Panel } from 'react-bootstrap';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from '../base/Alert';
+import { LoadingSpinner, Alert } from '../../..';
+
 import { helpLinkNode, SEARCH_SYNTAX_TOPIC } from '../../util/helpLinks';
 
 import { SearchResultCard } from './SearchResultCard';

@@ -17,7 +17,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 
-import { Progress } from '../internal/components/base/Progress';
+import { Progress } from '..';
 
 storiesOf('Progress', module)
     .addDecorator(withKnobs)

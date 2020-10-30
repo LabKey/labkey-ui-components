@@ -3,7 +3,7 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { List } from 'immutable';
 
-import { LabelHelpTip } from '../base/LabelHelpTip';
+import { LabelHelpTip } from '../../..';
 
 import { FIELD_EDITOR_SAMPLE_TYPES_TOPIC, helpLinkNode } from '../../util/helpLinks';
 

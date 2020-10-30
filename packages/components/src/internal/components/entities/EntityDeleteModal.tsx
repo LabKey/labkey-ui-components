@@ -11,7 +11,6 @@ import {
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
     deleteRows,
-    NotificationItemProps,
 } from '../../..';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';

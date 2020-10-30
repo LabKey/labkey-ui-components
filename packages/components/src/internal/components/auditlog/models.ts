@@ -3,8 +3,8 @@
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
 import { fromJS, Map, Record, List } from 'immutable';
-import { App } from "../../..";
-import { SAMPLES_KEY } from "../../app";
+
+import { App } from '../../..';
 
 export class AuditDetailsModel extends Record({
     rowId: undefined,
@@ -125,34 +125,26 @@ export class TimelineEventModel extends Record({
         return this.entity && event.entity && this.entity.get('value') === event.entity.get('value');
     }
 
-    getComment() : string {
-        if (!this.metadata)
-            return undefined;
-        const commentField = this.metadata.find((metadataRow) => (metadataRow.get('field').toLowerCase() === 'comment'));
-        if (commentField)
-            return commentField.get('value');
+    getComment(): string {
+        if (!this.metadata) return undefined;
+        const commentField = this.metadata.find(metadataRow => metadataRow.get('field').toLowerCase() === 'comment');
+        if (commentField) return commentField.get('value');
         return undefined;
     }
 
     getIcon(): string {
         let icon = this.eventType;
 
-        if (App.ASSAYS_KEY === this.eventType)
-            icon = 'assay';
+        if (App.ASSAYS_KEY === this.eventType) icon = 'assay';
         else if (this.eventType === 'inventory') {
             const summary = this.summary.toLowerCase();
-            if (summary.indexOf('added to') > -1)
-                icon = 'storage_insert';
-            else if (summary.indexOf('discarded') > -1)
-                icon = 'storage_remove';
-            else if (summary.indexOf('checked in') > -1)
-                icon = 'storage_checkin';
-            else if (summary.indexOf('checked out') > -1)
-                icon = 'storage_checkout';
-            else if (summary.indexOf('moved') > -1)
-                icon = 'storage_move';
-            else // for storage update events not associated with check in, use samples icon
-                icon = SAMPLES_KEY;
+            if (summary.indexOf('added to') > -1) icon = 'storage_insert';
+            else if (summary.indexOf('discarded') > -1) icon = 'storage_remove';
+            else if (summary.indexOf('checked in') > -1) icon = 'storage_checkin';
+            else if (summary.indexOf('checked out') > -1) icon = 'storage_checkout';
+            else if (summary.indexOf('moved') > -1) icon = 'storage_move';
+            // for storage update events not associated with check in, use samples icon
+            else icon = App.SAMPLES_KEY;
         }
 
         return icon;

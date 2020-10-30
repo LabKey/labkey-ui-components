@@ -15,7 +15,7 @@
  */
 import React from 'react';
 
-import { SVGIcon } from '../base/SVGIcon';
+import { SVGIcon } from '../../..';
 
 import { SearchResultCardData } from './models';
 

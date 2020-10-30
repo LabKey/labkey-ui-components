@@ -51,7 +51,7 @@ import {
     WizardNavButtons,
 } from '../../..';
 
-import { AssayUploadTabs } from '../base/models/model';
+import { AssayUploadTabs } from '../../AssayDefinitionModel';
 
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';

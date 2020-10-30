@@ -5,13 +5,11 @@ import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import classNames from 'classnames';
 
-import { IParentOption } from '../entities/models';
+import { IParentOption, SelectInput, RemoveEntityButton } from '../../..';
 import { IParentAlias } from '../domainproperties/samples/models';
 
-import { SelectInput } from '../forms/input/SelectInput';
-
 import { PARENT_ALIAS_HELPER_TEXT } from '../../constants';
-import { RemoveEntityButton } from '../buttons/RemoveEntityButton';
+
 import { DomainFieldLabel } from '../domainproperties/DomainFieldLabel';
 
 interface IParentAliasRow {

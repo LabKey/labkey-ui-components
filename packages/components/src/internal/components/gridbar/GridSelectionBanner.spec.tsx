@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { Button } from 'react-bootstrap';
 
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel } from '../../..';
 
 import { GridSelectionBanner } from './GridSelectionBanner';
 

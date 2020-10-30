@@ -17,7 +17,7 @@ import React from 'react';
 import ReactN from 'reactn';
 import { List, Map } from 'immutable';
 
-import { QUERY_GRID_PREFIX } from '../constants';
+import { GRID_CHECKBOX_OPTIONS, QUERY_GRID_PREFIX, GRID_SELECTION_INDEX } from '../constants';
 import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGridSelected } from '../actions';
 import { getStateModelId, getStateQueryGridModel } from '../models';
 import { headerCell, headerSelectionCell } from '../renderers';
@@ -36,8 +36,6 @@ import {
 } from '../..';
 
 import { getRouteFromLocationHash } from '../util/URL';
-
-import { GRID_CHECKBOX_OPTIONS, GRID_SELECTION_INDEX } from './base/models/constants';
 
 interface QueryGridProps {
     model?: QueryGridModel;

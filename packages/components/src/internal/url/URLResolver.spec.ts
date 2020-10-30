@@ -6,7 +6,7 @@ import { LineageResult } from '../components/lineage/models';
 
 import { registerDefaultURLMappers } from '../testHelpers';
 
-import { URLResolver } from './URLResolver';
+import { parsePathName, URLResolver } from './URLResolver';
 
 beforeAll(() => {
     registerDefaultURLMappers();
@@ -76,5 +76,25 @@ describe('resolveLineage', () => {
 
         expect(resolvedLinks.list).toEqual(undefined);
         expect(resolvedLinks.overview).toEqual('/labkey/ExampleLineage/experiment-showRunGraph.view?rowId=794');
+    });
+});
+
+describe('parsePathName', () => {
+    test('old style', () => {
+        const url = '/labkey/controller/my%20folder/my%20path/action.view?extra=123';
+        expect(parsePathName(url)).toEqual({
+            controller: 'controller',
+            action: 'action',
+            containerPath: '/my folder/my path',
+        });
+    });
+
+    test('new style', () => {
+        const url = '/labkey/my%20folder/my%20path/controller-action.view?extra=123';
+        expect(parsePathName(url)).toEqual({
+            controller: 'controller',
+            action: 'action',
+            containerPath: '/my folder/my path',
+        });
     });
 });

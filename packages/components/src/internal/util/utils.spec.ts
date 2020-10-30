@@ -25,39 +25,11 @@ import {
     isIntegerInRange,
     isNonNegativeFloat,
     isNonNegativeInteger,
-    resolveKey,
-    resolveKeyFromJson,
     toLowerSafe,
     unorderedEqual,
 } from './utils';
 
 const emptyList = List<string>();
-
-describe('resolveKey', () => {
-    test('no encodings', () => {
-        expect(resolveKey('schema', 'query')).toBe('schema/query');
-        expect(resolveKey('Schema', 'Query')).toBe('schema/query');
-        expect(resolveKey('ScheMa', 'QueRy')).toBe('schema/query');
-    });
-
-    test('with encodings', () => {
-        expect(resolveKey('$chem&', '{query,/.more~less}')).toBe('$dchem$a/{query$c$s$pmore$tless$b');
-        expect(resolveKey('$,hema$', 'q&x&&&d')).toBe('$d$chema$d/q$ax$a$a$ad');
-    });
-});
-
-describe('resolveKeyFromJson', () => {
-    test('schema name with one part', () => {
-        expect(resolveKeyFromJson({ schemaName: ['partOne'], queryName: 'q/Name' })).toBe('partone/q$sname');
-        expect(resolveKeyFromJson({ schemaName: ['p&rtOne'], queryName: '//$Name' })).toBe('p$dartone/$s$s$dname');
-    });
-
-    test('schema name with multiple parts', () => {
-        expect(resolveKeyFromJson({ schemaName: ['one', 'Two', 'thrEE$'], queryName: 'four' })).toBe(
-            'one$ptwo$pthree$dd/four'
-        );
-    });
-});
 
 describe('intersect', () => {
     test('with matches', () => {

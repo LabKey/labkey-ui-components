@@ -10,11 +10,11 @@ import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import { DomainException } from '../internal/components/domainproperties/models';
-import { AssayProtocolModel } from '../internal/components/domainproperties/assay/models';
+import { AssayProtocolModel, AssayDesignerPanels, Alert } from '..';
 import { setAssayDomainException } from '../internal/components/domainproperties/assay/actions';
-import { AssayDesignerPanels } from '../internal/components/domainproperties/assay/AssayDesignerPanels';
+
 import { SEVERITY_LEVEL_ERROR } from '../internal/components/domainproperties/constants';
-import { Alert } from '../internal/components/base/Alert';
+
 import generalAssayTemplate from '../test/data/assay-getProtocolGeneralTemplate.json';
 import generalAssaySaved from '../test/data/assay-getProtocolGeneral.json';
 import generalAssayDupes from '../test/data/assay-getProtocolGeneralDuplicateFields.json';

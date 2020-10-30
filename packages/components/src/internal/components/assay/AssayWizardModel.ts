@@ -11,7 +11,7 @@ import {
     QueryGridModel,
     QueryInfo,
 } from '../../..';
-import { AssayUploadTabs } from '../base/models/model';
+import { AssayUploadTabs } from '../../AssayDefinitionModel';
 import { generateNameWithTimestamp } from '../../util/Date';
 
 // exported for jest testing

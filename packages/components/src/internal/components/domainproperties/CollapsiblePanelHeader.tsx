@@ -4,7 +4,7 @@ import { Panel } from 'react-bootstrap';
 import { faCheckCircle, faExclamationCircle, faMinusSquare, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { LabelHelpTip } from '../base/LabelHelpTip';
+import { LabelHelpTip } from '../../..';
 
 import { DomainPanelStatus } from './models';
 

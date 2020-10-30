@@ -18,8 +18,7 @@ import { fromJS, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import { PageDetailHeader } from '../internal/components/forms/PageDetailHeader';
-import { CreatedModified } from '../internal/components/base/CreatedModified';
+import { PageDetailHeader, CreatedModified } from '..';
 
 import { ICON_URL } from './mock';
 import './stories.scss';

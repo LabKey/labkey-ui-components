@@ -5,13 +5,13 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 import { List, Map } from 'immutable';
 import { Security } from '@labkey/api';
 
-import { SecurityPolicy, SecurityRole } from '../internal/components/permissions/models';
+import { SecurityPolicy, SecurityRole, SiteUsersGridPanel } from '..';
 import { getRolesByUniqueName, processGetRolesResponse } from '../internal/components/permissions/actions';
-import { SiteUsersGridPanel } from '../internal/components/user/SiteUsersGridPanel';
+
 import policyJSON from '../test/data/security-getPolicy.json';
 import './stories.scss';
 import { SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../test/data/constants';

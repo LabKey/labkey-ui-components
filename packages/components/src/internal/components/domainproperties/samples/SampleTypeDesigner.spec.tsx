@@ -3,11 +3,9 @@ import { Map } from 'immutable';
 import { mount } from 'enzyme';
 import renderer from 'react-test-renderer';
 
-import { Alert } from '../../base/Alert';
+import { Alert, FileAttachmentForm } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import DomainForm from '../DomainForm';
-
-import { FileAttachmentForm } from '../../files/FileAttachmentForm';
 
 import { DomainDetails } from '../models';
 

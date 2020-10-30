@@ -18,11 +18,10 @@ import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { fromJS, List } from 'immutable';
+import { List } from 'immutable';
 
-import { DataClassDataType } from '..';
+import { DataClassDataType, IEntityTypeOption } from '..';
 import { SingleParentEntityPanel } from '../internal/components/entities/SingleParentEntityPanel';
-import { IEntityTypeOption } from '../internal/components/entities/models';
 
 const parentTypeOptions = List<IEntityTypeOption>([
     {

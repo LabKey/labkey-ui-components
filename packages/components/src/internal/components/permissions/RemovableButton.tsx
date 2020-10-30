@@ -6,7 +6,7 @@ import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import { List } from 'immutable';
 
-import { Tip } from '../base/Tip';
+import { Tip } from '../../..';
 
 interface Props {
     id: number;

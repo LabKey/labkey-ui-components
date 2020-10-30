@@ -29,8 +29,8 @@ import {
 import { genCellKey } from './actions';
 import { getQueryColumnRenderers, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
-import { GRID_EDIT_INDEX } from './components/base/models/constants';
-import { IQueryGridModel } from './components/base/models/model';
+import { GRID_EDIT_INDEX } from './constants';
+import { IQueryGridModel } from './QueryGridModel';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
@@ -47,6 +47,7 @@ export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyVal
 
 export type PropsInitializer = () => IQueryGridModel;
 
+// TODO: Move to QueryGridModel.ts
 /**
  * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
  * @param gridId

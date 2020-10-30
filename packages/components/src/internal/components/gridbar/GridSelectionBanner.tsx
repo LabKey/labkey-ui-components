@@ -18,7 +18,7 @@ import { Button } from 'react-bootstrap';
 import { Map } from 'immutable';
 
 import { gridClearAll, gridSelectAll } from '../../actions';
-import { QueryGridModel } from '../base/models/model';
+import { QueryGridModel } from '../../..';
 
 interface Props {
     containerCls?: string;

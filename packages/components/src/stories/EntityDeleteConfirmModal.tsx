@@ -17,10 +17,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import './stories.scss';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 
-import { EntityDeleteConfirmModal } from '..';
-import { SampleTypeDataType } from '../internal/components/entities/constants';
+import { EntityDeleteConfirmModal, SampleTypeDataType } from '..';
 
 storiesOf('EntityDeleteConfirmModal', module)
     .addDecorator(withKnobs)

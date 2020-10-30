@@ -1,7 +1,7 @@
 import { fromJS, Map, OrderedMap, Record, Set } from 'immutable';
 
 import { DomainDesign, DomainDetails, IDomainField } from '../models';
-import { IParentOption } from '../../entities/models';
+import { IParentOption } from '../../../..';
 
 export class SampleTypeModel extends Record({
     rowId: undefined,

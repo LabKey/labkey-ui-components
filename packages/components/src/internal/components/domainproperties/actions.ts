@@ -330,7 +330,7 @@ export function processJsonImport(content: string, domain:DomainDesign): SimpleR
         }
 
         if (!domainType?.includes('List') && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
-            return {success: false, msg: `Error on importing field '${field.name}': Domain type '${domainType}' does not support fields with an externally defined Primary Key.`};
+            return {success: false, msg: `Error on importing field '${field.name}': ${domainType || 'This'} domain type does not support fields with an externally defined Primary Key.`};
         }
 
         // These values are set server-side during a save

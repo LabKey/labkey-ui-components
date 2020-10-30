@@ -29,7 +29,6 @@ import { blurActiveElement } from '../../util/utils';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
-    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     PHILEVEL_NOT_PHI,
@@ -71,7 +70,8 @@ import { SimpleResponse } from "../files/models";
 import { ATTACHMENT_TYPE, FILE_TYPE, FLAG_TYPE, PROP_DESC_TYPES, PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
-import {generateNameWithTimestamp} from "../../util/Date";
+import { generateNameWithTimestamp } from "../../util/Date";
+import { ActionButton } from "../buttons/ActionButton";
 
 interface IDomainFormInput {
     domain: DomainDesign;

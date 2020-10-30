@@ -205,6 +205,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                     return (
                         <DomainForm
                             key={domain.domainId || i}
+                            index={domain.domainId || i}
                             domainIndex={i}
                             domain={domain}
                             headerPrefix={protocolModel.name}

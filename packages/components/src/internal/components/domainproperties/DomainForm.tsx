@@ -96,6 +96,7 @@ interface IDomainFormInput {
     todoIconHelpMsg?: string;
     showInferFromFile?: boolean;
     useTheme?: boolean;
+    index?: number; // Used in AssayDesignerPanels for distinguishing FileAttachmentForms
     appDomainHeaderRenderer?: HeaderRenderer;
     maxPhiLevel?: string; // Just for testing, only affects display
     containerTop?: number; // This sets the top of the sticky header, default is 0
@@ -721,7 +722,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderEmptyDomain() {
-        const { allowImportExport } = this.props;
+        const { allowImportExport, index } = this.props;
         const shouldShowInferFromFile = this.shouldShowInferFromFile();
         if (shouldShowInferFromFile || allowImportExport) {
             let acceptedFormats = [];
@@ -749,6 +750,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         allowDirectories={false}
                         allowMultiple={false}
                         label={label}
+                        index={index}
                         onFileRemoval={() => this.setState(() => ({ filePreviewMsg: undefined }))}
                         previewGridProps={shouldShowInferFromFile && {
                             previewCount: 3,

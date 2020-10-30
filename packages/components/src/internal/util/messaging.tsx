@@ -19,8 +19,10 @@ export function getActionErrorMessage(
 }
 
 const IllegalArgumentMessage = 'java.lang.illegalargumentexception:';
+const ClassCastMessage = 'cannot be cast to class';
+const NullPointerExceptionMessage = 'java.lang.nullpointerexception';
 
-export function resolveErrorMessage(error: any, noun: string = undefined, nounPlural?: string, verb?: string): string {
+export function resolveErrorMessage(error: any, noun: string = 'data', nounPlural?: string, verb?: string): string {
     let errorMsg;
     if (!error) {
         return undefined;
@@ -41,11 +43,11 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
             lcMessage.indexOf('violation of unique key constraint') >= 0 ||
             lcMessage.indexOf('cannot insert duplicate key row') >= 0
         ) {
-            return `There was a problem ${verb || 'creating'} your ${noun}.  Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${nounPlural || noun} are still valid.`;
-        } else if (lcMessage.indexOf('bad sql grammar') >= 0) {
-            return `There was a problem ${verb || 'creating'} your ${noun}.  Check that the format of the data matches the expected type for each field.`;
+            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check the existing ${nounPlural || noun} for possible duplicates and make sure any referenced ${nounPlural || noun} are still valid.`;
+        } else if (lcMessage.indexOf('bad sql grammar') >= 0 || lcMessage.indexOf(ClassCastMessage) >= 0) {
+            return `There was a problem ${verb || 'creating'} your ${noun || 'data'}.  Check that the format of the data matches the expected type for each field.`;
         } else if (lcMessage.indexOf('existing row was not found') >= 0) {
-            return `We could not find the ${noun} ${verb ? 'to ' + verb : ''}.  Try refreshing your page to see if it has been deleted.`;
+            return `We could not find the ${noun || 'data'} ${verb ? 'to ' + verb : ''}.  Try refreshing your page to see if it has been deleted.`;
         } else if (
             lcMessage.indexOf('communication failure') >= 0 ||
             lcMessage.match(/query.*in schema.*doesn't exist/) !== null ||
@@ -59,8 +61,9 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
             return errorMsg.substring(startIndex + IllegalArgumentMessage.length).trim();
         } else if (lcMessage.indexOf('at least one of "file", "runfilepath", or "datarows" is required') >= 0) {
             return `No data provided for ${verb || 'import'}.`;
+        } else if (lcMessage.indexOf(NullPointerExceptionMessage) >= 0) {
+            return `There was a problem ${verb || 'processing'} your ${noun || 'data'}. This may be a problem in the application. Contact your administrator.`;
         }
-
     }
     return errorMsg;
 }

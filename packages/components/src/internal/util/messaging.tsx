@@ -20,6 +20,7 @@ export function getActionErrorMessage(
 
 const IllegalArgumentMessage = 'java.lang.illegalargumentexception:';
 const ClassCastMessage = 'cannot be cast to class';
+const NullPointerExceptionMessage = 'java.lang.nullpointerexception';
 
 export function resolveErrorMessage(error: any, noun: string = undefined, nounPlural?: string, verb?: string): string {
     let errorMsg;
@@ -60,6 +61,8 @@ export function resolveErrorMessage(error: any, noun: string = undefined, nounPl
             return errorMsg.substring(startIndex + IllegalArgumentMessage.length).trim();
         } else if (lcMessage.indexOf('at least one of "file", "runfilepath", or "datarows" is required') >= 0) {
             return `No data provided for ${verb || 'import'}.`;
+        } else if (lcMessage.indexOf(NullPointerExceptionMessage) >= 0) {
+            return `There was a problem ${verb || 'processing'} your ${noun}. This may be a problem in the application. Contact your administrator.`;
         }
     }
     return errorMsg;

@@ -432,15 +432,15 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('test showInferFromFile click domain-form-add-link', () => {
+    test('test showInferFromFile click domain-form-manual-btn', () => {
         const component = <DomainFormContainer showInferFromFile={true} />;
 
         const wrapper = mount(component);
         expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
-        expect(wrapper.find('.domain-form-add-link')).toHaveLength(1);
-        wrapper.find('.domain-form-add-link').last().simulate('click');
+        expect(wrapper.find('.domain-form-manual-btn')).toHaveLength(1);
+        wrapper.find('.domain-form-manual-btn>span').simulate('click');
         expect(wrapper.find(FileAttachmentForm)).toHaveLength(0);
-        expect(wrapper.find('.domain-form-add-link')).toHaveLength(0);
+        expect(wrapper.find('.domain-form-manual-btn')).toHaveLength(0);
         expect(wrapper.find(DomainRow)).toHaveLength(1);
         wrapper.unmount();
     });
@@ -497,7 +497,7 @@ describe('DomainForm', () => {
         expect(helpLink.length).toEqual(1);
 
         // Search field test
-        const searchField = form.find({ className: 'form-control', placeholder: 'Search Fields' });
+        const searchField = form.find({ className: 'domain-search-input' });
         expect(searchField.length).toEqual(1);
         searchField.props().onChange({ target: { value: 'abcd' } });
 

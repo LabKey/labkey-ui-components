@@ -36,7 +36,9 @@ class WrappedNew extends React.Component<any, any> {
         super(props);
 
         const model = ListModel.create(null, this.props.data);
-        this.state = { model };
+        const modelWithDomainKindName = model.set("domainKindName", "List"); // Gets set server-side
+
+        this.state = { modelWithDomainKindName };
     }
 
     onRadioChange = e => {

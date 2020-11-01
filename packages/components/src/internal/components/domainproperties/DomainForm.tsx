@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 import React from 'react';
-import { List } from 'immutable';
+import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
+import classNames from 'classnames';
 
 import { Sticky, StickyContainer } from 'react-sticky';
 
@@ -37,6 +38,7 @@ import { LookupProvider } from './Lookup/Context';
 import {
     addDomainField,
     clearAllClientValidationErrors,
+    downloadJsonFile,
     getDomainAlertClasses,
     getDomainHeaderName,
     getDomainPanelClass,
@@ -44,6 +46,8 @@ import {
     getIndexFromId,
     getMaxPhiLevel,
     handleDomainUpdates,
+    mergeDomainFields,
+    processJsonImport,
     removeField,
     setDomainFields,
     updateDomainPanelClassList,
@@ -62,9 +66,12 @@ import {
     IFieldChange,
     DomainFieldIndexChange,
 } from './models';
+import { SimpleResponse } from "../files/models";
 import { ATTACHMENT_TYPE, FILE_TYPE, FLAG_TYPE, PROP_DESC_TYPES, PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
+import { generateNameWithTimestamp } from "../../util/Date";
+import { ActionButton } from "../buttons/ActionButton";
 
 interface IDomainFormInput {
     domain: DomainDesign;
@@ -81,9 +88,11 @@ interface IDomainFormInput {
     panelStatus?: DomainPanelStatus;
     headerPrefix?: string; // used as a string to remove from the heading when using the domain.name
     headerTitle?: string;
+    allowImportExport?: boolean;
     todoIconHelpMsg?: string;
     showInferFromFile?: boolean;
     useTheme?: boolean;
+    index?: number; // Used in AssayDesignerPanels for distinguishing FileAttachmentForms
     appDomainHeaderRenderer?: HeaderRenderer;
     maxPhiLevel?: string; // Just for testing, only affects display
     containerTop?: number; // This sets the top of the sticky header, default is 0
@@ -355,6 +364,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         } else this.applyAddField();
     };
 
+    onExportFields = () => {
+        const { domain } = this.props;
+        let fields = domain.fields;
+        let filteredFields = fields.filter((field: DomainField) => field.visible);
+        let fieldData = filteredFields.map(field => DomainField.serialize(field, false)).toArray();
+        const fieldsJson = JSON.stringify(fieldData, null, 4);
+
+        downloadJsonFile(fieldsJson, generateNameWithTimestamp('Fields') + '.fields.json');
+    };
+
     onAddField = () => {
         this.applyAddField();
     };
@@ -517,26 +536,27 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderAddFieldOption() {
-        const { domainFormDisplayOptions } = this.props;
+        const { domain, domainFormDisplayOptions, allowImportExport } = this.props;
+        const hasFields = domain.fields.size > 0;
 
         if (!domainFormDisplayOptions.hideAddFieldsButton) {
-            if (this.shouldShowInferFromFile()) {
+            if (!hasFields && (this.shouldShowInferFromFile() || allowImportExport)) {
                 return (
-                    <div className="margin-top">
-                        or&nbsp;
-                        <span className="domain-form-add-link" onClick={this.initNewDesign}>
-                            manually define fields
-                        </span>
+                    <div className="margin-top domain-form-manual-section">
+                        <p>Or</p>
+                        <ActionButton buttonClass="domain-form-manual-btn" onClick={this.initNewDesign}>
+                            Manually Define Fields
+                        </ActionButton>
                     </div>
                 );
             } else {
-                // TODO remove domain-form-add-btn after use in 19.3
                 return (
                     <Row className="domain-add-field-row">
                         <Col xs={12}>
                             <AddEntityButton
                                 entity="Field"
                                 buttonClass="domain-form-add-btn"
+                                containerClass="pull-right"
                                 onClick={this.onAddField}
                             />
                         </Col>
@@ -661,30 +681,87 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
+    importFieldsFromJson = (file: File): Promise<SimpleResponse> => {
+        const { domain, onChange } = this.props;
+
+        return new Promise((resolve, reject) => {
+            let content = '';
+            const reader = new FileReader();
+
+            // Waits until file is loaded
+            reader.onloadend = function(e: any) {
+                // Catches malformed JSON
+                try {
+                    content = e.target.result;
+                    const response = processJsonImport(content, domain);
+
+                    if (!response.success) {
+                        return resolve(response);
+                    } else {
+                        const tsFields = response.fields;
+                        if (onChange) {
+                            onChange(mergeDomainFields(domain, tsFields), true);
+                        }
+                        resolve({success: true});
+                    }
+                } catch (e) {
+                    reject({success: false, msg: e.toString()});
+                }
+            };
+
+            reader.onerror = function(error: any) {
+                reject({success: false, msg: error.toString()});
+            };
+
+            reader.readAsText(file);
+        });
+    };
+
     renderEmptyDomain() {
-        if (this.shouldShowInferFromFile()) {
+        const { allowImportExport, index } = this.props;
+        const shouldShowInferFromFile = this.shouldShowInferFromFile();
+        if (shouldShowInferFromFile || allowImportExport) {
+            let acceptedFormats = [];
+            if (shouldShowInferFromFile) {
+                acceptedFormats = acceptedFormats.concat(['.csv', '.tsv', '.txt', '.xls', '.xlsx']);
+            }
+            if (allowImportExport) {
+                acceptedFormats = acceptedFormats.concat(['.json']);
+            }
+
+            let label;
+            if (allowImportExport && shouldShowInferFromFile) {
+                label = "Import or infer fields from file";
+            } else if (allowImportExport) {
+                label = "Import fields from file";
+            } else {
+                label = "Infer fields from file";
+            }
+
             return (
                 <>
                     <FileAttachmentForm
-                        acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
+                        acceptedFormats={acceptedFormats.join(', ')}
                         showAcceptedFormats={true}
                         allowDirectories={false}
                         allowMultiple={false}
-                        label="Infer fields from file"
+                        label={label}
+                        index={index}
                         onFileRemoval={() => this.setState(() => ({ filePreviewMsg: undefined }))}
-                        previewGridProps={{
+                        previewGridProps={shouldShowInferFromFile && {
                             previewCount: 3,
                             skipPreviewGrid: true,
                             onPreviewLoad: this.handleFilePreviewLoad,
                         }}
+                        fileSpecificCallback={Map({'.json': this.importFieldsFromJson})}
                     />
-                    {this.state.filePreviewMsg && <Alert bsStyle="info">{this.state.filePreviewMsg}</Alert>}
+                    {shouldShowInferFromFile && this.state.filePreviewMsg && <Alert bsStyle="info">{this.state.filePreviewMsg}</Alert>}
                 </>
             );
         } else {
             return (
                 <Panel className="domain-form-no-field-panel">
-                    No fields created yet. Add some using the button below.
+                    No fields created yet. Click the 'Add Field' button to get started.
                 </Panel>
             );
         }
@@ -743,28 +820,50 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     }
 
-    renderSearchField() {
-        const { domain, domainIndex } = this.props;
+    renderToolbar() {
+        const { domain, domainIndex, allowImportExport, domainFormDisplayOptions } = this.props;
         const { fields } = domain;
+        const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
 
         return (
-            <Row>
-                <Col xs={3}>
-                    <FormControl
-                        id={'domain-search-name-' + domainIndex}
-                        type="text"
-                        placeholder="Search Fields"
-                        onChange={this.onSearch}
-                    />
+            <Row className="domain-field-toolbar">
+                <Col xs={4}>
+                    {!domainFormDisplayOptions.hideAddFieldsButton &&
+                        <AddEntityButton
+                            entity="Field"
+                            containerClass="container--toolbar-button"
+                            buttonClass="domain-toolbar-add-btn"
+                            onClick={this.onAddField}
+                        />
+                    }
+                    {allowImportExport &&
+                        <ActionButton
+                            containerClass="container--toolbar-button"
+                            buttonClass="domain-toolbar-export-btn"
+                            onClick={this.onExportFields}
+                            disabled={disableExport}
+                        >
+                            <i className="fa fa-download domain-toolbar-export-btn-icon" /> Export
+                        </ActionButton>
+                    }
                 </Col>
-                {this.state.filtered && (
-                    <Col xs={9}>
-                        <div className="domain-search-text">
-                            Showing {fields.filter(f => f.visible).size} of {fields.size} field
-                            {fields.size > 1 ? 's' : ''}.
-                        </div>
-                    </Col>
-                )}
+                <Col xs={8}>
+                    <div className="pull-right">
+                        {this.state.filtered && (
+                            <span className="domain-search-text">
+                                Showing {fields.filter(f => f.visible).size} of {fields.size} field
+                                {fields.size > 1 ? 's' : ''}.
+                            </span>
+                        )}
+                        <FormControl
+                            id={'domain-search-name-' + domainIndex}
+                            className="domain-search-input"
+                            type="text"
+                            placeholder="Search Fields"
+                            onChange={this.onSearch}
+                        />
+                    </div>
+                </Col>
             </Row>
         );
     }
@@ -793,15 +892,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
+            allowImportExport
         } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
+        const hasFields = domain.fields.size > 0;
 
         return (
             <>
+                {(hasFields || !(this.shouldShowInferFromFile() || allowImportExport)) && this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && this.renderAppDomainHeader()}
-                {(filtered || domain.fields.size > 1) && this.renderSearchField()}
-                {domain.fields.size > 0 ? (
+                {hasFields ? (
                     <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
                         <StickyContainer>
                             <Sticky topOffset={containerTop ? -1 * containerTop : 0}>
@@ -879,6 +980,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             fieldsAdditionalRenderer,
             domainFormDisplayOptions,
             todoIconHelpMsg,
+            allowImportExport
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
@@ -886,6 +988,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domain.fields.size > 0
                 ? '' + domain.fields.size + ' Field' + (domain.fields.size > 1 ? 's' : '') + ' Defined'
                 : undefined;
+        const hasFields = domain.fields.size > 0;
+        const styleToolbar = !hasFields && (this.shouldShowInferFromFile() || allowImportExport);
 
         return (
             <>
@@ -913,7 +1017,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             {children}
                         </CollapsiblePanelHeader>
                     )}
-                    <Panel.Body collapsible={collapsible || controlledCollapse}>
+                    <Panel.Body
+                        className={classNames({ 'domain-field-top-noBuffer': !styleToolbar })}
+                        collapsible={collapsible || controlledCollapse}
+                    >
                         {this.domainExists(domain) ? this.renderForm() : <Alert>Invalid domain design.</Alert>}
 
                         {fieldsAdditionalRenderer && fieldsAdditionalRenderer()}

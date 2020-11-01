@@ -43,6 +43,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
         Immutable.Record {
           "name": "Run Fields",
@@ -63,6 +64,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
         Immutable.Record {
           "name": "Data Fields",
@@ -83,6 +85,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
       ],
       "editableResults": false,
@@ -149,6 +152,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
           Immutable.Record {
             "name": "Run Fields",
@@ -169,6 +173,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
           Immutable.Record {
             "name": "Data Fields",
@@ -189,6 +194,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
         ],
         "editableResults": false,
@@ -282,6 +288,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         "reservedFieldNames": Immutable.List [],
                         "newDesignFields": undefined,
                         "instructions": undefined,
+                        "domainKindName": undefined,
                       },
                       Immutable.Record {
                         "name": "Run Fields",
@@ -302,6 +309,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         "reservedFieldNames": Immutable.List [],
                         "newDesignFields": undefined,
                         "instructions": undefined,
+                        "domainKindName": undefined,
                       },
                       Immutable.Record {
                         "name": "Data Fields",
@@ -322,6 +330,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         "reservedFieldNames": Immutable.List [],
                         "newDesignFields": undefined,
                         "instructions": undefined,
+                        "domainKindName": undefined,
                       },
                     ],
                     "editableResults": false,
@@ -573,6 +582,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         "reservedFieldNames": Immutable.List [],
                         "newDesignFields": undefined,
                         "instructions": undefined,
+                        "domainKindName": undefined,
                       },
                       Immutable.Record {
                         "name": "Run Fields",
@@ -593,6 +603,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         "reservedFieldNames": Immutable.List [],
                         "newDesignFields": undefined,
                         "instructions": undefined,
+                        "domainKindName": undefined,
                       },
                       Immutable.Record {
                         "name": "Data Fields",
@@ -613,6 +624,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         "reservedFieldNames": Immutable.List [],
                         "newDesignFields": undefined,
                         "instructions": undefined,
+                        "domainKindName": undefined,
                       },
                     ],
                     "editableResults": false,
@@ -859,6 +871,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         "reservedFieldNames": Immutable.List [],
                         "newDesignFields": undefined,
                         "instructions": undefined,
+                        "domainKindName": undefined,
                       },
                       Immutable.Record {
                         "name": "Run Fields",
@@ -879,6 +892,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         "reservedFieldNames": Immutable.List [],
                         "newDesignFields": undefined,
                         "instructions": undefined,
+                        "domainKindName": undefined,
                       },
                       Immutable.Record {
                         "name": "Data Fields",
@@ -899,6 +913,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         "reservedFieldNames": Immutable.List [],
                         "newDesignFields": undefined,
                         "instructions": undefined,
+                        "domainKindName": undefined,
                       },
                     ],
                     "editableResults": false,
@@ -1155,6 +1170,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
         Immutable.Record {
           "name": "Run Fields",
@@ -1175,6 +1191,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
         Immutable.Record {
           "name": "Data Fields",
@@ -1195,6 +1212,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
       ],
       "editableResults": false,
@@ -1261,6 +1279,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
           Immutable.Record {
             "name": "Run Fields",
@@ -1281,6 +1300,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
           Immutable.Record {
             "name": "Data Fields",
@@ -1301,6 +1321,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
         ],
         "editableResults": false,
@@ -1370,6 +1391,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
             Immutable.Record {
               "name": "Run Fields",
@@ -1390,6 +1412,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
             Immutable.Record {
               "name": "Data Fields",
@@ -1410,6 +1433,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
           ],
           "editableResults": false,
@@ -1595,6 +1619,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -1615,6 +1640,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -1635,6 +1661,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -1886,6 +1913,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -1906,6 +1934,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -1926,6 +1955,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -2172,6 +2202,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -2192,6 +2223,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -2212,6 +2244,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -2469,6 +2502,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -2489,6 +2523,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -2509,6 +2544,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -2770,6 +2806,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
         Immutable.Record {
           "name": "Run Fields",
@@ -2790,6 +2827,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
         Immutable.Record {
           "name": "Data Fields",
@@ -2810,6 +2848,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
       ],
       "editableResults": false,
@@ -2876,6 +2915,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
           Immutable.Record {
             "name": "Run Fields",
@@ -2896,6 +2936,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
           Immutable.Record {
             "name": "Data Fields",
@@ -2916,6 +2957,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
         ],
         "editableResults": false,
@@ -2985,6 +3027,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
             Immutable.Record {
               "name": "Run Fields",
@@ -3005,6 +3048,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
             Immutable.Record {
               "name": "Data Fields",
@@ -3025,6 +3069,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
           ],
           "editableResults": false,
@@ -3210,6 +3255,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -3230,6 +3276,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -3250,6 +3297,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -3501,6 +3549,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -3521,6 +3570,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -3541,6 +3591,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -3787,6 +3838,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -3807,6 +3859,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -3827,6 +3880,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -4084,6 +4138,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -4104,6 +4159,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -4124,6 +4180,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -5577,6 +5634,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
         Immutable.Record {
           "name": "Run Fields",
@@ -5597,6 +5655,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
         Immutable.Record {
           "name": "Data Fields",
@@ -5617,6 +5676,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": undefined,
+          "domainKindName": undefined,
         },
       ],
       "editableResults": false,
@@ -5683,6 +5743,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
           Immutable.Record {
             "name": "Run Fields",
@@ -5703,6 +5764,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
           Immutable.Record {
             "name": "Data Fields",
@@ -5723,6 +5785,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": undefined,
+            "domainKindName": undefined,
           },
         ],
         "editableResults": false,
@@ -5792,6 +5855,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
             Immutable.Record {
               "name": "Run Fields",
@@ -5812,6 +5876,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
             Immutable.Record {
               "name": "Data Fields",
@@ -5832,6 +5897,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": undefined,
+              "domainKindName": undefined,
             },
           ],
           "editableResults": false,
@@ -5986,6 +6052,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -6006,6 +6073,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -6026,6 +6094,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -6277,6 +6346,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -6297,6 +6367,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -6317,6 +6388,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,
@@ -6563,6 +6635,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Run Fields",
@@ -6583,6 +6656,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                     Immutable.Record {
                                       "name": "Data Fields",
@@ -6603,6 +6677,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       "reservedFieldNames": Immutable.List [],
                                       "newDesignFields": undefined,
                                       "instructions": undefined,
+                                      "domainKindName": undefined,
                                     },
                                   ],
                                   "editableResults": false,

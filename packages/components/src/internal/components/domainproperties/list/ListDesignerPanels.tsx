@@ -13,6 +13,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { ListModel } from './models';
 import { ListPropertiesPanel } from './ListPropertiesPanel';
+import {PropDescType} from "../PropDescType";
 
 interface Props {
     initModel?: ListModel;
@@ -75,6 +76,8 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 if (onChange && dirty) {
                     onChange(this.state.model);
                 }
+
+                this.setKeyTypeForModel();
             }
         );
     };
@@ -104,6 +107,31 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     this.props.onComplete(model, resolveErrorMessage(error));
                 });
             });
+    }
+
+    setKeyTypeForModel(): void {
+        const { model } = this.state;
+
+        if (!model.keyType) {
+            const fields = model.domain.fields;
+            const pkField = fields.find(i => i.isPrimaryKey);
+
+            if (pkField) {
+                const keyName = pkField.get('name');
+
+                let keyType;
+                // TODO this autoIncrement check doesn't seem to work for importing from JSON as the data type will just be INTEGER_TYPE and not AUTOINT_TYPE
+                if (PropDescType.isAutoIncrement(pkField.dataType)) {
+                    keyType = 'AutoIncrementInteger';
+                } else if (PropDescType.isInteger(pkField.dataType.rangeURI)) {
+                    keyType = 'Integer';
+                } else if (PropDescType.isString(pkField.dataType.rangeURI)) {
+                    keyType = 'Varchar';
+                }
+
+                this.onPropertiesChange(model.merge({ keyName, keyType }) as ListModel);
+            }
+        }
     }
 
     onFinish = () => {
@@ -231,6 +259,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
+                    allowImportExport={true}
                 />
                 <Progress
                     modal={true}

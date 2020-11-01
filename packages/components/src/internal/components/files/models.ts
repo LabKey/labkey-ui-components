@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Map } from 'immutable';
+import {List, Map} from 'immutable';
+import {DomainField} from "../../..";
 
 export interface FileAttachmentFormModel {
     addAttachedFile?: (any) => any;
@@ -82,4 +83,12 @@ export interface FileSizeLimitProps {
         displayValue: string;
     };
 }
+
+export interface SimpleResponse {
+    success: boolean;
+    msg?: string;
+    loading?: boolean;
+    fields?: List<DomainField>;
+}
+
 export const ALL_FILES_LIMIT_KEY = 'all';

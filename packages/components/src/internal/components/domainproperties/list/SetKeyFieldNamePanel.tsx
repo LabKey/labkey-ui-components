@@ -86,11 +86,14 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
     render() {
         const { domain } = this.props;
         const pkRowIndex = domain && domain.fields.findIndex(i => i.isPrimaryKey);
-        const pkField = pkRowIndex > -1 ? domain.fields.get(pkRowIndex) : undefined;
+        const pkField = pkRowIndex > -1
+            // check for edge case on JSON file import, for an invalid PK field type
+            ? (this.isValidKeyField(domain.fields.get(pkRowIndex)) ? domain.fields.get(pkRowIndex) : undefined)
+            : undefined;
         const isAutoIncPk = pkField !== undefined && PropDescType.isAutoIncrement(pkField.dataType);
 
         return (
-            <Alert>
+            <Alert className="list__set-key-alert">
                 <div>
                     Select a key value for this list which uniquely identifies the item. You can use "
                     {AUTO_INC_KEY_OPTION_TEXT}" to define your own below.

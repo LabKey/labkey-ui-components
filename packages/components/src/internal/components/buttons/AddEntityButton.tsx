@@ -14,41 +14,21 @@
  * limitations under the License.
  */
 import React from 'react';
-import classNames from 'classnames';
 
-import { LabelHelpTip } from '../../..';
+import { ActionButton, ActionButtonProps } from "./ActionButton";
 
-interface AddEntityButtonProps {
-    buttonClass?: string;
-    containerClass?: string;
-    disabled?: boolean;
-    title?: string;
+interface EntityButtonProps extends ActionButtonProps {
     entity?: string;
-    onClick: () => void;
-    helperTitle?: string;
-    helperBody?: any;
 }
 
-export class AddEntityButton extends React.Component<AddEntityButtonProps, any> {
-    static defaultProps = {
-        containerClass: 'form-group',
-        helperTitle: 'More Info',
-    };
-
+export class AddEntityButton extends React.PureComponent<EntityButtonProps> {
     render() {
-        const { buttonClass, containerClass, entity, disabled, onClick, title, helperBody, helperTitle } = this.props;
-
-        const buttonClasses = classNames('container--action-button btn btn-default', { disabled });
+        const { entity } = this.props;
 
         return (
-            <div className={containerClass} title={title}>
-                <div className={buttonClass}>
-                    <span className={buttonClasses} onClick={disabled ? undefined : onClick}>
-                        <i className="fa fa-plus-circle container--addition-icon" /> Add {entity}
-                    </span>
-                    {helperBody ? <LabelHelpTip body={helperBody} title={helperTitle} /> : ''}
-                </div>
-            </div>
+            <ActionButton {...this.props}>
+                <i className="fa fa-plus-circle container--addition-icon" /> Add {entity}
+            </ActionButton>
         );
     }
 }

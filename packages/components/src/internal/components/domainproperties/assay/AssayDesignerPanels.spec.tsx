@@ -120,10 +120,10 @@ describe('AssayDesignerPanels', () => {
         expect(wrapper.find('.fa-exclamation-circle').hostNodes()).toHaveLength(3);
         expect(wrapper.find(NameInput)).toHaveLength(1);
         expect(wrapper.find(DescriptionInput)).toHaveLength(1);
-        expect(wrapper.find('.domain-form-no-field-panel').hostNodes()).toHaveLength(2);
-        expect(wrapper.find('.domain-form-add-btn').hostNodes()).toHaveLength(2);
-        expect(wrapper.find('.domain-form-add-link').hostNodes()).toHaveLength(1);
-        expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
+        expect(wrapper.find('.domain-form-no-field-panel').hostNodes()).toHaveLength(0);
+        expect(wrapper.find('.domain-form-add-btn').hostNodes()).toHaveLength(0);
+        expect(wrapper.find('.domain-form-manual-btn').hostNodes()).toHaveLength(3);
+        expect(wrapper.find(FileAttachmentForm)).toHaveLength(3);
         expect(wrapper.find('.domain-designer-buttons').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.btn-primary')).toHaveLength(1);
         expect(wrapper.find('.btn-primary').props().disabled).toBe(false);
@@ -135,7 +135,8 @@ describe('AssayDesignerPanels', () => {
             const component = <AssayDesignerPanels {...BASE_PROPS} initModel={model} />;
             const wrapper = mount(component);
             setAssayName(wrapper, 'Foo');
-            expect(wrapper.find(FileAttachmentForm)).toHaveLength(shouldInfer ? 1 : 0);
+            expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
+            expect(wrapper.find('.file-form-formats').text()).toContain(shouldInfer ? 'include: .csv, .tsv, .txt, .xls, .xlsx, .json' : 'include: .json');
             wrapper.unmount();
         }
 

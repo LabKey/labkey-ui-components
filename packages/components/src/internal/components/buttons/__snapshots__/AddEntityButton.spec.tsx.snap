@@ -1,91 +1,32 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AddEntityButton /> Default properties 1`] = `
-<div
-  className="form-group"
+exports[`<AddEntityButton /> Minimal properties 1`] = `
+<ActionButton
+  containerClass="form-group"
+  entity="EntityName"
+  helperTitle="More Info"
+  onClick={[MockFunction]}
 >
-  <div>
-    <span
-      className="container--action-button btn btn-default"
-      onClick={
-        [MockFunction] {
-          "calls": Array [
-            Array [],
-          ],
-          "results": Array [
-            Object {
-              "type": "return",
-              "value": undefined,
-            },
-          ],
-        }
-      }
-    >
-      <i
-        className="fa fa-plus-circle container--addition-icon"
-      />
-       Add 
-    </span>
-  </div>
-</div>
+  <i
+    className="fa fa-plus-circle container--addition-icon"
+  />
+   Add 
+  EntityName
+</ActionButton>
 `;
 
-exports[`<AddEntityButton /> Disabled 1`] = `
-<div
-  className="form-group"
+exports[`<AddEntityButton /> Typical properties 1`] = `
+<ActionButton
+  buttonClass="button-class-name"
+  containerClass="container-class-name"
+  entity="EntityName"
+  helperTitle="More Info"
+  onClick={[MockFunction]}
 >
-  <div>
-    <span
-      className="container--action-button btn btn-default disabled"
-    >
-      <i
-        className="fa fa-plus-circle container--addition-icon"
-      />
-       Add 
-    </span>
-  </div>
-</div>
-`;
-
-exports[`<AddEntityButton /> Specify entity and classes 1`] = `
-<div
-  className="test-container-class"
->
-  <div
-    className="test-button-class"
-  >
-    <span
-      className="container--action-button btn btn-default"
-      onClick={[MockFunction]}
-    >
-      <i
-        className="fa fa-plus-circle container--addition-icon"
-      />
-       Add 
-      Test
-    </span>
-    
-  </div>
-</div>
-`;
-
-exports[`<AddEntityButton /> With title 1`] = `
-<div
-  className="form-group"
-  title="Test title"
->
-  <div>
-    <span
-      className="container--action-button btn btn-default"
-      onClick={[MockFunction]}
-    >
-      <i
-        className="fa fa-plus-circle container--addition-icon"
-      />
-       Add 
-      Test
-    </span>
-    
-  </div>
-</div>
+  <i
+    className="fa fa-plus-circle container--addition-icon"
+  />
+   Add 
+  EntityName
+</ActionButton>
 `;

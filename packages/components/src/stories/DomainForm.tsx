@@ -27,6 +27,7 @@ interface Props {
     helpNoun?: any;
     helpTopic?: any;
     appPropertiesOnly?: boolean;
+    allowImportExport?: boolean;
 }
 
 class DomainFormContainer extends React.PureComponent<Props, any> {
@@ -74,10 +75,24 @@ storiesOf('DomainForm', module)
         );
     })
     .add('infer from file', () => {
-        return <DomainFormContainer data={undefined} showInferFromFile={boolean('showInferFromFile', true)} />;
+        return <DomainFormContainer
+            data={undefined}
+            showInferFromFile={boolean('showInferFromFile', true)}
+            allowImportExport={boolean('allowImportExport', false)}
+        />;
+    })
+    .add('import from file', () => {
+        return <DomainFormContainer
+            data={undefined}
+            showInferFromFile={boolean('showInferFromFile', false)}
+            allowImportExport={boolean('allowImportExport', true)}
+        />;
     })
     .add('with domain properties', () => {
-        return <DomainFormContainer data={domainData} appPropertiesOnly={false} />;
+        return <DomainFormContainer
+            data={domainData}
+            appPropertiesOnly={false}
+        />;
     })
     .add('with server side errors and no file or flag types', () => {
         return <DomainFormContainer data={errorData} exception={exceptionDataServer} />;

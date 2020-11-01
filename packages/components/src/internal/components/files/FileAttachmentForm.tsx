@@ -22,9 +22,14 @@ import { FormSection, Progress, LoadingSpinner, InferDomainResponse, inferDomain
 
 import { FileAttachmentContainer } from './FileAttachmentContainer';
 import { FileGridPreviewProps, FilePreviewGrid } from './FilePreviewGrid';
-import { convertRowDataIntoPreviewData, fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
+import {
+    convertRowDataIntoPreviewData,
+    fileMatchesAcceptedFormat,
+    fileSizeLimitCompare,
+    getFileExtension,
+} from './actions';
 
-import { FileSizeLimitProps } from './models';
+import {FileSizeLimitProps, SimpleResponse} from './models';
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -44,6 +49,8 @@ interface FileAttachmentFormProps {
     onCancel?: () => any;
     onFileChange?: (files: Map<string, File>) => any;
     onFileRemoval?: (attachmentName: string) => any;
+    // map between file extension and the callback function to use instead of the standard uploadDataFileForPreview
+    fileSpecificCallback?: Map<string, (file: File) => Promise<SimpleResponse>>;
     onSubmit?: (files: Map<string, File>) => any;
     isSubmitting?: boolean;
     showButtons?: boolean;
@@ -79,6 +86,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         showProgressBar: false,
         submitText: 'Upload',
         compact: false,
+        fileSpecificCallback: undefined,
     };
 
     fileAttachmentContainerRef: React.RefObject<FileAttachmentContainer>;
@@ -126,23 +134,45 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         return attachedFiles.reduce((total, file) => (total += file.size), 0);
     }
 
-    handleFileChange = (fileList: { [key: string]: File }) => {
-        const { onFileChange, sizeLimits } = this.props;
+    reportFileOversized = (attachedFiles: Map<string, File>, sizeStr: string): void => {
+        this.setState(() => ({
+            errorMessage:
+                'This file is too large to be previewed. The maximum size allowed for previewing files of this type is ' +
+                sizeStr,
+        }));
+    };
+
+    handleFileChange = (fileList: { [key: string]: File }): void => {
+        const { onFileChange, sizeLimits, fileSpecificCallback, allowMultiple } = this.props;
         const attachedFiles = this.state.attachedFiles.merge(fileList);
 
         this.setState(
             () => ({ attachedFiles }),
             () => {
-                if (this.isShowPreviewGrid()) {
-                    // if showing preview, there can be only one attached file
-                    const sizeCheck = fileSizeLimitCompare(attachedFiles.valueSeq().first(), sizeLimits);
-                    if (!sizeCheck.isOversizedForPreview) this.uploadDataFileForPreview();
-                    else {
-                        this.setState(() => ({
-                            errorMessage:
-                                'This file is too large to be previewed. The maximum size allowed for previewing files of this type is ' +
-                                sizeCheck.limits.maxPreviewSize.displayValue,
-                        }));
+                if (!allowMultiple) {
+                    // currently only supporting 1 file for processing contents
+                    const firstFile = attachedFiles.valueSeq().first();
+                    const sizeCheck = fileSizeLimitCompare(firstFile, sizeLimits);
+
+                    const fileTypeFn = fileSpecificCallback?.get(getFileExtension(firstFile.name));
+                    if (fileTypeFn) {
+                        if (!sizeCheck.isOversized) {
+                            fileTypeFn(firstFile)
+                                .then(res => {
+                                    this.updateErrors(res.success ? null : res.msg);
+                                })
+                                .catch(res => {
+                                    this.updateErrors(res.msg);
+                                });
+                        } else {
+                            this.reportFileOversized(attachedFiles, sizeCheck.limits.maxSize.displayValue);
+                        }
+                    } else if (this.isShowPreviewGrid()) {
+                        if (!sizeCheck.isOversizedForPreview) {
+                            this.uploadDataFileForPreview();
+                        } else {
+                            this.reportFileOversized(attachedFiles, sizeCheck.limits.maxPreviewSize.displayValue);
+                        }
                     }
                 }
 
@@ -153,7 +183,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         );
     };
 
-    handleFileRemoval = (attachmentName: string) => {
+    handleFileRemoval = (attachmentName: string): void => {
         const { onFileRemoval } = this.props;
 
         this.setState(

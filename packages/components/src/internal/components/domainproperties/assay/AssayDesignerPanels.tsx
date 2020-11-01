@@ -205,6 +205,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                     return (
                         <DomainForm
                             key={domain.domainId || i}
+                            index={domain.domainId || i}
                             domainIndex={i}
                             domain={domain}
                             headerPrefix={protocolModel.name}
@@ -231,6 +232,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                             appPropertiesOnly={appPropertiesOnly}
                             showFilePropertyType={showFilePropertyType}
                             successBsStyle={successBsStyle}
+                            allowImportExport={true}
                         >
                             <div>{domain.description}</div>
                         </DomainForm>

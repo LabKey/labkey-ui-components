@@ -163,6 +163,11 @@
   cursor: pointer;
 }
 
+.container--toolbar-button {
+  display: inline-block;
+  padding-right: 5px;
+}
+
 .container--removal-icon {
   color: lightgrey;
 }

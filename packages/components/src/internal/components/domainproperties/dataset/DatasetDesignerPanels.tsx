@@ -495,6 +495,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         hideAddFieldsButton: model.isFromAssay(),
                         hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                     }}
+                    allowImportExport={true}
                 />
                 <Progress
                     modal={true}

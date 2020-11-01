@@ -87,6 +87,7 @@ interface IDomainDesign {
     domainException?: DomainException;
     newDesignFields?: List<DomainField>; // set of fields to initialize a manually created design
     instructions?: string;
+    domainKindName?: string;
 }
 
 export class DomainDesign
@@ -109,6 +110,7 @@ export class DomainDesign
         reservedFieldNames: List<string>(),
         newDesignFields: undefined,
         instructions: undefined,
+        domainKindName: undefined,
     })
     implements IDomainDesign {
     name: string;
@@ -129,6 +131,7 @@ export class DomainDesign
     reservedFieldNames: List<string>;
     newDesignFields?: List<DomainField>; // Returns a set of fields to initialize a manually created design
     instructions: string;
+    domainKindName: string;
 
     static create(rawModel: any, exception?: any): DomainDesign {
         let fields = List<DomainField>();
@@ -169,7 +172,7 @@ export class DomainDesign
 
     static serialize(dd: DomainDesign): any {
         const json = dd.toJS();
-        json.fields = dd.fields.map(DomainField.serialize).toArray();
+        json.fields = dd.fields.map(field => DomainField.serialize(field)).toArray();
 
         // remove non-serializable fields
         delete json.domainException;
@@ -211,6 +214,10 @@ export class DomainDesign
         }
 
         return invalid;
+    }
+
+    hasDefaultValueOption(value: string): boolean {
+        return this.defaultValueOptions.some(option => option === value);
     }
 
     hasInvalidNameField(defaultNameFieldConfig?: Partial<IDomainField>): boolean {
@@ -679,7 +686,7 @@ export class DomainField
         return field;
     }
 
-    static serialize(df: DomainField): any {
+    static serialize(df: DomainField, fixCaseSensitivity = true): any {
         const json = df.toJS();
 
         if (!(df.dataType.isLookup() || df.dataType.isUser() || df.dataType.isSample())) {
@@ -693,13 +700,15 @@ export class DomainField
         }
 
         // for some reason the property binding server side cares about casing here for 'URL' and 'PHI'
-        if (json.URL !== undefined) {
-            json.url = json.URL;
-            delete json.URL;
-        }
-        if (json.PHI !== undefined) {
-            json.phi = json.PHI;
-            delete json.PHI;
+        if (fixCaseSensitivity) {
+            if (json.URL !== undefined) {
+                json.url = json.URL;
+                delete json.URL;
+            }
+            if (json.PHI !== undefined) {
+                json.phi = json.PHI;
+                delete json.PHI;
+            }
         }
 
         if (json.conditionalFormats) {

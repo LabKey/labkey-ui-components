@@ -318,7 +318,7 @@ Array [
                 className="control-label text-left"
               >
                 <strong>
-                  Infer fields from file
+                  Import or infer fields from file
                 </strong>
               </label>
             </div>
@@ -353,7 +353,7 @@ Array [
                       Select file or drag and drop here.
                     </label>
                     <input
-                      accept=".csv, .tsv, .txt, .xls, .xlsx"
+                      accept=".csv, .tsv, .txt, .xls, .xlsx, .json"
                       className="file-upload--input"
                       id="fileUpload"
                       multiple={false}
@@ -379,7 +379,7 @@ Array [
               <strong>
                 Supported formats include: 
               </strong>
-              .csv, .tsv, .txt, .xls, .xlsx
+              .csv, .tsv, .txt, .xls, .xlsx, .json
             </div>
           </div>
           <div
@@ -391,15 +391,26 @@ Array [
           </div>
         </div>
         <div
-          className="margin-top"
+          className="margin-top domain-form-manual-section"
         >
-          or 
-          <span
-            className="domain-form-add-link"
-            onClick={[Function]}
+          <p>
+            Or
+          </p>
+          <div
+            className="form-group"
           >
-            manually define fields
-          </span>
+            <div
+              className="domain-form-manual-btn"
+            >
+              <span
+                className="container--action-button btn btn-default"
+                onClick={[Function]}
+              >
+                Manually Define Fields
+              </span>
+              
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -914,7 +925,7 @@ Array [
                 className="control-label text-left"
               >
                 <strong>
-                  Infer fields from file
+                  Import or infer fields from file
                 </strong>
               </label>
             </div>
@@ -949,7 +960,7 @@ Array [
                       Select file or drag and drop here.
                     </label>
                     <input
-                      accept=".csv, .tsv, .txt, .xls, .xlsx"
+                      accept=".csv, .tsv, .txt, .xls, .xlsx, .json"
                       className="file-upload--input"
                       id="fileUpload"
                       multiple={false}
@@ -975,7 +986,7 @@ Array [
               <strong>
                 Supported formats include: 
               </strong>
-              .csv, .tsv, .txt, .xls, .xlsx
+              .csv, .tsv, .txt, .xls, .xlsx, .json
             </div>
           </div>
           <div
@@ -987,15 +998,26 @@ Array [
           </div>
         </div>
         <div
-          className="margin-top"
+          className="margin-top domain-form-manual-section"
         >
-          or 
-          <span
-            className="domain-form-add-link"
-            onClick={[Function]}
+          <p>
+            Or
+          </p>
+          <div
+            className="form-group"
           >
-            manually define fields
-          </span>
+            <div
+              className="domain-form-manual-btn"
+            >
+              <span
+                className="container--action-button btn btn-default"
+                onClick={[Function]}
+              >
+                Manually Define Fields
+              </span>
+              
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1300,6 +1322,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "reservedFieldNames": Immutable.List [],
         "newDesignFields": undefined,
         "instructions": null,
+        "domainKindName": undefined,
       },
       "domainId": 0,
       "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1591,6 +1614,7 @@ exports[`DataClassDesigner initModel 1`] = `
           "reservedFieldNames": Immutable.List [],
           "newDesignFields": undefined,
           "instructions": null,
+          "domainKindName": undefined,
         },
         "domainId": 0,
         "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -1885,6 +1909,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": null,
+            "domainKindName": undefined,
           },
         ]
       }
@@ -2174,6 +2199,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "reservedFieldNames": Immutable.List [],
               "newDesignFields": undefined,
               "instructions": null,
+              "domainKindName": undefined,
             },
             "domainId": 0,
             "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2471,6 +2497,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "reservedFieldNames": Immutable.List [],
                 "newDesignFields": undefined,
                 "instructions": null,
+                "domainKindName": undefined,
               },
               "domainId": 0,
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -2772,6 +2799,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "reservedFieldNames": Immutable.List [],
                   "newDesignFields": undefined,
                   "instructions": null,
+                  "domainKindName": undefined,
                 },
                 "domainId": 0,
                 "lsid": "urn:lsid:labkey.com:DataClass.Folder-5398:test1",
@@ -4138,6 +4166,7 @@ exports[`DataClassDesigner initModel 1`] = `
         </DataClassPropertiesPanelImpl>
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
+        allowImportExport={true}
         controlledCollapse={true}
         domain={
           Immutable.Record {
@@ -4411,6 +4440,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "reservedFieldNames": Immutable.List [],
             "newDesignFields": undefined,
             "instructions": null,
+            "domainKindName": undefined,
           }
         }
         domainIndex={0}
@@ -4426,6 +4456,7 @@ exports[`DataClassDesigner initModel 1`] = `
       >
         <LookupProvider>
           <DomainFormImpl
+            allowImportExport={true}
             appPropertiesOnly={false}
             controlledCollapse={true}
             domain={
@@ -4700,6 +4731,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "reservedFieldNames": Immutable.List [],
                 "newDesignFields": undefined,
                 "instructions": null,
+                "domainKindName": undefined,
               }
             }
             domainFormDisplayOptions={
@@ -4892,6 +4924,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     </CollapsiblePanelHeader>
                     <PanelBody
                       bsClass="panel"
+                      className="domain-field-top-noBuffer"
                       collapsible={true}
                     >
                       <PanelCollapse
@@ -4927,8 +4960,117 @@ exports[`DataClassDesigner initModel 1`] = `
                               className="panel-collapse collapse"
                             >
                               <div
-                                className="panel-body"
+                                className="domain-field-top-noBuffer panel-body"
                               >
+                                <Row
+                                  bsClass="row"
+                                  className="domain-field-toolbar"
+                                  componentClass="div"
+                                >
+                                  <div
+                                    className="domain-field-toolbar row"
+                                  >
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      xs={4}
+                                    >
+                                      <div
+                                        className="col-xs-4"
+                                      >
+                                        <AddEntityButton
+                                          buttonClass="domain-toolbar-add-btn"
+                                          containerClass="container--toolbar-button"
+                                          entity="Field"
+                                          onClick={[Function]}
+                                        >
+                                          <ActionButton
+                                            buttonClass="domain-toolbar-add-btn"
+                                            containerClass="container--toolbar-button"
+                                            entity="Field"
+                                            helperTitle="More Info"
+                                            onClick={[Function]}
+                                          >
+                                            <div
+                                              className="container--toolbar-button"
+                                            >
+                                              <div
+                                                className="domain-toolbar-add-btn"
+                                              >
+                                                <span
+                                                  className="container--action-button btn btn-default"
+                                                  onClick={[Function]}
+                                                >
+                                                  <i
+                                                    className="fa fa-plus-circle container--addition-icon"
+                                                  />
+                                                   Add 
+                                                  Field
+                                                </span>
+                                              </div>
+                                            </div>
+                                          </ActionButton>
+                                        </AddEntityButton>
+                                        <ActionButton
+                                          buttonClass="domain-toolbar-export-btn"
+                                          containerClass="container--toolbar-button"
+                                          disabled={false}
+                                          helperTitle="More Info"
+                                          onClick={[Function]}
+                                        >
+                                          <div
+                                            className="container--toolbar-button"
+                                          >
+                                            <div
+                                              className="domain-toolbar-export-btn"
+                                            >
+                                              <span
+                                                className="container--action-button btn btn-default"
+                                                onClick={[Function]}
+                                              >
+                                                <i
+                                                  className="fa fa-download domain-toolbar-export-btn-icon"
+                                                />
+                                                 Export
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </ActionButton>
+                                      </div>
+                                    </Col>
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      xs={8}
+                                    >
+                                      <div
+                                        className="col-xs-8"
+                                      >
+                                        <div
+                                          className="pull-right"
+                                        >
+                                          <FormControl
+                                            bsClass="form-control"
+                                            className="domain-search-input"
+                                            componentClass="input"
+                                            id="domain-search-name-0"
+                                            onChange={[Function]}
+                                            placeholder="Search Fields"
+                                            type="text"
+                                          >
+                                            <input
+                                              className="domain-search-input form-control"
+                                              id="domain-search-name-0"
+                                              onChange={[Function]}
+                                              placeholder="Search Fields"
+                                              type="text"
+                                            />
+                                          </FormControl>
+                                        </div>
+                                      </div>
+                                    </Col>
+                                  </div>
+                                </Row>
                                 <Row
                                   bsClass="row"
                                   className=""
@@ -4945,41 +5087,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                       <div
                                         className="col-xs-12"
                                       />
-                                    </Col>
-                                  </div>
-                                </Row>
-                                <Row
-                                  bsClass="row"
-                                  componentClass="div"
-                                >
-                                  <div
-                                    className="row"
-                                  >
-                                    <Col
-                                      bsClass="col"
-                                      componentClass="div"
-                                      xs={3}
-                                    >
-                                      <div
-                                        className="col-xs-3"
-                                      >
-                                        <FormControl
-                                          bsClass="form-control"
-                                          componentClass="input"
-                                          id="domain-search-name-0"
-                                          onChange={[Function]}
-                                          placeholder="Search Fields"
-                                          type="text"
-                                        >
-                                          <input
-                                            className="form-control"
-                                            id="domain-search-name-0"
-                                            onChange={[Function]}
-                                            placeholder="Search Fields"
-                                            type="text"
-                                          />
-                                        </FormControl>
-                                      </div>
                                     </Col>
                                   </div>
                                 </Row>
@@ -12211,29 +12318,36 @@ exports[`DataClassDesigner initModel 1`] = `
                                       >
                                         <AddEntityButton
                                           buttonClass="domain-form-add-btn"
-                                          containerClass="form-group"
+                                          containerClass="pull-right"
                                           entity="Field"
-                                          helperTitle="More Info"
                                           onClick={[Function]}
                                         >
-                                          <div
-                                            className="form-group"
+                                          <ActionButton
+                                            buttonClass="domain-form-add-btn"
+                                            containerClass="pull-right"
+                                            entity="Field"
+                                            helperTitle="More Info"
+                                            onClick={[Function]}
                                           >
                                             <div
-                                              className="domain-form-add-btn"
+                                              className="pull-right"
                                             >
-                                              <span
-                                                className="container--action-button btn btn-default"
-                                                onClick={[Function]}
+                                              <div
+                                                className="domain-form-add-btn"
                                               >
-                                                <i
-                                                  className="fa fa-plus-circle container--addition-icon"
-                                                />
-                                                 Add 
-                                                Field
-                                              </span>
+                                                <span
+                                                  className="container--action-button btn btn-default"
+                                                  onClick={[Function]}
+                                                >
+                                                  <i
+                                                    className="fa fa-plus-circle container--addition-icon"
+                                                  />
+                                                   Add 
+                                                  Field
+                                                </span>
+                                              </div>
                                             </div>
-                                          </div>
+                                          </ActionButton>
                                         </AddEntityButton>
                                       </div>
                                     </Col>

@@ -41,11 +41,13 @@ import {
     DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA,
     DOMAIN_FIELD_PREFIX,
+    DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
     DOMAIN_FIELD_TYPE,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
+import {SimpleResponse} from "../files/models";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -142,6 +144,18 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
                 }
             })
     );
+}
+
+// This looks hacky, but it's actually the recommended way to download a file using raw JS
+export function downloadJsonFile(content: string, fileName: string) {
+    let downloadLink = document.createElement('a');
+    downloadLink.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(content);
+    downloadLink.download = fileName;
+    downloadLink.style.display = 'none';
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 }
 
 export function processQueries(payload: any): List<QueryInfoLite> {
@@ -288,6 +302,48 @@ export function createNewDomainField(domain: DomainDesign, fieldConfig: Partial<
     }
 
     return DomainField.create(fieldConfig, true);
+}
+
+export function mergeDomainFields(domain: DomainDesign, newFields: List<DomainField>): DomainDesign {
+    return domain.set('fields', domain.fields.concat(newFields)) as DomainDesign;
+}
+
+export function processJsonImport(content: string, domain:DomainDesign): SimpleResponse {
+    const domainType = domain.domainKindName;
+    const emptinessError = {success: false, msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.'};
+
+    if (content == "") {
+        return emptinessError;
+    }
+
+    const jsFields = JSON.parse(content as string);
+
+    if (jsFields.length < 1 || Object.keys(jsFields).length === 0) {
+        return emptinessError;
+    }
+
+    for (let i=0; i < jsFields.length; i++){
+        const field = jsFields[i];
+
+        if (field.defaultValueType && domain.defaultValueOptions.size > 0 && !domain.hasDefaultValueOption(field.defaultValueType)) {
+            return {success: false, msg: `Error on importing field '${field.name}': Default value type '${field.defaultValueType}' is invalid.`};
+        }
+
+        if (!domainType?.includes('List') && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
+            return {success: false, msg: `Error on importing field '${field.name}': ${domainType || 'This'} domain type does not support fields with an externally defined Primary Key.`};
+        }
+
+        // These values are set server-side during a save
+        if (field.propertyId) {
+            delete field.propertyId;
+        }
+        if (field.propertyURI) {
+            delete field.propertyURI;
+        }
+    }
+
+    const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, false)));
+    return {success: true, fields: tsFields};
 }
 
 export function addDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainDesign {

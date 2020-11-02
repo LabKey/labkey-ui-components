@@ -41,31 +41,16 @@ to reference the new pre-release version in order to view the changes within the
 be able to do this without publishing for quicker development iteration.
 
 In order to use and test the components you are developing or modifying in this repository within another application,
-we currently recommend using `yarn watch` together with a copy command from the `dist` directory to the `node_modules/@labkey/components`
-directory of your application. The `watch` command will automatically build a package when the source code changes.  If you have hot reloading started for your application, after you copy the `dist` directory, changes made in the components
-will then get loaded into the application.
+we currently recommend using `yarn watch` together with the LabKey module's `npm run start-link` command.
+The `watch` command will automatically build a package when the source code changes, and if you have hot reloading
+started for your application, changes made in the components will then get re-built into the application.
 
 For example, to test changes in `@labkey/components` within the `my_app` module, you could do:
 * ``yarn watch``
 * edit files within the `package/components` dir
 * wait for recompile triggered by the `watch` to happen
-* ``cp -r dist /path/to/my_app/node_modules/\@labkey/components/dist``
-* use [hot module reload mode](../../build/webpack/README.md#developing-with-hot-module-reloading-hmr) in your module to test changes
-
-
-We do not currently recommend using [`npm link`](https://docs.npmjs.com/cli/link.html) (or [`yarn link`](https://yarnpkg.com/lang/en/docs/cli/link/)).  It seems promising,
-but when used it produces an empty page in the application in many cases and the following type of error in the console:
-```
-react-dom.development.js:55 Uncaught Invariant Violation: Element ref was specified as a string (reactSelect) but no owner was set. This could happen for one of the following reasons:
-1. You may be adding a ref to a function component
-2. You may be adding a ref to a component that was not created inside a component's render method
-3. You have multiple copies of React loaded
-```
-I believe this happens because the `node_modules` directory within this directory contains all of the dependencies for the package,
-including the ones that are excluded in our bundling of the package since they are also included by the application.
-This includes, most notably, a copy of `react`.  When the application loads it will get one copy of react from this
-`node_modules` and one copy from its own `node_modules` and unhappiness ensues.  There are probably things we can do to
-fix this, but for now use watch and copy instead.
+* use [hot module reload mode](../../build/webpack/README.md#developing-with-hot-module-reloading-hmr) in your module
+with webpack aliases enabled for package linking
 
 ### Package Dependencies
 We track our external dependencies in [this spreadsheet](https://docs.google.com/spreadsheets/d/1W39yHLulzLUaXhp5-IRFuloJC9O94CJnwEHrR_4CcSo/edit#gid=0)
@@ -79,10 +64,10 @@ been investigation into the cost of upgrading packages that are out of date.
 ### Storybook
 
 A great way to view and play with these components is via [Storybook](https://storybook.js.org/). This is a tool that is used to deploy components in a functional environment which runs the components according to "stories".
-These stories are composed by developers to show features of a component and let other members of the team interact with a component. Because storybook uses WebPack's hot reloading,
+These stories are composed by developers to show features of a component and let other members of the team interact with a component. Because storybook uses webpack's hot reloading,
 this is also a great way to do visual inspection and testing of your components in isolation.
 
-For each component that is developed a set of stories that illustrate the components should also be created.  We follow these
+For each component that is developed, a set of stories that illustrate the components should also be created.  We follow these
 conventions currently:
 * The configuration files for storybook are in the `.storybook` directory.
 * Stories are placed the directory `src/stories` with the names of the story files the same as the names of the respective components

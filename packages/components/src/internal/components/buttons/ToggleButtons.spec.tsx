@@ -19,6 +19,13 @@ describe('<ToggleButtons/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
+    test('with className', () => {
+        const onClickFn = jest.fn();
+        const component = <ToggleButtons first="a" second="b" className={'testing-cls'} onClick={onClickFn} />;
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
     test('onClick handler', () => {
         const onClickFn = jest.fn();
         const component = <ToggleButtons first="a" second="b" onClick={onClickFn} />;

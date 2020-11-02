@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 0.10#.#
-*Released*: ## November 2020
+### version 0.105.0
+*Released*: 2 November 2020
 * ImmutableJS-free `CreatedModified`.
 * `resolveDetailFieldValue` updated to handle `Record` type. Typings improved.
 * `FilesListingForm` and `WebDavFile` updates.

@@ -13,31 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { Map } from 'immutable';
+import React, { FC, memo } from 'react';
 
 import { CreatedModified } from '../../..';
 
 import { Breadcrumb } from './Breadcrumb';
 
 interface Props {
-    row?: Map<string, any>;
+    row?: Record<string, any>;
     useServerDate?: boolean;
 }
 
-export class BreadcrumbCreate extends React.Component<Props, any> {
-    static defaultProps = {
-        useServerDate: true,
-    };
-
-    render() {
-        const { children, row, useServerDate } = this.props;
-
-        return (
-            <div className="row component-crumbcreate--container">
-                <Breadcrumb className="col-xs-8 col-sm-8 col-md-8">{children}</Breadcrumb>
-                <CreatedModified row={row} useServerDate={useServerDate} className="col-xs-4 col-sm-4 col-md-4" />
-            </div>
-        );
-    }
-}
+export const BreadcrumbCreate: FC<Props> = memo(props => (
+    <div className="row component-crumbcreate--container">
+        <Breadcrumb className="col-xs-8 col-sm-8 col-md-8">{props.children}</Breadcrumb>
+        <CreatedModified row={props.row} useServerDate={props.useServerDate} className="col-xs-4 col-sm-4 col-md-4" />
+    </div>
+));

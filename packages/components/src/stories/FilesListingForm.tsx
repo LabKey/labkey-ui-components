@@ -13,7 +13,7 @@ storiesOf('FilesListingForm', module)
         return (
             <FilesListingForm
                 files={List<IFile>()}
-                handleUpload={() => {}}
+                handleUpload={async () => {}}
                 handleDelete={() => {}}
                 handleDownload={() => {}}
                 addFileText={text('addFileText', undefined)}
@@ -33,7 +33,7 @@ storiesOf('FilesListingForm', module)
         return (
             <FilesListingForm
                 files={FILES_DATA}
-                handleUpload={() => {}}
+                handleUpload={async () => {}}
                 handleDelete={() => {}}
                 handleDownload={() => {}}
                 addFileText={text('addFileText', undefined)}
@@ -56,7 +56,7 @@ storiesOf('FilesListingForm', module)
                 readOnlyFiles={FILES_DATA_2}
                 headerText={text('headerText', 'Editable files')}
                 readOnlyHeaderText={text('readOnlyHeaderText', 'Read-only files')}
-                handleUpload={() => {}}
+                handleUpload={async () => {}}
                 handleDelete={() => {}}
                 handleDownload={() => {}}
                 addFileText={text('addFileText', undefined)}

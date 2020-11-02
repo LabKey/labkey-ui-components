@@ -24,6 +24,11 @@ export interface FileAttachmentFormModel {
 }
 
 export interface IFile {
+    canDelete: boolean;
+    canEdit: boolean;
+    canRead: boolean;
+    canRename: boolean;
+    canUpload: boolean;
     contentLength: number;
     contentType: string;
     created: string;
@@ -41,14 +46,14 @@ export interface IFile {
     name: string;
     options: string;
     propertiesRowId?: number;
-    canDelete: boolean;
-    canEdit: boolean;
-    canRead: boolean;
-    canRename: boolean;
-    canUpload: boolean;
 }
 
 export const DEFAULT_FILE: IFile = {
+    canDelete: false,
+    canEdit: false,
+    canRead: false,
+    canRename: false,
+    canUpload: false,
     contentLength: 0,
     contentType: undefined,
     created: undefined,
@@ -66,11 +71,6 @@ export const DEFAULT_FILE: IFile = {
     name: undefined,
     options: undefined,
     propertiesRowId: undefined,
-    canDelete: false,
-    canEdit: false,
-    canRead: false,
-    canRename: false,
-    canUpload: false,
 };
 
 export interface FileSizeLimitProps {

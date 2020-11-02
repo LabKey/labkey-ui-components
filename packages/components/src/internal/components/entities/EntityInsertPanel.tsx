@@ -977,7 +977,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             })
             .catch(error => {
                 this.setState(() => ({
-                    error: resolveErrorMessage(error, this.props.nounPlural),
+                    error: resolveErrorMessage(error, this.props.nounPlural, this.props.nounPlural, "importing"),
                     isSubmitting: false,
                 }));
             });

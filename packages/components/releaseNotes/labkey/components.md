@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Release*: TBD
+* More error message resolution improvements, particularly for importing with EntityInsertPanel
+
 ### version 0.104.0
 *Released*: 1 Nov 2020
 * Item 7984: DomainForm component support for export/import field definitions from .json file

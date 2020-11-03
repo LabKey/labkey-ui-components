@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { Component, ReactNode } from 'react';
 import classNames from 'classnames';
-import { Map } from 'immutable';
 import moment from 'moment';
 import { Query } from '@labkey/api';
 
-import { LoadingSpinner } from './LoadingSpinner';
+import { caseInsensitive, LoadingSpinner } from '../../..';
 
 interface IRowConfig {
     createdBy: string;
     createdTS: any;
     display: boolean;
-    hasCreated: boolean;
-    hasModified: boolean;
     modifiedBy: string;
     modifiedTS: any;
+    hasCreated: boolean;
+    hasModified: boolean;
     useCreated: boolean;
 }
 
 interface CreatedModifiedProps {
     className?: string;
-    row: Map<string, any>;
+    row: Record<string, any>;
     useServerDate?: boolean;
 }
 
@@ -43,30 +42,25 @@ interface State {
     loading: boolean;
 }
 
-export class CreatedModified extends React.Component<CreatedModifiedProps, State> {
-    static defaultProps = {
-        useServerDate: true,
-    };
+export class CreatedModified extends Component<CreatedModifiedProps, State> {
+    static defaultProps = { className: 'cbmb-inline', useServerDate: true };
 
     constructor(props) {
         super(props);
 
-        this.state = {
-            serverDate: undefined,
-            loading: props.useServerDate,
-        };
+        this.state = { loading: props.useServerDate, serverDate: undefined };
     }
 
     componentDidMount(): void {
         if (this.props.useServerDate) {
             Query.getServerDate({
-                success: serverDate => this.setState(() => ({ serverDate, loading: false })),
-                failure: error => this.setState(() => ({ loading: false })),
+                success: serverDate => this.setState({ serverDate, loading: false }),
+                failure: error => this.setState({ loading: false }),
             });
         }
     }
 
-    formatTitle(config: IRowConfig): string {
+    formatTitle = (config: IRowConfig): string => {
         const title = [];
 
         if (config.display) {
@@ -92,17 +86,16 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
         }
 
         return '';
-    }
+    };
 
-    processRow(): IRowConfig {
+    processRow = (): IRowConfig => {
         const { row } = this.props;
 
         if (row) {
-            const createdBy = row.getIn(['CreatedBy', 'displayValue']) || row.getIn(['createdby', 'displayValue']);
-            const createdTS = row.getIn(['Created', 'value']) || row.getIn(['created', 'value']);
-
-            const modifiedBy = row.getIn(['ModifiedBy', 'displayValue']) || row.getIn(['modifiedby', 'displayValue']);
-            const modifiedTS = row.getIn(['Modified', 'value']) || row.getIn(['modified', 'value']);
+            const createdBy = caseInsensitive(row, 'createdBy')?.displayValue;
+            const createdTS = caseInsensitive(row, 'created')?.value;
+            const modifiedBy = caseInsensitive(row, 'modifiedBy')?.displayValue;
+            const modifiedTS = caseInsensitive(row, 'modified')?.value;
 
             const hasCreated = createdTS !== undefined;
             const hasModified = modifiedTS !== undefined;
@@ -129,9 +122,9 @@ export class CreatedModified extends React.Component<CreatedModifiedProps, State
             modifiedTS: undefined,
             useCreated: false,
         };
-    }
+    };
 
-    render() {
+    render(): ReactNode {
         const { className } = this.props;
         const { serverDate, loading } = this.state;
 

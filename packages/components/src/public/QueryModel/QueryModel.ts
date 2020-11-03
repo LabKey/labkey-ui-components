@@ -345,7 +345,6 @@ export class QueryModel {
         this.orderedRows = undefined;
         this.rows = undefined;
         this.rowCount = undefined;
-        this.rowsError = undefined;
         this.rowsLoadingState = LoadingState.INITIALIZED;
         this.selectedReportId = undefined;
         this.selections = undefined;

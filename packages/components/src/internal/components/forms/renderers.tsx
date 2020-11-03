@@ -35,7 +35,7 @@ export function resolveRenderer(column: QueryColumn) {
                     editing?: boolean,
                     allowFieldDisable = false,
                     initiallyDisabled = false,
-                    onToggleDisable?: (boolean) => void
+                    onToggleDisable?: (disabled: boolean) => void
                 ) => {
                     return (
                         <AliasInput
@@ -87,37 +87,47 @@ export function resolveRenderer(column: QueryColumn) {
     return inputRenderer;
 }
 
-function findValue(data: Map<string, any>, lookup?: boolean): any {
-    return data.has('displayValue') && lookup !== true ? data.get('displayValue') : data.get('value');
+interface FieldValue {
+    displayValue?: any;
+    formattedValue?: any;
+    value: any;
 }
 
+type FieldArray = FieldValue[];
+type FieldMap = Map<string, any>;
+type FieldList = List<FieldMap>;
+
+const isFieldList = (value: any): value is FieldList => List.isList(value);
+
+const isFieldArray = (value: any): value is FieldArray => Array.isArray(value);
+
+const isFieldMap = (value: any): value is FieldMap => Map.isMap(value);
+
+const resolveFieldValue = (data: FieldValue, lookup?: boolean, ignoreFormattedValue?: boolean): string => {
+    if (!ignoreFormattedValue && data.hasOwnProperty('formattedValue')) {
+        return data.formattedValue;
+    }
+
+    const o = lookup !== true && data.hasOwnProperty('displayValue') ? data.displayValue : data.value;
+    return o !== null && o !== undefined ? o : undefined;
+};
+
 export function resolveDetailFieldValue(
-    data: any,
+    data: FieldList | FieldArray | FieldMap | FieldValue,
     lookup?: boolean,
     ignoreFormattedValue?: boolean
 ): string | string[] {
-    let value;
-
     if (data) {
-        if (List.isList(data) && data.size) {
-            value = data
-                .map(d => {
-                    if (!ignoreFormattedValue && d.has('formattedValue')) {
-                        return d.get('formattedValue');
-                    }
-
-                    const o = findValue(d, lookup);
-                    return o !== null && o !== undefined ? o : undefined;
-                })
-                .toArray();
-        } else if (!ignoreFormattedValue && data.has('formattedValue')) {
-            value = data.get('formattedValue');
-        } else {
-            const o = findValue(data, lookup);
-            value = o !== null && o !== undefined ? o : undefined;
+        if (isFieldList(data) && data.size) {
+            return data.toJS().map(d => resolveFieldValue(d, lookup, ignoreFormattedValue));
+        } else if (isFieldArray(data) && data.length) {
+            return data.map(d => resolveFieldValue(d, lookup, ignoreFormattedValue));
+        } else if (isFieldMap(data)) {
+            return resolveFieldValue(data.toJS(), lookup, ignoreFormattedValue);
         }
+
+        return resolveFieldValue(data as FieldValue, lookup, ignoreFormattedValue);
     }
 
-    // avoid setting value to 'null' use 'undefined' instead
-    return value === null ? undefined : value;
+    return undefined;
 }

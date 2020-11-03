@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* First official stable release of the `@labkey/components` package. See [Public API Docs](../../docs/public.md) for details.
+
 ### version 0.105.0
 *Released*: 2 November 2020
 * ImmutableJS-free `CreatedModified`.

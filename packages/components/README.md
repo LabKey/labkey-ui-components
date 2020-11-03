@@ -4,10 +4,16 @@
 
 This package contains React components, models, actions, and utility functions for LabKey applications and pages.
 
-:construction: **Warning** :construction:
-This package is under development, so these components should be considered unstable and are very likely to change.
-Once they're ready, we'll officially push the components as version 1.0.0.
-:construction: **Warning** :construction:
+## v1.0.0 - Official Stable Release
+v1.0.0 is the first stable release of `@labkey/components`. This version includes components that are part of the public
+API along with components used internally within LabKey.
+
+The source code in this package is split into two main directories under the `/src` directory: `internal` and `public`.
+The React components, models, etc. in the `internal` directory are either purely for implementation purposes or not yet
+stable enough to be included as part of the public API. As components become more stable they will be moved to the
+`public` directory and added to the public API documentation with future `@labkey/component` package versions.
+
+Please see the [Public API Docs](./docs/public.md) for further details.
 
 ## Development
 

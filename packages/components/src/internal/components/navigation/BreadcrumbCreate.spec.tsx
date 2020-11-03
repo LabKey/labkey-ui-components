@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import React from 'react';
-import { fromJS, Map } from 'immutable';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 
@@ -22,28 +21,26 @@ import { AppURL } from '../../..';
 
 import { BreadcrumbCreate } from './BreadcrumbCreate';
 
-const createdModifiedRow = Map<string, any>(
-    fromJS({
-        Created: {
-            formattedValue: '2019-05-15 19:45',
-            value: '2019-05-15 19:45:40.593',
-        },
-        CreatedBy: {
-            displayValue: 'username',
-            url: '#/q/core/siteusers/1001',
-            value: 1001,
-        },
-        Modified: {
-            formattedValue: '2019-05-16 19:45',
-            value: '2019-05-16 19:45:40.593',
-        },
-        ModifiedBy: {
-            displayValue: 'username2',
-            url: '#/q/core/siteusers/1002',
-            value: 1002,
-        },
-    })
-);
+const createdModifiedRow = {
+    Created: {
+        formattedValue: '2019-05-15 19:45',
+        value: '2019-05-15 19:45:40.593',
+    },
+    CreatedBy: {
+        displayValue: 'username',
+        url: '#/q/core/siteusers/1001',
+        value: 1001,
+    },
+    Modified: {
+        formattedValue: '2019-05-16 19:45',
+        value: '2019-05-16 19:45:40.593',
+    },
+    ModifiedBy: {
+        displayValue: 'username2',
+        url: '#/q/core/siteusers/1002',
+        value: 1002,
+    },
+};
 
 describe('<BreadcrumbCreate/>', () => {
     test('with created row', () => {

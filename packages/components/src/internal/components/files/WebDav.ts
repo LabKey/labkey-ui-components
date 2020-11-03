@@ -5,6 +5,11 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 import { DEFAULT_FILE, IFile } from './models';
 
 export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
+    canDelete: boolean;
+    canEdit: boolean;
+    canRead: boolean;
+    canRename: boolean;
+    canUpload: boolean;
     contentLength: number;
     contentType: string;
     created: string;
@@ -22,15 +27,6 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     name: string;
     options: string;
     propertiesRowId?: number;
-    canDelete: boolean;
-    canEdit: boolean;
-    canRead: boolean;
-    canRename: boolean;
-    canUpload: boolean;
-
-    constructor(params?: IFile) {
-        params ? super(params) : super();
-    }
 
     static create(values): WebDavFile {
         const webDavFile = new WebDavFile(values);
@@ -53,21 +49,19 @@ export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     }
 }
 
-function getWebDavUrl(containerPath: string, directory?: string, createIntermediates?: boolean, skipAtFiles?: boolean) {
-    let url =
-        ActionURL.getContextPath() +
-        '/_webdav' +
-        ActionURL.encodePath(containerPath) +
-        (!skipAtFiles ? '/' + encodeURIComponent('@files') : '');
+function getWebDavUrl(
+    containerPath: string,
+    directory?: string,
+    createIntermediates?: boolean,
+    skipAtFiles?: boolean,
+    asJSON?: boolean
+): string {
+    let url = `${ActionURL.getContextPath()}/_webdav${ActionURL.encodePath(containerPath)}`;
 
-    if (directory) {
-        const encodedDirName = encodeURIComponent(directory).replace(/%2F/g, '/');
-        url += '/' + encodedDirName;
-    }
-
-    if (createIntermediates) {
-        url += '?createIntermediates=' + createIntermediates;
-    }
+    if (!skipAtFiles) url += '/' + encodeURIComponent('@files');
+    if (directory) url += '/' + encodeURIComponent(directory).replace(/%2F/g, '/');
+    if (createIntermediates) url += '?createIntermediates=' + createIntermediates;
+    if (asJSON) url += '?method=JSON';
 
     return url;
 }
@@ -80,11 +74,8 @@ export function getWebDavFiles(
     alternateFilterCondition?: (file: any) => boolean
 ): Promise<Map<string, any>> {
     return new Promise((resolve, reject) => {
-        const url = getWebDavUrl(containerPath, directory, false, skipAtFiles);
-
         return Ajax.request({
-            url: url + '?method=JSON',
-            method: 'GET',
+            url: getWebDavUrl(containerPath, directory, false, skipAtFiles, true),
             success: Utils.getCallbackWrapper(response => {
                 // Filter directories and create webdav files
                 const filteredFiles = response.files.reduce((filtered, file) => {
@@ -97,8 +88,7 @@ export function getWebDavFiles(
                         return filtered;
                     }
                 }, Map<string, WebDavFile>());
-                const filterFilesAndPerms = Map({ files: filteredFiles, permissions: response.permissions });
-                resolve(filterFilesAndPerms);
+                resolve(Map({ files: filteredFiles, permissions: response.permissions }));
             }),
             failure: Utils.getCallbackWrapper(
                 response => {
@@ -122,10 +112,8 @@ export function uploadWebDavFile(
         const form = new FormData();
         form.append('file', file);
 
-        const url = getWebDavUrl(containerPath, directory, createIntermediates);
-
         Ajax.request({
-            url,
+            url: getWebDavUrl(containerPath, directory, createIntermediates),
             method: 'POST',
             form,
             success: Utils.getCallbackWrapper(() => {

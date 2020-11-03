@@ -34,7 +34,7 @@ You can then import `@labkey/components` in your application as follows:
 import { QueryModel, GridPanel } from '@labkey/components';
 ```
 
-#### API
+## API
 * [QueryModel API](./QueryModel.md) - how to use `QueryModel`, `withQueryModels`, `GridPanel`, and `DetailsPanel`, to
 fetch and render data from LabKey server.
 * [Sorting Utilities](./sort.md) - utilities to sort data the way users expect it to be sorted.

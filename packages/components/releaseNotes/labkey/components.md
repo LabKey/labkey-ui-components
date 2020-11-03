@@ -5,6 +5,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 7979: ToggleButton updates for use in LKFM storage unit CRUD
 
+### version 1.0.0
+*Released*: 3 November 2020
+* First official stable release of the `@labkey/components` package. See [Public API Docs](../../docs/public.md) for details.
+
+### version 0.105.0
+*Released*: 2 November 2020
+* ImmutableJS-free `CreatedModified`.
+* `resolveDetailFieldValue` updated to handle `Record` type. Typings improved.
+* `FilesListingForm` and `WebDavFile` updates.
+
 ### version 0.104.0
 *Released*: 1 Nov 2020
 * Item 7984: DomainForm component support for export/import field definitions from .json file

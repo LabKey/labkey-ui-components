@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { Button } from 'react-bootstrap';
 import { List, Set } from 'immutable';
@@ -6,30 +6,28 @@ import { List, Set } from 'immutable';
 import { IFile } from './models';
 
 interface Props {
+    canDelete?: boolean;
     files: List<IFile>;
+    getFilePropertiesEditTrigger?: (file: IFile) => ReactNode;
     headerText?: string;
     noFilesMessage: string;
-    onFileSelection: (event) => any;
-    onDelete?: (fileName: string) => any;
-    canDelete?: boolean;
+    onDelete?: (fileName: string) => void;
+    onFileSelection: (event) => void;
     selectedFiles: Set<string>;
     useFilePropertiesEditTrigger?: boolean;
-    getFilePropertiesEditTrigger?: (file: IFile) => React.ReactNode;
 }
 
 interface State {
     confirmDeletionSet: Set<string>;
 }
 
-export class FilesListing extends React.PureComponent<Props, State> {
+export class FilesListing extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = {
-            confirmDeletionSet: Set<string>(),
-        };
+        this.state = { confirmDeletionSet: Set<string>() };
     }
 
-    toggleDeleteConfirmation = (fileName: string) => {
+    toggleDeleteConfirmation = (fileName: string): void => {
         const { confirmDeletionSet } = this.state;
 
         this.setState({
@@ -39,12 +37,9 @@ export class FilesListing extends React.PureComponent<Props, State> {
         });
     };
 
-    deleteFile = (fileName: string) => {
-        const { onDelete } = this.props;
-        this.setState({
-            confirmDeletionSet: this.state.confirmDeletionSet.delete(fileName),
-        });
-        onDelete(fileName);
+    deleteFile = (fileName: string): void => {
+        this.setState(state => ({ confirmDeletionSet: state.confirmDeletionSet.delete(fileName) }));
+        this.props.onDelete?.(fileName);
     };
 
     render() {
@@ -55,7 +50,10 @@ export class FilesListing extends React.PureComponent<Props, State> {
             useFilePropertiesEditTrigger,
             getFilePropertiesEditTrigger,
             canDelete,
+            onFileSelection,
+            selectedFiles,
         } = this.props;
+        const { confirmDeletionSet } = this.state;
 
         if (!files || files.size === 0) return <div>{noFilesMessage}</div>;
 
@@ -64,7 +62,7 @@ export class FilesListing extends React.PureComponent<Props, State> {
                 {headerText && <div className="file-listing--header bottom-spacing">{headerText}</div>}
                 {files.map((file: IFile, key) => {
                     const { description, downloadUrl, name } = file;
-                    const confirmDelete = this.state.confirmDeletionSet.has(name);
+                    const confirmDelete = confirmDeletionSet.has(name);
 
                     return (
                         <div className="component file-listing-row--container" key={key}>
@@ -72,9 +70,9 @@ export class FilesListing extends React.PureComponent<Props, State> {
                                 <div className="row" key={key}>
                                     <div className="col-xs-4 file-listing-icon--container">
                                         <input
-                                            checked={this.props.selectedFiles.contains(name)}
+                                            checked={selectedFiles.contains(name)}
                                             name={name}
-                                            onClick={this.props.onFileSelection}
+                                            onClick={onFileSelection}
                                             type="checkbox"
                                         />
                                         <i className={file.iconFontCls + ' file-listing-icon'} />

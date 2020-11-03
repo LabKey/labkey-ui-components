@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 1.0.0
+*Released*: 3 November 2020
 * First official stable release of the `@labkey/components` package. See [Public API Docs](../../docs/public.md) for details.
 
 ### version 0.105.0

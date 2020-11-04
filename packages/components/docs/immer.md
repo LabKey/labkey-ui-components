@@ -1,10 +1,11 @@
 # Immer
 
 [Immer](https://immerjs.github.io/immer/docs/introduction) is a JavaScript package that provides immutability for normal
-JavaScript objects, arrays, Sets, and Maps. After internal review by several of our frontend engineers we've elected
+JavaScript objects, arrays, Sets, and Maps. After internal review by several of our frontend engineers, we've elected
 to add Immer as a dependency and start using it for new development in lieu of [ImmutableJS](https://immutable-js.github.io/immutable-js/).
 That said, we do not plan on actively migrating all usages away from ImmutableJS and it will remain a dependency for
-the foreseeable future.
+the foreseeable future. Note that while we are transitioning these existing objects to Immer, please don't rely heavily
+on the APIs exposed in our immutable objects.
 
 This document intends to outline why we're moving to Immer, provide some links to good resources for Immer, and provide
 a couple of scenarios highlighting aspects of note.

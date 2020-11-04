@@ -28,6 +28,8 @@ import {
     getDomainPanelStatus,
     setDomainFields,
     updateDomainException,
+    processJsonImport,
+    downloadJsonFile
 } from './actions';
 import { DomainDesign, DomainException, DomainField } from './models';
 import { DATETIME_TYPE, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from './PropDescType';
@@ -294,4 +296,42 @@ describe('domain properties actions', () => {
         expect(getDomainHeaderName('Test Name', 'Test Header Title', 'test')).toBe('Test Header Title');
         expect(getDomainHeaderName('Data Fields')).toBe('Results Fields');
     });
-});
+
+    test('downloadJsonFile ', () => {
+        const link = {
+            click: jest.fn()
+        };
+        jest.spyOn(document, "createElement").mockImplementation(() => link as any);
+        downloadJsonFile("test-file", "fileName");
+
+        expect(link.className).toEqual("download-helper");
+        expect(link.download).toEqual("test-file.txt");
+        expect(link.href).toEqual("data:application/txt,hello%20world");
+        expect(link.click).toHaveBeenCalledTimes(1);
+
+    });
+
+    test('downloadJsonFile ', () => {
+
+        expect(FileSaver.saveAs).toHaveBeenCalledWith(
+            {content:'content', options: { type: 'application/octet-stream' }},
+            'filename.extension'
+        )
+    });
+
+    test('processJsonImport ', () => {
+        const domain = DomainDesign.create({});
+
+        const emptinessError = {success: false, msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.'};
+        expect(processJsonImport("[]", domain)).toStrictEqual(emptinessError);
+        expect(processJsonImport("{}", domain)).toStrictEqual(emptinessError);
+        expect(processJsonImport("", domain)).toStrictEqual(emptinessError);
+
+        expect(() => {processJsonImport("<<< Invalid JSON", domain)}).toThrow();
+
+        const notListButContainsPKDomain = DomainDesign.create({});
+
+
+    });
+
+    });

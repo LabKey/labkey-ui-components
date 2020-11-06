@@ -1,6 +1,6 @@
 import React from 'react';
 import { List } from 'immutable';
-import { ActionURL } from '@labkey/api';
+import { ActionURL, Domain } from '@labkey/api';
 
 import { importData, Progress, resolveErrorMessage } from '../../../..';
 
@@ -14,6 +14,7 @@ import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { ListModel } from './models';
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import {PropDescType} from "../PropDescType";
+import ConfirmImportTypes from "../ConfirmImportTypes";
 
 interface Props {
     initModel?: ListModel;
@@ -30,6 +31,9 @@ interface State {
     model: ListModel;
     file: File;
     shouldImportData: boolean;
+    preSaveModel: ListModel;
+    importErrorModalOpen: boolean;
+    importError: any;
 }
 
 class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -40,6 +44,9 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             model: props.initModel || ListModel.create({}),
             file: undefined,
             shouldImportData: false,
+            preSaveModel: undefined,
+            importErrorModalOpen: false,
+            importError: undefined,
         };
     }
 
@@ -86,6 +93,30 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         this.setState({ file, shouldImportData });
     };
 
+    onImportErrorStayAndFix = () => {
+        const { model } = this.state;
+
+        this.setState({importErrorModalOpen: false});
+        const dropOptions = {
+            schemaName: 'lists',
+            queryName: model.name,
+            failure: (error) => {
+                const updatedModel = model.set('exception', error) as ListModel;
+                this.setState({ model: updatedModel });
+            },
+            success: () => {
+                this.setState((state) => ({ model: state.preSaveModel }), () => {
+                    this.setState({preSaveModel: undefined});
+                });
+            }
+        };
+        Domain.drop(dropOptions);
+    }
+
+    onImportErrorContinue = () => {
+        this.props.onComplete(this.state.model);
+    }
+
     handleFileImport() {
         const { setSubmitting } = this.props;
         const { file, model } = this.state;
@@ -104,7 +135,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             .catch(error => {
                 console.error(error);
                 setSubmitting(false, () => {
-                    this.props.onComplete(model, resolveErrorMessage(error));
+                    this.setState({importErrorModalOpen: true, importError: error});
                 });
             });
     }
@@ -156,31 +187,33 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         const { setSubmitting } = this.props;
         const { model, shouldImportData } = this.state;
 
-        saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
-            .then(response => {
-                let updatedModel = model.set('exception', undefined) as ListModel;
-                updatedModel = updatedModel.merge({ domain: response }) as ListModel;
-                this.setState(() => ({ model: updatedModel }));
-
-                // If we're importing List file data, import file contents
-                if (shouldImportData) {
-                    this.handleFileImport();
-                } else {
-                    setSubmitting(false, () => {
-                        this.props.onComplete(updatedModel);
-                    });
-                }
-            })
-            .catch(response => {
-                const exception = resolveErrorMessage(response);
-                const updatedModel = exception
-                    ? (model.set('exception', exception) as ListModel)
-                    : (model.merge({ domain: response, exception: undefined }) as ListModel);
-
-                setSubmitting(false, () => {
+        this.setState((state) => ({ preSaveModel: state.model.set('exception', undefined) as ListModel}), () => {
+            saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
+                .then(response => {
+                    let updatedModel = model.set('exception', undefined) as ListModel;
+                    updatedModel = updatedModel.merge({ domain: response }) as ListModel;
                     this.setState(() => ({ model: updatedModel }));
+
+                    // If we're importing List file data, import file contents
+                    if (shouldImportData) {
+                        this.handleFileImport();
+                    } else {
+                        setSubmitting(false, () => {
+                            this.props.onComplete(updatedModel);
+                        });
+                    }
+                })
+                .catch(response => {
+                    const exception = resolveErrorMessage(response);
+                    const updatedModel = exception
+                        ? (model.set('exception', exception) as ListModel)
+                        : (model.merge({ domain: response, exception: undefined }) as ListModel);
+
+                    setSubmitting(false, () => {
+                        this.setState(() => ({ model: updatedModel }));
+                    });
                 });
-            });
+        });
     };
 
     headerRenderer = (config: IAppDomainHeader) => {
@@ -201,7 +234,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             onTogglePanel,
             saveBtnText,
         } = this.props;
-        const { model, file } = this.state;
+        const { model, file, importError, importErrorModalOpen } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -267,6 +300,13 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     estimate={file ? file.size * 0.005 : undefined}
                     title="Importing data from selected file..."
                     toggle={submitting && file !== undefined}
+                />
+                <ConfirmImportTypes
+                    designerType="List"
+                    show={importErrorModalOpen}
+                    error={importError}
+                    onConfirm={this.onImportErrorContinue}
+                    onCancel={this.onImportErrorStayAndFix}
                 />
             </BaseDomainDesigner>
         );

@@ -18,7 +18,7 @@ import React from 'react';
 
 import { List } from 'immutable';
 
-import { ActionURL, getServerContext } from '@labkey/api';
+import { ActionURL, Domain, getServerContext } from '@labkey/api';
 
 import produce, { Draft } from 'immer';
 
@@ -38,6 +38,7 @@ import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
 import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
+import ConfirmImportTypes from "../ConfirmImportTypes";
 
 const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
 const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';
@@ -60,6 +61,9 @@ interface State {
     shouldImportData: boolean;
     keyPropertyIndex?: number;
     visitDatePropertyIndex?: number;
+    preSaveModel: DatasetModel;
+    importErrorModalOpen: boolean;
+    importError: any;
 }
 
 export class DatasetDesignerPanelImpl extends React.PureComponent<Props & InjectedBaseDomainDesignerProps, State> {
@@ -73,6 +77,9 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             model: props.initModel || DatasetModel.create(null, {}),
             file: undefined,
             shouldImportData: false,
+            preSaveModel: undefined,
+            importErrorModalOpen: false,
+            importError: undefined,
         };
     }
 
@@ -316,6 +323,33 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         );
     };
 
+    onImportErrorStayAndFix = () => {
+        const { model } = this.state;
+
+        console.log("beh", model);
+        this.setState({importErrorModalOpen: false});
+        const dropOptions = {
+            schemaName: 'study',
+            queryName: model.name,
+            failure: (error) => {
+                this.setState(
+                    produce((draft: Draft<State>) => {
+                        draft.model.exception = error;
+                }))
+            },
+            success: () => {
+                this.setState((state) => ({ model: state.preSaveModel }), () => {
+                    this.setState({preSaveModel: undefined});
+                });
+            }
+        };
+        Domain.drop(dropOptions);
+    }
+
+    onImportErrorContinue = () => {
+        this.props.onComplete(this.state.model);
+    }
+
     handleFileImport(participantId, sequenceNum) {
         const { setSubmitting } = this.props;
         const { file, model } = this.state;
@@ -338,7 +372,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             .catch(error => {
                 console.error(error);
                 setSubmitting(false, () => {
-                    this.props.onComplete(model, resolveErrorMessage(error));
+                    this.setState({importErrorModalOpen: true, importError: error});
                 });
             });
     }
@@ -348,6 +382,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const { model, shouldImportData } = this.state;
         const participantIdMapCol = this._participantId;
         const sequenceNumMapCol = this._sequenceNum;
+
+        console.log("start of save", model.domain);
 
         // if there is a domain error and we are mapping columns, the row indices will be incorrect so don't include them
         const addRowIndexes = !(participantIdMapCol || sequenceNumMapCol);
@@ -372,7 +408,12 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             }
         });
 
-        saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, addRowIndexes)
+        console.log("before calling save", updatedDomain);
+        this.setState(produce((draft: Draft<State>) => {
+            draft.preSaveModel = model;
+            draft.model.exception = undefined;
+        }), () => {
+            saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, addRowIndexes)
             .then(response => {
                 this.setState(
                     produce((draft: Draft<State>) => {
@@ -413,6 +454,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     );
                 });
             });
+        });
     };
 
     render() {
@@ -430,7 +472,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             saveBtnText,
         } = this.props;
 
-        const { model, file, keyPropertyIndex, visitDatePropertyIndex } = this.state;
+        const { model, file, keyPropertyIndex, visitDatePropertyIndex, importError, importErrorModalOpen  } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -503,6 +545,13 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     estimate={file ? file.size * 0.005 : undefined}
                     title="Importing data from selected file..."
                     toggle={submitting && file !== undefined}
+                />
+                <ConfirmImportTypes
+                    designerType='Dataset'
+                    show={importErrorModalOpen}
+                    error={importError}
+                    onConfirm={this.onImportErrorContinue}
+                    onCancel={this.onImportErrorStayAndFix}
                 />
             </BaseDomainDesigner>
         );

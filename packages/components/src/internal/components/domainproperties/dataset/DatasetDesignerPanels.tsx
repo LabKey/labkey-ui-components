@@ -61,7 +61,7 @@ interface State {
     shouldImportData: boolean;
     keyPropertyIndex?: number;
     visitDatePropertyIndex?: number;
-    preSaveModel: DatasetModel;
+    preSaveDomain: DomainDesign;
     importErrorModalOpen: boolean;
     importError: any;
 }
@@ -77,7 +77,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             model: props.initModel || DatasetModel.create(null, {}),
             file: undefined,
             shouldImportData: false,
-            preSaveModel: undefined,
+            preSaveDomain: undefined,
             importErrorModalOpen: false,
             importError: undefined,
         };
@@ -326,7 +326,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     onImportErrorStayAndFix = () => {
         const { model } = this.state;
 
-        console.log("beh", model);
         this.setState({importErrorModalOpen: false});
         const dropOptions = {
             schemaName: 'study',
@@ -338,8 +337,10 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 }))
             },
             success: () => {
-                this.setState((state) => ({ model: state.preSaveModel }), () => {
-                    this.setState({preSaveModel: undefined});
+                this.setState(produce((draft: Draft<State>) => {
+                    draft.model.domain = this.state.preSaveDomain;
+                }), () => {
+                    this.setState({preSaveDomain: undefined});
                 });
             }
         };
@@ -383,8 +384,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         const participantIdMapCol = this._participantId;
         const sequenceNumMapCol = this._sequenceNum;
 
-        console.log("start of save", model.domain);
-
         // if there is a domain error and we are mapping columns, the row indices will be incorrect so don't include them
         const addRowIndexes = !(participantIdMapCol || sequenceNumMapCol);
 
@@ -408,9 +407,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             }
         });
 
-        console.log("before calling save", updatedDomain);
         this.setState(produce((draft: Draft<State>) => {
-            draft.preSaveModel = model;
+            draft.preSaveDomain = updatedDomain;
             draft.model.exception = undefined;
         }), () => {
             saveDomain(updatedDomain, model.getDomainKind(), model.getOptions(), model.name, false, addRowIndexes)

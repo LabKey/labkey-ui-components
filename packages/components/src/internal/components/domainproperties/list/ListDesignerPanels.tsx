@@ -31,7 +31,7 @@ interface State {
     model: ListModel;
     file: File;
     shouldImportData: boolean;
-    preSaveModel: ListModel;
+    preSaveDomain: DomainDesign;
     importErrorModalOpen: boolean;
     importError: any;
 }
@@ -44,7 +44,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             model: props.initModel || ListModel.create({}),
             file: undefined,
             shouldImportData: false,
-            preSaveModel: undefined,
+            preSaveDomain: undefined,
             importErrorModalOpen: false,
             importError: undefined,
         };
@@ -105,8 +105,11 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 this.setState({ model: updatedModel });
             },
             success: () => {
-                this.setState((state) => ({ model: state.preSaveModel }), () => {
-                    this.setState({preSaveModel: undefined});
+                this.setState((state) => ({ model: model.merge({
+                        domain: state.preSaveDomain,
+                        'exception': undefined
+                }) as ListModel }), () => {
+                    this.setState({preSaveDomain: undefined});
                 });
             }
         };
@@ -187,7 +190,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         const { setSubmitting } = this.props;
         const { model, shouldImportData } = this.state;
 
-        this.setState((state) => ({ preSaveModel: state.model.set('exception', undefined) as ListModel}), () => {
+        this.setState((state) => ({ preSaveDomain: state.model.domain }), () => {
             saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
                 .then(response => {
                     let updatedModel = model.set('exception', undefined) as ListModel;

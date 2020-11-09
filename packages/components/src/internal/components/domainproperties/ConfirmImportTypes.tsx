@@ -10,10 +10,7 @@ interface Props {
     designerType: String;
 }
 
-interface State {
-}
-
-export default class ConfirmImportTypes extends PureComponent<Props, State> {
+export default class ConfirmImportTypes extends PureComponent<Props> {
     render() {
         const { error, onConfirm, onCancel, show, designerType } = this.props;
 

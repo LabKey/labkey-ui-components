@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Support error handling for inaccurately inferred field types within List and Dataset designers.
+* [Issue 41460](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=41460): Support error handling for inaccurately inferred field types within List and Dataset designers.
 
 ### version 1.0.0
 *Released*: 3 November 2020

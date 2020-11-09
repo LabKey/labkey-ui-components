@@ -32,7 +32,6 @@ interface State {
     file: File;
     shouldImportData: boolean;
     preSaveDomain: DomainDesign;
-    importErrorModalOpen: boolean;
     importError: any;
 }
 
@@ -45,7 +44,6 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             file: undefined,
             shouldImportData: false,
             preSaveDomain: undefined,
-            importErrorModalOpen: false,
             importError: undefined,
         };
     }
@@ -96,7 +94,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
     onImportErrorStayAndFix = () => {
         const { model } = this.state;
 
-        this.setState({importErrorModalOpen: false});
+        this.setState({importError: undefined});
         const dropOptions = {
             schemaName: 'lists',
             queryName: model.name,
@@ -107,10 +105,9 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             success: () => {
                 this.setState((state) => ({ model: model.merge({
                         domain: state.preSaveDomain,
+                        preSaveDomain: undefined,
                         'exception': undefined
-                }) as ListModel }), () => {
-                    this.setState({preSaveDomain: undefined});
-                });
+                }) as ListModel }));
             }
         };
         Domain.drop(dropOptions);
@@ -138,7 +135,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             .catch(error => {
                 console.error(error);
                 setSubmitting(false, () => {
-                    this.setState({importErrorModalOpen: true, importError: error});
+                    this.setState({importError: error});
                 });
             });
     }
@@ -237,7 +234,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             onTogglePanel,
             saveBtnText,
         } = this.props;
-        const { model, file, importError, importErrorModalOpen } = this.state;
+        const { model, file, importError } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -306,7 +303,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 />
                 <ConfirmImportTypes
                     designerType="List"
-                    show={importErrorModalOpen}
+                    show={importError !== undefined}
                     error={importError}
                     onConfirm={this.onImportErrorContinue}
                     onCancel={this.onImportErrorStayAndFix}

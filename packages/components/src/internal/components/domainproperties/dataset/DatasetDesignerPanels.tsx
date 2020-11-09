@@ -62,7 +62,6 @@ interface State {
     keyPropertyIndex?: number;
     visitDatePropertyIndex?: number;
     preSaveDomain: DomainDesign;
-    importErrorModalOpen: boolean;
     importError: any;
 }
 
@@ -78,7 +77,6 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             file: undefined,
             shouldImportData: false,
             preSaveDomain: undefined,
-            importErrorModalOpen: false,
             importError: undefined,
         };
     }
@@ -326,7 +324,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
     onImportErrorStayAndFix = () => {
         const { model } = this.state;
 
-        this.setState({importErrorModalOpen: false});
+        this.setState({importError: undefined});
         const dropOptions = {
             schemaName: 'study',
             queryName: model.name,
@@ -339,9 +337,8 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             success: () => {
                 this.setState(produce((draft: Draft<State>) => {
                     draft.model.domain = this.state.preSaveDomain;
-                }), () => {
-                    this.setState({preSaveDomain: undefined});
-                });
+                    draft.preSaveDomain = undefined;
+                }));
             }
         };
         Domain.drop(dropOptions);
@@ -373,7 +370,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             .catch(error => {
                 console.error(error);
                 setSubmitting(false, () => {
-                    this.setState({importErrorModalOpen: true, importError: error});
+                    this.setState({importError: error});
                 });
             });
     }
@@ -470,7 +467,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             saveBtnText,
         } = this.props;
 
-        const { model, file, keyPropertyIndex, visitDatePropertyIndex, importError, importErrorModalOpen  } = this.state;
+        const { model, file, keyPropertyIndex, visitDatePropertyIndex, importError } = this.state;
 
         return (
             <BaseDomainDesigner
@@ -546,7 +543,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 />
                 <ConfirmImportTypes
                     designerType='Dataset'
-                    show={importErrorModalOpen}
+                    show={importError !== undefined}
                     error={importError}
                     onConfirm={this.onImportErrorContinue}
                     onCancel={this.onImportErrorStayAndFix}

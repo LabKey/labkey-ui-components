@@ -103,10 +103,11 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 this.setState({ model: updatedModel });
             },
             success: () => {
-                this.setState((state) => ({ model: model.merge({
+                this.setState((state) => ({
+                    preSaveDomain: undefined,
+                    model: model.merge({
                         domain: state.preSaveDomain,
-                        preSaveDomain: undefined,
-                        'exception': undefined
+                        exception: undefined
                 }) as ListModel }));
             }
         };

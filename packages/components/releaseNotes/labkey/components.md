@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.1.0
+*Released*: 9 November 2020
+* Item 7979: ToggleButton updates for use in LKFM storage unit CRUD
+
 ### version 1.0.0
 *Released*: 3 November 2020
 * First official stable release of the `@labkey/components` package. See [Public API Docs](../../docs/public.md) for details.

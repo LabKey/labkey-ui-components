@@ -308,7 +308,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     toggle={submitting && file !== undefined}
                 />
                 <ConfirmImportTypes
-                    designerType="List"
+                    designerType="list"
                     show={importError !== undefined}
                     error={importError}
                     onConfirm={this.onImportErrorContinue}

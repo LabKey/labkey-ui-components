@@ -7,7 +7,7 @@ interface Props {
     show: boolean;
     onConfirm: () => void;
     onCancel: () => void;
-    designerType: String;
+    designerType: string;
 }
 
 export default class ConfirmImportTypes extends PureComponent<Props> {

@@ -20,7 +20,7 @@ interface Props {
     initModel?: ListModel;
     onChange?: (model: ListModel) => void;
     onCancel: () => void;
-    onComplete: (model: ListModel, fileImportError?: string) => void;
+    onComplete: (model: ListModel) => void;
     useTheme?: boolean;
     containerTop?: number; // This sets the top of the sticky header, default is 0
     successBsStyle?: string;
@@ -31,7 +31,7 @@ interface State {
     model: ListModel;
     file: File;
     shouldImportData: boolean;
-    preSaveDomain: DomainDesign;
+    savedModel: ListModel;
     importError: any;
 }
 
@@ -43,7 +43,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             model: props.initModel || ListModel.create({}),
             file: undefined,
             shouldImportData: false,
-            preSaveDomain: undefined,
+            savedModel: undefined,
             importError: undefined,
         };
     }
@@ -91,52 +91,56 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         this.setState({ file, shouldImportData });
     };
 
-    onImportErrorStayAndFix = () => {
-        const { model } = this.state;
+    onImportErrorStayAndFix = (): void => {
+        const { model, savedModel } = this.state;
 
-        this.setState({importError: undefined});
-        const dropOptions = {
+        Domain.drop({
             schemaName: 'lists',
-            queryName: model.name,
+            queryName: savedModel.name,
             failure: (error) => {
-                const updatedModel = model.set('exception', error) as ListModel;
-                this.setState({ model: updatedModel });
+                this.setState({
+                    model: model.set('exception', error) as ListModel,
+                    savedModel: undefined,
+                    importError: undefined,
+                });
             },
             success: () => {
                 this.setState((state) => ({
-                    preSaveDomain: undefined,
-                    model: model.merge({
-                        domain: state.preSaveDomain,
-                        exception: undefined
-                }) as ListModel }));
-            }
-        };
-        Domain.drop(dropOptions);
-    }
+                    model: model.set('exception', undefined) as ListModel,
+                    savedModel: undefined,
+                    importError: undefined,
+                }));
+            },
+        });
+    };
 
-    onImportErrorContinue = () => {
-        this.props.onComplete(this.state.model);
-    }
+    onImportErrorContinue = (): void => {
+        this.props.onComplete(this.state.savedModel);
+    };
 
     handleFileImport() {
         const { setSubmitting } = this.props;
-        const { file, model } = this.state;
+        const { file, savedModel } = this.state;
 
         importData({
             schemaName: 'lists',
-            queryName: model.name,
+            queryName: savedModel.name,
             file,
-            importUrl: ActionURL.buildURL('list', 'UploadListItems', LABKEY.container.path, { name: model.name }),
+            importUrl: ActionURL.buildURL('list', 'UploadListItems', LABKEY.container.path, {
+                name: savedModel.name,
+            }),
         })
             .then(response => {
                 setSubmitting(false, () => {
-                    this.props.onComplete(model);
+                    this.props.onComplete(savedModel);
                 });
             })
             .catch(error => {
                 console.error(error);
                 setSubmitting(false, () => {
-                    this.setState({importError: error});
+                    this.setState({
+                        importError: error,
+                    });
                 });
             });
     }
@@ -188,33 +192,34 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         const { setSubmitting } = this.props;
         const { model, shouldImportData } = this.state;
 
-        this.setState((state) => ({ preSaveDomain: state.model.domain }), () => {
-            saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
-                .then(response => {
-                    let updatedModel = model.set('exception', undefined) as ListModel;
-                    updatedModel = updatedModel.merge({ domain: response }) as ListModel;
-                    this.setState(() => ({ model: updatedModel }));
-
+        saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
+            .then(response => {
+                const updatedModel = model.set('exception', undefined) as ListModel;
+                this.setState(() => ({
+                    model: updatedModel,
+                    // the savedModel will be used for dropping the domain on file import failure or for onComplete
+                    savedModel: updatedModel.merge({ domain: response }) as ListModel,
+                }), () => {
                     // If we're importing List file data, import file contents
                     if (shouldImportData) {
                         this.handleFileImport();
                     } else {
                         setSubmitting(false, () => {
-                            this.props.onComplete(updatedModel);
+                            this.props.onComplete(this.state.savedModel);
                         });
                     }
-                })
-                .catch(response => {
-                    const exception = resolveErrorMessage(response);
-                    const updatedModel = exception
-                        ? (model.set('exception', exception) as ListModel)
-                        : (model.merge({ domain: response, exception: undefined }) as ListModel);
-
-                    setSubmitting(false, () => {
-                        this.setState(() => ({ model: updatedModel }));
-                    });
                 });
-        });
+            })
+            .catch(response => {
+                const exception = resolveErrorMessage(response);
+                const updatedModel = exception
+                    ? (model.set('exception', exception) as ListModel)
+                    : (model.merge({ domain: response, exception: undefined }) as ListModel);
+
+                setSubmitting(false, () => {
+                    this.setState(() => ({ model: updatedModel }));
+                });
+            });
     };
 
     headerRenderer = (config: IAppDomainHeader) => {

@@ -15,7 +15,7 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
+import { Ajax, Domain, getServerContext, Query, Security, Utils } from '@labkey/api';
 
 import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL } from '../../..';
 
@@ -35,7 +35,14 @@ import {
     QueryInfoLite,
     updateSampleField,
 } from './models';
-import { PROP_DESC_TYPES } from './PropDescType';
+import {
+    ATTACHMENT_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
+    PROP_DESC_TYPES,
+    PropDescType,
+} from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
@@ -194,25 +201,49 @@ export function handleSchemas(payload: any): List<SchemaDetails> {
         .toList();
 }
 
+export async function getAvailableTypes(domain: DomainDesign): Promise<List<PropDescType>> {
+    const container = getServerContext().container;
+    const hasOntologyModule = container.activeModules.indexOf('Ontology') > -1;
+    const ontologies = hasOntologyModule ? await fetchOntologies(getServerContext().container.path) : [];
+
+    return PROP_DESC_TYPES.filter(type => {
+        if (type === FLAG_TYPE && !domain.allowFlagProperties) {
+            return false;
+        }
+
+        if (type === FILE_TYPE && !domain.allowFileLinkProperties) {
+            return false;
+        }
+
+        if (type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties) {
+            return false;
+        }
+
+        if (type === ONTOLOGY_LOOKUP_TYPE && (!hasOntologyModule || ontologies.length === 0)) {
+            return false;
+        }
+
+        return true;
+    }) as List<PropDescType>;
+}
+
 export function fetchOntologies(containerPath: string): Promise<OntologyModel[]> {
-    return cache<OntologyModel[]>(
-        'ontologies-cache',
-        containerPath,
-        () =>
-            new Promise(resolve => {
-                Query.selectRows({
-                    method: 'POST',
-                    schemaName: 'ontology',
-                    queryName: 'ontologies',
-                    columns: 'RowId,Name,Abbreviation',
-                    sort: 'Name',
-                    requiredVersion: 17.1,
-                    success: (response) => {
-                        resolve(response.rows.map(row => OntologyModel.create(row)));
-                    },
-                });
-            })
-    );
+    return cache<OntologyModel[]>('ontologies-cache', containerPath, () => {
+        return new Promise(resolve => {
+            Query.selectRows({
+                method: 'POST',
+                containerPath,
+                schemaName: 'ontology',
+                queryName: 'ontologies',
+                columns: 'RowId,Name,Abbreviation',
+                sort: 'Name',
+                requiredVersion: 17.1,
+                success: (response) => {
+                    resolve(response.rows.map(row => OntologyModel.create(row)));
+                },
+            });
+        });
+    });
 }
 
 export function getMaxPhiLevel(): Promise<string> {

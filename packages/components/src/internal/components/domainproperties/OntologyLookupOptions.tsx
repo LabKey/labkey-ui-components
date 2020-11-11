@@ -190,19 +190,24 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                             value={field.sourceOntology}
                         >
                             {loading && (
-                                <option disabled key="_loading" value={field.sourceOntology}>
+                                <option disabled key="_loading">
                                     Loading...
                                 </option>
                             )}
-                            {!loading &&
-                                ontologies &&
+                            {!loading && ontologies?.length === 0 && (
+                                <option key="_currentValue" value={field.sourceOntology}>
+                                    {field.sourceOntology}
+                                </option>
+                            )}
+                            {!loading && ontologies?.length > 0 &&
                                 ontologies.map(ontology => {
                                     return (
                                         <option key={ontology.abbreviation} value={ontology.abbreviation}>
                                             {ontology.getLabel()}
                                         </option>
                                     );
-                                })}
+                                })
+                            }
                         </FormControl>
                     </Col>
                     <Col xs={3}>

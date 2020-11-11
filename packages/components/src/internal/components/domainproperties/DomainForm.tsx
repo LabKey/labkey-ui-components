@@ -18,8 +18,6 @@ import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import classNames from 'classnames';
-import { getServerContext } from '@labkey/api';
-
 import { Sticky, StickyContainer } from 'react-sticky';
 
 import { AddEntityButton, ConfirmModal, InferDomainResponse, FileAttachmentForm, Alert } from '../../..';
@@ -52,6 +50,7 @@ import {
     removeField,
     setDomainFields,
     updateDomainPanelClassList,
+    getAvailableTypes,
 } from './actions';
 import { DomainRow } from './DomainRow';
 import {
@@ -68,14 +67,7 @@ import {
     DomainFieldIndexChange,
 } from './models';
 import { SimpleResponse } from "../files/models";
-import {
-    ATTACHMENT_TYPE,
-    FILE_TYPE,
-    FLAG_TYPE,
-    ONTOLOGY_LOOKUP_TYPE,
-    PROP_DESC_TYPES,
-    PropDescType,
-} from './PropDescType';
+import { PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
 import { generateNameWithTimestamp } from "../../util/Date";
@@ -163,7 +155,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             confirmDeleteRowIndex: undefined,
             dragId: undefined,
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
-            availableTypes: this.getAvailableTypes(),
+            availableTypes: List(),
             collapsed: props.initCollapsed,
             filtered: false,
             filePreviewData: undefined,
@@ -173,7 +165,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     componentDidMount(): void {
-        if (!this.props.maxPhiLevel) {
+        const { domain, maxPhiLevel, useTheme } = this.props;
+
+        if (!maxPhiLevel) {
             getMaxPhiLevel()
                 .then(maxPhiLevel => {
                     this.setState(() => ({ maxPhiLevel }));
@@ -183,7 +177,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 });
         }
 
-        updateDomainPanelClassList(this.props.useTheme, this.props.domain);
+        getAvailableTypes(domain).then(availableTypes => {
+            this.setState(() => ({ availableTypes }));
+        });
+
+        updateDomainPanelClassList(useTheme, domain);
     }
 
     componentDidUpdate(
@@ -193,27 +191,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     ): void {
         updateDomainPanelClassList(prevProps.useTheme, this.props.domain);
     }
-
-    getAvailableTypes = (): List<PropDescType> => {
-        const { domain } = this.props;
-        const allowOntologyLookup = getServerContext().container.activeModules.indexOf('Ontology') > -1;
-
-        return PROP_DESC_TYPES.filter(type => {
-            if (type === FLAG_TYPE && !domain.allowFlagProperties) {
-                return false;
-            }
-
-            if (type === FILE_TYPE && !domain.allowFileLinkProperties) {
-                return false;
-            }
-
-            if (type === ONTOLOGY_LOOKUP_TYPE && !allowOntologyLookup) {
-                return false;
-            }
-
-            return !(type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties);
-        }) as List<PropDescType>;
-    };
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainFormInput>, nextContext: any): void {
         const { controlledCollapse, initCollapsed, validate, onChange } = this.props;

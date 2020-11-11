@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version TBD
-*Released*: TBD
+### version 0.4.1
+*Released*: 11 November 2020
 * Add tsconfig path for freezerManagerPath
 
 ### version 0.4.0

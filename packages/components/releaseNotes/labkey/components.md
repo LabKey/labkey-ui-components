@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.1.1
+*Release*: 11 November 2020
+* More error message resolution improvements, particularly for importing with EntityInsertPanel
+
 ### version 1.1.0
 *Released*: 9 November 2020
 * Item 7979: ToggleButton updates for use in LKFM storage unit CRUD

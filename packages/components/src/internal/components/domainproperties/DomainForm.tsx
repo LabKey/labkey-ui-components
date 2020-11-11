@@ -774,10 +774,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return domain.set('fields', filteredFields) as DomainDesign;
     };
 
-    getDomainFields = (): List<DomainField> => {
-        return this.props.domain.fields;
-    };
-
     updateFilteredFields = (value?: string) => {
         const { domain } = this.props;
 
@@ -795,6 +791,21 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return !collapsed;
     };
+
+    getFieldAdditionalDetails(): {[key: string]: string} {
+        const mapping = {};
+        this.props.domain.fields.forEach(field => {
+            if (!field.hasInvalidName()) {
+                if (field.conceptImportColumn) {
+                    mapping[field.conceptImportColumn] = 'Ontology Lookup: ' + field.name;
+                }
+                if (field.conceptLabelColumn) {
+                    mapping[field.conceptLabelColumn] = 'Ontology Lookup: ' + field.name;
+                }
+            }
+        });
+        return mapping;
+    }
 
     renderPanelHeaderContent() {
         const { helpTopic, controlledCollapse } = this.props;
@@ -886,10 +897,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
-            allowImportExport
+            allowImportExport,
         } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
         const hasFields = domain.fields.size > 0;
+        const fieldAdditionalDetails = this.getFieldAdditionalDetails();
 
         return (
             <>
@@ -919,7 +931,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                         key={'domain-row-key-' + i}
                                                         field={field}
                                                         fieldError={this.getFieldError(domain, i)}
-                                                        getDomainFields={this.getDomainFields}
+                                                        domainFields={domain.fields}
+                                                        fieldAdditionalDetails={fieldAdditionalDetails}
                                                         domainIndex={domainIndex}
                                                         index={i}
                                                         expanded={expandedRowIndex === i}

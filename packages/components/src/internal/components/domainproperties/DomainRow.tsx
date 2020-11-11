@@ -77,7 +77,8 @@ interface IDomainRowProps {
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    getDomainFields?: () => List<DomainField>;
+    domainFields?: List<DomainField>;
+    fieldAdditionalDetails?: {[key: string]: string}
 }
 
 interface IDomainRowState {
@@ -117,10 +118,18 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const { field, index, fieldError } = this.props;
+        const { field, index, fieldError, fieldAdditionalDetails } = this.props;
         const details = [];
+        let period = '';
 
-        // TODO field.dataType.isOntologyLookup()
+        if (field.isNew()) {
+            details.push('New Field');
+            period = '. ';
+        } else if (field.updatedField) {
+            details.push('Updated');
+            period = '. ';
+        }
+
         if (field.dataType.isSample()) {
             const detailsText =
                 field.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName &&
@@ -129,24 +138,21 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                 }) === 0
                     ? ALL_SAMPLES_DISPLAY_TEXT
                     : field.lookupQuery;
-            details.push(detailsText);
+            details.push(period + detailsText);
+            period = '. ';
         } else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
             details.push(
-                [field.lookupContainer || 'Current Folder', field.lookupSchema, field.lookupQuery].join(' > ')
+                period + [field.lookupContainer || 'Current Folder', field.lookupSchema, field.lookupQuery].join(' > ')
             );
-        } else if (field.isNew()) {
-            details.push('New Field');
-        } else if (field.updatedField) {
-            details.push('Updated');
-        }
-
-        let period = '';
-        if (details.length > 0) {
+            period = '. ';
+        } else if (field.dataType.isOntologyLookup() && field.sourceOntology) {
+            details.push(period + field.sourceOntology);
             period = '. ';
         }
 
         if (field.wrappedColumnName) {
             details.push(period + 'Wrapped column - ' + field.wrappedColumnName);
+            period = '. ';
         }
 
         if (field.isPrimaryKey) {
@@ -156,6 +162,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
         if (field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
             details.push(period + 'Locked');
+            period = '. ';
+        }
+
+        if (!field.hasInvalidName() && fieldAdditionalDetails?.hasOwnProperty(field.name)) {
+            details.push(period + fieldAdditionalDetails[field.name]);
             period = '. ';
         }
 
@@ -491,7 +502,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             appPropertiesOnly,
             successBsStyle,
             domainFormDisplayOptions,
-            getDomainFields,
+            domainFields,
         } = this.props;
 
         return (
@@ -557,7 +568,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     field={field}
                                     index={index}
                                     domainIndex={domainIndex}
-                                    getDomainFields={getDomainFields}
+                                    domainFields={domainFields}
                                     onMultiChange={this.onMultiFieldChange}
                                     onChange={this.onSingleFieldChange}
                                     showingModal={this.showingModal}

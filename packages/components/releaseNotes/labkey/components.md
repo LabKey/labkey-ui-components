@@ -1,9 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
+### version 0.104.?
 *Released*: TBD
 * Item 8058: Domain form support for new Ontology Lookup data type and expanded row input options
+
+### version 0.104.1
+*Released*: 10 Nov 2020
+* [Issue 41460](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=41460): Support error handling for inaccurately inferred field types within List and Dataset designers.
 
 ### version 0.104.0
 *Released*: 1 Nov 2020

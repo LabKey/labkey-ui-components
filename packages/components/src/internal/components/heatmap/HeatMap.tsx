@@ -13,17 +13,44 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { Link } from 'react-router';
-import { fromJS, List, Map } from 'immutable';
+import React, { FC, memo, ReactNode, useState, useMemo, useEffect, useCallback } from 'react';
+import {
+    addDateRangeFilter,
+    AppURL,
+    LoadingSpinner,
+    naturalSort,
+    SchemaQuery
+} from '../../..';
 
-import { gridInit } from '../../actions';
-import { getStateQueryGridModel } from '../../models';
-import { getQueryGridModel } from '../../global';
-import { LoadingSpinner, AppURL, QueryGridModel, SchemaQuery, naturalSort } from '../../..';
+// These need to be direct imports from files to avoid circular dependencies in index.ts
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { addDateRangeFilter, last12Months, monthSort } from './utils';
+
+import { last12Months, monthSort } from './utils';
 import { HeatMapDisplay } from './HeatMapDisplay';
+import { Link } from "react-router";
+
+export interface HeatMapCell {
+    monthName: string,
+    monthNum: number,
+    yearNum: number,
+    title: string,
+    providerName: string,
+    protocolName: string,
+    monthTotal: string,
+    completeTotal: string,
+    inRangeTotal: string,
+    url: AppURL,
+}
+
+export interface HeatMapDisplayCell {
+    name: string,
+    renderYCell: (cell: HeatMapDisplayCell) => ReactNode,
+    completeTotal: string,
+    inRangeTotal: string,
+    headerUrl: AppURL,
+    totalUrl: AppURL
+}
 
 export interface HeatMapProps {
     schemaQuery: SchemaQuery;
@@ -35,57 +62,57 @@ export interface HeatMapProps {
     measure: string;
     yInRangeTotal?: string; // property name in 'cell' containing the in-range total amount (not the complete total)
     yTotalLabel?: string;
-    getCellUrl: (row: Map<string, any>) => AppURL;
-    getHeaderUrl: (cell: any) => AppURL;
-    getTotalUrl: (cell: any) => AppURL;
+    getCellUrl: (row: { [key: string]: any }) => AppURL;
+    getHeaderUrl: (cell: HeatMapCell) => AppURL;
+    getTotalUrl: (cell: HeatMapCell) => AppURL;
     headerClickUrl: AppURL;
     emptyDisplay?: any;
     navigate?: (url: string | AppURL) => any;
     urlPrefix?: string; // prefix to use when creating urls for cells and rows and headers
+    modelId?: string;
 }
 
-export class HeatMap extends React.Component<HeatMapProps, any> {
-    static defaultProps = {
-        displayNamePath: ['Protocol', 'displayValue'],
-    };
+const getRowDisplayName = (row: any, displayNamePath: string[]): any => {
+    return row[displayNamePath[0]][displayNamePath[1]];
+}
 
-    componentDidMount() {
-        this.initModel();
-    }
+const rowSort = (row1, row2, displayNamePath: string[]): number => {
+    return naturalSort(getRowDisplayName(row1, displayNamePath), getRowDisplayName(row2, displayNamePath));
+}
 
-    UNSAFE_componentWillReceiveProps(nextProps: HeatMapProps): void {
-        this.initModel();
-    }
+const getModelId = (schemaQuery: SchemaQuery) => {
+    return `heatmap-${schemaQuery.getSchema()}-${schemaQuery.getQuery()}`;
+}
 
-    initModel() {
-        const model = this.getQueryGridModel();
-        gridInit(model, true, this);
-    }
+const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
+    const { queryModels, modelId, urlPrefix, nounPlural, navigate, headerClickUrl } = props;
 
-    getQueryGridModel(): QueryGridModel {
-        const model = getStateQueryGridModel('heatmap', this.props.schemaQuery, { allowSelection: false });
-        return getQueryGridModel(model.getId()) || model;
-    }
+    const [heatMapData, setHeatMapData] = useState<HeatMapCell[]>();
 
-    _prepareHeatMapData(data): List<Map<string, any>> {
-        const { getCellUrl, displayNamePath } = this.props;
+    const model = queryModels[modelId];
+
+    useEffect(() => {
+        const { getCellUrl, displayNamePath } = props;
+
+        if (model.isLoading) {
+            return;
+        }
 
         // expected pivot column names
         const months = last12Months();
         const pivotColumns = months.reverse();
 
-        return data
-            .sortBy(row => row.getIn(displayNamePath), naturalSort)
-            .map((row: Map<string, any>) => {
-                const protocolName = row.getIn(displayNamePath),
-                    providerName = row.getIn(['Provider', 'value']),
-                    completeTotal = row.getIn(['CompleteCount', 'value']),
-                    inRangeTotal = row.getIn(['InRangeCount', 'value']);
+        const processedData = model.gridData
+            .sort((row1, row2) => rowSort(row1, row2, displayNamePath))
+            .reduce<HeatMapCell[]>((cells, row) => {
+                const protocolName = getRowDisplayName(row,displayNamePath),
+                    providerName = row.Provider?.value,
+                    completeTotal = row.CompleteCount?.value,
+                    inRangeTotal = row.InRangeCount?.value;
 
                 const url = getCellUrl(row);
 
                 // create cells for the last 12 months including values for which there is no data
-                const cells = [];
                 for (let i = 0; i < pivotColumns.length; i++) {
                     const pivotCol = pivotColumns[i];
                     const pivotColName = pivotCol.yearMonth + '::MonthCount';
@@ -93,11 +120,10 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
                     // Get the count for the year-month.
                     // The pivot column will not be present if no <Protocol>s have run count for that month.
                     // The pivot column value will be null if this <Protocol> has no runs, but others do.
-                    let monthTotal = 0;
-                    if (row.hasIn([pivotColName, 'value'])) monthTotal = row.getIn([pivotColName, 'value']) || 0;
+                    let monthTotal = row[pivotColName]?.value ?? 0;
 
                     cells.push(
-                        Map({
+                        {
                             monthName: pivotCol.monthName,
                             monthNum: pivotCol.month,
                             yearNum: pivotCol.year,
@@ -108,55 +134,55 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
                             completeTotal,
                             inRangeTotal,
                             url,
-                        })
+                        }
                     );
                 }
 
-                return List(cells);
-            })
-            .flatten(true);
-    }
+                return cells;
+            }, []);
 
-    _prepareYAxisColumns(heatMapData) {
-        const { getHeaderUrl, getTotalUrl } = this.props;
-        const yAxisColumnsMap = Map<string, any>().asMutable();
+        setHeatMapData(processedData);
+    }, [model]);
 
-        heatMapData.map((cell: any) => {
-            // error check for empty cells or cells without protocols
-            if (cell && cell.has('protocolName')) {
-                const cellData = fromJS({
-                    name: cell.get('protocolName'),
-                    renderYCell: this.renderYCell,
-                    completeTotal: cell.get('completeTotal'),
-                    inRangeTotal: cell.get('inRangeTotal'),
-                    headerUrl: getHeaderUrl(cell),
-                    totalUrl: getTotalUrl(cell),
-                });
-
-                yAxisColumnsMap.set(cell.get('protocolName'), cellData);
-            }
-        });
-
-        return yAxisColumnsMap.asImmutable();
-    }
-
-    renderYCell = cell => {
-        const { urlPrefix } = this.props;
-        const url = cell.get('headerUrl');
-        const name = cell.get('name') ? cell.get('name') : '<Name not provided>';
+    const renderYCell = useCallback((cell: HeatMapDisplayCell): ReactNode => {
+        const url = cell?.headerUrl;
+        const name = cell?.name ?? '<Name not provided>';
 
         if (url) {
             return <Link to={url.toString(urlPrefix)}>{name}</Link>;
         }
 
         return <span>{name}</span>;
-    };
+    }, [urlPrefix]);
 
-    renderYTotalCell = (cell: Map<string, any>) => {
-        const { nounPlural, urlPrefix } = this.props;
-        const inRangeTotal = cell.get('inRangeTotal'),
-            completeTotal = cell.get('completeTotal'),
-            url = cell.get('totalUrl');
+    const yAxisColumns = useMemo((): { [key: string]: HeatMapDisplayCell } => {
+        const { getHeaderUrl, getTotalUrl } = props;
+
+        if (!heatMapData) {
+            return undefined;
+        }
+
+        return heatMapData.reduce<{ [key: string]: HeatMapDisplayCell }>((cols, cell) => {
+            // error check for empty cells or cells without protocols
+            if (cell?.protocolName !== undefined) {
+                cols[cell.protocolName] = {
+                    name: cell.protocolName,
+                    renderYCell: renderYCell,
+                    completeTotal: cell.completeTotal,
+                    inRangeTotal: cell.inRangeTotal,
+                    headerUrl: getHeaderUrl(cell),
+                    totalUrl: getTotalUrl(cell),
+                };
+            }
+
+            return cols;
+        }, {});
+    }, [heatMapData]);
+
+    const renderYTotalCell = useCallback((cell: HeatMapDisplayCell): ReactNode => {
+        const inRangeTotal = cell.inRangeTotal,
+            completeTotal = cell.completeTotal,
+            url = cell.totalUrl;
 
         if (url) {
             const now = new Date();
@@ -185,53 +211,72 @@ export class HeatMap extends React.Component<HeatMapProps, any> {
         }
 
         return inRangeTotal + ' / ' + completeTotal;
-    };
+    }, [urlPrefix, nounPlural]);
 
-    onCellClick = (cell: Map<string, any>) => {
-        const { navigate, urlPrefix } = this.props;
+    const onCellClick = useCallback((cell: any) => {
 
         // only allow click through on cells with a monthTotal
-        if (navigate && cell.get('monthTotal') && cell.get('url')) {
-            const dateBegin = new Date([cell.get('monthNum'), 1, cell.get('yearNum')].join('/'));
+        if (navigate && cell.monthTotal && cell.url) {
+            const dateBegin = new Date([cell.monthNum, 1, cell.yearNum].join('/'));
             const dateEnd = new Date(dateBegin.getFullYear(), dateBegin.getMonth() + 1, 0);
 
-            const dateUrl = addDateRangeFilter(cell.get('url'), 'Created', dateBegin, dateEnd);
+            const dateUrl = addDateRangeFilter(cell.url, 'Created', dateBegin, dateEnd);
             navigate(dateUrl.toString(urlPrefix));
         }
-    };
+    }, [navigate]);
 
-    onHeaderClick = (headerText: string, data: List<Map<string, any>>) => {
-        const { navigate, headerClickUrl, urlPrefix } = this.props;
-        const anyCell = data.filter(d => d.get('monthName') === headerText).first();
+    const onHeaderClick = useCallback((headerText: string, data: any) => {
+        const anyCell = data.filter(d => d.monthName === headerText).first();
 
         if (navigate && anyCell) {
-            const dateBegin = new Date([anyCell.get('monthNum'), 1, anyCell.get('yearNum')].join('/'));
+            const dateBegin = new Date([anyCell.monthNum, 1, anyCell.yearNum].join('/'));
             const dateEnd = new Date(dateBegin.getFullYear(), dateBegin.getMonth() + 1, 0);
 
             const dateUrl = addDateRangeFilter(headerClickUrl, 'Created', dateBegin, dateEnd);
             navigate(dateUrl.toString(urlPrefix));
         }
+    }, [navigate, headerClickUrl]);
+
+    if (!model || model.isLoading) {
+        return <LoadingSpinner/>;
+    }
+
+    return (
+        <HeatMapDisplay
+            {...props}
+            data={heatMapData}
+            yAxisColumns={yAxisColumns}
+            xSort={monthSort}
+            yTotalCellRenderer={renderYTotalCell}
+            onCellClick={onCellClick}
+            onHeaderClick={onHeaderClick}
+        />
+    );
+
+});
+
+const HeatMapWithQueryModels = withQueryModels<HeatMapProps>(HeatMapImpl);
+
+export const HeatMap: FC<HeatMapProps> = memo((props) => {
+    const modelId = props.modelId || getModelId(props.schemaQuery)
+
+    const queryConfigs = {
+        [modelId]: {
+            urlPrefix: props.urlPrefix,
+            schemaQuery: props.schemaQuery,
+        }
     };
 
-    render() {
-        const model = this.getQueryGridModel();
+    return (
+        <HeatMapWithQueryModels
+            {...props}
+            autoLoad={true}
+            modelId={modelId}
+            queryConfigs={queryConfigs}
+        />
+    )
+});
 
-        if (!model || !model.isLoaded) {
-            return <LoadingSpinner />;
-        }
-
-        const heatMapData = this._prepareHeatMapData(model.getData());
-
-        return (
-            <HeatMapDisplay
-                {...this.props}
-                data={heatMapData}
-                yAxisColumns={this._prepareYAxisColumns(heatMapData)}
-                xSort={monthSort.bind(this)}
-                yTotalCellRenderer={this.renderYTotalCell}
-                onCellClick={this.onCellClick}
-                onHeaderClick={this.onHeaderClick}
-            />
-        );
-    }
-}
+HeatMap.defaultProps = {
+    displayNamePath: ['Protocol', 'displayValue'],
+};

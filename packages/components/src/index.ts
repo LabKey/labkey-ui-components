@@ -230,7 +230,7 @@ import { SchemaListing } from './internal/components/listing/SchemaListing';
 import { QueriesListing } from './internal/components/listing/QueriesListing';
 import { QueriesListingPage } from './internal/components/listing/pages/QueriesListingPage';
 import { SchemaListingPage } from './internal/components/listing/pages/SchemaListingPage';
-import { HeatMap } from './internal/components/heatmap/HeatMap';
+import { HeatMap, HeatMapCell } from './internal/components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './internal/components/heatmap/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
@@ -259,6 +259,8 @@ import {
     getSampleTypeDetails,
     loadSelectedSamples,
 } from './internal/components/samples/actions';
+import { SampleEmptyAlert } from './internal/components/samples/SampleEmptyAlert'
+import { SampleSetSummary } from './internal/components/samples/SampleSetSummary'
 import {
     AssayContextConsumer,
     assayPage,
@@ -575,6 +577,8 @@ export {
     loadSelectedSamples,
     SampleTypeDataType,
     DataClassDataType,
+    SampleEmptyAlert,
+    SampleSetSummary,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -632,6 +636,7 @@ export {
     RUN_PROPERTIES_REQUIRED_COLUMNS,
     // heatmap
     HeatMap,
+    HeatMapCell,
     addDateRangeFilter,
     last12Months,
     monthSort,

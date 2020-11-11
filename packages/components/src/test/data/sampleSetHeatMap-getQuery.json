@@ -213,7 +213,7 @@
   },
   "rows" : [ {
     "data" : {
-      "2019-5::MonthCount" : {
+      "2020-5::MonthCount" : {
         "value" : 500
       },
       "InRangeCount" : {
@@ -224,7 +224,7 @@
         "value" : "urn:lsid:labkey.com:SampleSet.Folder-8914:ExpressionSystemSamples",
         "displayValue" : "ExpressionSystemSamples"
       },
-      "2019-2::MonthCount" : {
+      "2020-2::MonthCount" : {
         "value" : 25
       },
       "CompleteCount" : {
@@ -233,7 +233,7 @@
     }
   }, {
     "data" : {
-      "2019-5::MonthCount" : {
+      "2020-5::MonthCount" : {
         "value" : 10
       },
       "InRangeCount" : {
@@ -244,7 +244,7 @@
         "value" : "urn:lsid:labkey.com:SampleSet.Folder-8914:Samples",
         "displayValue" : "Samples"
       },
-      "2019-2::MonthCount" : {
+      "2020-2::MonthCount" : {
         "value" : 108
       },
       "CompleteCount" : {

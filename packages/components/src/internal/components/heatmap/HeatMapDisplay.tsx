@@ -13,67 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, Map, Set } from 'immutable';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
-import { HeatMapProps } from './HeatMap';
+import { HeatMapCell, HeatMapDisplayCell, HeatMapProps } from './HeatMap';
 import { naturalSort } from '../../..';
 
+const applySort = (sortFn, labels: Set<string>): Set<string> => {
+    let sorted;
+
+    if (typeof sortFn === 'function') {
+        sorted = labels.sort(sortFn);
+    }
+    else {
+        sorted = labels.sort(naturalSort);
+    }
+
+    return sorted;
+}
+
 interface HeatMapDisplayProps extends HeatMapProps {
-    data: List<Map<string, any>>;
+    data: HeatMapCell[];
     displayMeasure?: boolean;
     onCellClick?: Function;
     onHeaderClick?: Function;
     xSort?: Function;
     ySort?: Function;
-    yAxisColumns: Map<string, any>;
-    yTotalCellRenderer?: (cell: Map<string, any>) => void;
+    yAxisColumns: { [key: string]: HeatMapDisplayCell };
+    yTotalCellRenderer?: (cell: HeatMapDisplayCell) => ReactNode
 }
 
-export class HeatMapDisplay extends React.Component<HeatMapDisplayProps, any> {
-    static applySort(sortFn, labels: Set<any>): Set<any> {
-        let sorted;
+export const HeatMapDisplay: FC<HeatMapDisplayProps> = memo((props) => {
+    const { data, xAxis, yAxis, measure, xSort, ySort, onCellClick, emptyDisplay, onHeaderClick, yTotalCellRenderer,
+        yTotalLabel, yInRangeTotal, yAxisColumns, nounSingular, nounPlural, displayMeasure } = props;
 
-        if (typeof sortFn === 'function') {
-            sorted = labels.sort(sortFn);
-        } else {
-            sorted = labels.sort(naturalSort);
-        }
-
-        return sorted;
-    }
-
-    processData() {
-        const { data, xAxis, yAxis, measure, xSort, ySort, onCellClick } = this.props;
-
+    const processedData = useMemo(() => {
         const rows = [];
-        let xLabels = Set();
-        let yLabels = Set();
-        let measureMap = Map<string, any>();
+        let xLabels = Set<string>();
+        let yLabels = Set<string>();
+        let measureMap = Map<string, HeatMapCell>();
 
         if (!data) {
-            throw new Error('HeatMapDisplay requires a List for data');
+            return;
         }
 
         data.map(cell => {
-            var x = cell.get(xAxis);
-            var y = cell.get(yAxis);
+            const x = cell[xAxis];
+            const y = cell[yAxis];
 
             xLabels = xLabels.add(x);
             yLabels = yLabels.add(y);
             measureMap = measureMap.set(x + '---' + y, cell);
         });
 
-        var max = measureMap.maxBy(cell => cell.get(measure));
-        if (max) {
-            max = max.get(measure);
-        } else {
-            max = 0;
+        const maxCell = measureMap.maxBy(cell => cell[measure]);
+        let max = 0;
+        if (maxCell) {
+            max = maxCell[measure];
         }
 
-        var xLabelsSorted = HeatMapDisplay.applySort(xSort, xLabels);
-        var yLabelsSorted = HeatMapDisplay.applySort(ySort, yLabels);
+        const xLabelsSorted = applySort(xSort, xLabels);
+        const yLabelsSorted = applySort(ySort, yLabels);
 
         yLabelsSorted.map(yLabel => {
             let row = List([
@@ -85,11 +86,11 @@ export class HeatMapDisplay extends React.Component<HeatMapDisplayProps, any> {
             ]);
 
             xLabelsSorted.map(xLabel => {
-                var cell = measureMap.get(xLabel + '---' + yLabel);
-                var value = cell ? cell.get(measure) : 0;
-                var title = cell ? cell.get('title') : undefined;
-                var opacity = Math.max(0.12, value / max);
-                var _cell = {
+                const cell = measureMap.get(xLabel + '---' + yLabel);
+                const value = cell ? cell[measure] : 0;
+                const title = cell?.title;
+                const opacity = max > 0 ? Math.max(0.12, value / max) : 0;
+                const _cell = {
                     value,
                     title,
                     style: {
@@ -117,133 +118,127 @@ export class HeatMapDisplay extends React.Component<HeatMapDisplayProps, any> {
             headers: xLabelsSorted,
             rows: List(rows),
         };
+    }, [data, xAxis, yAxis, measure, xSort, ySort, onCellClick]);
+
+    const renderNoData = (): JSX.Element => {
+        return <div>{emptyDisplay || 'No data available.'}</div>;
     }
 
-    render() {
-        const {
-            data,
-            displayMeasure,
-            yAxisColumns,
-            onHeaderClick,
-            yInRangeTotal,
-            yTotalCellRenderer,
-            yTotalLabel,
-            nounSingular,
-            nounPlural,
-            emptyDisplay,
-        } = this.props;
-        const { headers, rows } = this.processData();
-        var headersArray = headers.toArray();
-        var yCell;
+    if (!processedData)
+        return renderNoData();
 
-        if (rows.size === 0) {
-            return <div>{emptyDisplay || 'No data available.'}</div>;
-        }
+    const {headers, rows} = processedData;
+    const headersArray = headers.toArray();
+    let yCell;
 
-        return (
-            <div className="table-responsive">
-                <table className="table heatmap-container">
-                    <thead>
-                        <tr>
-                            <th style={{ borderBottom: 'none', width: '16%' }} />
-                            {headers.map((header, i: number) => (
-                                <th
-                                    key={i}
-                                    onClick={onHeaderClick ? onHeaderClick.bind(this, header, data, i) : null}
-                                    style={
-                                        onHeaderClick
-                                            ? { borderBottom: 'none', cursor: 'pointer' }
-                                            : { borderBottom: 'none' }
-                                    }
-                                >
-                                    <div>
-                                        <span style={{ color: '#888888', fontWeight: 'normal' }}>{header}</span>
-                                    </div>
-                                </th>
-                            ))}
+    if (rows.size === 0) {
+        return renderNoData();
+    }
+
+    return (
+        <div className="table-responsive">
+            <table className="table heatmap-container">
+                <thead>
+                <tr>
+                    <th style={{borderBottom: 'none', width: '16%'}}/>
+                    {headers.toArray().map((header: string, i: number) => (
+                        <th
+                            key={i}
+                            onClick={onHeaderClick ? onHeaderClick.bind(this, header, data, i) : null}
+                            style={
+                                onHeaderClick
+                                    ? {borderBottom: 'none', cursor: 'pointer'}
+                                    : {borderBottom: 'none'}
+                            }
+                        >
+                            <div>
+                                <span style={{color: '#888888', fontWeight: 'normal'}}>{header}</span>
+                            </div>
+                        </th>
+                    ))}
+                    {yTotalCellRenderer || yInRangeTotal ? (
+                        <th
+                            style={{
+                                borderBottom: 'none',
+                                width: '16%',
+                                color: '#888888',
+                                fontWeight: 'normal',
+                            }}
+                        >
+                            {yTotalLabel || 'Totals'}
+                        </th>
+                    ) : null}
+                </tr>
+                </thead>
+                <tbody>
+                {rows.map((row: List<any>, r) => {
+                    return (
+                        <tr key={r}>
+                            {row.map((cell, c) => {
+                                if (c == 0)
+                                {
+                                    yCell = yAxisColumns[cell.value];
+                                    return (
+                                        <td
+                                            key={c}
+                                            style={{
+                                                borderTop: 'none',
+                                                background: r % 2 == 1 ? '#f9f9f9' : 'white',
+                                                width: '16%',
+                                                textAlign: 'right',
+                                                wordWrap: 'break-word',
+                                                height: '35px',
+                                            }}
+                                        >
+                                            <div>{yCell.renderYCell(yCell)}</div>
+                                        </td>
+                                    );
+                                }
+
+                                const overlay = (
+                                    <Tooltip id={'heatmap-cell-tooltip-' + r + '-' + c}>
+                                        {(cell.value
+                                            ? cell.value + ' ' + (cell.value == 1 ? nounSingular : nounPlural)
+                                            : 'No ' + nounPlural) +
+                                        ' for ' +
+                                        cell.title}
+                                    </Tooltip>
+                                );
+
+                                return (
+                                    <OverlayTrigger
+                                        key={c}
+                                        overlay={overlay}
+                                        placement="bottom"
+                                        delayShow={300}
+                                        delayHide={10}
+                                    >
+                                        <td
+                                            onClick={cell.onClick}
+                                            className="heat-map--cell"
+                                            style={{width: '6%', height: '35px', padding: '0px'}}
+                                            headers={headersArray[c - 1]}
+                                        >
+                                            <div style={cell.style}>{displayMeasure ? cell.value : null}</div>
+                                        </td>
+                                    </OverlayTrigger>
+                                );
+                            })}
+
                             {yTotalCellRenderer || yInRangeTotal ? (
-                                <th
-                                    style={{
-                                        borderBottom: 'none',
-                                        width: '16%',
-                                        color: '#888888',
-                                        fontWeight: 'normal',
-                                    }}
-                                >
-                                    {yTotalLabel || 'Totals'}
-                                </th>
+                                <td style={{borderTop: 'none', height: '35px'}}>
+                                    {yCell
+                                        ? yTotalCellRenderer
+                                            ? yTotalCellRenderer(yCell)
+                                            : yCell.yInRangeTotal
+                                        : 'Unknown'}
+                                </td>
                             ) : null}
                         </tr>
-                    </thead>
-                    <tbody>
-                        {rows.map((row: List<any>, r) => {
-                            return (
-                                <tr key={r}>
-                                    {row.map((cell, c) => {
-                                        if (c == 0) {
-                                            yCell = yAxisColumns.get(cell.value);
-                                            return (
-                                                <td
-                                                    key={c}
-                                                    style={{
-                                                        borderTop: 'none',
-                                                        background: r % 2 == 1 ? '#f9f9f9' : 'white',
-                                                        width: '16%',
-                                                        textAlign: 'right',
-                                                        wordWrap: 'break-word',
-                                                        height: '35px',
-                                                    }}
-                                                >
-                                                    <div>{yCell.get('renderYCell')(yCell)}</div>
-                                                </td>
-                                            );
-                                        }
-
-                                        const overlay = (
-                                            <Tooltip id={'heatmap-cell-tooltip-' + r + '-' + c}>
-                                                {(cell.value
-                                                    ? cell.value + ' ' + (cell.value == 1 ? nounSingular : nounPlural)
-                                                    : 'No ' + nounPlural) +
-                                                    ' for ' +
-                                                    cell.title}
-                                            </Tooltip>
-                                        );
-
-                                        return (
-                                            <OverlayTrigger
-                                                key={c}
-                                                overlay={overlay}
-                                                placement="bottom"
-                                                delayShow={300}
-                                                delayHide={10}
-                                            >
-                                                <td
-                                                    onClick={cell.onClick}
-                                                    className="heat-map--cell"
-                                                    style={{ width: '6%', height: '35px', padding: '0px' }}
-                                                    headers={headersArray[c - 1]}
-                                                >
-                                                    <div style={cell.style}>{displayMeasure ? cell.value : null}</div>
-                                                </td>
-                                            </OverlayTrigger>
-                                        );
-                                    })}
-
-                                    {yTotalCellRenderer || yInRangeTotal ? (
-                                        <td style={{ borderTop: 'none', height: '35px' }}>
-                                            {yCell
-                                                ? yTotalCellRenderer
-                                                    ? yTotalCellRenderer(yCell)
-                                                    : yCell.get(yInRangeTotal)
-                                                : 'Unknown'}
-                                        </td>
-                                    ) : null}
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
-            </div>
-        );
-    }
-}
+                    );
+                })}
+                </tbody>
+            </table>
+        </div>
+    );
+});

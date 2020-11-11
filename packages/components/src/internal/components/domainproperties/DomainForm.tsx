@@ -18,6 +18,7 @@ import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import classNames from 'classnames';
+import { getServerContext } from '@labkey/api';
 
 import { Sticky, StickyContainer } from 'react-sticky';
 
@@ -67,7 +68,14 @@ import {
     DomainFieldIndexChange,
 } from './models';
 import { SimpleResponse } from "../files/models";
-import { ATTACHMENT_TYPE, FILE_TYPE, FLAG_TYPE, PROP_DESC_TYPES, PropDescType } from './PropDescType';
+import {
+    ATTACHMENT_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
+    PROP_DESC_TYPES,
+    PropDescType,
+} from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
 import { generateNameWithTimestamp } from "../../util/Date";
@@ -188,6 +196,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     getAvailableTypes = (): List<PropDescType> => {
         const { domain } = this.props;
+        const allowOntologyLookup = getServerContext().container.activeModules.indexOf('Ontology') > -1;
 
         return PROP_DESC_TYPES.filter(type => {
             if (type === FLAG_TYPE && !domain.allowFlagProperties) {
@@ -195,6 +204,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
 
             if (type === FILE_TYPE && !domain.allowFileLinkProperties) {
+                return false;
+            }
+
+            if (type === ONTOLOGY_LOOKUP_TYPE && !allowOntologyLookup) {
                 return false;
             }
 
@@ -784,6 +797,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return domain.set('fields', filteredFields) as DomainDesign;
     };
 
+    getDomainFields = (): List<DomainField> => {
+        return this.props.domain.fields;
+    };
+
     updateFilteredFields = (value?: string) => {
         const { domain } = this.props;
 
@@ -925,6 +942,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                         key={'domain-row-key-' + i}
                                                         field={field}
                                                         fieldError={this.getFieldError(domain, i)}
+                                                        getDomainFields={this.getDomainFields}
                                                         domainIndex={domainIndex}
                                                         index={i}
                                                         expanded={expandedRowIndex === i}

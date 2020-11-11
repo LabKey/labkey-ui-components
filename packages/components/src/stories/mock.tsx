@@ -99,6 +99,7 @@ import source1Query from '../test/data/source1-getQuery.json';
 import source1QueryDetails from '../test/data/source1-getQueryDetails.json';
 import issuesProjectGroups from '../test/data/issues-getProjectGroups.json';
 import issuesUsersForGroup from '../test/data/issues-getUsersForGroup.json';
+import ontologiesQuery from '../test/data/ontologies-getQuery.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -200,6 +201,9 @@ const QUERY_RESPONSES = fromJS({
     lists: {
         mixturetypes: mixtureTypesQuery,
         lookuplist: lookuplistQuery,
+    },
+    ontology: {
+        ontologies: ontologiesQuery,
     },
     samples: {
         hemoglobin: hemoglobinLineageQueryIn,
@@ -369,7 +373,7 @@ export function initMocks() {
 
     mock.post(/.*\/property\/?.*\/inferDomain.*/, jsonResponse(inferDomainJson));
 
-    mock.get(/.*\/security\/GetMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
+    mock.get(/.*\/security\/?.*\/GetMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
 
     mock.get(/.*\/security\/?.*\/getRoles.*/, jsonResponse(getRolesJson));
 

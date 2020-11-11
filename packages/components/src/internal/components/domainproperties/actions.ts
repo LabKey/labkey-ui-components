@@ -31,6 +31,7 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    OntologyModel,
     QueryInfoLite,
     updateSampleField,
 } from './models';
@@ -191,6 +192,27 @@ export function handleSchemas(payload: any): List<SchemaDetails> {
         .valueSeq()
         .sort((a, b) => naturalSort(a.fullyQualifiedName, b.fullyQualifiedName))
         .toList();
+}
+
+export function fetchOntologies(containerPath: string): Promise<OntologyModel[]> {
+    return cache<OntologyModel[]>(
+        'ontologies-cache',
+        containerPath,
+        () =>
+            new Promise(resolve => {
+                Query.selectRows({
+                    method: 'POST',
+                    schemaName: 'ontology',
+                    queryName: 'ontologies',
+                    columns: 'RowId,Name,Abbreviation',
+                    sort: 'Name',
+                    requiredVersion: 17.1,
+                    success: (response) => {
+                        resolve(response.rows.map(row => OntologyModel.create(row)));
+                    },
+                });
+            })
+    );
 }
 
 export function getMaxPhiLevel(): Promise<string> {
@@ -458,6 +480,9 @@ function updateDataType(field: DomainField, value: any): DomainField {
             rangeURI: dataType.rangeURI,
             lookupSchema: dataType.lookupSchema,
             lookupQuery: dataType.lookupQuery,
+            sourceOntology: undefined,
+            conceptLabelColumn: undefined,
+            conceptImportColumn: undefined,
         }) as DomainField;
 
         if (field.isNew()) {

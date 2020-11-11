@@ -29,6 +29,7 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
+import { OntologyLookupOptions } from "./OntologyLookupOptions";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;
@@ -40,11 +41,13 @@ interface IDomainRowExpandedOptionsProps {
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    getDomainFields?: () => List<DomainField>;
 }
 
-export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
+export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps> {
     typeDependentOptions = () => {
         const { field, index, onChange, onMultiChange, domainIndex, domainFormDisplayOptions } = this.props;
+        const domainFields = this.props?.getDomainFields() ?? List();
 
         switch (field.dataType.name) {
             case 'string':
@@ -159,6 +162,18 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         value={field.lookupQueryValue}
                         original={field.original}
                         container={field.lookupContainer}
+                        onChange={onChange}
+                        lockType={field.lockType}
+                    />
+                );
+            case 'ontologyLookup':
+                return (
+                    <OntologyLookupOptions
+                        index={index}
+                        domainIndex={domainIndex}
+                        label="Ontology Lookup Options"
+                        domainFields={domainFields}
+                        field={field}
                         onChange={onChange}
                         lockType={field.lockType}
                     />

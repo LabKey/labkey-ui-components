@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8058: Domain form support for new Ontology Lookup data type and expanded row input options
+
 ### version 0.104.0
 *Released*: 1 Nov 2020
 * Item 7984: DomainForm component support for export/import field definitions from .json file

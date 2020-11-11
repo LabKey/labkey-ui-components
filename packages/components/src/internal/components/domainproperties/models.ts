@@ -15,8 +15,9 @@
  */
 import { fromJS, List, Map, Record } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
+import { immerable } from 'immer';
 
-import { SCHEMAS } from '../../..';
+import { caseInsensitive, SCHEMAS } from '../../..';
 
 import {
     DOMAIN_FIELD_DIMENSION,
@@ -480,6 +481,9 @@ export interface IDomainField {
     lockType: string;
     disablePhiLevel?: boolean;
     lockExistingField?: boolean;
+    sourceOntology?: string;
+    conceptLabelColumn?: string;
+    conceptImportColumn?: string;
 }
 
 export class DomainField
@@ -530,6 +534,9 @@ export class DomainField
         wrappedColumnName: undefined,
         disablePhiLevel: false,
         lockExistingField: false,
+        sourceOntology: undefined,
+        conceptLabelColumn: undefined,
+        conceptImportColumn: undefined,
     })
     implements IDomainField {
     conceptURI?: string;
@@ -578,6 +585,9 @@ export class DomainField
     wrappedColumnName?: string;
     disablePhiLevel?: boolean;
     lockExistingField?: boolean;
+    sourceOntology?: string;
+    conceptLabelColumn?: string;
+    conceptImportColumn?: string;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         const baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -763,11 +773,15 @@ export class DomainField
             return FieldErrors.MISSING_DATA_TYPE;
         }
 
-        if (this.name === undefined || this.name === null || this.name.trim() === '') {
+        if (this.hasInvalidName()) {
             return FieldErrors.MISSING_FIELD_NAME;
         }
 
         return FieldErrors.NONE;
+    }
+
+    hasInvalidName(): boolean {
+        return (this.name === undefined || this.name === null || this.name.trim() === '');
     }
 
     hasErrors(): boolean {
@@ -935,6 +949,10 @@ function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
 
     if (type.isSample()) {
         return rangeURI === INT_RANGE_URI;
+    }
+
+    if (type.isOntologyLookup()) {
+        return rangeURI === STRING_RANGE_URI;
     }
 
     // Catches Users
@@ -1407,4 +1425,28 @@ export class DomainDetails extends Record({
 export interface DomainFieldIndexChange {
     originalIndex: number;
     newIndex: number;
+}
+
+export class OntologyModel {
+    [immerable] = true;
+
+    rowId: number;
+    abbreviation: string;
+    name: string;
+
+    constructor(values?: Partial<OntologyModel>) {
+        Object.assign(this, values);
+    }
+
+    static create(raw: any): OntologyModel {
+        return new OntologyModel({
+            rowId: caseInsensitive(raw, 'RowId').value,
+            name: caseInsensitive(raw, 'Name').value,
+            abbreviation: caseInsensitive(raw, 'Abbreviation').value,
+        });
+    }
+
+    getLabel() {
+        return this.name + ' (' + this.abbreviation + ')';
+    }
 }

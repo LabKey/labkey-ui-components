@@ -16,6 +16,7 @@ import {
     MULTILINE_RANGE_URI,
     PARTICIPANTID_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
+    CONCEPT_CODE_CONCEPT_URI,
     STRING_RANGE_URI,
     TIME_RANGE_URI,
     USER_RANGE_URI,
@@ -60,6 +61,10 @@ export class PropDescType
 
     static isSample(conceptURI: string): boolean {
         return conceptURI === SAMPLE_TYPE_CONCEPT_URI;
+    }
+
+    static isOntologyLookup(conceptURI: string): boolean {
+        return conceptURI === CONCEPT_CODE_CONCEPT_URI;
     }
 
     static isLookup(name: string): boolean {
@@ -147,6 +152,10 @@ export class PropDescType
     isSample(): boolean {
         return PropDescType.isSample(this.conceptURI);
     }
+
+    isOntologyLookup(): boolean {
+        return PropDescType.isOntologyLookup(this.conceptURI);
+    }
 }
 
 export const TEXT_TYPE = new PropDescType({
@@ -217,6 +226,12 @@ export const SAMPLE_TYPE = new PropDescType({
     rangeURI: INT_RANGE_URI,
     conceptURI: SAMPLE_TYPE_CONCEPT_URI,
 });
+export const ONTOLOGY_LOOKUP_TYPE = new PropDescType({
+    name: 'ontologyLookup',
+    display: 'Ontology Lookup',
+    rangeURI: STRING_RANGE_URI,
+    conceptURI: CONCEPT_CODE_CONCEPT_URI,
+});
 
 export const BINARY_TYPE = new PropDescType({ name: 'binary', display: 'Byte Buffer', rangeURI: BINARY_RANGE_URI });
 export const DATE_TYPE = new PropDescType({ name: 'date', display: 'Date', rangeURI: DATE_RANGE_URI });
@@ -249,6 +264,7 @@ export const PROP_DESC_TYPES = List([
     PARTICIPANT_TYPE,
     LOOKUP_TYPE,
     SAMPLE_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);

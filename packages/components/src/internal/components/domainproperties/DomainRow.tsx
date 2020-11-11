@@ -77,6 +77,7 @@ interface IDomainRowProps {
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    getDomainFields?: () => List<DomainField>;
 }
 
 interface IDomainRowState {
@@ -119,6 +120,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         const { field, index, fieldError } = this.props;
         const details = [];
 
+        // TODO field.dataType.isOntologyLookup()
         if (field.dataType.isSample()) {
             const detailsText =
                 field.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName &&
@@ -489,6 +491,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             appPropertiesOnly,
             successBsStyle,
             domainFormDisplayOptions,
+            getDomainFields,
         } = this.props;
 
         return (
@@ -554,6 +557,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     field={field}
                                     index={index}
                                     domainIndex={domainIndex}
+                                    getDomainFields={getDomainFields}
                                     onMultiChange={this.onMultiFieldChange}
                                     onChange={this.onSingleFieldChange}
                                     showingModal={this.showingModal}

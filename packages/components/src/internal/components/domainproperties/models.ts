@@ -49,6 +49,7 @@ import {
     SAMPLE_TYPE,
     TEXT_TYPE,
     USERS_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
 } from './PropDescType';
 
 export interface IFieldChange {
@@ -939,7 +940,7 @@ function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean): bo
     if (type === FILE_TYPE) return includeFileType;
 
     // We are excluding the field types below for the App
-    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE].includes(type);
+    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
 function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {

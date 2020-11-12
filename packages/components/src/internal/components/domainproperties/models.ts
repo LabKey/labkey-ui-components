@@ -284,6 +284,7 @@ export enum FieldErrors {
     MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
     MISSING_DATA_TYPE = 'Please provide a data type for each field.',
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
+    MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
 }
 
 export interface IConditionalFormat {
@@ -776,6 +777,10 @@ export class DomainField
 
         if (this.hasInvalidName()) {
             return FieldErrors.MISSING_FIELD_NAME;
+        }
+
+        if (this.dataType.isOntologyLookup() && (!this.sourceOntology || !this.conceptLabelColumn)) {
+            return FieldErrors.MISSING_ONTOLOGY_PROPERTIES;
         }
 
         return FieldErrors.NONE;

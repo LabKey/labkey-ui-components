@@ -201,30 +201,37 @@ export function handleSchemas(payload: any): List<SchemaDetails> {
         .toList();
 }
 
-export async function getAvailableTypes(domain: DomainDesign): Promise<List<PropDescType>> {
-    const container = getServerContext().container;
-    const hasOntologyModule = container.activeModules.indexOf('Ontology') > -1;
-    const ontologies = hasOntologyModule ? await fetchOntologies(getServerContext().container.path) : [];
+export function hasActiveModule(name: string): boolean {
+    return getServerContext().container.activeModules?.indexOf(name) > -1;
+}
 
-    return PROP_DESC_TYPES.filter(type => {
-        if (type === FLAG_TYPE && !domain.allowFlagProperties) {
-            return false;
-        }
+export function getAvailableTypes(domain: DomainDesign): List<PropDescType> {
+    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, [])) as List<PropDescType>;
+}
 
-        if (type === FILE_TYPE && !domain.allowFileLinkProperties) {
-            return false;
-        }
+export async function getAvailableTypesForOntology(domain: DomainDesign): Promise<List<PropDescType>> {
+    const ontologies = await fetchOntologies(getServerContext().container.path);
+    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)) as List<PropDescType>;
+}
 
-        if (type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties) {
-            return false;
-        }
+function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologies: OntologyModel[]): boolean {
+    if (type === FLAG_TYPE && !domain.allowFlagProperties) {
+        return false;
+    }
 
-        if (type === ONTOLOGY_LOOKUP_TYPE && (!hasOntologyModule || ontologies.length === 0)) {
-            return false;
-        }
+    if (type === FILE_TYPE && !domain.allowFileLinkProperties) {
+        return false;
+    }
 
-        return true;
-    }) as List<PropDescType>;
+    if (type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties) {
+        return false;
+    }
+
+    if (type === ONTOLOGY_LOOKUP_TYPE && ontologies.length === 0) {
+        return false;
+    }
+
+    return true;
 }
 
 export function fetchOntologies(containerPath: string): Promise<OntologyModel[]> {

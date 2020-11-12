@@ -51,6 +51,8 @@ import {
     setDomainFields,
     updateDomainPanelClassList,
     getAvailableTypes,
+    getAvailableTypesForOntology,
+    hasActiveModule,
 } from './actions';
 import { DomainRow } from './DomainRow';
 import {
@@ -155,7 +157,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             confirmDeleteRowIndex: undefined,
             dragId: undefined,
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
-            availableTypes: List(),
+            availableTypes: getAvailableTypes(props.domain),
             collapsed: props.initCollapsed,
             filtered: false,
             filePreviewData: undefined,
@@ -177,9 +179,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 });
         }
 
-        getAvailableTypes(domain).then(availableTypes => {
-            this.setState(() => ({ availableTypes }));
-        });
+        // if the given container does have the Ontology module enabled, get the updated set of available data types
+        if (hasActiveModule('Ontology')) {
+            getAvailableTypesForOntology(domain).then(availableTypes => {
+                this.setState(() => ({ availableTypes }));
+            });
+        }
 
         updateDomainPanelClassList(useTheme, domain);
     }
@@ -792,6 +797,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return !collapsed;
     };
 
+    getDomainFields = (): List<DomainField> => {
+        return this.props.domain.fields;
+    };
+
     getFieldAdditionalDetails(): {[key: string]: string} {
         const mapping = {};
         this.props.domain.fields.forEach(field => {
@@ -931,7 +940,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                         key={'domain-row-key-' + i}
                                                         field={field}
                                                         fieldError={this.getFieldError(domain, i)}
-                                                        domainFields={domain.fields}
+                                                        getDomainFields={this.getDomainFields}
                                                         fieldAdditionalDetails={fieldAdditionalDetails}
                                                         domainIndex={domainIndex}
                                                         index={i}

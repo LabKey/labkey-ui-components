@@ -41,12 +41,12 @@ interface IDomainRowExpandedOptionsProps {
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    domainFields?: List<DomainField>;
+    getDomainFields?: () => List<DomainField>;
 }
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps> {
     typeDependentOptions = () => {
-        const { field, index, onChange, onMultiChange, domainIndex, domainFormDisplayOptions, domainFields } = this.props;
+        const { field, index, onChange, onMultiChange, domainIndex, domainFormDisplayOptions, getDomainFields } = this.props;
 
         switch (field.dataType.name) {
             case 'string':
@@ -166,12 +166,14 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                     />
                 );
             case 'ontologyLookup':
+                const domainFields = getDomainFields ? getDomainFields() : List<DomainField>();
+
                 return (
                     <OntologyLookupOptions
                         index={index}
                         domainIndex={domainIndex}
                         label="Ontology Lookup Options"
-                        domainFields={domainFields || List()}
+                        domainFields={domainFields}
                         field={field}
                         onChange={onChange}
                         lockType={field.lockType}

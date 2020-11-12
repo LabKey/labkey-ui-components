@@ -77,7 +77,7 @@ interface IDomainRowProps {
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    domainFields?: List<DomainField>;
+    getDomainFields?: () => List<DomainField>;
     fieldAdditionalDetails?: {[key: string]: string}
 }
 
@@ -502,7 +502,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             appPropertiesOnly,
             successBsStyle,
             domainFormDisplayOptions,
-            domainFields,
+            getDomainFields,
         } = this.props;
 
         return (
@@ -568,7 +568,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     field={field}
                                     index={index}
                                     domainIndex={domainIndex}
-                                    domainFields={domainFields}
+                                    getDomainFields={getDomainFields}
                                     onMultiChange={this.onMultiFieldChange}
                                     onChange={this.onSingleFieldChange}
                                     showingModal={this.showingModal}

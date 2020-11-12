@@ -82,6 +82,9 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
+      "sourceOntology": undefined,
+      "conceptLabelColumn": undefined,
+      "conceptImportColumn": undefined,
     }
   }
   index={1}
@@ -431,6 +434,9 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}
@@ -972,6 +978,9 @@ exports[`DomainExpandedOptions Boolean data type 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}
@@ -1287,6 +1296,9 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
+      "sourceOntology": undefined,
+      "conceptLabelColumn": undefined,
+      "conceptImportColumn": undefined,
     }
   }
   index={1}
@@ -1655,6 +1667,9 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}
@@ -2196,6 +2211,9 @@ exports[`DomainExpandedOptions Date/time data type 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}
@@ -2683,6 +2701,9 @@ exports[`DomainExpandedOptions No text options 1`] = `
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
+      "sourceOntology": undefined,
+      "conceptLabelColumn": undefined,
+      "conceptImportColumn": undefined,
     }
   }
   index={1}
@@ -2798,6 +2819,9 @@ exports[`DomainExpandedOptions No text options 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}
@@ -3332,6 +3356,9 @@ exports[`DomainExpandedOptions No text options 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}
@@ -3814,6 +3841,9 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
+      "sourceOntology": undefined,
+      "conceptLabelColumn": undefined,
+      "conceptImportColumn": undefined,
     }
   }
   index={1}
@@ -4217,6 +4247,9 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}
@@ -4758,6 +4791,9 @@ exports[`DomainExpandedOptions Numeric data type 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}
@@ -5240,6 +5276,9 @@ exports[`DomainExpandedOptions Text data type 1`] = `
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
+      "sourceOntology": undefined,
+      "conceptLabelColumn": undefined,
+      "conceptImportColumn": undefined,
     }
   }
   index={1}
@@ -5355,6 +5394,9 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}
@@ -5896,6 +5938,9 @@ exports[`DomainExpandedOptions Text data type 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               }
             }
             index={1}

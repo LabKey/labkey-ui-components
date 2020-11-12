@@ -11,12 +11,17 @@ import { DomainDetails } from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner } from './SampleTypeDesigner';
+import { initDomainPropertiesUnitTestMocks, sleep } from "../../../testHelpers";
 
 const BASE_PROPS = {
     initModel: undefined,
     onComplete: jest.fn(),
     onCancel: jest.fn(),
 };
+
+beforeAll(() => {
+    initDomainPropertiesUnitTestMocks();
+});
 
 describe('SampleTypeDesigner', () => {
     test('default properties', () => {
@@ -47,7 +52,7 @@ describe('SampleTypeDesigner', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('initModel with name URL props', () => {
+    test('initModel with name URL props', async () => {
         const form = (
             <SampleTypeDesigner
                 {...BASE_PROPS}
@@ -63,6 +68,7 @@ describe('SampleTypeDesigner', () => {
             />
         );
         const wrapped = mount(form);
+        await sleep();
 
         expect(wrapped.find(SampleTypePropertiesPanel)).toHaveLength(1);
         expect(wrapped.find(DomainForm)).toHaveLength(1);
@@ -71,8 +77,9 @@ describe('SampleTypeDesigner', () => {
         wrapped.unmount();
     });
 
-    test('open fields panel', () => {
+    test('open fields panel', async () => {
         const wrapped = mount(<SampleTypeDesigner {...BASE_PROPS} />);
+        await sleep();
 
         const panelHeader = wrapped.find('div#domain-header');
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();

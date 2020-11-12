@@ -5,7 +5,7 @@ import { mount, MountRendererProps, ReactWrapper } from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
 import mock, { proxy } from 'xhr-mock';
 
-import { initLineageMocks, initQueryGridMocks, initUserPropsMocks } from '../stories/mock';
+import { initDomainPropertiesMocks, initLineageMocks, initQueryGridMocks, initUserPropsMocks } from '../stories/mock';
 import { initQueryGridState, QueryInfo, ServerContextProvider } from '..';
 
 import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
@@ -48,6 +48,15 @@ export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?:
     initQueryGridMocks();
     initLineageMocks();
     initUserPropsMocks();
+    mock.use(proxy);
+}
+
+export function initDomainPropertiesUnitTestMocks(): void {
+    window['__react-beautiful-dnd-disable-dev-warnings'] = true;
+
+    mock.setup();
+    initQueryGridMocks();
+    initDomainPropertiesMocks();
     mock.use(proxy);
 }
 

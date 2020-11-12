@@ -48,6 +48,8 @@ import {
     DOMAIN_FIELD_LOOKUP_CONTAINER,
     DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA,
+    DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
+    DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
@@ -851,4 +853,31 @@ export function getUpdatedVisitedPanelsList(visitedPanels: List<number>, index: 
     }
 
     return updatedVisitedPanels;
+}
+
+export function updateOntologyFieldProperties(
+    fieldIndex: number,
+    domainIndex: number,
+    updatedDomain: DomainDesign,
+    origDomain: DomainDesign,
+    removedFieldIndex: number
+): DomainDesign {
+    // make sure it is still an ontology lookup data type field before changing anything
+    const ontField = updatedDomain.fields.get(fieldIndex);
+    if (ontField.dataType.isOntologyLookup()) {
+        // if the concept field prop is set and the field's name has changed, update it based on the updatedDomain
+        if (ontField.conceptImportColumn && updatedDomain.findFieldIndexByName(ontField.conceptImportColumn) === -1) {
+            const id = createFormInputId(DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, domainIndex, fieldIndex);
+            const origFieldIndex = origDomain.findFieldIndexByName(ontField.conceptImportColumn);
+            const value = origFieldIndex !== removedFieldIndex ? updatedDomain.fields.get(origFieldIndex).name : undefined;
+            updatedDomain = updateDomainField(updatedDomain, { id, value });
+        }
+        if (ontField.conceptLabelColumn && updatedDomain.findFieldIndexByName(ontField.conceptLabelColumn) === -1) {
+            const id = createFormInputId(DOMAIN_FIELD_ONTOLOGY_LABEL_COL, domainIndex, fieldIndex);
+            const origFieldIndex = origDomain.findFieldIndexByName(ontField.conceptLabelColumn);
+            const value = origFieldIndex !== removedFieldIndex ? updatedDomain.fields.get(origFieldIndex).name : undefined;
+            updatedDomain = updateDomainField(updatedDomain, { id, value });
+        }
+    }
+    return updatedDomain;
 }

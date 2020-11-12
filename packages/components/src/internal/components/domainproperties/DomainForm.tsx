@@ -20,7 +20,13 @@ import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Sticky, StickyContainer } from 'react-sticky';
 
-import { AddEntityButton, ConfirmModal, InferDomainResponse, FileAttachmentForm, Alert } from '../../..';
+import {
+    AddEntityButton,
+    ConfirmModal,
+    InferDomainResponse,
+    FileAttachmentForm,
+    Alert,
+} from '../../..';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
@@ -53,6 +59,7 @@ import {
     getAvailableTypes,
     getAvailableTypesForOntology,
     hasActiveModule,
+    updateOntologyFieldProperties,
 } from './actions';
 import { DomainRow } from './DomainRow';
 import {
@@ -147,6 +154,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
     };
+
+    _fieldAdditionalDetails = {};
 
     constructor(props) {
         super(props);
@@ -311,7 +320,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onDomainChange(updatedDomain: DomainDesign, dirty?: boolean, rowIndexChange?: DomainFieldIndexChange) {
-        const { onChange, controlledCollapse } = this.props;
+        const { onChange, controlledCollapse, domain, domainIndex } = this.props;
 
         // Check for cleared errors
         if (controlledCollapse && updatedDomain.hasErrors()) {
@@ -321,6 +330,18 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             if (markedInvalid.size > invalidFields.size) {
                 updatedDomain = this.validateDomain(updatedDomain);
             }
+        }
+
+        // if this domain has any Ontology Lookup field(s), check if we need to update the related field properties based on
+        // the updated domain (i.e. check for any name changes to selected fields)
+        // note: we skip any rowIndexChange which has an newIndex as those are just reorder changes
+        if (
+            rowIndexChange?.newIndex === undefined &&
+            this._fieldAdditionalDetails['ontologyLookupIndices'].length > 0
+        ) {
+            this._fieldAdditionalDetails['ontologyLookupIndices'].forEach(index => {
+                updatedDomain = updateOntologyFieldProperties(index, domainIndex, updatedDomain, domain, rowIndexChange?.originalIndex);
+            });
         }
 
         if (onChange) {
@@ -801,18 +822,27 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return this.props.domain.fields;
     };
 
-    getFieldAdditionalDetails(): {[key: string]: string} {
-        const mapping = {};
-        this.props.domain.fields.forEach(field => {
+    getFieldAdditionalDetails(): {[key: string]: any} {
+        const mapping = {
+            ontologyLookupIndices: [],
+            detailsInfo: {},
+        };
+
+        this.props.domain.fields.forEach((field, index) => {
             if (!field.hasInvalidName()) {
                 if (field.conceptImportColumn) {
-                    mapping[field.conceptImportColumn] = 'Ontology Lookup: ' + field.name;
+                    mapping.detailsInfo[field.conceptImportColumn] = 'Ontology Lookup: ' + field.name;
                 }
                 if (field.conceptLabelColumn) {
-                    mapping[field.conceptLabelColumn] = 'Ontology Lookup: ' + field.name;
+                    mapping.detailsInfo[field.conceptLabelColumn] = 'Ontology Lookup: ' + field.name;
+                }
+
+                if (field.dataType.isOntologyLookup()) {
+                    mapping.ontologyLookupIndices.push(index);
                 }
             }
         });
+
         return mapping;
     }
 
@@ -910,7 +940,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         } = this.props;
         const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
         const hasFields = domain.fields.size > 0;
-        const fieldAdditionalDetails = this.getFieldAdditionalDetails();
+        this._fieldAdditionalDetails = this.getFieldAdditionalDetails();
 
         return (
             <>
@@ -941,7 +971,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                         field={field}
                                                         fieldError={this.getFieldError(domain, i)}
                                                         getDomainFields={this.getDomainFields}
-                                                        fieldAdditionalDetails={fieldAdditionalDetails}
+                                                        fieldAdditionalDetails={this._fieldAdditionalDetails['detailsInfo']}
                                                         domainIndex={domainIndex}
                                                         index={i}
                                                         expanded={expandedRowIndex === i}

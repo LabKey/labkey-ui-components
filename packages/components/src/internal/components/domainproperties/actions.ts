@@ -865,19 +865,41 @@ export function updateOntologyFieldProperties(
     // make sure it is still an ontology lookup data type field before changing anything
     const ontField = updatedDomain.fields.get(fieldIndex);
     if (ontField.dataType.isOntologyLookup()) {
-        // if the concept field prop is set and the field's name has changed, update it based on the updatedDomain
-        if (ontField.conceptImportColumn && updatedDomain.findFieldIndexByName(ontField.conceptImportColumn) === -1) {
+        // if the concept field prop is set and the field's name or data type has changed, update it based on the updatedDomain
+        if (ontField.conceptImportColumn) {
             const id = createFormInputId(DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, domainIndex, fieldIndex);
-            const origFieldIndex = origDomain.findFieldIndexByName(ontField.conceptImportColumn);
-            const value = origFieldIndex !== removedFieldIndex ? updatedDomain.fields.get(origFieldIndex).name : undefined;
+            const value = getOntologyUpdatedFieldName(
+                ontField.conceptImportColumn,
+                updatedDomain,
+                origDomain,
+                removedFieldIndex
+            );
             updatedDomain = updateDomainField(updatedDomain, { id, value });
         }
-        if (ontField.conceptLabelColumn && updatedDomain.findFieldIndexByName(ontField.conceptLabelColumn) === -1) {
+        if (ontField.conceptLabelColumn) {
             const id = createFormInputId(DOMAIN_FIELD_ONTOLOGY_LABEL_COL, domainIndex, fieldIndex);
-            const origFieldIndex = origDomain.findFieldIndexByName(ontField.conceptLabelColumn);
-            const value = origFieldIndex !== removedFieldIndex ? updatedDomain.fields.get(origFieldIndex).name : undefined;
+            const value = getOntologyUpdatedFieldName(
+                ontField.conceptLabelColumn,
+                updatedDomain,
+                origDomain,
+                removedFieldIndex
+            );
             updatedDomain = updateDomainField(updatedDomain, { id, value });
         }
     }
     return updatedDomain;
+}
+
+// get the new/updated field name for the ontology related property
+// if it has been removed or changed to a non-string data type, return undefined
+function getOntologyUpdatedFieldName(
+    propFieldName: string,
+    updatedDomain: DomainDesign,
+    origDomain: DomainDesign,
+    removedFieldIndex: number
+): string {
+    const origFieldIndex = origDomain.findFieldIndexByName(propFieldName);
+    const updatedPropField = updatedDomain.fields.get(origFieldIndex);
+    const propFieldRemoved = origFieldIndex === removedFieldIndex;
+    return !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined;
 }

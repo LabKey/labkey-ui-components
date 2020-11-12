@@ -332,15 +332,21 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
         }
 
-        // if this domain has any Ontology Lookup field(s), check if we need to update the related field properties based on
-        // the updated domain (i.e. check for any name changes to selected fields)
+        // if this domain has any Ontology Lookup field(s), check if we need to update the related field properties
+        // based on the updated domain (i.e. check for any name changes to selected fields)
         // note: we skip any rowIndexChange which has an newIndex as those are just reorder changes
         if (
             rowIndexChange?.newIndex === undefined &&
             this._fieldAdditionalDetails['ontologyLookupIndices'].length > 0
         ) {
             this._fieldAdditionalDetails['ontologyLookupIndices'].forEach(index => {
-                updatedDomain = updateOntologyFieldProperties(index, domainIndex, updatedDomain, domain, rowIndexChange?.originalIndex);
+                updatedDomain = updateOntologyFieldProperties(
+                    index,
+                    domainIndex,
+                    updatedDomain,
+                    domain,
+                    rowIndexChange?.originalIndex
+                );
             });
         }
 

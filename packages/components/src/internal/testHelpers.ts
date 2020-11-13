@@ -43,20 +43,13 @@ export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map
  * to all of the same mock API responses we use in storybook.
  */
 export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void {
+    window['__react-beautiful-dnd-disable-dev-warnings'] = true;
     initUnitTests(metadata, columnRenderers);
     mock.setup();
     initQueryGridMocks();
+    initDomainPropertiesMocks();
     initLineageMocks();
     initUserPropsMocks();
-    mock.use(proxy);
-}
-
-export function initDomainPropertiesUnitTestMocks(): void {
-    window['__react-beautiful-dnd-disable-dev-warnings'] = true;
-
-    mock.setup();
-    initQueryGridMocks();
-    initDomainPropertiesMocks();
     mock.use(proxy);
 }
 

@@ -11,7 +11,7 @@ import { DomainDetails } from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner } from './SampleTypeDesigner';
-import { initDomainPropertiesUnitTestMocks, sleep } from "../../../testHelpers";
+import { initUnitTestMocks, sleep } from "../../../testHelpers";
 
 const BASE_PROPS = {
     initModel: undefined,
@@ -20,7 +20,7 @@ const BASE_PROPS = {
 };
 
 beforeAll(() => {
-    initDomainPropertiesUnitTestMocks();
+    initUnitTestMocks();
 });
 
 describe('SampleTypeDesigner', () => {

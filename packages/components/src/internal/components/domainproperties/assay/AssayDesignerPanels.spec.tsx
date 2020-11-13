@@ -9,7 +9,7 @@ import { FileAttachmentForm } from '../../../..';
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
 import { AssayDesignerPanels } from './AssayDesignerPanels';
-import { initDomainPropertiesUnitTestMocks, sleep } from '../../../testHelpers';
+import { initUnitTestMocks, sleep } from '../../../testHelpers';
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,
@@ -68,7 +68,7 @@ const BASE_PROPS = {
 };
 
 beforeAll(() => {
-    initDomainPropertiesUnitTestMocks();
+    initUnitTestMocks();
 });
 
 describe('AssayDesignerPanels', () => {

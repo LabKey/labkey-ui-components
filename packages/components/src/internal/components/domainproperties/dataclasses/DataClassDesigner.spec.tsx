@@ -10,7 +10,7 @@ import DomainForm from '../DomainForm';
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';
 import { DataClassDesigner } from './DataClassDesigner';
-import { initDomainPropertiesUnitTestMocks, sleep } from '../../../testHelpers';
+import { initUnitTestMocks, sleep } from '../../../testHelpers';
 
 const BASE_PROPS = {
     onComplete: jest.fn(),
@@ -18,7 +18,7 @@ const BASE_PROPS = {
 };
 
 beforeAll(() => {
-    initDomainPropertiesUnitTestMocks();
+    initUnitTestMocks();
 });
 
 describe('DataClassDesigner', () => {

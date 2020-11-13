@@ -12,7 +12,7 @@ import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
 import { ListDesignerPanels } from './ListDesignerPanels';
-import { initDomainPropertiesUnitTestMocks, sleep } from "../../../testHelpers";
+import { initUnitTestMocks, sleep } from "../../../testHelpers";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
@@ -23,7 +23,7 @@ const BASE_PROPS = {
 };
 
 beforeAll(() => {
-    initDomainPropertiesUnitTestMocks();
+    initUnitTestMocks();
 });
 
 describe('ListDesignerPanel', () => {

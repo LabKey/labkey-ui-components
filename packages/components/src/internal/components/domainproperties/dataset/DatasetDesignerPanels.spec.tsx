@@ -26,10 +26,10 @@ import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import { DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
-import { initDomainPropertiesUnitTestMocks, sleep } from "../../../testHelpers";
+import { initUnitTestMocks, sleep } from "../../../testHelpers";
 
 beforeAll(() => {
-    initDomainPropertiesUnitTestMocks();
+    initUnitTestMocks();
 });
 
 describe('Dataset Designer', () => {

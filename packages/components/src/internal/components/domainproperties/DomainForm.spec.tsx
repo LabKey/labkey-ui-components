@@ -40,10 +40,10 @@ import {
 import { clearFieldDetails, createFormInputId, updateDomainField } from './actions';
 
 import { DomainRow } from './DomainRow';
-import { initDomainPropertiesUnitTestMocks, sleep } from "../../testHelpers";
+import { initUnitTestMocks, sleep } from "../../testHelpers";
 
 beforeAll(() => {
-    initDomainPropertiesUnitTestMocks();
+    initUnitTestMocks();
 });
 
 interface Props {

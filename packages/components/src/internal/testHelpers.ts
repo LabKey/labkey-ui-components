@@ -32,6 +32,7 @@ export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map
                 numberFormat: null,
             },
             path: 'testContainer',
+            activeModules: ['Core', 'Query'],
         },
         contextPath: 'labkey',
     });

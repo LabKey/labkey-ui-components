@@ -895,7 +895,7 @@ export function updateOntologyFieldProperties(
 
 // get the new/updated field name for the ontology related property
 // if it has been removed or changed to a non-string data type, return undefined
-function getOntologyUpdatedFieldName(
+export function getOntologyUpdatedFieldName(
     propFieldName: string,
     updatedDomain: DomainDesign,
     origDomain: DomainDesign,

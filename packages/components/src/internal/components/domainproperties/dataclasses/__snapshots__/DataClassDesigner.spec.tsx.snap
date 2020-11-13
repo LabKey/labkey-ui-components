@@ -5605,7 +5605,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "conceptImportColumn": undefined,
                                                           }
                                                         }
-                                                        fieldAdditionalDetails={Object {}}
+                                                        fieldDetailsInfo={Object {}}
                                                         getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={0}
@@ -8013,7 +8013,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "conceptImportColumn": undefined,
                                                           }
                                                         }
-                                                        fieldAdditionalDetails={Object {}}
+                                                        fieldDetailsInfo={Object {}}
                                                         getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={1}
@@ -10357,7 +10357,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "conceptImportColumn": undefined,
                                                           }
                                                         }
-                                                        fieldAdditionalDetails={Object {}}
+                                                        fieldDetailsInfo={Object {}}
                                                         getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={2}

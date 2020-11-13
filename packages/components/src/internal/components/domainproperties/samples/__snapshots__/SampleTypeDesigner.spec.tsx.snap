@@ -3924,7 +3924,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "conceptImportColumn": undefined,
                                                           }
                                                         }
-                                                        fieldAdditionalDetails={Object {}}
+                                                        fieldDetailsInfo={Object {}}
                                                         getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={0}

@@ -36,12 +36,13 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
         this.loadData();
     }
 
-    loadData = (): void => {
-        fetchOntologies(getServerContext().container.path).then(data => {
+    loadData = async (): Promise<void> => {
+        try {
+            const newOntologies = await fetchOntologies(getServerContext().container.path);
             this.setState(
                 () => ({
                     loading: false,
-                    ontologies: data,
+                    ontologies: newOntologies,
                 }),
                 () => {
                     const { field } = this.props;
@@ -53,10 +54,10 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                     }
                 }
             );
-        }).catch(error => {
+        } catch (error) {
             console.error('Failed to retrieve available types for Ontology.', error);
             this.setState(() => ({ loading: false }));
-        });
+        }
     };
 
     onSelectChange = (id, formValue, selected): void => {

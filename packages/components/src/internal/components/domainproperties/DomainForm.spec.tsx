@@ -40,7 +40,7 @@ import {
 import { clearFieldDetails, createFormInputId, updateDomainField } from './actions';
 
 import { DomainRow } from './DomainRow';
-import { initUnitTestMocks, sleep } from "../../testHelpers";
+import { initUnitTestMocks, sleep } from '../../testHelpers';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -579,6 +579,7 @@ describe('DomainForm', () => {
         expect(typeField.find({ value: 'flag' }).length).toEqual(0);
         expect(typeField.find({ value: 'fileLink' }).length).toEqual(0);
         expect(typeField.find({ value: 'attachment' }).length).toEqual(0);
+        expect(typeField.find({ value: 'ontologyLookup' }).length).toEqual(0);
 
         expect(form).toMatchSnapshot();
         form.unmount();

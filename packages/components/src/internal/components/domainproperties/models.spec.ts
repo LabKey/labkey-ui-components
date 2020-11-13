@@ -48,6 +48,7 @@ import {
     STRING_RANGE_URI,
     BOOLEAN_RANGE_URI,
     SAMPLE_TYPE_CONCEPT_URI,
+    DOMAIN_FIELD_FULLY_LOCKED,
 } from './constants';
 
 describe('PropDescType', () => {
@@ -366,6 +367,55 @@ describe('DomainDesign', () => {
         expect(domain.findFieldIndexByName('defdef')).toBe(-1);
         expect(domain.findFieldIndexByName('def')).toBe(1);
     });
+
+    test('getFieldDetails', () => {
+        let fieldDetails = DomainDesign.create({
+            fields: [
+                { name: 'text1', rangeURI: TEXT_TYPE.rangeURI },
+                { name: 'text2', rangeURI: TEXT_TYPE.rangeURI },
+            ],
+        }).getFieldDetails();
+        expect(fieldDetails.ontologyLookupIndices.length).toBe(0);
+        expect(fieldDetails.detailsInfo['text1']).toBe(undefined);
+        expect(fieldDetails.detailsInfo['text2']).toBe(undefined);
+
+        fieldDetails = DomainDesign.create({
+            fields: [
+                { name: 'text1', rangeURI: TEXT_TYPE.rangeURI },
+                { name: 'text2', rangeURI: TEXT_TYPE.rangeURI },
+                {
+                    name: 'ont',
+                    rangeURI: TEXT_TYPE.rangeURI,
+                    conceptURI: CONCEPT_CODE_CONCEPT_URI,
+                    sourceOntology: 'SRC',
+                    conceptImportColumn: 'text1',
+                    conceptLabelColumn: 'text2',
+                },
+            ],
+        }).getFieldDetails();
+        expect(fieldDetails.ontologyLookupIndices.length).toBe(1);
+        expect(fieldDetails.ontologyLookupIndices[0]).toBe(2);
+        expect(fieldDetails.detailsInfo['text1']).toBe('Ontology Lookup: ont');
+        expect(fieldDetails.detailsInfo['text2']).toBe('Ontology Lookup: ont');
+
+        fieldDetails = DomainDesign.create({
+            fields: [
+                { name: 'text1', rangeURI: TEXT_TYPE.rangeURI },
+                { name: 'text2', rangeURI: TEXT_TYPE.rangeURI },
+                {
+                    name: '', // invalid name should prevent all field details info from being set
+                    rangeURI: TEXT_TYPE.rangeURI,
+                    conceptURI: CONCEPT_CODE_CONCEPT_URI,
+                    sourceOntology: 'SRC',
+                    conceptImportColumn: 'text1',
+                    conceptLabelColumn: 'text2',
+                },
+            ],
+        }).getFieldDetails();
+        expect(fieldDetails.ontologyLookupIndices.length).toBe(0);
+        expect(fieldDetails.detailsInfo['text1']).toBe(undefined);
+        expect(fieldDetails.detailsInfo['text2']).toBe(undefined);
+    });
 });
 
 describe('DomainField', () => {
@@ -443,6 +493,41 @@ describe('DomainField', () => {
             sourceOntology: 'test1',
             conceptLabelColumn: 'test2'
         }).getErrors()).toBe(FieldErrors.NONE);
+    });
+
+    test('getDetailsTextArray', () => {
+        let field = DomainField.create({ propertyId: undefined, name: 'test' });
+        expect(field.getDetailsTextArray().join('')).toBe('New Field');
+
+        field = field.merge({ propertyId: 0, updatedField: true }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe('Updated');
+
+        field = field.merge({ dataType: SAMPLE_TYPE, lookupSchema: 'exp', lookupQuery: 'SampleType1' }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe('Updated. SampleType1');
+
+        field = field.merge({ dataType: LOOKUP_TYPE }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe('Updated. Current Folder > exp > SampleType1');
+
+        field = field.merge({ lookupContainer: 'Test Folder' }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe('Updated. Test Folder > exp > SampleType1');
+
+        field = field.merge({ dataType: ONTOLOGY_LOOKUP_TYPE, sourceOntology: 'SRC' }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC');
+
+        field = field.merge({ wrappedColumnName: 'Wrapped' }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Wrapped column - Wrapped');
+
+        field = field.merge({ wrappedColumnName: undefined, isPrimaryKey: true }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Primary Key');
+
+        field = field.merge({ lockType: DOMAIN_FIELD_FULLY_LOCKED }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Primary Key. Locked');
+
+        expect(field.getDetailsTextArray({test: 'Additional Info'}).join(''))
+            .toBe('Updated. SRC. Primary Key. Locked. Additional Info');
+        field = field.merge({ name: '' }) as DomainField;
+        expect(field.getDetailsTextArray({test: 'Additional Info'}).join(''))
+            .toBe('Updated. SRC. Primary Key. Locked');
     });
 });
 

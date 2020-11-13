@@ -20,7 +20,9 @@ import { immerable } from 'immer';
 import { caseInsensitive, SCHEMAS } from '../../..';
 
 import {
+    ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_DIMENSION,
+    DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_NOT_LOCKED,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
@@ -68,6 +70,11 @@ export interface ITypeDependentProps {
     label: string;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any;
     lockType: string;
+}
+
+export interface FieldDetails {
+    detailsInfo: {[key: string]: string};
+    ontologyLookupIndices: number[];
 }
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -251,6 +258,30 @@ export class DomainDesign
 
     findFieldIndexByName(fieldName: string): number {
         return this.fields.findIndex((field: DomainField) => fieldName && field.name === fieldName);
+    }
+
+    getFieldDetails(): FieldDetails {
+        const mapping = {
+            ontologyLookupIndices: [],
+            detailsInfo: {},
+        };
+
+        this.fields.forEach((field, index) => {
+            if (!field.hasInvalidName()) {
+                if (field.conceptImportColumn) {
+                    mapping.detailsInfo[field.conceptImportColumn] = 'Ontology Lookup: ' + field.name;
+                }
+                if (field.conceptLabelColumn) {
+                    mapping.detailsInfo[field.conceptLabelColumn] = 'Ontology Lookup: ' + field.name;
+                }
+
+                if (field.dataType.isOntologyLookup()) {
+                    mapping.ontologyLookupIndices.push(index);
+                }
+            }
+        });
+
+        return mapping;
     }
 }
 
@@ -838,6 +869,61 @@ export class DomainField
             default:
                 return false;
         }
+    }
+
+    getDetailsTextArray(fieldDetailsInfo?: {[key: string]: string}): any[] {
+        const details = [];
+        let period = '';
+
+        if (this.isNew()) {
+            details.push('New Field');
+            period = '. ';
+        } else if (this.updatedField) {
+            details.push('Updated');
+            period = '. ';
+        }
+
+        if (this.dataType.isSample()) {
+            const detailsText =
+                this.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName &&
+                SCHEMAS.EXP_TABLES.MATERIALS.queryName.localeCompare(this.lookupQuery, 'en', {
+                    sensitivity: 'accent',
+                }) === 0
+                    ? ALL_SAMPLES_DISPLAY_TEXT
+                    : this.lookupQuery;
+            details.push(period + detailsText);
+            period = '. ';
+        } else if (this.dataType.isLookup() && this.lookupSchema && this.lookupQuery) {
+            details.push(
+                period + [this.lookupContainer || 'Current Folder', this.lookupSchema, this.lookupQuery].join(' > ')
+            );
+            period = '. ';
+        } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
+            details.push(period + this.sourceOntology);
+            period = '. ';
+        }
+
+        if (this.wrappedColumnName) {
+            details.push(period + 'Wrapped column - ' + this.wrappedColumnName);
+            period = '. ';
+        }
+
+        if (this.isPrimaryKey) {
+            details.push(period + 'Primary Key');
+            period = '. ';
+        }
+
+        if (this.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
+            details.push(period + 'Locked');
+            period = '. ';
+        }
+
+        if (!this.hasInvalidName() && fieldDetailsInfo?.hasOwnProperty(this.name)) {
+            details.push(period + fieldDetailsInfo[this.name]);
+            period = '. ';
+        }
+
+        return details;
     }
 }
 

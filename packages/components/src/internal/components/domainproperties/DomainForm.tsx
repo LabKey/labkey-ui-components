@@ -74,6 +74,7 @@ import {
     IDomainFormDisplayOptions,
     IFieldChange,
     DomainFieldIndexChange,
+    FieldDetails,
 } from './models';
 import { SimpleResponse } from "../files/models";
 import { PropDescType } from './PropDescType';
@@ -113,11 +114,6 @@ interface IDomainFormInput {
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     fieldsAdditionalRenderer?: () => any;
-}
-
-interface FieldDetails {
-    detailsInfo: Record<string, any>;
-    ontologyLookupIndices: number[];
 }
 
 interface IDomainFormState {
@@ -173,7 +169,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
             availableTypes: getAvailableTypes(props.domain),
             collapsed: props.initCollapsed,
-            fieldDetails: this.getFieldDetails(props.domain),
+            fieldDetails: props.domain?.getFieldDetails(),
             filtered: false,
             filePreviewData: undefined,
             file: undefined,
@@ -353,7 +349,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             });
         }
 
-        this.setState(() => ({ fieldDetails: this.getFieldDetails(updatedDomain) }));
+        this.setState(() => ({ fieldDetails: updatedDomain.getFieldDetails() }));
 
         this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChange);
     }
@@ -829,30 +825,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     getDomainFields = (): List<DomainField> => {
         return this.props.domain.fields;
-    };
-
-    getFieldDetails = (domain: DomainDesign): FieldDetails => {
-        const mapping = {
-            ontologyLookupIndices: [],
-            detailsInfo: {},
-        };
-
-        domain.fields.forEach((field, index) => {
-            if (!field.hasInvalidName()) {
-                if (field.conceptImportColumn) {
-                    mapping.detailsInfo[field.conceptImportColumn] = 'Ontology Lookup: ' + field.name;
-                }
-                if (field.conceptLabelColumn) {
-                    mapping.detailsInfo[field.conceptLabelColumn] = 'Ontology Lookup: ' + field.name;
-                }
-
-                if (field.dataType.isOntologyLookup()) {
-                    mapping.ontologyLookupIndices.push(index);
-                }
-            }
-        });
-
-        return mapping;
     };
 
     renderPanelHeaderContent() {

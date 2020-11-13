@@ -238,7 +238,7 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
 
 export function fetchOntologies(containerPath: string): Promise<OntologyModel[]> {
     return cache<OntologyModel[]>('ontologies-cache', containerPath, () => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Query.selectRows({
                 method: 'POST',
                 containerPath,
@@ -247,8 +247,11 @@ export function fetchOntologies(containerPath: string): Promise<OntologyModel[]>
                 columns: 'RowId,Name,Abbreviation',
                 sort: 'Name',
                 requiredVersion: 17.1,
-                success: (response) => {
-                    resolve(response.rows.map(row => OntologyModel.create(row)));
+                success: response => {
+                    resolve(response.rows.map(OntologyModel.create));
+                },
+                failure: error => {
+                    reject(error);
                 },
             });
         });

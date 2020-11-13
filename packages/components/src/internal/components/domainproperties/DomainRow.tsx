@@ -78,7 +78,7 @@ interface IDomainRowProps {
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     getDomainFields?: () => List<DomainField>;
-    fieldAdditionalDetails?: {[key: string]: string}
+    fieldDetailsInfo?: {[key: string]: string}
 }
 
 interface IDomainRowState {
@@ -118,7 +118,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const { field, index, fieldError, fieldAdditionalDetails } = this.props;
+        const { field, index, fieldError, fieldDetailsInfo } = this.props;
         const details = [];
         let period = '';
 
@@ -165,8 +165,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             period = '. ';
         }
 
-        if (!field.hasInvalidName() && fieldAdditionalDetails?.hasOwnProperty(field.name)) {
-            details.push(period + fieldAdditionalDetails[field.name]);
+        if (!field.hasInvalidName() && fieldDetailsInfo?.hasOwnProperty(field.name)) {
+            details.push(period + fieldDetailsInfo[field.name]);
             period = '. ';
         }
 

@@ -29,7 +29,7 @@ interface State {
 export class OntologyLookupOptions extends PureComponent<Props, State> {
     state: Readonly<State> = {
         loading: true,
-        ontologies: undefined,
+        ontologies: [],
     };
 
     componentDidMount(): void {
@@ -37,10 +37,6 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
     }
 
     loadData = (): void => {
-        this.setState({
-            loading: true,
-        });
-
         fetchOntologies(getServerContext().container.path).then(data => {
             this.setState(
                 () => ({
@@ -57,6 +53,9 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                     }
                 }
             );
+        }).catch(error => {
+            console.error('Failed to retrieve available types for Ontology.', error);
+            this.setState(() => ({ loading: false }));
         });
     };
 
@@ -69,11 +68,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
     };
 
     onChange(id: string, value: any): void {
-        const { onChange } = this.props;
-
-        if (onChange) {
-            onChange(id, value);
-        }
+        this.props.onChange?.(id, value);
     }
 
     getChooseSourceHelpText = (): ReactNode => {
@@ -194,12 +189,12 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                     Loading...
                                 </option>
                             )}
-                            {!loading && ontologies?.length === 0 && (
+                            {!loading && ontologies.length === 0 && (
                                 <option key="_currentValue" value={field.sourceOntology}>
                                     {field.sourceOntology}
                                 </option>
                             )}
-                            {!loading && ontologies?.length > 0 &&
+                            {!loading && ontologies.length > 0 &&
                                 ontologies.map(ontology => {
                                     return (
                                         <option key={ontology.abbreviation} value={ontology.abbreviation}>

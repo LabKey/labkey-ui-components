@@ -115,6 +115,11 @@ interface IDomainFormInput {
     fieldsAdditionalRenderer?: () => any;
 }
 
+interface FieldDetails {
+    detailsInfo: Record<string, any>;
+    ontologyLookupIndices: number[];
+}
+
 interface IDomainFormState {
     expandedRowIndex: number;
     expandTransition: number;
@@ -123,6 +128,8 @@ interface IDomainFormState {
     maxPhiLevel: string;
     dragId?: number;
     availableTypes: List<PropDescType>;
+    // used for quicker access to field information (i.e. details display info and if a field is an ontology)
+    fieldDetails: FieldDetails;
     filtered: boolean;
     filePreviewData: InferDomainResponse;
     file: File;
@@ -155,9 +162,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
     };
 
-    _fieldAdditionalDetails = {};
-
-    constructor(props) {
+    constructor(props: IDomainFormInput) {
         super(props);
 
         this.state = {
@@ -168,6 +173,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             maxPhiLevel: props.maxPhiLevel || PHILEVEL_NOT_PHI,
             availableTypes: getAvailableTypes(props.domain),
             collapsed: props.initCollapsed,
+            fieldDetails: this.getFieldDetails(props.domain),
             filtered: false,
             filePreviewData: undefined,
             file: undefined,
@@ -175,34 +181,33 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         };
     }
 
-    componentDidMount(): void {
+    componentDidMount = async (): Promise<void> => {
         const { domain, maxPhiLevel, useTheme } = this.props;
 
         if (!maxPhiLevel) {
-            getMaxPhiLevel()
-                .then(maxPhiLevel => {
-                    this.setState(() => ({ maxPhiLevel }));
-                })
-                .catch(error => {
-                    console.error('Unable to retrieve max PHI level.');
-                });
+            try {
+                const nextMaxPhiLevel = await getMaxPhiLevel();
+                this.setState({ maxPhiLevel: nextMaxPhiLevel });
+            } catch (error) {
+                console.error('Unable to retrieve max PHI level.');
+            }
         }
 
         // if the given container does have the Ontology module enabled, get the updated set of available data types
         if (hasActiveModule('Ontology')) {
-            getAvailableTypesForOntology(domain).then(availableTypes => {
-                this.setState(() => ({ availableTypes }));
-            });
+            try {
+                const availableTypes = await getAvailableTypesForOntology(domain);
+                this.setState({ availableTypes });
+            } catch (error) {
+                console.error('Failed to retrieve available types for Ontology.', error);
+            }
         }
 
+        // TODO since this is called in componentDidUpdate, can it be removed here?
         updateDomainPanelClassList(useTheme, domain);
-    }
+    };
 
-    componentDidUpdate(
-        prevProps: Readonly<IDomainFormInput>,
-        prevState: Readonly<IDomainFormState>,
-        snapshot?: any
-    ): void {
+    componentDidUpdate(prevProps: Readonly<IDomainFormInput>): void {
         updateDomainPanelClassList(prevProps.useTheme, this.props.domain);
     }
 
@@ -277,9 +282,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     };
 
-    setExpandedState(expandedRowIndex: number, expandTransition: number) {
-        this.setState(() => ({ expandedRowIndex, expandTransition }));
-    }
+    setExpandedState = (expandedRowIndex: number, expandTransition: number): void => {
+        this.setState({ expandedRowIndex, expandTransition });
+    };
 
     collapseRow = (): void => {
         if (this.isExpanded()) {
@@ -320,7 +325,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onDomainChange(updatedDomain: DomainDesign, dirty?: boolean, rowIndexChange?: DomainFieldIndexChange) {
-        const { onChange, controlledCollapse, domain, domainIndex } = this.props;
+        const { controlledCollapse, domain, domainIndex } = this.props;
+        const { ontologyLookupIndices } = this.state.fieldDetails;
 
         // Check for cleared errors
         if (controlledCollapse && updatedDomain.hasErrors()) {
@@ -335,11 +341,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         // if this domain has any Ontology Lookup field(s), check if we need to update the related field properties
         // based on the updated domain (i.e. check for any name changes to selected fields)
         // note: we skip any rowIndexChange which has an newIndex as those are just reorder changes
-        if (
-            rowIndexChange?.newIndex === undefined &&
-            this._fieldAdditionalDetails['ontologyLookupIndices'].length > 0
-        ) {
-            this._fieldAdditionalDetails['ontologyLookupIndices'].forEach(index => {
+        if (rowIndexChange?.newIndex === undefined && ontologyLookupIndices.length > 0) {
+            ontologyLookupIndices.forEach(index => {
                 updatedDomain = updateOntologyFieldProperties(
                     index,
                     domainIndex,
@@ -350,9 +353,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             });
         }
 
-        if (onChange) {
-            onChange(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChange);
-        }
+        this.setState(() => ({ fieldDetails: this.getFieldDetails(updatedDomain) }));
+
+        this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChange);
     }
 
     onDeleteConfirm(index: number) {
@@ -828,13 +831,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return this.props.domain.fields;
     };
 
-    getFieldAdditionalDetails(): {[key: string]: any} {
+    getFieldDetails = (domain: DomainDesign): FieldDetails => {
         const mapping = {
             ontologyLookupIndices: [],
             detailsInfo: {},
         };
 
-        this.props.domain.fields.forEach((field, index) => {
+        domain.fields.forEach((field, index) => {
             if (!field.hasInvalidName()) {
                 if (field.conceptImportColumn) {
                     mapping.detailsInfo[field.conceptImportColumn] = 'Ontology Lookup: ' + field.name;
@@ -850,7 +853,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         });
 
         return mapping;
-    }
+    };
 
     renderPanelHeaderContent() {
         const { helpTopic, controlledCollapse } = this.props;
@@ -944,9 +947,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainFormDisplayOptions,
             allowImportExport,
         } = this.props;
-        const { expandedRowIndex, expandTransition, maxPhiLevel, dragId, availableTypes, filtered } = this.state;
+        const {
+            expandedRowIndex,
+            expandTransition,
+            fieldDetails,
+            maxPhiLevel,
+            dragId,
+            availableTypes,
+            filtered,
+        } = this.state;
         const hasFields = domain.fields.size > 0;
-        this._fieldAdditionalDetails = this.getFieldAdditionalDetails();
 
         return (
             <>
@@ -977,7 +987,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                         field={field}
                                                         fieldError={this.getFieldError(domain, i)}
                                                         getDomainFields={this.getDomainFields}
-                                                        fieldAdditionalDetails={this._fieldAdditionalDetails['detailsInfo']}
+                                                        fieldDetailsInfo={fieldDetails.detailsInfo}
                                                         domainIndex={domainIndex}
                                                         index={i}
                                                         expanded={expandedRowIndex === i}
@@ -1033,7 +1043,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             fieldsAdditionalRenderer,
             domainFormDisplayOptions,
             todoIconHelpMsg,
-            allowImportExport
+            allowImportExport,
         } = this.props;
         const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);

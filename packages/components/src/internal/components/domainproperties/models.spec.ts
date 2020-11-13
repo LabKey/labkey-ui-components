@@ -23,6 +23,7 @@ import {
     INTEGER_TYPE,
     LOOKUP_TYPE,
     MULTILINE_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
     PARTICIPANT_TYPE,
     PropDescType,
     SAMPLE_TYPE,
@@ -30,8 +31,22 @@ import {
     USERS_TYPE,
 } from './PropDescType';
 
-import { DomainDesign, DomainField, FieldErrors } from './models';
-import { DOMAIN_FIELD_NOT_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, INT_RANGE_URI } from './constants';
+import {
+    acceptablePropertyType,
+    DomainDesign,
+    DomainField,
+    FieldErrors,
+    isPropertyTypeAllowed,
+    OntologyModel,
+} from './models';
+import {
+    CONCEPT_CODE_CONCEPT_URI,
+    DOMAIN_FIELD_NOT_LOCKED,
+    DOMAIN_FIELD_PARTIALLY_LOCKED,
+    INT_RANGE_URI,
+    STRING_RANGE_URI,
+    BOOLEAN_RANGE_URI,
+} from './constants';
 
 describe('PropDescType', () => {
     test('isInteger', () => {
@@ -48,6 +63,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isInteger(USERS_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isInteger(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isInteger(PARTICIPANT_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isInteger(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isString', () => {
@@ -64,6 +80,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isString(USERS_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(SAMPLE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isString(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
     });
 
     test('isMeasure', () => {
@@ -80,6 +97,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isMeasure(USERS_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMeasure(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMeasure(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
     });
 
     test('isDimension', () => {
@@ -96,6 +114,7 @@ describe('PropDescType', () => {
         expect(PropDescType.isDimension(USERS_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isDimension(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isDimension(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
     });
 
     test('isMvEnableable', () => {
@@ -112,6 +131,46 @@ describe('PropDescType', () => {
         expect(PropDescType.isMvEnableable(USERS_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isMvEnableable(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
+    });
+
+    test('isPropertyTypeAllowed', () => {
+        expect(isPropertyTypeAllowed(TEXT_TYPE, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(LOOKUP_TYPE, true)).toBeFalsy();
+        expect(isPropertyTypeAllowed(MULTILINE_TYPE, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(BOOLEAN_TYPE, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(INTEGER_TYPE, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(DOUBLE_TYPE, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(DATETIME_TYPE, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(FLAG_TYPE, true)).toBeFalsy();
+        expect(isPropertyTypeAllowed(FILE_TYPE, false)).toBeFalsy();
+        expect(isPropertyTypeAllowed(FILE_TYPE, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(ATTACHMENT_TYPE, true)).toBeFalsy();
+        expect(isPropertyTypeAllowed(USERS_TYPE, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(SAMPLE_TYPE, true)).toBeTruthy();
+        expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true)).toBeFalsy();
+        expect(isPropertyTypeAllowed(ONTOLOGY_LOOKUP_TYPE, true)).toBeFalsy();
+    });
+
+    test('acceptablePropertyType', () => {
+        expect(acceptablePropertyType(LOOKUP_TYPE, INT_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(LOOKUP_TYPE, STRING_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(LOOKUP_TYPE, BOOLEAN_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(SAMPLE_TYPE, INT_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(SAMPLE_TYPE, STRING_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(SAMPLE_TYPE, BOOLEAN_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(ONTOLOGY_LOOKUP_TYPE, INT_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(ONTOLOGY_LOOKUP_TYPE, STRING_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(ONTOLOGY_LOOKUP_TYPE, BOOLEAN_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(INTEGER_TYPE, INT_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(INTEGER_TYPE, STRING_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(INTEGER_TYPE, BOOLEAN_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(TEXT_TYPE, INT_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(TEXT_TYPE, STRING_RANGE_URI)).toBeTruthy();
+        expect(acceptablePropertyType(TEXT_TYPE, BOOLEAN_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(BOOLEAN_TYPE, INT_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(BOOLEAN_TYPE, STRING_RANGE_URI)).toBeFalsy();
+        expect(acceptablePropertyType(BOOLEAN_TYPE, BOOLEAN_RANGE_URI)).toBeTruthy();
     });
 });
 
@@ -278,5 +337,59 @@ describe('DomainField', () => {
         const updatedDblField = DomainField.updateDefaultValues(dblField);
         expect(updatedDblField.measure).toBeTruthy();
         expect(updatedDblField.dimension).toBeFalsy();
+    });
+
+    test('hasInvalidName', () => {
+        expect(DomainField.create({}).hasInvalidName()).toBeTruthy();
+        expect(DomainField.create({ name: undefined }).hasInvalidName()).toBeTruthy();
+        expect(DomainField.create({ name: null }).hasInvalidName()).toBeTruthy();
+        expect(DomainField.create({ name: '' }).hasInvalidName()).toBeTruthy();
+        expect(DomainField.create({ name: 'test' }).hasInvalidName()).toBeFalsy();
+    });
+
+    test('getErrors', () => {
+        // TODO add checks for FieldErrors.MISSING_SCHEMA_QUERY and FieldErrors.MISSING_DATA_TYPE
+
+        expect(DomainField.create({ name: '' }).getErrors()).toBe(FieldErrors.MISSING_FIELD_NAME);
+        expect(DomainField.create({ name: 'test' }).getErrors()).toBe(FieldErrors.NONE);
+
+        expect(DomainField.create({
+            name: 'test',
+            rangeURI: STRING_RANGE_URI,
+            conceptURI: CONCEPT_CODE_CONCEPT_URI,
+            sourceOntology: undefined,
+            conceptLabelColumn: undefined
+        }).getErrors()).toBe(FieldErrors.MISSING_ONTOLOGY_PROPERTIES);
+        expect(DomainField.create({
+            name: 'test',
+            rangeURI: STRING_RANGE_URI,
+            conceptURI: CONCEPT_CODE_CONCEPT_URI,
+            sourceOntology: 'test1',
+            conceptLabelColumn: undefined
+        }).getErrors()).toBe(FieldErrors.MISSING_ONTOLOGY_PROPERTIES);
+        expect(DomainField.create({
+            name: 'test',
+            rangeURI: STRING_RANGE_URI,
+            conceptURI: CONCEPT_CODE_CONCEPT_URI,
+            sourceOntology: 'test1',
+            conceptLabelColumn: 'test2'
+        }).getErrors()).toBe(FieldErrors.NONE);
+    });
+});
+
+describe('OntologyModel', () => {
+    test('create', () => {
+        expect(OntologyModel.create({}).name).toBe(undefined);
+        expect(OntologyModel.create({ name: {} }).name).toBe(undefined);
+        expect(OntologyModel.create({ Name: {} }).name).toBe(undefined);
+        expect(OntologyModel.create({ name: { value: 'test' } }).name).toBe('test');
+        expect(OntologyModel.create({ Name: { value: 'test' } }).name).toBe('test');
+    });
+
+    test('getLabel', () => {
+        expect(OntologyModel.create({
+            Name: { value: 'test' },
+            Abbreviation: { value: 'T' }
+        }).getLabel()).toBe('test (T)');
     });
 });

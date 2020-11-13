@@ -940,7 +940,7 @@ export function resolveAvailableTypes(
     return filteredTypes;
 }
 
-function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean): boolean {
+export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean): boolean {
     // We allow file type for some domains based on the parameter
     if (type === FILE_TYPE) return includeFileType;
 
@@ -948,7 +948,7 @@ function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean): bo
     return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
-function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
+export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
     if (type.isLookup()) {
         return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
     }
@@ -1446,9 +1446,9 @@ export class OntologyModel {
 
     static create(raw: any): OntologyModel {
         return new OntologyModel({
-            rowId: caseInsensitive(raw, 'RowId').value,
-            name: caseInsensitive(raw, 'Name').value,
-            abbreviation: caseInsensitive(raw, 'Abbreviation').value,
+            rowId: caseInsensitive(raw, 'RowId')?.value,
+            name: caseInsensitive(raw, 'Name')?.value,
+            abbreviation: caseInsensitive(raw, 'Abbreviation')?.value,
         });
     }
 

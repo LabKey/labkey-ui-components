@@ -107,10 +107,11 @@ export class PropDescType
     }
 
     static isAutoIncrement(dataType: PropDescType): boolean {
-        return dataType.display === AUTOINT_TYPE.display;
+        return dataType?.display === AUTOINT_TYPE.display;
     }
 
     getJsonType(): JsonType {
+        // TODO should this change to default to returning this.name and just catch the diff cases?
         switch (this.name) {
             case 'boolean':
                 return 'boolean';

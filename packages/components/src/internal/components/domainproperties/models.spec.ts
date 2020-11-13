@@ -15,6 +15,7 @@
  */
 import {
     ATTACHMENT_TYPE,
+    AUTOINT_TYPE,
     BOOLEAN_TYPE,
     DATETIME_TYPE,
     DOUBLE_TYPE,
@@ -46,6 +47,7 @@ import {
     INT_RANGE_URI,
     STRING_RANGE_URI,
     BOOLEAN_RANGE_URI,
+    SAMPLE_TYPE_CONCEPT_URI,
 } from './constants';
 
 describe('PropDescType', () => {
@@ -81,6 +83,23 @@ describe('PropDescType', () => {
         expect(PropDescType.isString(SAMPLE_TYPE.rangeURI)).toBeFalsy();
         expect(PropDescType.isString(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isString(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
+    });
+
+    test('isNumeric', () => {
+        expect(PropDescType.isNumeric(TEXT_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(LOOKUP_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(MULTILINE_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(BOOLEAN_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(INTEGER_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isNumeric(DOUBLE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isNumeric(DATETIME_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(FLAG_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(FILE_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(ATTACHMENT_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(USERS_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isNumeric(SAMPLE_TYPE.rangeURI)).toBeTruthy();
+        expect(PropDescType.isNumeric(PARTICIPANT_TYPE.rangeURI)).toBeFalsy();
+        expect(PropDescType.isNumeric(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeFalsy();
     });
 
     test('isMeasure', () => {
@@ -132,6 +151,56 @@ describe('PropDescType', () => {
         expect(PropDescType.isMvEnableable(SAMPLE_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(PARTICIPANT_TYPE.rangeURI)).toBeTruthy();
         expect(PropDescType.isMvEnableable(ONTOLOGY_LOOKUP_TYPE.rangeURI)).toBeTruthy();
+    });
+
+    test('isUser', () => {
+        expect(PropDescType.isUser(undefined)).toBeFalsy();
+        expect(PropDescType.isUser(null)).toBeFalsy();
+        expect(PropDescType.isUser('test')).toBeFalsy();
+        expect(PropDescType.isUser('users')).toBeTruthy();
+    });
+
+    test('isLookup', () => {
+        expect(PropDescType.isLookup(undefined)).toBeFalsy();
+        expect(PropDescType.isLookup(null)).toBeFalsy();
+        expect(PropDescType.isLookup('test')).toBeFalsy();
+        expect(PropDescType.isLookup('lookup')).toBeTruthy();
+    });
+
+    test('isSample', () => {
+        expect(PropDescType.isSample(undefined)).toBeFalsy();
+        expect(PropDescType.isSample(null)).toBeFalsy();
+        expect(PropDescType.isSample(CONCEPT_CODE_CONCEPT_URI)).toBeFalsy();
+        expect(PropDescType.isSample(SAMPLE_TYPE_CONCEPT_URI)).toBeTruthy();
+    });
+
+    test('isOntologyLookup', () => {
+        expect(PropDescType.isOntologyLookup(undefined)).toBeFalsy();
+        expect(PropDescType.isOntologyLookup(null)).toBeFalsy();
+        expect(PropDescType.isOntologyLookup(SAMPLE_TYPE_CONCEPT_URI)).toBeFalsy();
+        expect(PropDescType.isOntologyLookup(CONCEPT_CODE_CONCEPT_URI)).toBeTruthy();
+    });
+
+    test('isAutoIncrement', () => {
+        expect(PropDescType.isAutoIncrement(undefined)).toBeFalsy();
+        expect(PropDescType.isAutoIncrement(null)).toBeFalsy();
+        expect(PropDescType.isAutoIncrement(INTEGER_TYPE)).toBeFalsy();
+        expect(PropDescType.isAutoIncrement(AUTOINT_TYPE)).toBeTruthy();
+    });
+
+    test('isFileType', () => {
+        expect(INTEGER_TYPE.isFileType()).toBeFalsy();
+        expect(TEXT_TYPE.isFileType()).toBeFalsy();
+        expect(FILE_TYPE.isFileType()).toBeTruthy();
+        expect(ATTACHMENT_TYPE.isFileType()).toBeTruthy();
+    });
+
+    test('getJsonType', () => {
+        expect(TEXT_TYPE.getJsonType()).toBe('string');
+        expect(BOOLEAN_TYPE.getJsonType()).toBe('boolean');
+        expect(INTEGER_TYPE.getJsonType()).toBe('int');
+        expect(DOUBLE_TYPE.getJsonType()).toBe('float');
+        expect(DATETIME_TYPE.getJsonType()).toBe('date');
     });
 
     test('isPropertyTypeAllowed', () => {

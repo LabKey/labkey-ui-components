@@ -168,11 +168,13 @@ export class ProductMenuModel extends Record({
                     productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
                 }),
                 success: Utils.getCallbackWrapper(response => {
-                    const sections = List<MenuSectionModel>().asMutable();
-                    response.forEach(sectionData => {
-                        sections.push(MenuSectionModel.create(sectionData, this.currentProductId));
-                    });
-                    resolve(sections.asImmutable());
+                    let sections = List<MenuSectionModel>();
+                    if (response) {
+                        response.forEach(sectionData => {
+                            sections = sections.push(MenuSectionModel.create(sectionData, this.currentProductId));
+                        });
+                    }
+                    resolve(sections);
                 }),
                 failure: Utils.getCallbackWrapper(response => {
                     reject(response);

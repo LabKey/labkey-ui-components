@@ -476,22 +476,13 @@ describe('DomainField', () => {
             name: 'test',
             rangeURI: STRING_RANGE_URI,
             conceptURI: CONCEPT_CODE_CONCEPT_URI,
-            sourceOntology: undefined,
-            conceptLabelColumn: undefined
+            sourceOntology: undefined
         }).getErrors()).toBe(FieldErrors.MISSING_ONTOLOGY_PROPERTIES);
         expect(DomainField.create({
             name: 'test',
             rangeURI: STRING_RANGE_URI,
             conceptURI: CONCEPT_CODE_CONCEPT_URI,
-            sourceOntology: 'test1',
-            conceptLabelColumn: undefined
-        }).getErrors()).toBe(FieldErrors.MISSING_ONTOLOGY_PROPERTIES);
-        expect(DomainField.create({
-            name: 'test',
-            rangeURI: STRING_RANGE_URI,
-            conceptURI: CONCEPT_CODE_CONCEPT_URI,
-            sourceOntology: 'test1',
-            conceptLabelColumn: 'test2'
+            sourceOntology: 'test1'
         }).getErrors()).toBe(FieldErrors.NONE);
     });
 

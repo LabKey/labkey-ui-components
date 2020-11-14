@@ -810,7 +810,8 @@ export class DomainField
             return FieldErrors.MISSING_FIELD_NAME;
         }
 
-        if (this.dataType.isOntologyLookup() && (!this.sourceOntology || !this.conceptLabelColumn)) {
+        // Issue 41829: for an ontology lookup field, only the sourceOntology is required (other two props are optional)
+        if (this.dataType.isOntologyLookup() && !this.sourceOntology) {
             return FieldErrors.MISSING_ONTOLOGY_PROPERTIES;
         }
 

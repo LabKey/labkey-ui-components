@@ -27,7 +27,7 @@ interface SampleSetSummaryProps {
     location?: Location,
     navigate: (url: string | AppURL) => any,
     user: User,
-    excludedSampleSets: string[]
+    excludedSampleSets?: string[]
 }
 
 export const SampleSetSummary: FC<SampleSetSummaryProps> = memo( props => {
@@ -36,7 +36,8 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo( props => {
     const [ selected, setSelected ] = useState<string>()
 
     const queryConfig = useMemo(() => {
-        return { ...SAMPLE_QUERY_CONFIG, baseFilters: [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)] }
+        return { ...SAMPLE_QUERY_CONFIG,
+            baseFilters: excludedSampleSets ? [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)] : undefined }
     }, [excludedSampleSets]);
 
     useEffect(() => {

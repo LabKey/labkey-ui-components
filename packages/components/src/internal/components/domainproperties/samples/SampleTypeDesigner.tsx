@@ -13,6 +13,7 @@ import {
     naturalSort,
     resolveErrorMessage,
     SCHEMAS,
+    getHelpLink,
 } from '../../../..';
 
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
@@ -25,7 +26,7 @@ import { SAMPLE_TYPE } from '../PropDescType';
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 
-const DEFAULT_SAMPLE_FIELD_CONFIG = {
+export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
     dataType: SAMPLE_TYPE,
     conceptURI: SAMPLE_TYPE.conceptURI,
@@ -48,6 +49,9 @@ const DOMAIN_PANEL_INDEX = 1;
 export const SAMPLE_SET_IMPORT_PREFIX = 'materialInputs/';
 export const DATA_CLASS_IMPORT_PREFIX = 'dataInputs/';
 const DATA_CLASS_SCHEMA_KEY = 'exp/dataclasses';
+const SAMPLE_SET_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
+const SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER =  'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
+const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
 
 interface Props {
     onChange?: (model: SampleTypeModel) => void;
@@ -65,6 +69,7 @@ interface Props {
     dataClassAliasCaption?: string;
     dataClassTypeCaption?: string;
     dataClassParentageLabel?: string;
+    showParentLabelPrefix?: boolean;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
 
     // EntityDetailsForm props
@@ -96,7 +101,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         includeDataClasses: false,
         useSeparateDataClassesAliasMenu: false,
-
+        nameExpressionInfoUrl: getHelpLink(SAMPLE_SET_NAME_EXPRESSION_TOPIC),
+        nameExpressionPlaceholder: SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER,
+        helpTopic: SAMPLE_SET_HELP_TOPIC,
+        showParentLabelPrefix: true,
         useTheme: false,
         appPropertiesOnly: true,
     };
@@ -134,8 +142,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     formatLabel = (name: string, prefix: string, containerPath?: string): string => {
-        const { includeDataClasses, useSeparateDataClassesAliasMenu } = this.props;
-        return includeDataClasses && !useSeparateDataClassesAliasMenu ? `${prefix}: ${name} (${containerPath})` : name;
+        const { includeDataClasses, useSeparateDataClassesAliasMenu, showParentLabelPrefix } = this.props;
+        return includeDataClasses && !useSeparateDataClassesAliasMenu && showParentLabelPrefix
+            ? `${prefix}: ${name} (${containerPath})` : name;
     };
 
     initParentOptions = (model: SampleTypeModel, responses: any[]) => {

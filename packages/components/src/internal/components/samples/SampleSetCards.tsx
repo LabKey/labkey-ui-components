@@ -4,11 +4,12 @@ import {
     Alert,
     naturalSort,
     LoadingSpinner,
-    Cards,
+    Cards, SchemaQuery,
 } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import {Filter} from "@labkey/api";
 
 const rowSort = (row1, row2): number => {
     return naturalSort(getSampleSetName(row1), getSampleSetName(row2));
@@ -100,11 +101,17 @@ const SampleSetCardsImpl: FC<Props & InjectedQueryModels> = memo(props => {
 
 const SampleSetCardsWithQueryModels = withQueryModels<Props>(SampleSetCardsImpl)
 
-export const SampleSetCards: FC = memo(() => {
+interface SampleSetCardsProps {
+    excludedSampleSets?: string[]
+}
+
+export const SampleSetCards: FC<SampleSetCardsProps> = memo((props) => {
+    const { excludedSampleSets } = props;
     const modelId = 'samplesets-cards';
     const queryConfigs = {
         [modelId]: {
-            schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS
+            schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+            baseFilters: excludedSampleSets ? [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)] : undefined
         }
     }
 

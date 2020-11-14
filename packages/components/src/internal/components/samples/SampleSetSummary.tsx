@@ -1,7 +1,8 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useState } from 'react'
+import React, { FC, memo, ReactNode, useCallback, useEffect, useState, useMemo } from 'react'
 import { SampleSetCards } from "./SampleSetCards";
 import { SampleSetHeatMap } from "./SampleSetHeatMap";
 import { GridPanelWithModel, SCHEMAS, AppURL, SelectInput, User, Location } from "../../..";
+import { Filter } from "@labkey/api";
 
 const SELECTION_HEATMAP = 'heatmap';
 const SELECTION_CARDS = 'cards';
@@ -25,16 +26,21 @@ const SAMPLE_QUERY_CONFIG = {
 interface SampleSetSummaryProps {
     location?: Location,
     navigate: (url: string | AppURL) => any,
-    user: User
+    user: User,
+    excludedSampleSets: string[]
 }
 
 export const SampleSetSummary: FC<SampleSetSummaryProps> = memo( props => {
-    const { location, navigate, user } = props;
+    const { location, navigate, user, excludedSampleSets } = props;
 
     const [ selected, setSelected ] = useState<string>()
 
+    const queryConfig = useMemo(() => {
+        return { ...SAMPLE_QUERY_CONFIG, baseFilters: [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)] }
+    }, [excludedSampleSets]);
+
     useEffect(() => {
-        setSelected(location.query && location.query.viewAs ? location.query.viewAs : 'grid')
+        setSelected(location?.query?.viewAs ?? 'grid')
     }, [])
 
     const showHeatMap = (): boolean => {
@@ -77,9 +83,9 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo( props => {
         <>
             {renderSelect()}
             {showHeatMap() && <SampleSetHeatMap navigate={navigate} user={user}/>}
-            {showCards() && <SampleSetCards/>}
+            {showCards() && <SampleSetCards excludedSampleSets={excludedSampleSets}/>}
             {showGrid() &&
-                <GridPanelWithModel queryConfig={SAMPLE_QUERY_CONFIG} asPanel={false} showPagination={true}/>}
+                <GridPanelWithModel queryConfig={queryConfig} asPanel={false} showPagination={true} showChartMenu={false}/>}
         </>
     )
 

@@ -25,6 +25,7 @@ import {
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
+import { Filter } from '@labkey/api';
 
 import { last12Months, monthSort } from './utils';
 import { HeatMapDisplay } from './HeatMapDisplay';
@@ -54,6 +55,7 @@ export interface HeatMapDisplayCell {
 
 export interface HeatMapProps {
     schemaQuery: SchemaQuery;
+    filters?: Filter.IFilter[];
     displayNamePath?: string[]; // path within a query row to use for displaying the y axis and by which to sort the rows of data
     nounSingular: string;
     nounPlural: string;
@@ -258,12 +260,15 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
 const HeatMapWithQueryModels = withQueryModels<HeatMapProps>(HeatMapImpl);
 
 export const HeatMap: FC<HeatMapProps> = memo((props) => {
-    const modelId = props.modelId || getModelId(props.schemaQuery)
+    const { schemaQuery, filters, urlPrefix } = props;
+
+    const modelId = props.modelId || getModelId(schemaQuery)
 
     const queryConfigs = {
         [modelId]: {
-            urlPrefix: props.urlPrefix,
-            schemaQuery: props.schemaQuery,
+            urlPrefix: urlPrefix,
+            schemaQuery: schemaQuery,
+            baseFilters: filters,
         }
     };
 

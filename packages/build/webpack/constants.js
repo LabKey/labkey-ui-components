@@ -184,7 +184,8 @@ module.exports = {
                             "baseUrl": ".",
                             "paths": {
                                 "immutable": [labkeyUIComponentsPath + "/node_modules/immutable"],
-                                "@labkey/components": [labkeyUIComponentsPath]
+                                "@labkey/components": [labkeyUIComponentsPath],
+                                "@labkey/freezermanager": [freezerManagerPath]
                             }
                         },
                         onlyCompileBundledFiles: true

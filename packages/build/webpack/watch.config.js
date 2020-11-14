@@ -68,8 +68,6 @@ module.exports = {
 
     resolve: {
         alias: {
-            // Adjust the relative path for your enlistment to enable hot reloading of the app when
-            // new builds happen in @labkey/components and @labkey/freezermanager.
             // Note that for modules that don't have these packages, the aliases are just ignored and don't
             // seem to cause any problems.
             '@labkey/components': constants.labkeyUIComponentsPath,

@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SampleEmptyAlert/> admin 1`] = `
+<div
+  className="alert alert-warning"
+  role="alert"
+>
+  No samples have been created.
+   Click 
+  <a
+    onClick={[Function]}
+    style={Object {}}
+  >
+    here
+  </a>
+   to create samples.
+</div>
+`;
+
+exports[`<SampleEmptyAlert/> author 1`] = `
+<div
+  className="alert alert-warning"
+  role="alert"
+>
+  No samples have been created.
+   Click 
+  <a
+    onClick={[Function]}
+    style={Object {}}
+  >
+    here
+  </a>
+   to create samples.
+</div>
+`;
+
+exports[`<SampleEmptyAlert/> custom props 1`] = `
+<div
+  className="testClass alert alert-warning"
+  role="alert"
+>
+  Test Message
+</div>
+`;
+
+exports[`<SampleEmptyAlert/> reader 1`] = `
+<div
+  className="alert alert-warning"
+  role="alert"
+>
+  No samples have been created.
+</div>
+`;

@@ -11,7 +11,7 @@ import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';
-import { initUnitTestMocks, sleep } from "../../../testHelpers";
+import { initUnitTestMocks } from "../../../testHelpers";
 
 const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
 
@@ -32,18 +32,16 @@ describe('IssuesListDefDesignerPanel', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('visible properties', async () => {
+    test('visible properties', () => {
         const issuesDesignerPanels = mount(<IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);
-        await sleep();
 
         expect(issuesDesignerPanels.find(IssuesListDefPropertiesPanel)).toHaveLength(1);
         expect(issuesDesignerPanels.find(DomainForm)).toHaveLength(1);
         issuesDesignerPanels.unmount();
     });
 
-    test('open fields panel', async () => {
+    test('open fields panel', () => {
         const wrapped = mount(<IssuesListDefDesignerPanels {...BASE_PROPS} />);
-        await sleep();
 
         const panelHeader = wrapped.find('div#domain-header');
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();

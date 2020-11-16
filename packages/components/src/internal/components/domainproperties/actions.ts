@@ -901,8 +901,12 @@ export function getOntologyUpdatedFieldName(
     origDomain: DomainDesign,
     removedFieldIndex: number
 ): string {
-    const origFieldIndex = origDomain.findFieldIndexByName(propFieldName);
-    const updatedPropField = updatedDomain.fields.get(origFieldIndex);
+    let origFieldIndex = origDomain.findFieldIndexByName(propFieldName);
     const propFieldRemoved = origFieldIndex === removedFieldIndex;
+
+    // check for a field removal prior to the ontology lookup field
+    origFieldIndex = removedFieldIndex < origFieldIndex ? origFieldIndex - 1 : origFieldIndex;
+    const updatedPropField = updatedDomain.fields.get(origFieldIndex);
+
     return !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined;
 }

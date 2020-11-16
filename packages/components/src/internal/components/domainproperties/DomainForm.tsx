@@ -336,16 +336,22 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         // if this domain has any Ontology Lookup field(s), check if we need to update the related field properties
         // based on the updated domain (i.e. check for any name changes to selected fields)
-        // note: we skip any rowIndexChange which has an newIndex as those are just reorder changes
+        // note: we skip any rowIndexChange which has a newIndex as those are just reorder changes
         if (rowIndexChange?.newIndex === undefined && ontologyLookupIndices.length > 0) {
             ontologyLookupIndices.forEach(index => {
-                updatedDomain = updateOntologyFieldProperties(
-                    index,
-                    domainIndex,
-                    updatedDomain,
-                    domain,
-                    rowIndexChange?.originalIndex
-                );
+                // skip any ontology lookup fields if they were removed
+                const ontFieldRemoved = rowIndexChange?.originalIndex === index;
+
+                if (!ontFieldRemoved) {
+                    updatedDomain = updateOntologyFieldProperties(
+                        // check for a field removal prior to the ontology lookup field
+                        (rowIndexChange?.originalIndex < index ? index - 1 : index),
+                        domainIndex,
+                        updatedDomain,
+                        domain,
+                        rowIndexChange?.originalIndex
+                    );
+                }
             });
         }
 

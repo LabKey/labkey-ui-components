@@ -111,6 +111,9 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
+      "sourceOntology": undefined,
+      "conceptLabelColumn": undefined,
+      "conceptImportColumn": undefined,
     }
   }
   index={1}
@@ -553,6 +556,9 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
+      "sourceOntology": undefined,
+      "conceptLabelColumn": undefined,
+      "conceptImportColumn": undefined,
     }
   }
   index={1}
@@ -876,6 +882,9 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
+      "sourceOntology": undefined,
+      "conceptLabelColumn": undefined,
+      "conceptImportColumn": undefined,
     }
   }
   index={1}

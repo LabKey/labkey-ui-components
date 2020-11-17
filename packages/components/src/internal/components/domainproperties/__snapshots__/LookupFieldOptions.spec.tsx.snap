@@ -91,6 +91,9 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "wrappedColumnName": undefined,
         "disablePhiLevel": false,
         "lockExistingField": false,
+        "sourceOntology": undefined,
+        "conceptLabelColumn": undefined,
+        "conceptImportColumn": undefined,
       }
     }
   >
@@ -684,6 +687,9 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "wrappedColumnName": undefined,
         "disablePhiLevel": false,
         "lockExistingField": false,
+        "sourceOntology": undefined,
+        "conceptLabelColumn": undefined,
+        "conceptImportColumn": undefined,
       }
     }
   >
@@ -1338,6 +1344,9 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "wrappedColumnName": undefined,
         "disablePhiLevel": false,
         "lockExistingField": false,
+        "sourceOntology": undefined,
+        "conceptLabelColumn": undefined,
+        "conceptImportColumn": undefined,
       }
     }
   >
@@ -1992,6 +2001,9 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "wrappedColumnName": undefined,
         "disablePhiLevel": false,
         "lockExistingField": false,
+        "sourceOntology": undefined,
+        "conceptLabelColumn": undefined,
+        "conceptImportColumn": undefined,
       }
     }
   >

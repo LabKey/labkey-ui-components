@@ -22,17 +22,15 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { DeleteIcon, DragDropHandle, FieldExpansionToggle, SCHEMAS } from '../../..';
+import { DeleteIcon, DragDropHandle, FieldExpansionToggle } from '../../..';
 
 import {
-    ALL_SAMPLES_DISPLAY_TEXT,
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     DOMAIN_FIELD_ADV,
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_DELETE,
     DOMAIN_FIELD_DETAILS,
     DOMAIN_FIELD_EXPAND,
-    DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_ROW,
@@ -77,6 +75,8 @@ interface IDomainRowProps {
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    getDomainFields?: () => List<DomainField>;
+    fieldDetailsInfo?: {[key: string]: string}
 }
 
 interface IDomainRowState {
@@ -116,49 +116,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
      *  Details section of property row
      */
     getDetailsText = (): React.ReactNode => {
-        const { field, index, fieldError } = this.props;
-        const details = [];
-
-        if (field.dataType.isSample()) {
-            const detailsText =
-                field.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName &&
-                SCHEMAS.EXP_TABLES.MATERIALS.queryName.localeCompare(field.lookupQuery, 'en', {
-                    sensitivity: 'accent',
-                }) === 0
-                    ? ALL_SAMPLES_DISPLAY_TEXT
-                    : field.lookupQuery;
-            details.push(detailsText);
-        } else if (field.dataType.isLookup() && field.lookupSchema && field.lookupQuery) {
-            details.push(
-                [field.lookupContainer || 'Current Folder', field.lookupSchema, field.lookupQuery].join(' > ')
-            );
-        } else if (field.isNew()) {
-            details.push('New Field');
-        } else if (field.updatedField) {
-            details.push('Updated');
-        }
-
-        let period = '';
-        if (details.length > 0) {
-            period = '. ';
-        }
-
-        if (field.wrappedColumnName) {
-            details.push(period + 'Wrapped column - ' + field.wrappedColumnName);
-        }
-
-        if (field.isPrimaryKey) {
-            details.push(period + 'Primary Key');
-            period = '. ';
-        }
-
-        if (field.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
-            details.push(period + 'Locked');
-            period = '. ';
-        }
+        const { field, index, fieldError, fieldDetailsInfo } = this.props;
+        const details = field.getDetailsTextArray(fieldDetailsInfo);
 
         if (fieldError) {
-            details.push(period);
+            details.push(details.length > 0 ? '. ' : '');
             const msg = fieldError.severity + ': ' + fieldError.message;
             details.push(
                 <>
@@ -489,6 +451,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             appPropertiesOnly,
             successBsStyle,
             domainFormDisplayOptions,
+            getDomainFields,
         } = this.props;
 
         return (
@@ -554,6 +517,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     field={field}
                                     index={index}
                                     domainIndex={domainIndex}
+                                    getDomainFields={getDomainFields}
                                     onMultiChange={this.onMultiFieldChange}
                                     onChange={this.onSingleFieldChange}
                                     showingModal={this.showingModal}

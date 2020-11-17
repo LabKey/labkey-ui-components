@@ -1031,6 +1031,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "wrappedColumnName": undefined,
             "disablePhiLevel": false,
             "lockExistingField": false,
+            "sourceOntology": undefined,
+            "conceptLabelColumn": undefined,
+            "conceptImportColumn": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -1175,6 +1178,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "wrappedColumnName": undefined,
               "disablePhiLevel": false,
               "lockExistingField": false,
+              "sourceOntology": undefined,
+              "conceptLabelColumn": undefined,
+              "conceptImportColumn": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -1294,6 +1300,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -1422,6 +1431,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "wrappedColumnName": undefined,
                   "disablePhiLevel": false,
                   "lockExistingField": false,
+                  "sourceOntology": undefined,
+                  "conceptLabelColumn": undefined,
+                  "conceptImportColumn": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -1564,6 +1576,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -1714,6 +1729,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "wrappedColumnName": undefined,
                       "disablePhiLevel": false,
                       "lockExistingField": false,
+                      "sourceOntology": undefined,
+                      "conceptLabelColumn": undefined,
+                      "conceptImportColumn": undefined,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -2056,6 +2074,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
                                             "lockExistingField": false,
+                                            "sourceOntology": undefined,
+                                            "conceptLabelColumn": undefined,
+                                            "conceptImportColumn": undefined,
                                           },
                                         ],
                                         "indices": Immutable.List [],
@@ -2913,6 +2934,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -3033,6 +3057,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -3892,8 +3919,13 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "wrappedColumnName": undefined,
                                                             "disablePhiLevel": false,
                                                             "lockExistingField": false,
+                                                            "sourceOntology": undefined,
+                                                            "conceptLabelColumn": undefined,
+                                                            "conceptImportColumn": undefined,
                                                           }
                                                         }
+                                                        fieldDetailsInfo={Object {}}
+                                                        getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={0}
                                                         key="domain-row-key-0"
@@ -4075,6 +4107,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "wrappedColumnName": undefined,
                                                                             "disablePhiLevel": false,
                                                                             "lockExistingField": false,
+                                                                            "sourceOntology": undefined,
+                                                                            "conceptLabelColumn": undefined,
+                                                                            "conceptImportColumn": undefined,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -4651,8 +4686,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "wrappedColumnName": undefined,
                                                                               "disablePhiLevel": false,
                                                                               "lockExistingField": false,
+                                                                              "sourceOntology": undefined,
+                                                                              "conceptLabelColumn": undefined,
+                                                                              "conceptImportColumn": undefined,
                                                                             }
                                                                           }
+                                                                          getDomainFields={[Function]}
                                                                           index={0}
                                                                           onChange={[Function]}
                                                                           onMultiChange={[Function]}
@@ -5073,6 +5112,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     index={0}
@@ -5614,6 +5656,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     hideConditionalFormatting={true}

@@ -684,4 +684,59 @@ describe('DomainForm', () => {
         expect(form).toMatchSnapshot();
         form.unmount();
     });
+
+    test('using allowImportExport', () => {
+        const domain = DomainDesign.create({});
+
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                allowImportExport={true}
+            />
+        );
+
+        expect(form.find('.domain-form-manual-section').length).toEqual(1);
+        expect(form.find('.domain-form-manual-section').length).toEqual(1);
+        expect(form.find('.file-form-formats').text()).toContain('.json');
+
+        expect(form).toMatchSnapshot();
+        form.unmount();
+    });
+
+    test('using allowImportExport, field view', () => {
+        const fields = [];
+        fields.push({
+            name: 'key',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test',
+        });
+
+        const domain = DomainDesign.create({
+            name: 'allowImportExport field view',
+            description: 'basic list domain form',
+            domainURI: 'test',
+            domainId: 1,
+            fields,
+            indices: [],
+        });
+
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                domainFormDisplayOptions={{
+                    hideRequired: true,
+                }}
+                allowImportExport={true}
+            />
+        );
+
+        expect(form.find('.domain-toolbar-export-btn').length).toEqual(1);
+        expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
+
+        expect(form).toMatchSnapshot();
+        form.unmount();
+    });
 });

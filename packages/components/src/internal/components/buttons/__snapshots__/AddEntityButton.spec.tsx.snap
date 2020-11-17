@@ -1,6 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<AddEntityButton /> Fully populated props 1`] = `
+<ActionButton
+  buttonClass="test-button-class"
+  containerClass="test-container-class"
+  disabled={false}
+  entity="EntityName"
+  helperBody={[Function]}
+  helperTitle="test-helperTitle"
+  onClick={[MockFunction]}
+  title="test-title"
+>
+  <i
+    className="fa fa-plus-circle container--addition-icon"
+  />
+   Add 
+  EntityName
+</ActionButton>
+`;
+
 exports[`<AddEntityButton /> Minimal properties 1`] = `
+<ActionButton
+  containerClass="form-group"
+  entity="EntityName"
+  helperTitle="More Info"
+  onClick={[MockFunction]}
+>
+  <i
+    className="fa fa-plus-circle container--addition-icon"
+  />
+   Add 
+  EntityName
+</ActionButton>
+`;
+
+exports[`<AddEntityButton /> Minimal props 1`] = `
 <ActionButton
   containerClass="form-group"
   entity="EntityName"

@@ -297,26 +297,18 @@ describe('domain properties actions', () => {
         expect(getDomainHeaderName('Data Fields')).toBe('Results Fields');
     });
 
-    test('downloadJsonFile ', () => {
-        const link = {
-            click: jest.fn()
-        };
-        jest.spyOn(document, "createElement").mockImplementation(() => link as any);
+    test('downloadJsonFile', () => {
+        const mockLink = { href: '', click: jest.fn(), download: '', style: { display: '' }} as any;
+        const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValueOnce(mockLink);
+        document.body.appendChild = jest.fn();
+        document.body.removeChild = jest.fn();
         downloadJsonFile("test-file", "fileName");
 
-        expect(link.className).toEqual("download-helper");
-        expect(link.download).toEqual("test-file.txt");
-        expect(link.href).toEqual("data:application/txt,hello%20world");
-        expect(link.click).toHaveBeenCalledTimes(1);
-
-    });
-
-    test('downloadJsonFile ', () => {
-
-        expect(FileSaver.saveAs).toHaveBeenCalledWith(
-            {content:'content', options: { type: 'application/octet-stream' }},
-            'filename.extension'
-        )
+        expect(createElementSpy).toBeCalledWith('a');
+        expect(mockLink.style.display).toBe('none');
+        expect(document.body.appendChild).toBeCalledWith(mockLink);
+        expect(mockLink.click).toBeCalled();
+        expect(document.body.removeChild).toBeCalledWith(mockLink);
     });
 
     test('processJsonImport ', () => {
@@ -326,12 +318,18 @@ describe('domain properties actions', () => {
         expect(processJsonImport("[]", domain)).toStrictEqual(emptinessError);
         expect(processJsonImport("{}", domain)).toStrictEqual(emptinessError);
         expect(processJsonImport("", domain)).toStrictEqual(emptinessError);
-
         expect(() => {processJsonImport("<<< Invalid JSON", domain)}).toThrow();
 
-        const notListButContainsPKDomain = DomainDesign.create({});
+        const primaryKeyErrorAssay = {success: false, msg: "Error on importing field 'undefined': Assay domain type does not support fields with an externally defined Primary Key."};
+        const primaryKeyError = {success: false, msg: "Error on importing field 'undefined': This domain type does not support fields with an externally defined Primary Key."};
+        expect(processJsonImport('[{"isPrimaryKey": true, "lockType": "PKLocked"}]', DomainDesign.create({domainKindName: 'Assay'}))).toStrictEqual(primaryKeyErrorAssay);
+        expect(processJsonImport('[{"isPrimaryKey": true, "lockType": "PKLocked"}]', domain)).toStrictEqual(primaryKeyError);
 
-
+        const jsonWithStrippableFields = '[{"propertyId": 1234, "propertyURI":1234}]';
+        const result = processJsonImport(jsonWithStrippableFields, domain);
+        expect(result.success).toBe(true);
+        result.fields.forEach(field => {
+            expect(field).not.toMatchObject({'propertyId': 'value', 'propertyURI':'value'});
+        })
     });
-
-    });
+});

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "1.1.1-fb-biologics-sample-type.1",
+  "version": "1.1.1-fb-biologics-sample-type.2",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

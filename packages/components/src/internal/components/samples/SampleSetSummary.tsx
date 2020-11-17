@@ -42,7 +42,7 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo( props => {
 
     useEffect(() => {
         setSelected(location?.query?.viewAs ?? 'grid')
-    }, [])
+    }, [location])
 
     const showHeatMap = (): boolean => {
         return selected === SELECTION_HEATMAP;

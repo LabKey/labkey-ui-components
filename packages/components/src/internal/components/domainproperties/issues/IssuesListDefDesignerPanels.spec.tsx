@@ -11,6 +11,7 @@ import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';
 import { IssuesListDefModel } from './models';
+import { initUnitTestMocks } from "../../../testHelpers";
 
 const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues List For Jest' });
 
@@ -18,6 +19,10 @@ const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
 };
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 describe('IssuesListDefDesignerPanel', () => {
     test('new Issue List Definition', () => {

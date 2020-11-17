@@ -1156,6 +1156,9 @@ exports[`DataClassDesigner initModel 1`] = `
             "wrappedColumnName": undefined,
             "disablePhiLevel": false,
             "lockExistingField": false,
+            "sourceOntology": undefined,
+            "conceptLabelColumn": undefined,
+            "conceptImportColumn": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1235,6 +1238,9 @@ exports[`DataClassDesigner initModel 1`] = `
             "wrappedColumnName": undefined,
             "disablePhiLevel": false,
             "lockExistingField": false,
+            "sourceOntology": undefined,
+            "conceptLabelColumn": undefined,
+            "conceptImportColumn": undefined,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1314,6 +1320,9 @@ exports[`DataClassDesigner initModel 1`] = `
             "wrappedColumnName": undefined,
             "disablePhiLevel": false,
             "lockExistingField": false,
+            "sourceOntology": undefined,
+            "conceptLabelColumn": undefined,
+            "conceptImportColumn": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -1448,6 +1457,9 @@ exports[`DataClassDesigner initModel 1`] = `
               "wrappedColumnName": undefined,
               "disablePhiLevel": false,
               "lockExistingField": false,
+              "sourceOntology": undefined,
+              "conceptLabelColumn": undefined,
+              "conceptImportColumn": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1527,6 +1539,9 @@ exports[`DataClassDesigner initModel 1`] = `
               "wrappedColumnName": undefined,
               "disablePhiLevel": false,
               "lockExistingField": false,
+              "sourceOntology": undefined,
+              "conceptLabelColumn": undefined,
+              "conceptImportColumn": undefined,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1606,6 +1621,9 @@ exports[`DataClassDesigner initModel 1`] = `
               "wrappedColumnName": undefined,
               "disablePhiLevel": false,
               "lockExistingField": false,
+              "sourceOntology": undefined,
+              "conceptLabelColumn": undefined,
+              "conceptImportColumn": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -1743,6 +1761,9 @@ exports[`DataClassDesigner initModel 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -1822,6 +1843,9 @@ exports[`DataClassDesigner initModel 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -1901,6 +1925,9 @@ exports[`DataClassDesigner initModel 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -2033,6 +2060,9 @@ exports[`DataClassDesigner initModel 1`] = `
                   "wrappedColumnName": undefined,
                   "disablePhiLevel": false,
                   "lockExistingField": false,
+                  "sourceOntology": undefined,
+                  "conceptLabelColumn": undefined,
+                  "conceptImportColumn": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2112,6 +2142,9 @@ exports[`DataClassDesigner initModel 1`] = `
                   "wrappedColumnName": undefined,
                   "disablePhiLevel": false,
                   "lockExistingField": false,
+                  "sourceOntology": undefined,
+                  "conceptLabelColumn": undefined,
+                  "conceptImportColumn": undefined,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2191,6 +2224,9 @@ exports[`DataClassDesigner initModel 1`] = `
                   "wrappedColumnName": undefined,
                   "disablePhiLevel": false,
                   "lockExistingField": false,
+                  "sourceOntology": undefined,
+                  "conceptLabelColumn": undefined,
+                  "conceptImportColumn": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -2331,6 +2367,9 @@ exports[`DataClassDesigner initModel 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2410,6 +2449,9 @@ exports[`DataClassDesigner initModel 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2489,6 +2531,9 @@ exports[`DataClassDesigner initModel 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -2633,6 +2678,9 @@ exports[`DataClassDesigner initModel 1`] = `
                       "wrappedColumnName": undefined,
                       "disablePhiLevel": false,
                       "lockExistingField": false,
+                      "sourceOntology": undefined,
+                      "conceptLabelColumn": undefined,
+                      "conceptImportColumn": undefined,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -2712,6 +2760,9 @@ exports[`DataClassDesigner initModel 1`] = `
                       "wrappedColumnName": undefined,
                       "disablePhiLevel": false,
                       "lockExistingField": false,
+                      "sourceOntology": undefined,
+                      "conceptLabelColumn": undefined,
+                      "conceptImportColumn": undefined,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -2791,6 +2842,9 @@ exports[`DataClassDesigner initModel 1`] = `
                       "wrappedColumnName": undefined,
                       "disablePhiLevel": false,
                       "lockExistingField": false,
+                      "sourceOntology": undefined,
+                      "conceptLabelColumn": undefined,
+                      "conceptImportColumn": undefined,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -3780,7 +3834,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       >
                                                         <span
                                                           className="Select-multi-value-wrapper"
-                                                          id="react-select-4--value"
+                                                          id="react-select-6--value"
                                                         >
                                                           <div
                                                             className="Select-placeholder"
@@ -3788,7 +3842,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             Loading...
                                                           </div>
                                                           <div
-                                                            aria-activedescendant="react-select-4--value"
+                                                            aria-activedescendant="react-select-6--value"
                                                             aria-expanded={false}
                                                             aria-owns=""
                                                             aria-readonly="true"
@@ -4104,7 +4158,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                       >
                                                         <span
                                                           className="Select-multi-value-wrapper"
-                                                          id="react-select-5--value"
+                                                          id="react-select-7--value"
                                                         >
                                                           <div
                                                             className="Select-placeholder"
@@ -4112,7 +4166,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             Loading...
                                                           </div>
                                                           <div
-                                                            aria-activedescendant="react-select-5--value"
+                                                            aria-activedescendant="react-select-7--value"
                                                             aria-expanded={false}
                                                             aria-owns=""
                                                             aria-readonly="true"
@@ -4274,6 +4328,9 @@ exports[`DataClassDesigner initModel 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -4353,6 +4410,9 @@ exports[`DataClassDesigner initModel 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -4432,6 +4492,9 @@ exports[`DataClassDesigner initModel 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -4565,6 +4628,9 @@ exports[`DataClassDesigner initModel 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -4644,6 +4710,9 @@ exports[`DataClassDesigner initModel 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -4723,6 +4792,9 @@ exports[`DataClassDesigner initModel 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -5528,8 +5600,13 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "wrappedColumnName": undefined,
                                                             "disablePhiLevel": false,
                                                             "lockExistingField": false,
+                                                            "sourceOntology": undefined,
+                                                            "conceptLabelColumn": undefined,
+                                                            "conceptImportColumn": undefined,
                                                           }
                                                         }
+                                                        fieldDetailsInfo={Object {}}
+                                                        getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={0}
                                                         key="domain-row-key-0"
@@ -5728,6 +5805,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "wrappedColumnName": undefined,
                                                                             "disablePhiLevel": false,
                                                                             "lockExistingField": false,
+                                                                            "sourceOntology": undefined,
+                                                                            "conceptLabelColumn": undefined,
+                                                                            "conceptImportColumn": undefined,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -6295,8 +6375,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "wrappedColumnName": undefined,
                                                                               "disablePhiLevel": false,
                                                                               "lockExistingField": false,
+                                                                              "sourceOntology": undefined,
+                                                                              "conceptLabelColumn": undefined,
+                                                                              "conceptImportColumn": undefined,
                                                                             }
                                                                           }
+                                                                          getDomainFields={[Function]}
                                                                           index={0}
                                                                           onChange={[Function]}
                                                                           onMultiChange={[Function]}
@@ -6728,6 +6812,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     index={0}
@@ -7280,6 +7367,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     hideConditionalFormatting={false}
@@ -7918,8 +8008,13 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "wrappedColumnName": undefined,
                                                             "disablePhiLevel": false,
                                                             "lockExistingField": false,
+                                                            "sourceOntology": undefined,
+                                                            "conceptLabelColumn": undefined,
+                                                            "conceptImportColumn": undefined,
                                                           }
                                                         }
+                                                        fieldDetailsInfo={Object {}}
+                                                        getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={1}
                                                         key="domain-row-key-1"
@@ -8107,6 +8202,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "wrappedColumnName": undefined,
                                                                             "disablePhiLevel": false,
                                                                             "lockExistingField": false,
+                                                                            "sourceOntology": undefined,
+                                                                            "conceptLabelColumn": undefined,
+                                                                            "conceptImportColumn": undefined,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -8657,8 +8755,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "wrappedColumnName": undefined,
                                                                               "disablePhiLevel": false,
                                                                               "lockExistingField": false,
+                                                                              "sourceOntology": undefined,
+                                                                              "conceptLabelColumn": undefined,
+                                                                              "conceptImportColumn": undefined,
                                                                             }
                                                                           }
+                                                                          getDomainFields={[Function]}
                                                                           index={1}
                                                                           onChange={[Function]}
                                                                           onMultiChange={[Function]}
@@ -9065,6 +9167,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     index={1}
@@ -9606,6 +9711,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     hideConditionalFormatting={false}
@@ -10244,8 +10352,13 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "wrappedColumnName": undefined,
                                                             "disablePhiLevel": false,
                                                             "lockExistingField": false,
+                                                            "sourceOntology": undefined,
+                                                            "conceptLabelColumn": undefined,
+                                                            "conceptImportColumn": undefined,
                                                           }
                                                         }
+                                                        fieldDetailsInfo={Object {}}
+                                                        getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={2}
                                                         key="domain-row-key-2"
@@ -10433,6 +10546,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "wrappedColumnName": undefined,
                                                                             "disablePhiLevel": false,
                                                                             "lockExistingField": false,
+                                                                            "sourceOntology": undefined,
+                                                                            "conceptLabelColumn": undefined,
+                                                                            "conceptImportColumn": undefined,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -10965,8 +11081,12 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "wrappedColumnName": undefined,
                                                                               "disablePhiLevel": false,
                                                                               "lockExistingField": false,
+                                                                              "sourceOntology": undefined,
+                                                                              "conceptLabelColumn": undefined,
+                                                                              "conceptImportColumn": undefined,
                                                                             }
                                                                           }
+                                                                          getDomainFields={[Function]}
                                                                           index={2}
                                                                           onChange={[Function]}
                                                                           onMultiChange={[Function]}
@@ -11335,6 +11455,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     index={2}
@@ -11876,6 +11999,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     hideConditionalFormatting={false}

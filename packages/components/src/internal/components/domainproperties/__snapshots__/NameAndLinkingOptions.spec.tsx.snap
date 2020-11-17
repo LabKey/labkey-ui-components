@@ -82,6 +82,9 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "wrappedColumnName": undefined,
       "disablePhiLevel": false,
       "lockExistingField": false,
+      "sourceOntology": undefined,
+      "conceptLabelColumn": undefined,
+      "conceptImportColumn": undefined,
     }
   }
   index={1}

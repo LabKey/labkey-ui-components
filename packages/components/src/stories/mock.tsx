@@ -99,6 +99,7 @@ import source1Query from '../test/data/source1-getQuery.json';
 import source1QueryDetails from '../test/data/source1-getQueryDetails.json';
 import issuesProjectGroups from '../test/data/issues-getProjectGroups.json';
 import issuesUsersForGroup from '../test/data/issues-getUsersForGroup.json';
+import ontologiesQuery from '../test/data/ontologies-getQuery.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -201,6 +202,9 @@ const QUERY_RESPONSES = fromJS({
         mixturetypes: mixtureTypesQuery,
         lookuplist: lookuplistQuery,
     },
+    ontology: {
+        ontologies: ontologiesQuery,
+    },
     samples: {
         hemoglobin: hemoglobinLineageQueryIn,
         samples: sampleDetailsQuery,
@@ -247,6 +251,7 @@ export function initMocks() {
     initQueryGridMocks(250);
     initLineageMocks();
     initUserPropsMocks();
+    initDomainPropertiesMocks();
 
     mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
         const body = decodeURIComponent(req.body());
@@ -260,30 +265,6 @@ export function initMocks() {
 
         if (!responseBody) {
             console.log(`executeSql response not found! "${body}"`);
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*\/query\/?.*\/getSchemas.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.schemaName === undefined) {
-            responseBody = getSchemasJson;
-        } else if (queryParams.schemaName.toLowerCase() === 'assay') {
-            responseBody = assayGetSchemasJson;
-        }
-
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*\/query\/?.*\/getQueries.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.schemaName.toLowerCase() === 'assay') {
-            responseBody = assayGetQueriesJson;
         }
 
         return jsonResponse(responseBody, res);
@@ -344,36 +325,11 @@ export function initMocks() {
         return jsonResponse(responseBody, res);
     });
 
-    mock.get(/.*getProjectGroups.*/, (req, res) => {
-        const responseBody = issuesProjectGroups;
-        return jsonResponse(responseBody, res);
-    });
-
-    mock.get(/.*getUsersForGroup.*/, (req, res) => {
-        const queryParams = req.url().query;
-        let responseBody;
-
-        if (queryParams.groupId === '') {
-            responseBody = issuesUsersForGroup.filter(users => {
-                return users.groupId === null;
-            });
-        } else if (queryParams.groupId === '-1' || queryParams.groupId === '-2' || queryParams.groupId === '1025') {
-            responseBody = issuesUsersForGroup.filter(users => {
-                return users.groupId !== null && users.groupId.toString() === queryParams.groupId;
-            });
-        }
-        return jsonResponse(responseBody, res);
-    });
-
     mock.post(/.*\/visualization\/?.*\/getVisualization.*/, jsonResponse(visualizationConfig));
 
     mock.post(/.*\/property\/?.*\/inferDomain.*/, jsonResponse(inferDomainJson));
 
-    mock.get(/.*\/security\/GetMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
-
     mock.get(/.*\/security\/?.*\/getRoles.*/, jsonResponse(getRolesJson));
-
-    mock.get(/.*\/assay\/getValidPublishTargets.*/, jsonResponse(getValidPublishTargetsJson));
 
     mock.get(/.*browseData.*/, delay(jsonResponse(browseData), 1000));
 
@@ -589,6 +545,57 @@ export function initQueryGridMocks(delayMs = undefined) {
 
     // TODO conditionalize based on queryName
     mock.get(/.*\/study-reports\/?.*\/getReportInfos.*/, jsonResponse(mixturesReportInfos));
+}
+
+export function initDomainPropertiesMocks() {
+    mock.get(/.*\/security\/?.*\/GetMaxPhiLevel.*/, jsonResponse(getMaxPhiLevelJson));
+
+    mock.get(/.*\/assay\/?.*\/getValidPublishTargets.*/, jsonResponse(getValidPublishTargetsJson));
+
+    mock.get(/.*\/query\/?.*\/getQueries.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+
+        if (queryParams.schemaName.toLowerCase() === 'assay') {
+            responseBody = assayGetQueriesJson;
+        }
+
+        return jsonResponse(responseBody, res);
+    });
+
+    mock.get(/.*\/query\/?.*\/getSchemas.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+
+        if (queryParams.schemaName === undefined) {
+            responseBody = getSchemasJson;
+        } else if (queryParams.schemaName.toLowerCase() === 'assay') {
+            responseBody = assayGetSchemasJson;
+        }
+
+        return jsonResponse(responseBody, res);
+    });
+
+    mock.get(/.*getProjectGroups.*/, (req, res) => {
+        const responseBody = issuesProjectGroups;
+        return jsonResponse(responseBody, res);
+    });
+
+    mock.get(/.*getUsersForGroup.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+
+        if (queryParams.groupId === '') {
+            responseBody = issuesUsersForGroup.filter(users => {
+                return users.groupId === null;
+            });
+        } else if (queryParams.groupId === '-1' || queryParams.groupId === '-2' || queryParams.groupId === '1025') {
+            responseBody = issuesUsersForGroup.filter(users => {
+                return users.groupId !== null && users.groupId.toString() === queryParams.groupId;
+            });
+        }
+        return jsonResponse(responseBody, res);
+    });
 }
 
 export function initLineageMocks() {

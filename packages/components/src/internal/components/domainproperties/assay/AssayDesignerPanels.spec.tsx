@@ -9,6 +9,7 @@ import { FileAttachmentForm } from '../../../..';
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
 import { AssayDesignerPanels } from './AssayDesignerPanels';
+import { initUnitTestMocks, sleep } from '../../../testHelpers';
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,
@@ -66,55 +67,60 @@ const BASE_PROPS = {
     onCancel: jest.fn(),
 };
 
+beforeAll(() => {
+    initUnitTestMocks();
+});
+
 describe('AssayDesignerPanels', () => {
-    test('default properties', () => {
+    test('default properties', async () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} />);
-
+        await sleep();
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('initModel', () => {
+    test('initModel', async () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} />);
-
+        await sleep();
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('hideEmptyBatchDomain for new assay', () => {
+    test('hideEmptyBatchDomain for new assay', async () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} hideEmptyBatchDomain={true} />);
-
+        await sleep();
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('hideEmptyBatchDomain with initModel', () => {
+    test('hideEmptyBatchDomain with initModel', async () => {
         const form = mount(
             <AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} hideEmptyBatchDomain={true} />
         );
-
+        await sleep();
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('appPropertiesOnly for new assay', () => {
+    test('appPropertiesOnly for new assay', async () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} appPropertiesOnly={true} />);
-
+        await sleep();
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('appPropertiesOnly with initModel', () => {
+    test('appPropertiesOnly with initModel', async () => {
         const form = mount(<AssayDesignerPanels {...BASE_PROPS} initModel={EXISTING_MODEL} appPropertiesOnly={true} />);
-
+        await sleep();
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('new assay wizard', () => {
+    test('new assay wizard', async () => {
         const component = <AssayDesignerPanels {...BASE_PROPS} initModel={EMPTY_MODEL} successBsStyle="primary" />;
-
         const wrapper = mount(component);
+        await sleep();
+
         expect(wrapper.find('.domain-heading-collapsible').hostNodes()).toHaveLength(4);
         expect(wrapper.find('.domain-panel-status-icon').hostNodes()).toHaveLength(3);
         expect(wrapper.find('.fa-exclamation-circle').hostNodes()).toHaveLength(3);
@@ -131,9 +137,10 @@ describe('AssayDesignerPanels', () => {
     });
 
     test('infer from file', () => {
-        function validateInferFromFile(model: AssayProtocolModel, shouldInfer: boolean) {
+        async function validateInferFromFile(model: AssayProtocolModel, shouldInfer: boolean) {
             const component = <AssayDesignerPanels {...BASE_PROPS} initModel={model} />;
             const wrapper = mount(component);
+            await sleep();
             setAssayName(wrapper, 'Foo');
             expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
             expect(wrapper.find('.file-form-formats').text()).toContain(shouldInfer ? 'include: .csv, .tsv, .txt, .xls, .xlsx, .json' : 'include: .json');
@@ -168,7 +175,7 @@ describe('AssayDesignerPanels', () => {
         );
     });
 
-    test('Show app headers', () => {
+    test('Show app headers', async () => {
         const _appHeaderId = 'mock-app-header';
         const _appHeaderText = 'This is a mock app header';
 
@@ -188,6 +195,8 @@ describe('AssayDesignerPanels', () => {
         );
 
         const wrapper = mount(component);
+        await sleep();
+
         // Open Sample Fields panel body
         wrapper
             .find(Panel.Heading)

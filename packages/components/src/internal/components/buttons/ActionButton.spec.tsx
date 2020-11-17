@@ -24,7 +24,6 @@ describe('<ActionButton />', () => {
     test('Default properties', () => {
         const onClick = jest.fn();
         const wrapper = shallow(<ActionButton onClick={onClick} />);
-        console.log(wrapper.debug());
         wrapper.find('span').simulate('click');
         expect(onClick).toHaveBeenCalledTimes(1);
         expect(wrapper).toMatchSnapshot();

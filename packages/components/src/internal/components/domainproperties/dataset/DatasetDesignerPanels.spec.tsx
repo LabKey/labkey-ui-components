@@ -26,6 +26,11 @@ import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 import { DatasetDesignerPanels } from './DatasetDesignerPanels';
 
 import { DatasetModel } from './models';
+import { initUnitTestMocks, sleep } from "../../../testHelpers";
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 describe('Dataset Designer', () => {
     const newDatasetModel = DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined);

@@ -836,6 +836,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             onClick={this.onAddField}
                         />
                     }
+
+                    <ActionButton
+                        containerClass="container--toolbar-button"
+                        buttonClass="domain-toolbar-delete-btn"
+                        onClick={() => {}}
+                        // disabled={disableExport}
+                    >
+                        <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
+                    </ActionButton>
+
                     {allowImportExport &&
                         <ActionButton
                             containerClass="container--toolbar-button"

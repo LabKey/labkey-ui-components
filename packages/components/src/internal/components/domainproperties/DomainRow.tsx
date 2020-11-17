@@ -368,7 +368,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)}>
-                <Col xs={6}>
+                <Col xs={2}>
+                    <Checkbox
+                        className="domain-field-checkbox"
+                        name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
+                        id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
+                        checked={field.required}
+                        onChange={() => {}}
+                        disabled={false}
+                    />
+                </Col>
+                <Col xs={4}>
                     <FormControl
                         // autoFocus={field.isNew()}  // TODO: This is not working great with drag and drop, need to investigate
                         type="text"
@@ -534,10 +544,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 />
                             </div>
                             <div className="domain-row-main">
-                                <Col xs={6} className="domain-row-base-fields">
+                                <Col xs={7} className="domain-row-base-fields">
                                     {this.renderBaseFields()}
                                 </Col>
-                                <Col xs={6} className="field-details-container">
+                                <Col xs={5} className="field-details-container">
                                     {this.getDetails()}
                                     {this.renderButtons()}
                                 </Col>

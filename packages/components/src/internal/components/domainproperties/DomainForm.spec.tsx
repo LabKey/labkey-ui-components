@@ -40,6 +40,7 @@ import {
 import { clearFieldDetails, createFormInputId, updateDomainField } from './actions';
 
 import { DomainRow } from './DomainRow';
+import { ActionButton } from "../buttons/ActionButton";
 
 interface Props {
     showInferFromFile?: boolean;
@@ -697,10 +698,27 @@ describe('DomainForm', () => {
         );
 
         expect(form.find('.domain-form-manual-section').length).toEqual(1);
-        expect(form.find('.domain-form-manual-section').length).toEqual(1);
         expect(form.find('.file-form-formats').text()).toContain('.json');
 
-        expect(form).toMatchSnapshot();
+        form.unmount();
+    });
+
+    test('not using allowImportExport', () => {
+        const domain = DomainDesign.create({});
+
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                allowImportExport={false}
+            />
+        );
+
+        expect(form.find('.domain-form-manual-section').length).toEqual(0);
+        expect(form.find('.file-form-formats').length).toEqual(0);
+        expect(form.find('.domain-toolbar-export-btn').length).toEqual(0);
+        expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
+
         form.unmount();
     });
 
@@ -736,7 +754,48 @@ describe('DomainForm', () => {
         expect(form.find('.domain-toolbar-export-btn').length).toEqual(1);
         expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
 
-        expect(form).toMatchSnapshot();
+        const actionButtons = form.find(ActionButton);
+        expect(actionButtons.length).toBe(3);
+        expect(actionButtons.at(1).prop('disabled')).toBe(false);
+
+        form.unmount();
+    });
+
+    test('not using allowImportExport, field view', () => {
+        const fields = [];
+        fields.push({
+            name: 'key',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test',
+        });
+
+        const domain = DomainDesign.create({
+            name: 'allowImportExport field view',
+            description: 'basic list domain form',
+            domainURI: 'test',
+            domainId: 1,
+            fields,
+            indices: [],
+        });
+
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                domainFormDisplayOptions={{
+                    hideRequired: true,
+                }}
+                allowImportExport={false}
+            />
+        );
+
+        expect(form.find('.domain-toolbar-export-btn').length).toEqual(0);
+        expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
+
+        const actionButtons = form.find(ActionButton);
+        expect(actionButtons.length).toBe(2);
+
         form.unmount();
     });
 });

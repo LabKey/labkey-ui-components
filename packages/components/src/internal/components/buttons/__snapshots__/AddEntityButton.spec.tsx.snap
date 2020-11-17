@@ -19,40 +19,9 @@ exports[`<AddEntityButton /> Fully populated props 1`] = `
 </ActionButton>
 `;
 
-exports[`<AddEntityButton /> Minimal properties 1`] = `
-<ActionButton
-  containerClass="form-group"
-  entity="EntityName"
-  helperTitle="More Info"
-  onClick={[MockFunction]}
->
-  <i
-    className="fa fa-plus-circle container--addition-icon"
-  />
-   Add 
-  EntityName
-</ActionButton>
-`;
-
 exports[`<AddEntityButton /> Minimal props 1`] = `
 <ActionButton
   containerClass="form-group"
-  entity="EntityName"
-  helperTitle="More Info"
-  onClick={[MockFunction]}
->
-  <i
-    className="fa fa-plus-circle container--addition-icon"
-  />
-   Add 
-  EntityName
-</ActionButton>
-`;
-
-exports[`<AddEntityButton /> Typical properties 1`] = `
-<ActionButton
-  buttonClass="button-class-name"
-  containerClass="container-class-name"
   entity="EntityName"
   helperTitle="More Info"
   onClick={[MockFunction]}

@@ -37,22 +37,6 @@ exports[`<ActionButton /> Disabled 1`] = `
 </div>
 `;
 
-exports[`<ActionButton /> Specify entity and classes 1`] = `
-<div
-  className="test-container-class"
->
-  <div
-    className="test-button-class"
-  >
-    <span
-      className="container--action-button btn btn-default"
-      onClick={[MockFunction]}
-    />
-    
-  </div>
-</div>
-`;
-
 exports[`<ActionButton /> With custom props 1`] = `
 <div
   className="test-container-class"
@@ -88,21 +72,6 @@ exports[`<ActionButton /> With custom props 1`] = `
         />
       </svg>
     </span>
-  </div>
-</div>
-`;
-
-exports[`<ActionButton /> With title 1`] = `
-<div
-  className="form-group"
-  title="Test title"
->
-  <div>
-    <span
-      className="container--action-button btn btn-default"
-      onClick={[MockFunction]}
-    />
-    
   </div>
 </div>
 `;

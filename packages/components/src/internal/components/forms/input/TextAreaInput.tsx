@@ -36,8 +36,8 @@ interface TextAreaInputProps extends DisableableInputProps {
     initiallyDisabled?: boolean;
     value?: any;
     addLabelAsterisk?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     onChange?: any;
-    renderFieldLabel?: (queryColumn: QueryColumn) => ReactNode;
 }
 
 export class TextAreaInput extends DisableableInput<TextAreaInputProps, DisableableInputState> {

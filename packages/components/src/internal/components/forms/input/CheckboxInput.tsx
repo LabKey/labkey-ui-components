@@ -32,7 +32,7 @@ interface CheckboxInputProps extends DisableableInputProps {
     showLabel?: boolean;
     value?: any;
     addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn) => ReactNode;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
 
     // from formsy-react
     getErrorMessage?: Function;

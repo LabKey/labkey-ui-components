@@ -40,7 +40,7 @@ interface FileInputProps extends DisableableInputProps {
     onChange: any;
     queryColumn?: QueryColumn;
     addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn) => ReactNode;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
 }
 
 export class FileInput extends DisableableInput<FileInputProps, FileInputState> {

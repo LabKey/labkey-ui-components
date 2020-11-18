@@ -67,7 +67,7 @@ interface QueryFormInputsProps {
     initiallyDisableFields?: boolean;
     useDatePicker?: boolean;
     disabledFields?: List<string>;
-    renderFieldLabel?: (queryColumn: QueryColumn) => ReactNode;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
 }
 
 interface State {
@@ -251,6 +251,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         joinValues={joinValues}
                                         label={col.caption}
                                         addLabelAsterisk={showAsteriskSymbol}
+                                        renderFieldLabel={renderFieldLabel}
                                         loadOnChange
                                         loadOnFocus
                                         maxRows={10}

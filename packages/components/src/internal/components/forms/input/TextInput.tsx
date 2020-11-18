@@ -37,7 +37,7 @@ export interface TextInputProps extends DisableableInputProps {
     validatePristine?: boolean;
     value?: string;
     addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn) => ReactNode;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
 }
 
 interface TextInputState extends DisableableInputState {

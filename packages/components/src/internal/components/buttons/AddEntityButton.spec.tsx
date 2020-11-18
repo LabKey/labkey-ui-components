@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 import React from 'react';
-import renderer from 'react-test-renderer';
 
 import { shallow } from 'enzyme';
 
 import { AddEntityButton } from './AddEntityButton';
 
 describe('<AddEntityButton />', () => {
-    test('Minimal properties', () => {
+    test('Minimal props', () => {
         const onClick = jest.fn();
         const wrapper = shallow(
             <AddEntityButton
@@ -31,14 +30,19 @@ describe('<AddEntityButton />', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('Typical properties', () => {
+    test('Fully populated props', () => {
         const onClick = jest.fn();
+        const helperBody = <p> Test Body Contents </p>;
         const wrapper = shallow(
             <AddEntityButton
                 entity="EntityName"
-                buttonClass="button-class-name"
-                containerClass="container-class-name"
                 onClick={onClick}
+                buttonClass='test-button-class'
+                containerClass='test-container-class'
+                disabled={false}
+                title='test-title'
+                helperTitle='test-helperTitle'
+                helperBody={() => {return helperBody}}
             />);
         expect(wrapper).toMatchSnapshot();
     });

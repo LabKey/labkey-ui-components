@@ -29,8 +29,8 @@ export default class ConfirmImportTypes extends PureComponent<Props> {
                                 {error && error.errors.map((error, index) => <li key={index}> {error.exception} </li>)}
                             </ul>
                             <p>
-                                If you create this list without resolving the error, no file data will be imported at this
-                                time. <b> Are you sure you want to create the list without importing the file data? </b>
+                                If you create this {designerType} without resolving the error, no file data will be imported at this
+                                time. <b> Are you sure you want to create the {designerType} without importing the file data? </b>
                             </p>
                         </div>
                     </>

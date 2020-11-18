@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 import { Utils } from '@labkey/api';
 
@@ -32,6 +32,7 @@ interface CheckboxInputProps extends DisableableInputProps {
     showLabel?: boolean;
     value?: any;
     addLabelAsterisk?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn) => ReactNode;
 
     // from formsy-react
     getErrorMessage?: Function;
@@ -87,7 +88,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
     };
 
     render() {
-        const { allowDisable, label, name, queryColumn, showLabel, addLabelAsterisk } = this.props;
+        const { allowDisable, label, name, queryColumn, showLabel, addLabelAsterisk, renderFieldLabel } = this.props;
         const { isDisabled } = this.state;
 
         // N.B.  We do not use the Checkbox component from Formsy because it does not support
@@ -95,21 +96,26 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         // produces a "Converting circular structure to JSON" error.
         return (
             <div className="form-group row">
-                <FieldLabel
-                    label={label}
-                    labelOverlayProps={{
-                        isFormsy: false,
-                        inputId: queryColumn.name,
-                        addLabelAsterisk,
-                    }}
-                    showLabel={showLabel}
-                    showToggle={allowDisable}
-                    column={queryColumn}
-                    isDisabled={isDisabled}
-                    toggleProps={{
-                        onClick: this.toggleDisabled,
-                    }}
-                />
+                {renderFieldLabel
+                    ? <label className={'control-label col-sm-3 text-left col-xs-12'}>
+                        {renderFieldLabel(queryColumn)}
+                    </label>
+                    : <FieldLabel
+                        label={label}
+                        labelOverlayProps={{
+                            isFormsy: false,
+                            inputId: queryColumn.name,
+                            addLabelAsterisk,
+                        }}
+                        showLabel={showLabel}
+                        showToggle={allowDisable}
+                        column={queryColumn}
+                        isDisabled={isDisabled}
+                        toggleProps={{
+                            onClick: this.toggleDisabled,
+                        }}
+                    />
+                }
                 <div className="col-sm-9 col-xs-12">
                     <input
                         disabled={this.state.isDisabled}

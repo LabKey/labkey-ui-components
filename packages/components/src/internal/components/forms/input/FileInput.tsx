@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { RefObject } from 'react';
+import React, { ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 
 import { FieldLabel } from '../FieldLabel';
@@ -40,6 +40,7 @@ interface FileInputProps extends DisableableInputProps {
     onChange: any;
     queryColumn?: QueryColumn;
     addLabelAsterisk?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn) => ReactNode;
 }
 
 export class FileInput extends DisableableInput<FileInputProps, FileInputState> {
@@ -138,7 +139,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
     }
 
     render() {
-        const { queryColumn, allowDisable, addLabelAsterisk, showLabel } = this.props;
+        const { queryColumn, allowDisable, addLabelAsterisk, renderFieldLabel, showLabel } = this.props;
         const { isHover, isDisabled, file } = this.state;
 
         const name = this.getInputName();
@@ -204,16 +205,19 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
 
         return (
             <div className="form-group row">
-                <FieldLabel
-                    labelOverlayProps={labelOverlayProps}
-                    showLabel={showLabel}
-                    showToggle={allowDisable}
-                    column={queryColumn}
-                    isDisabled={isDisabled}
-                    toggleProps={{
-                        onClick: this.toggleDisabled,
-                    }}
-                />
+                {renderFieldLabel
+                    ? renderFieldLabel(queryColumn)
+                    : <FieldLabel
+                        labelOverlayProps={labelOverlayProps}
+                        showLabel={showLabel}
+                        showToggle={allowDisable}
+                        column={queryColumn}
+                        isDisabled={isDisabled}
+                        toggleProps={{
+                            onClick: this.toggleDisabled,
+                        }}
+                    />
+                }
                 <div className="col-md-9">{body}</div>
             </div>
         );

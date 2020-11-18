@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { datePlaceholder } from '../../../util/Date';
 
@@ -35,6 +35,7 @@ interface DateInputProps extends DisableableInputProps {
     validatePristine?: boolean;
     value?: string;
     addLabelAsterisk?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn) => ReactNode;
 }
 
 export class DateInput extends DisableableInput<DateInputProps, any> {
@@ -64,6 +65,7 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
             validatePristine,
             value,
             addLabelAsterisk,
+            renderFieldLabel,
         } = this.props;
 
         const props: TextInputProps = {
@@ -80,6 +82,7 @@ export class DateInput extends DisableableInput<DateInputProps, any> {
             showLabel,
             validatePristine,
             addLabelAsterisk,
+            renderFieldLabel,
             value: value ? value : '', // to avoid uncontrolled -> controlled warnings
         };
 

@@ -67,6 +67,7 @@ interface QueryFormInputsProps {
     initiallyDisableFields?: boolean;
     useDatePicker?: boolean;
     disabledFields?: List<string>;
+    renderFieldLabel?: (queryColumn: QueryColumn) => ReactNode;
 }
 
 interface State {
@@ -176,6 +177,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             allowFieldDisable,
             disabledFields,
             useDatePicker,
+            renderFieldLabel,
         } = this.props;
 
         const filter = columnFilter ? columnFilter : insertColumnFilter;
@@ -279,6 +281,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 initiallyDisabled={shouldDisableField}
                                 onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
+                                renderFieldLabel={renderFieldLabel}
                             />
                         );
                     } else if (col.inputType === 'file' && renderFileInputs) {
@@ -292,6 +295,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                 initiallyDisabled={shouldDisableField}
                                 onToggleDisable={this.onToggleDisable}
                                 addLabelAsterisk={showAsteriskSymbol}
+                                renderFieldLabel={renderFieldLabel}
                             />
                         );
                     }
@@ -306,6 +310,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     initiallyDisabled={shouldDisableField}
                                     onToggleDisable={this.onToggleDisable}
                                     addLabelAsterisk={showAsteriskSymbol}
+                                    renderFieldLabel={renderFieldLabel}
                                 />
                             ) : (
                                 <DateInput
@@ -316,6 +321,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     initiallyDisabled={shouldDisableField}
                                     onToggleDisable={this.onToggleDisable}
                                     addLabelAsterisk={showAsteriskSymbol}
+                                    renderFieldLabel={renderFieldLabel}
                                 />
                             );
                         case 'boolean':
@@ -328,6 +334,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     initiallyDisabled={shouldDisableField}
                                     onToggleDisable={this.onToggleDisable}
                                     addLabelAsterisk={showAsteriskSymbol}
+                                    renderFieldLabel={renderFieldLabel}
                                 />
                             );
                         default:
@@ -340,6 +347,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                     initiallyDisabled={shouldDisableField}
                                     onToggleDisable={this.onToggleDisable}
                                     addLabelAsterisk={showAsteriskSymbol}
+                                    renderFieldLabel={renderFieldLabel}
                                 />
                             );
                     }

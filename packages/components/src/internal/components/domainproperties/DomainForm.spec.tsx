@@ -699,6 +699,8 @@ describe('DomainForm', () => {
 
         expect(form.find('.domain-form-manual-section').length).toEqual(1);
         expect(form.find('.file-form-formats').text()).toContain('.json');
+        expect(form.find('.domain-toolbar-export-btn').length).toEqual(0);
+        expect(form.find('.domain-field-top-noBuffer').length).toEqual(0);
 
         form.unmount();
     });
@@ -754,6 +756,7 @@ describe('DomainForm', () => {
         expect(form.find('.domain-toolbar-export-btn').length).toEqual(1);
         expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
 
+        // Note that the button at index i is the export button
         const actionButtons = form.find(ActionButton);
         expect(actionButtons.length).toBe(3);
         expect(actionButtons.at(1).prop('disabled')).toBe(false);

@@ -393,6 +393,7 @@ import { ListDesignerPanels } from './internal/components/domainproperties/list/
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
+import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
 import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
@@ -690,6 +691,7 @@ export {
     setDomainFields,
     DomainDesign,
     DomainField,
+    DomainFieldLabel,
     IDomainField,
     DomainDetails,
     inferDomainFromFile,

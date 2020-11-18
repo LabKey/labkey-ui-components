@@ -614,7 +614,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
-                                    size="lg"
+                                    size={null}
                                     spin={false}
                                     swapOpacity={false}
                                     symbol={false}
@@ -623,7 +623,7 @@ exports[`DomainRow Sample Field 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                      className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                       data-icon="grip-vertical"
                                       data-prefix="fas"
                                       focusable="false"
@@ -2842,7 +2842,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
-                                    size="lg"
+                                    size={null}
                                     spin={false}
                                     swapOpacity={false}
                                     symbol={false}
@@ -2851,7 +2851,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                      className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                       data-icon="grip-vertical"
                                       data-prefix="fas"
                                       focusable="false"
@@ -4951,7 +4951,7 @@ exports[`DomainRow date time field 1`] = `
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
-                                    size="lg"
+                                    size={null}
                                     spin={false}
                                     swapOpacity={false}
                                     symbol={false}
@@ -4960,7 +4960,7 @@ exports[`DomainRow date time field 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                      className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                       data-icon="grip-vertical"
                                       data-prefix="fas"
                                       focusable="false"
@@ -7320,7 +7320,7 @@ exports[`DomainRow decimal field 1`] = `
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
-                                    size="lg"
+                                    size={null}
                                     spin={false}
                                     swapOpacity={false}
                                     symbol={false}
@@ -7329,7 +7329,7 @@ exports[`DomainRow decimal field 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                      className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                       data-icon="grip-vertical"
                                       data-prefix="fas"
                                       focusable="false"
@@ -9724,7 +9724,7 @@ exports[`DomainRow participant id field 1`] = `
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
-                                    size="lg"
+                                    size={null}
                                     spin={false}
                                     swapOpacity={false}
                                     symbol={false}
@@ -9733,7 +9733,7 @@ exports[`DomainRow participant id field 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                      className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                       data-icon="grip-vertical"
                                       data-prefix="fas"
                                       focusable="false"
@@ -11876,7 +11876,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
-                                    size="lg"
+                                    size={null}
                                     spin={false}
                                     swapOpacity={false}
                                     symbol={false}
@@ -11885,7 +11885,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                      className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                       data-icon="grip-vertical"
                                       data-prefix="fas"
                                       focusable="false"
@@ -13906,7 +13906,7 @@ exports[`DomainRow string field test 1`] = `
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
-                                    size="lg"
+                                    size={null}
                                     spin={false}
                                     swapOpacity={false}
                                     symbol={false}
@@ -13915,7 +13915,7 @@ exports[`DomainRow string field test 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                      className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                       data-icon="grip-vertical"
                                       data-prefix="fas"
                                       focusable="false"
@@ -16351,7 +16351,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     pull={null}
                                     pulse={false}
                                     rotation={null}
-                                    size="lg"
+                                    size={null}
                                     spin={false}
                                     swapOpacity={false}
                                     symbol={false}
@@ -16360,7 +16360,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                   >
                                     <svg
                                       aria-hidden="true"
-                                      className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                      className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                       data-icon="grip-vertical"
                                       data-prefix="fas"
                                       focusable="false"

@@ -207,10 +207,10 @@
 }
 
 .domain-form-expand-btn {
-  color: $gray-light;
+  color: $gray-no-highlight;
 
   &:hover {
-    color: $gray-base;
+    color: $blue-highlight;
     cursor: pointer;
   }
 }
@@ -397,14 +397,10 @@
 }
 
 .domain-row-handle {
-  padding: 15px 0 0 8px;
-  border-width: 0 1px 0 0;
-  border-style: solid;
-  border-color: $gray-border;
+  padding: 15px 0 0 10px;
   display: table-cell;
   width: 30px;
   vertical-align: top;
-  background-color: $gray-shadow;
   color: $gray-no-highlight;
 
   &:hover {

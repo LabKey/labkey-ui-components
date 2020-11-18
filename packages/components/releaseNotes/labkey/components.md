@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 0.104.3
+*Released*: 17 Nov 2020
 * [Issue 41854](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=41854): Wording updates for domain designer error dialog
 * Server-side error messages fixes to be completed separately.
 

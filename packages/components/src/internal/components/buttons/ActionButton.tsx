@@ -25,7 +25,7 @@ export interface ActionButtonProps {
     title?: string;
     onClick: () => void;
     helperTitle?: string;
-    helperBody?: any;
+    helperBody?: () => any;
 }
 
 export class ActionButton extends React.PureComponent<ActionButtonProps> {

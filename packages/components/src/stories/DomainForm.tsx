@@ -69,6 +69,7 @@ storiesOf('DomainForm', module)
                 data={undefined}
                 helpNoun={text('helpNoun', undefined)}
                 helpTopic={text('helpTopic', undefined)}
+                allowImportExport={boolean('allowImportExport', false)}
             />
         );
     })

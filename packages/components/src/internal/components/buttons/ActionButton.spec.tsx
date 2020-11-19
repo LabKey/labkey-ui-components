@@ -29,14 +29,19 @@ describe('<ActionButton />', () => {
         expect(wrapper).toMatchSnapshot();
     });
 
-    test('Specify entity and classes', () => {
+    test('With custom props', () => {
         const onClick = jest.fn();
+        const helperBody = <p> Test Body Contents </p>;
         const tree = renderer
             .create(
                 <ActionButton
+                    buttonClass='test-button-class'
+                    containerClass='test-container-class'
+                    disabled={false}
+                    title='test-title'
                     onClick={onClick}
-                    containerClass="test-container-class"
-                    buttonClass="test-button-class"
+                    helperTitle='test-helperTitle'
+                    helperBody={() => {return helperBody}}
                 />
             )
             .toJSON();
@@ -49,11 +54,5 @@ describe('<ActionButton />', () => {
         wrapper.find('span').simulate('click');
         expect(onClick).toHaveBeenCalledTimes(0);
         expect(wrapper).toMatchSnapshot();
-    });
-
-    test('With title', () => {
-        const onClick = jest.fn();
-        const tree = renderer.create(<ActionButton onClick={onClick} title="Test title" />).toJSON();
-        expect(tree).toMatchSnapshot();
     });
 });

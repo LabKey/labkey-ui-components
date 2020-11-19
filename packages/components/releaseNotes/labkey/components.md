@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 1.1.2
+*Released*: 19 November 2020
 * Sccs variable maintenance
 
 ### version 1.1.1

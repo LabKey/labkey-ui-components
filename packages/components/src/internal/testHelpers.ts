@@ -5,7 +5,7 @@ import { mount, MountRendererProps, ReactWrapper } from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
 import mock, { proxy } from 'xhr-mock';
 
-import { initLineageMocks, initQueryGridMocks, initUserPropsMocks } from '../stories/mock';
+import { initDomainPropertiesMocks, initLineageMocks, initQueryGridMocks, initUserPropsMocks } from '../stories/mock';
 import { initQueryGridState, QueryInfo, ServerContextProvider } from '..';
 
 import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
@@ -32,6 +32,7 @@ export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map
                 numberFormat: null,
             },
             path: 'testContainer',
+            activeModules: ['Core', 'Query'],
         },
         contextPath: 'labkey',
     });
@@ -43,9 +44,11 @@ export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map
  * to all of the same mock API responses we use in storybook.
  */
 export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void {
+    window['__react-beautiful-dnd-disable-dev-warnings'] = true;
     initUnitTests(metadata, columnRenderers);
     mock.setup();
     initQueryGridMocks();
+    initDomainPropertiesMocks();
     initLineageMocks();
     initUserPropsMocks();
     mock.use(proxy);

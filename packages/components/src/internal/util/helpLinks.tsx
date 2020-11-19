@@ -13,6 +13,7 @@ export const FIELD_EDITOR_CONDITIONAL_FORMAT_TOPIC = FIELD_EDITOR_TOPIC + '#cond
 export const FIELD_EDITOR_SAMPLE_TYPES_TOPIC = FIELD_EDITOR_TOPIC + '#samp';
 export const DATE_FORMATS_TOPIC = 'dateFormats#date';
 export const NUMBER_FORMATS_TOPIC = 'dateFormats#number';
+export const ONTOLOGY_TOPIC = 'ontology';
 
 export const ASSAY_EDIT_PLATE_TEMPLATE_TOPIC = 'editPlateTemplate';
 export const CONFIGURE_SCRIPTING_TOPIC = 'configureScripting';

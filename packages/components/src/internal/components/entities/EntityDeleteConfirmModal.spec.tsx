@@ -15,15 +15,38 @@
  */
 import React from 'react';
 import { mount } from 'enzyme';
+import mock, { proxy } from 'xhr-mock';
 
 import { ConfirmModal } from '../../..';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { SampleTypeDataType } from './constants';
+import { sleep } from '../../testHelpers';
+
+beforeAll(() => {
+    mock.setup();
+    mock.post(/.*\/experiment\/?.*\/getMaterialDeleteConfirmationData.*/, (req, res) => {
+        return res.status(200)
+            .headers({ 'Content-Type': 'application/json' })
+            .body(JSON.stringify({
+                success: true,
+                data: {
+                    canDelete: [
+                        {
+                            Name: 'D-2.3.1',
+                            RowId: 351,
+                        },
+                    ],
+                    cannotDelete: [],
+                },
+            }));
+    });
+    mock.use(proxy);
+});
 
 describe('<EntityDeleteConfirmModal/>', () => {
-    test('Error display', () => {
+    test('Error display', async () => {
         const errorMsg = 'There was an error';
         const component = (
             <EntityDeleteConfirmModal
@@ -34,6 +57,8 @@ describe('<EntityDeleteConfirmModal/>', () => {
             />
         );
         const wrapper = mount(component);
+        await sleep();
+
         wrapper.setState({
             isLoading: false,
             error: errorMsg,
@@ -41,8 +66,11 @@ describe('<EntityDeleteConfirmModal/>', () => {
         const confirmModal = wrapper.find(ConfirmModal);
         expect(confirmModal.find('Alert').first().text()).toBe(errorMsg);
         expect(confirmModal.props().cancelButtonText).toBe('Dismiss');
+
+        wrapper.unmount();
     });
-    test('Have confirmation data', () => {
+
+    test('Have confirmation data', async () => {
         const component = (
             <EntityDeleteConfirmModal
                 selectionKey="nonesuch"
@@ -52,18 +80,10 @@ describe('<EntityDeleteConfirmModal/>', () => {
             />
         );
         const wrapper = mount(component);
-        wrapper.setState({
-            isLoading: false,
-            confirmationData: {
-                canDelete: [
-                    {
-                        Name: 'D-2.3.1',
-                        RowId: 351,
-                    },
-                ],
-                cannotDelete: [],
-            },
-        });
+        await sleep();
+        wrapper.update();
+
         expect(wrapper.find(EntityDeleteConfirmModalDisplay)).toHaveLength(1);
+        wrapper.unmount();
     });
 });

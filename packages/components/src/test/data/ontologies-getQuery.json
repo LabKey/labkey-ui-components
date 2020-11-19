@@ -1,0 +1,162 @@
+{
+  "schemaName" : [ "ontology" ],
+  "queryName" : "ontologies",
+  "metaData" : {
+    "importTemplates" : [ {
+      "label" : "Download Template",
+      "url" : "/labkey/Ontology%20Dev/query-exportExcelTemplate.view?schemaName=ontology&query.queryName=ontologies&headerType=DisplayFieldKey"
+    } ],
+    "sortInfo" : {
+      "field" : "Name",
+      "direction" : "ASC"
+    },
+    "root" : "rows",
+    "totalProperty" : "rowCount",
+    "sortInfoArray" : [ {
+      "field" : "Name",
+      "direction" : "ASC"
+    } ],
+    "description" : null,
+    "id" : "RowId",
+    "fields" : [ {
+      "fieldKey" : [ "RowId" ],
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "int identity",
+      "defaultValue" : null,
+      "scale" : 10,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : true,
+      "hidden" : false,
+      "keyField" : true,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : true,
+      "userEditable" : false,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 10,
+      "shortCaption" : "Row Id",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Row Id"
+    }, {
+      "fieldKey" : [ "Name" ],
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "nvarchar",
+      "defaultValue" : null,
+      "scale" : 700,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "textarea",
+      "cols" : 60,
+      "rows" : 15,
+      "shortCaption" : "Name",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Name"
+    }, {
+      "fieldKey" : [ "Abbreviation" ],
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "nvarchar",
+      "defaultValue" : null,
+      "scale" : 20,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 20,
+      "shortCaption" : "Abbreviation",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Abbreviation"
+    } ],
+    "title" : "ontologies",
+    "importMessage" : null
+  },
+  "rows" : [ {
+    "data" : {
+      "Abbreviation" : {
+        "value" : "45887"
+      },
+      "RowId" : {
+        "value" : 2
+      },
+      "Name" : {
+        "value" : "Test HOM-UCARE-->\">'>'\"<script>alert('8(');</script>",
+        "url" : "/labkey/Ontology%20Dev/query-detailsQueryRow.view?schemaName=ontology&query.queryName=ontologies&RowId=2"
+      }
+    }
+  }, {
+    "data" : {
+      "Abbreviation" : {
+        "value" : "NCIT"
+      },
+      "RowId" : {
+        "value" : 1
+      },
+      "Name" : {
+        "value" : "Test National Cancer Institute Thesaurus",
+        "url" : "/labkey/Ontology%20Dev/query-detailsQueryRow.view?schemaName=ontology&query.queryName=ontologies&RowId=1"
+      }
+    }
+  } ],
+  "rowCount" : 2
+}

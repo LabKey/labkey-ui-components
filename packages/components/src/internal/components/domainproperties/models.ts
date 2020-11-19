@@ -15,11 +15,14 @@
  */
 import { fromJS, List, Map, Record } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
+import { immerable } from 'immer';
 
-import { SCHEMAS } from '../../..';
+import { caseInsensitive, SCHEMAS } from '../../..';
 
 import {
+    ALL_SAMPLES_DISPLAY_TEXT,
     DOMAIN_FIELD_DIMENSION,
+    DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_NOT_LOCKED,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
@@ -48,6 +51,7 @@ import {
     SAMPLE_TYPE,
     TEXT_TYPE,
     USERS_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
 } from './PropDescType';
 
 export interface IFieldChange {
@@ -66,6 +70,11 @@ export interface ITypeDependentProps {
     label: string;
     onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any;
     lockType: string;
+}
+
+export interface FieldDetails {
+    detailsInfo: {[key: string]: string};
+    ontologyLookupIndices: number[];
 }
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -250,6 +259,30 @@ export class DomainDesign
     findFieldIndexByName(fieldName: string): number {
         return this.fields.findIndex((field: DomainField) => fieldName && field.name === fieldName);
     }
+
+    getFieldDetails(): FieldDetails {
+        const mapping = {
+            ontologyLookupIndices: [],
+            detailsInfo: {},
+        };
+
+        this.fields.forEach((field, index) => {
+            if (!field.hasInvalidName()) {
+                if (field.conceptImportColumn) {
+                    mapping.detailsInfo[field.conceptImportColumn] = 'Ontology Lookup: ' + field.name;
+                }
+                if (field.conceptLabelColumn) {
+                    mapping.detailsInfo[field.conceptLabelColumn] = 'Ontology Lookup: ' + field.name;
+                }
+
+                if (field.dataType.isOntologyLookup()) {
+                    mapping.ontologyLookupIndices.push(index);
+                }
+            }
+        });
+
+        return mapping;
+    }
 }
 
 interface IDomainIndex {
@@ -282,6 +315,7 @@ export enum FieldErrors {
     MISSING_SCHEMA_QUERY = 'Missing required lookup target schema or table property.',
     MISSING_DATA_TYPE = 'Please provide a data type for each field.',
     MISSING_FIELD_NAME = 'Please provide a name for each field.',
+    MISSING_ONTOLOGY_PROPERTIES = 'Missing required ontology source or label field property.',
 }
 
 export interface IConditionalFormat {
@@ -480,6 +514,9 @@ export interface IDomainField {
     lockType: string;
     disablePhiLevel?: boolean;
     lockExistingField?: boolean;
+    sourceOntology?: string;
+    conceptLabelColumn?: string;
+    conceptImportColumn?: string;
 }
 
 export class DomainField
@@ -530,6 +567,9 @@ export class DomainField
         wrappedColumnName: undefined,
         disablePhiLevel: false,
         lockExistingField: false,
+        sourceOntology: undefined,
+        conceptLabelColumn: undefined,
+        conceptImportColumn: undefined,
     })
     implements IDomainField {
     conceptURI?: string;
@@ -578,6 +618,9 @@ export class DomainField
     wrappedColumnName?: string;
     disablePhiLevel?: boolean;
     lockExistingField?: boolean;
+    sourceOntology?: string;
+    conceptLabelColumn?: string;
+    conceptImportColumn?: string;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         const baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -763,11 +806,20 @@ export class DomainField
             return FieldErrors.MISSING_DATA_TYPE;
         }
 
-        if (this.name === undefined || this.name === null || this.name.trim() === '') {
+        if (this.hasInvalidName()) {
             return FieldErrors.MISSING_FIELD_NAME;
         }
 
+        // Issue 41829: for an ontology lookup field, only the sourceOntology is required (other two props are optional)
+        if (this.dataType.isOntologyLookup() && !this.sourceOntology) {
+            return FieldErrors.MISSING_ONTOLOGY_PROPERTIES;
+        }
+
         return FieldErrors.NONE;
+    }
+
+    hasInvalidName(): boolean {
+        return (this.name === undefined || this.name === null || this.name.trim() === '');
     }
 
     hasErrors(): boolean {
@@ -818,6 +870,61 @@ export class DomainField
             default:
                 return false;
         }
+    }
+
+    getDetailsTextArray(fieldDetailsInfo?: {[key: string]: string}): any[] {
+        const details = [];
+        let period = '';
+
+        if (this.isNew()) {
+            details.push('New Field');
+            period = '. ';
+        } else if (this.updatedField) {
+            details.push('Updated');
+            period = '. ';
+        }
+
+        if (this.dataType.isSample()) {
+            const detailsText =
+                this.lookupSchema === SCHEMAS.EXP_TABLES.MATERIALS.schemaName &&
+                SCHEMAS.EXP_TABLES.MATERIALS.queryName.localeCompare(this.lookupQuery, 'en', {
+                    sensitivity: 'accent',
+                }) === 0
+                    ? ALL_SAMPLES_DISPLAY_TEXT
+                    : this.lookupQuery;
+            details.push(period + detailsText);
+            period = '. ';
+        } else if (this.dataType.isLookup() && this.lookupSchema && this.lookupQuery) {
+            details.push(
+                period + [this.lookupContainer || 'Current Folder', this.lookupSchema, this.lookupQuery].join(' > ')
+            );
+            period = '. ';
+        } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
+            details.push(period + this.sourceOntology);
+            period = '. ';
+        }
+
+        if (this.wrappedColumnName) {
+            details.push(period + 'Wrapped column - ' + this.wrappedColumnName);
+            period = '. ';
+        }
+
+        if (this.isPrimaryKey) {
+            details.push(period + 'Primary Key');
+            period = '. ';
+        }
+
+        if (this.lockType == DOMAIN_FIELD_FULLY_LOCKED) {
+            details.push(period + 'Locked');
+            period = '. ';
+        }
+
+        if (!this.hasInvalidName() && fieldDetailsInfo?.hasOwnProperty(this.name)) {
+            details.push(period + fieldDetailsInfo[this.name]);
+            period = '. ';
+        }
+
+        return details;
     }
 }
 
@@ -920,21 +1027,25 @@ export function resolveAvailableTypes(
     return filteredTypes;
 }
 
-function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean): boolean {
+export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boolean): boolean {
     // We allow file type for some domains based on the parameter
     if (type === FILE_TYPE) return includeFileType;
 
     // We are excluding the field types below for the App
-    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE].includes(type);
+    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
 }
 
-function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
+export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
     if (type.isLookup()) {
         return rangeURI === INT_RANGE_URI || rangeURI === STRING_RANGE_URI;
     }
 
     if (type.isSample()) {
         return rangeURI === INT_RANGE_URI;
+    }
+
+    if (type.isOntologyLookup()) {
+        return rangeURI === STRING_RANGE_URI;
     }
 
     // Catches Users
@@ -1407,4 +1518,28 @@ export class DomainDetails extends Record({
 export interface DomainFieldIndexChange {
     originalIndex: number;
     newIndex: number;
+}
+
+export class OntologyModel {
+    [immerable] = true;
+
+    rowId: number;
+    abbreviation: string;
+    name: string;
+
+    constructor(values?: Partial<OntologyModel>) {
+        Object.assign(this, values);
+    }
+
+    static create(raw: any): OntologyModel {
+        return new OntologyModel({
+            rowId: caseInsensitive(raw, 'RowId')?.value,
+            name: caseInsensitive(raw, 'Name')?.value,
+            abbreviation: caseInsensitive(raw, 'Abbreviation')?.value,
+        });
+    }
+
+    getLabel() {
+        return this.name + ' (' + this.abbreviation + ')';
+    }
 }

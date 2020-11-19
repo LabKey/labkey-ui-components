@@ -29,6 +29,7 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
+import { OntologyLookupOptions } from "./OntologyLookupOptions";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;
@@ -40,18 +41,21 @@ interface IDomainRowExpandedOptionsProps {
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    getDomainFields?: () => List<DomainField>;
 }
 
-export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps, any> {
+export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps> {
     typeDependentOptions = () => {
-        const { field, index, onChange, onMultiChange, domainIndex, domainFormDisplayOptions } = this.props;
+        const { field, index, onChange, onMultiChange, domainIndex, domainFormDisplayOptions, getDomainFields } = this.props;
 
         switch (field.dataType.name) {
             case 'string':
                 if (domainFormDisplayOptions && !domainFormDisplayOptions.hideTextOptions) {
-                    if (field.isPrimaryKey)
-                        // Issue39877: Max text length options should not be visible for text key field of list
+                    // Issue39877: Max text length options should not be visible for text key field of list
+                    if (field.isPrimaryKey) {
                         return;
+                    }
+
                     return (
                         <TextFieldOptions
                             index={index}
@@ -159,6 +163,20 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         value={field.lookupQueryValue}
                         original={field.original}
                         container={field.lookupContainer}
+                        onChange={onChange}
+                        lockType={field.lockType}
+                    />
+                );
+            case 'ontologyLookup':
+                const domainFields = getDomainFields ? getDomainFields() : List<DomainField>();
+
+                return (
+                    <OntologyLookupOptions
+                        index={index}
+                        domainIndex={domainIndex}
+                        label="Ontology Lookup Options"
+                        domainFields={domainFields}
+                        field={field}
                         onChange={onChange}
                         lockType={field.lockType}
                     />

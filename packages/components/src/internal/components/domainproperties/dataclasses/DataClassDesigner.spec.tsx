@@ -10,11 +10,16 @@ import DomainForm from '../DomainForm';
 import { DataClassPropertiesPanel } from './DataClassPropertiesPanel';
 import { DataClassModel } from './models';
 import { DataClassDesigner } from './DataClassDesigner';
+import { initUnitTestMocks, sleep } from '../../../testHelpers';
 
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
 };
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 describe('DataClassDesigner', () => {
     test('default properties', () => {
@@ -45,9 +50,10 @@ describe('DataClassDesigner', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('initModel', () => {
+    test('initModel', async () => {
         const form = <DataClassDesigner {...BASE_PROPS} initModel={DataClassModel.create(getDomainDetailsJSON)} />;
         const wrapped = mount(form);
+        await sleep();
 
         expect(wrapped.find(DataClassPropertiesPanel)).toHaveLength(1);
         expect(wrapped.find(DomainForm)).toHaveLength(1);
@@ -56,8 +62,9 @@ describe('DataClassDesigner', () => {
         wrapped.unmount();
     });
 
-    test('open fields panel', () => {
+    test('open fields panel', async () => {
         const wrapped = mount(<DataClassDesigner {...BASE_PROPS} />);
+        await sleep();
 
         const panelHeader = wrapped.find('div#domain-header');
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-collapsed')).toBeTruthy();

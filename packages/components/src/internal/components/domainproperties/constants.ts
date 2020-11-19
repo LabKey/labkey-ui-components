@@ -48,6 +48,9 @@ export const DOMAIN_FIELD_SAMPLE_TYPE = 'sampleTypeSelect';
 export const DOMAIN_FIELD_DEFAULT_VALUE_TYPE = 'defaultValueType';
 export const DOMAIN_FIELD_DEFAULT_VALUE = 'defaultValue';
 export const DOMAIN_FIELD_DEFAULT_DISPLAY_VALUE = 'defaultDisplayValue';
+export const DOMAIN_FIELD_ONTOLOGY_SOURCE = 'sourceOntology';
+export const DOMAIN_FIELD_ONTOLOGY_LABEL_COL = 'conceptLabelColumn';
+export const DOMAIN_FIELD_ONTOLOGY_IMPORT_COL = 'conceptImportColumn';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
@@ -131,6 +134,7 @@ export const RANGE_URIS = {
 export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
 export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
+export const CONCEPT_CODE_CONCEPT_URI = 'http://www.labkey.org/types#conceptCode';
 
 export const UNLIMITED_TEXT_LENGTH = 2147483647; // Integer.MAX_VALUE
 export const MAX_TEXT_LENGTH = 4000;

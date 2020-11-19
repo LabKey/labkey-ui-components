@@ -5,8 +5,17 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Release*: TBD
 * Item 8137: ...
 
+### version 1.2.0
+*Released*: 19 November 2020
+* Merge forward changes from release20.11-SNAPSHOT branch
+    - includes hotfix changes from version 0.104.1, 0.104.2, 0.104.3
+
+### version 1.1.2
+*Released*: 19 November 2020
+* Sccs variable maintenance
+
 ### version 1.1.1
-*Release*: 11 November 2020
+*Released*: 11 November 2020
 * More error message resolution improvements, particularly for importing with EntityInsertPanel
 
 ### version 1.1.0
@@ -22,6 +31,19 @@ Components, models, actions, and utility functions for LabKey applications and p
 * ImmutableJS-free `CreatedModified`.
 * `resolveDetailFieldValue` updated to handle `Record` type. Typings improved.
 * `FilesListingForm` and `WebDavFile` updates.
+
+### version 0.104.3
+*Released*: 17 Nov 2020
+* [Issue 41854](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=41854): Wording updates for domain designer error dialog
+* Server-side error messages fixes to be completed separately.
+
+### version 0.104.2
+*Released*: 17 Nov 2020
+* Item 8058: Domain form support for new Ontology Lookup data type and expanded row input options
+
+### version 0.104.1
+*Released*: 10 Nov 2020
+* [Issue 41460](https://www.labkey.org/home/Developer/issues/issues-details.view?issueId=41460): Support error handling for inaccurately inferred field types within List and Dataset designers.
 
 ### version 0.104.0
 *Released*: 1 Nov 2020

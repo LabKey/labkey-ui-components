@@ -217,6 +217,16 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#conceptCode",
+                      "display": "Ontology Lookup",
+                      "name": "ontologyLookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -322,6 +332,9 @@ exports[`DomainRow Sample Field 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   }
                 }
                 helpNoun="domain"
@@ -510,6 +523,9 @@ exports[`DomainRow Sample Field 1`] = `
                                     "wrappedColumnName": undefined,
                                     "disablePhiLevel": false,
                                     "lockExistingField": false,
+                                    "sourceOntology": undefined,
+                                    "conceptLabelColumn": undefined,
+                                    "conceptImportColumn": undefined,
                                   }
                                 }
                                 helpNoun="domain"
@@ -1060,6 +1076,9 @@ exports[`DomainRow Sample Field 1`] = `
                                       "wrappedColumnName": undefined,
                                       "disablePhiLevel": false,
                                       "lockExistingField": false,
+                                      "sourceOntology": undefined,
+                                      "conceptLabelColumn": undefined,
+                                      "conceptImportColumn": undefined,
                                     }
                                   }
                                   index={0}
@@ -1149,10 +1168,10 @@ exports[`DomainRow Sample Field 1`] = `
                                                   <Col
                                                     bsClass="col"
                                                     componentClass="div"
-                                                    xs={2}
+                                                    xs={5}
                                                   >
                                                     <div
-                                                      className="col-xs-2"
+                                                      className="col-xs-5"
                                                     >
                                                       <div
                                                         className="domain-field-label"
@@ -1422,6 +1441,9 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={0}
@@ -1963,6 +1985,9 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={0}
@@ -2433,6 +2458,16 @@ exports[`DomainRow client side warning on field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#conceptCode",
+                      "display": "Ontology Lookup",
+                      "name": "ontologyLookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -2538,6 +2573,9 @@ exports[`DomainRow client side warning on field 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   }
                 }
                 fieldError={
@@ -2738,6 +2776,9 @@ exports[`DomainRow client side warning on field 1`] = `
                                     "wrappedColumnName": undefined,
                                     "disablePhiLevel": false,
                                     "lockExistingField": false,
+                                    "sourceOntology": undefined,
+                                    "conceptLabelColumn": undefined,
+                                    "conceptImportColumn": undefined,
                                   }
                                 }
                                 helpNoun="domain"
@@ -3016,6 +3057,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 value="sample"
                                               >
                                                 Sample
+                                              </option>
+                                              <option
+                                                key="13"
+                                                value="ontologyLookup"
+                                              >
+                                                Ontology Lookup
                                               </option>
                                             </select>
                                           </FormControl>
@@ -3428,6 +3475,9 @@ exports[`DomainRow client side warning on field 1`] = `
                                       "wrappedColumnName": undefined,
                                       "disablePhiLevel": false,
                                       "lockExistingField": false,
+                                      "sourceOntology": undefined,
+                                      "conceptLabelColumn": undefined,
+                                      "conceptImportColumn": undefined,
                                     }
                                   }
                                   index={1}
@@ -3543,6 +3593,9 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={1}
@@ -4084,6 +4137,9 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={1}
@@ -4554,6 +4610,16 @@ exports[`DomainRow date time field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#conceptCode",
+                      "display": "Ontology Lookup",
+                      "name": "ontologyLookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -4659,6 +4725,9 @@ exports[`DomainRow date time field 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   }
                 }
                 helpNoun="domain"
@@ -4847,6 +4916,9 @@ exports[`DomainRow date time field 1`] = `
                                     "wrappedColumnName": undefined,
                                     "disablePhiLevel": false,
                                     "lockExistingField": false,
+                                    "sourceOntology": undefined,
+                                    "conceptLabelColumn": undefined,
+                                    "conceptImportColumn": undefined,
                                   }
                                 }
                                 helpNoun="domain"
@@ -5377,6 +5449,9 @@ exports[`DomainRow date time field 1`] = `
                                       "wrappedColumnName": undefined,
                                       "disablePhiLevel": false,
                                       "lockExistingField": false,
+                                      "sourceOntology": undefined,
+                                      "conceptLabelColumn": undefined,
+                                      "conceptImportColumn": undefined,
                                     }
                                   }
                                   index={0}
@@ -5745,6 +5820,9 @@ exports[`DomainRow date time field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={0}
@@ -6286,6 +6364,9 @@ exports[`DomainRow date time field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={0}
@@ -6923,6 +7004,16 @@ exports[`DomainRow decimal field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#conceptCode",
+                      "display": "Ontology Lookup",
+                      "name": "ontologyLookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -7028,6 +7119,9 @@ exports[`DomainRow decimal field 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   }
                 }
                 helpNoun="domain"
@@ -7216,6 +7310,9 @@ exports[`DomainRow decimal field 1`] = `
                                     "wrappedColumnName": undefined,
                                     "disablePhiLevel": false,
                                     "lockExistingField": false,
+                                    "sourceOntology": undefined,
+                                    "conceptLabelColumn": undefined,
+                                    "conceptImportColumn": undefined,
                                   }
                                 }
                                 helpNoun="domain"
@@ -7746,6 +7843,9 @@ exports[`DomainRow decimal field 1`] = `
                                       "wrappedColumnName": undefined,
                                       "disablePhiLevel": false,
                                       "lockExistingField": false,
+                                      "sourceOntology": undefined,
+                                      "conceptLabelColumn": undefined,
+                                      "conceptImportColumn": undefined,
                                     }
                                   }
                                   index={2}
@@ -8149,6 +8249,9 @@ exports[`DomainRow decimal field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={2}
@@ -8690,6 +8793,9 @@ exports[`DomainRow decimal field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={2}
@@ -9327,6 +9433,16 @@ exports[`DomainRow participant id field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#conceptCode",
+                      "display": "Ontology Lookup",
+                      "name": "ontologyLookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -9432,6 +9548,9 @@ exports[`DomainRow participant id field 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   }
                 }
                 helpNoun="domain"
@@ -9620,6 +9739,9 @@ exports[`DomainRow participant id field 1`] = `
                                     "wrappedColumnName": undefined,
                                     "disablePhiLevel": false,
                                     "lockExistingField": false,
+                                    "sourceOntology": undefined,
+                                    "conceptLabelColumn": undefined,
+                                    "conceptImportColumn": undefined,
                                   }
                                 }
                                 helpNoun="domain"
@@ -9850,6 +9972,12 @@ exports[`DomainRow participant id field 1`] = `
                                                 value="lookup"
                                               >
                                                 Lookup
+                                              </option>
+                                              <option
+                                                key="5"
+                                                value="ontologyLookup"
+                                              >
+                                                Ontology Lookup
                                               </option>
                                             </select>
                                           </FormControl>
@@ -10174,6 +10302,9 @@ exports[`DomainRow participant id field 1`] = `
                                       "wrappedColumnName": undefined,
                                       "disablePhiLevel": false,
                                       "lockExistingField": false,
+                                      "sourceOntology": undefined,
+                                      "conceptLabelColumn": undefined,
+                                      "conceptImportColumn": undefined,
                                     }
                                   }
                                   index={0}
@@ -10289,6 +10420,9 @@ exports[`DomainRow participant id field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={0}
@@ -10830,6 +10964,9 @@ exports[`DomainRow participant id field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={0}
@@ -11467,6 +11604,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#conceptCode",
+                      "display": "Ontology Lookup",
+                      "name": "ontologyLookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -11572,6 +11719,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   }
                 }
                 fieldError={
@@ -11772,6 +11922,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     "wrappedColumnName": undefined,
                                     "disablePhiLevel": false,
                                     "lockExistingField": false,
+                                    "sourceOntology": undefined,
+                                    "conceptLabelColumn": undefined,
+                                    "conceptImportColumn": undefined,
                                   }
                                 }
                                 helpNoun="domain"
@@ -12050,6 +12203,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 value="sample"
                                               >
                                                 Sample
+                                              </option>
+                                              <option
+                                                key="13"
+                                                value="ontologyLookup"
+                                              >
+                                                Ontology Lookup
                                               </option>
                                             </select>
                                           </FormControl>
@@ -12383,6 +12542,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       "wrappedColumnName": undefined,
                                       "disablePhiLevel": false,
                                       "lockExistingField": false,
+                                      "sourceOntology": undefined,
+                                      "conceptLabelColumn": undefined,
+                                      "conceptImportColumn": undefined,
                                     }
                                   }
                                   index={1}
@@ -12498,6 +12660,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={1}
@@ -13039,6 +13204,9 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={1}
@@ -13509,6 +13677,16 @@ exports[`DomainRow string field test 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#conceptCode",
+                      "display": "Ontology Lookup",
+                      "name": "ontologyLookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -13614,6 +13792,9 @@ exports[`DomainRow string field test 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   }
                 }
                 helpNoun="domain"
@@ -13802,6 +13983,9 @@ exports[`DomainRow string field test 1`] = `
                                     "wrappedColumnName": undefined,
                                     "disablePhiLevel": false,
                                     "lockExistingField": false,
+                                    "sourceOntology": undefined,
+                                    "conceptLabelColumn": undefined,
+                                    "conceptImportColumn": undefined,
                                   }
                                 }
                                 helpNoun="domain"
@@ -14032,6 +14216,12 @@ exports[`DomainRow string field test 1`] = `
                                                 value="lookup"
                                               >
                                                 Lookup
+                                              </option>
+                                              <option
+                                                key="5"
+                                                value="ontologyLookup"
+                                              >
+                                                Ontology Lookup
                                               </option>
                                             </select>
                                           </FormControl>
@@ -14356,6 +14546,9 @@ exports[`DomainRow string field test 1`] = `
                                       "wrappedColumnName": undefined,
                                       "disablePhiLevel": false,
                                       "lockExistingField": false,
+                                      "sourceOntology": undefined,
+                                      "conceptLabelColumn": undefined,
+                                      "conceptImportColumn": undefined,
                                     }
                                   }
                                   index={1}
@@ -14777,6 +14970,9 @@ exports[`DomainRow string field test 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={1}
@@ -15318,6 +15514,9 @@ exports[`DomainRow string field test 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={1}
@@ -15955,6 +16154,16 @@ exports[`DomainRow with empty domain form 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#conceptCode",
+                      "display": "Ontology Lookup",
+                      "name": "ontologyLookup",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -16060,6 +16269,9 @@ exports[`DomainRow with empty domain form 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   }
                 }
                 helpNoun="domain"
@@ -16248,6 +16460,9 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "wrappedColumnName": undefined,
                                     "disablePhiLevel": false,
                                     "lockExistingField": false,
+                                    "sourceOntology": undefined,
+                                    "conceptLabelColumn": undefined,
+                                    "conceptImportColumn": undefined,
                                   }
                                 }
                                 helpNoun="domain"
@@ -16525,6 +16740,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 value="sample"
                                               >
                                                 Sample
+                                              </option>
+                                              <option
+                                                key="13"
+                                                value="ontologyLookup"
+                                              >
+                                                Ontology Lookup
                                               </option>
                                             </select>
                                           </FormControl>
@@ -16851,6 +17072,9 @@ exports[`DomainRow with empty domain form 1`] = `
                                       "wrappedColumnName": undefined,
                                       "disablePhiLevel": false,
                                       "lockExistingField": false,
+                                      "sourceOntology": undefined,
+                                      "conceptLabelColumn": undefined,
+                                      "conceptImportColumn": undefined,
                                     }
                                   }
                                   index={1}
@@ -17272,6 +17496,9 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={1}
@@ -17813,6 +18040,9 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "wrappedColumnName": undefined,
                                                 "disablePhiLevel": false,
                                                 "lockExistingField": false,
+                                                "sourceOntology": undefined,
+                                                "conceptLabelColumn": undefined,
+                                                "conceptImportColumn": undefined,
                                               }
                                             }
                                             index={1}

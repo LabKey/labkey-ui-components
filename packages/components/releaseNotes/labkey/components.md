@@ -1,13 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 1.2.0
+*Released*: 19 November 2020
 * Merge forward changes from release20.11-SNAPSHOT branch
     - includes hotfix changes from version 0.104.1, 0.104.2, 0.104.3
 
+### version 1.1.2
+*Released*: 19 November 2020
+* Sccs variable maintenance
+
 ### version 1.1.1
-*Release*: 11 November 2020
+*Released*: 11 November 2020
 * More error message resolution improvements, particularly for importing with EntityInsertPanel
 
 ### version 1.1.0

@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Merge forward changes from release20.11-SNAPSHOT branch
-    - includes hotfix changes from version 0.104.1 and 0.104.2
+    - includes hotfix changes from version 0.104.1, 0.104.2, 0.104.3
 
 ### version 1.1.1
 *Release*: 11 November 2020

@@ -8,6 +8,7 @@
 
 //== Colors
 $brand-primary:         #2980b9;
+$cyan: #33e0ff;
 
 //== Scaffolding
 $body-bg:               #f3f3f4 !default;
@@ -41,8 +42,12 @@ $breadcrumb-padding-horizontal: 0;
 //** Breadcrumb background color
 $breadcrumb-bg:                 transparent;
 //** Breadcrumb text color
-$breadcrumb-color:              $gray !default;
+$breadcrumb-color:              #999 !default;
 //** Textual separator for between breadcrumb elements
 $breadcrumb-separator:          ">" !default;
+
+// Domain properties variables
+$gray-border:           #CCC;
+$gray-shadow:           #F3F3F4;
 
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/_variables";

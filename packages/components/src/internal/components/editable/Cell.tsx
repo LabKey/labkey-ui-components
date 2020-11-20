@@ -19,7 +19,7 @@ import { List } from 'immutable';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { cancelEvent, isCopy, isPaste, isSelectAll } from '../../events';
-import { focusCell, inDrag, modifyCell, selectCell, unfocusCellSelection } from '../../actions';
+import { focusCell, modifyCell, selectCell, unfocusCellSelection } from '../../actions';
 import { CellMessage, ValueDescriptor } from '../../models';
 import { KEYS, MODIFICATION_TYPES, SELECTION_TYPES } from '../../constants';
 
@@ -28,6 +28,7 @@ import { QueryColumn } from '../../..';
 import { getQueryColumnRenderers } from '../../global';
 
 import { LookupCell, LookupCellProps } from './LookupCell';
+import { inDrag } from './actions';
 
 interface Props {
     col: QueryColumn;

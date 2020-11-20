@@ -26,7 +26,7 @@ import {
     ViewInfo,
 } from '..';
 
-import { genCellKey } from './actions';
+import { genCellKey } from './util/utils';
 import { getQueryColumnRenderers, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
 import { GRID_EDIT_INDEX } from './constants';

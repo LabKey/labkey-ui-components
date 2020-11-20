@@ -184,7 +184,7 @@ import { EditableGridPanelForUpdate } from './internal/components/editable/Edita
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 import { EditableGridModal } from './internal/components/editable/EditableGridModal';
-import { EditableColumnMetadata } from './internal/components/editable/EditableGrid';
+import { EditableColumnMetadata } from './internal/components/editable/models';
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';

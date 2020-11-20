@@ -19,24 +19,16 @@ import { Button, OverlayTrigger, Popover } from 'react-bootstrap';
 import { List, Map, OrderedMap, Set } from 'immutable';
 import $ from 'jquery';
 
-import {
-    addRows,
-    beginDrag,
-    clearSelection,
-    copyEvent,
-    endDrag,
-    inDrag,
-    pasteEvent,
-    removeRow,
-    removeRows,
-    select,
-    updateGridFromBulkForm,
-} from '../../actions';
 import { getQueryGridModel } from '../../global';
 
 import { headerSelectionCell } from '../../renderers';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
-import { MAX_EDITABLE_GRID_ROWS, GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from '../../constants';
+import {
+    MAX_EDITABLE_GRID_ROWS,
+    GRID_CHECKBOX_OPTIONS,
+    GRID_EDIT_INDEX,
+    GRID_SELECTION_INDEX,
+} from '../../constants';
 import {
     Grid,
     GridColumn,
@@ -54,6 +46,20 @@ import { EditorModel, ValueDescriptor } from '../../models';
 
 import { AddRowsControl, AddRowsControlProps, PlacementType } from './Controls';
 import { Cell } from './Cell';
+import { EditableColumnMetadata } from './models';
+import {
+    addRows,
+    beginDrag,
+    clearSelection,
+    copyEvent,
+    endDrag,
+    inDrag,
+    pasteEvent,
+    removeRow,
+    removeRows,
+    select,
+    updateGridFromBulkForm,
+} from './actions';
 
 const COUNT_COL = new GridColumn({
     index: GRID_EDIT_INDEX,
@@ -132,14 +138,6 @@ function inputCellKey(col: QueryColumn, row: any): string {
     }
 
     return [col.fieldKey, indexKey].join('_$Cell$_');
-}
-
-export interface EditableColumnMetadata {
-    placeholder?: string;
-    readOnly?: boolean;
-    toolTip?: ReactNode;
-    filteredLookupValues?: List<string>;
-    filteredLookupKeys?: List<any>;
 }
 
 export interface EditableGridProps {
@@ -802,7 +800,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     };
 
     render() {
-        const { allowAdd, bordered, condensed, emptyGridMsg, isSubmitting, striped } = this.props;
+        const { allowAdd, bordered, condensed, emptyGridMsg, striped } = this.props;
         const model = this.getModel(this.props);
 
         if (!model || !model.isLoaded) {

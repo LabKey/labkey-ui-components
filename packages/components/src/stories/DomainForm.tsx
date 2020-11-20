@@ -47,7 +47,6 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
 
     render() {
         const { domain } = this.state;
-        const appPropertiesOnly = boolean('appPropertiesOnly', this.props.appPropertiesOnly);
 
         return (
             <MockLookupProvider>
@@ -56,7 +55,6 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
                     domain={domain}
                     onChange={this.onChange}
                     maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                    appPropertiesOnly={appPropertiesOnly}
                 />
             </MockLookupProvider>
         );
@@ -71,6 +69,7 @@ storiesOf('DomainForm', module)
                 data={undefined}
                 helpNoun={text('helpNoun', undefined)}
                 helpTopic={text('helpTopic', undefined)}
+                allowImportExport={boolean('allowImportExport', false)}
             />
         );
     })
@@ -92,6 +91,12 @@ storiesOf('DomainForm', module)
         return <DomainFormContainer
             data={domainData}
             appPropertiesOnly={false}
+        />;
+    })
+    .add('appPropertiesOnly', () => {
+        return <DomainFormContainer
+            data={domainData}
+            appPropertiesOnly={true}
         />;
     })
     .add('with server side errors and no file or flag types', () => {

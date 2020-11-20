@@ -15,7 +15,7 @@
  */
 import classNames from 'classnames';
 import { List, Map } from 'immutable';
-import { Ajax, Domain, Query, Security, Utils } from '@labkey/api';
+import { Ajax, Domain, getServerContext, Query, Security, Utils } from '@labkey/api';
 
 import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL } from '../../..';
 
@@ -31,15 +31,25 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    OntologyModel,
     QueryInfoLite,
     updateSampleField,
 } from './models';
-import { PROP_DESC_TYPES } from './PropDescType';
+import {
+    ATTACHMENT_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
+    PROP_DESC_TYPES,
+    PropDescType,
+} from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
     DOMAIN_FIELD_LOOKUP_CONTAINER,
     DOMAIN_FIELD_LOOKUP_QUERY,
     DOMAIN_FIELD_LOOKUP_SCHEMA,
+    DOMAIN_FIELD_ONTOLOGY_IMPORT_COL,
+    DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
     DOMAIN_FIELD_PREFIX,
     DOMAIN_FIELD_PRIMARY_KEY_LOCKED,
     DOMAIN_FIELD_SAMPLE_TYPE,
@@ -191,6 +201,61 @@ export function handleSchemas(payload: any): List<SchemaDetails> {
         .valueSeq()
         .sort((a, b) => naturalSort(a.fullyQualifiedName, b.fullyQualifiedName))
         .toList();
+}
+
+export function hasActiveModule(name: string): boolean {
+    return getServerContext().container.activeModules?.indexOf(name) > -1;
+}
+
+export function getAvailableTypes(domain: DomainDesign): List<PropDescType> {
+    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, [])) as List<PropDescType>;
+}
+
+export async function getAvailableTypesForOntology(domain: DomainDesign): Promise<List<PropDescType>> {
+    const ontologies = await fetchOntologies(getServerContext().container.path);
+    return PROP_DESC_TYPES.filter(type => _isAvailablePropType(type, domain, ontologies)) as List<PropDescType>;
+}
+
+function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologies: OntologyModel[]): boolean {
+    if (type === FLAG_TYPE && !domain.allowFlagProperties) {
+        return false;
+    }
+
+    if (type === FILE_TYPE && !domain.allowFileLinkProperties) {
+        return false;
+    }
+
+    if (type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties) {
+        return false;
+    }
+
+    if (type === ONTOLOGY_LOOKUP_TYPE && ontologies.length === 0) {
+        return false;
+    }
+
+    return true;
+}
+
+export function fetchOntologies(containerPath: string): Promise<OntologyModel[]> {
+    return cache<OntologyModel[]>('ontologies-cache', containerPath, () => {
+        return new Promise((resolve, reject) => {
+            Query.selectRows({
+                method: 'POST',
+                containerPath,
+                schemaName: 'ontology',
+                queryName: 'ontologies',
+                columns: 'RowId,Name,Abbreviation',
+                sort: 'Name',
+                requiredVersion: 17.1,
+                success: response => {
+                    resolve(response.rows.map(OntologyModel.create));
+                },
+                failure: error => {
+                    reject(error);
+                },
+            });
+        });
+    });
 }
 
 export function getMaxPhiLevel(): Promise<string> {
@@ -458,6 +523,9 @@ function updateDataType(field: DomainField, value: any): DomainField {
             rangeURI: dataType.rangeURI,
             lookupSchema: dataType.lookupSchema,
             lookupQuery: dataType.lookupQuery,
+            sourceOntology: undefined,
+            conceptLabelColumn: undefined,
+            conceptImportColumn: undefined,
         }) as DomainField;
 
         if (field.isNew()) {
@@ -788,4 +856,57 @@ export function getUpdatedVisitedPanelsList(visitedPanels: List<number>, index: 
     }
 
     return updatedVisitedPanels;
+}
+
+export function updateOntologyFieldProperties(
+    fieldIndex: number,
+    domainIndex: number,
+    updatedDomain: DomainDesign,
+    origDomain: DomainDesign,
+    removedFieldIndex: number
+): DomainDesign {
+    // make sure it is still an ontology lookup data type field before changing anything
+    const ontField = updatedDomain.fields.get(fieldIndex);
+    if (ontField.dataType.isOntologyLookup()) {
+        // if the concept field prop is set and the field's name or data type has changed, update it based on the updatedDomain
+        if (ontField.conceptImportColumn) {
+            const id = createFormInputId(DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, domainIndex, fieldIndex);
+            const value = getOntologyUpdatedFieldName(
+                ontField.conceptImportColumn,
+                updatedDomain,
+                origDomain,
+                removedFieldIndex
+            );
+            updatedDomain = updateDomainField(updatedDomain, { id, value });
+        }
+        if (ontField.conceptLabelColumn) {
+            const id = createFormInputId(DOMAIN_FIELD_ONTOLOGY_LABEL_COL, domainIndex, fieldIndex);
+            const value = getOntologyUpdatedFieldName(
+                ontField.conceptLabelColumn,
+                updatedDomain,
+                origDomain,
+                removedFieldIndex
+            );
+            updatedDomain = updateDomainField(updatedDomain, { id, value });
+        }
+    }
+    return updatedDomain;
+}
+
+// get the new/updated field name for the ontology related property
+// if it has been removed or changed to a non-string data type, return undefined
+export function getOntologyUpdatedFieldName(
+    propFieldName: string,
+    updatedDomain: DomainDesign,
+    origDomain: DomainDesign,
+    removedFieldIndex: number
+): string {
+    let origFieldIndex = origDomain.findFieldIndexByName(propFieldName);
+    const propFieldRemoved = origFieldIndex === removedFieldIndex;
+
+    // check for a field removal prior to the ontology lookup field
+    origFieldIndex = removedFieldIndex < origFieldIndex ? origFieldIndex - 1 : origFieldIndex;
+    const updatedPropField = updatedDomain.fields.get(origFieldIndex);
+
+    return !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined;
 }

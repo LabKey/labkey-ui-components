@@ -19,6 +19,8 @@ import { QueryColumn } from '../../..';
 
 import {
     createFormInputId,
+    getAvailableTypes,
+    getAvailableTypesForOntology,
     getBannerMessages,
     getDomainAlertClasses,
     getDomainBottomErrorMessage,
@@ -26,12 +28,27 @@ import {
     getDomainPanelClass,
     getDomainPanelHeaderId,
     getDomainPanelStatus,
+    getOntologyUpdatedFieldName,
+    hasActiveModule,
     setDomainFields,
     updateDomainException,
+    updateOntologyFieldProperties,
+    processJsonImport,
+    downloadJsonFile
 } from './actions';
 import { DomainDesign, DomainException, DomainField } from './models';
-import { DATETIME_TYPE, DOUBLE_TYPE, INTEGER_TYPE, TEXT_TYPE } from './PropDescType';
 import {
+    ATTACHMENT_TYPE,
+    DATETIME_TYPE,
+    DOUBLE_TYPE,
+    FILE_TYPE,
+    FLAG_TYPE,
+    INTEGER_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
+    TEXT_TYPE,
+} from './PropDescType';
+import {
+    CONCEPT_CODE_CONCEPT_URI,
     DOMAIN_FIELD_PREFIX,
     FIELD_NAME_CHAR_WARNING_INFO,
     FIELD_NAME_CHAR_WARNING_MSG,
@@ -41,6 +58,11 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
 } from './constants';
+import { initUnitTestMocks } from '../../testHelpers';
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 describe('domain properties actions', () => {
     test('test create id', () => {
@@ -293,5 +315,183 @@ describe('domain properties actions', () => {
         expect(getDomainHeaderName('Test Name', undefined, 'test')).toBe('Test Name');
         expect(getDomainHeaderName('Test Name', 'Test Header Title', 'test')).toBe('Test Header Title');
         expect(getDomainHeaderName('Data Fields')).toBe('Results Fields');
+    });
+
+    test('hasActiveModule', () => {
+        expect(hasActiveModule(undefined)).toBeFalsy();
+        expect(hasActiveModule(null)).toBeFalsy();
+        expect(hasActiveModule('bogus')).toBeFalsy();
+        expect(hasActiveModule('query')).toBeFalsy();
+        expect(hasActiveModule('Query')).toBeTruthy();
+    });
+
+    test('getAvailableTypes', () => {
+        let domain = DomainDesign.create({
+            allowFlagProperties: true,
+            allowFileLinkProperties: true,
+            allowAttachmentProperties: true,
+        });
+        expect(getAvailableTypes(domain).contains(FLAG_TYPE)).toBeTruthy();
+        expect(getAvailableTypes(domain).contains(FILE_TYPE)).toBeTruthy();
+        expect(getAvailableTypes(domain).contains(ATTACHMENT_TYPE)).toBeTruthy();
+        expect(getAvailableTypes(domain).contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
+        expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
+
+        domain = DomainDesign.create({
+            allowFlagProperties: false,
+            allowFileLinkProperties: false,
+            allowAttachmentProperties: false,
+        });
+        expect(getAvailableTypes(domain).contains(FLAG_TYPE)).toBeFalsy();
+        expect(getAvailableTypes(domain).contains(FILE_TYPE)).toBeFalsy();
+        expect(getAvailableTypes(domain).contains(ATTACHMENT_TYPE)).toBeFalsy();
+        expect(getAvailableTypes(domain).contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
+        expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
+    });
+
+    test('getAvailableTypesForOntology', async () => {
+        const domain = DomainDesign.create({});
+        const types = await getAvailableTypesForOntology(domain);
+        expect(types.contains(FLAG_TYPE)).toBeTruthy();
+        expect(types.contains(FILE_TYPE)).toBeFalsy();
+        expect(types.contains(ATTACHMENT_TYPE)).toBeFalsy();
+        expect(types.contains(ONTOLOGY_LOOKUP_TYPE)).toBeTruthy();
+        expect(types.contains(TEXT_TYPE)).toBeTruthy();
+    });
+
+    test('updateOntologyFieldProperties', () => {
+        const origDomain = DomainDesign.create({
+            fields: [
+                {
+                    name: 'ont',
+                    rangeURI: TEXT_TYPE.rangeURI,
+                    conceptURI: CONCEPT_CODE_CONCEPT_URI,
+                    sourceOntology: 'SRC',
+                    conceptImportColumn: 'text1',
+                    conceptLabelColumn: 'text2',
+                },
+                { name: 'text1', rangeURI: TEXT_TYPE.rangeURI },
+                { name: 'text2', rangeURI: TEXT_TYPE.rangeURI },
+            ],
+        });
+
+        let testDomain = updateOntologyFieldProperties(0, 0, origDomain, origDomain, undefined);
+        expect(testDomain.fields.get(0).sourceOntology).toBe('SRC');
+        expect(testDomain.fields.get(0).conceptImportColumn).toBe('text1');
+        expect(testDomain.fields.get(0).conceptLabelColumn).toBe('text2');
+
+        const nameChangesDomain = DomainDesign.create({
+            fields: [
+                {
+                    name: 'ont',
+                    rangeURI: TEXT_TYPE.rangeURI,
+                    conceptURI: CONCEPT_CODE_CONCEPT_URI,
+                    sourceOntology: 'SRC',
+                    conceptImportColumn: 'text1',
+                    conceptLabelColumn: 'text2',
+                },
+                { name: 'text1Updated', rangeURI: TEXT_TYPE.rangeURI },
+                { name: 'text2Updated', rangeURI: TEXT_TYPE.rangeURI },
+            ],
+        });
+        testDomain = updateOntologyFieldProperties(0, 0, nameChangesDomain, origDomain, undefined);
+        expect(testDomain.fields.get(0).sourceOntology).toBe('SRC');
+        expect(testDomain.fields.get(0).conceptImportColumn).toBe('text1Updated');
+        expect(testDomain.fields.get(0).conceptLabelColumn).toBe('text2Updated');
+
+        const removedChangesDomain = DomainDesign.create({
+            fields: [
+                {
+                    name: 'ont',
+                    rangeURI: TEXT_TYPE.rangeURI,
+                    conceptURI: CONCEPT_CODE_CONCEPT_URI,
+                    sourceOntology: 'SRC',
+                    conceptImportColumn: 'text1',
+                    conceptLabelColumn: 'text2',
+                },
+                { name: 'text1', rangeURI: TEXT_TYPE.rangeURI },
+            ],
+        });
+        testDomain = updateOntologyFieldProperties(0, 0, removedChangesDomain, origDomain, 2);
+        expect(testDomain.fields.get(0).sourceOntology).toBe('SRC');
+        expect(testDomain.fields.get(0).conceptImportColumn).toBe('text1');
+        expect(testDomain.fields.get(0).conceptLabelColumn).toBe(undefined);
+
+        const dataTypeChangesDomain = DomainDesign.create({
+            fields: [
+                {
+                    name: 'ont',
+                    rangeURI: TEXT_TYPE.rangeURI,
+                    conceptURI: CONCEPT_CODE_CONCEPT_URI,
+                    sourceOntology: 'SRC',
+                    conceptImportColumn: 'text1',
+                    conceptLabelColumn: 'text2',
+                },
+                { name: 'text1', rangeURI: INTEGER_TYPE.rangeURI },
+                { name: 'text2', rangeURI: INTEGER_TYPE.rangeURI },
+            ],
+        });
+        testDomain = updateOntologyFieldProperties(0, 0, dataTypeChangesDomain, origDomain, undefined);
+        expect(testDomain.fields.get(0).sourceOntology).toBe('SRC');
+        expect(testDomain.fields.get(0).conceptImportColumn).toBe(undefined);
+        expect(testDomain.fields.get(0).conceptLabelColumn).toBe(undefined);
+    });
+
+    test('getOntologyUpdatedFieldName', () => {
+        const origDomain = DomainDesign.create({
+            fields: [
+                { name: 'text', rangeURI: TEXT_TYPE.rangeURI },
+                { name: 'int', rangeURI: INTEGER_TYPE.rangeURI },
+            ],
+        });
+        const updatedDomain = DomainDesign.create({
+            fields: [
+                { name: 'textUpdated', rangeURI: TEXT_TYPE.rangeURI },
+                { name: 'intUpdated', rangeURI: INTEGER_TYPE.rangeURI },
+            ],
+        });
+
+        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, undefined)).toBe('text');
+        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, undefined)).toBe('textUpdated');
+        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, 0)).toBe(undefined);
+        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, 0)).toBe(undefined);
+        expect(getOntologyUpdatedFieldName('int', origDomain, origDomain, undefined)).toBe(undefined);
+        expect(getOntologyUpdatedFieldName('int', updatedDomain, origDomain, undefined)).toBe(undefined);
+    });
+
+    test('downloadJsonFile', () => {
+        const mockLink = { href: '', click: jest.fn(), download: '', style: { display: '' }} as any;
+        const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValueOnce(mockLink);
+        document.body.appendChild = jest.fn();
+        document.body.removeChild = jest.fn();
+        downloadJsonFile("test-file", "fileName");
+
+        expect(createElementSpy).toBeCalledWith('a');
+        expect(mockLink.style.display).toBe('none');
+        expect(document.body.appendChild).toBeCalledWith(mockLink);
+        expect(mockLink.click).toBeCalled();
+        expect(document.body.removeChild).toBeCalledWith(mockLink);
+    });
+
+    test('processJsonImport ', () => {
+        const domain = DomainDesign.create({});
+
+        const emptinessError = {success: false, msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.'};
+        expect(processJsonImport("[]", domain)).toStrictEqual(emptinessError);
+        expect(processJsonImport("{}", domain)).toStrictEqual(emptinessError);
+        expect(processJsonImport("", domain)).toStrictEqual(emptinessError);
+        expect(() => {processJsonImport("<<< Invalid JSON", domain)}).toThrow();
+
+        const primaryKeyErrorAssay = {success: false, msg: "Error on importing field 'undefined': Assay domain type does not support fields with an externally defined Primary Key."};
+        const primaryKeyError = {success: false, msg: "Error on importing field 'undefined': This domain type does not support fields with an externally defined Primary Key."};
+        expect(processJsonImport('[{"isPrimaryKey": true, "lockType": "PKLocked"}]', DomainDesign.create({domainKindName: 'Assay'}))).toStrictEqual(primaryKeyErrorAssay);
+        expect(processJsonImport('[{"isPrimaryKey": true, "lockType": "PKLocked"}]', domain)).toStrictEqual(primaryKeyError);
+
+        const jsonWithStrippableFields = '[{"propertyId": 1234, "propertyURI":1234}]';
+        const result = processJsonImport(jsonWithStrippableFields, domain);
+        expect(result.success).toBe(true);
+        result.fields.forEach(field => {
+            expect(field).not.toMatchObject({'propertyId': 'value', 'propertyURI':'value'});
+        })
     });
 });

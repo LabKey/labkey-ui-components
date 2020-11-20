@@ -63,6 +63,7 @@ import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
 import { Alert } from './internal/components/base/Alert';
 import { DeleteIcon } from './internal/components/base/DeleteIcon';
+import { LockIcon } from './internal/components/base/LockIcon';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
 import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
@@ -813,6 +814,7 @@ export {
     LoadingSpinner,
     CreatedModified,
     DeleteIcon,
+    LockIcon,
     // base models, enums, constants
     Container,
     User,

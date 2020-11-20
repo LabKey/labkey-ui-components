@@ -2,64 +2,56 @@
  * Copyright (c) 2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { SVGIcon } from './SVGIcon';
 
-interface ICardProps {
-    title: string;
+export interface ICardProps {
     caption?: string;
-    iconSrc?: string;
-    iconUrl?: string;
     disabled?: boolean;
     href?: string;
-    onClick?: (index: number) => any;
+    iconSrc?: string;
+    iconUrl?: string;
+    onClick?: (index: number) => void;
+    title: string;
 }
 
 type CardProps = ICardProps & {
     index: number;
 };
 
-class Card extends React.Component<CardProps, any> {
-    onClick = () => {
-        const { index, onClick } = this.props;
+const Card: FC<CardProps> = props => {
+    const { caption, disabled, href, iconUrl, iconSrc, index, onClick, title } = props;
 
-        if (onClick) {
-            onClick(index);
-        }
-    };
+    const onClickHandler = useCallback(() => {
+        onClick?.(index);
+    }, [index, onClick]);
 
-    render() {
-        const { href, disabled, title, caption, iconUrl, iconSrc } = this.props;
-
-        return (
-            <a className="cards__card" href={href} onClick={this.onClick}>
-                <div className={'cards__block-center' + (disabled ? ' cards__block-disabled' : '')}>
-                    <div className="cards__block-center-content">
-                        {iconUrl && <img src={iconUrl} />}
-                        {iconSrc && <SVGIcon iconDir="_images" iconSrc={iconSrc} />}
-                    </div>
+    return (
+        <a className="cards__card" href={href} onClick={onClickHandler}>
+            <div className={'cards__block-center' + (disabled ? ' cards__block-disabled' : '')}>
+                <div className="cards__block-center-content">
+                    {iconUrl && <img src={iconUrl} />}
+                    {iconSrc && <SVGIcon iconDir="_images" iconSrc={iconSrc} />}
                 </div>
-                <div className="cards__card-content">
-                    <div className="cards__card-title">{title}</div>
-                    {caption ? caption : ''}
-                </div>
-            </a>
-        );
-    }
-}
-
-const CARDS_COLUMNS_CLASS = 'col-xs-6 col-md-4 col-lg-3';
+            </div>
+            <div className="cards__card-content">
+                <div className="cards__card-title">{title}</div>
+                {caption ? caption : ''}
+            </div>
+        </a>
+    );
+};
 
 interface Props {
     cards: ICardProps[];
 }
 
-export const Cards: React.SFC<Props> = props => (
+export const Cards: FC<Props> = props => (
     <div className="cards">
         <div className="row">
             {props.cards.map((cardProps, i) => (
-                <div className={CARDS_COLUMNS_CLASS} key={i}>
+                <div className="col-xs-6 col-md-4 col-lg-3" key={i}>
                     <Card {...cardProps} index={i} />
                 </div>
             ))}

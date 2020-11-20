@@ -23,7 +23,7 @@ import {
 } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
-import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 import { Filter } from '@labkey/api';
 
@@ -215,7 +215,7 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
         return inRangeTotal + ' / ' + completeTotal;
     }, [urlPrefix, nounPlural]);
 
-    const onCellClick = useCallback((cell: any) => {
+    const onCellClick = useCallback((cell: HeatMapCell): void => {
 
         // only allow click through on cells with a monthTotal
         if (navigate && cell.monthTotal && cell.url) {
@@ -227,8 +227,8 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
         }
     }, [navigate]);
 
-    const onHeaderClick = useCallback((headerText: string, data: any) => {
-        const anyCell = data.filter(d => d.monthName === headerText).first();
+    const onHeaderClick = useCallback((headerText: string, data: HeatMapCell[]): void => {
+        const anyCell = data.filter(d => d.monthName === headerText)[0];
 
         if (navigate && anyCell) {
             const dateBegin = new Date([anyCell.monthNum, 1, anyCell.yearNum].join('/'));
@@ -262,15 +262,14 @@ const HeatMapWithQueryModels = withQueryModels<HeatMapProps>(HeatMapImpl);
 export const HeatMap: FC<HeatMapProps> = memo((props) => {
     const { schemaQuery, filters, urlPrefix } = props;
 
-    const modelId = props.modelId || getModelId(schemaQuery)
+    const modelId = props.modelId || getModelId(schemaQuery);
 
-    const queryConfigs = {
-        [modelId]: {
-            urlPrefix: urlPrefix,
-            schemaQuery: schemaQuery,
-            baseFilters: filters,
-        }
-    };
+    const queryConfigs = useMemo<QueryConfigMap>(
+        () => ({
+            [modelId]: { baseFilters: filters, schemaQuery, urlPrefix },
+        }),
+        [modelId]
+    );
 
     return (
         <HeatMapWithQueryModels

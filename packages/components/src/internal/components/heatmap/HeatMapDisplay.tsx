@@ -13,49 +13,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, ReactNode, useMemo } from 'react';
-import { List, Map, Set } from 'immutable';
+import React, { CSSProperties, FC, memo, ReactNode, useMemo } from 'react';
+import { Map, Set } from 'immutable';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import { HeatMapCell, HeatMapDisplayCell, HeatMapProps } from './HeatMap';
 import { naturalSort } from '../../..';
 
-const applySort = (sortFn, labels: Set<string>): Set<string> => {
-    let sorted;
-
-    if (typeof sortFn === 'function') {
-        sorted = labels.sort(sortFn);
-    }
-    else {
-        sorted = labels.sort(naturalSort);
-    }
-
-    return sorted;
+interface DisplayCell {
+    onClick?: () => void;
+    style?: CSSProperties;
+    title?: string;
+    value: any;
 }
+
+interface DisplayData {
+    headers: string[];
+    rows: DisplayCell[][];
+}
+
+type SortComparator = (a: any, b: any) => number;
 
 interface HeatMapDisplayProps extends HeatMapProps {
     data: HeatMapCell[];
     displayMeasure?: boolean;
-    onCellClick?: Function;
-    onHeaderClick?: Function;
-    xSort?: Function;
-    ySort?: Function;
-    yAxisColumns: { [key: string]: HeatMapDisplayCell };
-    yTotalCellRenderer?: (cell: HeatMapDisplayCell) => ReactNode
+    onCellClick?: (cell: HeatMapCell) => void;
+    onHeaderClick?: (header: string, data: HeatMapCell[], index: number) => void;
+    xSort?: SortComparator;
+    ySort?: SortComparator;
+    yAxisColumns: Record<string, HeatMapDisplayCell>;
+    yTotalCellRenderer?: (cell: HeatMapDisplayCell) => ReactNode;
 }
 
 export const HeatMapDisplay: FC<HeatMapDisplayProps> = memo((props) => {
     const { data, xAxis, yAxis, measure, xSort, ySort, onCellClick, emptyDisplay, onHeaderClick, yTotalCellRenderer,
         yTotalLabel, yInRangeTotal, yAxisColumns, nounSingular, nounPlural, displayMeasure } = props;
 
-    const processedData = useMemo(() => {
-        const rows = [];
+    const { headers, rows } = useMemo<DisplayData>(() => {
+        const rows: DisplayCell[][] = [];
         let xLabels = Set<string>();
         let yLabels = Set<string>();
         let measureMap = Map<string, HeatMapCell>();
 
         if (!data) {
-            return;
+            return { headers: [], rows };
         }
 
         data.map(cell => {
@@ -73,26 +74,23 @@ export const HeatMapDisplay: FC<HeatMapDisplayProps> = memo((props) => {
             max = maxCell[measure];
         }
 
-        const xLabelsSorted = applySort(xSort, xLabels);
-        const yLabelsSorted = applySort(ySort, yLabels);
+        const xLabelsSorted = xLabels.sort(xSort ?? naturalSort).toArray();
+        const yLabelsSorted = yLabels.sort(ySort ?? naturalSort).toArray();
 
         yLabelsSorted.map(yLabel => {
-            let row = List([
-                {
-                    value: yLabel,
-                    style: {},
-                    onClick: undefined,
-                },
-            ]);
+            const row: DisplayCell[] = [{ style: {}, value: yLabel }];
 
             xLabelsSorted.map(xLabel => {
                 const cell = measureMap.get(xLabel + '---' + yLabel);
                 const value = cell ? cell[measure] : 0;
-                const title = cell?.title;
                 const opacity = max > 0 ? Math.max(0.12, value / max) : 0;
-                const _cell = {
-                    value,
-                    title,
+
+                row.push({
+                    onClick: onCellClick
+                        ? () => {
+                              onCellClick(cell);
+                          }
+                        : undefined,
                     style: {
                         background: value === 0 ? '#F6F6F6' : '#779E47',
                         opacity: value === 0 ? 1 : opacity,
@@ -100,39 +98,24 @@ export const HeatMapDisplay: FC<HeatMapDisplayProps> = memo((props) => {
                         width: '100%',
                         height: '100%',
                     },
-                    onClick: undefined,
-                };
-
-                if (typeof onCellClick === 'function') {
-                    _cell.onClick = () => {
-                        onCellClick(cell);
-                    };
-                }
-
-                row = row.push(_cell);
+                    title: cell?.title,
+                    value,
+                });
             });
+
             rows.push(row);
         });
 
         return {
             headers: xLabelsSorted,
-            rows: List(rows),
+            rows,
         };
     }, [data, xAxis, yAxis, measure, xSort, ySort, onCellClick]);
 
-    const renderNoData = (): JSX.Element => {
-        return <div>{emptyDisplay || 'No data available.'}</div>;
-    }
-
-    if (!processedData)
-        return renderNoData();
-
-    const {headers, rows} = processedData;
-    const headersArray = headers.toArray();
     let yCell;
 
-    if (rows.size === 0) {
-        return renderNoData();
+    if (rows.length === 0) {
+        return <div>{emptyDisplay ?? 'No data available.'}</div>;
     }
 
     return (
@@ -141,7 +124,7 @@ export const HeatMapDisplay: FC<HeatMapDisplayProps> = memo((props) => {
                 <thead>
                 <tr>
                     <th style={{borderBottom: 'none', width: '16%'}}/>
-                    {headers.toArray().map((header: string, i: number) => (
+                    {headers.map((header: string, i: number) => (
                         <th
                             key={i}
                             onClick={onHeaderClick ? onHeaderClick.bind(this, header, data, i) : null}
@@ -171,19 +154,18 @@ export const HeatMapDisplay: FC<HeatMapDisplayProps> = memo((props) => {
                 </tr>
                 </thead>
                 <tbody>
-                {rows.map((row: List<any>, r) => {
+                {rows.map((row, r) => {
                     return (
                         <tr key={r}>
                             {row.map((cell, c) => {
-                                if (c == 0)
-                                {
+                                if (c === 0) {
                                     yCell = yAxisColumns[cell.value];
                                     return (
                                         <td
                                             key={c}
                                             style={{
                                                 borderTop: 'none',
-                                                background: r % 2 == 1 ? '#f9f9f9' : 'white',
+                                                background: r % 2 === 1 ? '#f9f9f9' : 'white',
                                                 width: '16%',
                                                 textAlign: 'right',
                                                 wordWrap: 'break-word',
@@ -198,7 +180,7 @@ export const HeatMapDisplay: FC<HeatMapDisplayProps> = memo((props) => {
                                 const overlay = (
                                     <Tooltip id={'heatmap-cell-tooltip-' + r + '-' + c}>
                                         {(cell.value
-                                            ? cell.value + ' ' + (cell.value == 1 ? nounSingular : nounPlural)
+                                            ? cell.value + ' ' + (cell.value === 1 ? nounSingular : nounPlural)
                                             : 'No ' + nounPlural) +
                                         ' for ' +
                                         cell.title}
@@ -217,7 +199,7 @@ export const HeatMapDisplay: FC<HeatMapDisplayProps> = memo((props) => {
                                             onClick={cell.onClick}
                                             className="heat-map--cell"
                                             style={{width: '6%', height: '35px', padding: '0px'}}
-                                            headers={headersArray[c - 1]}
+                                            headers={headers[c - 1]}
                                         >
                                             <div style={cell.style}>{displayMeasure ? cell.value : null}</div>
                                         </td>

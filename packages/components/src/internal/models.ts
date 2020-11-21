@@ -15,90 +15,11 @@
  */
 import { Iterable, List, Map, OrderedMap, Record, Set } from 'immutable';
 
-import {
-    AppURL,
-    DataViewInfoTypes,
-    getQueryGridModel,
-    QueryColumn,
-    QueryGridModel,
-    resolveSchemaQuery,
-    SchemaQuery,
-    ViewInfo,
-} from '..';
+import { AppURL, DataViewInfoTypes, QueryColumn, QueryGridModel } from '..';
 
 import { genCellKey } from './util/utils';
-import { getQueryColumnRenderers, getQueryMetadata } from './global';
-import { DefaultGridLoader } from './components/GridLoader';
+import { getQueryColumnRenderers } from './global';
 import { GRID_EDIT_INDEX } from './constants';
-import { IQueryGridModel } from './QueryGridModel';
-
-export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
-    const parts = [gridId, resolveSchemaQuery(schemaQuery)];
-
-    if (schemaQuery && schemaQuery.viewName) {
-        parts.push(schemaQuery.viewName);
-    }
-    if (keyValue !== undefined) {
-        parts.push(keyValue);
-    }
-
-    return parts.join('|').toLowerCase();
-}
-
-export type PropsInitializer = () => IQueryGridModel;
-
-// TODO: Move to QueryGridModel.ts
-/**
- * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
- * @param gridId
- * @param schemaQuery
- * @param [initProps] can be either a props object or a function that returns a props object.
- * @param [keyValue]
- * @returns {QueryGridModel}
- */
-export function getStateQueryGridModel(
-    gridId: string,
-    schemaQuery: SchemaQuery,
-    initProps?: IQueryGridModel | PropsInitializer,
-    keyValue?: any
-): QueryGridModel {
-    const modelId = getStateModelId(gridId, schemaQuery, keyValue);
-
-    // if the model already exists in the global state, return it
-    const model = getQueryGridModel(modelId);
-
-    if (model) {
-        return model;
-    }
-
-    const metadata = getQueryMetadata();
-
-    let modelProps: Partial<IQueryGridModel> = {
-        keyValue,
-        id: modelId,
-        loader: DefaultGridLoader, // Should we make this a default on the QueryGridModel class?
-        schema: schemaQuery.schemaName,
-        query: schemaQuery.queryName,
-        view: schemaQuery.viewName,
-        hideEmptyChartSelector: metadata.get('hideEmptyChartMenu'),
-        hideEmptyViewSelector: metadata.get('hideEmptyViewMenu'),
-    };
-
-    if (keyValue !== undefined && schemaQuery.viewName === undefined) {
-        modelProps.view = ViewInfo.DETAIL_NAME;
-        modelProps.bindURL = false;
-    }
-
-    if (initProps !== undefined) {
-        const props = typeof initProps === 'function' ? initProps() : initProps;
-        modelProps = {
-            ...modelProps,
-            ...props,
-        };
-    }
-
-    return new QueryGridModel(modelProps);
-}
 
 type DataViewInfoType =
     | DataViewInfoTypes.AutomaticPlot
@@ -206,73 +127,6 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
     constructor(values?: DataViewClientMetadata) {
         super(values);
     }
-}
-
-export class VisualizationConfigModel extends Record({
-    queryConfig: undefined,
-    chartConfig: undefined,
-}) {
-    queryConfig: QueryConfigModel;
-    chartConfig: ChartConfigModel;
-
-    static create(raw: any): VisualizationConfigModel {
-        return new VisualizationConfigModel(
-            Object.assign({}, raw, {
-                chartConfig: new ChartConfigModel(raw.chartConfig),
-                queryConfig: new QueryConfigModel(raw.queryConfig),
-            })
-        );
-    }
-}
-
-export class ChartConfigModel extends Record({
-    geomOptions: undefined,
-    height: undefined,
-    labels: undefined,
-    measures: undefined,
-    pointType: undefined,
-    renderType: undefined,
-    scales: undefined,
-    width: undefined,
-}) {
-    geomOptions: any;
-    height: number;
-    labels: any;
-    measures: any;
-    pointType: string;
-    renderType: string;
-    scales: any;
-    width: number;
-}
-
-export class QueryConfigModel extends Record({
-    columns: undefined,
-    containerPath: undefined,
-    // dataRegionName: undefined,
-    filterArray: undefined,
-    maxRows: undefined,
-    method: undefined,
-    parameters: undefined,
-    // queryLabel: undefined,
-    queryName: undefined,
-    requiredVersion: undefined,
-    schemaName: undefined,
-    // sort: undefined,
-    viewName: undefined,
-}) {
-    columns: List<string>;
-    containerPath: string;
-    // dataRegionName: string;
-    filterArray: List<any>;
-    maxRows: number;
-    method: string;
-    parameters: any;
-    // queryLabel: string;
-    queryName: string;
-    requiredVersion: string;
-    schemaName: string;
-    // sort: string;
-    viewName: string;
 }
 
 export interface ValueDescriptor {

@@ -16,7 +16,7 @@
 import { fromJS } from 'immutable';
 
 import { AssayStateModel, QueryInfo, SchemaQuery } from '../../..';
-import { getStateQueryGridModel } from '../../models';
+import { getStateQueryGridModel } from '../../QueryGridModel';
 import { initQueryGridState } from '../../global';
 import { ASSAY_DEFINITION_MODEL } from '../../../test/data/constants';
 

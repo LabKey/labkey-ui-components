@@ -17,9 +17,9 @@ import React from 'react';
 import $ from 'jquery';
 import { Filter } from '@labkey/api';
 
-import { DataViewInfo, VisualizationConfigModel } from '../../models';
-import { getVisualizationConfig } from '../../actions';
+import { DataViewInfo } from '../../models';
 import { debounce, generateId, LoadingSpinner } from '../../..';
+import { getVisualizationConfig, VisualizationConfigModel } from '../../VisualizationConfigModel';
 
 interface Props {
     chart: DataViewInfo;

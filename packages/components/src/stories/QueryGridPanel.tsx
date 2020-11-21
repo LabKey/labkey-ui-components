@@ -20,6 +20,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { List } from 'immutable';
 
 import {
+    getStateQueryGridModel,
     QueryGridPanel,
     ManageDropdownButton,
     QueryGridModel,
@@ -27,7 +28,7 @@ import {
     SelectionMenuItem,
     DataViewInfoTypes,
 } from '..';
-import { DataViewInfo, getStateQueryGridModel } from '../internal/models';
+import { DataViewInfo } from '../internal/models';
 
 import './stories.scss';
 

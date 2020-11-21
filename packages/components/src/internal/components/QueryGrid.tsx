@@ -19,7 +19,7 @@ import { List, Map } from 'immutable';
 
 import { GRID_CHECKBOX_OPTIONS, QUERY_GRID_PREFIX, GRID_SELECTION_INDEX } from '../constants';
 import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGridSelected } from '../actions';
-import { getStateModelId, getStateQueryGridModel } from '../models';
+import { getStateModelId, getStateQueryGridModel } from '../QueryGridModel';
 import { headerCell, headerSelectionCell } from '../renderers';
 import { getBrowserHistory } from '../util/global';
 

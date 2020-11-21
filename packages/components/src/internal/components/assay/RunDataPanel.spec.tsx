@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import { getQueryGridModel } from '../../global';
-import { getStateQueryGridModel } from '../../models';
+import { getStateQueryGridModel } from '../../QueryGridModel';
 import { gridInit } from '../../actions';
 import { withFormSteps, WithFormStepsProps } from '../../..';
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';

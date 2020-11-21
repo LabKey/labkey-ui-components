@@ -1,13 +1,38 @@
 import { fromJS, List, Map, OrderedSet, Record } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
-import {QueryColumn, QueryInfo, resolveKey, SchemaQuery, ViewInfo } from '..';
+import {
+    getQueryGridModel,
+    QueryColumn,
+    QueryInfo,
+    resolveKey,
+    resolveSchemaQuery,
+    SchemaQuery,
+    ViewInfo,
+} from '..';
 import { intersect, toLowerSafe } from './util/utils';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
+import { getQueryMetadata } from './global';
+import { DefaultGridLoader } from './components/GridLoader';
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
 const emptyRow = Map<string, any>();
+
+export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
+    const parts = [gridId, resolveSchemaQuery(schemaQuery)];
+
+    if (schemaQuery && schemaQuery.viewName) {
+        parts.push(schemaQuery.viewName);
+    }
+    if (keyValue !== undefined) {
+        parts.push(keyValue);
+    }
+
+    return parts.join('|').toLowerCase();
+}
+
+export type PropsInitializer = () => IQueryGridModel;
 
 export interface IQueryGridModel {
     id?: string;
@@ -548,4 +573,56 @@ export class QueryGridModel
 
         return this.getId();
     }
+}
+
+/**
+ * Used to create a QueryGridModel, based on some initial props, that can be put into the global state.
+ * @param gridId
+ * @param schemaQuery
+ * @param [initProps] can be either a props object or a function that returns a props object.
+ * @param [keyValue]
+ * @returns {QueryGridModel}
+ */
+export function getStateQueryGridModel(
+    gridId: string,
+    schemaQuery: SchemaQuery,
+    initProps?: IQueryGridModel | PropsInitializer,
+    keyValue?: any
+): QueryGridModel {
+    const modelId = getStateModelId(gridId, schemaQuery, keyValue);
+
+    // if the model already exists in the global state, return it
+    const model = getQueryGridModel(modelId);
+
+    if (model) {
+        return model;
+    }
+
+    const metadata = getQueryMetadata();
+
+    let modelProps: Partial<IQueryGridModel> = {
+        keyValue,
+        id: modelId,
+        loader: DefaultGridLoader, // Should we make this a default on the QueryGridModel class?
+        schema: schemaQuery.schemaName,
+        query: schemaQuery.queryName,
+        view: schemaQuery.viewName,
+        hideEmptyChartSelector: metadata.get('hideEmptyChartMenu'),
+        hideEmptyViewSelector: metadata.get('hideEmptyViewMenu'),
+    };
+
+    if (keyValue !== undefined && schemaQuery.viewName === undefined) {
+        modelProps.view = ViewInfo.DETAIL_NAME;
+        modelProps.bindURL = false;
+    }
+
+    if (initProps !== undefined) {
+        const props = typeof initProps === 'function' ? initProps() : initProps;
+        modelProps = {
+            ...modelProps,
+            ...props,
+        };
+    }
+
+    return new QueryGridModel(modelProps);
 }

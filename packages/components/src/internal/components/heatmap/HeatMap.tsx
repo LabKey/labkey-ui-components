@@ -18,7 +18,7 @@ import { Link } from 'react-router';
 import { fromJS, List, Map } from 'immutable';
 
 import { gridInit } from '../../actions';
-import { getStateQueryGridModel } from '../../models';
+import { getStateQueryGridModel } from '../../QueryGridModel';
 import { getQueryGridModel } from '../../global';
 import { LoadingSpinner, AppURL, QueryGridModel, SchemaQuery, naturalSort } from '../../..';
 

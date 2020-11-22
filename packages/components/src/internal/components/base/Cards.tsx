@@ -51,7 +51,7 @@ export const Cards: FC<Props> = props => (
     <div className="cards">
         <div className="row">
             {props.cards.map((cardProps, i) => (
-                <div className="col-xs-6 col-md-4 col-lg-3" key={i}>
+                <div className="col-xs-6 col-md-4 col-lg-3" key={cardProps.title}>
                     <Card {...cardProps} index={i} />
                 </div>
             ))}

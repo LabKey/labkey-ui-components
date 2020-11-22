@@ -1,8 +1,11 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useState, useMemo } from 'react'
-import { SampleSetCards } from "./SampleSetCards";
-import { SampleSetHeatMap } from "./SampleSetHeatMap";
-import { GridPanelWithModel, SCHEMAS, AppURL, SelectInput, User, Location } from "../../..";
-import { Filter } from "@labkey/api";
+import React, { FC, memo, ReactNode, useCallback, useEffect, useState, useMemo } from 'react';
+
+import { Filter } from '@labkey/api';
+
+import { GridPanelWithModel, SCHEMAS, AppURL, SelectInput, User, Location } from '../../..';
+
+import { SampleSetCards } from './SampleSetCards';
+import { SampleSetHeatMap } from './SampleSetHeatMap';
 
 const SELECTION_HEATMAP = 'heatmap';
 const SELECTION_CARDS = 'cards';
@@ -21,40 +24,44 @@ const SAMPLE_QUERY_CONFIG = {
     isPaged: true,
     id: SAMPLE_SET_GRID_GRID_ID,
     schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
-}
+};
 
 interface SampleSetSummaryProps {
-    location?: Location,
-    navigate: (url: string | AppURL) => any,
-    user: User,
-    excludedSampleSets?: string[]
+    location?: Location;
+    navigate: (url: string | AppURL) => any;
+    user: User;
+    excludedSampleSets?: string[];
 }
 
-export const SampleSetSummary: FC<SampleSetSummaryProps> = memo( props => {
+export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
     const { location, navigate, user, excludedSampleSets } = props;
 
-    const [ selected, setSelected ] = useState<string>()
+    const [selected, setSelected] = useState<string>();
 
     const queryConfig = useMemo(() => {
-        return { ...SAMPLE_QUERY_CONFIG,
-            baseFilters: excludedSampleSets ? [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)] : undefined }
+        return {
+            ...SAMPLE_QUERY_CONFIG,
+            baseFilters: excludedSampleSets
+                ? [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)]
+                : undefined,
+        };
     }, [excludedSampleSets]);
 
     useEffect(() => {
-        setSelected(location?.query?.viewAs ?? 'grid')
-    }, [location])
+        setSelected(location?.query?.viewAs ?? 'grid');
+    }, [location]);
 
     const showHeatMap = (): boolean => {
         return selected === SELECTION_HEATMAP;
-    }
+    };
 
     const showCards = (): boolean => {
         return selected === SELECTION_CARDS;
-    }
+    };
 
     const showGrid = (): boolean => {
         return selected === SELECTION_GRID || selected === undefined;
-    }
+    };
 
     const onSelectionChange = useCallback((selected, value) => {
         setSelected(value);
@@ -77,17 +84,22 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo( props => {
                 onChange={onSelectionChange}
                 options={SAMPLESET_VIEW_OPTIONS}
             />
-        )
-    }
+        );
+    };
 
     return (
         <>
             {renderSelect()}
-            {showHeatMap() && <SampleSetHeatMap navigate={navigate} user={user}/>}
-            {showCards() && <SampleSetCards excludedSampleSets={excludedSampleSets}/>}
-            {showGrid() &&
-                <GridPanelWithModel queryConfig={queryConfig} asPanel={false} showPagination={true} showChartMenu={false}/>}
+            {showHeatMap() && <SampleSetHeatMap navigate={navigate} user={user} />}
+            {showCards() && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
+            {showGrid() && (
+                <GridPanelWithModel
+                    queryConfig={queryConfig}
+                    asPanel={false}
+                    showPagination={true}
+                    showChartMenu={false}
+                />
+            )}
         </>
-    )
-
+    );
 });

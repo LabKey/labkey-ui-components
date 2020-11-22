@@ -259,9 +259,9 @@ import {
     getSampleTypeDetails,
     loadSelectedSamples,
 } from './internal/components/samples/actions';
-import { SampleEmptyAlert } from './internal/components/samples/SampleEmptyAlert'
-import { SampleSetSummary } from './internal/components/samples/SampleSetSummary'
-import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal'
+import { SampleEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
+import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
+import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -391,7 +391,10 @@ import { DatasetModel } from './internal/components/domainproperties/dataset/mod
 import { fetchListDesign } from './internal/components/domainproperties/list/actions';
 import { fetchIssuesListDefDesign } from './internal/components/domainproperties/issues/actions';
 import { fetchDatasetDesign } from './internal/components/domainproperties/dataset/actions';
-import { SampleTypeDesigner, DEFAULT_SAMPLE_FIELD_CONFIG } from './internal/components/domainproperties/samples/SampleTypeDesigner';
+import {
+    SampleTypeDesigner,
+    DEFAULT_SAMPLE_FIELD_CONFIG,
+} from './internal/components/domainproperties/samples/SampleTypeDesigner';
 import { ListDesignerPanels } from './internal/components/domainproperties/list/ListDesignerPanels';
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';

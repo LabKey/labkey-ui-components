@@ -1,20 +1,21 @@
-import React from 'react'
-import { Location, SampleSetSummary, User, waitForLifecycle} from '../../..'
-import {mount} from "enzyme";
-import {initUnitTestMocks, registerDefaultURLMappers} from "../../testHelpers";
+import React from 'react';
+
+import { mount } from 'enzyme';
+
+import { Location, SampleSetSummary, User, waitForLifecycle } from '../../..';
+import { initUnitTestMocks, registerDefaultURLMappers } from '../../testHelpers';
 
 beforeAll(() => {
     initUnitTestMocks();
     registerDefaultURLMappers();
 });
 
-describe("<SampleSetSummary />", () => {
-
-    test("Summary display", async() => {
+describe('<SampleSetSummary />', () => {
+    test('Summary display', async () => {
         const location: Location = {
             query: {
-                viewAs: 'grid'
-            }
+                viewAs: 'grid',
+            },
         };
 
         const user = new User({
@@ -24,13 +25,7 @@ describe("<SampleSetSummary />", () => {
             isAdmin: true,
         });
 
-        const component = mount(
-            <SampleSetSummary
-                location={location}
-                navigate={() => {}}
-                user={user}
-            />
-        );
+        const component = mount(<SampleSetSummary location={location} navigate={() => {}} user={user} />);
 
         let grid = component.find('.grid-panel');
         expect(grid).toHaveLength(1);
@@ -63,7 +58,6 @@ describe("<SampleSetSummary />", () => {
         await waitForLifecycle(component);
 
         cards = component.find('.cards');
-        expect(cards).toHaveLength(2);  // With and without samples
+        expect(cards).toHaveLength(2); // With and without samples
     });
-
 });

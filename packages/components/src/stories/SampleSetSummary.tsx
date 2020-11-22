@@ -17,17 +17,17 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { text, withKnobs } from '@storybook/addon-knobs';
 
-import {AppURL, HeatMap, Location, SCHEMAS, User} from '..';
+import { AppURL, HeatMap, Location, SCHEMAS, User } from '..';
 import './stories.scss';
-import {SampleSetSummary} from "../internal/components/samples/SampleSetSummary";
+import { SampleSetSummary } from '../internal/components/samples/SampleSetSummary';
 
 storiesOf('SampleSetSummary', module)
     .addDecorator(withKnobs)
     .add('sample sets', () => {
         const location: Location = {
             query: {
-                viewAs: 'grid'
-            }
+                viewAs: 'grid',
+            },
         };
 
         const user = new User({
@@ -37,11 +37,5 @@ storiesOf('SampleSetSummary', module)
             isAdmin: true,
         });
 
-        return (
-            <SampleSetSummary
-                location={location}
-                navigate={() => {}}
-                user={user}
-            />
-        );
+        return <SampleSetSummary location={location} navigate={() => {}} user={user} />;
     });

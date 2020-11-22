@@ -14,43 +14,39 @@
  * limitations under the License.
  */
 import React, { FC, memo, ReactNode, useState, useMemo, useEffect, useCallback } from 'react';
-import {
-    addDateRangeFilter,
-    AppURL,
-    LoadingSpinner,
-    naturalSort,
-    SchemaQuery
-} from '../../..';
+
+import { Filter } from '@labkey/api';
+
+import { Link } from 'react-router';
+
+import { addDateRangeFilter, AppURL, LoadingSpinner, naturalSort, SchemaQuery } from '../../..';
 
 // These need to be direct imports from files to avoid circular dependencies in index.ts
 import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
-import { Filter } from '@labkey/api';
-
 import { last12Months, monthSort } from './utils';
 import { HeatMapDisplay } from './HeatMapDisplay';
-import { Link } from "react-router";
 
 export interface HeatMapCell {
-    monthName: string,
-    monthNum: number,
-    yearNum: number,
-    title: string,
-    providerName: string,
-    protocolName: string,
-    monthTotal: string,
-    completeTotal: string,
-    inRangeTotal: string,
-    url: AppURL,
+    monthName: string;
+    monthNum: number;
+    yearNum: number;
+    title: string;
+    providerName: string;
+    protocolName: string;
+    monthTotal: string;
+    completeTotal: string;
+    inRangeTotal: string;
+    url: AppURL;
 }
 
 export interface HeatMapDisplayCell {
-    name: string,
-    renderYCell: (cell: HeatMapDisplayCell) => ReactNode,
-    completeTotal: string,
-    inRangeTotal: string,
-    headerUrl: AppURL,
-    totalUrl: AppURL
+    name: string;
+    renderYCell: (cell: HeatMapDisplayCell) => ReactNode;
+    completeTotal: string;
+    inRangeTotal: string;
+    headerUrl: AppURL;
+    totalUrl: AppURL;
 }
 
 export interface HeatMapProps {
@@ -76,15 +72,15 @@ export interface HeatMapProps {
 
 const getRowDisplayName = (row: any, displayNamePath: string[]): any => {
     return row[displayNamePath[0]][displayNamePath[1]];
-}
+};
 
 const rowSort = (row1, row2, displayNamePath: string[]): number => {
     return naturalSort(getRowDisplayName(row1, displayNamePath), getRowDisplayName(row2, displayNamePath));
-}
+};
 
-const getModelId = (schemaQuery: SchemaQuery) => {
+const getModelId = (schemaQuery: SchemaQuery): string => {
     return `heatmap-${schemaQuery.getSchema()}-${schemaQuery.getQuery()}`;
-}
+};
 
 const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
     const { queryModels, modelId, urlPrefix, nounPlural, navigate, headerClickUrl } = props;
@@ -107,7 +103,7 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
         const processedData = model.gridData
             .sort((row1, row2) => rowSort(row1, row2, displayNamePath))
             .reduce<HeatMapCell[]>((cells, row) => {
-                const protocolName = getRowDisplayName(row,displayNamePath),
+                const protocolName = getRowDisplayName(row, displayNamePath),
                     providerName = row.Provider?.value,
                     completeTotal = row.CompleteCount?.value,
                     inRangeTotal = row.InRangeCount?.value;
@@ -122,22 +118,20 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
                     // Get the count for the year-month.
                     // The pivot column will not be present if no <Protocol>s have run count for that month.
                     // The pivot column value will be null if this <Protocol> has no runs, but others do.
-                    let monthTotal = row[pivotColName]?.value ?? 0;
+                    const monthTotal = row[pivotColName]?.value ?? 0;
 
-                    cells.push(
-                        {
-                            monthName: pivotCol.monthName,
-                            monthNum: pivotCol.month,
-                            yearNum: pivotCol.year,
-                            title: pivotCol.displayValue,
-                            providerName,
-                            protocolName,
-                            monthTotal,
-                            completeTotal,
-                            inRangeTotal,
-                            url,
-                        }
-                    );
+                    cells.push({
+                        monthName: pivotCol.monthName,
+                        monthNum: pivotCol.month,
+                        yearNum: pivotCol.year,
+                        title: pivotCol.displayValue,
+                        providerName,
+                        protocolName,
+                        monthTotal,
+                        completeTotal,
+                        inRangeTotal,
+                        url,
+                    });
                 }
 
                 return cells;
@@ -146,16 +140,19 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
         setHeatMapData(processedData);
     }, [model]);
 
-    const renderYCell = useCallback((cell: HeatMapDisplayCell): ReactNode => {
-        const url = cell?.headerUrl;
-        const name = cell?.name ?? '<Name not provided>';
+    const renderYCell = useCallback(
+        (cell: HeatMapDisplayCell): ReactNode => {
+            const url = cell?.headerUrl;
+            const name = cell?.name ?? '<Name not provided>';
 
-        if (url) {
-            return <Link to={url.toString(urlPrefix)}>{name}</Link>;
-        }
+            if (url) {
+                return <Link to={url.toString(urlPrefix)}>{name}</Link>;
+            }
 
-        return <span>{name}</span>;
-    }, [urlPrefix]);
+            return <span>{name}</span>;
+        },
+        [urlPrefix]
+    );
 
     const yAxisColumns = useMemo((): { [key: string]: HeatMapDisplayCell } => {
         const { getHeaderUrl, getTotalUrl } = props;
@@ -169,7 +166,7 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
             if (cell?.protocolName !== undefined) {
                 cols[cell.protocolName] = {
                     name: cell.protocolName,
-                    renderYCell: renderYCell,
+                    renderYCell,
                     completeTotal: cell.completeTotal,
                     inRangeTotal: cell.inRangeTotal,
                     headerUrl: getHeaderUrl(cell),
@@ -181,66 +178,79 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
         }, {});
     }, [heatMapData]);
 
-    const renderYTotalCell = useCallback((cell: HeatMapDisplayCell): ReactNode => {
-        const inRangeTotal = cell.inRangeTotal,
-            completeTotal = cell.completeTotal,
-            url = cell.totalUrl;
+    const renderYTotalCell = useCallback(
+        (cell: HeatMapDisplayCell): ReactNode => {
+            const inRangeTotal = cell.inRangeTotal,
+                completeTotal = cell.completeTotal,
+                url = cell.totalUrl;
 
-        if (url) {
-            const now = new Date();
-            const dateEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            const dateBegin = new Date(dateEnd.getFullYear() - 1, dateEnd.getMonth() + 1, 1);
-            const dateUrl = addDateRangeFilter(url, 'Created', dateBegin, dateEnd);
+            if (url) {
+                const now = new Date();
+                const dateEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                const dateBegin = new Date(dateEnd.getFullYear() - 1, dateEnd.getMonth() + 1, 1);
+                const dateUrl = addDateRangeFilter(url, 'Created', dateBegin, dateEnd);
 
-            if (inRangeTotal === completeTotal) {
+                if (inRangeTotal === completeTotal) {
+                    return (
+                        <span title={'All ' + completeTotal + ' ' + nounPlural + ' created in last 12 months'}>
+                            <Link to={dateUrl.toString(urlPrefix)}>{inRangeTotal}</Link>
+                        </span>
+                    );
+                }
+
                 return (
-                    <span title={'All ' + completeTotal + ' ' + nounPlural + ' created in last 12 months'}>
-                        <Link to={dateUrl.toString(urlPrefix)}>{inRangeTotal}</Link>
+                    <span
+                        title={
+                            inRangeTotal +
+                            ' of ' +
+                            completeTotal +
+                            ' total ' +
+                            nounPlural +
+                            ' created in last 12 months'
+                        }
+                    >
+                        <Link to={dateUrl.toString(urlPrefix)}>{inRangeTotal}</Link> /{' '}
+                        <Link to={url.toString(urlPrefix)}>{completeTotal}</Link>
                     </span>
                 );
             }
 
-            return (
-                <span
-                    title={
-                        inRangeTotal + ' of ' + completeTotal + ' total ' + nounPlural + ' created in last 12 months'
-                    }
-                >
-                    <Link to={dateUrl.toString(urlPrefix)}>{inRangeTotal}</Link> /{' '}
-                    <Link to={url.toString(urlPrefix)}>{completeTotal}</Link>
-                </span>
-            );
-        }
+            return inRangeTotal + ' / ' + completeTotal;
+        },
+        [urlPrefix, nounPlural]
+    );
 
-        return inRangeTotal + ' / ' + completeTotal;
-    }, [urlPrefix, nounPlural]);
+    const onCellClick = useCallback(
+        (cell: HeatMapCell): void => {
+            // only allow click through on cells with a monthTotal
+            if (navigate && cell.monthTotal && cell.url) {
+                const dateBegin = new Date([cell.monthNum, 1, cell.yearNum].join('/'));
+                const dateEnd = new Date(dateBegin.getFullYear(), dateBegin.getMonth() + 1, 0);
 
-    const onCellClick = useCallback((cell: HeatMapCell): void => {
+                const dateUrl = addDateRangeFilter(cell.url, 'Created', dateBegin, dateEnd);
+                navigate(dateUrl.toString(urlPrefix));
+            }
+        },
+        [navigate]
+    );
 
-        // only allow click through on cells with a monthTotal
-        if (navigate && cell.monthTotal && cell.url) {
-            const dateBegin = new Date([cell.monthNum, 1, cell.yearNum].join('/'));
-            const dateEnd = new Date(dateBegin.getFullYear(), dateBegin.getMonth() + 1, 0);
+    const onHeaderClick = useCallback(
+        (headerText: string, data: HeatMapCell[]): void => {
+            const anyCell = data.filter(d => d.monthName === headerText)[0];
 
-            const dateUrl = addDateRangeFilter(cell.url, 'Created', dateBegin, dateEnd);
-            navigate(dateUrl.toString(urlPrefix));
-        }
-    }, [navigate]);
+            if (navigate && anyCell) {
+                const dateBegin = new Date([anyCell.monthNum, 1, anyCell.yearNum].join('/'));
+                const dateEnd = new Date(dateBegin.getFullYear(), dateBegin.getMonth() + 1, 0);
 
-    const onHeaderClick = useCallback((headerText: string, data: HeatMapCell[]): void => {
-        const anyCell = data.filter(d => d.monthName === headerText)[0];
-
-        if (navigate && anyCell) {
-            const dateBegin = new Date([anyCell.monthNum, 1, anyCell.yearNum].join('/'));
-            const dateEnd = new Date(dateBegin.getFullYear(), dateBegin.getMonth() + 1, 0);
-
-            const dateUrl = addDateRangeFilter(headerClickUrl, 'Created', dateBegin, dateEnd);
-            navigate(dateUrl.toString(urlPrefix));
-        }
-    }, [navigate, headerClickUrl]);
+                const dateUrl = addDateRangeFilter(headerClickUrl, 'Created', dateBegin, dateEnd);
+                navigate(dateUrl.toString(urlPrefix));
+            }
+        },
+        [navigate, headerClickUrl]
+    );
 
     if (!model || model.isLoading) {
-        return <LoadingSpinner/>;
+        return <LoadingSpinner />;
     }
 
     return (
@@ -254,12 +264,11 @@ const HeatMapImpl: FC<HeatMapProps & InjectedQueryModels> = memo(props => {
             onHeaderClick={onHeaderClick}
         />
     );
-
 });
 
 const HeatMapWithQueryModels = withQueryModels<HeatMapProps>(HeatMapImpl);
 
-export const HeatMap: FC<HeatMapProps> = memo((props) => {
+export const HeatMap: FC<HeatMapProps> = memo(props => {
     const { schemaQuery, filters, urlPrefix } = props;
 
     const modelId = props.modelId || getModelId(schemaQuery);
@@ -271,14 +280,7 @@ export const HeatMap: FC<HeatMapProps> = memo((props) => {
         [modelId]
     );
 
-    return (
-        <HeatMapWithQueryModels
-            {...props}
-            autoLoad={true}
-            modelId={modelId}
-            queryConfigs={queryConfigs}
-        />
-    )
+    return <HeatMapWithQueryModels {...props} autoLoad={true} modelId={modelId} queryConfigs={queryConfigs} />;
 });
 
 HeatMap.defaultProps = {

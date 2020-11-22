@@ -52,14 +52,7 @@ storiesOf('HeatMap', module)
                 measure="monthTotal"
                 yInRangeTotal="InRangeTotal"
                 yTotalLabel={text('yTotalLabel', '12 month total runs')}
-                getCellUrl={row =>
-                    AppURL.create(
-                        'assays',
-                        row.Provider.value,
-                        row.Protocol.displayValue,
-                        'runs'
-                    )
-                }
+                getCellUrl={row => AppURL.create('assays', row.Provider.value, row.Protocol.displayValue, 'runs')}
                 getHeaderUrl={cell => {
                     const provider = cell.providerName;
                     const protocol = cell.protocolName;

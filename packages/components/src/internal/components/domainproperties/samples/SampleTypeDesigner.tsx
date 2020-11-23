@@ -13,6 +13,7 @@ import {
     naturalSort,
     resolveErrorMessage,
     SCHEMAS,
+    getHelpLink,
 } from '../../../..';
 
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
@@ -25,7 +26,7 @@ import { SAMPLE_TYPE } from '../PropDescType';
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 
-const DEFAULT_SAMPLE_FIELD_CONFIG = {
+export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
     dataType: SAMPLE_TYPE,
     conceptURI: SAMPLE_TYPE.conceptURI,
@@ -48,6 +49,9 @@ const DOMAIN_PANEL_INDEX = 1;
 export const SAMPLE_SET_IMPORT_PREFIX = 'materialInputs/';
 export const DATA_CLASS_IMPORT_PREFIX = 'dataInputs/';
 const DATA_CLASS_SCHEMA_KEY = 'exp/dataclasses';
+const SAMPLE_SET_NAME_EXPRESSION_TOPIC = 'sampleIDs#patterns';
+const SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER = 'Enter a naming pattern (e.g., S-${now:date}-${dailySampleCount})';
+const SAMPLE_SET_HELP_TOPIC = 'createSampleType';
 
 interface Props {
     onChange?: (model: SampleTypeModel) => void;
@@ -65,6 +69,7 @@ interface Props {
     dataClassAliasCaption?: string;
     dataClassTypeCaption?: string;
     dataClassParentageLabel?: string;
+    showParentLabelPrefix?: boolean;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
 
     // EntityDetailsForm props
@@ -80,9 +85,9 @@ interface Props {
     successBsStyle?: string;
     saveBtnText?: string;
 
-    metricUnitProps?: MetricUnitProps
+    metricUnitProps?: MetricUnitProps;
 
-    validateProperties?: (designerDetails?: any) => Promise<any>
+    validateProperties?: (designerDetails?: any) => Promise<any>;
 }
 
 interface State {
@@ -96,7 +101,10 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         defaultSampleFieldConfig: DEFAULT_SAMPLE_FIELD_CONFIG,
         includeDataClasses: false,
         useSeparateDataClassesAliasMenu: false,
-
+        nameExpressionInfoUrl: getHelpLink(SAMPLE_SET_NAME_EXPRESSION_TOPIC),
+        nameExpressionPlaceholder: SAMPLE_SET_NAME_EXPRESSION_PLACEHOLDER,
+        helpTopic: SAMPLE_SET_HELP_TOPIC,
+        showParentLabelPrefix: true,
         useTheme: false,
         appPropertiesOnly: true,
     };
@@ -134,11 +142,13 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     };
 
     formatLabel = (name: string, prefix: string, containerPath?: string): string => {
-        const { includeDataClasses, useSeparateDataClassesAliasMenu } = this.props;
-        return includeDataClasses && !useSeparateDataClassesAliasMenu ? `${prefix}: ${name} (${containerPath})` : name;
+        const { includeDataClasses, useSeparateDataClassesAliasMenu, showParentLabelPrefix } = this.props;
+        return includeDataClasses && !useSeparateDataClassesAliasMenu && showParentLabelPrefix
+            ? `${prefix}: ${name} (${containerPath})`
+            : name;
     };
 
-    initParentOptions = (model: SampleTypeModel, responses: any[]) => {
+    initParentOptions = (model: SampleTypeModel, responses: any[]): void => {
         const { isValidParentOptionFn } = this.props;
         let sets = List<IParentOption>();
         responses.forEach(results => {
@@ -210,7 +220,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const aliases = {};
 
         if (parentAliases) {
-            parentAliases.map((alias: IParentAlias) => {
+            parentAliases.forEach((alias: IParentAlias) => {
                 const { parentValue } = alias;
 
                 let value = parentValue && parentValue.value ? (parentValue.value as string) : '';
@@ -225,7 +235,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         return Map<string, string>(aliases);
     }
 
-    onFieldChange = (model: SampleTypeModel) => {
+    onFieldChange = (model: SampleTypeModel): void => {
         const { onChange } = this.props;
 
         this.setState(
@@ -238,6 +248,18 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         );
     };
 
+    propertiesToggle = (collapsed, callback) => {
+        const { onTogglePanel } = this.props;
+
+        onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback);
+    }
+
+    formToggle = (collapsed, callback) => {
+        const { onTogglePanel } = this.props;
+
+        onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback)
+    }
+
     updateAliasValue = (id: string, field: string, newValue: any): IParentAlias => {
         const { model } = this.state;
         const { parentAliases } = model;
@@ -248,7 +270,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         } as IParentAlias;
     };
 
-    parentAliasChange = (id: string, field: string, newValue: any) => {
+    parentAliasChange = (id: string, field: string, newValue: any): void => {
         const { model } = this.state;
         const { parentAliases } = model;
         const changedAlias = this.updateAliasValue(id, field, newValue);
@@ -296,7 +318,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         this.onFieldChange(newModel);
     };
 
-    removeParentAlias = (id: string) => {
+    removeParentAlias = (id: string): void => {
         const { model } = this.state;
         const { parentAliases } = model;
         const aliases = parentAliases.delete(id);
@@ -304,7 +326,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         this.onFieldChange(newModel);
     };
 
-    domainChangeHandler = (domain: DomainDesign, dirty: boolean) => {
+    domainChangeHandler = (domain: DomainDesign, dirty: boolean): void => {
         const { onChange } = this.props;
         const { model } = this.state;
 
@@ -325,8 +347,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
         const { model } = this.state;
 
-        let metricUnitLabel = metricUnitProps?.metricUnitLabel;
-        let metricUnitRequired = metricUnitProps?.metricUnitRequired;
+        const metricUnitLabel = metricUnitProps?.metricUnitLabel;
+        const metricUnitRequired = metricUnitProps?.metricUnitRequired;
         const isValid = model.isValid(defaultSampleFieldConfig, metricUnitRequired);
 
         this.props.onFinish(isValid, this.saveDomain);
@@ -385,7 +407,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             domainDesign = addDomainField(domainDesign, nameCol);
         }
 
-        try{
+        try {
             if (this.props.validateProperties) {
                 const response = await this.props.validateProperties(details);
                 if (response.error) {
@@ -405,13 +427,12 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             return;
         }
 
-        saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name)
-            .then((response: DomainDesign) => {
-                setSubmitting(false, () => {
-                    this.props.onComplete(response);
-                });
-            })
-            .catch(response => {
+        try {
+            const response: DomainDesign = await saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name);
+            setSubmitting(false, () => {
+                this.props.onComplete(response);
+            });
+        } catch (response) {
                 const exception = resolveErrorMessage(response);
                 const updatedModel = exception
                     ? (model.set('exception', exception) as SampleTypeModel)
@@ -424,7 +445,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 setSubmitting(false, () => {
                     this.setState(() => ({ model: updatedModel }));
                 });
-            });
+        }
     };
 
     render() {
@@ -437,7 +458,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             visitedPanels,
             firstState,
             validatePanel,
-            onTogglePanel,
             submitting,
             onCancel,
             nameExpressionPlaceholder,
@@ -454,7 +474,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             dataClassAliasCaption,
             dataClassTypeCaption,
             dataClassParentageLabel,
-            metricUnitProps
+            metricUnitProps,
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -500,7 +520,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                             : 'COMPLETE'
                     }
                     validate={validatePanel === PROPERTIES_PANEL_INDEX}
-                    onToggle={(collapsed, callback) => onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback)}
+                    onToggle={this.propertiesToggle}
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     metricUnitProps={metricUnitProps}
@@ -522,7 +542,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     showInferFromFile={true}
                     containerTop={containerTop}
                     onChange={this.domainChangeHandler}
-                    onToggle={(collapsed, callback) => onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback)}
+                    onToggle={this.formToggle}
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}

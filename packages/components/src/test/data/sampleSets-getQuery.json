@@ -121,7 +121,112 @@
       "shortCaption" : "Row Id",
       "facetingBehaviorType" : "AUTOMATIC",
       "caption" : "Row Id"
-    } ],
+    },
+      {
+        "ext" : { },
+        "name" : "SampleCount",
+        "description" : "Contains the number of samples currently stored in this sample set",
+        "align" : "right",
+        "friendlyType" : "Integer",
+        "type" : "Integer",
+        "jsonType" : "int",
+        "sqlType" : "INTEGER",
+        "defaultValue" : null,
+        "fieldKey" : "SampleCount",
+        "fieldKeyArray" : [ "SampleCount" ],
+        "fieldKeyPath" : "SampleCount",
+        "isAutoIncrement" : false,
+        "autoIncrement" : false,
+        "isHidden" : false,
+        "hidden" : false,
+        "isKeyField" : false,
+        "keyField" : false,
+        "isMvEnabled" : false,
+        "mvEnabled" : false,
+        "isNullable" : true,
+        "nullable" : true,
+        "required" : false,
+        "isReadOnly" : false,
+        "readOnly" : false,
+        "isUserEditable" : false,
+        "userEditable" : false,
+        "calculated" : true,
+        "isVersionField" : false,
+        "versionField" : false,
+        "isSelectable" : true,
+        "selectable" : true,
+        "shownInInsertView" : false,
+        "shownInUpdateView" : false,
+        "shownInDetailsView" : true,
+        "dimension" : false,
+        "measure" : true,
+        "recommendedVariable" : false,
+        "defaultScale" : "LINEAR",
+        "phi" : "NotPHI",
+        "excludeFromShifting" : false,
+        "sortable" : true,
+        "conceptURI" : null,
+        "rangeURI" : null,
+        "inputType" : "text",
+        "shortCaption" : "Sample Count",
+        "facetingBehaviorType" : "AUTOMATIC",
+        "caption" : "Sample Count"
+      },
+      {
+        "ext" : {
+          "xtype" : "textarea"
+        },
+        "name" : "Description",
+        "description" : "Contains an optional description about the contents or purpose of this sample set",
+        "align" : "left",
+        "friendlyType" : "Text (String)",
+        "type" : "Text (String)",
+        "jsonType" : "string",
+        "sqlType" : "text",
+        "defaultValue" : null,
+        "fieldKey" : "Description",
+        "fieldKeyArray" : [ "Description" ],
+        "fieldKeyPath" : "Description",
+        "isAutoIncrement" : false,
+        "autoIncrement" : false,
+        "isHidden" : false,
+        "hidden" : false,
+        "isKeyField" : false,
+        "keyField" : false,
+        "isMvEnabled" : false,
+        "mvEnabled" : false,
+        "isNullable" : true,
+        "nullable" : true,
+        "required" : false,
+        "isReadOnly" : false,
+        "readOnly" : false,
+        "isUserEditable" : true,
+        "userEditable" : true,
+        "calculated" : false,
+        "isVersionField" : false,
+        "versionField" : false,
+        "isSelectable" : true,
+        "selectable" : true,
+        "shownInInsertView" : true,
+        "shownInUpdateView" : true,
+        "shownInDetailsView" : true,
+        "dimension" : false,
+        "measure" : false,
+        "recommendedVariable" : false,
+        "defaultScale" : "LINEAR",
+        "phi" : "NotPHI",
+        "excludeFromShifting" : false,
+        "sortable" : true,
+        "conceptURI" : null,
+        "rangeURI" : null,
+        "inputType" : "textarea",
+        "cols" : 60,
+        "rows" : 15,
+        "shortCaption" : "Description",
+        "facetingBehaviorType" : "AUTOMATIC",
+        "caption" : "Description"
+      }
+    ],
     "title" : "SampleSets",
     "importMessage" : null
   },
@@ -136,6 +241,12 @@
       "Name" : {
         "value" : "Name Expression Set",
         "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=110"
+      },
+      "Description" : {
+        "value" : "This is a Name Expression sample set"
+      },
+      "SampleCount" : {
+        "value" : 1
       }
     }
   }, {
@@ -149,6 +260,12 @@
       "Name" : {
         "value" : "Sample Set 2",
         "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=111"
+      },
+      "Description" : {
+        "value" : "This is sample set 2 sample set"
+      },
+      "SampleCount" : {
+        "value" : 3
       }
     }
   }, {
@@ -162,6 +279,12 @@
       "Name" : {
         "value" : "Sample Set Error",
         "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=113"
+      },
+      "Description" : {
+        "value" : "This is sample set error sample set"
+      },
+      "SampleCount" : {
+        "value" : 0
       }
     }
   }, {
@@ -175,6 +298,12 @@
       "Name" : {
         "value" : "Fruits",
         "url" : "/labkey/Sample%20Management%202/experiment-showMaterialSource.view?rowId=114"
+      },
+      "Description" : {
+        "value" : "This is a fruits sample set"
+      },
+      "SampleCount" : {
+        "value" : 0
       }
     }
   } ],

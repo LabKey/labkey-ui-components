@@ -3,7 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Release*: TBD
-* Item 8137: ...
+* Item 8137: Misc package changes to support LKFM freezer hierarchy polish
+    - export existing DomainFieldLabel for use in app
+    - add new LockIcon components to package
+    - add renderFieldLabel property to QueryFormInputs component and related input components
 
 ### version 1.2.0
 *Released*: 19 November 2020

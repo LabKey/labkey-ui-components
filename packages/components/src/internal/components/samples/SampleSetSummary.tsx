@@ -51,24 +51,12 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
         setSelected(location?.query?.viewAs ?? 'grid');
     }, [location]);
 
-    const showHeatMap = (): boolean => {
-        return selected === SELECTION_HEATMAP;
-    };
-
-    const showCards = (): boolean => {
-        return selected === SELECTION_CARDS;
-    };
-
-    const showGrid = (): boolean => {
-        return selected === SELECTION_GRID || selected === undefined;
-    };
-
     const onSelectionChange = useCallback((selected, value) => {
         setSelected(value);
     }, []);
 
-    const renderSelect = (): ReactNode => {
-        return (
+    return (
+        <>
             <SelectInput
                 key="sample-sets-view-select"
                 name="sample-sets-view-select"
@@ -84,15 +72,9 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
                 onChange={onSelectionChange}
                 options={SAMPLESET_VIEW_OPTIONS}
             />
-        );
-    };
-
-    return (
-        <>
-            {renderSelect()}
-            {showHeatMap() && <SampleSetHeatMap navigate={navigate} user={user} />}
-            {showCards() && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
-            {showGrid() && (
+            {selected === SELECTION_HEATMAP && <SampleSetHeatMap navigate={navigate} user={user} />}
+            {selected === SELECTION_CARDS && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
+            {selected === SELECTION_GRID || selected === undefined && (
                 <GridPanelWithModel
                     queryConfig={queryConfig}
                     asPanel={false}

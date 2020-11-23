@@ -59,10 +59,6 @@ interface Props {
 const SampleSetCardsImpl: FC<Props & InjectedQueryModels> = memo(({ actions, modelId, queryModels }) => {
     const model = queryModels[modelId];
 
-    useEffect(() => {
-        actions.loadModel(modelId);
-    }, []);
-
     const { emptyCards, nonEmptyCards } = useMemo(
         () => ({
             emptyCards: model.isLoading ? undefined : getEmptySampleSetCards(model.gridData),
@@ -113,5 +109,5 @@ export const SampleSetCards: FC<SampleSetCardsProps> = memo(({ excludedSampleSet
         [excludedSampleSets, modelId]
     );
 
-    return <SampleSetCardsWithQueryModels queryConfigs={queryConfigs} modelId={modelId} />;
+    return <SampleSetCardsWithQueryModels queryConfigs={queryConfigs} modelId={modelId} autoLoad={true}/>;
 });

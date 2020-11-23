@@ -74,7 +74,7 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
             />
             {selected === SELECTION_HEATMAP && <SampleSetHeatMap navigate={navigate} user={user} />}
             {selected === SELECTION_CARDS && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
-            {selected === SELECTION_GRID || selected === undefined && (
+            {(selected === SELECTION_GRID || selected === undefined) && (
                 <GridPanelWithModel
                     queryConfig={queryConfig}
                     asPanel={false}

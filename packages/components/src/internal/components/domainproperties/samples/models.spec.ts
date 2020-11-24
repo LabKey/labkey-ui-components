@@ -112,8 +112,7 @@ describe('SampleTypeModel', () => {
             SampleTypeModel.create({ options: fromJS({ metricUnit: null }) } as DomainDetails, undefined).metricUnit
         ).toBe(undefined);
         expect(
-            SampleTypeModel.create({ options: fromJS({ metricUnit: 'ml' }) } as DomainDetails, undefined)
-                .metricUnit
+            SampleTypeModel.create({ options: fromJS({ metricUnit: 'ml' }) } as DomainDetails, undefined).metricUnit
         ).toBe('ml');
     });
 

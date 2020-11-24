@@ -16,8 +16,9 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 
+import { FieldLabel } from '../FieldLabel';
+
 import { SelectInputImpl } from './SelectInput';
-import { FieldLabel } from "../FieldLabel";
 
 describe('SelectInput', () => {
     const formsyProps = {
@@ -108,33 +109,49 @@ describe('SelectInput', () => {
         const defaultLabel = 'Jest Label Test';
         const customLabel = 'Jest Custom Label Test';
 
-        let component = mount(<SelectInputImpl {...Object.assign({}, formsyProps, {
-            showLabel: true,
-            label: defaultLabel,
-        })} />);
+        let component = mount(
+            <SelectInputImpl
+                {...Object.assign({}, formsyProps, {
+                    showLabel: true,
+                    label: defaultLabel,
+                })}
+            />
+        );
         validateFieldLabel(component, true, defaultLabel);
         component.unmount();
 
-        component = mount(<SelectInputImpl {...Object.assign({}, formsyProps, {
-            showLabel: false,
-            label: defaultLabel,
-        })} />);
+        component = mount(
+            <SelectInputImpl
+                {...Object.assign({}, formsyProps, {
+                    showLabel: false,
+                    label: defaultLabel,
+                })}
+            />
+        );
         validateFieldLabel(component, false, undefined);
         component.unmount();
 
-        component = mount(<SelectInputImpl {...Object.assign({}, formsyProps, {
-            showLabel: true,
-            label: defaultLabel,
-            renderFieldLabel: () => <div>{customLabel}</div>
-        })} />);
+        component = mount(
+            <SelectInputImpl
+                {...Object.assign({}, formsyProps, {
+                    showLabel: true,
+                    label: defaultLabel,
+                    renderFieldLabel: () => <div>{customLabel}</div>,
+                })}
+            />
+        );
         validateFieldLabel(component, false, customLabel);
         component.unmount();
 
-        component = mount(<SelectInputImpl {...Object.assign({}, formsyProps, {
-            showLabel: false,
-            label: defaultLabel,
-            renderFieldLabel: () => <div>Jest Custom Label Test</div>
-        })} />);
+        component = mount(
+            <SelectInputImpl
+                {...Object.assign({}, formsyProps, {
+                    showLabel: false,
+                    label: defaultLabel,
+                    renderFieldLabel: () => <div>Jest Custom Label Test</div>,
+                })}
+            />
+        );
         validateFieldLabel(component, false, undefined);
         component.unmount();
     });

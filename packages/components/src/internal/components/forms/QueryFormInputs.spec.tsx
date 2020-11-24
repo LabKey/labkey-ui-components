@@ -30,7 +30,7 @@ import { FileInput } from './input/FileInput';
 import { SelectInput } from './input/SelectInput';
 
 import { DatePickerInput } from './input/DatePickerInput';
-import { FieldLabel } from "./FieldLabel";
+import { FieldLabel } from './FieldLabel';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -69,9 +69,12 @@ describe('QueryFormInputs', () => {
         return getQueryDetails(SCHEMA_QUERY).then(queryInfo => {
             const formWrapper = mount(
                 <Formsy>
-                    <QueryFormInputs queryInfo={queryInfo} renderFieldLabel={(queryColumn: QueryColumn) => {
-                        return <div className={'jest-field-label-test'}>{queryColumn.name}</div>
-                    }} />
+                    <QueryFormInputs
+                        queryInfo={queryInfo}
+                        renderFieldLabel={(queryColumn: QueryColumn) => {
+                            return <div className="jest-field-label-test">{queryColumn.name}</div>;
+                        }}
+                    />
                 </Formsy>
             );
 

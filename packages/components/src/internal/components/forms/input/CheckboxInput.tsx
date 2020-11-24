@@ -96,11 +96,12 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         // produces a "Converting circular structure to JSON" error.
         return (
             <div className="form-group row">
-                {renderFieldLabel
-                    ? <label className="control-label col-sm-3 text-left col-xs-12">
+                {renderFieldLabel ? (
+                    <label className="control-label col-sm-3 text-left col-xs-12">
                         {renderFieldLabel(queryColumn)}
                     </label>
-                    : <FieldLabel
+                ) : (
+                    <FieldLabel
                         label={label}
                         labelOverlayProps={{
                             isFormsy: false,
@@ -115,7 +116,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                             onClick: this.toggleDisabled,
                         }}
                     />
-                }
+                )}
                 <div className="col-sm-9 col-xs-12">
                     <input
                         disabled={this.state.isDisabled}

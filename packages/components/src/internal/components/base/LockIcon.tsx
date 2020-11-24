@@ -1,5 +1,5 @@
 import React, { ReactNode, PureComponent } from 'react';
-import { OverlayTrigger, Popover } from "react-bootstrap";
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

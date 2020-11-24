@@ -158,11 +158,12 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
         return (
             <div className="form-group row">
-                {renderFieldLabel
-                    ? <label className="control-label col-sm-3 text-left col-xs-12">
+                {renderFieldLabel ? (
+                    <label className="control-label col-sm-3 text-left col-xs-12">
                         {renderFieldLabel(queryColumn)}
                     </label>
-                    : <FieldLabel
+                ) : (
+                    <FieldLabel
                         label={label}
                         labelOverlayProps={{
                             isFormsy: false,
@@ -177,7 +178,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                             onClick: this.toggleDisabled,
                         }}
                     />
-                }
+                )}
                 <div className={wrapperClassName}>
                     <DatePicker
                         autoComplete="off"

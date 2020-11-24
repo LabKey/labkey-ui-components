@@ -205,9 +205,10 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
 
         return (
             <div className="form-group row">
-                {renderFieldLabel
-                    ? renderFieldLabel(queryColumn)
-                    : <FieldLabel
+                {renderFieldLabel ? (
+                    renderFieldLabel(queryColumn)
+                ) : (
+                    <FieldLabel
                         labelOverlayProps={labelOverlayProps}
                         showLabel={showLabel}
                         showToggle={allowDisable}
@@ -217,7 +218,7 @@ export class FileInput extends DisableableInput<FileInputProps, FileInputState> 
                             onClick: this.toggleDisabled,
                         }}
                     />
-                }
+                )}
                 <div className="col-md-9">{body}</div>
             </div>
         );

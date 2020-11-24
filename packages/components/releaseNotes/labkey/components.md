@@ -8,6 +8,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     - add new LockIcon components to package
     - add renderFieldLabel property to QueryFormInputs component and related input components
 
+### version 1.3.0
+*Released*: 23 November 2020
+* Add SampleSetSummary and related components (SampleSetHeatMap, SampleSetCards, SampleSetDeleteModal and SampleEmptyAlert)
+* Update HeatMap to use withQueryModels
+
 ### version 1.2.0
 *Released*: 19 November 2020
 * Merge forward changes from release20.11-SNAPSHOT branch

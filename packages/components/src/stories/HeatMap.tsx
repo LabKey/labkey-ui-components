@@ -33,9 +33,9 @@ storiesOf('HeatMap', module)
                 measure="monthTotal"
                 yInRangeTotal="InRangeTotal"
                 yTotalLabel={text('yTotalLabel', '12 month total samples')}
-                getCellUrl={row => AppURL.create('samples', row.getIn(['Protocol', 'displayValue']).toLowerCase())}
-                getHeaderUrl={cell => cell.get('url')}
-                getTotalUrl={cell => cell.get('url')}
+                getCellUrl={row => AppURL.create('samples', row.Protocol?.displayValue?.toLowerCase())}
+                getHeaderUrl={cell => cell.url}
+                getTotalUrl={cell => cell.url}
                 headerClickUrl={AppURL.create('q', 'exp', 'materials')}
                 navigate={url => console.log(url.toString())}
             />
@@ -52,22 +52,15 @@ storiesOf('HeatMap', module)
                 measure="monthTotal"
                 yInRangeTotal="InRangeTotal"
                 yTotalLabel={text('yTotalLabel', '12 month total runs')}
-                getCellUrl={row =>
-                    AppURL.create(
-                        'assays',
-                        row.getIn(['Provider', 'value']),
-                        row.getIn(['Protocol', 'displayValue']),
-                        'runs'
-                    )
-                }
+                getCellUrl={row => AppURL.create('assays', row.Provider.value, row.Protocol.displayValue, 'runs')}
                 getHeaderUrl={cell => {
-                    const provider = cell.get('providerName');
-                    const protocol = cell.get('protocolName');
+                    const provider = cell.providerName;
+                    const protocol = cell.protocolName;
                     return AppURL.create('assays', provider, protocol, 'overview');
                 }}
                 getTotalUrl={cell => {
-                    const provider = cell.get('providerName');
-                    const protocol = cell.get('protocolName');
+                    const provider = cell.providerName;
+                    const protocol = cell.protocolName;
                     return AppURL.create('assays', provider, protocol, 'runs');
                 }}
                 headerClickUrl={AppURL.create('q', 'exp', 'assayruns')}

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Release*: TBD
+* Item 8116: Make insertRows, updateRows, and deleteRows API success response consistent
+    - make sure to include "rows" and "transactionAuditId" for each
+
 ### version 1.4.0
 *Release*: 24 November 2020
 * Item 8137: Misc package changes to support LKFM freezer hierarchy polish

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Release*: TBD
+### version 1.4.0
+*Release*: 24 November 2020
 * Item 8137: Misc package changes to support LKFM freezer hierarchy polish
     - export existing DomainFieldLabel for use in app
     - add new LockIcon components to package

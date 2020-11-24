@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<DeleteIcon/> custom properties 1`] = `
+exports[`<LockIcon/> custom properties 1`] = `
 <span
   className="domain-field-lock-icon jest-testing-cls"
   onBlur={[Function]}
@@ -29,7 +29,7 @@ exports[`<DeleteIcon/> custom properties 1`] = `
 </span>
 `;
 
-exports[`<DeleteIcon/> default properties 1`] = `
+exports[`<LockIcon/> default properties 1`] = `
 <span
   className="domain-field-lock-icon"
   onBlur={[Function]}

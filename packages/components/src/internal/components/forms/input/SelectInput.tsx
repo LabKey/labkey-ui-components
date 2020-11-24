@@ -405,7 +405,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
 
                 if (renderFieldLabel) {
                     return (
-                        <label className={'control-label col-sm-3 text-left col-xs-12'}>
+                        <label className="control-label col-sm-3 text-left col-xs-12">
                             {renderFieldLabel(undefined, label, description)}
                         </label>
                     );

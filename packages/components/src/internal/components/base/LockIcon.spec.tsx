@@ -9,7 +9,7 @@ const DEFAULT_PROPS = {
     body: () => <div>Jest testing body</div>,
 };
 
-describe('<DeleteIcon/>', () => {
+describe('<LockIcon/>', () => {
     test('default properties', () => {
         const component = <LockIcon {...DEFAULT_PROPS} />;
         const tree = renderer.create(component).toJSON();

@@ -97,7 +97,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
         return (
             <div className="form-group row">
                 {renderFieldLabel
-                    ? <label className={'control-label col-sm-3 text-left col-xs-12'}>
+                    ? <label className="control-label col-sm-3 text-left col-xs-12">
                         {renderFieldLabel(queryColumn)}
                     </label>
                     : <FieldLabel

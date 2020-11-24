@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* yarn run lint-fix on src/internal/components/domainproperties
+
 ### version 1.3.0
 *Released*: 23 November 2020
 * Add SampleSetSummary and related components (SampleSetHeatMap, SampleSetCards, SampleSetDeleteModal and SampleEmptyAlert)

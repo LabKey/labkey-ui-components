@@ -5913,7 +5913,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             pull={null}
                                                                             pulse={false}
                                                                             rotation={null}
-                                                                            size="lg"
+                                                                            size={null}
                                                                             spin={false}
                                                                             swapOpacity={false}
                                                                             symbol={false}
@@ -5922,7 +5922,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           >
                                                                             <svg
                                                                               aria-hidden="true"
-                                                                              className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                                                              className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                                                               data-icon="grip-vertical"
                                                                               data-prefix="fas"
                                                                               focusable="false"
@@ -8310,7 +8310,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             pull={null}
                                                                             pulse={false}
                                                                             rotation={null}
-                                                                            size="lg"
+                                                                            size={null}
                                                                             spin={false}
                                                                             swapOpacity={false}
                                                                             symbol={false}
@@ -8319,7 +8319,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           >
                                                                             <svg
                                                                               aria-hidden="true"
-                                                                              className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                                                              className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                                                               data-icon="grip-vertical"
                                                                               data-prefix="fas"
                                                                               focusable="false"
@@ -10654,7 +10654,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             pull={null}
                                                                             pulse={false}
                                                                             rotation={null}
-                                                                            size="lg"
+                                                                            size={null}
                                                                             spin={false}
                                                                             swapOpacity={false}
                                                                             symbol={false}
@@ -10663,7 +10663,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           >
                                                                             <svg
                                                                               aria-hidden="true"
-                                                                              className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                                                              className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                                                               data-icon="grip-vertical"
                                                                               data-prefix="fas"
                                                                               focusable="false"

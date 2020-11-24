@@ -18,6 +18,6 @@ export class DragDropHandle extends React.Component<Props, any> {
                   })
                 : undefined;
 
-        return <FontAwesomeIcon size="lg" className={className} icon={faGripVertical} />;
+        return <FontAwesomeIcon className={className} icon={faGripVertical} />;
     }
 }

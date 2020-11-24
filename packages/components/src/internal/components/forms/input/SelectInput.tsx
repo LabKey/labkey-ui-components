@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 import ReactSelect, { Option } from 'react-select';
 import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
-import { generateId } from '../../../..';
+import { generateId, QueryColumn } from '../../../..';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -128,6 +128,7 @@ export interface SelectInputProps extends DisableableInputProps {
     selectedOptions?: Option | Option[];
     showLabel?: boolean;
     addLabelAsterisk?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     valueKey?: string;
     onChange?: Function; // this is getting confused with formsy on change, need to separate
     optionRenderer?: any;
@@ -383,7 +384,16 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     }
 
     renderLabel(inputProps: any) {
-        const { allowDisable, label, multiple, name, required, showLabel, addLabelAsterisk } = this.props;
+        const {
+            allowDisable,
+            label,
+            multiple,
+            name,
+            required,
+            showLabel,
+            addLabelAsterisk,
+            renderFieldLabel,
+        } = this.props;
         const { isDisabled } = this.state;
 
         if (showLabel && label !== undefined) {
@@ -392,6 +402,15 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                 if (!description) {
                     description = 'Select ' + (multiple ? ' one or more values for ' : ' a ') + label;
                 }
+
+                if (renderFieldLabel) {
+                    return (
+                        <label className="control-label col-sm-3 text-left col-xs-12">
+                            {renderFieldLabel(undefined, label, description)}
+                        </label>
+                    );
+                }
+
                 return (
                     <FieldLabel
                         id={inputProps.id}

@@ -2,11 +2,6 @@
 
 This repository defines all of the npm packages available in the @labkey scope.
 
-:construction: **Warning** :construction:
-These packages are under development, so these components should be considered unstable and are very likely to change.
-Once they're ready, we'll officially push the components as version 1.0.0.
-:construction: **Warning** :construction:
-
 ## Package listing
 
 <!--- keep these alphabetical --->

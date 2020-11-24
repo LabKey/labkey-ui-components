@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 import DatePicker from 'react-datepicker';
 
@@ -43,6 +43,7 @@ export interface DatePickerInputProps extends DisableableInputProps {
     showLabel?: boolean;
     value?: any;
     addLabelAsterisk?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
 
     // from formsy-react
     getErrorMessage?: Function;
@@ -147,6 +148,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
             queryColumn,
             showLabel,
             addLabelAsterisk,
+            renderFieldLabel,
             placeholderText,
             isClearable,
             wrapperClassName,
@@ -156,21 +158,27 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
         return (
             <div className="form-group row">
-                <FieldLabel
-                    label={label}
-                    labelOverlayProps={{
-                        isFormsy: false,
-                        inputId: queryColumn.name,
-                        addLabelAsterisk,
-                    }}
-                    showLabel={showLabel}
-                    showToggle={allowDisable}
-                    column={queryColumn}
-                    isDisabled={isDisabled}
-                    toggleProps={{
-                        onClick: this.toggleDisabled,
-                    }}
-                />
+                {renderFieldLabel ? (
+                    <label className="control-label col-sm-3 text-left col-xs-12">
+                        {renderFieldLabel(queryColumn)}
+                    </label>
+                ) : (
+                    <FieldLabel
+                        label={label}
+                        labelOverlayProps={{
+                            isFormsy: false,
+                            inputId: queryColumn.name,
+                            addLabelAsterisk,
+                        }}
+                        showLabel={showLabel}
+                        showToggle={allowDisable}
+                        column={queryColumn}
+                        isDisabled={isDisabled}
+                        toggleProps={{
+                            onClick: this.toggleDisabled,
+                        }}
+                    />
+                )}
                 <div className={wrapperClassName}>
                     <DatePicker
                         autoComplete="off"

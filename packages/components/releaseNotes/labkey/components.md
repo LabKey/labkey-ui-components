@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.4.0
+*Release*: 24 November 2020
+* Item 8137: Misc package changes to support LKFM freezer hierarchy polish
+    - export existing DomainFieldLabel for use in app
+    - add new LockIcon components to package
+    - add renderFieldLabel property to QueryFormInputs component and related input components
+
 ### version 1.3.0
 *Released*: 23 November 2020
 * Add SampleSetSummary and related components (SampleSetHeatMap, SampleSetCards, SampleSetDeleteModal and SampleEmptyAlert)

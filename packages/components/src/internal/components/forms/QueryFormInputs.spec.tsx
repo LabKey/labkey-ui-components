@@ -21,7 +21,7 @@ import { mount } from 'enzyme';
 
 import { initUnitTestMocks } from '../../testHelpers';
 
-import { getQueryDetails, SchemaQuery } from '../../..';
+import { getQueryDetails, QueryColumn, SchemaQuery } from '../../..';
 
 import { QueryFormInputs } from './QueryFormInputs';
 import { TextInput } from './input/TextInput';
@@ -30,6 +30,7 @@ import { FileInput } from './input/FileInput';
 import { SelectInput } from './input/SelectInput';
 
 import { DatePickerInput } from './input/DatePickerInput';
+import { FieldLabel } from './FieldLabel';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -56,6 +57,29 @@ describe('QueryFormInputs', () => {
             expect(formWrapper.find(SelectInput)).toHaveLength(0);
             // default properties don't render file inputs
             expect(formWrapper.find(FileInput)).toHaveLength(0);
+
+            // by default all inputs should render labels with FieldLabel
+            expect(formWrapper.find(FieldLabel)).toHaveLength(7);
+
+            formWrapper.unmount();
+        });
+    });
+
+    test('renderFieldLabel', () => {
+        return getQueryDetails(SCHEMA_QUERY).then(queryInfo => {
+            const formWrapper = mount(
+                <Formsy>
+                    <QueryFormInputs
+                        queryInfo={queryInfo}
+                        renderFieldLabel={(queryColumn: QueryColumn) => {
+                            return <div className="jest-field-label-test">{queryColumn.name}</div>;
+                        }}
+                    />
+                </Formsy>
+            );
+
+            expect(formWrapper.find(FieldLabel)).toHaveLength(0);
+            expect(formWrapper.find('.jest-field-label-test')).toHaveLength(7);
 
             formWrapper.unmount();
         });

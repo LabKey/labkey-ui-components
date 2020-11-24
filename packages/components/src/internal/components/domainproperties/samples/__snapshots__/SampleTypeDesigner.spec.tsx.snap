@@ -67,7 +67,7 @@ Array [
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType"
                   target="_blank"
                 >
                   Learn more about designing some samples
@@ -496,7 +496,7 @@ Array [
               >
                 <a
                   className="domain-field-float-right"
-                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+                  href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType"
                   target="_blank"
                 >
                   Learn more about designing sample types
@@ -1031,6 +1031,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "wrappedColumnName": undefined,
             "disablePhiLevel": false,
             "lockExistingField": false,
+            "sourceOntology": undefined,
+            "conceptLabelColumn": undefined,
+            "conceptImportColumn": undefined,
           },
         ],
         "indices": Immutable.List [],
@@ -1081,6 +1084,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       }
     }
     firstState={true}
+    helpTopic="createSampleType"
     includeDataClasses={false}
     initModel={
       Immutable.Record {
@@ -1175,6 +1179,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "wrappedColumnName": undefined,
               "disablePhiLevel": false,
               "lockExistingField": false,
+              "sourceOntology": undefined,
+              "conceptLabelColumn": undefined,
+              "conceptImportColumn": undefined,
             },
           ],
           "indices": Immutable.List [],
@@ -1190,11 +1197,14 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "nameReadOnly": true,
       }
     }
+    nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
+    nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
     onCancel={[MockFunction]}
     onComplete={[MockFunction]}
     onFinish={[Function]}
     onTogglePanel={[Function]}
     setSubmitting={[Function]}
+    showParentLabelPrefix={true}
     submitting={false}
     useSeparateDataClassesAliasMenu={false}
     useTheme={false}
@@ -1294,6 +1304,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -1317,6 +1330,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       <ComponentWithDomainPropertiesPanelCollapse
         appPropertiesOnly={true}
         controlledCollapse={true}
+        helpTopic="createSampleType"
         includeDataClasses={false}
         initCollapsed={false}
         model={
@@ -1422,6 +1436,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "wrappedColumnName": undefined,
                   "disablePhiLevel": false,
                   "lockExistingField": false,
+                  "sourceOntology": undefined,
+                  "conceptLabelColumn": undefined,
+                  "conceptImportColumn": undefined,
                 },
               ],
               "indices": Immutable.List [],
@@ -1435,6 +1452,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "exception": undefined,
           }
         }
+        nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
+        nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
         onAddParentAlias={[Function]}
         onParentAliasChange={[Function]}
         onRemoveParentAlias={[Function]}
@@ -1453,7 +1472,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           dataClassAliasCaption="Data Class Alias"
           dataClassParentageLabel="data class"
           dataClassTypeCaption="Data Class"
-          helpTopic="createSampleSet"
+          helpTopic="createSampleType"
           includeDataClasses={false}
           metricUnitProps={
             Object {
@@ -1564,6 +1583,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -1577,7 +1599,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "exception": undefined,
             }
           }
-          nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs"
+          nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
           nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
           nounPlural="Sample Types"
           nounSingular="Sample Type"
@@ -1602,7 +1624,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             dataClassParentageLabel="data class"
             dataClassTypeCaption="Data Class"
             headerId="sample-type-properties-hdr"
-            helpTopic="createSampleSet"
+            helpTopic="createSampleType"
             includeDataClasses={false}
             isValid={true}
             metricUnitProps={
@@ -1714,6 +1736,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "wrappedColumnName": undefined,
                       "disablePhiLevel": false,
                       "lockExistingField": false,
+                      "sourceOntology": undefined,
+                      "conceptLabelColumn": undefined,
+                      "conceptImportColumn": undefined,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -1727,7 +1752,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "exception": undefined,
               }
             }
-            nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs"
+            nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
             nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
             nounPlural="Sample Types"
             nounSingular="Sample Type"
@@ -1909,7 +1934,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         className="col-xs-12"
                                       >
                                         <HelpTopicURL
-                                          helpTopic="createSampleSet"
+                                          helpTopic="createSampleType"
                                           nounPlural="Sample Types"
                                         >
                                           <Row
@@ -1929,7 +1954,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                 >
                                                   <a
                                                     className="domain-field-float-right"
-                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleSet"
+                                                    href="https://www.labkey.org/Documentation/wiki-page.view?name=createSampleType"
                                                     target="_blank"
                                                   >
                                                     Learn more about designing sample types
@@ -2056,6 +2081,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             "wrappedColumnName": undefined,
                                             "disablePhiLevel": false,
                                             "lockExistingField": false,
+                                            "sourceOntology": undefined,
+                                            "conceptLabelColumn": undefined,
+                                            "conceptImportColumn": undefined,
                                           },
                                         ],
                                         "indices": Immutable.List [],
@@ -2069,7 +2097,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       "exception": undefined,
                                     }
                                   }
-                                  nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs"
+                                  nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
                                   nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
                                   nameReadOnly={true}
                                   noun="Sample Type"
@@ -2913,6 +2941,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "wrappedColumnName": undefined,
                 "disablePhiLevel": false,
                 "lockExistingField": false,
+                "sourceOntology": undefined,
+                "conceptLabelColumn": undefined,
+                "conceptImportColumn": undefined,
               },
             ],
             "indices": Immutable.List [],
@@ -3033,6 +3064,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "wrappedColumnName": undefined,
                     "disablePhiLevel": false,
                     "lockExistingField": false,
+                    "sourceOntology": undefined,
+                    "conceptLabelColumn": undefined,
+                    "conceptImportColumn": undefined,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -3892,8 +3926,13 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "wrappedColumnName": undefined,
                                                             "disablePhiLevel": false,
                                                             "lockExistingField": false,
+                                                            "sourceOntology": undefined,
+                                                            "conceptLabelColumn": undefined,
+                                                            "conceptImportColumn": undefined,
                                                           }
                                                         }
+                                                        fieldDetailsInfo={Object {}}
+                                                        getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={0}
                                                         key="domain-row-key-0"
@@ -4075,6 +4114,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "wrappedColumnName": undefined,
                                                                             "disablePhiLevel": false,
                                                                             "lockExistingField": false,
+                                                                            "sourceOntology": undefined,
+                                                                            "conceptLabelColumn": undefined,
+                                                                            "conceptImportColumn": undefined,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -4180,7 +4222,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             pull={null}
                                                                             pulse={false}
                                                                             rotation={null}
-                                                                            size="lg"
+                                                                            size={null}
                                                                             spin={false}
                                                                             swapOpacity={false}
                                                                             symbol={false}
@@ -4189,7 +4231,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                           >
                                                                             <svg
                                                                               aria-hidden="true"
-                                                                              className="svg-inline--fa fa-grip-vertical fa-w-10 fa-lg "
+                                                                              className="svg-inline--fa fa-grip-vertical fa-w-10 "
                                                                               data-icon="grip-vertical"
                                                                               data-prefix="fas"
                                                                               focusable="false"
@@ -4651,8 +4693,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "wrappedColumnName": undefined,
                                                                               "disablePhiLevel": false,
                                                                               "lockExistingField": false,
+                                                                              "sourceOntology": undefined,
+                                                                              "conceptLabelColumn": undefined,
+                                                                              "conceptImportColumn": undefined,
                                                                             }
                                                                           }
+                                                                          getDomainFields={[Function]}
                                                                           index={0}
                                                                           onChange={[Function]}
                                                                           onMultiChange={[Function]}
@@ -5073,6 +5119,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     index={0}
@@ -5614,6 +5663,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "wrappedColumnName": undefined,
                                                                                         "disablePhiLevel": false,
                                                                                         "lockExistingField": false,
+                                                                                        "sourceOntology": undefined,
+                                                                                        "conceptLabelColumn": undefined,
+                                                                                        "conceptImportColumn": undefined,
                                                                                       }
                                                                                     }
                                                                                     hideConditionalFormatting={true}

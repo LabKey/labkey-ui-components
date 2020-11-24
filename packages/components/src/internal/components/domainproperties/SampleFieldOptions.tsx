@@ -96,7 +96,7 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                     </Col>
                 </Row>
                 <Row className="domain-row-expanded">
-                    <Col xs={2}>
+                    <Col xs={5}>
                         <div className="domain-field-label">
                             Sample lookup to
                             <LabelHelpTip title="Sample Reference" body={this.getHelpText} />

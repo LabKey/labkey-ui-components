@@ -40,6 +40,12 @@ import {
 import { clearFieldDetails, createFormInputId, updateDomainField } from './actions';
 
 import { DomainRow } from './DomainRow';
+import { ActionButton } from "../buttons/ActionButton";
+import { initUnitTestMocks, sleep } from '../../testHelpers';
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
 
 interface Props {
     showInferFromFile?: boolean;
@@ -72,10 +78,11 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
 }
 
 describe('DomainForm', () => {
-    test('with empty domain form', () => {
+    test('with empty domain form', async () => {
         const domain = DomainDesign.create({});
 
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        await sleep();
 
         // Empty panel
         const emptyHdrMsg = form.find({ className: 'domain-form-no-field-panel panel panel-default' });
@@ -100,17 +107,18 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('with showHeader, helpNoun, and helpTopic', () => {
+    test('with showHeader, helpNoun, and helpTopic', async () => {
         const domain = DomainDesign.create({});
         const form = mount(
             <DomainForm domain={domain} helpNoun="assay" helpTopic="assays" showHeader={false} onChange={jest.fn()} />
         );
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('domain form with no fields', () => {
+    test('domain form with no fields', async () => {
         const domain = DomainDesign.create({
             name: 'no fields',
             description: 'no field description',
@@ -120,12 +128,13 @@ describe('DomainForm', () => {
             indices: [],
         });
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('domain form with all field types', () => {
+    test('domain form with all field types', async () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -206,12 +215,13 @@ describe('DomainForm', () => {
             indices: [],
         });
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('domain form with updated fields', () => {
+    test('domain form with updated fields', async () => {
         const fields = [];
         fields.push({
             name: 'fieldname',
@@ -254,12 +264,13 @@ describe('DomainForm', () => {
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_TYPE, 0, 3), value: 'attachment' });
 
         const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('domain form updated field, cleared details', () => {
+    test('domain form updated field, cleared details', async () => {
         const fields = [];
         fields.push({
             name: 'fieldname',
@@ -282,12 +293,13 @@ describe('DomainForm', () => {
         domain = clearFieldDetails(domain);
 
         const form = mount(<DomainForm domain={domain} key="domainForm" onChange={jest.fn()} />);
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('domain form add, expand, and delete field', () => {
+    test('domain form add, expand, and delete field', async () => {
         const fields = [
             {
                 name: 'fieldname',
@@ -314,6 +326,7 @@ describe('DomainForm', () => {
         };
 
         const form = mount(<DomainForm domain={domain} onChange={changeHandler} />);
+        await sleep();
 
         // Add new row
         const findButton = form.find({ className: 'domain-form-add-btn' }).childAt(0);
@@ -353,7 +366,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('domain form initCollapsed', () => {
+    test('domain form initCollapsed', async () => {
         const domain = DomainDesign.create({
             name: 'collapsed with two fields',
             fields: [
@@ -375,12 +388,13 @@ describe('DomainForm', () => {
         const form = mount(
             <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} />
         );
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('domain form initCollapsed and markComplete', () => {
+    test('domain form initCollapsed and markComplete', async () => {
         const domain = DomainDesign.create({
             name: 'collapsed and markComplete',
             fields: [
@@ -402,12 +416,13 @@ describe('DomainForm', () => {
         const form = mount(
             <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} />
         );
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('domain form headerPrefix and panelCls', () => {
+    test('domain form headerPrefix and panelCls', async () => {
         const domain = DomainDesign.create({ name: 'Foo headerPrefix and panelCls' });
 
         const form = mount(
@@ -419,23 +434,26 @@ describe('DomainForm', () => {
                 onChange={jest.fn()}
             />
         );
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('with showInferFromFile', () => {
+    test('with showInferFromFile', async () => {
         const domain = DomainDesign.create({});
         const form = mount(<DomainForm domain={domain} showInferFromFile={true} onChange={jest.fn()} />);
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('test showInferFromFile click domain-form-manual-btn', () => {
+    test('test showInferFromFile click domain-form-manual-btn', async () => {
         const component = <DomainFormContainer showInferFromFile={true} />;
-
         const wrapper = mount(component);
+        await sleep();
+
         expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
         expect(wrapper.find('.domain-form-manual-btn')).toHaveLength(1);
         wrapper.find('.domain-form-manual-btn>span').simulate('click');
@@ -445,7 +463,7 @@ describe('DomainForm', () => {
         wrapper.unmount();
     });
 
-    test('domain form header and search', () => {
+    test('domain form header and search', async () => {
         const fields = [];
         fields.push({
             name: 'abc_fieldname',
@@ -491,6 +509,7 @@ describe('DomainForm', () => {
 
         const helpTopic = 'Your topic';
         const form = mount(<DomainForm helpTopic={helpTopic} domain={domain} onChange={changeHandler} />);
+        await sleep();
 
         // Check help link
         const helpLink = form.find('a.domain-field-float-right');
@@ -521,7 +540,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test('domain form no file or attachment type', () => {
+    test('domain form no file or attachment type', async () => {
         const domain = DomainDesign.create({
             name: 'Domain Name',
             description: 'description',
@@ -543,6 +562,7 @@ describe('DomainForm', () => {
         };
 
         const form = mount(<DomainForm domain={domain} onChange={changeHandler} />);
+        await sleep();
 
         // Add new row
         const findButton = form.find({ className: 'domain-form-add-btn' }).childAt(0);
@@ -560,12 +580,13 @@ describe('DomainForm', () => {
         expect(typeField.find({ value: 'flag' }).length).toEqual(0);
         expect(typeField.find({ value: 'fileLink' }).length).toEqual(0);
         expect(typeField.find({ value: 'attachment' }).length).toEqual(0);
+        expect(typeField.find({ value: 'ontologyLookup' }).length).toEqual(0);
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('header click for expand and collapse', () => {
+    test('header click for expand and collapse', async () => {
         const name = 'header click';
         const domain = DomainDesign.create({
             name,
@@ -582,6 +603,8 @@ describe('DomainForm', () => {
         const wrapper = mount(
             <DomainForm domain={domain} onChange={jest.fn} collapsible={true} controlledCollapse={true} />
         );
+        await sleep();
+
         expect(wrapper.find('.domain-panel-header-expanded').hostNodes()).toHaveLength(1);
         expect(wrapper.find('.domain-panel-header-collapsed').hostNodes()).toHaveLength(0);
         expect(wrapper.find('.panel-heading').text()).toBe(name + '1 Field Defined');
@@ -600,7 +623,7 @@ describe('DomainForm', () => {
         wrapper.unmount();
     });
 
-    test('Show app header', () => {
+    test('Show app header', async () => {
         const name = 'header click';
         const domain = DomainDesign.create({
             name,
@@ -627,12 +650,14 @@ describe('DomainForm', () => {
         const wrapper = mount(
             <DomainForm domain={domain} onChange={jest.fn} collapsible={true} appDomainHeaderRenderer={mockAppHeader} />
         );
+        await sleep();
+
         expect(wrapper.find(DomainRow)).toHaveLength(1);
         expect(wrapper.find('#' + _headerId).text()).toBe(_headerText);
         wrapper.unmount();
     });
 
-    test('domain form with hide required', () => {
+    test('domain form with hide required', async () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -659,12 +684,13 @@ describe('DomainForm', () => {
                 }}
             />
         );
+        await sleep();
 
         expect(form).toMatchSnapshot();
         form.unmount();
     });
 
-    test('domain form with hide add fields button', () => {
+    test('domain form with hide add fields button', async () => {
         const domain = DomainDesign.create({});
 
         const form = mount(
@@ -676,12 +702,129 @@ describe('DomainForm', () => {
                 }}
             />
         );
+        await sleep();
 
         // Add button
         const findButton = form.find({ className: 'domain-form-add-btn' });
         expect(findButton.length).toEqual(0);
 
         expect(form).toMatchSnapshot();
+        form.unmount();
+    });
+
+    test('using allowImportExport', () => {
+        const domain = DomainDesign.create({});
+
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                allowImportExport={true}
+            />
+        );
+
+        expect(form.find('.domain-form-manual-section').length).toEqual(1);
+        expect(form.find('.file-form-formats').text()).toContain('.json');
+        expect(form.find('.domain-toolbar-export-btn').length).toEqual(0);
+        expect(form.find('.domain-field-top-noBuffer').length).toEqual(0);
+
+        form.unmount();
+    });
+
+    test('not using allowImportExport', () => {
+        const domain = DomainDesign.create({});
+
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                allowImportExport={false}
+            />
+        );
+
+        expect(form.find('.domain-form-manual-section').length).toEqual(0);
+        expect(form.find('.file-form-formats').length).toEqual(0);
+        expect(form.find('.domain-toolbar-export-btn').length).toEqual(0);
+        expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
+
+        form.unmount();
+    });
+
+    test('using allowImportExport, field view', () => {
+        const fields = [];
+        fields.push({
+            name: 'key',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test',
+        });
+
+        const domain = DomainDesign.create({
+            name: 'allowImportExport field view',
+            description: 'basic list domain form',
+            domainURI: 'test',
+            domainId: 1,
+            fields,
+            indices: [],
+        });
+
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                domainFormDisplayOptions={{
+                    hideRequired: true,
+                }}
+                allowImportExport={true}
+            />
+        );
+
+        expect(form.find('.domain-toolbar-export-btn').length).toEqual(1);
+        expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
+
+        // Note that the button at index i is the export button
+        const actionButtons = form.find(ActionButton);
+        expect(actionButtons.length).toBe(3);
+        expect(actionButtons.at(1).prop('disabled')).toBe(false);
+
+        form.unmount();
+    });
+
+    test('not using allowImportExport, field view', () => {
+        const fields = [];
+        fields.push({
+            name: 'key',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test',
+        });
+
+        const domain = DomainDesign.create({
+            name: 'allowImportExport field view',
+            description: 'basic list domain form',
+            domainURI: 'test',
+            domainId: 1,
+            fields,
+            indices: [],
+        });
+
+        const form = mount(
+            <DomainForm
+                domain={domain}
+                onChange={jest.fn()}
+                domainFormDisplayOptions={{
+                    hideRequired: true,
+                }}
+                allowImportExport={false}
+            />
+        );
+
+        expect(form.find('.domain-toolbar-export-btn').length).toEqual(0);
+        expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
+
+        const actionButtons = form.find(ActionButton);
+        expect(actionButtons.length).toBe(2);
+
         form.unmount();
     });
 });

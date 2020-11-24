@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Textarea } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
@@ -36,6 +36,7 @@ interface TextAreaInputProps extends DisableableInputProps {
     initiallyDisabled?: boolean;
     value?: any;
     addLabelAsterisk?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     onChange?: any;
 }
 
@@ -62,8 +63,12 @@ export class TextAreaInput extends DisableableInput<TextAreaInputProps, Disablea
     }
 
     renderLabel() {
-        const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk } = this.props;
+        const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk, renderFieldLabel } = this.props;
         const { isDisabled } = this.state;
+
+        if (renderFieldLabel) {
+            return renderFieldLabel(queryColumn);
+        }
 
         return (
             <FieldLabel

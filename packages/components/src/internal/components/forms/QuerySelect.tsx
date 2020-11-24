@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { fromJS, List } from 'immutable';
 import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api';
@@ -136,6 +136,7 @@ interface InheritedSelectInputProps {
     saveOnBlur?: boolean;
     showLabel?: boolean;
     addLabelAsterisk?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     validations?: any;
     value?: any;
 }

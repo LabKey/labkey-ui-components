@@ -63,6 +63,7 @@ import { AddEntityButton } from './internal/components/buttons/AddEntityButton';
 import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityButton';
 import { Alert } from './internal/components/base/Alert';
 import { DeleteIcon } from './internal/components/base/DeleteIcon';
+import { LockIcon } from './internal/components/base/LockIcon';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
 import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
@@ -399,6 +400,7 @@ import { ListDesignerPanels } from './internal/components/domainproperties/list/
 import { DataClassDesigner } from './internal/components/domainproperties/dataclasses/DataClassDesigner';
 import { DataClassModel } from './internal/components/domainproperties/dataclasses/models';
 import { deleteDataClass, fetchDataClass } from './internal/components/domainproperties/dataclasses/actions';
+import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
 import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
@@ -700,6 +702,7 @@ export {
     setDomainFields,
     DomainDesign,
     DomainField,
+    DomainFieldLabel,
     IDomainField,
     DomainDetails,
     inferDomainFromFile,
@@ -822,6 +825,7 @@ export {
     LoadingSpinner,
     CreatedModified,
     DeleteIcon,
+    LockIcon,
     // base models, enums, constants
     Container,
     User,

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Input } from 'formsy-react-components';
 
 import { FieldLabel } from '../FieldLabel';
@@ -37,6 +37,7 @@ export interface TextInputProps extends DisableableInputProps {
     validatePristine?: boolean;
     value?: string;
     addLabelAsterisk?: boolean;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
 }
 
 interface TextInputState extends DisableableInputState {
@@ -84,8 +85,12 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
     }
 
     renderLabel() {
-        const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk } = this.props;
+        const { label, queryColumn, showLabel, allowDisable, addLabelAsterisk, renderFieldLabel } = this.props;
         const { isDisabled } = this.state;
+
+        if (renderFieldLabel) {
+            return renderFieldLabel(queryColumn);
+        }
 
         return (
             <FieldLabel
@@ -116,12 +121,10 @@ export class TextInput extends DisableableInput<TextInputProps, TextInputState> 
             elementWrapperClassName,
             labelClassName,
             name,
-            onChange,
             placeholder,
             queryColumn,
             rowClassName,
             validatePristine,
-            value,
         } = this.props;
 
         let type = 'text',

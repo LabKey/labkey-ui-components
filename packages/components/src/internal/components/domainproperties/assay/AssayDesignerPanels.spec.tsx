@@ -6,10 +6,11 @@ import { Panel } from 'react-bootstrap';
 import { DomainDesign } from '../models';
 import { FileAttachmentForm } from '../../../..';
 
+import { initUnitTestMocks, sleep } from '../../../testHelpers';
+
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
 import { AssayDesignerPanels } from './AssayDesignerPanels';
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
 
 const EXISTING_MODEL = AssayProtocolModel.create({
     protocolId: 1,
@@ -143,7 +144,9 @@ describe('AssayDesignerPanels', () => {
             await sleep();
             setAssayName(wrapper, 'Foo');
             expect(wrapper.find(FileAttachmentForm)).toHaveLength(1);
-            expect(wrapper.find('.file-form-formats').text()).toContain(shouldInfer ? 'include: .csv, .tsv, .txt, .xls, .xlsx, .json' : 'include: .json');
+            expect(wrapper.find('.file-form-formats').text()).toContain(
+                shouldInfer ? 'include: .csv, .tsv, .txt, .xls, .xlsx, .json' : 'include: .json'
+            );
             wrapper.unmount();
         }
 

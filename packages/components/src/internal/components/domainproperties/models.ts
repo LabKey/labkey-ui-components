@@ -73,7 +73,7 @@ export interface ITypeDependentProps {
 }
 
 export interface FieldDetails {
-    detailsInfo: {[key: string]: string};
+    detailsInfo: { [key: string]: string };
     ontologyLookupIndices: number[];
 }
 
@@ -819,7 +819,7 @@ export class DomainField
     }
 
     hasInvalidName(): boolean {
-        return (this.name === undefined || this.name === null || this.name.trim() === '');
+        return this.name === undefined || this.name === null || this.name.trim() === '';
     }
 
     hasErrors(): boolean {
@@ -872,7 +872,7 @@ export class DomainField
         }
     }
 
-    getDetailsTextArray(fieldDetailsInfo?: {[key: string]: string}): any[] {
+    getDetailsTextArray(fieldDetailsInfo?: { [key: string]: string }): any[] {
         const details = [];
         let period = '';
 

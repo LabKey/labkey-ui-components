@@ -472,18 +472,22 @@ describe('DomainField', () => {
         expect(DomainField.create({ name: '' }).getErrors()).toBe(FieldErrors.MISSING_FIELD_NAME);
         expect(DomainField.create({ name: 'test' }).getErrors()).toBe(FieldErrors.NONE);
 
-        expect(DomainField.create({
-            name: 'test',
-            rangeURI: STRING_RANGE_URI,
-            conceptURI: CONCEPT_CODE_CONCEPT_URI,
-            sourceOntology: undefined
-        }).getErrors()).toBe(FieldErrors.MISSING_ONTOLOGY_PROPERTIES);
-        expect(DomainField.create({
-            name: 'test',
-            rangeURI: STRING_RANGE_URI,
-            conceptURI: CONCEPT_CODE_CONCEPT_URI,
-            sourceOntology: 'test1'
-        }).getErrors()).toBe(FieldErrors.NONE);
+        expect(
+            DomainField.create({
+                name: 'test',
+                rangeURI: STRING_RANGE_URI,
+                conceptURI: CONCEPT_CODE_CONCEPT_URI,
+                sourceOntology: undefined,
+            }).getErrors()
+        ).toBe(FieldErrors.MISSING_ONTOLOGY_PROPERTIES);
+        expect(
+            DomainField.create({
+                name: 'test',
+                rangeURI: STRING_RANGE_URI,
+                conceptURI: CONCEPT_CODE_CONCEPT_URI,
+                sourceOntology: 'test1',
+            }).getErrors()
+        ).toBe(FieldErrors.NONE);
     });
 
     test('getDetailsTextArray', () => {
@@ -514,11 +518,13 @@ describe('DomainField', () => {
         field = field.merge({ lockType: DOMAIN_FIELD_FULLY_LOCKED }) as DomainField;
         expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Primary Key. Locked');
 
-        expect(field.getDetailsTextArray({test: 'Additional Info'}).join(''))
-            .toBe('Updated. SRC. Primary Key. Locked. Additional Info');
+        expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
+            'Updated. SRC. Primary Key. Locked. Additional Info'
+        );
         field = field.merge({ name: '' }) as DomainField;
-        expect(field.getDetailsTextArray({test: 'Additional Info'}).join(''))
-            .toBe('Updated. SRC. Primary Key. Locked');
+        expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
+            'Updated. SRC. Primary Key. Locked'
+        );
     });
 });
 
@@ -532,9 +538,11 @@ describe('OntologyModel', () => {
     });
 
     test('getLabel', () => {
-        expect(OntologyModel.create({
-            Name: { value: 'test' },
-            Abbreviation: { value: 'T' }
-        }).getLabel()).toBe('test (T)');
+        expect(
+            OntologyModel.create({
+                Name: { value: 'test' },
+                Abbreviation: { value: 'T' },
+            }).getLabel()
+        ).toBe('test (T)');
     });
 });

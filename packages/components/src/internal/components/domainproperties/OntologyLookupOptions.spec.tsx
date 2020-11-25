@@ -8,7 +8,7 @@ import { OntologyLookupOptions } from './OntologyLookupOptions';
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from './PropDescType';
-import { DOMAIN_FIELD_FULLY_LOCKED } from "./constants";
+import { DOMAIN_FIELD_FULLY_LOCKED } from './constants';
 
 const DEFAULT_PROPS = {
     index: 0,
@@ -52,7 +52,13 @@ beforeAll(() => {
 });
 
 describe('OntologyLookupOptions', () => {
-    function validate(wrapper: any, disabled: boolean, selectedSource: string, importOptions: string[], labelOptions: string[]) {
+    function validate(
+        wrapper: any,
+        disabled: boolean,
+        selectedSource: string,
+        importOptions: string[],
+        labelOptions: string[]
+    ) {
         expect(wrapper.find(SectionHeading)).toHaveLength(1);
         expect(wrapper.find('.domain-field-label')).toHaveLength(3);
 
@@ -111,7 +117,14 @@ describe('OntologyLookupOptions', () => {
 
     test('disabled selects', async () => {
         const domainFields = List.of(field1, field2, field3, field4, field5, field6);
-        const wrapper = mount(<OntologyLookupOptions {...DEFAULT_PROPS} field={field1} domainFields={domainFields} lockType={DOMAIN_FIELD_FULLY_LOCKED} />);
+        const wrapper = mount(
+            <OntologyLookupOptions
+                {...DEFAULT_PROPS}
+                field={field1}
+                domainFields={domainFields}
+                lockType={DOMAIN_FIELD_FULLY_LOCKED}
+            />
+        );
         await sleep();
         wrapper.update();
 

@@ -33,12 +33,13 @@ import { importData, Progress, resolveErrorMessage } from '../../../..';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_NOT_LOCKED } from '../constants';
 
+import ConfirmImportTypes from '../ConfirmImportTypes';
+
 import { DatasetColumnMappingPanel } from './DatasetColumnMappingPanel';
 
 import { DatasetPropertiesPanel } from './DatasetPropertiesPanel';
 import { DatasetModel } from './models';
 import { getStudySubjectProp, getStudyTimepointLabel } from './actions';
-import ConfirmImportTypes from "../ConfirmImportTypes";
 
 const KEY_FIELD_MAPPING_ERROR = 'Your Additional Key Field must not be one of the Column Mapping fields.';
 const VISIT_DATE_MAPPING_ERROR = 'Your Visit Date Column must not be one of the Column Mapping fields.';
@@ -327,7 +328,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         Domain.drop({
             schemaName: 'study',
             queryName: savedModel.name,
-            failure: (error) => {
+            failure: error => {
                 this.setState(
                     produce((draft: Draft<State>) => {
                         draft.model.exception = error;
@@ -546,7 +547,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     toggle={submitting && file !== undefined}
                 />
                 <ConfirmImportTypes
-                    designerType='dataset'
+                    designerType="dataset"
                     show={importError !== undefined}
                     error={importError}
                     onConfirm={this.onImportErrorContinue}

@@ -17,6 +17,8 @@ import { List } from 'immutable';
 
 import { QueryColumn } from '../../..';
 
+import { initUnitTestMocks } from '../../testHelpers';
+
 import {
     createFormInputId,
     getAvailableTypes,
@@ -34,7 +36,7 @@ import {
     updateDomainException,
     updateOntologyFieldProperties,
     processJsonImport,
-    downloadJsonFile
+    downloadJsonFile,
 } from './actions';
 import { DomainDesign, DomainException, DomainField } from './models';
 import {
@@ -58,7 +60,6 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
 } from './constants';
-import { initUnitTestMocks } from '../../testHelpers';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -460,11 +461,11 @@ describe('domain properties actions', () => {
     });
 
     test('downloadJsonFile', () => {
-        const mockLink = { href: '', click: jest.fn(), download: '', style: { display: '' }} as any;
+        const mockLink = { href: '', click: jest.fn(), download: '', style: { display: '' } } as any;
         const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValueOnce(mockLink);
         document.body.appendChild = jest.fn();
         document.body.removeChild = jest.fn();
-        downloadJsonFile("test-file", "fileName");
+        downloadJsonFile('test-file', 'fileName');
 
         expect(createElementSpy).toBeCalledWith('a');
         expect(mockLink.style.display).toBe('none');
@@ -476,22 +477,43 @@ describe('domain properties actions', () => {
     test('processJsonImport ', () => {
         const domain = DomainDesign.create({});
 
-        const emptinessError = {success: false, msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.'};
-        expect(processJsonImport("[]", domain)).toStrictEqual(emptinessError);
-        expect(processJsonImport("{}", domain)).toStrictEqual(emptinessError);
-        expect(processJsonImport("", domain)).toStrictEqual(emptinessError);
-        expect(() => {processJsonImport("<<< Invalid JSON", domain)}).toThrow();
+        const emptinessError = {
+            success: false,
+            msg:
+                'No field definitions were found in the imported json file. Please check the file contents and try again.',
+        };
+        expect(processJsonImport('[]', domain)).toStrictEqual(emptinessError);
+        expect(processJsonImport('{}', domain)).toStrictEqual(emptinessError);
+        expect(processJsonImport('', domain)).toStrictEqual(emptinessError);
+        expect(() => {
+            processJsonImport('<<< Invalid JSON', domain);
+        }).toThrow();
 
-        const primaryKeyErrorAssay = {success: false, msg: "Error on importing field 'undefined': Assay domain type does not support fields with an externally defined Primary Key."};
-        const primaryKeyError = {success: false, msg: "Error on importing field 'undefined': This domain type does not support fields with an externally defined Primary Key."};
-        expect(processJsonImport('[{"isPrimaryKey": true, "lockType": "PKLocked"}]', DomainDesign.create({domainKindName: 'Assay'}))).toStrictEqual(primaryKeyErrorAssay);
-        expect(processJsonImport('[{"isPrimaryKey": true, "lockType": "PKLocked"}]', domain)).toStrictEqual(primaryKeyError);
+        const primaryKeyErrorAssay = {
+            success: false,
+            msg:
+                "Error on importing field 'undefined': Assay domain type does not support fields with an externally defined Primary Key.",
+        };
+        const primaryKeyError = {
+            success: false,
+            msg:
+                "Error on importing field 'undefined': This domain type does not support fields with an externally defined Primary Key.",
+        };
+        expect(
+            processJsonImport(
+                '[{"isPrimaryKey": true, "lockType": "PKLocked"}]',
+                DomainDesign.create({ domainKindName: 'Assay' })
+            )
+        ).toStrictEqual(primaryKeyErrorAssay);
+        expect(processJsonImport('[{"isPrimaryKey": true, "lockType": "PKLocked"}]', domain)).toStrictEqual(
+            primaryKeyError
+        );
 
         const jsonWithStrippableFields = '[{"propertyId": 1234, "propertyURI":1234}]';
         const result = processJsonImport(jsonWithStrippableFields, domain);
         expect(result.success).toBe(true);
         result.fields.forEach(field => {
-            expect(field).not.toMatchObject({'propertyId': 'value', 'propertyURI':'value'});
-        })
+            expect(field).not.toMatchObject({ propertyId: 'value', propertyURI: 'value' });
+        });
     });
 });

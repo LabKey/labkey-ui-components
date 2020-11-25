@@ -73,7 +73,7 @@ export class SampleTypeModel extends Record({
     }
 
     isMetricUnitValid(metricUnitRequired?: boolean) {
-        return !metricUnitRequired || this.metricUnit != null
+        return !metricUnitRequired || this.metricUnit != null;
     }
 
     /**

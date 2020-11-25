@@ -6,6 +6,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 8116: Make insertRows, updateRows, and deleteRows API success response consistent
     - make sure to include "rows" and "transactionAuditId" for each
 
+### version 1.4.1
+*Released*: 25 November 2020
+* yarn run lint-fix on src/internal/components/domainproperties
+
 ### version 1.4.0
 *Release*: 24 November 2020
 * Item 8137: Misc package changes to support LKFM freezer hierarchy polish

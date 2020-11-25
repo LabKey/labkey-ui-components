@@ -86,10 +86,13 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
     render() {
         const { domain } = this.props;
         const pkRowIndex = domain && domain.fields.findIndex(i => i.isPrimaryKey);
-        const pkField = pkRowIndex > -1
-            // check for edge case on JSON file import, for an invalid PK field type
-            ? (this.isValidKeyField(domain.fields.get(pkRowIndex)) ? domain.fields.get(pkRowIndex) : undefined)
-            : undefined;
+        const pkField =
+            pkRowIndex > -1
+                ? // check for edge case on JSON file import, for an invalid PK field type
+                  this.isValidKeyField(domain.fields.get(pkRowIndex))
+                    ? domain.fields.get(pkRowIndex)
+                    : undefined
+                : undefined;
         const isAutoIncPk = pkField !== undefined && PropDescType.isAutoIncrement(pkField.dataType);
 
         return (

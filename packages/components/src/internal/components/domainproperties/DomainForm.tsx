@@ -16,7 +16,7 @@
 import React from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
+import {Checkbox, Col, Form, FormControl, Panel, Row} from 'react-bootstrap';
 import classNames from 'classnames';
 import { Sticky, StickyContainer } from 'react-sticky';
 
@@ -25,7 +25,7 @@ import {
     ConfirmModal,
     InferDomainResponse,
     FileAttachmentForm,
-    Alert,
+    Alert, createFormInputId,
 } from '../../..';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
@@ -33,7 +33,7 @@ import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 import { blurActiveElement } from '../../util/utils';
 
 import {
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_FIELD_SELECTED,
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     PHILEVEL_NOT_PHI,
@@ -59,7 +59,7 @@ import {
     getAvailableTypes,
     getAvailableTypesForOntology,
     hasActiveModule,
-    updateOntologyFieldProperties,
+    updateOntologyFieldProperties, createFormInputName,
 } from './actions';
 import { DomainRow } from './DomainRow';
 import {
@@ -124,6 +124,7 @@ interface IDomainFormState {
     maxPhiLevel: string;
     dragId?: number;
     availableTypes: List<PropDescType>;
+    selectAll: boolean;
     // used for quicker access to field information (i.e. details display info and if a field is an ontology)
     fieldDetails: FieldDetails;
     filtered: boolean;
@@ -174,6 +175,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             filePreviewData: undefined,
             file: undefined,
             filePreviewMsg: undefined,
+            selectAll: false,
         };
     }
 
@@ -204,6 +206,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     componentDidUpdate(prevProps: Readonly<IDomainFormInput>): void {
+        const unselectedExists = this.props.domain.fields.some((field) => {
+            return field.visible && !field.selected;
+        });
+        if (unselectedExists && this.state.selectAll === true) {
+            this.setState({selectAll: false});
+        } else if (!unselectedExists && this.state.selectAll === false) {
+            this.setState({selectAll: true});
+        }
+
         updateDomainPanelClassList(prevProps.useTheme, this.props.domain);
     }
 
@@ -391,15 +402,42 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         } else this.applyAddField();
     };
 
+    toggleSelectAll = () => {
+        const { domain } = this.props;
+        const { selectAll, filtered } = this.state;
+        let fields = domain.fields;
+
+        if (filtered) {
+            let filteredFields = fields.filter((field: DomainField) => field.visible);
+        }
+
+        const toggledFields = fields.map(field => field.set('selected', !selectAll));
+        const updatedDomain = domain.merge({
+            fields: toggledFields,
+        }) as DomainDesign;
+        this.onDomainChange(updatedDomain, true);
+        this.setState((state) => ({selectAll: !state.selectAll}));
+    };
+
     onExportFields = () => {
         const { domain } = this.props;
+        const { selectAll } = this.state;
         let fields = domain.fields;
         let filteredFields = fields.filter((field: DomainField) => field.visible);
+        // Respect selection, if any selection exists
+        filteredFields = filteredFields.some((field: DomainField) => field.selected)
+            ? filteredFields.filter((field: DomainField) => field.selected)
+            : filteredFields;
+
         let fieldData = filteredFields.map(field => DomainField.serialize(field, false)).toArray();
         const fieldsJson = JSON.stringify(fieldData, null, 4);
 
         downloadJsonFile(fieldsJson, generateNameWithTimestamp('Fields') + '.fields.json');
     };
+
+    onDeleteFields = () => {
+
+    }
 
     onAddField = () => {
         this.applyAddField();
@@ -659,12 +697,22 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderRowHeaders() {
         const { domainFormDisplayOptions } = this.props;
+        const { selectAll } = this.state;
 
         return (
             <div className="domain-floating-hdr">
                 <Row className="domain-form-hdr-row">
-                    <Col xs={6}>
-                        <Col xs={6}>
+                    <Col xs={8}>
+                        <Col xs={1}>
+                            <Checkbox
+                                className="domain-hdr-select-all-checkbox"
+                                name="domain-select-all-checkbox"
+                                id="domain-select-all-checkbox"
+                                checked={selectAll}
+                                onChange={this.toggleSelectAll}
+                            />
+                        </Col>
+                        <Col xs={4}>
                             <b>Name</b>
                         </Col>
                         <Col xs={4}>
@@ -676,7 +724,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             </Col>
                         )}
                     </Col>
-                    <Col xs={6}>
+                    <Col xs={4}>
                         <b>Details</b>
                     </Col>
                 </Row>
@@ -855,6 +903,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { domain, domainIndex, allowImportExport, domainFormDisplayOptions } = this.props;
         const { fields } = domain;
         const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
+        const selectedExists = fields.some((field) => {return field.visible && field.selected;});
 
         return (
             <Row className="domain-field-toolbar">
@@ -871,8 +920,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <ActionButton
                         containerClass="container--toolbar-button"
                         buttonClass="domain-toolbar-delete-btn"
-                        onClick={() => {}}
-                        // disabled={disableExport}
+                        onClick={this.onDeleteFields}
+                        disabled={!selectedExists}
                     >
                         <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
                     </ActionButton>

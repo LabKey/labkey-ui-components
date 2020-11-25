@@ -34,6 +34,7 @@ import {
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_ROW,
+    DOMAIN_FIELD_SELECTED,
     DOMAIN_FIELD_TYPE,
     FIELD_NAME_CHAR_WARNING_INFO,
     FIELD_NAME_CHAR_WARNING_MSG,
@@ -144,6 +145,34 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         return details;
     };
 
+    getRowCssClasses = (
+        expanded: boolean,
+        closing: boolean,
+        dragging: boolean,
+        selected: boolean,
+        fieldError: DomainFieldError,
+    ): string => {
+        const classes = List<string>().asMutable();
+
+        if (!selected) {
+            classes.push('domain-field-row');
+        } else {
+            classes.push('domain-field-row-selected');
+        }
+
+        if (!dragging) {
+            classes.push(this.getFieldBorderClass(fieldError, selected));
+        } else {
+            classes.push('domain-row-border-dragging');
+        }
+
+        if (closing || expanded) {
+            classes.push('domain-row-expanded');
+        }
+
+        return classes.join(' ');
+    };
+
     getDetails() {
         const { index, expanded, domainIndex } = this.props;
         const { closing } = this.state;
@@ -158,37 +187,17 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         );
     }
 
-    getFieldErrorClass = (fieldError: DomainFieldError): string => {
+    getFieldBorderClass = (fieldError: DomainFieldError, selected: boolean): string => {
         if (!fieldError) {
+            if (selected) {
+                return 'domain-row-border-selected';
+            }
             return 'domain-row-border-default';
         } else if (fieldError.severity === SEVERITY_LEVEL_ERROR) {
             return 'domain-row-border-error';
         } else {
             return 'domain-row-border-warning';
         }
-    };
-
-    getRowCssClasses = (
-        expanded: boolean,
-        closing: boolean,
-        dragging: boolean,
-        fieldError: DomainFieldError
-    ): string => {
-        const classes = List<string>().asMutable();
-
-        classes.push('domain-field-row');
-
-        if (!dragging) {
-            classes.push(this.getFieldErrorClass(fieldError));
-        } else {
-            classes.push('domain-row-border-dragging');
-        }
-
-        if (closing || expanded) {
-            classes.push('domain-row-expanded');
-        }
-
-        return classes.join(' ');
     };
 
     onFieldChange = (evt: any, expand?: boolean) => {
@@ -330,13 +339,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)}>
-                <Col xs={2}>
+                <Col xs={1}>
                     <Checkbox
                         className="domain-field-checkbox"
-                        name={createFormInputName(DOMAIN_FIELD_REQUIRED)}
-                        id={createFormInputId(DOMAIN_FIELD_REQUIRED, domainIndex, index)}
-                        checked={field.required}
-                        onChange={() => {}}
+                        name={createFormInputName(DOMAIN_FIELD_SELECTED)}
+                        id={createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, index)}
+                        checked={field.selected}
+                        onChange={this.onFieldChange}
                         disabled={false}
                     />
                 </Col>
@@ -463,6 +472,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             domainFormDisplayOptions,
             getDomainFields,
         } = this.props;
+        const selected = field.selected;
 
         return (
             <Draggable
@@ -472,7 +482,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             >
                 {provided => (
                     <div
-                        className={this.getRowCssClasses(expanded, closing, dragging, fieldError)}
+                        className={this.getRowCssClasses(expanded, closing, dragging, selected, fieldError)}
                         {...provided.draggableProps}
                         ref={provided.innerRef}
                         tabIndex={index}
@@ -507,10 +517,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 />
                             </div>
                             <div className="domain-row-main">
-                                <Col xs={7} className="domain-row-base-fields">
+                                <Col xs={8} className="domain-row-base-fields">
                                     {this.renderBaseFields()}
                                 </Col>
-                                <Col xs={5} className="field-details-container">
+                                <Col xs={4} className="field-details-container">
                                     {this.getDetails()}
                                     {this.renderButtons()}
                                 </Col>

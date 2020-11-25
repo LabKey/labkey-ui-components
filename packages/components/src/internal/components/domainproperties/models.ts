@@ -570,6 +570,7 @@ export class DomainField
         sourceOntology: undefined,
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
+        selected: false,
     })
     implements IDomainField {
     conceptURI?: string;
@@ -621,6 +622,7 @@ export class DomainField
     sourceOntology?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
+    selected: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
         const baseField = DomainField.resolveBaseProperties(rawField, mandatoryFieldNames);
@@ -793,6 +795,7 @@ export class DomainField
         delete json.lookupValidator;
         delete json.disablePhiLevel;
         delete json.lockExistingField;
+        delete json.selected;
 
         return json;
     }

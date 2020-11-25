@@ -23,6 +23,7 @@ export const DOMAIN_FIELD_EXPAND = 'expand';
 export const DOMAIN_FIELD_DELETE = 'delete';
 export const DOMAIN_FIELD_ROW = 'row';
 export const DOMAIN_FIELD_REQUIRED = 'required';
+export const DOMAIN_FIELD_SELECTED = 'selected';
 export const DOMAIN_FIELD_DETAILS = 'details';
 export const DOMAIN_FIELD_DESCRIPTION = 'description';
 export const DOMAIN_FIELD_LABEL = 'label';

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 1.4.1
+*Released*: 25 November 2020
 * yarn run lint-fix on src/internal/components/domainproperties
 
 ### version 1.4.0

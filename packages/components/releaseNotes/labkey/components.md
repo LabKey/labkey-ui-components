@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Release*: TBD
 * Item 8116: Make insertRows, updateRows, and deleteRows API success response consistent
     - make sure to include "rows" and "transactionAuditId" for each
+    - minor display / layout fix for PageDetailHeader body content to flow better below image
 
 ### version 1.4.1
 *Released*: 25 November 2020

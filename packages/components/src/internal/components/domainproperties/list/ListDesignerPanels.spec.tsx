@@ -9,10 +9,11 @@ import DomainForm from '../DomainForm';
 
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
+import { initUnitTestMocks, sleep } from '../../../testHelpers';
+
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
 import { ListDesignerPanels } from './ListDesignerPanels';
-import { initUnitTestMocks, sleep } from "../../../testHelpers";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.4.1
+*Released*: 25 November 2020
+* yarn run lint-fix on src/internal/components/domainproperties
+
 ### version 1.4.0
 *Release*: 24 November 2020
 * Item 8137: Misc package changes to support LKFM freezer hierarchy polish

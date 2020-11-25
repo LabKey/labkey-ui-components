@@ -29,7 +29,7 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
-import { OntologyLookupOptions } from "./OntologyLookupOptions";
+import { OntologyLookupOptions } from './OntologyLookupOptions';
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;
@@ -46,7 +46,15 @@ interface IDomainRowExpandedOptionsProps {
 
 export class DomainRowExpandedOptions extends React.Component<IDomainRowExpandedOptionsProps> {
     typeDependentOptions = () => {
-        const { field, index, onChange, onMultiChange, domainIndex, domainFormDisplayOptions, getDomainFields } = this.props;
+        const {
+            field,
+            index,
+            onChange,
+            onMultiChange,
+            domainIndex,
+            domainFormDisplayOptions,
+            getDomainFields,
+        } = this.props;
 
         switch (field.dataType.name) {
             case 'string':

@@ -14,16 +14,16 @@ import {
     ONTOLOGY_LOOKUP_TYPE,
     SAMPLE_TYPE,
     TEXT_TYPE,
-} from "./PropDescType";
-import { OntologyLookupOptions } from "./OntologyLookupOptions";
-import { TextFieldOptions } from "./TextFieldOptions";
-import { BooleanFieldOptions } from "./BooleanFieldOptions";
-import { DateTimeFieldOptions } from "./DateTimeFieldOptions";
-import { NumericFieldOptions } from "./NumericFieldOptions";
-import { LookupFieldOptions } from "./LookupFieldOptions";
-import { SampleFieldOptions } from "./SampleFieldOptions";
-import { NameAndLinkingOptions } from "./NameAndLinkingOptions";
-import { ConditionalFormattingAndValidation } from "./ConditionalFormattingAndValidation";
+} from './PropDescType';
+import { OntologyLookupOptions } from './OntologyLookupOptions';
+import { TextFieldOptions } from './TextFieldOptions';
+import { BooleanFieldOptions } from './BooleanFieldOptions';
+import { DateTimeFieldOptions } from './DateTimeFieldOptions';
+import { NumericFieldOptions } from './NumericFieldOptions';
+import { LookupFieldOptions } from './LookupFieldOptions';
+import { SampleFieldOptions } from './SampleFieldOptions';
+import { NameAndLinkingOptions } from './NameAndLinkingOptions';
+import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 
 const DEFAULT_PROPS = {
     index: 1,
@@ -35,7 +35,7 @@ const DEFAULT_PROPS = {
 };
 
 describe('DomainExpandedOptions', () => {
-    function validateRender(row: any, expected: {[key: string]: number}, expectCondFormAndVal = true) {
+    function validateRender(row: any, expected: { [key: string]: number }, expectCondFormAndVal = true) {
         expect(row.find(TextFieldOptions)).toHaveLength(expected.text || 0);
         expect(row.find(BooleanFieldOptions)).toHaveLength(expected.boolean || 0);
         expect(row.find(DateTimeFieldOptions)).toHaveLength(expected.dateTime || 0);

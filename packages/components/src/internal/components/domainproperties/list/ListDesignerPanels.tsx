@@ -10,11 +10,13 @@ import { getDomainPanelStatus, saveDomain } from '../actions';
 
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
+import { PropDescType } from '../PropDescType';
+
+import ConfirmImportTypes from '../ConfirmImportTypes';
+
 import { SetKeyFieldNamePanel } from './SetKeyFieldNamePanel';
 import { ListModel } from './models';
 import { ListPropertiesPanel } from './ListPropertiesPanel';
-import {PropDescType} from "../PropDescType";
-import ConfirmImportTypes from "../ConfirmImportTypes";
 
 interface Props {
     initModel?: ListModel;
@@ -97,7 +99,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         Domain.drop({
             schemaName: 'lists',
             queryName: savedModel.name,
-            failure: (error) => {
+            failure: error => {
                 this.setState({
                     model: model.set('exception', error) as ListModel,
                     savedModel: undefined,
@@ -105,7 +107,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                 });
             },
             success: () => {
-                this.setState((state) => ({
+                this.setState(state => ({
                     model: model.set('exception', undefined) as ListModel,
                     savedModel: undefined,
                     importError: undefined,
@@ -195,20 +197,23 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         saveDomain(model.domain, model.getDomainKind(), model.getOptions(), model.name)
             .then(response => {
                 const updatedModel = model.set('exception', undefined) as ListModel;
-                this.setState(() => ({
-                    model: updatedModel,
-                    // the savedModel will be used for dropping the domain on file import failure or for onComplete
-                    savedModel: updatedModel.merge({ domain: response }) as ListModel,
-                }), () => {
-                    // If we're importing List file data, import file contents
-                    if (shouldImportData) {
-                        this.handleFileImport();
-                    } else {
-                        setSubmitting(false, () => {
-                            this.props.onComplete(this.state.savedModel);
-                        });
+                this.setState(
+                    () => ({
+                        model: updatedModel,
+                        // the savedModel will be used for dropping the domain on file import failure or for onComplete
+                        savedModel: updatedModel.merge({ domain: response }) as ListModel,
+                    }),
+                    () => {
+                        // If we're importing List file data, import file contents
+                        if (shouldImportData) {
+                            this.handleFileImport();
+                        } else {
+                            setSubmitting(false, () => {
+                                this.props.onComplete(this.state.savedModel);
+                            });
+                        }
                     }
-                });
+                );
             })
             .catch(response => {
                 const exception = resolveErrorMessage(response);

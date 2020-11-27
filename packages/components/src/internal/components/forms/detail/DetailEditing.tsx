@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import { List } from 'immutable';
 import Formsy from 'formsy-react';
@@ -46,6 +46,7 @@ interface DetailEditingState {
     editing?: boolean;
     warning?: string;
     error?: React.ReactNode;
+    isSubmitting?: boolean;
 }
 
 export class DetailEditing extends React.Component<DetailEditingProps, DetailEditingState> {
@@ -63,6 +64,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
             editing: false,
             warning: undefined,
             error: undefined,
+            isSubmitting: false,
         };
     }
 
@@ -94,6 +96,8 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     };
 
     handleSubmit = values => {
+        this.setState(() => ({isSubmitting: true}));
+
         const { auditBehavior, queryModel, onUpdate } = this.props;
         const queryData = queryModel.getRow();
         const queryInfo = queryModel.queryInfo;
@@ -120,7 +124,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
             })
                 .then(() => {
                     this.setState(
-                        () => ({ editing: false }),
+                        () => ({ isSubmitting: false, editing: false }),
                         () => {
                             if (onUpdate) {
                                 onUpdate();
@@ -133,6 +137,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                     console.error(error);
                     this.setState(() => ({
                         warning: undefined,
+                        isSubmitting: false,
                         error: resolveErrorMessage(error, 'data', undefined, 'update'),
                     }));
                 });
@@ -141,26 +146,27 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                 canSubmit: false,
                 warning: 'No changes detected. Please update the form and click save.',
                 error: undefined,
+                isSubmitting: false,
             }));
         }
     };
 
-    renderEditControls() {
+    renderEditControls(): ReactNode {
         const { cancelText, submitText } = this.props;
-        const { canSubmit } = this.state;
+        const { canSubmit, isSubmitting } = this.state;
         return (
             <div className="full-width bottom-spacing">
                 <Button className="pull-left" onClick={this.handleClick}>
                     {cancelText}
                 </Button>
-                <Button className="pull-right" bsStyle="success" type="submit" disabled={!canSubmit}>
+                <Button className="pull-right" bsStyle="success" type="submit" disabled={!canSubmit || isSubmitting}>
                     {submitText}
                 </Button>
             </div>
         );
     }
 
-    render() {
+    render(): ReactNode {
         const { queryModel, queryColumns, canUpdate, useEditIcon, appEditable, asSubPanel, title } = this.props;
         const { editing, warning, error } = this.state;
 

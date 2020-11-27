@@ -52,6 +52,7 @@ storiesOf('PageDetailHeader', module)
                 iconUrl={ICON_URL}
                 title={text('title', 'Page Detail Header')}
                 subTitle={text('subtitle', 'With a subtitle')}
+                description={'With a description\nThat has a newline in it\nwhich extends below the image.'}
             >
                 <CreatedModified row={createdRow} />
             </PageDetailHeader>

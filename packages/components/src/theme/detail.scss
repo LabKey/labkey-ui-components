@@ -161,6 +161,10 @@
   float: left;
 }
 
+.detail__header-icon--body-container {
+  padding-left: 120px; // this should match the width from detail__header--image-container
+}
+
 .detail__header--desc {
   color: grey;
   font-style: $font-size-small;

@@ -1,8 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Disable "Submit" button on DetailEditing when in the process of submitting
+* Add some styling to hide text that overflows a field
+
 ### version 1.5.0
-*Release*: 27 November 2020
+*Released*: 27 November 2020
 * Item 8116: Make insertRows, updateRows, and deleteRows API success response consistent
     - make sure to include "rows" and "transactionAuditId" for each
     - minor display / layout fix for PageDetailHeader body content to flow better below image
@@ -12,7 +17,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * yarn run lint-fix on src/internal/components/domainproperties
 
 ### version 1.4.0
-*Release*: 24 November 2020
+*Released*: 24 November 2020
 * Item 8137: Misc package changes to support LKFM freezer hierarchy polish
     - export existing DomainFieldLabel for use in app
     - add new LockIcon components to package

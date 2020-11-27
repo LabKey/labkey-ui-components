@@ -89,3 +89,11 @@
   display: flex;
   padding-left: 10px;
 };
+
+.field-hide-overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 150px;
+    display: inline-block;
+    white-space: nowrap;
+}

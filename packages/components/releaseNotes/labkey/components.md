@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Release*: TBD
+### version 1.5.0
+*Release*: 27 November 2020
 * Item 8116: Make insertRows, updateRows, and deleteRows API success response consistent
     - make sure to include "rows" and "transactionAuditId" for each
     - minor display / layout fix for PageDetailHeader body content to flow better below image

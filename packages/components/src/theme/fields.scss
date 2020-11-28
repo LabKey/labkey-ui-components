@@ -90,10 +90,23 @@
   padding-left: 10px;
 };
 
+.field-text-nowrap {
+    white-space: nowrap;
+}
+
 .field-hide-overflow {
+    @media (max-width: 612px) {
+        max-width: 150px;
+    }
+    @media (min-width: 613px) and (max-width: $screen-md) {
+        max-width: none;
+    }
+    @media (min-width: $screen-md) {
+        max-width: 150px;
+    }
+
     text-overflow: ellipsis;
     overflow: hidden;
-    max-width: 150px;
     display: inline-block;
     white-space: nowrap;
 }

@@ -199,7 +199,7 @@ export class QueryInfo extends Record({
             }, List<string>());
             this.columns.forEach(col => {
                 if (col.fieldKey && col.addToDisplayView && !columnFieldKeys.includes(col.fieldKey.toLowerCase())) {
-                    if (!lowerOmit || (lowerOmit.size > 0 && !lowerOmit.includes(col.fieldKey.toLowerCase())))
+                    if (!lowerOmit || !lowerOmit.includes(col.fieldKey.toLowerCase()))
                         displayColumns = displayColumns.push(col);
                 }
             });

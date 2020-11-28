@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Disable "Submit" button on DetailEditing when in the process of submitting
 * Add some styling to hide text that overflows a field
+* Fix bug in QueryInfo that did not add columns designated as addToDisplayView in all cases
 
 ### version 1.5.0
 *Released*: 27 November 2020

@@ -53,11 +53,15 @@ exports[`<TimelineView /> Disable selection 1`] = `
           Sample Registered
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -118,11 +122,15 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -183,11 +191,15 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            xyang
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              xyang
+            </a>
+          </div>
            
         </div>
       </td>
@@ -248,11 +260,15 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -313,11 +329,15 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1038"
+          <div
+            className="field-text-nowrap"
           >
-            Test Lab User
-          </a>
+            <a
+              href="#/q/core/siteusers/1038"
+            >
+              Test Lab User
+            </a>
+          </div>
            
         </div>
       </td>
@@ -378,11 +398,15 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1038"
+          <div
+            className="field-text-nowrap"
           >
-            Test Lab User
-          </a>
+            <a
+              href="#/q/core/siteusers/1038"
+            >
+              Test Lab User
+            </a>
+          </div>
            
         </div>
       </td>
@@ -443,11 +467,15 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -508,11 +536,15 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            xyang
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              xyang
+            </a>
+          </div>
            
           <LabelHelpTip
             body={[Function]}
@@ -583,7 +615,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           Sample Registered
         </div>
         <div>
-          Vader
+          <div
+            className="field-text-nowrap"
+          >
+            Vader
+          </div>
            
         </div>
       </td>
@@ -644,7 +680,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </a>
         </div>
         <div>
-          Vader
+          <div
+            className="field-text-nowrap"
+          >
+            Vader
+          </div>
            
         </div>
       </td>
@@ -705,7 +745,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </a>
         </div>
         <div>
-          xyang
+          <div
+            className="field-text-nowrap"
+          >
+            xyang
+          </div>
            
         </div>
       </td>
@@ -766,7 +810,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </a>
         </div>
         <div>
-          Vader
+          <div
+            className="field-text-nowrap"
+          >
+            Vader
+          </div>
            
         </div>
       </td>
@@ -827,7 +875,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </a>
         </div>
         <div>
-          Test Lab User
+          <div
+            className="field-text-nowrap"
+          >
+            Test Lab User
+          </div>
            
         </div>
       </td>
@@ -888,7 +940,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </a>
         </div>
         <div>
-          Test Lab User
+          <div
+            className="field-text-nowrap"
+          >
+            Test Lab User
+          </div>
            
         </div>
       </td>
@@ -949,7 +1005,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </a>
         </div>
         <div>
-          Vader
+          <div
+            className="field-text-nowrap"
+          >
+            Vader
+          </div>
            
         </div>
       </td>
@@ -1010,7 +1070,11 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </a>
         </div>
         <div>
-          xyang
+          <div
+            className="field-text-nowrap"
+          >
+            xyang
+          </div>
            
           <LabelHelpTip
             body={[Function]}
@@ -1081,11 +1145,15 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           Sample Registered
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1152,11 +1220,15 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1217,11 +1289,15 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            xyang
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              xyang
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1282,11 +1358,15 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1347,11 +1427,15 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1038"
+          <div
+            className="field-text-nowrap"
           >
-            Test Lab User
-          </a>
+            <a
+              href="#/q/core/siteusers/1038"
+            >
+              Test Lab User
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1418,11 +1502,15 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1038"
+          <div
+            className="field-text-nowrap"
           >
-            Test Lab User
-          </a>
+            <a
+              href="#/q/core/siteusers/1038"
+            >
+              Test Lab User
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1483,11 +1571,15 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1548,11 +1640,15 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            xyang
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              xyang
+            </a>
+          </div>
            
           <LabelHelpTip
             body={[Function]}
@@ -1623,11 +1719,15 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           Sample Registered
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1688,11 +1788,15 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1759,11 +1863,15 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            xyang
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              xyang
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1824,11 +1932,15 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1889,11 +2001,15 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1038"
+          <div
+            className="field-text-nowrap"
           >
-            Test Lab User
-          </a>
+            <a
+              href="#/q/core/siteusers/1038"
+            >
+              Test Lab User
+            </a>
+          </div>
            
         </div>
       </td>
@@ -1954,11 +2070,15 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1038"
+          <div
+            className="field-text-nowrap"
           >
-            Test Lab User
-          </a>
+            <a
+              href="#/q/core/siteusers/1038"
+            >
+              Test Lab User
+            </a>
+          </div>
            
         </div>
       </td>
@@ -2019,11 +2139,15 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            Vader
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              Vader
+            </a>
+          </div>
            
         </div>
       </td>
@@ -2090,11 +2214,15 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </a>
         </div>
         <div>
-          <a
-            href="#/q/core/siteusers/1005"
+          <div
+            className="field-text-nowrap"
           >
-            xyang
-          </a>
+            <a
+              href="#/q/core/siteusers/1005"
+            >
+              xyang
+            </a>
+          </div>
            
           <LabelHelpTip
             body={[Function]}

@@ -170,7 +170,7 @@ export class TimelineView extends React.Component<Props, any> {
                     {entity != null && getEventDataValueDisplay(entity)}
                 </div>
                 <div>
-                    {getEventDataValueDisplay(user, showUserLinks)} {this.renderComment(comment)}
+                    <div className="field-text-nowrap">{getEventDataValueDisplay(user, showUserLinks)}</div> {this.renderComment(comment)}
                 </div>
             </td>
         );

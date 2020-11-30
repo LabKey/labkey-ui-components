@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 1.5.1
+*Released*: 30 November 2020
 * Disable "Submit" button on DetailEditing when in the process of submitting
 * Add some styling to hide text that overflows a field
 * Fix bug in QueryInfo that did not add columns designated as addToDisplayView in all cases

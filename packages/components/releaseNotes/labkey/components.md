@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8141: AssayImportPanels - props to allow setting initial assay upload tab and hiding other tabs
+
 ### version 1.5.1
 *Released*: 30 November 2020
 * Disable "Submit" button on DetailEditing when in the process of submitting

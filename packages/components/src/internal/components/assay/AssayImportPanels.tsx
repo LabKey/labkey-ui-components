@@ -83,6 +83,7 @@ interface OwnProps {
     maxInsertRows?: number;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
     loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
+    showUploadTabs?: boolean;
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -99,6 +100,7 @@ interface State {
 class AssayImportPanelsImpl extends Component<Props, State> {
     static defaultProps = {
         loadSelections: loadSelectedSamples,
+        showUploadTabs: true,
     };
 
     assayUploadTimer: number;
@@ -625,6 +627,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             allowBulkInsert,
             allowBulkUpdate,
             onSave,
+            showUploadTabs,
         } = this.props;
         const { duplicateFileResponse, model, showRenameModal } = this.state;
 
@@ -666,6 +669,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
                     fileSizeLimits={this.props.fileSizeLimits}
                     maxInsertRows={this.props.maxInsertRows}
                     onGridDataChange={this.props.onDataChange}
+                    showTabs={showUploadTabs}
                 />
                 {this.state.error && <Alert bsStyle="danger">{this.state.error}</Alert>}
                 <WizardNavButtons cancel={onCancel} containerClassName="" includeNext={false}>

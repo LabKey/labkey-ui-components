@@ -25,7 +25,7 @@ import {
     ConfirmModal,
     InferDomainResponse,
     FileAttachmentForm,
-    Alert, createFormInputId,
+    Alert,
 } from '../../..';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
@@ -59,7 +59,8 @@ import {
     getAvailableTypes,
     getAvailableTypesForOntology,
     hasActiveModule,
-    updateOntologyFieldProperties, createFormInputName,
+    updateOntologyFieldProperties,
+    bulkRemoveFields,
 } from './actions';
 import { DomainRow } from './DomainRow';
 import {
@@ -131,6 +132,7 @@ interface IDomainFormState {
     filePreviewData: InferDomainResponse;
     file: File;
     filePreviewMsg: string;
+    deletabilityInfo: any;
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -176,6 +178,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             file: undefined,
             filePreviewMsg: undefined,
             selectAll: false,
+            deletabilityInfo: undefined,
         };
     }
 
@@ -421,7 +424,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onExportFields = () => {
         const { domain } = this.props;
-        const { selectAll } = this.state;
         let fields = domain.fields;
         let filteredFields = fields.filter((field: DomainField) => field.visible);
         // Respect selection, if any selection exists
@@ -435,8 +437,90 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         downloadJsonFile(fieldsJson, generateNameWithTimestamp('Fields') + '.fields.json');
     };
 
-    onDeleteFields = () => {
+    renderBulkFieldDeleteConfirm = () => {
+        const { domain } = this.props;
+        const { deletabilityInfo } = this.state;
+        const { deletableSelectedFields, undeletableFields } = deletabilityInfo;
+        const deletable = deletableSelectedFields.length;
+        const undeletable = undeletableFields.length;
 
+        const fieldsPlural = deletable > 1 ? "fields" : "field";
+        const howManyDeleted = undeletable > 0
+            ? `${deletable} of ${deletable + undeletable} fields`
+            : `${deletable} ${fieldsPlural}`;
+
+        const plural1 = undeletable > 1 ? "they are" : "it is a";
+        const plural2 = undeletable > 1 ? "s" : "";
+        const undeletableNames = undeletableFields.map((i) => {return domain.fields.get(i).name});
+        const undeletableWarning = undeletable > 0
+            ? `${undeletableNames.join(', ')} cannot be deleted as ${plural1} necessary field${plural2}.`
+            : ``;
+
+        return (
+            <ConfirmModal
+                title="Confirm Delete Fields"
+                msg={
+                    <div>
+                        <p> {howManyDeleted} will be deleted. </p>
+                        <p> {undeletableWarning} </p>
+                        <p> Do you wish to proceed? </p>
+                    </div>
+                }
+                onConfirm={() => this.onBulkDeleteConfirm()}
+                onCancel={this.onConfirmBulkCancel}
+                confirmVariant="danger"
+                confirmButtonText="Yes, Delete Fields"
+                cancelButtonText="Cancel"
+            />
+        );
+    }
+
+    onDeleteFields = () => {
+        const { domain } = this.props;
+        let fields = domain.fields;
+
+        let undeletableFields = [];
+        let deletableSelectedFields = [];
+        for (let i = 0; i < fields.size; i++) {
+            const field = fields.get(i);
+
+            // collect what's not deletable, and unsaved
+
+            // collect selected and visible
+            if (field.visible && field.selected) {
+                if (field.isSaved() && field.isPrimaryKey) { // todo: other conditions
+                    undeletableFields.push(i);
+                } else {
+                    deletableSelectedFields.push(i);
+                }
+            }
+        }
+
+        if (undeletableFields) {
+            const deletabilityInfo = {
+                deletableSelectedFields: deletableSelectedFields,
+                undeletableFields: undeletableFields,
+            }
+            this.setState({deletabilityInfo});
+        }
+    }
+
+    onBulkDeleteConfirm = () => {
+        const { domain } = this.props;
+        let fieldCount = domain.fields.size;
+        const { deletableSelectedFields } = this.state.deletabilityInfo;
+
+        const updatedDomain = bulkRemoveFields(domain, deletableSelectedFields);
+        console.log(updatedDomain.domainException.toJS());
+        this.onDomainChange(updatedDomain, true);
+        this.setState(state => ({
+            deletabilityInfo: undefined,
+
+            // if the last field was removed, clear any file preview data
+            filePreviewData: fieldCount === 0 ? undefined : state.filePreviewData,
+            file: fieldCount === 0 ? undefined : state.file,
+            filePreviewMsg: undefined,
+        }))
     }
 
     onAddField = () => {
@@ -472,6 +556,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onConfirmCancel = () => {
         this.setState(() => ({ confirmDeleteRowIndex: undefined }));
+    };
+
+    onConfirmBulkCancel = () => {
+        this.setState(() => ({ deletabilityInfo: undefined }));
     };
 
     onBeforeDragStart = initial => {
@@ -681,7 +769,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 title="Confirm Remove Field"
                 msg={
                     <div>
-                        Are you sure you want to remove{' '}
+                        Are you sure you want to remove
                         {field && field.name && field.name.trim().length > 0 ? <b>{field.name}</b> : 'this field'}? All
                         of its data will be deleted as well.
                     </div>
@@ -1082,7 +1170,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             todoIconHelpMsg,
             allowImportExport,
         } = this.props;
-        const { collapsed, confirmDeleteRowIndex, filePreviewData, file } = this.state;
+        const { collapsed, confirmDeleteRowIndex, filePreviewData, file, deletabilityInfo } = this.state;
         const title = getDomainHeaderName(domain.name, headerTitle, headerPrefix);
         const headerDetails =
             domain.fields.size > 0
@@ -1094,6 +1182,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return (
             <>
                 {confirmDeleteRowIndex !== undefined && this.renderFieldRemoveConfirm()}
+                {deletabilityInfo && this.renderBulkFieldDeleteConfirm()}
                 <Panel
                     className={getDomainPanelClass(collapsed, controlledCollapse, useTheme)}
                     expanded={this.isPanelExpanded()}

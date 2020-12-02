@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8203: Domain designer row styling updates
+
 ### version 1.5.1
 *Released*: 30 November 2020
 * Disable "Submit" button on DetailEditing when in the process of submitting

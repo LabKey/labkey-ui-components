@@ -75,34 +75,34 @@
 
 .domain-field-row {
   border: 1px solid;
-  border-radius: 2px;
-  margin: 0 0 20px 0;
+  margin-bottom: -1px;
   background-color: white;
   outline: none;
 };
 
 .domain-row-border-default {
   border-color: $gray-border;
-  box-shadow: inset 0 1px 3px 2px $gray-shadow;
 }
 
 .domain-row-border-error {
   border-color: $red-border;
-  box-shadow: inset 0 0 5px 0 $red-shadow, 0 0 5px 0 $red-shadow;
+  box-shadow: inset 0 0 5px 0 $red-shadow;
+  margin-bottom: 0; // to offset the margin-bottom from domain-field-row
 }
 
 .domain-row-border-warning {
   border-color: $yellow-border;
-  box-shadow: inset 0 0 5px 0 $yellow-shadow, 0 0 5px 0 $yellow-shadow;
+  box-shadow: inset 0 0 5px 0 $yellow-shadow;
+  margin-bottom: 0; // to offset the margin-bottom from domain-field-row
 }
 
 .domain-warning-icon {
   color: $brand-warning;
 }
 
-.domain-row-border-dragging {
-  border-color: $blue-border;
-  box-shadow: inset 0 1px 3px 2px $gray-shadow, 0 0 0 1px $blue-border
+.domain-row-border-dragging, .domain-field-row.dragging {
+  border-color: $blue-border-solid;
+  box-shadow: 0 6px 8px $gray-light;
 }
 
 .domain-field-toolbar {
@@ -234,7 +234,7 @@
   height: 53px;
   margin: 25px 0px 20px 0px;
   padding: 15px 20px;
-  box-shadow: inset 0 1px 3px 2px $gray-shadow;
+  border-radius: unset;
   color: #777777;
 }
 
@@ -665,4 +665,8 @@
 .domain__import-data__file-title {
     margin-left: 6px;
     color: $brand-primary;
+}
+
+.domain-add-field-row {
+    margin-top: 20px;
 }

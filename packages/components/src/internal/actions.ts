@@ -1141,7 +1141,7 @@ export function replaceSelected(key: string, ids: string[] | string, containerPa
 export function setSnapshotSelections(key: string, ids: string[] | string, containerPath?: string): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
-            url: buildURL('query', 'setSnapshotSelectionAction.api', undefined, {
+            url: buildURL('query', 'setSnapshotSelection.api', undefined, {
                 container: containerPath,
             }),
             method: 'POST',

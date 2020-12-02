@@ -18,6 +18,10 @@ import { mount } from 'enzyme';
 
 import { FileAttachmentForm } from '../../..';
 
+import { ActionButton } from '../buttons/ActionButton';
+
+import { initUnitTestMocks, sleep } from '../../testHelpers';
+
 import { DomainDesign } from './models';
 import DomainForm from './DomainForm';
 import {
@@ -40,8 +44,6 @@ import {
 import { clearFieldDetails, createFormInputId, updateDomainField } from './actions';
 
 import { DomainRow } from './DomainRow';
-import { ActionButton } from "../buttons/ActionButton";
-import { initUnitTestMocks, sleep } from '../../testHelpers';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -715,13 +717,7 @@ describe('DomainForm', () => {
     test('using allowImportExport', () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(
-            <DomainForm
-                domain={domain}
-                onChange={jest.fn()}
-                allowImportExport={true}
-            />
-        );
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} allowImportExport={true} />);
 
         expect(form.find('.domain-form-manual-section').length).toEqual(1);
         expect(form.find('.file-form-formats').text()).toContain('.json');
@@ -734,13 +730,7 @@ describe('DomainForm', () => {
     test('not using allowImportExport', () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(
-            <DomainForm
-                domain={domain}
-                onChange={jest.fn()}
-                allowImportExport={false}
-            />
-        );
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} allowImportExport={false} />);
 
         expect(form.find('.domain-form-manual-section').length).toEqual(0);
         expect(form.find('.file-form-formats').length).toEqual(0);

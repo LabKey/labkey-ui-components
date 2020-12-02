@@ -77,7 +77,7 @@ interface IDomainRowProps {
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     getDomainFields?: () => List<DomainField>;
-    fieldDetailsInfo?: {[key: string]: string}
+    fieldDetailsInfo?: { [key: string]: string };
 }
 
 interface IDomainRowState {

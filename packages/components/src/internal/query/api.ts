@@ -757,6 +757,7 @@ export function updateRows(options: IUpdateRowsOptions): Promise<any> {
                         {
                             schemaQuery: options.schemaQuery,
                             rows: response.rows,
+                            transactionAuditId: response.transactionAuditId,
                         }
                     )
                 );
@@ -792,12 +793,14 @@ export function deleteRows(options: DeleteRowsOptions): Promise<any> {
             auditBehavior: options.auditBehavior,
             auditUserComment: options.auditUserComment,
             apiVersion: 13.2,
-            success: () => {
+            success: response => {
                 resolve(
                     Object.assign(
                         {},
                         {
                             schemaQuery: options.schemaQuery,
+                            rows: response.rows,
+                            transactionAuditId: response.transactionAuditId,
                         }
                     )
                 );

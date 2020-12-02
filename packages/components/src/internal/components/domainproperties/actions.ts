@@ -21,6 +21,8 @@ import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL } from '..
 
 import { processSchemas } from '../../schemas';
 
+import { SimpleResponse } from '../files/models';
+
 import {
     decodeLookup,
     DomainDesign,
@@ -57,7 +59,6 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
-import {SimpleResponse} from "../files/models";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -158,7 +159,7 @@ export function fetchQueries(containerPath: string, schemaName: string): Promise
 
 // This looks hacky, but it's actually the recommended way to download a file using raw JS
 export function downloadJsonFile(content: string, fileName: string) {
-    let downloadLink = document.createElement('a');
+    const downloadLink = document.createElement('a');
     downloadLink.href = 'data:application/json;charset=utf-8,' + encodeURIComponent(content);
     downloadLink.download = fileName;
     downloadLink.style.display = 'none';
@@ -373,11 +374,14 @@ export function mergeDomainFields(domain: DomainDesign, newFields: List<DomainFi
     return domain.set('fields', domain.fields.concat(newFields)) as DomainDesign;
 }
 
-export function processJsonImport(content: string, domain:DomainDesign): SimpleResponse {
+export function processJsonImport(content: string, domain: DomainDesign): SimpleResponse {
     const domainType = domain.domainKindName;
-    const emptinessError = {success: false, msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.'};
+    const emptinessError = {
+        success: false,
+        msg: 'No field definitions were found in the imported json file. Please check the file contents and try again.',
+    };
 
-    if (content == "") {
+    if (content == '') {
         return emptinessError;
     }
 
@@ -387,15 +391,27 @@ export function processJsonImport(content: string, domain:DomainDesign): SimpleR
         return emptinessError;
     }
 
-    for (let i=0; i < jsFields.length; i++){
+    for (let i = 0; i < jsFields.length; i++) {
         const field = jsFields[i];
 
-        if (field.defaultValueType && domain.defaultValueOptions.size > 0 && !domain.hasDefaultValueOption(field.defaultValueType)) {
-            return {success: false, msg: `Error on importing field '${field.name}': Default value type '${field.defaultValueType}' is invalid.`};
+        if (
+            field.defaultValueType &&
+            domain.defaultValueOptions.size > 0 &&
+            !domain.hasDefaultValueOption(field.defaultValueType)
+        ) {
+            return {
+                success: false,
+                msg: `Error on importing field '${field.name}': Default value type '${field.defaultValueType}' is invalid.`,
+            };
         }
 
         if (!domainType?.includes('List') && field.lockType === DOMAIN_FIELD_PRIMARY_KEY_LOCKED) {
-            return {success: false, msg: `Error on importing field '${field.name}': ${domainType || 'This'} domain type does not support fields with an externally defined Primary Key.`};
+            return {
+                success: false,
+                msg: `Error on importing field '${field.name}': ${
+                    domainType || 'This'
+                } domain type does not support fields with an externally defined Primary Key.`,
+            };
         }
 
         // These values are set server-side during a save
@@ -408,7 +424,7 @@ export function processJsonImport(content: string, domain:DomainDesign): SimpleR
     }
 
     const tsFields: List<DomainField> = List(jsFields.map(field => DomainField.create(field, false)));
-    return {success: true, fields: tsFields};
+    return { success: true, fields: tsFields };
 }
 
 export function addDomainField(domain: DomainDesign, fieldConfig: Partial<IDomainField> = {}): DomainDesign {

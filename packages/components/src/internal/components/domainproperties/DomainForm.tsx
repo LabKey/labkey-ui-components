@@ -20,20 +20,20 @@ import {Checkbox, Col, Form, FormControl, Panel, Row} from 'react-bootstrap';
 import classNames from 'classnames';
 import { Sticky, StickyContainer } from 'react-sticky';
 
-import {
-    AddEntityButton,
-    ConfirmModal,
-    InferDomainResponse,
-    FileAttachmentForm,
-    Alert,
-} from '../../..';
+import { AddEntityButton, ConfirmModal, InferDomainResponse, FileAttachmentForm, Alert } from '../../..';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
 import { blurActiveElement } from '../../util/utils';
 
+import { SimpleResponse } from '../files/models';
+
+import { generateNameWithTimestamp } from '../../util/Date';
+
+import { ActionButton } from '../buttons/ActionButton';
+
 import {
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_FIELD_SELECTED,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     EXPAND_TRANSITION,
     EXPAND_TRANSITION_FAST,
     PHILEVEL_NOT_PHI,
@@ -77,12 +77,9 @@ import {
     DomainFieldIndexChange,
     FieldDetails,
 } from './models';
-import { SimpleResponse } from "../files/models";
 import { PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
-import { generateNameWithTimestamp } from "../../util/Date";
-import { ActionButton } from "../buttons/ActionButton";
 
 interface IDomainFormInput {
     domain: DomainDesign;
@@ -359,7 +356,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 if (!ontFieldRemoved) {
                     updatedDomain = updateOntologyFieldProperties(
                         // check for a field removal prior to the ontology lookup field
-                        (rowIndexChange?.originalIndex < index ? index - 1 : index),
+                        rowIndexChange?.originalIndex < index ? index - 1 : index,
                         domainIndex,
                         updatedDomain,
                         domain,
@@ -424,14 +421,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     onExportFields = () => {
         const { domain } = this.props;
-        let fields = domain.fields;
+        const fields = domain.fields;
         let filteredFields = fields.filter((field: DomainField) => field.visible);
         // Respect selection, if any selection exists
         filteredFields = filteredFields.some((field: DomainField) => field.selected)
             ? filteredFields.filter((field: DomainField) => field.selected)
             : filteredFields;
 
-        let fieldData = filteredFields.map(field => DomainField.serialize(field, false)).toArray();
+        const fieldData = filteredFields.map(field => DomainField.serialize(field, false)).toArray();
         const fieldsJson = JSON.stringify(fieldData, null, 4);
 
         downloadJsonFile(fieldsJson, generateNameWithTimestamp('Fields') + '.fields.json');
@@ -852,7 +849,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             const reader = new FileReader();
 
             // Waits until file is loaded
-            reader.onloadend = function(e: any) {
+            reader.onloadend = function (e: any) {
                 // Catches malformed JSON
                 try {
                     content = e.target.result;
@@ -865,15 +862,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         if (onChange) {
                             onChange(mergeDomainFields(domain, tsFields), true);
                         }
-                        resolve({success: true});
+                        resolve({ success: true });
                     }
                 } catch (e) {
-                    reject({success: false, msg: e.toString()});
+                    reject({ success: false, msg: e.toString() });
                 }
             };
 
-            reader.onerror = function(error: any) {
-                reject({success: false, msg: error.toString()});
+            reader.onerror = function (error: any) {
+                reject({ success: false, msg: error.toString() });
             };
 
             reader.readAsText(file);
@@ -894,11 +891,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
             let label;
             if (allowImportExport && shouldShowInferFromFile) {
-                label = "Import or infer fields from file";
+                label = 'Import or infer fields from file';
             } else if (allowImportExport) {
-                label = "Import fields from file";
+                label = 'Import fields from file';
             } else {
-                label = "Infer fields from file";
+                label = 'Infer fields from file';
             }
 
             return (
@@ -911,14 +908,18 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         label={label}
                         index={index}
                         onFileRemoval={() => this.setState(() => ({ filePreviewMsg: undefined }))}
-                        previewGridProps={shouldShowInferFromFile && {
-                            previewCount: 3,
-                            skipPreviewGrid: true,
-                            onPreviewLoad: this.handleFilePreviewLoad,
-                        }}
-                        fileSpecificCallback={Map({'.json': this.importFieldsFromJson})}
+                        previewGridProps={
+                            shouldShowInferFromFile && {
+                                previewCount: 3,
+                                skipPreviewGrid: true,
+                                onPreviewLoad: this.handleFilePreviewLoad,
+                            }
+                        }
+                        fileSpecificCallback={Map({ '.json': this.importFieldsFromJson })}
                     />
-                    {shouldShowInferFromFile && this.state.filePreviewMsg && <Alert bsStyle="info">{this.state.filePreviewMsg}</Alert>}
+                    {shouldShowInferFromFile && this.state.filePreviewMsg && (
+                        <Alert bsStyle="info">{this.state.filePreviewMsg}</Alert>
+                    )}
                 </>
             );
         } else {
@@ -996,14 +997,14 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         return (
             <Row className="domain-field-toolbar">
                 <Col xs={4}>
-                    {!domainFormDisplayOptions.hideAddFieldsButton &&
+                    {!domainFormDisplayOptions.hideAddFieldsButton && (
                         <AddEntityButton
                             entity="Field"
                             containerClass="container--toolbar-button"
                             buttonClass="domain-toolbar-add-btn"
                             onClick={this.onAddField}
                         />
-                    }
+                    )}
 
                     <ActionButton
                         containerClass="container--toolbar-button"
@@ -1014,7 +1015,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
                     </ActionButton>
 
-                    {allowImportExport &&
+                    {allowImportExport && (
                         <ActionButton
                             containerClass="container--toolbar-button"
                             buttonClass="domain-toolbar-export-btn"
@@ -1023,7 +1024,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         >
                             <i className="fa fa-download domain-toolbar-export-btn-icon" /> Export
                         </ActionButton>
-                    }
+                    )}
                 </Col>
                 <Col xs={8}>
                     <div className="pull-right">

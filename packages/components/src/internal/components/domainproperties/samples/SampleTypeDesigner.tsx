@@ -252,13 +252,13 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const { onTogglePanel } = this.props;
 
         onTogglePanel(PROPERTIES_PANEL_INDEX, collapsed, callback);
-    }
+    };
 
     formToggle = (collapsed, callback) => {
         const { onTogglePanel } = this.props;
 
-        onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback)
-    }
+        onTogglePanel(DOMAIN_PANEL_INDEX, collapsed, callback);
+    };
 
     updateAliasValue = (id: string, field: string, newValue: any): IParentAlias => {
         const { model } = this.state;
@@ -433,18 +433,18 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 this.props.onComplete(response);
             });
         } catch (response) {
-                const exception = resolveErrorMessage(response);
-                const updatedModel = exception
-                    ? (model.set('exception', exception) as SampleTypeModel)
-                    : (model.merge({
-                          // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
-                          domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
-                          exception: undefined,
-                      }) as SampleTypeModel);
+            const exception = resolveErrorMessage(response);
+            const updatedModel = exception
+                ? (model.set('exception', exception) as SampleTypeModel)
+                : (model.merge({
+                      // since the isNew case adds in the Name column, we need to go back to the state model's domain to merge in the error info
+                      domain: domain.merge({ domainException: response.domainException }) as DomainDesign,
+                      exception: undefined,
+                  }) as SampleTypeModel);
 
-                setSubmitting(false, () => {
-                    this.setState(() => ({ model: updatedModel }));
-                });
+            setSubmitting(false, () => {
+                this.setState(() => ({ model: updatedModel }));
+            });
         }
     };
 

@@ -74,17 +74,19 @@ export class PageDetailHeader extends PureComponent<Props> {
                             )}
                         </div>
                     )}
-                    <h2 className="no-margin-top detail__header--name">{title}</h2>
-                    {subTitle && <h4 className="test-loc-detail-subtitle">{subTitle}</h4>}
-                    {description && <span className="detail__header--desc">{description}</span>}
-                    {fieldTriggerProps && (
-                        <div className="text__truncate">
-                            <FieldEditorOverlay
-                                {...fieldTriggerProps}
-                                canUpdate={hasAllPermissions(user, [PermissionTypes.Update])}
-                            />
-                        </div>
-                    )}
+                    <div className="detail__header-icon--body-container">
+                        <h2 className="no-margin-top detail__header--name">{title}</h2>
+                        {subTitle && <h4 className="test-loc-detail-subtitle">{subTitle}</h4>}
+                        {description && <span className="detail__header--desc">{description}</span>}
+                        {fieldTriggerProps && (
+                            <div className="text__truncate">
+                                <FieldEditorOverlay
+                                    {...fieldTriggerProps}
+                                    canUpdate={hasAllPermissions(user, [PermissionTypes.Update])}
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
                 {children && <div className="pull-right">{children}</div>}
                 <div className="clearfix" />

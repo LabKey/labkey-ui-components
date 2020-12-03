@@ -208,7 +208,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
 
         return (
             <div className="domain-row-container">
-                <div className="domain-row-handle" />
+                <div className="domain-row-container-expand-spacer" />
                 <div className="domain-row-container-expanded">
                     <Col xs={12}>{this.typeDependentOptions()}</Col>
                     <Col xs={12} lg={10}>

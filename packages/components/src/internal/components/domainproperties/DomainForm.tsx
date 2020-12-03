@@ -658,24 +658,28 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { domainFormDisplayOptions } = this.props;
 
         return (
-            <div className="domain-floating-hdr">
-                <Row className="domain-form-hdr-row">
-                    <Col xs={6}>
-                        <Col xs={6}>
-                            <b>Name</b>
-                        </Col>
-                        <Col xs={4}>
-                            <b>Data Type</b>
-                        </Col>
-                        {!domainFormDisplayOptions.hideRequired && (
-                            <Col xs={2} className="domain-form-hdr-center">
-                                <b>Required</b>
+            <div className="domain-field-row domain-row-border-default domain-floating-hdr">
+                <Row className="domain-row-container">
+                    <div className="domain-row-handle" />
+                    <div className="domain-row-expand" />
+                    <div>
+                        <Col xs={6} className="domain-row-base-fields">
+                            <Col xs={6}>
+                                <b>Name *</b>
                             </Col>
-                        )}
-                    </Col>
-                    <Col xs={6}>
-                        <b>Details</b>
-                    </Col>
+                            <Col xs={4}>
+                                <b>Data Type *</b>
+                            </Col>
+                            <Col xs={2}>
+                                {!domainFormDisplayOptions.hideRequired && (
+                                    <b>Required</b>
+                                )}
+                            </Col>
+                        </Col>
+                        <Col xs={6}>
+                            <b>Details</b>
+                        </Col>
+                    </div>
                 </Row>
             </div>
         );

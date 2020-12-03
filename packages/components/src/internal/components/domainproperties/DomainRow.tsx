@@ -191,7 +191,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         return classes.join(' ');
     };
 
-    onFieldChange = (evt: any, expand?: boolean) => {
+    onFieldChange = (evt: any, expand?: boolean): void => {
         const { index } = this.props;
 
         let value = getCheckedValue(evt);
@@ -298,11 +298,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this.setState(() => ({ closing: true }));
     };
 
-    setDragDisabled = (propDragDisabled: boolean, disabled: boolean) => {
+    setDragDisabled = (propDragDisabled: boolean, disabled: boolean): void => {
         this.setState(() => ({ isDragDisabled: disabled || propDragDisabled }));
     };
 
-    showingModal = (showing: boolean) => {
+    showingModal = (showing: boolean): void => {
         this.setState(() => ({ showingModal: showing }));
     };
 
@@ -396,7 +396,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     }
 
     renderButtons() {
-        const { expanded, index, field, appPropertiesOnly, domainIndex, domainFormDisplayOptions } = this.props;
+        const { expanded, index, field, appPropertiesOnly, domainIndex } = this.props;
         const { closing } = this.state;
 
         return (
@@ -420,14 +420,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         onDelete={this.onDelete}
                     />
                 )}
-                <FieldExpansionToggle
-                    cls="domain-field-expand-icon"
-                    expanded={expanded}
-                    expandedTitle="Hide additional field properties"
-                    collapsedTitle="Show additional field properties"
-                    id={createFormInputId(DOMAIN_FIELD_EXPAND, domainIndex, index)}
-                    onClick={this.onExpand}
-                />
             </div>
         );
     }
@@ -496,11 +488,21 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     }
                                 />
                             </div>
+                            <div className="domain-row-expand">
+                                <FieldExpansionToggle
+                                    cls="domain-field-expand-icon"
+                                    expanded={expanded}
+                                    expandedTitle="Hide additional field properties"
+                                    collapsedTitle="Show additional field properties"
+                                    id={createFormInputId(DOMAIN_FIELD_EXPAND, domainIndex, index)}
+                                    onClick={this.onExpand}
+                                />
+                            </div>
                             <div className="domain-row-main">
-                                <Col xs={6} className="domain-row-base-fields">
+                                <Col xs={6} className="domain-row-base-fields domain-row-base-fields-position">
                                     {this.renderBaseFields()}
                                 </Col>
-                                <Col xs={6} className="field-details-container">
+                                <Col xs={6} className="domain-row-details-container">
                                     {this.getDetails()}
                                     {this.renderButtons()}
                                 </Col>

@@ -4,6 +4,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 8203: Domain designer row styling updates
+    - Move expand/collapse icon to left hand side of row
+    - Fix row header text alignments
+    - ...
 
 ### version 1.5.1
 *Released*: 30 November 2020

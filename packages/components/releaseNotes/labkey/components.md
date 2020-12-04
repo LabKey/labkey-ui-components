@@ -11,6 +11,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - For rows that can be reordered, styling updates for the row being dragged so that it has blue border and box drop shadow that makes it “sit” above the other rows
     - Column titles/headings above the rows align with left side of the related inputs and those that are required have an * after the title
 
+### version 1.5.2
+*Released*: 4 December 2020
+* Remove check for experimental flag from isFreezerManagerEnabled
+
 ### version 1.5.1
 *Released*: 30 November 2020
 * Disable "Submit" button on DetailEditing when in the process of submitting

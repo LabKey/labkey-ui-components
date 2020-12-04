@@ -59,7 +59,7 @@ import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
-import { AssayWizardModel } from './AssayWizardModel';
+import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
 import {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
@@ -85,6 +85,8 @@ interface OwnProps {
     loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
     showUploadTabs?: boolean;
     showQuerySelectPreviewOptions?: boolean;
+    runDataPanelTitle?: string;
+    beforeFinish?: (data: IAssayUploadOptions) => IAssayUploadOptions;
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -476,9 +478,14 @@ class AssayImportPanelsImpl extends Component<Props, State> {
     };
 
     onFinish = (importAgain: boolean): void => {
-        const { currentStep, onSave, maxInsertRows } = this.props;
+        const { currentStep, onSave, maxInsertRows, beforeFinish } = this.props;
         const { model } = this.state;
-        const data = model.prepareFormData(currentStep, this.getDataGridModel());
+        let data = model.prepareFormData(currentStep, this.getDataGridModel());
+
+        if (beforeFinish) {
+            data = beforeFinish(data);
+        }
+
         if (
             model.isCopyTab(currentStep) &&
             maxInsertRows &&
@@ -630,6 +637,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             onSave,
             showUploadTabs,
             showQuerySelectPreviewOptions,
+            runDataPanelTitle,
         } = this.props;
         const { duplicateFileResponse, model, showRenameModal } = this.state;
 
@@ -672,6 +680,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
                     maxInsertRows={this.props.maxInsertRows}
                     onGridDataChange={this.props.onDataChange}
                     showTabs={showUploadTabs}
+                    title={runDataPanelTitle}
                 />
                 {this.state.error && <Alert bsStyle="danger">{this.state.error}</Alert>}
                 <WizardNavButtons cancel={onCancel} containerClassName="" includeNext={false}>

@@ -377,7 +377,7 @@ library is used (for a component). Switch a couple of usages from `ReactN` to `R
 * Fix sorts issue with QueryModel.urlQueryParams
 
 ### version 0.82.0
-*Release*: 30 July 2020
+*Released*: 30 July 2020
 * Add method for applications to register their URL Mappers so different applications can choose to route Server URLs differently.
 * Add a productId property to ActionMapper so it can be used to construct a URL to a separate application.
 

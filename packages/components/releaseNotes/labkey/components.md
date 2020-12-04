@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 1.5.2
+*Released*: 4 December 2020
 * Remove check for experimental flag from isFreezerManagerEnabled
 
 ### version 1.5.1

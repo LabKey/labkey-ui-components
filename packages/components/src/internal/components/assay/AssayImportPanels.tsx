@@ -84,6 +84,7 @@ interface OwnProps {
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
     loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
     showUploadTabs?: boolean;
+    showQuerySelectPreviewOptions?: boolean;
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -628,6 +629,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             allowBulkUpdate,
             onSave,
             showUploadTabs,
+            showQuerySelectPreviewOptions,
         } = this.props;
         const { duplicateFileResponse, model, showRenameModal } = this.state;
 
@@ -652,8 +654,8 @@ class AssayImportPanelsImpl extends Component<Props, State> {
                         hasBatchProperties={model.batchColumns.size > 0}
                     />
                 )}
-                <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
-                <RunPropertiesPanel model={model} onChange={this.handleRunChange} />
+                <BatchPropertiesPanel model={model} showQuerySelectPreviewOptions={showQuerySelectPreviewOptions} onChange={this.handleBatchChange} />
+                <RunPropertiesPanel model={model} showQuerySelectPreviewOptions={showQuerySelectPreviewOptions} onChange={this.handleRunChange} />
                 <RunDataPanel
                     currentStep={currentStep}
                     wizardModel={model}

@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Item 8141: AssayImportPanels - props to allow setting initial assay upload tab and hiding other tabs
+* Item 8141: AssayImportPanels updates to support file based assay scenario
+    - add props to allow setting initial assay upload tab and hiding other tabs
+    - add props to allow batch/run property QuerySelects to not show full preview options
 
 ### version 1.5.1
 *Released*: 30 November 2020

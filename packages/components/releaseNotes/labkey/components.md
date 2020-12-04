@@ -9,6 +9,10 @@ Components, models, actions, and utility functions for LabKey applications and p
     - fix so that date picker input field label shows asterisk when required
     - add beforeFinish prop to allow usages of AssayImportPanels to manipulate data before import/save
 
+### version 1.5.2
+*Released*: 4 December 2020
+* Remove check for experimental flag from isFreezerManagerEnabled
+
 ### version 1.5.1
 *Released*: 30 November 2020
 * Disable "Submit" button on DetailEditing when in the process of submitting

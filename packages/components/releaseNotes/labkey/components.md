@@ -4,9 +4,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 8203: Domain designer row styling updates
-    - Move expand/collapse icon to left hand side of row
-    - Fix row header text alignments
-    - ...
+    - Remove grey background of drag handle area on the far left of the row
+    - Move the expand/collapse icon to the left (next to the dnd handle) but keep the remove/delete icon on the far right
+    - Remove margin/padding between rows (i.e. no spacing below each row), so that they look more like a table of rows
+    - Remove box-shadow from rows and remove border radius (corners should be square now)
+    - For rows that can be reordered, styling updates for the row being dragged so that it has blue border and box drop shadow that makes it “sit” above the other rows
+    - Column titles/headings above the rows align with left side of the related inputs and those that are required have an * after the title
 
 ### version 1.5.1
 *Released*: 30 November 2020

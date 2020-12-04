@@ -54,11 +54,11 @@ export function userCanDesignLocations(user: User): boolean {
 }
 
 export function isFreezerManagementEnabled(): boolean {
-    const smEnabled = isSampleManagerEnabled();
-    return (
-        getServerContext().moduleContext?.inventory &&
-        (!smEnabled || getServerContext().moduleContext?.samplemanagement.hasFreezerManagementEnabled === true)
-    );
+    return getServerContext().moduleContext?.inventory !== undefined;
+}
+
+export function isAsynchronousImportEnabled(): boolean {
+    return getServerContext().moduleContext?.samplemanagement?.hasAsynchronousImportEnabled === true;
 }
 
 export function isSampleManagerEnabled(): boolean {

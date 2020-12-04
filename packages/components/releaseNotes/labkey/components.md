@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 8141: AssayImportPanels updates to support file based assay scenario
     - add props to allow setting initial assay upload tab and hiding other tabs
     - add props to allow batch/run property QuerySelects to not show full preview options
+    - fix so that date picker input field label shows asterisk when required
 
 ### version 1.5.1
 *Released*: 30 November 2020

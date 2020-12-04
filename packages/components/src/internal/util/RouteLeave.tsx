@@ -5,6 +5,7 @@ import { AppURL } from '../..';
 
 import { BeforeUnload } from './BeforeUnload';
 import { Location } from 'history';
+import { getBrowserHistory } from './global';
 
 export const ON_LEAVE_DIRTY_STATE_MESSAGE =
     'You have unsaved changes that will be lost. Are you sure you want to continue?';
@@ -17,27 +18,33 @@ export const ON_LEAVE_DIRTY_STATE_MESSAGE =
  * in the browser will not change. (Issue 39633).
  * See also https://stackoverflow.com/questions/32841757/detecting-user-leaving-page-with-react-router
  *
+ * TODO: Seems like there are some additional tools in newer versions of react-router:
+ *  https://stackoverflow.com/questions/62792342/in-react-router-v6-how-to-check-form-is-dirty-before-leaving-page-route
+ *
  * @param currentLocation the location of the current page
  */
 export function confirmLeaveWhenDirty(currentLocation: Location): boolean {
     const result = confirm(ON_LEAVE_DIRTY_STATE_MESSAGE);
-    if (result) {
-        // navigation confirmed
-        return true;
-    } else {
-        // navigation canceled, pushing the previous path
-        if (currentLocation) {
-            const appURL = AppURL.create(
-                ...currentLocation.pathname
-                    .substring(1)
-                    .split('/')
-                    .map(part => decodeURIComponent(part))
-            );
-            window.history.replaceState(null, null, appURL.toHref() + currentLocation.search);
-        }
 
-        return false;
+    // navigation canceled, pushing the previous path
+    if (!result && currentLocation) {
+        const currentHashPath = AppURL.create(
+            ...currentLocation.pathname
+                .substring(1)
+                .split('/')
+                .map(part => decodeURIComponent(part))
+        ).toHref() + currentLocation.search;
+
+        const history = getBrowserHistory();
+        // Needed because some links pre-add the history, while others don't Issue #41419
+        if (currentHashPath !== history.location.hash)
+            window.history.go(-1); //pop the stack as the new location was already pushed on
+
+        // Replace the state so things look handled -- prevents onbeforeunload from re-prompting
+        window.history.replaceState(null, null, currentHashPath);
     }
+
+    return result;
 }
 
 interface RouteLeaveInjectedProps {

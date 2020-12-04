@@ -22,7 +22,6 @@ describe('getMenuSectionConfigs', () => {
     test('sampleManager enabled', () => {
         LABKEY.moduleContext = {
             samplemanagement: {
-                hasFreezerManagementEnabled: true,
                 hasPremiumModule: true,
                 hasStudyModule: true,
                 productId: 'SampleManager',
@@ -64,7 +63,6 @@ describe('getMenuSectionConfigs', () => {
     test('SM and FM enabled, SM current app', () => {
         LABKEY.moduleContext = {
             samplemanagement: {
-                hasFreezerManagementEnabled: true,
                 hasPremiumModule: true,
                 hasStudyModule: true,
                 productId: 'SampleManager',
@@ -97,7 +95,6 @@ describe('getMenuSectionConfigs', () => {
     test('SM and FM enabled, FM current app', () => {
         LABKEY.moduleContext = {
             samplemanagement: {
-                hasFreezerManagementEnabled: true,
                 hasPremiumModule: true,
                 hasStudyModule: true,
                 productId: 'SampleManager',
@@ -137,7 +134,6 @@ describe('getMenuSectionConfigs', () => {
 describe('utils', () => {
     LABKEY.moduleContext = {
         samplemanagement: {
-            hasFreezerManagementEnabled: true,
             hasPremiumModule: true,
             hasStudyModule: true,
             productId: 'SampleManager',
@@ -178,29 +174,6 @@ describe('utils', () => {
             samplemanagement: {},
         };
         expect(isSampleManagerEnabled()).toBeTruthy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {
-                hasFreezerManagementEnabled: false,
-            },
-        };
-        expect(isSampleManagerEnabled()).toBeTruthy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {
-                hasFreezerManagementEnabled: true,
-            },
-        };
-        expect(isSampleManagerEnabled()).toBeTruthy();
-
-        LABKEY.moduleContext = {
-            samplemanagement: {
-                hasFreezerManagementEnabled: true,
-            },
-        };
-        expect(isSampleManagerEnabled()).toBeTruthy();
     });
 
     test('isFreezerManagementEnabled', () => {
@@ -216,29 +189,6 @@ describe('utils', () => {
             inventory: {},
             samplemanagement: {},
         };
-        expect(isFreezerManagementEnabled()).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {
-                hasFreezerManagementEnabled: false,
-            },
-        };
-        expect(isFreezerManagementEnabled()).toBeFalsy();
-
-        LABKEY.moduleContext = {
-            inventory: {},
-            samplemanagement: {
-                hasFreezerManagementEnabled: true,
-            },
-        };
         expect(isFreezerManagementEnabled()).toBeTruthy();
-
-        LABKEY.moduleContext = {
-            samplemanagement: {
-                hasFreezerManagementEnabled: true,
-            },
-        };
-        expect(isFreezerManagementEnabled()).toBeFalsy();
     });
 });

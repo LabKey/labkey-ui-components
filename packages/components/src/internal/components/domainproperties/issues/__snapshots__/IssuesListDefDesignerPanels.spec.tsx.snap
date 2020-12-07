@@ -526,6 +526,23 @@ Array [
                 
               </div>
             </div>
+            <div
+              className="container--toolbar-button"
+            >
+              <div
+                className="domain-toolbar-delete-btn"
+              >
+                <span
+                  className="container--action-button btn btn-default disabled"
+                >
+                  <i
+                    className="fa fa-trash domain-toolbar-export-btn-icon"
+                  />
+                   Delete
+                </span>
+                
+              </div>
+            </div>
           </div>
           <div
             className="col-xs-8"

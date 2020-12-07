@@ -1159,6 +1159,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "sourceOntology": undefined,
             "conceptLabelColumn": undefined,
             "conceptImportColumn": undefined,
+            "selected": false,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1241,6 +1242,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "sourceOntology": undefined,
             "conceptLabelColumn": undefined,
             "conceptImportColumn": undefined,
+            "selected": false,
           },
           Immutable.Record {
             "conceptURI": null,
@@ -1323,6 +1325,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "sourceOntology": undefined,
             "conceptLabelColumn": undefined,
             "conceptImportColumn": undefined,
+            "selected": false,
           },
         ],
         "indices": Immutable.List [],
@@ -1460,6 +1463,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "selected": false,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1542,6 +1546,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "selected": false,
             },
             Immutable.Record {
               "conceptURI": null,
@@ -1624,6 +1629,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "selected": false,
             },
           ],
           "indices": Immutable.List [],
@@ -1764,6 +1770,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "selected": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -1846,6 +1853,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "selected": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -1928,6 +1936,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "selected": false,
               },
             ],
             "indices": Immutable.List [],
@@ -2063,6 +2072,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "selected": false,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2145,6 +2155,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "selected": false,
                 },
                 Immutable.Record {
                   "conceptURI": null,
@@ -2227,6 +2238,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "selected": false,
                 },
               ],
               "indices": Immutable.List [],
@@ -2370,6 +2382,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2452,6 +2465,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -2534,6 +2548,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -2681,6 +2696,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "selected": false,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -2763,6 +2779,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "selected": false,
                     },
                     Immutable.Record {
                       "conceptURI": null,
@@ -2845,6 +2862,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "selected": false,
                     },
                   ],
                   "indices": Immutable.List [],
@@ -4331,6 +4349,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "selected": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -4413,6 +4432,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "selected": false,
               },
               Immutable.Record {
                 "conceptURI": null,
@@ -4495,6 +4515,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "selected": false,
               },
             ],
             "indices": Immutable.List [],
@@ -4631,6 +4652,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -4713,6 +4735,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   },
                   Immutable.Record {
                     "conceptURI": null,
@@ -4795,6 +4818,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   },
                 ],
                 "indices": Immutable.List [],
@@ -5084,6 +5108,30 @@ exports[`DataClassDesigner initModel 1`] = `
                                           </ActionButton>
                                         </AddEntityButton>
                                         <ActionButton
+                                          buttonClass="domain-toolbar-delete-btn"
+                                          containerClass="container--toolbar-button"
+                                          disabled={true}
+                                          helperTitle="More Info"
+                                          onClick={[Function]}
+                                        >
+                                          <div
+                                            className="container--toolbar-button"
+                                          >
+                                            <div
+                                              className="domain-toolbar-delete-btn"
+                                            >
+                                              <span
+                                                className="container--action-button btn btn-default disabled"
+                                              >
+                                                <i
+                                                  className="fa fa-trash domain-toolbar-export-btn-icon"
+                                                />
+                                                 Delete
+                                              </span>
+                                            </div>
+                                          </div>
+                                        </ActionButton>
+                                        <ActionButton
                                           buttonClass="domain-toolbar-export-btn"
                                           containerClass="container--toolbar-button"
                                           disabled={false}
@@ -5248,8 +5296,37 @@ exports[`DataClassDesigner initModel 1`] = `
                                                           className="domain-row-handle"
                                                         />
                                                         <div
-                                                          className="domain-row-expand"
-                                                        />
+                                                          className="domain-row-action-section"
+                                                        >
+                                                          <Checkbox
+                                                            bsClass="checkbox"
+                                                            checked={false}
+                                                            className="domain-field-check-icon"
+                                                            disabled={false}
+                                                            id="domain-select-all-checkbox"
+                                                            inline={false}
+                                                            name="domain-select-all-checkbox"
+                                                            onChange={[Function]}
+                                                            title=""
+                                                          >
+                                                            <div
+                                                              className="domain-field-check-icon checkbox"
+                                                            >
+                                                              <label
+                                                                title=""
+                                                              >
+                                                                <input
+                                                                  checked={false}
+                                                                  disabled={false}
+                                                                  id="domain-select-all-checkbox"
+                                                                  name="domain-select-all-checkbox"
+                                                                  onChange={[Function]}
+                                                                  type="checkbox"
+                                                                />
+                                                              </label>
+                                                            </div>
+                                                          </Checkbox>
+                                                        </div>
                                                         <div>
                                                           <Col
                                                             bsClass="col"
@@ -5611,6 +5688,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "selected": false,
                                                           }
                                                         }
                                                         fieldDetailsInfo={Object {}}
@@ -5816,6 +5894,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "selected": false,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -5949,8 +6028,36 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         </DragDropHandle>
                                                                       </div>
                                                                       <div
-                                                                        className="domain-row-expand"
+                                                                        className="domain-row-action-section"
                                                                       >
+                                                                        <Checkbox
+                                                                          bsClass="checkbox"
+                                                                          checked={false}
+                                                                          className="domain-field-check-icon"
+                                                                          disabled={false}
+                                                                          id="domainpropertiesrow-selected-0-0"
+                                                                          inline={false}
+                                                                          name="domainpropertiesrow-selected"
+                                                                          onChange={[Function]}
+                                                                          title=""
+                                                                        >
+                                                                          <div
+                                                                            className="domain-field-check-icon checkbox"
+                                                                          >
+                                                                            <label
+                                                                              title=""
+                                                                            >
+                                                                              <input
+                                                                                checked={false}
+                                                                                disabled={false}
+                                                                                id="domainpropertiesrow-selected-0-0"
+                                                                                name="domainpropertiesrow-selected"
+                                                                                onChange={[Function]}
+                                                                                type="checkbox"
+                                                                              />
+                                                                            </label>
+                                                                          </div>
+                                                                        </Checkbox>
                                                                         <FieldExpansionToggle
                                                                           cls="domain-field-expand-icon"
                                                                           collapsedTitle="Show additional field properties"
@@ -6390,6 +6497,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "selected": false,
                                                                             }
                                                                           }
                                                                           getDomainFields={[Function]}
@@ -6427,11 +6535,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     <div>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -6456,11 +6563,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded "
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded  row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -6610,11 +6716,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -6655,11 +6760,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -6827,6 +6931,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "selected": false,
                                                                                       }
                                                                                     }
                                                                                     index={0}
@@ -6835,11 +6940,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     <div>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -6865,11 +6969,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <div>
                                                                                             <Col
@@ -7382,6 +7485,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "selected": false,
                                                                                       }
                                                                                     }
                                                                                     hideConditionalFormatting={false}
@@ -7393,11 +7497,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     <div>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -7423,11 +7526,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -8023,6 +8125,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "selected": false,
                                                           }
                                                         }
                                                         fieldDetailsInfo={Object {}}
@@ -8217,6 +8320,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "selected": false,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -8350,8 +8454,36 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         </DragDropHandle>
                                                                       </div>
                                                                       <div
-                                                                        className="domain-row-expand"
+                                                                        className="domain-row-action-section"
                                                                       >
+                                                                        <Checkbox
+                                                                          bsClass="checkbox"
+                                                                          checked={false}
+                                                                          className="domain-field-check-icon"
+                                                                          disabled={false}
+                                                                          id="domainpropertiesrow-selected-0-1"
+                                                                          inline={false}
+                                                                          name="domainpropertiesrow-selected"
+                                                                          onChange={[Function]}
+                                                                          title=""
+                                                                        >
+                                                                          <div
+                                                                            className="domain-field-check-icon checkbox"
+                                                                          >
+                                                                            <label
+                                                                              title=""
+                                                                            >
+                                                                              <input
+                                                                                checked={false}
+                                                                                disabled={false}
+                                                                                id="domainpropertiesrow-selected-0-1"
+                                                                                name="domainpropertiesrow-selected"
+                                                                                onChange={[Function]}
+                                                                                type="checkbox"
+                                                                              />
+                                                                            </label>
+                                                                          </div>
+                                                                        </Checkbox>
                                                                         <FieldExpansionToggle
                                                                           cls="domain-field-expand-icon"
                                                                           collapsedTitle="Show additional field properties"
@@ -8774,6 +8906,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "selected": false,
                                                                             }
                                                                           }
                                                                           getDomainFields={[Function]}
@@ -8812,11 +8945,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     <div>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -8841,11 +8973,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -9010,11 +9141,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -9186,6 +9316,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "selected": false,
                                                                                       }
                                                                                     }
                                                                                     index={1}
@@ -9194,11 +9325,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     <div>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -9224,11 +9354,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <div>
                                                                                             <Col
@@ -9730,6 +9859,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "selected": false,
                                                                                       }
                                                                                     }
                                                                                     hideConditionalFormatting={false}
@@ -9741,11 +9871,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     <div>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -9771,11 +9900,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -10371,6 +10499,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "selected": false,
                                                           }
                                                         }
                                                         fieldDetailsInfo={Object {}}
@@ -10565,6 +10694,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "selected": false,
                                                                           }
                                                                         }
                                                                         helpNoun="field designer"
@@ -10698,8 +10828,36 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         </DragDropHandle>
                                                                       </div>
                                                                       <div
-                                                                        className="domain-row-expand"
+                                                                        className="domain-row-action-section"
                                                                       >
+                                                                        <Checkbox
+                                                                          bsClass="checkbox"
+                                                                          checked={false}
+                                                                          className="domain-field-check-icon"
+                                                                          disabled={false}
+                                                                          id="domainpropertiesrow-selected-0-2"
+                                                                          inline={false}
+                                                                          name="domainpropertiesrow-selected"
+                                                                          onChange={[Function]}
+                                                                          title=""
+                                                                        >
+                                                                          <div
+                                                                            className="domain-field-check-icon checkbox"
+                                                                          >
+                                                                            <label
+                                                                              title=""
+                                                                            >
+                                                                              <input
+                                                                                checked={false}
+                                                                                disabled={false}
+                                                                                id="domainpropertiesrow-selected-0-2"
+                                                                                name="domainpropertiesrow-selected"
+                                                                                onChange={[Function]}
+                                                                                type="checkbox"
+                                                                              />
+                                                                            </label>
+                                                                          </div>
+                                                                        </Checkbox>
                                                                         <FieldExpansionToggle
                                                                           cls="domain-field-expand-icon"
                                                                           collapsedTitle="Show additional field properties"
@@ -11104,6 +11262,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "selected": false,
                                                                             }
                                                                           }
                                                                           getDomainFields={[Function]}
@@ -11142,11 +11301,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     <div>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -11171,11 +11329,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -11334,11 +11491,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -11478,6 +11634,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "selected": false,
                                                                                       }
                                                                                     }
                                                                                     index={2}
@@ -11486,11 +11643,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     <div>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -11516,11 +11672,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <div>
                                                                                             <Col
@@ -12022,6 +12177,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "selected": false,
                                                                                       }
                                                                                     }
                                                                                     hideConditionalFormatting={false}
@@ -12033,11 +12189,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     <div>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"
@@ -12063,11 +12218,10 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                       </Row>
                                                                                       <Row
                                                                                         bsClass="row"
-                                                                                        className="domain-row-expanded"
                                                                                         componentClass="div"
                                                                                       >
                                                                                         <div
-                                                                                          className="domain-row-expanded row"
+                                                                                          className="row"
                                                                                         >
                                                                                           <Col
                                                                                             bsClass="col"

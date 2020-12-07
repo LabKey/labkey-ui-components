@@ -839,14 +839,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderPanelHeaderContent() {
-        const { helpTopic, controlledCollapse } = this.props;
+        const { helpTopic } = this.props;
 
         return (
             <Row className={helpTopic ? 'domain-form-hdr-margins' : ''}>
-                <Col xs={helpTopic ? 9 : 12}>
-                    {!controlledCollapse &&
-                        'Adjust fields and their properties. Expand a row to set additional properties.'}
-                </Col>
+                <Col xs={helpTopic ? 9 : 12}/>
                 {helpTopic && (
                     <Col xs={3}>
                         {helpLinkNode(helpTopic, 'Learn more about this tool', 'domain-field-float-right')}

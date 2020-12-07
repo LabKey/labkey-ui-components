@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React from 'react';
-import { Button, Checkbox, Col, Collapse, FormControl, OverlayTrigger, Popover, Row } from 'react-bootstrap';
+import { Button, Checkbox, Col, Collapse, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
 import classNames from 'classnames';
@@ -23,7 +23,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { DeleteIcon, DragDropHandle, FieldExpansionToggle } from '../../..';
+import { DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip } from '../../..';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -125,19 +125,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             const msg = fieldError.severity + ': ' + fieldError.message;
             details.push(
                 <>
-                    <b key={field.name + '_' + index}>{msg}</b>&nbsp;
                     {fieldError.extraInfo && (
-                        <OverlayTrigger
-                            placement="bottom"
-                            overlay={
-                                <Popover bsClass="popover" id="domain-row-field-error-popover">
-                                    {fieldError.extraInfo}
-                                </Popover>
-                            }
-                        >
-                            <FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />
-                        </OverlayTrigger>
+                        <LabelHelpTip
+                            title={fieldError.severity}
+                            body={() => fieldError.extraInfo}
+                            iconComponent={() => <FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />}
+                        />
                     )}
+                    {fieldError.extraInfo && <span>&nbsp;</span>}
+                    <b key={field.name + '_' + index}>{msg}</b>
                 </>
             );
         }

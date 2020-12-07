@@ -551,7 +551,7 @@ describe('DomainRow', () => {
             className: 'domain-field-details',
         });
         expect(rowDetails.length).toEqual(1);
-        const expected = 'New Field. ' + severity + ': ' + FIELD_NAME_CHAR_WARNING_MSG;
+        const expected = severity + ': ' + FIELD_NAME_CHAR_WARNING_MSG;
         expect(rowDetails.text()).toContain(expected);
 
         expect(row).toMatchSnapshot();

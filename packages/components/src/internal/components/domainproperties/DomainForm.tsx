@@ -670,11 +670,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             <Col xs={4}>
                                 <b>Data Type *</b>
                             </Col>
-                            <Col xs={2}>
-                                {!domainFormDisplayOptions.hideRequired && (
-                                    <b>Required</b>
-                                )}
-                            </Col>
+                            <Col xs={2}>{!domainFormDisplayOptions.hideRequired && <b>Required</b>}</Col>
                         </Col>
                         <Col xs={6}>
                             <b>Details</b>
@@ -843,7 +839,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         return (
             <Row className={helpTopic ? 'domain-form-hdr-margins' : ''}>
-                <Col xs={helpTopic ? 9 : 12}/>
+                <Col xs={helpTopic ? 9 : 12} />
                 {helpTopic && (
                     <Col xs={3}>
                         {helpLinkNode(helpTopic, 'Learn more about this tool', 'domain-field-float-right')}

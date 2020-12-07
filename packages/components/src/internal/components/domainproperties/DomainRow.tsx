@@ -129,7 +129,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         <LabelHelpTip
                             title={fieldError.severity}
                             body={() => fieldError.extraInfo}
-                            iconComponent={() => <FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />}
+                            iconComponent={() => (
+                                <FontAwesomeIcon icon={faExclamationCircle} className="domain-warning-icon" />
+                            )}
                         />
                     )}
                     {fieldError.extraInfo && <span>&nbsp;</span>}

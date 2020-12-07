@@ -788,9 +788,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             <div className="domain-field-row domain-row-border-default domain-floating-hdr">
                 <Row className="domain-row-container">
                     <div className="domain-row-handle" />
-                    <div className="domain-row-expand">
+                    <div className="domain-row-action-section">
                         <Checkbox
-                            className="domain-hdr-select-all-checkbox"
+                            className="domain-field-check-icon"
                             name="domain-select-all-checkbox"
                             id="domain-select-all-checkbox"
                             checked={selectAll}

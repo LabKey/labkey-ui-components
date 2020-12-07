@@ -34,11 +34,9 @@ $red-shadow:            rgba(220, 53, 69, 0.5);
 $yellow-border:         rgba(255, 204, 129, 1);
 $yellow-shadow:         rgba(255, 204, 129, 0.5);
 
-$blue-border:           rgba(41,128,185,0.5);
-$blue-border-solid:     rgba(41,128,185, 1);
-
-$blue-bkgrd-selected:  #2980b920;
-
+$blue-border:           rgba(41, 128, 185, 0.5);
+$blue-border-solid:     rgba(41, 128, 185, 1);
+$blue-bkgrd-selected:   rgba(41, 128, 185, 0.1);
 
 // OmniBox variables
 @mixin border-top-radius($radius)

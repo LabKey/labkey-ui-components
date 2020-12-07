@@ -144,34 +144,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         return details;
     };
 
-    getRowCssClasses = (
-        expanded: boolean,
-        closing: boolean,
-        dragging: boolean,
-        selected: boolean,
-        fieldError: DomainFieldError,
-    ): string => {
-        const classes = List<string>().asMutable();
-
-        if (!selected) {
-            classes.push('domain-field-row');
-        } else {
-            classes.push('domain-field-row-selected');
-        }
-
-        if (!dragging) {
-            classes.push(this.getFieldBorderClass(fieldError, selected));
-        } else {
-            classes.push('domain-row-border-dragging');
-        }
-
-        if (closing || expanded) {
-            classes.push('domain-row-expanded');
-        }
-
-        return classes.join(' ');
-    };
-
     getDetails() {
         const { index, expanded, domainIndex } = this.props;
         const { closing } = this.state;
@@ -194,6 +166,33 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         } else {
             return 'domain-row-border-warning';
         }
+    };
+
+    getRowCssClasses = (
+        expanded: boolean,
+        closing: boolean,
+        dragging: boolean,
+        selected: boolean,
+        fieldError: DomainFieldError,
+    ): string => {
+        const classes = List<string>().asMutable();
+        classes.push('domain-field-row');
+
+        if (selected) {
+            classes.push('selected');
+        }
+
+        if (!dragging) {
+            classes.push(this.getFieldBorderClass(fieldError, selected));
+        } else {
+            classes.push('domain-row-border-dragging');
+        }
+
+        if (closing || expanded) {
+            classes.push('domain-row-expanded');
+        }
+
+        return classes.join(' ');
     };
 
     onFieldChange = (evt: any, expand?: boolean): void => {
@@ -335,17 +334,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
         return (
             <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)}>
-                <Col xs={1}>
-                    <Checkbox
-                        className="domain-field-checkbox"
-                        name={createFormInputName(DOMAIN_FIELD_SELECTED)}
-                        id={createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, index)}
-                        checked={field.selected}
-                        onChange={this.onFieldChange}
-                        disabled={false}
-                    />
-                </Col>
-                <Col xs={4}>
+                <Col xs={6}>
                     <FormControl
                         // autoFocus={field.isNew()}  // TODO: This is not working great with drag and drop, need to investigate
                         type="text"
@@ -507,7 +496,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     }
                                 />
                             </div>
-                            <div className="domain-row-expand">
+                            <div className="domain-row-action-section">
+                                <Checkbox
+                                    className="domain-field-check-icon"
+                                    name={createFormInputName(DOMAIN_FIELD_SELECTED)}
+                                    id={createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, index)}
+                                    checked={field.selected}
+                                    onChange={this.onFieldChange}
+                                    disabled={false}
+                                />
                                 <FieldExpansionToggle
                                     cls="domain-field-expand-icon"
                                     expanded={expanded}

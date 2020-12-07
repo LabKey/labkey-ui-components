@@ -404,6 +404,10 @@
   &:hover {
       color: $blue-highlight;
   }
+
+  &.disabled {
+      opacity: 0.5;
+  }
 }
 
 .domain-row-empty-handle {

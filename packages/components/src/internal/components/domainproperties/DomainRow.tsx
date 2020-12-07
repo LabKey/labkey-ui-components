@@ -17,6 +17,7 @@ import React from 'react';
 import { Button, Checkbox, Col, Collapse, FormControl, OverlayTrigger, Popover, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { Draggable } from 'react-beautiful-dnd';
+import classNames from 'classnames';
 
 import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
@@ -477,7 +478,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                 successBsStyle={successBsStyle}
                                 domainFormDisplayOptions={domainFormDisplayOptions}
                             />
-                            <div className="domain-row-handle" {...provided.dragHandleProps}>
+                            <div
+                                className={classNames('domain-row-handle', { disabled: isDragDisabled })}
+                                {...provided.dragHandleProps}
+                            >
                                 <DragDropHandle
                                     highlighted={
                                         dragging

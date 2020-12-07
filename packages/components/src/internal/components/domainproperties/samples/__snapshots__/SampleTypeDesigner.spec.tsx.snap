@@ -3587,79 +3587,87 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   }
                                                 >
                                                   <div
-                                                    className="domain-floating-hdr"
+                                                    className="domain-field-row domain-row-border-default domain-floating-hdr"
                                                   >
                                                     <Row
                                                       bsClass="row"
-                                                      className="domain-form-hdr-row"
+                                                      className="domain-row-container"
                                                       componentClass="div"
                                                     >
                                                       <div
-                                                        className="domain-form-hdr-row row"
+                                                        className="domain-row-container row"
                                                       >
-                                                        <Col
-                                                          bsClass="col"
-                                                          componentClass="div"
-                                                          xs={6}
-                                                        >
-                                                          <div
-                                                            className="col-xs-6"
+                                                        <div
+                                                          className="domain-row-handle"
+                                                        />
+                                                        <div
+                                                          className="domain-row-expand"
+                                                        />
+                                                        <div>
+                                                          <Col
+                                                            bsClass="col"
+                                                            className="domain-row-base-fields"
+                                                            componentClass="div"
+                                                            xs={6}
                                                           >
-                                                            <Col
-                                                              bsClass="col"
-                                                              componentClass="div"
-                                                              xs={6}
+                                                            <div
+                                                              className="domain-row-base-fields col-xs-6"
                                                             >
-                                                              <div
-                                                                className="col-xs-6"
+                                                              <Col
+                                                                bsClass="col"
+                                                                componentClass="div"
+                                                                xs={6}
                                                               >
-                                                                <b>
-                                                                  Name
-                                                                </b>
-                                                              </div>
-                                                            </Col>
-                                                            <Col
-                                                              bsClass="col"
-                                                              componentClass="div"
-                                                              xs={4}
-                                                            >
-                                                              <div
-                                                                className="col-xs-4"
+                                                                <div
+                                                                  className="col-xs-6"
+                                                                >
+                                                                  <b>
+                                                                    Name *
+                                                                  </b>
+                                                                </div>
+                                                              </Col>
+                                                              <Col
+                                                                bsClass="col"
+                                                                componentClass="div"
+                                                                xs={4}
                                                               >
-                                                                <b>
-                                                                  Data Type
-                                                                </b>
-                                                              </div>
-                                                            </Col>
-                                                            <Col
-                                                              bsClass="col"
-                                                              className="domain-form-hdr-center"
-                                                              componentClass="div"
-                                                              xs={2}
-                                                            >
-                                                              <div
-                                                                className="domain-form-hdr-center col-xs-2"
+                                                                <div
+                                                                  className="col-xs-4"
+                                                                >
+                                                                  <b>
+                                                                    Data Type *
+                                                                  </b>
+                                                                </div>
+                                                              </Col>
+                                                              <Col
+                                                                bsClass="col"
+                                                                componentClass="div"
+                                                                xs={2}
                                                               >
-                                                                <b>
-                                                                  Required
-                                                                </b>
-                                                              </div>
-                                                            </Col>
-                                                          </div>
-                                                        </Col>
-                                                        <Col
-                                                          bsClass="col"
-                                                          componentClass="div"
-                                                          xs={6}
-                                                        >
-                                                          <div
-                                                            className="col-xs-6"
+                                                                <div
+                                                                  className="col-xs-2"
+                                                                >
+                                                                  <b>
+                                                                    Required
+                                                                  </b>
+                                                                </div>
+                                                              </Col>
+                                                            </div>
+                                                          </Col>
+                                                          <Col
+                                                            bsClass="col"
+                                                            componentClass="div"
+                                                            xs={6}
                                                           >
-                                                            <b>
-                                                              Details
-                                                            </b>
-                                                          </div>
-                                                        </Col>
+                                                            <div
+                                                              className="col-xs-6"
+                                                            >
+                                                              <b>
+                                                                Details
+                                                              </b>
+                                                            </div>
+                                                          </Col>
+                                                        </div>
                                                       </div>
                                                     </Row>
                                                   </div>
@@ -4250,16 +4258,85 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         </DragDropHandle>
                                                                       </div>
                                                                       <div
+                                                                        className="domain-row-expand"
+                                                                      >
+                                                                        <FieldExpansionToggle
+                                                                          cls="domain-field-expand-icon"
+                                                                          collapsedTitle="Show additional field properties"
+                                                                          expanded={false}
+                                                                          expandedTitle="Hide additional field properties"
+                                                                          id="domainpropertiesrow-expand-0-0"
+                                                                          onClick={[Function]}
+                                                                        >
+                                                                          <div
+                                                                            className="field-icon domain-field-expand-icon"
+                                                                            id="domainpropertiesrow-expand-0-0"
+                                                                            onClick={[Function]}
+                                                                            title="Show additional field properties"
+                                                                          >
+                                                                            <FontAwesomeIcon
+                                                                              border={false}
+                                                                              className=""
+                                                                              fixedWidth={false}
+                                                                              flip={null}
+                                                                              icon={
+                                                                                Object {
+                                                                                  "icon": Array [
+                                                                                    448,
+                                                                                    512,
+                                                                                    Array [],
+                                                                                    "f0fe",
+                                                                                    "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                                                                  ],
+                                                                                  "iconName": "plus-square",
+                                                                                  "prefix": "fas",
+                                                                                }
+                                                                              }
+                                                                              inverse={false}
+                                                                              listItem={false}
+                                                                              mask={null}
+                                                                              pull={null}
+                                                                              pulse={false}
+                                                                              rotation={null}
+                                                                              size="lg"
+                                                                              spin={false}
+                                                                              swapOpacity={false}
+                                                                              symbol={false}
+                                                                              title=""
+                                                                              transform={null}
+                                                                            >
+                                                                              <svg
+                                                                                aria-hidden="true"
+                                                                                className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                                                                data-icon="plus-square"
+                                                                                data-prefix="fas"
+                                                                                focusable="false"
+                                                                                role="img"
+                                                                                style={Object {}}
+                                                                                viewBox="0 0 448 512"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                              >
+                                                                                <path
+                                                                                  d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                                                                  fill="currentColor"
+                                                                                  style={Object {}}
+                                                                                />
+                                                                              </svg>
+                                                                            </FontAwesomeIcon>
+                                                                          </div>
+                                                                        </FieldExpansionToggle>
+                                                                      </div>
+                                                                      <div
                                                                         className="domain-row-main"
                                                                       >
                                                                         <Col
                                                                           bsClass="col"
-                                                                          className="domain-row-base-fields"
+                                                                          className="domain-row-base-fields domain-row-base-fields-position"
                                                                           componentClass="div"
                                                                           xs={6}
                                                                         >
                                                                           <div
-                                                                            className="domain-row-base-fields col-xs-6"
+                                                                            className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                                                           >
                                                                             <div
                                                                               id="domainpropertiesrow-row-0-0"
@@ -4418,12 +4495,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         </Col>
                                                                         <Col
                                                                           bsClass="col"
-                                                                          className="field-details-container"
+                                                                          className="domain-row-details-container"
                                                                           componentClass="div"
                                                                           xs={6}
                                                                         >
                                                                           <div
-                                                                            className="field-details-container col-xs-6"
+                                                                            className="domain-row-details-container col-xs-6"
                                                                           >
                                                                             <div
                                                                               className="domain-field-details"
@@ -4497,71 +4574,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   </FontAwesomeIcon>
                                                                                 </span>
                                                                               </DeleteIcon>
-                                                                              <FieldExpansionToggle
-                                                                                cls="domain-field-expand-icon"
-                                                                                collapsedTitle="Show additional field properties"
-                                                                                expanded={false}
-                                                                                expandedTitle="Hide additional field properties"
-                                                                                id="domainpropertiesrow-expand-0-0"
-                                                                                onClick={[Function]}
-                                                                              >
-                                                                                <div
-                                                                                  className="field-icon domain-field-expand-icon"
-                                                                                  id="domainpropertiesrow-expand-0-0"
-                                                                                  onClick={[Function]}
-                                                                                  title="Show additional field properties"
-                                                                                >
-                                                                                  <FontAwesomeIcon
-                                                                                    border={false}
-                                                                                    className=""
-                                                                                    fixedWidth={false}
-                                                                                    flip={null}
-                                                                                    icon={
-                                                                                      Object {
-                                                                                        "icon": Array [
-                                                                                          448,
-                                                                                          512,
-                                                                                          Array [],
-                                                                                          "f0fe",
-                                                                                          "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                                                        ],
-                                                                                        "iconName": "plus-square",
-                                                                                        "prefix": "fas",
-                                                                                      }
-                                                                                    }
-                                                                                    inverse={false}
-                                                                                    listItem={false}
-                                                                                    mask={null}
-                                                                                    pull={null}
-                                                                                    pulse={false}
-                                                                                    rotation={null}
-                                                                                    size="lg"
-                                                                                    spin={false}
-                                                                                    swapOpacity={false}
-                                                                                    symbol={false}
-                                                                                    title=""
-                                                                                    transform={null}
-                                                                                  >
-                                                                                    <svg
-                                                                                      aria-hidden="true"
-                                                                                      className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                                                                      data-icon="plus-square"
-                                                                                      data-prefix="fas"
-                                                                                      focusable="false"
-                                                                                      role="img"
-                                                                                      style={Object {}}
-                                                                                      viewBox="0 0 448 512"
-                                                                                      xmlns="http://www.w3.org/2000/svg"
-                                                                                    >
-                                                                                      <path
-                                                                                        d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                                                        fill="currentColor"
-                                                                                        style={Object {}}
-                                                                                      />
-                                                                                    </svg>
-                                                                                  </FontAwesomeIcon>
-                                                                                </div>
-                                                                              </FieldExpansionToggle>
                                                                             </div>
                                                                           </div>
                                                                         </Col>
@@ -4709,7 +4721,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             className="domain-row-container"
                                                                           >
                                                                             <div
-                                                                              className="domain-row-handle"
+                                                                              className="domain-row-container-expand-spacer"
                                                                             />
                                                                             <div
                                                                               className="domain-row-container-expanded"

@@ -18,11 +18,15 @@ exports[`<PageDetailHeader/> default props 1`] = `
         width="100%"
       />
     </div>
-    <h2
-      className="no-margin-top detail__header--name"
+    <div
+      className="detail__header-icon--body-container"
     >
-      Title
-    </h2>
+      <h2
+        className="no-margin-top detail__header--name"
+      >
+        Title
+      </h2>
+    </div>
   </div>
   <div
     className="clearfix"
@@ -48,21 +52,25 @@ exports[`<PageDetailHeader/> with additional props 1`] = `
         width="100%"
       />
     </div>
-    <h2
-      className="no-margin-top detail__header--name"
+    <div
+      className="detail__header-icon--body-container"
     >
-      Title
-    </h2>
-    <h4
-      className="test-loc-detail-subtitle"
-    >
-      Subtitle
-    </h4>
-    <span
-      className="detail__header--desc"
-    >
-      Description
-    </span>
+      <h2
+        className="no-margin-top detail__header--name"
+      >
+        Title
+      </h2>
+      <h4
+        className="test-loc-detail-subtitle"
+      >
+        Subtitle
+      </h4>
+      <span
+        className="detail__header--desc"
+      >
+        Description
+      </span>
+    </div>
   </div>
   <div
     className="pull-right"
@@ -84,11 +92,15 @@ exports[`<PageDetailHeader/> without icon 1`] = `
   <div
     className="col-md-6 detail__header--container"
   >
-    <h2
-      className="no-margin-top detail__header--name"
+    <div
+      className="detail__header-icon--body-container"
     >
-      Title
-    </h2>
+      <h2
+        className="no-margin-top detail__header--name"
+      >
+        Title
+      </h2>
+    </div>
   </div>
   <div
     className="clearfix"

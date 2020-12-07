@@ -1132,6 +1132,38 @@ export function replaceSelected(key: string, ids: string[] | string, containerPa
     });
 }
 
+/**
+ * Set the snapshot selections for a grid
+ * @param key the selection key for the grid
+ * @param ids ids to change selection for
+ * @param containerPath optional path to the container for this grid.  Default is the current container path
+ */
+export function setSnapshotSelections(key: string, ids: string[] | string, containerPath?: string): Promise<ISelectResponse> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: buildURL('query', 'setSnapshotSelection.api', undefined, {
+                container: containerPath,
+            }),
+            method: 'POST',
+            jsonData: {
+                key,
+                id: ids,
+            },
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response);
+            }),
+            failure: Utils.getCallbackWrapper(
+                response => {
+                    reject(response);
+                },
+                this,
+                true
+            ),
+        });
+    });
+}
+
+
 function removeAll(selected: List<string>, toDelete: List<string>): List<string> {
     toDelete.forEach(id => {
         const idx = selected.indexOf(id);

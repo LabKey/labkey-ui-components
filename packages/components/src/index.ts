@@ -133,6 +133,7 @@ import {
     replaceSelected,
     schemaGridInvalidate,
     setSelected,
+    setSnapshotSelections,
     unselectAll,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
@@ -453,6 +454,7 @@ export {
     gridShowError,
     replaceSelected,
     setSelected,
+    setSnapshotSelections,
     unselectAll,
     // query related items
     ISelectRowsResult,

@@ -15,16 +15,20 @@ exports[`<UserDetailHeader/> custom description 1`] = `
         src="/labkey/_images/defaultavatar.png"
       />
     </div>
-    <h2
-      className="no-margin-top detail__header--name"
+    <div
+      className="detail__header-icon--body-container"
     >
-      Title
-    </h2>
-    <span
-      className="detail__header--desc"
-    >
-      My custom description
-    </span>
+      <h2
+        className="no-margin-top detail__header--name"
+      >
+        Title
+      </h2>
+      <span
+        className="detail__header--desc"
+      >
+        My custom description
+      </span>
+    </div>
   </div>
   <div
     className="pull-right"
@@ -50,16 +54,20 @@ exports[`<UserDetailHeader/> custom properties 1`] = `
         src="/labkey/_images/defaultavatar.png"
       />
     </div>
-    <h2
-      className="no-margin-top detail__header--name"
+    <div
+      className="detail__header-icon--body-container"
     >
-      Title (Custom)
-    </h2>
-    <span
-      className="detail__header--desc"
-    >
-      Assay Designer, Reader
-    </span>
+      <h2
+        className="no-margin-top detail__header--name"
+      >
+        Title (Custom)
+      </h2>
+      <span
+        className="detail__header--desc"
+      >
+        Assay Designer, Reader
+      </span>
+    </div>
   </div>
   <div
     className="pull-right"
@@ -103,16 +111,20 @@ exports[`<UserDetailHeader/> default properties 1`] = `
         src="/labkey/_images/defaultavatar.png"
       />
     </div>
-    <h2
-      className="no-margin-top detail__header--name"
+    <div
+      className="detail__header-icon--body-container"
     >
-      Title
-    </h2>
-    <span
-      className="detail__header--desc"
-    >
-      Reader
-    </span>
+      <h2
+        className="no-margin-top detail__header--name"
+      >
+        Title
+      </h2>
+      <span
+        className="detail__header--desc"
+      >
+        Reader
+      </span>
+    </div>
   </div>
   <div
     className="pull-right"

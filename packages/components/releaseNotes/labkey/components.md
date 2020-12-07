@@ -1,8 +1,43 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.7.0
+*Released*: 7 December 2020
+* Item 8203: Domain designer row styling updates
+    - Remove grey background of drag handle area on the far left of the row
+    - Move the expand/collapse icon to the left (next to the dnd handle) but keep the remove/delete icon on the far right
+    - Remove margin/padding between rows (i.e. no spacing below each row), so that they look more like a table of rows
+    - Remove box-shadow from rows and remove border radius (corners should be square now)
+    - For rows that can be reordered, styling updates for the row being dragged so that it has blue border and box drop shadow that makes it “sit” above the other rows
+    - Column titles/headings above the rows align with left side of the related inputs and those that are required have an * after the title
+
+### version 1.6.0
+*Released*: 6 December 2020
+* Issue 41737: Storage actions do not respect filters on the grid
+    - Add setSnapshotSelections utility function
+
+### version 1.5.2
+*Released*: 4 December 2020
+* Remove check for experimental flag from isFreezerManagerEnabled
+
+### version 1.5.1
+*Released*: 30 November 2020
+* Disable "Submit" button on DetailEditing when in the process of submitting
+* Add some styling to hide text that overflows a field
+* Fix bug in QueryInfo that did not add columns designated as addToDisplayView in all cases
+
+### version 1.5.0
+*Released*: 27 November 2020
+* Item 8116: Make insertRows, updateRows, and deleteRows API success response consistent
+    - make sure to include "rows" and "transactionAuditId" for each
+    - minor display / layout fix for PageDetailHeader body content to flow better below image
+
+### version 1.4.1
+*Released*: 25 November 2020
+* yarn run lint-fix on src/internal/components/domainproperties
+
 ### version 1.4.0
-*Release*: 24 November 2020
+*Released*: 24 November 2020
 * Item 8137: Misc package changes to support LKFM freezer hierarchy polish
     - export existing DomainFieldLabel for use in app
     - add new LockIcon components to package

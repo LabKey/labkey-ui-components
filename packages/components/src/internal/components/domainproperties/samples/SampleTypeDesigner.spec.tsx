@@ -9,9 +9,10 @@ import DomainForm from '../DomainForm';
 
 import { DomainDetails } from '../models';
 
+import { initUnitTestMocks, sleep } from '../../../testHelpers';
+
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner } from './SampleTypeDesigner';
-import { initUnitTestMocks, sleep } from "../../../testHelpers";
 
 const BASE_PROPS = {
     initModel: undefined,

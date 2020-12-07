@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import {ConfirmModal} from "../../..";
+import { ConfirmModal } from '../../..';
 
 interface Props {
     error: any;
@@ -29,17 +29,21 @@ export default class ConfirmImportTypes extends PureComponent<Props> {
                                 {error && error.errors.map((error, index) => <li key={index}> {error.exception} </li>)}
                             </ul>
                             <p>
-                                If you create this {designerType} without resolving the error, no file data will be imported at this
-                                time. <b> Are you sure you want to create the {designerType} without importing the file data? </b>
+                                If you create this {designerType} without resolving the error, no file data will be
+                                imported at this time.{' '}
+                                <b>
+                                    {' '}
+                                    Are you sure you want to create the {designerType} without importing the file data?{' '}
+                                </b>
                             </p>
                         </div>
                     </>
                 }
-                confirmVariant='primary'
+                confirmVariant="primary"
                 onConfirm={onConfirm}
                 onCancel={onCancel}
-                confirmButtonText='Yes, Create Without Data'
-                cancelButtonText='No, Go Back to Field Editor'
+                confirmButtonText="Yes, Create Without Data"
+                cancelButtonText="No, Go Back to Field Editor"
             />
         );
     }

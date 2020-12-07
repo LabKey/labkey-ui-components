@@ -11,6 +11,11 @@ Components, models, actions, and utility functions for LabKey applications and p
     - For rows that can be reordered, styling updates for the row being dragged so that it has blue border and box drop shadow that makes it “sit” above the other rows
     - Column titles/headings above the rows align with left side of the related inputs and those that are required have an * after the title
 
+### version 1.6.0
+*Released*: 6 December 2020
+* Issue 41737: Storage actions do not respect filters on the grid
+    - Add setSnapshotSelections utility function
+
 ### version 1.5.2
 *Released*: 4 December 2020
 * Remove check for experimental flag from isFreezerManagerEnabled

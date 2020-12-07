@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 1.7.0
+*Released*: 7 December 2020
 * Item 8203: Domain designer row styling updates
     - Remove grey background of drag handle area on the far left of the row
     - Move the expand/collapse icon to the left (next to the dnd handle) but keep the remove/delete icon on the far right

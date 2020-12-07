@@ -92,12 +92,12 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
 
         return (
             <div>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={12}>
                         <div className="domain-field-section-heading">{label}</div>
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={2}>
                         <div className="domain-field-label">Target Folder</div>
                         <FolderSelect

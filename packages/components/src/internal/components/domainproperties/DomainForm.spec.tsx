@@ -772,10 +772,9 @@ describe('DomainForm', () => {
         expect(form.find('.domain-toolbar-export-btn').length).toEqual(1);
         expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
 
-        // Note that the button at index i is the export button
         const actionButtons = form.find(ActionButton);
-        expect(actionButtons.length).toBe(3);
-        expect(actionButtons.at(1).prop('disabled')).toBe(false);
+        expect(actionButtons.length).toBe(4);
+        expect(actionButtons.at(2).prop('disabled')).toBe(false); // export button
 
         form.unmount();
     });
@@ -813,7 +812,7 @@ describe('DomainForm', () => {
         expect(form.find('.domain-field-top-noBuffer').length).toEqual(2);
 
         const actionButtons = form.find(ActionButton);
-        expect(actionButtons.length).toBe(2);
+        expect(actionButtons.length).toBe(3);
 
         form.unmount();
     });

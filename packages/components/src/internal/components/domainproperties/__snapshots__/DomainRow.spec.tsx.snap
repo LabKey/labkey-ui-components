@@ -335,6 +335,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -526,6 +527,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -658,8 +660,36 @@ exports[`DomainRow Sample Field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
-                                className="domain-row-expand"
+                                className="domain-row-action-section"
                               >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-0"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-0"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
                                 <FieldExpansionToggle
                                   cls="domain-field-expand-icon"
                                   collapsedTitle="Show additional field properties"
@@ -1083,6 +1113,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={0}
@@ -1134,11 +1165,10 @@ exports[`DomainRow Sample Field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -1163,11 +1193,10 @@ exports[`DomainRow Sample Field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -1448,6 +1477,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -1456,11 +1486,10 @@ exports[`DomainRow Sample Field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -1486,11 +1515,10 @@ exports[`DomainRow Sample Field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -1992,6 +2020,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -2001,11 +2030,10 @@ exports[`DomainRow Sample Field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -2031,11 +2059,10 @@ exports[`DomainRow Sample Field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -2580,6 +2607,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 fieldError={
@@ -2783,6 +2811,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -2915,8 +2944,36 @@ exports[`DomainRow client side warning on field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
-                                className="domain-row-expand"
+                                className="domain-row-action-section"
                               >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-1"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-1"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
                                 <FieldExpansionToggle
                                   cls="domain-field-expand-icon"
                                   collapsedTitle="Show additional field properties"
@@ -3528,6 +3585,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={1}
@@ -3646,6 +3704,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -3654,11 +3713,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -3684,11 +3742,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -4190,6 +4247,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -4199,11 +4257,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -4229,11 +4286,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -4778,6 +4834,7 @@ exports[`DomainRow date time field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -4969,6 +5026,7 @@ exports[`DomainRow date time field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -5101,8 +5159,36 @@ exports[`DomainRow date time field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
-                                className="domain-row-expand"
+                                className="domain-row-action-section"
                               >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-0"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-0"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
                                 <FieldExpansionToggle
                                   cls="domain-field-expand-icon"
                                   collapsedTitle="Show additional field properties"
@@ -5506,6 +5592,7 @@ exports[`DomainRow date time field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={0}
@@ -5541,11 +5628,10 @@ exports[`DomainRow date time field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -5570,11 +5656,10 @@ exports[`DomainRow date time field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -5733,11 +5818,10 @@ exports[`DomainRow date time field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -5877,6 +5961,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -5885,11 +5970,10 @@ exports[`DomainRow date time field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -5915,11 +5999,10 @@ exports[`DomainRow date time field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -6421,6 +6504,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -6430,11 +6514,10 @@ exports[`DomainRow date time field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -6460,11 +6543,10 @@ exports[`DomainRow date time field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -7176,6 +7258,7 @@ exports[`DomainRow decimal field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -7367,6 +7450,7 @@ exports[`DomainRow decimal field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -7499,8 +7583,36 @@ exports[`DomainRow decimal field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
-                                className="domain-row-expand"
+                                className="domain-row-action-section"
                               >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-2"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-2"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
                                 <FieldExpansionToggle
                                   cls="domain-field-expand-icon"
                                   collapsedTitle="Show additional field properties"
@@ -7904,6 +8016,7 @@ exports[`DomainRow decimal field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={2}
@@ -7938,11 +8051,10 @@ exports[`DomainRow decimal field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -7967,11 +8079,10 @@ exports[`DomainRow decimal field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -8136,11 +8247,10 @@ exports[`DomainRow decimal field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -8310,6 +8420,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={2}
@@ -8318,11 +8429,10 @@ exports[`DomainRow decimal field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -8348,11 +8458,10 @@ exports[`DomainRow decimal field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -8854,6 +8963,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={2}
@@ -8863,11 +8973,10 @@ exports[`DomainRow decimal field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -8893,11 +9002,10 @@ exports[`DomainRow decimal field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -9609,6 +9717,7 @@ exports[`DomainRow participant id field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -9800,6 +9909,7 @@ exports[`DomainRow participant id field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -9932,8 +10042,36 @@ exports[`DomainRow participant id field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
-                                className="domain-row-expand"
+                                className="domain-row-action-section"
                               >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-0"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-0"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
                                 <FieldExpansionToggle
                                   cls="domain-field-expand-icon"
                                   collapsedTitle="Show additional field properties"
@@ -10367,6 +10505,7 @@ exports[`DomainRow participant id field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={0}
@@ -10485,6 +10624,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -10493,11 +10633,10 @@ exports[`DomainRow participant id field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -10523,11 +10662,10 @@ exports[`DomainRow participant id field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -11029,6 +11167,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -11038,11 +11177,10 @@ exports[`DomainRow participant id field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -11068,11 +11206,10 @@ exports[`DomainRow participant id field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -11784,6 +11921,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 fieldError={
@@ -11987,6 +12125,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -12119,8 +12258,36 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
-                                className="domain-row-expand"
+                                className="domain-row-action-section"
                               >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-1"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-1"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
                                 <FieldExpansionToggle
                                   cls="domain-field-expand-icon"
                                   collapsedTitle="Show additional field properties"
@@ -12610,6 +12777,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={1}
@@ -12728,6 +12896,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -12736,11 +12905,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -12766,11 +12934,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -13272,6 +13439,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -13281,11 +13449,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -13311,11 +13478,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -13860,6 +14026,7 @@ exports[`DomainRow string field test 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -14051,6 +14218,7 @@ exports[`DomainRow string field test 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -14183,8 +14351,36 @@ exports[`DomainRow string field test 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
-                                className="domain-row-expand"
+                                className="domain-row-action-section"
                               >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-1"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-1"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
                                 <FieldExpansionToggle
                                   cls="domain-field-expand-icon"
                                   collapsedTitle="Show additional field properties"
@@ -14618,6 +14814,7 @@ exports[`DomainRow string field test 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={1}
@@ -14653,11 +14850,10 @@ exports[`DomainRow string field test 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -14682,11 +14878,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded "
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded  row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -14836,11 +15031,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -14881,11 +15075,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -15042,6 +15235,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -15050,11 +15244,10 @@ exports[`DomainRow string field test 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -15080,11 +15273,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -15586,6 +15778,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -15595,11 +15788,10 @@ exports[`DomainRow string field test 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -15625,11 +15817,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -16341,6 +16532,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -16532,6 +16724,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -16663,8 +16856,36 @@ exports[`DomainRow with empty domain form 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
-                                className="domain-row-expand"
+                                className="domain-row-action-section"
                               >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-1"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-1"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
                                 <FieldExpansionToggle
                                   cls="domain-field-expand-icon"
                                   collapsedTitle="Show additional field properties"
@@ -17148,6 +17369,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={1}
@@ -17183,11 +17405,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17212,11 +17433,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded "
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded  row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17366,11 +17586,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17411,11 +17630,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17572,6 +17790,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -17580,11 +17799,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17610,11 +17828,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -18116,6 +18333,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -18125,11 +18343,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -18155,11 +18372,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"

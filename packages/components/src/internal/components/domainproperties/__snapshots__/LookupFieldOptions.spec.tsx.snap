@@ -94,17 +94,17 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "sourceOntology": undefined,
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
+        "selected": false,
       }
     }
   >
     <div>
       <Row
         bsClass="row"
-        className="domain-row-expanded"
         componentClass="div"
       >
         <div
-          className="domain-row-expanded row"
+          className="row"
         >
           <Col
             bsClass="col"
@@ -125,11 +125,10 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
       </Row>
       <Row
         bsClass="row"
-        className="domain-row-expanded"
         componentClass="div"
       >
         <div
-          className="domain-row-expanded row"
+          className="row"
         >
           <Col
             bsClass="col"
@@ -690,17 +689,17 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "sourceOntology": undefined,
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
+        "selected": false,
       }
     }
   >
     <div>
       <Row
         bsClass="row"
-        className="domain-row-expanded"
         componentClass="div"
       >
         <div
-          className="domain-row-expanded row"
+          className="row"
         >
           <Col
             bsClass="col"
@@ -721,11 +720,10 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
       </Row>
       <Row
         bsClass="row"
-        className="domain-row-expanded"
         componentClass="div"
       >
         <div
-          className="domain-row-expanded row"
+          className="row"
         >
           <Col
             bsClass="col"
@@ -1347,17 +1345,17 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "sourceOntology": undefined,
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
+        "selected": false,
       }
     }
   >
     <div>
       <Row
         bsClass="row"
-        className="domain-row-expanded"
         componentClass="div"
       >
         <div
-          className="domain-row-expanded row"
+          className="row"
         >
           <Col
             bsClass="col"
@@ -1378,11 +1376,10 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
       </Row>
       <Row
         bsClass="row"
-        className="domain-row-expanded"
         componentClass="div"
       >
         <div
-          className="domain-row-expanded row"
+          className="row"
         >
           <Col
             bsClass="col"
@@ -2004,17 +2001,17 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "sourceOntology": undefined,
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
+        "selected": false,
       }
     }
   >
     <div>
       <Row
         bsClass="row"
-        className="domain-row-expanded"
         componentClass="div"
       >
         <div
-          className="domain-row-expanded row"
+          className="row"
         >
           <Col
             bsClass="col"
@@ -2035,11 +2032,10 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
       </Row>
       <Row
         bsClass="row"
-        className="domain-row-expanded"
         componentClass="div"
       >
         <div
-          className="domain-row-expanded row"
+          className="row"
         >
           <Col
             bsClass="col"

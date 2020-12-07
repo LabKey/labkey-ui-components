@@ -335,6 +335,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -526,6 +527,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -658,16 +660,113 @@ exports[`DomainRow Sample Field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
+                                className="domain-row-action-section"
+                              >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-0"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-0"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
+                                <FieldExpansionToggle
+                                  cls="domain-field-expand-icon"
+                                  collapsedTitle="Show additional field properties"
+                                  expanded={false}
+                                  expandedTitle="Hide additional field properties"
+                                  id="domainpropertiesrow-expand-1-0"
+                                  onClick={[Function]}
+                                >
+                                  <div
+                                    className="field-icon domain-field-expand-icon"
+                                    id="domainpropertiesrow-expand-1-0"
+                                    onClick={[Function]}
+                                    title="Show additional field properties"
+                                  >
+                                    <FontAwesomeIcon
+                                      border={false}
+                                      className=""
+                                      fixedWidth={false}
+                                      flip={null}
+                                      icon={
+                                        Object {
+                                          "icon": Array [
+                                            448,
+                                            512,
+                                            Array [],
+                                            "f0fe",
+                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                          ],
+                                          "iconName": "plus-square",
+                                          "prefix": "fas",
+                                        }
+                                      }
+                                      inverse={false}
+                                      listItem={false}
+                                      mask={null}
+                                      pull={null}
+                                      pulse={false}
+                                      rotation={null}
+                                      size="lg"
+                                      spin={false}
+                                      swapOpacity={false}
+                                      symbol={false}
+                                      title=""
+                                      transform={null}
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                        data-icon="plus-square"
+                                        data-prefix="fas"
+                                        focusable="false"
+                                        role="img"
+                                        style={Object {}}
+                                        viewBox="0 0 448 512"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                          fill="currentColor"
+                                          style={Object {}}
+                                        />
+                                      </svg>
+                                    </FontAwesomeIcon>
+                                  </div>
+                                </FieldExpansionToggle>
+                              </div>
+                              <div
                                 className="domain-row-main"
                               >
                                 <Col
                                   bsClass="col"
-                                  className="domain-row-base-fields"
+                                  className="domain-row-base-fields domain-row-base-fields-position"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="domain-row-base-fields col-xs-6"
+                                    className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                   >
                                     <div
                                       id="domainpropertiesrow-row-1-0"
@@ -802,12 +901,12 @@ exports[`DomainRow Sample Field 1`] = `
                                 </Col>
                                 <Col
                                   bsClass="col"
-                                  className="field-details-container"
+                                  className="domain-row-details-container"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="field-details-container col-xs-6"
+                                    className="domain-row-details-container col-xs-6"
                                   >
                                     <div
                                       className="domain-field-details"
@@ -881,71 +980,6 @@ exports[`DomainRow Sample Field 1`] = `
                                           </FontAwesomeIcon>
                                         </span>
                                       </DeleteIcon>
-                                      <FieldExpansionToggle
-                                        cls="domain-field-expand-icon"
-                                        collapsedTitle="Show additional field properties"
-                                        expanded={false}
-                                        expandedTitle="Hide additional field properties"
-                                        id="domainpropertiesrow-expand-1-0"
-                                        onClick={[Function]}
-                                      >
-                                        <div
-                                          className="field-icon domain-field-expand-icon"
-                                          id="domainpropertiesrow-expand-1-0"
-                                          onClick={[Function]}
-                                          title="Show additional field properties"
-                                        >
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className=""
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  448,
-                                                  512,
-                                                  Array [],
-                                                  "f0fe",
-                                                  "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                ],
-                                                "iconName": "plus-square",
-                                                "prefix": "fas",
-                                              }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size="lg"
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
-                                          >
-                                            <svg
-                                              aria-hidden="true"
-                                              className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                              data-icon="plus-square"
-                                              data-prefix="fas"
-                                              focusable="false"
-                                              role="img"
-                                              style={Object {}}
-                                              viewBox="0 0 448 512"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <path
-                                                d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                fill="currentColor"
-                                                style={Object {}}
-                                              />
-                                            </svg>
-                                          </FontAwesomeIcon>
-                                        </div>
-                                      </FieldExpansionToggle>
                                     </div>
                                   </div>
                                 </Col>
@@ -1079,6 +1113,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={0}
@@ -1090,7 +1125,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     className="domain-row-container"
                                   >
                                     <div
-                                      className="domain-row-handle"
+                                      className="domain-row-container-expand-spacer"
                                     />
                                     <div
                                       className="domain-row-container-expanded"
@@ -1130,11 +1165,10 @@ exports[`DomainRow Sample Field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -1159,11 +1193,10 @@ exports[`DomainRow Sample Field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -1444,6 +1477,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -1452,11 +1486,10 @@ exports[`DomainRow Sample Field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -1482,11 +1515,10 @@ exports[`DomainRow Sample Field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -1988,6 +2020,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -1997,11 +2030,10 @@ exports[`DomainRow Sample Field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -2027,11 +2059,10 @@ exports[`DomainRow Sample Field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -2576,6 +2607,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 fieldError={
@@ -2779,6 +2811,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -2911,16 +2944,113 @@ exports[`DomainRow client side warning on field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
+                                className="domain-row-action-section"
+                              >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-1"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-1"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
+                                <FieldExpansionToggle
+                                  cls="domain-field-expand-icon"
+                                  collapsedTitle="Show additional field properties"
+                                  expanded={false}
+                                  expandedTitle="Hide additional field properties"
+                                  id="domainpropertiesrow-expand-1-1"
+                                  onClick={[Function]}
+                                >
+                                  <div
+                                    className="field-icon domain-field-expand-icon"
+                                    id="domainpropertiesrow-expand-1-1"
+                                    onClick={[Function]}
+                                    title="Show additional field properties"
+                                  >
+                                    <FontAwesomeIcon
+                                      border={false}
+                                      className=""
+                                      fixedWidth={false}
+                                      flip={null}
+                                      icon={
+                                        Object {
+                                          "icon": Array [
+                                            448,
+                                            512,
+                                            Array [],
+                                            "f0fe",
+                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                          ],
+                                          "iconName": "plus-square",
+                                          "prefix": "fas",
+                                        }
+                                      }
+                                      inverse={false}
+                                      listItem={false}
+                                      mask={null}
+                                      pull={null}
+                                      pulse={false}
+                                      rotation={null}
+                                      size="lg"
+                                      spin={false}
+                                      swapOpacity={false}
+                                      symbol={false}
+                                      title=""
+                                      transform={null}
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                        data-icon="plus-square"
+                                        data-prefix="fas"
+                                        focusable="false"
+                                        role="img"
+                                        style={Object {}}
+                                        viewBox="0 0 448 512"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                          fill="currentColor"
+                                          style={Object {}}
+                                        />
+                                      </svg>
+                                    </FontAwesomeIcon>
+                                  </div>
+                                </FieldExpansionToggle>
+                              </div>
+                              <div
                                 className="domain-row-main"
                               >
                                 <Col
                                   bsClass="col"
-                                  className="domain-row-base-fields"
+                                  className="domain-row-base-fields domain-row-base-fields-position"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="domain-row-base-fields col-xs-6"
+                                    className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                   >
                                     <div
                                       id="domainpropertiesrow-row-1-1"
@@ -3115,12 +3245,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                 </Col>
                                 <Col
                                   bsClass="col"
-                                  className="field-details-container"
+                                  className="domain-row-details-container"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="field-details-container col-xs-6"
+                                    className="domain-row-details-container col-xs-6"
                                   >
                                     <div
                                       className="domain-field-details"
@@ -3128,91 +3258,133 @@ exports[`DomainRow client side warning on field 1`] = `
                                     >
                                       New Field
                                       . 
+                                      <LabelHelpTip
+                                        body={[Function]}
+                                        customStyle={Object {}}
+                                        iconComponent={[Function]}
+                                        id="tooltip"
+                                        size="1x"
+                                        title="Warning"
+                                      >
+                                        <span
+                                          className="label-help-target"
+                                          onMouseOut={[Function]}
+                                          onMouseOver={[Function]}
+                                        >
+                                          <FontAwesomeIcon
+                                            border={false}
+                                            className="domain-warning-icon"
+                                            fixedWidth={false}
+                                            flip={null}
+                                            icon={
+                                              Object {
+                                                "icon": Array [
+                                                  512,
+                                                  512,
+                                                  Array [],
+                                                  "f06a",
+                                                  "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
+                                                ],
+                                                "iconName": "exclamation-circle",
+                                                "prefix": "fas",
+                                              }
+                                            }
+                                            inverse={false}
+                                            listItem={false}
+                                            mask={null}
+                                            pull={null}
+                                            pulse={false}
+                                            rotation={null}
+                                            size={null}
+                                            spin={false}
+                                            swapOpacity={false}
+                                            symbol={false}
+                                            title=""
+                                            transform={null}
+                                          >
+                                            <svg
+                                              aria-hidden="true"
+                                              className="svg-inline--fa fa-exclamation-circle fa-w-16 domain-warning-icon"
+                                              data-icon="exclamation-circle"
+                                              data-prefix="fas"
+                                              focusable="false"
+                                              role="img"
+                                              style={Object {}}
+                                              viewBox="0 0 512 512"
+                                              xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                              <path
+                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
+                                                fill="currentColor"
+                                                style={Object {}}
+                                              />
+                                            </svg>
+                                          </FontAwesomeIcon>
+                                          <Overlay
+                                            animation={[Function]}
+                                            placement="right"
+                                            rootClose={false}
+                                            show={false}
+                                            target={
+                                              <span
+                                                class="label-help-target"
+                                              >
+                                                <svg
+                                                  aria-hidden="true"
+                                                  class="svg-inline--fa fa-exclamation-circle fa-w-16 domain-warning-icon"
+                                                  data-icon="exclamation-circle"
+                                                  data-prefix="fas"
+                                                  focusable="false"
+                                                  role="img"
+                                                  viewBox="0 0 512 512"
+                                                  xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                  <path
+                                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
+                                                    fill="currentColor"
+                                                  />
+                                                </svg>
+                                              </span>
+                                            }
+                                          >
+                                            <Overlay
+                                              placement="right"
+                                              rootClose={false}
+                                              show={false}
+                                              target={
+                                                <span
+                                                  class="label-help-target"
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    class="svg-inline--fa fa-exclamation-circle fa-w-16 domain-warning-icon"
+                                                    data-icon="exclamation-circle"
+                                                    data-prefix="fas"
+                                                    focusable="false"
+                                                    role="img"
+                                                    viewBox="0 0 512 512"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                  >
+                                                    <path
+                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
+                                                      fill="currentColor"
+                                                    />
+                                                  </svg>
+                                                </span>
+                                              }
+                                              transition={[Function]}
+                                            />
+                                          </Overlay>
+                                        </span>
+                                      </LabelHelpTip>
+                                      <span>
+                                         
+                                      </span>
                                       <b
                                         key="#ColumnAwesome_1"
                                       >
                                         Warning: Field name contains special characters.
                                       </b>
-                                       
-                                      <OverlayTrigger
-                                        defaultOverlayShown={false}
-                                        overlay={
-                                          <Popover
-                                            bsClass="popover"
-                                            id="domain-row-field-error-popover"
-                                            placement="right"
-                                          >
-                                            SQL queries, R scripts, and other code are easiest to write when field names contain only a combination of letters, numbers, and underscores, and start with a letter or underscore. Exporting fields that abide by this format are also easier to work with in analysis applications such as SAS, SPSS, and MATLAB.
-                                          </Popover>
-                                        }
-                                        placement="bottom"
-                                        trigger={
-                                          Array [
-                                            "hover",
-                                            "focus",
-                                          ]
-                                        }
-                                      >
-                                        <FontAwesomeIcon
-                                          border={false}
-                                          className="domain-warning-icon"
-                                          fixedWidth={false}
-                                          flip={null}
-                                          icon={
-                                            Object {
-                                              "icon": Array [
-                                                512,
-                                                512,
-                                                Array [],
-                                                "f06a",
-                                                "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
-                                              ],
-                                              "iconName": "exclamation-circle",
-                                              "prefix": "fas",
-                                            }
-                                          }
-                                          inverse={false}
-                                          listItem={false}
-                                          mask={null}
-                                          onBlur={[Function]}
-                                          onClick={null}
-                                          onFocus={[Function]}
-                                          onMouseOut={[Function]}
-                                          onMouseOver={[Function]}
-                                          pull={null}
-                                          pulse={false}
-                                          rotation={null}
-                                          size={null}
-                                          spin={false}
-                                          swapOpacity={false}
-                                          symbol={false}
-                                          title=""
-                                          transform={null}
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            className="svg-inline--fa fa-exclamation-circle fa-w-16 domain-warning-icon"
-                                            data-icon="exclamation-circle"
-                                            data-prefix="fas"
-                                            focusable="false"
-                                            onBlur={[Function]}
-                                            onClick={null}
-                                            onFocus={[Function]}
-                                            onMouseOut={[Function]}
-                                            onMouseOver={[Function]}
-                                            role="img"
-                                            style={Object {}}
-                                            viewBox="0 0 512 512"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
-                                              fill="currentColor"
-                                              style={Object {}}
-                                            />
-                                          </svg>
-                                        </FontAwesomeIcon>
-                                      </OverlayTrigger>
                                     </div>
                                     <div
                                       className="domain-field-buttons"
@@ -3280,71 +3452,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                           </FontAwesomeIcon>
                                         </span>
                                       </DeleteIcon>
-                                      <FieldExpansionToggle
-                                        cls="domain-field-expand-icon"
-                                        collapsedTitle="Show additional field properties"
-                                        expanded={false}
-                                        expandedTitle="Hide additional field properties"
-                                        id="domainpropertiesrow-expand-1-1"
-                                        onClick={[Function]}
-                                      >
-                                        <div
-                                          className="field-icon domain-field-expand-icon"
-                                          id="domainpropertiesrow-expand-1-1"
-                                          onClick={[Function]}
-                                          title="Show additional field properties"
-                                        >
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className=""
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  448,
-                                                  512,
-                                                  Array [],
-                                                  "f0fe",
-                                                  "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                ],
-                                                "iconName": "plus-square",
-                                                "prefix": "fas",
-                                              }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size="lg"
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
-                                          >
-                                            <svg
-                                              aria-hidden="true"
-                                              className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                              data-icon="plus-square"
-                                              data-prefix="fas"
-                                              focusable="false"
-                                              role="img"
-                                              style={Object {}}
-                                              viewBox="0 0 448 512"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <path
-                                                d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                fill="currentColor"
-                                                style={Object {}}
-                                              />
-                                            </svg>
-                                          </FontAwesomeIcon>
-                                        </div>
-                                      </FieldExpansionToggle>
                                     </div>
                                   </div>
                                 </Col>
@@ -3478,6 +3585,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={1}
@@ -3489,7 +3597,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     className="domain-row-container"
                                   >
                                     <div
-                                      className="domain-row-handle"
+                                      className="domain-row-container-expand-spacer"
                                     />
                                     <div
                                       className="domain-row-container-expanded"
@@ -3596,6 +3704,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -3604,11 +3713,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -3634,11 +3742,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -4140,6 +4247,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -4149,11 +4257,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -4179,11 +4286,10 @@ exports[`DomainRow client side warning on field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -4728,6 +4834,7 @@ exports[`DomainRow date time field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -4919,6 +5026,7 @@ exports[`DomainRow date time field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -5051,16 +5159,113 @@ exports[`DomainRow date time field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
+                                className="domain-row-action-section"
+                              >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-0"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-0"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
+                                <FieldExpansionToggle
+                                  cls="domain-field-expand-icon"
+                                  collapsedTitle="Show additional field properties"
+                                  expanded={false}
+                                  expandedTitle="Hide additional field properties"
+                                  id="domainpropertiesrow-expand-1-0"
+                                  onClick={[Function]}
+                                >
+                                  <div
+                                    className="field-icon domain-field-expand-icon"
+                                    id="domainpropertiesrow-expand-1-0"
+                                    onClick={[Function]}
+                                    title="Show additional field properties"
+                                  >
+                                    <FontAwesomeIcon
+                                      border={false}
+                                      className=""
+                                      fixedWidth={false}
+                                      flip={null}
+                                      icon={
+                                        Object {
+                                          "icon": Array [
+                                            448,
+                                            512,
+                                            Array [],
+                                            "f0fe",
+                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                          ],
+                                          "iconName": "plus-square",
+                                          "prefix": "fas",
+                                        }
+                                      }
+                                      inverse={false}
+                                      listItem={false}
+                                      mask={null}
+                                      pull={null}
+                                      pulse={false}
+                                      rotation={null}
+                                      size="lg"
+                                      spin={false}
+                                      swapOpacity={false}
+                                      symbol={false}
+                                      title=""
+                                      transform={null}
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                        data-icon="plus-square"
+                                        data-prefix="fas"
+                                        focusable="false"
+                                        role="img"
+                                        style={Object {}}
+                                        viewBox="0 0 448 512"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                          fill="currentColor"
+                                          style={Object {}}
+                                        />
+                                      </svg>
+                                    </FontAwesomeIcon>
+                                  </div>
+                                </FieldExpansionToggle>
+                              </div>
+                              <div
                                 className="domain-row-main"
                               >
                                 <Col
                                   bsClass="col"
-                                  className="domain-row-base-fields"
+                                  className="domain-row-base-fields domain-row-base-fields-position"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="domain-row-base-fields col-xs-6"
+                                    className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                   >
                                     <div
                                       id="domainpropertiesrow-row-1-0"
@@ -5177,12 +5382,12 @@ exports[`DomainRow date time field 1`] = `
                                 </Col>
                                 <Col
                                   bsClass="col"
-                                  className="field-details-container"
+                                  className="domain-row-details-container"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="field-details-container col-xs-6"
+                                    className="domain-row-details-container col-xs-6"
                                   >
                                     <div
                                       className="domain-field-details"
@@ -5254,71 +5459,6 @@ exports[`DomainRow date time field 1`] = `
                                           </FontAwesomeIcon>
                                         </span>
                                       </DeleteIcon>
-                                      <FieldExpansionToggle
-                                        cls="domain-field-expand-icon"
-                                        collapsedTitle="Show additional field properties"
-                                        expanded={false}
-                                        expandedTitle="Hide additional field properties"
-                                        id="domainpropertiesrow-expand-1-0"
-                                        onClick={[Function]}
-                                      >
-                                        <div
-                                          className="field-icon domain-field-expand-icon"
-                                          id="domainpropertiesrow-expand-1-0"
-                                          onClick={[Function]}
-                                          title="Show additional field properties"
-                                        >
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className=""
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  448,
-                                                  512,
-                                                  Array [],
-                                                  "f0fe",
-                                                  "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                ],
-                                                "iconName": "plus-square",
-                                                "prefix": "fas",
-                                              }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size="lg"
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
-                                          >
-                                            <svg
-                                              aria-hidden="true"
-                                              className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                              data-icon="plus-square"
-                                              data-prefix="fas"
-                                              focusable="false"
-                                              role="img"
-                                              style={Object {}}
-                                              viewBox="0 0 448 512"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <path
-                                                d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                fill="currentColor"
-                                                style={Object {}}
-                                              />
-                                            </svg>
-                                          </FontAwesomeIcon>
-                                        </div>
-                                      </FieldExpansionToggle>
                                     </div>
                                   </div>
                                 </Col>
@@ -5452,6 +5592,7 @@ exports[`DomainRow date time field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={0}
@@ -5463,7 +5604,7 @@ exports[`DomainRow date time field 1`] = `
                                     className="domain-row-container"
                                   >
                                     <div
-                                      className="domain-row-handle"
+                                      className="domain-row-container-expand-spacer"
                                     />
                                     <div
                                       className="domain-row-container-expanded"
@@ -5487,11 +5628,10 @@ exports[`DomainRow date time field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -5516,11 +5656,10 @@ exports[`DomainRow date time field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -5679,11 +5818,10 @@ exports[`DomainRow date time field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -5823,6 +5961,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -5831,11 +5970,10 @@ exports[`DomainRow date time field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -5861,11 +5999,10 @@ exports[`DomainRow date time field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -6367,6 +6504,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -6376,11 +6514,10 @@ exports[`DomainRow date time field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -6406,11 +6543,10 @@ exports[`DomainRow date time field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -7122,6 +7258,7 @@ exports[`DomainRow decimal field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -7313,6 +7450,7 @@ exports[`DomainRow decimal field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -7445,16 +7583,113 @@ exports[`DomainRow decimal field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
+                                className="domain-row-action-section"
+                              >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-2"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-2"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
+                                <FieldExpansionToggle
+                                  cls="domain-field-expand-icon"
+                                  collapsedTitle="Show additional field properties"
+                                  expanded={false}
+                                  expandedTitle="Hide additional field properties"
+                                  id="domainpropertiesrow-expand-1-2"
+                                  onClick={[Function]}
+                                >
+                                  <div
+                                    className="field-icon domain-field-expand-icon"
+                                    id="domainpropertiesrow-expand-1-2"
+                                    onClick={[Function]}
+                                    title="Show additional field properties"
+                                  >
+                                    <FontAwesomeIcon
+                                      border={false}
+                                      className=""
+                                      fixedWidth={false}
+                                      flip={null}
+                                      icon={
+                                        Object {
+                                          "icon": Array [
+                                            448,
+                                            512,
+                                            Array [],
+                                            "f0fe",
+                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                          ],
+                                          "iconName": "plus-square",
+                                          "prefix": "fas",
+                                        }
+                                      }
+                                      inverse={false}
+                                      listItem={false}
+                                      mask={null}
+                                      pull={null}
+                                      pulse={false}
+                                      rotation={null}
+                                      size="lg"
+                                      spin={false}
+                                      swapOpacity={false}
+                                      symbol={false}
+                                      title=""
+                                      transform={null}
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                        data-icon="plus-square"
+                                        data-prefix="fas"
+                                        focusable="false"
+                                        role="img"
+                                        style={Object {}}
+                                        viewBox="0 0 448 512"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                          fill="currentColor"
+                                          style={Object {}}
+                                        />
+                                      </svg>
+                                    </FontAwesomeIcon>
+                                  </div>
+                                </FieldExpansionToggle>
+                              </div>
+                              <div
                                 className="domain-row-main"
                               >
                                 <Col
                                   bsClass="col"
-                                  className="domain-row-base-fields"
+                                  className="domain-row-base-fields domain-row-base-fields-position"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="domain-row-base-fields col-xs-6"
+                                    className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                   >
                                     <div
                                       id="domainpropertiesrow-row-1-2"
@@ -7571,12 +7806,12 @@ exports[`DomainRow decimal field 1`] = `
                                 </Col>
                                 <Col
                                   bsClass="col"
-                                  className="field-details-container"
+                                  className="domain-row-details-container"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="field-details-container col-xs-6"
+                                    className="domain-row-details-container col-xs-6"
                                   >
                                     <div
                                       className="domain-field-details"
@@ -7648,71 +7883,6 @@ exports[`DomainRow decimal field 1`] = `
                                           </FontAwesomeIcon>
                                         </span>
                                       </DeleteIcon>
-                                      <FieldExpansionToggle
-                                        cls="domain-field-expand-icon"
-                                        collapsedTitle="Show additional field properties"
-                                        expanded={false}
-                                        expandedTitle="Hide additional field properties"
-                                        id="domainpropertiesrow-expand-1-2"
-                                        onClick={[Function]}
-                                      >
-                                        <div
-                                          className="field-icon domain-field-expand-icon"
-                                          id="domainpropertiesrow-expand-1-2"
-                                          onClick={[Function]}
-                                          title="Show additional field properties"
-                                        >
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className=""
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  448,
-                                                  512,
-                                                  Array [],
-                                                  "f0fe",
-                                                  "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                ],
-                                                "iconName": "plus-square",
-                                                "prefix": "fas",
-                                              }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size="lg"
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
-                                          >
-                                            <svg
-                                              aria-hidden="true"
-                                              className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                              data-icon="plus-square"
-                                              data-prefix="fas"
-                                              focusable="false"
-                                              role="img"
-                                              style={Object {}}
-                                              viewBox="0 0 448 512"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <path
-                                                d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                fill="currentColor"
-                                                style={Object {}}
-                                              />
-                                            </svg>
-                                          </FontAwesomeIcon>
-                                        </div>
-                                      </FieldExpansionToggle>
                                     </div>
                                   </div>
                                 </Col>
@@ -7846,6 +8016,7 @@ exports[`DomainRow decimal field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={2}
@@ -7857,7 +8028,7 @@ exports[`DomainRow decimal field 1`] = `
                                     className="domain-row-container"
                                   >
                                     <div
-                                      className="domain-row-handle"
+                                      className="domain-row-container-expand-spacer"
                                     />
                                     <div
                                       className="domain-row-container-expanded"
@@ -7880,11 +8051,10 @@ exports[`DomainRow decimal field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -7909,11 +8079,10 @@ exports[`DomainRow decimal field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -8078,11 +8247,10 @@ exports[`DomainRow decimal field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -8252,6 +8420,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={2}
@@ -8260,11 +8429,10 @@ exports[`DomainRow decimal field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -8290,11 +8458,10 @@ exports[`DomainRow decimal field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -8796,6 +8963,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={2}
@@ -8805,11 +8973,10 @@ exports[`DomainRow decimal field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -8835,11 +9002,10 @@ exports[`DomainRow decimal field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -9551,6 +9717,7 @@ exports[`DomainRow participant id field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -9742,6 +9909,7 @@ exports[`DomainRow participant id field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -9874,16 +10042,113 @@ exports[`DomainRow participant id field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
+                                className="domain-row-action-section"
+                              >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-0"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-0"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
+                                <FieldExpansionToggle
+                                  cls="domain-field-expand-icon"
+                                  collapsedTitle="Show additional field properties"
+                                  expanded={false}
+                                  expandedTitle="Hide additional field properties"
+                                  id="domainpropertiesrow-expand-1-0"
+                                  onClick={[Function]}
+                                >
+                                  <div
+                                    className="field-icon domain-field-expand-icon"
+                                    id="domainpropertiesrow-expand-1-0"
+                                    onClick={[Function]}
+                                    title="Show additional field properties"
+                                  >
+                                    <FontAwesomeIcon
+                                      border={false}
+                                      className=""
+                                      fixedWidth={false}
+                                      flip={null}
+                                      icon={
+                                        Object {
+                                          "icon": Array [
+                                            448,
+                                            512,
+                                            Array [],
+                                            "f0fe",
+                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                          ],
+                                          "iconName": "plus-square",
+                                          "prefix": "fas",
+                                        }
+                                      }
+                                      inverse={false}
+                                      listItem={false}
+                                      mask={null}
+                                      pull={null}
+                                      pulse={false}
+                                      rotation={null}
+                                      size="lg"
+                                      spin={false}
+                                      swapOpacity={false}
+                                      symbol={false}
+                                      title=""
+                                      transform={null}
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                        data-icon="plus-square"
+                                        data-prefix="fas"
+                                        focusable="false"
+                                        role="img"
+                                        style={Object {}}
+                                        viewBox="0 0 448 512"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                          fill="currentColor"
+                                          style={Object {}}
+                                        />
+                                      </svg>
+                                    </FontAwesomeIcon>
+                                  </div>
+                                </FieldExpansionToggle>
+                              </div>
+                              <div
                                 className="domain-row-main"
                               >
                                 <Col
                                   bsClass="col"
-                                  className="domain-row-base-fields"
+                                  className="domain-row-base-fields domain-row-base-fields-position"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="domain-row-base-fields col-xs-6"
+                                    className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                   >
                                     <div
                                       id="domainpropertiesrow-row-1-0"
@@ -10030,12 +10295,12 @@ exports[`DomainRow participant id field 1`] = `
                                 </Col>
                                 <Col
                                   bsClass="col"
-                                  className="field-details-container"
+                                  className="domain-row-details-container"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="field-details-container col-xs-6"
+                                    className="domain-row-details-container col-xs-6"
                                   >
                                     <div
                                       className="domain-field-details"
@@ -10107,71 +10372,6 @@ exports[`DomainRow participant id field 1`] = `
                                           </FontAwesomeIcon>
                                         </span>
                                       </DeleteIcon>
-                                      <FieldExpansionToggle
-                                        cls="domain-field-expand-icon"
-                                        collapsedTitle="Show additional field properties"
-                                        expanded={false}
-                                        expandedTitle="Hide additional field properties"
-                                        id="domainpropertiesrow-expand-1-0"
-                                        onClick={[Function]}
-                                      >
-                                        <div
-                                          className="field-icon domain-field-expand-icon"
-                                          id="domainpropertiesrow-expand-1-0"
-                                          onClick={[Function]}
-                                          title="Show additional field properties"
-                                        >
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className=""
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  448,
-                                                  512,
-                                                  Array [],
-                                                  "f0fe",
-                                                  "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                ],
-                                                "iconName": "plus-square",
-                                                "prefix": "fas",
-                                              }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size="lg"
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
-                                          >
-                                            <svg
-                                              aria-hidden="true"
-                                              className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                              data-icon="plus-square"
-                                              data-prefix="fas"
-                                              focusable="false"
-                                              role="img"
-                                              style={Object {}}
-                                              viewBox="0 0 448 512"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <path
-                                                d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                fill="currentColor"
-                                                style={Object {}}
-                                              />
-                                            </svg>
-                                          </FontAwesomeIcon>
-                                        </div>
-                                      </FieldExpansionToggle>
                                     </div>
                                   </div>
                                 </Col>
@@ -10305,6 +10505,7 @@ exports[`DomainRow participant id field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={0}
@@ -10316,7 +10517,7 @@ exports[`DomainRow participant id field 1`] = `
                                     className="domain-row-container"
                                   >
                                     <div
-                                      className="domain-row-handle"
+                                      className="domain-row-container-expand-spacer"
                                     />
                                     <div
                                       className="domain-row-container-expanded"
@@ -10423,6 +10624,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -10431,11 +10633,10 @@ exports[`DomainRow participant id field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -10461,11 +10662,10 @@ exports[`DomainRow participant id field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -10967,6 +11167,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={0}
@@ -10976,11 +11177,10 @@ exports[`DomainRow participant id field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -11006,11 +11206,10 @@ exports[`DomainRow participant id field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -11722,6 +11921,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 fieldError={
@@ -11925,6 +12125,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -12057,16 +12258,113 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
+                                className="domain-row-action-section"
+                              >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-1"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-1"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
+                                <FieldExpansionToggle
+                                  cls="domain-field-expand-icon"
+                                  collapsedTitle="Show additional field properties"
+                                  expanded={false}
+                                  expandedTitle="Hide additional field properties"
+                                  id="domainpropertiesrow-expand-1-1"
+                                  onClick={[Function]}
+                                >
+                                  <div
+                                    className="field-icon domain-field-expand-icon"
+                                    id="domainpropertiesrow-expand-1-1"
+                                    onClick={[Function]}
+                                    title="Show additional field properties"
+                                  >
+                                    <FontAwesomeIcon
+                                      border={false}
+                                      className=""
+                                      fixedWidth={false}
+                                      flip={null}
+                                      icon={
+                                        Object {
+                                          "icon": Array [
+                                            448,
+                                            512,
+                                            Array [],
+                                            "f0fe",
+                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                          ],
+                                          "iconName": "plus-square",
+                                          "prefix": "fas",
+                                        }
+                                      }
+                                      inverse={false}
+                                      listItem={false}
+                                      mask={null}
+                                      pull={null}
+                                      pulse={false}
+                                      rotation={null}
+                                      size="lg"
+                                      spin={false}
+                                      swapOpacity={false}
+                                      symbol={false}
+                                      title=""
+                                      transform={null}
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                        data-icon="plus-square"
+                                        data-prefix="fas"
+                                        focusable="false"
+                                        role="img"
+                                        style={Object {}}
+                                        viewBox="0 0 448 512"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                          fill="currentColor"
+                                          style={Object {}}
+                                        />
+                                      </svg>
+                                    </FontAwesomeIcon>
+                                  </div>
+                                </FieldExpansionToggle>
+                              </div>
+                              <div
                                 className="domain-row-main"
                               >
                                 <Col
                                   bsClass="col"
-                                  className="domain-row-base-fields"
+                                  className="domain-row-base-fields domain-row-base-fields-position"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="domain-row-base-fields col-xs-6"
+                                    className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                   >
                                     <div
                                       id="domainpropertiesrow-row-1-1"
@@ -12261,12 +12559,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                 </Col>
                                 <Col
                                   bsClass="col"
-                                  className="field-details-container"
+                                  className="domain-row-details-container"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="field-details-container col-xs-6"
+                                    className="domain-row-details-container col-xs-6"
                                   >
                                     <div
                                       className="domain-field-details"
@@ -12279,7 +12577,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       >
                                         Error: 'modified' is a reserved field name in 'CancerCuringStudy'
                                       </b>
-                                       
                                     </div>
                                     <div
                                       className="domain-field-buttons"
@@ -12347,71 +12644,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                           </FontAwesomeIcon>
                                         </span>
                                       </DeleteIcon>
-                                      <FieldExpansionToggle
-                                        cls="domain-field-expand-icon"
-                                        collapsedTitle="Show additional field properties"
-                                        expanded={false}
-                                        expandedTitle="Hide additional field properties"
-                                        id="domainpropertiesrow-expand-1-1"
-                                        onClick={[Function]}
-                                      >
-                                        <div
-                                          className="field-icon domain-field-expand-icon"
-                                          id="domainpropertiesrow-expand-1-1"
-                                          onClick={[Function]}
-                                          title="Show additional field properties"
-                                        >
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className=""
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  448,
-                                                  512,
-                                                  Array [],
-                                                  "f0fe",
-                                                  "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                ],
-                                                "iconName": "plus-square",
-                                                "prefix": "fas",
-                                              }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size="lg"
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
-                                          >
-                                            <svg
-                                              aria-hidden="true"
-                                              className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                              data-icon="plus-square"
-                                              data-prefix="fas"
-                                              focusable="false"
-                                              role="img"
-                                              style={Object {}}
-                                              viewBox="0 0 448 512"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <path
-                                                d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                fill="currentColor"
-                                                style={Object {}}
-                                              />
-                                            </svg>
-                                          </FontAwesomeIcon>
-                                        </div>
-                                      </FieldExpansionToggle>
                                     </div>
                                   </div>
                                 </Col>
@@ -12545,6 +12777,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={1}
@@ -12556,7 +12789,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     className="domain-row-container"
                                   >
                                     <div
-                                      className="domain-row-handle"
+                                      className="domain-row-container-expand-spacer"
                                     />
                                     <div
                                       className="domain-row-container-expanded"
@@ -12663,6 +12896,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -12671,11 +12905,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -12701,11 +12934,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -13207,6 +13439,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -13216,11 +13449,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -13246,11 +13478,10 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -13795,6 +14026,7 @@ exports[`DomainRow string field test 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -13986,6 +14218,7 @@ exports[`DomainRow string field test 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -14118,16 +14351,113 @@ exports[`DomainRow string field test 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
+                                className="domain-row-action-section"
+                              >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-1"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-1"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
+                                <FieldExpansionToggle
+                                  cls="domain-field-expand-icon"
+                                  collapsedTitle="Show additional field properties"
+                                  expanded={false}
+                                  expandedTitle="Hide additional field properties"
+                                  id="domainpropertiesrow-expand-1-1"
+                                  onClick={[Function]}
+                                >
+                                  <div
+                                    className="field-icon domain-field-expand-icon"
+                                    id="domainpropertiesrow-expand-1-1"
+                                    onClick={[Function]}
+                                    title="Show additional field properties"
+                                  >
+                                    <FontAwesomeIcon
+                                      border={false}
+                                      className=""
+                                      fixedWidth={false}
+                                      flip={null}
+                                      icon={
+                                        Object {
+                                          "icon": Array [
+                                            448,
+                                            512,
+                                            Array [],
+                                            "f0fe",
+                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                          ],
+                                          "iconName": "plus-square",
+                                          "prefix": "fas",
+                                        }
+                                      }
+                                      inverse={false}
+                                      listItem={false}
+                                      mask={null}
+                                      pull={null}
+                                      pulse={false}
+                                      rotation={null}
+                                      size="lg"
+                                      spin={false}
+                                      swapOpacity={false}
+                                      symbol={false}
+                                      title=""
+                                      transform={null}
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                        data-icon="plus-square"
+                                        data-prefix="fas"
+                                        focusable="false"
+                                        role="img"
+                                        style={Object {}}
+                                        viewBox="0 0 448 512"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                          fill="currentColor"
+                                          style={Object {}}
+                                        />
+                                      </svg>
+                                    </FontAwesomeIcon>
+                                  </div>
+                                </FieldExpansionToggle>
+                              </div>
+                              <div
                                 className="domain-row-main"
                               >
                                 <Col
                                   bsClass="col"
-                                  className="domain-row-base-fields"
+                                  className="domain-row-base-fields domain-row-base-fields-position"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="domain-row-base-fields col-xs-6"
+                                    className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                   >
                                     <div
                                       id="domainpropertiesrow-row-1-1"
@@ -14274,12 +14604,12 @@ exports[`DomainRow string field test 1`] = `
                                 </Col>
                                 <Col
                                   bsClass="col"
-                                  className="field-details-container"
+                                  className="domain-row-details-container"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="field-details-container col-xs-6"
+                                    className="domain-row-details-container col-xs-6"
                                   >
                                     <div
                                       className="domain-field-details"
@@ -14351,71 +14681,6 @@ exports[`DomainRow string field test 1`] = `
                                           </FontAwesomeIcon>
                                         </span>
                                       </DeleteIcon>
-                                      <FieldExpansionToggle
-                                        cls="domain-field-expand-icon"
-                                        collapsedTitle="Show additional field properties"
-                                        expanded={false}
-                                        expandedTitle="Hide additional field properties"
-                                        id="domainpropertiesrow-expand-1-1"
-                                        onClick={[Function]}
-                                      >
-                                        <div
-                                          className="field-icon domain-field-expand-icon"
-                                          id="domainpropertiesrow-expand-1-1"
-                                          onClick={[Function]}
-                                          title="Show additional field properties"
-                                        >
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className=""
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  448,
-                                                  512,
-                                                  Array [],
-                                                  "f0fe",
-                                                  "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                ],
-                                                "iconName": "plus-square",
-                                                "prefix": "fas",
-                                              }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size="lg"
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
-                                          >
-                                            <svg
-                                              aria-hidden="true"
-                                              className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                              data-icon="plus-square"
-                                              data-prefix="fas"
-                                              focusable="false"
-                                              role="img"
-                                              style={Object {}}
-                                              viewBox="0 0 448 512"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <path
-                                                d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                fill="currentColor"
-                                                style={Object {}}
-                                              />
-                                            </svg>
-                                          </FontAwesomeIcon>
-                                        </div>
-                                      </FieldExpansionToggle>
                                     </div>
                                   </div>
                                 </Col>
@@ -14549,6 +14814,7 @@ exports[`DomainRow string field test 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={1}
@@ -14560,7 +14826,7 @@ exports[`DomainRow string field test 1`] = `
                                     className="domain-row-container"
                                   >
                                     <div
-                                      className="domain-row-handle"
+                                      className="domain-row-container-expand-spacer"
                                     />
                                     <div
                                       className="domain-row-container-expanded"
@@ -14584,11 +14850,10 @@ exports[`DomainRow string field test 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -14613,11 +14878,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded "
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded  row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -14767,11 +15031,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -14812,11 +15075,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -14973,6 +15235,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -14981,11 +15244,10 @@ exports[`DomainRow string field test 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -15011,11 +15273,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -15517,6 +15778,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -15526,11 +15788,10 @@ exports[`DomainRow string field test 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -15556,11 +15817,10 @@ exports[`DomainRow string field test 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -16272,6 +16532,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "selected": false,
                   }
                 }
                 helpNoun="domain"
@@ -16463,6 +16724,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "selected": false,
                                   }
                                 }
                                 helpNoun="domain"
@@ -16594,16 +16856,113 @@ exports[`DomainRow with empty domain form 1`] = `
                                 </DragDropHandle>
                               </div>
                               <div
+                                className="domain-row-action-section"
+                              >
+                                <Checkbox
+                                  bsClass="checkbox"
+                                  checked={false}
+                                  className="domain-field-check-icon"
+                                  disabled={false}
+                                  id="domainpropertiesrow-selected-1-1"
+                                  inline={false}
+                                  name="domainpropertiesrow-selected"
+                                  onChange={[Function]}
+                                  title=""
+                                >
+                                  <div
+                                    className="domain-field-check-icon checkbox"
+                                  >
+                                    <label
+                                      title=""
+                                    >
+                                      <input
+                                        checked={false}
+                                        disabled={false}
+                                        id="domainpropertiesrow-selected-1-1"
+                                        name="domainpropertiesrow-selected"
+                                        onChange={[Function]}
+                                        type="checkbox"
+                                      />
+                                    </label>
+                                  </div>
+                                </Checkbox>
+                                <FieldExpansionToggle
+                                  cls="domain-field-expand-icon"
+                                  collapsedTitle="Show additional field properties"
+                                  expanded={false}
+                                  expandedTitle="Hide additional field properties"
+                                  id="domainpropertiesrow-expand-1-1"
+                                  onClick={[Function]}
+                                >
+                                  <div
+                                    className="field-icon domain-field-expand-icon"
+                                    id="domainpropertiesrow-expand-1-1"
+                                    onClick={[Function]}
+                                    title="Show additional field properties"
+                                  >
+                                    <FontAwesomeIcon
+                                      border={false}
+                                      className=""
+                                      fixedWidth={false}
+                                      flip={null}
+                                      icon={
+                                        Object {
+                                          "icon": Array [
+                                            448,
+                                            512,
+                                            Array [],
+                                            "f0fe",
+                                            "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                          ],
+                                          "iconName": "plus-square",
+                                          "prefix": "fas",
+                                        }
+                                      }
+                                      inverse={false}
+                                      listItem={false}
+                                      mask={null}
+                                      pull={null}
+                                      pulse={false}
+                                      rotation={null}
+                                      size="lg"
+                                      spin={false}
+                                      swapOpacity={false}
+                                      symbol={false}
+                                      title=""
+                                      transform={null}
+                                    >
+                                      <svg
+                                        aria-hidden="true"
+                                        className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                        data-icon="plus-square"
+                                        data-prefix="fas"
+                                        focusable="false"
+                                        role="img"
+                                        style={Object {}}
+                                        viewBox="0 0 448 512"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                          fill="currentColor"
+                                          style={Object {}}
+                                        />
+                                      </svg>
+                                    </FontAwesomeIcon>
+                                  </div>
+                                </FieldExpansionToggle>
+                              </div>
+                              <div
                                 className="domain-row-main"
                               >
                                 <Col
                                   bsClass="col"
-                                  className="domain-row-base-fields"
+                                  className="domain-row-base-fields domain-row-base-fields-position"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="domain-row-base-fields col-xs-6"
+                                    className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                   >
                                     <div
                                       id="domainpropertiesrow-row-1-1"
@@ -16798,12 +17157,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                 </Col>
                                 <Col
                                   bsClass="col"
-                                  className="field-details-container"
+                                  className="domain-row-details-container"
                                   componentClass="div"
                                   xs={6}
                                 >
                                   <div
-                                    className="field-details-container col-xs-6"
+                                    className="domain-row-details-container col-xs-6"
                                   >
                                     <div
                                       className="domain-field-details"
@@ -16877,71 +17236,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                           </FontAwesomeIcon>
                                         </span>
                                       </DeleteIcon>
-                                      <FieldExpansionToggle
-                                        cls="domain-field-expand-icon"
-                                        collapsedTitle="Show additional field properties"
-                                        expanded={false}
-                                        expandedTitle="Hide additional field properties"
-                                        id="domainpropertiesrow-expand-1-1"
-                                        onClick={[Function]}
-                                      >
-                                        <div
-                                          className="field-icon domain-field-expand-icon"
-                                          id="domainpropertiesrow-expand-1-1"
-                                          onClick={[Function]}
-                                          title="Show additional field properties"
-                                        >
-                                          <FontAwesomeIcon
-                                            border={false}
-                                            className=""
-                                            fixedWidth={false}
-                                            flip={null}
-                                            icon={
-                                              Object {
-                                                "icon": Array [
-                                                  448,
-                                                  512,
-                                                  Array [],
-                                                  "f0fe",
-                                                  "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                ],
-                                                "iconName": "plus-square",
-                                                "prefix": "fas",
-                                              }
-                                            }
-                                            inverse={false}
-                                            listItem={false}
-                                            mask={null}
-                                            pull={null}
-                                            pulse={false}
-                                            rotation={null}
-                                            size="lg"
-                                            spin={false}
-                                            swapOpacity={false}
-                                            symbol={false}
-                                            title=""
-                                            transform={null}
-                                          >
-                                            <svg
-                                              aria-hidden="true"
-                                              className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                              data-icon="plus-square"
-                                              data-prefix="fas"
-                                              focusable="false"
-                                              role="img"
-                                              style={Object {}}
-                                              viewBox="0 0 448 512"
-                                              xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                              <path
-                                                d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                fill="currentColor"
-                                                style={Object {}}
-                                              />
-                                            </svg>
-                                          </FontAwesomeIcon>
-                                        </div>
-                                      </FieldExpansionToggle>
                                     </div>
                                   </div>
                                 </Col>
@@ -17075,6 +17369,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "selected": false,
                                     }
                                   }
                                   index={1}
@@ -17086,7 +17381,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     className="domain-row-container"
                                   >
                                     <div
-                                      className="domain-row-handle"
+                                      className="domain-row-container-expand-spacer"
                                     />
                                     <div
                                       className="domain-row-container-expanded"
@@ -17110,11 +17405,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17139,11 +17433,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded "
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded  row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17293,11 +17586,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17338,11 +17630,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17499,6 +17790,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -17507,11 +17799,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -17537,11 +17828,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <div>
                                                     <Col
@@ -18043,6 +18333,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "selected": false,
                                               }
                                             }
                                             index={1}
@@ -18052,11 +18343,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                             <div>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"
@@ -18082,11 +18372,10 @@ exports[`DomainRow with empty domain form 1`] = `
                                               </Row>
                                               <Row
                                                 bsClass="row"
-                                                className="domain-row-expanded"
                                                 componentClass="div"
                                               >
                                                 <div
-                                                  className="domain-row-expanded row"
+                                                  className="row"
                                                 >
                                                   <Col
                                                     bsClass="col"

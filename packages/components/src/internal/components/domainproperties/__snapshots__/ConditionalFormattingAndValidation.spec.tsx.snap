@@ -114,6 +114,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
       "sourceOntology": undefined,
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
+      "selected": false,
     }
   }
   index={1}
@@ -124,11 +125,10 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
   <div>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"
@@ -154,11 +154,10 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
     </Row>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"
@@ -559,6 +558,7 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
       "sourceOntology": undefined,
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
+      "selected": false,
     }
   }
   index={1}
@@ -569,11 +569,10 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
   <div>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"
@@ -599,11 +598,10 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
     </Row>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"
@@ -885,6 +883,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
       "sourceOntology": undefined,
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
+      "selected": false,
     }
   }
   index={1}
@@ -895,11 +894,10 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
   <div>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"
@@ -925,11 +923,10 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
     </Row>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"

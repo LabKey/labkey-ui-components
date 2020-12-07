@@ -150,12 +150,12 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
 
         return (
             <div>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={12}>
                         <SectionHeading title={label} />
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={3}>
                         <div className="domain-field-label">
                             Choose an Ontology

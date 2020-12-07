@@ -8,9 +8,7 @@ import { getAuditQueries } from './utils';
 describe('utils', () => {
     test('getAuditQueries', () => {
         LABKEY.moduleContext = {
-            samplemanagement: {
-                hasFreezerManagementEnabled: true,
-            },
+            samplemanagement: {},
             inventory: {},
         };
         let auditQueries = getAuditQueries();
@@ -18,10 +16,7 @@ describe('utils', () => {
         expect(auditQueries.findIndex(entry => entry.value === 'inventoryauditevent')).toBe(5);
 
         LABKEY.moduleContext = {
-            samplemanagement: {
-                hasFreezerManagementEnabled: false,
-            },
-            inventory: {},
+            samplemanagement: {},
         };
         auditQueries = getAuditQueries();
         expect(auditQueries.length).toBe(12);

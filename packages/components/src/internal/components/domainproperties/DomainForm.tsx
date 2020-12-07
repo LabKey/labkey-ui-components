@@ -785,33 +785,32 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { selectAll } = this.state;
 
         return (
-            <div className="domain-floating-hdr">
-                <Row className="domain-form-hdr-row">
-                    <Col xs={8}>
-                        <Col xs={1}>
-                            <Checkbox
-                                className="domain-hdr-select-all-checkbox"
-                                name="domain-select-all-checkbox"
-                                id="domain-select-all-checkbox"
-                                checked={selectAll}
-                                onChange={this.toggleSelectAll}
-                            />
-                        </Col>
-                        <Col xs={4}>
-                            <b>Name</b>
-                        </Col>
-                        <Col xs={4}>
-                            <b>Data Type</b>
-                        </Col>
-                        {!domainFormDisplayOptions.hideRequired && (
-                            <Col xs={2} className="domain-form-hdr-center">
-                                <b>Required</b>
+            <div className="domain-field-row domain-row-border-default domain-floating-hdr">
+                <Row className="domain-row-container">
+                    <div className="domain-row-handle" />
+                    <div className="domain-row-action-section">
+                        <Checkbox
+                            className="domain-field-check-icon"
+                            name="domain-select-all-checkbox"
+                            id="domain-select-all-checkbox"
+                            checked={selectAll}
+                            onChange={this.toggleSelectAll}
+                        />
+                    </div>
+                    <div>
+                        <Col xs={6} className="domain-row-base-fields">
+                            <Col xs={6}>
+                                <b>Name *</b>
                             </Col>
-                        )}
-                    </Col>
-                    <Col xs={4}>
-                        <b>Details</b>
-                    </Col>
+                            <Col xs={4}>
+                                <b>Data Type *</b>
+                            </Col>
+                            <Col xs={2}>{!domainFormDisplayOptions.hideRequired && <b>Required</b>}</Col>
+                        </Col>
+                        <Col xs={6}>
+                            <b>Details</b>
+                        </Col>
+                    </div>
                 </Row>
             </div>
         );
@@ -971,14 +970,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderPanelHeaderContent() {
-        const { helpTopic, controlledCollapse } = this.props;
+        const { helpTopic } = this.props;
 
         return (
             <Row className={helpTopic ? 'domain-form-hdr-margins' : ''}>
-                <Col xs={helpTopic ? 9 : 12}>
-                    {!controlledCollapse &&
-                        'Adjust fields and their properties. Expand a row to set additional properties.'}
-                </Col>
+                <Col xs={helpTopic ? 9 : 12} />
                 {helpTopic && (
                     <Col xs={3}>
                         {helpLinkNode(helpTopic, 'Learn more about this tool', 'domain-field-float-right')}
@@ -1005,7 +1001,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             onClick={this.onAddField}
                         />
                     )}
-
                     <ActionButton
                         containerClass="container--toolbar-button"
                         buttonClass="domain-toolbar-delete-btn"
@@ -1014,7 +1009,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     >
                         <i className="fa fa-trash domain-toolbar-export-btn-icon" /> Delete
                     </ActionButton>
-
                     {allowImportExport && (
                         <ActionButton
                             containerClass="container--toolbar-button"

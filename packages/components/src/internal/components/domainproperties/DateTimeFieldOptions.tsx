@@ -47,12 +47,12 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
 
         return (
             <div>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={12}>
                         <SectionHeading title={label} />
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={3}>
                         <div className="domain-field-label">
                             <DomainFieldLabel label="Format for Dates" helpTipBody={this.getFormatHelpText} />
@@ -60,7 +60,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                     </Col>
                     <Col xs={9} />
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={3}>
                         <FormControl
                             type="text"

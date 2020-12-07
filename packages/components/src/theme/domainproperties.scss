@@ -382,9 +382,7 @@
 
 .domain-floating-hdr {
     background-color: $white;
-    border-top-color: $white;
-    border-left-color: $white;
-    border-right-color: $white;
+    border-color: transparent;
     padding-top: 5px;
     padding-bottom: 15px;
     color: $gray;

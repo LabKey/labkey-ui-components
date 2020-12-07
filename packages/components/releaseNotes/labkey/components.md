@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.6.0
+*Released*: 6 December 2020
+* Issue 41737: Storage actions do not respect filters on the grid
+    - Add setSnapshotSelections utility function
+
 ### version 1.5.2
 *Released*: 4 December 2020
 * Remove check for experimental flag from isFreezerManagerEnabled

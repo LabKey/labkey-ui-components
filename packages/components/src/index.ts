@@ -92,7 +92,7 @@ import { FileAttachmentEntry } from './internal/components/files/FileAttachmentE
 import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './internal/components/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
-import { createNotification, NotificationCreatable } from './internal/components/notifications/actions';
+import { createNotification, NotificationCreatable, withTimeout } from './internal/components/notifications/actions';
 import {
     addNotification,
     dismissNotifications,
@@ -695,6 +695,7 @@ export {
     addNotification,
     createDeleteSuccessNotification,
     createDeleteErrorNotification,
+    withTimeout,
     // domain designer related items
     DomainForm,
     DomainFieldsDisplay,

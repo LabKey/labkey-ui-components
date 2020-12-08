@@ -15,7 +15,7 @@
  */
 import { Ajax, Utils } from '@labkey/api';
 
-import { buildURL } from '../../..';
+import { App, buildURL } from '../../..';
 
 import { NotificationItemModel, NotificationItemProps } from './model';
 import { addNotification } from './global';
@@ -50,4 +50,20 @@ export function setTrialBannerDismissSessionKey(): Promise<any> {
             method: 'POST',
         });
     });
+}
+
+/**
+ * Wrapper function for the window.setTimeout so that they can use a constant timeout value.
+ * @param callback function to call after timeout
+ * @param notification optional message/notification to be added after the timeout
+ */
+export function withTimeout(callback: any, notification?: NotificationCreatable): void {
+    window.setTimeout(callback, App.NOTIFICATION_TIMEOUT);
+
+    if (notification) {
+        // and then wait a bit to add the notification so the new component has mounted if the callback has a navigation
+        withTimeout(() => {
+            createNotification(notification);
+        });
+    }
 }

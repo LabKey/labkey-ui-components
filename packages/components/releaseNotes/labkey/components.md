@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* add allowAsync for EntityInsertPanel
+
 ### version 1.7.0
 *Released*: 7 December 2020
 * Item 8203: Domain designer row styling updates

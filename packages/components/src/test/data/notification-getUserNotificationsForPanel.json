@@ -1,0 +1,72 @@
+{
+  "success": true,
+  "notifications": {
+    "1": {
+      "RowId": 1,
+      "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete",
+      "ActionLinkText": "view",
+      "CreatedBy": "susan",
+      "ActionLinkUrl": "/labkey/Study/project-begin.view?",
+      "IconCls": "fa-check-circle",
+      "ObjectId": "fab36211-065a-1039-ab39-94ed22e93520",
+      "ContainerId": "31ff67a4-05bb-1039-8eb8-94ed22e9aaa8",
+      "HtmlContent": "Background job complete<br> Folder import",
+      "UserId": 1005,
+      "ReadOn": null,
+      "Created": "2020-11-11 07:47:32.317"
+    },
+    "2": {
+      "RowId": 2,
+      "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete",
+      "ActionLinkText": "view",
+      "CreatedBy": "susan",
+      "ActionLinkUrl": "/labkey/Biologics/pipeline-status-details.view?rowId=15",
+      "IconCls": "fa-check-circle",
+      "ObjectId": "47521e4b-0d84-1039-ad79-371818df2e5c",
+      "ContainerId": "47521e29-0d84-1039-ad79-371818df2e5c",
+      "HtmlContent": "Background job complete<br> Initialize Biologics folder with required data",
+      "UserId": 1005,
+      "ReadOn": null,
+      "Created": "2020-11-20 11:58:19.426"
+    },
+    "3": {
+      "RowId": 3,
+      "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete",
+      "ActionLinkText": "view",
+      "CreatedBy": "susan",
+      "ActionLinkUrl": "/labkey/Biologics/pipeline-status-details.view?rowId=16",
+      "IconCls": "fa-check-circle",
+      "ObjectId": "8e3bff5e-0d98-1039-ad79-371818df2e5c",
+      "ContainerId": "47521e29-0d84-1039-ad79-371818df2e5c",
+      "HtmlContent": "Background job complete<br> Import sample data &#039;test&#039;",
+      "UserId": 1005,
+      "ReadOn": "2020-12-08 15:43:22",
+      "Created": "2020-11-20 12:03:06.078"
+    },
+    "4": {
+      "RowId": 3,
+      "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.error",
+      "ActionLinkText": "view",
+      "CreatedBy": "susan",
+      "ActionLinkUrl": "/labkey/Biologics/pipeline-status-details.view?rowId=16",
+      "IconCls": "fa-exclamation-circle",
+      "ObjectId": "8e3bff5e-0d98-1039-ad79-371818df2e5d",
+      "ContainerId": "47521e29-0d84-1039-ad79-371818df2e5c",
+      "HtmlContent": "Error importing data",
+      "UserId": 1005,
+      "ReadOn": null,
+      "Created": "2020-11-20 12:03:06.078",
+      "hasError": true
+    },
+    "unreadCount": 3,
+    "hasRead": false,
+    "grouping": {
+      "Pipeline": [
+        4,
+        3,
+        2,
+        1
+      ]
+    }
+  }
+}

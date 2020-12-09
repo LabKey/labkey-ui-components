@@ -1,5 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* Add optional Notifications icon and overlay in NavigationBar
 
 ### version 1.7.0
 *Released*: 7 December 2020

@@ -17,6 +17,7 @@ import React from 'react';
 import { Record } from 'immutable';
 
 import { generateId, User } from '../../..';
+import { immerable } from "immer";
 
 export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;
 
@@ -74,4 +75,28 @@ export class NotificationItemModel
 
 function nextNotificationId(): string {
     return generateId('notification_');
+}
+
+export class ServerActivityData {
+    [immerable] = true;
+
+    readonly RowId: number;
+    readonly Type: string;
+    readonly Created: string;
+    readonly CreatedBy: string;
+    readonly UserId: number;
+    readonly ObjectId: string;
+    readonly ReadOn: string;
+    readonly ActionLinkText: string;
+    readonly ActionLinkUrl: string;
+    readonly ContainerId: string;
+    readonly HtmlContent: string;
+    readonly ContentType: string;
+    readonly IconCls: string;
+    readonly inProgress: boolean;
+    readonly hasError: boolean;
+
+    constructor(values?: Partial<ServerActivityData>) {
+        Object.assign(this, values);
+    }
 }

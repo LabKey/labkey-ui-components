@@ -55,7 +55,7 @@ export class ServerActivityList extends React.PureComponent<ServerActivityListPr
                         {this.props.viewErrorDetailsText}
                     </span>
                 ) : (
-                    <span className="server-notification-data">{activity.CreatedBy}</span>
+                    <span className="server-notification-data field-hide-overflow" title={activity.CreatedBy}>{activity.CreatedBy}</span>
                 )}
                 <div className="pull-right server-notification-data">{formatDateTime(parseDate(activity.Created, getDateTimeFormat()))}</div>
             </li>
@@ -66,7 +66,7 @@ export class ServerActivityList extends React.PureComponent<ServerActivityListPr
         const { activityData, onViewAll, maxListingSize, noActivityMsg, viewAllText } = this.props;
 
         if (!activityData || activityData.length === 0) {
-            return <div>{noActivityMsg}</div>;
+            return <div className="server-notifications-footer">{noActivityMsg}</div>;
         }
 
         return (

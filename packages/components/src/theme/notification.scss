@@ -7,7 +7,7 @@
 
 .fa-stack[data-count]:after{
     position:absolute;
-    right:-20px;
+    right:-16px;
     content: attr(data-count);
     font-size:75%;
     padding:.6em;
@@ -20,17 +20,6 @@
     font-weight:bold;
 }
 
-#server-notifications {
-    .popover-content {
-        padding: 0;
-    }
-}
-
-.server-notifications {
-    color: $brand-primary;
-    margin-right: 15px;
-}
-
 .server-notifications-icon {
     color: white;
     font-size: 22px;
@@ -41,25 +30,25 @@
     list-style-type: none;
     padding-left: 0;
     margin-top: 5px;
+    width: 350px;
 
     & > li {
-      margin-bottom: 5px;
-      border-bottom: 1px solid $gray-lighter;
-      padding-left: 15px;
-      padding-right: 15px;
+        margin-bottom: 5px;
+        border-bottom: 1px solid $gray-lighter;
+        padding: 0 15px 5px 15px;
 
-    &:hover {
-        background-color: $gray-lighter;
-    }
-    .has-error {
-        color: $brand-danger;
-    }
-    .is-complete {
-        color: $brand-success;
-    }
-    .is-unread {
-        font-weight: bold;
-    }
+        &:hover {
+            background-color: $gray-lighter;
+        }
+        .has-error {
+            color: $brand-danger;
+        }
+        .is-complete {
+            color: $brand-success;
+        }
+        .is-unread {
+            font-weight: bold;
+        }
   }
 }
 
@@ -76,12 +65,21 @@
 
 .server-notification-data {
     color: $gray-light;
+    max-width: 200px
 }
 
+.server-notifications-header {
+    padding: 8px 14px;
+    margin: 0;
+    font-size: 14px;
+    background-color: $gray-lighter;
+    border-bottom: 1px solid $gray-light;
+    border-radius: 5px 5px 0 0;
+}
 
 .server-notifications-footer {
-    margin-left: 15px;
-    margin-bottom: 5px;
+    margin: 5px 0 5px 15px;
+    width: 350px;
     &.server-notifications-error {
         color: $brand-danger;
     }

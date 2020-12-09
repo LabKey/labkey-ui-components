@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { DropdownButton } from 'react-bootstrap';
 
 import { User } from '../base/models/User';
 
@@ -57,49 +57,52 @@ export class ServerNotifications extends React.PureComponent<Props, State> {
         return this.state.activityData?.find(activity => activity.inProgress === true) !== undefined;
     }
 
-    onToggle = (show: boolean): void => {
-        this.setState(() => {show});
+    toggleMenu = (): void => {
+        this.setState(state => ({ show: !state.show }));
     };
 
     render(): ReactNode {
         const { activityData, error, isLoading, show } = this.state;
 
         const title = (
-            <>
+            <h3 className="server-notifications-header">
+                <div className="navbar-icon-connector" />
                 Notifications
                 {this.hasAnyUnread() && <div className="pull-right server-notifications-link" onClick={this.markAllRead}>Mark all as read</div>}
-            </>
+            </h3>
         );
-        let overlayContents;
+        let body;
         if (isLoading) {
-            overlayContents = <LoadingSpinner />;
+            body = <div className="server-notifications-footer"><LoadingSpinner /></div>;
         } else if (error) {
-            overlayContents = <div className="server-notifications-footer server-notifications-error">{error}</div>;
+            body = <div className="server-notifications-footer server-notifications-error">{error}</div>;
         } else {
-            overlayContents = <ServerActivityList activityData={activityData} onViewAll={this.viewAll} />;
+            body = <ServerActivityList activityData={activityData} onViewAll={this.viewAll} />;
         }
-        return (
-            <>
-                <OverlayTrigger
-                    placement="bottom"
-                    overlay={
-                        <Popover id="server-notifications" title={title}>
-                            {overlayContents}
-                        </Popover>
+        const icon = (
+            <span className="fa-stack navbar-icon" data-count={activityData?.length ? activityData.length : undefined}>
+                <i className="fa fa-circle fa-stack-1x" />
+                <i className={
+                        'fa ' +
+                        (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') +
+                        ' fa-stack-1x server-notifications-icon'
                     }
-                    trigger="click"
-                >
-                    <span className="fa-stack server-notifications" data-count={activityData?.length}>
-                        <i className="fa fa-circle fa-stack-1x" />
-                        <i className={
-                                'fa ' +
-                                (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') +
-                                ' fa-stack-1x server-notifications-icon'
-                            }
-                        />
-                    </span>
-                </OverlayTrigger>
-            </>
+                />
+            </span>
+        );
+        return (
+            <DropdownButton
+                id="server-notifications-button"
+                className="navbar-icon-button-right"
+                noCaret={true}
+                title={icon}
+                open={show}
+                onToggle={this.toggleMenu}
+                pullRight={true}
+            >
+                {title}
+                {body}
+            </DropdownButton>
         );
     }
 }

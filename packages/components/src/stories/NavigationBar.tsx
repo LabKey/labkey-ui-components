@@ -270,7 +270,7 @@ storiesOf('NavigationBar', module)
                 model={model}
                 showSearchBox={true}
                 user={user}
-                showNotifications={boolean("Show notifications?", false)}
+                showNotifications={boolean("Show notifications?", true)}
             />
         );
     });

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, Utils } from '@labkey/api';
+import { ActionURL, Ajax, getServerContext, Utils } from '@labkey/api';
 
 import { buildURL, naturalSortByProperty, resolveErrorMessage } from '../../..';
 
@@ -57,6 +57,8 @@ export function getServerNotifications(groups?: string[]): Promise<ServerActivit
         Ajax.request({
             url: ActionURL.buildURL('notification', 'getUserNotificationsForPanel.api'),
             method: 'GET',
+            // TODO
+            // params: { container: getServerContext().container.id },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     const notifications = [];
@@ -95,7 +97,12 @@ export function getPipelineActivityData(): Promise<ServerActivityData[]> {
             getPipelineJobStatuses()
         ]).then((responses) => {
                 const [notifications, statuses] = responses;
-                resolve(notifications.concat(...statuses).sort(naturalSortByProperty('Created')));
+                resolve(
+                    notifications
+                        .concat(...statuses)
+                        .filter(data => data.ContainerId === getServerContext().container.id)
+                        .sort(naturalSortByProperty('Created'))
+                );
             })
             .catch(reason => {
                 console.error(reason);

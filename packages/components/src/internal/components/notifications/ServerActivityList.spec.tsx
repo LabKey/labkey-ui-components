@@ -92,7 +92,7 @@ describe('<ServerActivityList>', () => {
         expect(item.find('.has-error')).toHaveLength(1);
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(2);
-        expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.htmlContent);
+        expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.HtmlContent);
         expect(links.at(1).text()).toBe(ServerActivityList.defaultProps.viewErrorDetailsText)
     });
 
@@ -118,10 +118,10 @@ describe('<ServerActivityList>', () => {
         expect(item.find('.has-error')).toHaveLength(0);
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(1);
-        expect(links.at(0).text()).toBe(DONE_NOT_READ.htmlContent);
+        expect(links.at(0).text()).toBe(DONE_NOT_READ.HtmlContent);
         const data = item.find('.server-notification-data');
         expect(data).toHaveLength(2);
-        expect(data.at(0).text()).toBe(DONE_NOT_READ.createdBy);
+        expect(data.at(0).text()).toBe(DONE_NOT_READ.CreatedBy);
         expect(data.at(1).text()).toBe('2020-11-11 12:47');
     });
 
@@ -137,7 +137,7 @@ describe('<ServerActivityList>', () => {
         expect(links).toHaveLength(0);
         const data = item.find('.server-notification-data');
         expect(data).toHaveLength(2);
-        expect(data.at(0).text()).toBe(DONE_AND_READ.createdBy);
+        expect(data.at(0).text()).toBe(DONE_AND_READ.CreatedBy);
         expect(data.at(1).text()).toBe('2020-11-14 04:47');
     });
 });

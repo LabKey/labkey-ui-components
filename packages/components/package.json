@@ -139,7 +139,8 @@
       "LABKEY": {
         "contextPath": "/labkey",
         "container": {
-          "path": ""
+          "path": "",
+          "id": "testContainerEntityId"
         },
         "project": {
           "rootId": "ROOTID"

@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ActionURL, Ajax, getServerContext, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, getServerContext, Utils } from '@labkey/api';
 
-import { buildURL, naturalSortByProperty, resolveErrorMessage } from '../../..';
+import { buildURL, naturalSortByProperty, resolveErrorMessage, selectRows } from '../../..';
 
 import { NotificationItemModel, NotificationItemProps, ServerActivityData } from './model';
 import { addNotification } from './global';
@@ -79,9 +79,28 @@ export function getServerNotifications(type?: string): Promise<ServerActivityDat
 }
 
 export function getPipelineJobStatuses(): Promise<ServerActivityData[]> {
-    // TODO
     return new Promise((resolve, reject) => {
-        resolve([]);
+        selectRows({
+            schemaName: 'pipeline',
+            queryName: 'job',
+            filterArray: [Filter.create('Status', 'RUNNING')],
+            sort: 'Created',
+        }).then(response => {
+                const model = response.models[response.key];
+                let activities = [];
+                Object.values(model).forEach(row => {
+                    activities.push(new ServerActivityData({
+                        inProgress: true,
+                        HtmlContent: row['Description']['value'],
+                        Created: row['Created']['formattedValue'],
+                        CreatedBy: row['CreatedBy']['displayValue']
+                    }));
+            });
+            resolve(activities);
+        }).catch(reason => {
+            console.error(reason);
+            reject(resolveErrorMessage(reason));
+        });
     });
 }
 

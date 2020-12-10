@@ -98,7 +98,7 @@ export class ServerActivityData {
 
     constructor(values?: Partial<ServerActivityData>) {
         const addedValues = {};
-        if (values.Type.indexOf('error') >= 0) {
+        if (values.Type?.indexOf('error') >= 0) {
             Object.assign(addedValues, { hasError: true });
         }
         Object.assign(this, values, addedValues);

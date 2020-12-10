@@ -52,22 +52,17 @@ export function setTrialBannerDismissSessionKey(): Promise<any> {
     });
 }
 
-export function getServerNotifications(groups?: string[]): Promise<ServerActivityData[]> {
+export function getServerNotifications(type?: string): Promise<ServerActivityData[]> {
     return new Promise((resolve, reject) => {
         Ajax.request({
-            url: ActionURL.buildURL('notification', 'getUserNotificationsForPanel.api'),
+            url: ActionURL.buildURL('notification', 'getUserNotifications.api'),
             method: 'GET',
-            // TODO
-            // params: { container: getServerContext().container.id },
+            params: { container: getServerContext().container.id, type },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     const notifications = [];
-                    Object.keys(response.notifications.grouping).forEach(grouping => {
-                        if (!groups || groups.indexOf(grouping) >= 0) {
-                            response.notifications.grouping[grouping].forEach(id => {
-                                notifications.push(new ServerActivityData(response.notifications[id]));
-                            });
-                        }
+                    response.notifications.forEach(notification => {
+                        notifications.push(new ServerActivityData(notification));
                     });
                     resolve(notifications);
                 } else {
@@ -93,14 +88,14 @@ export function getPipelineJobStatuses(): Promise<ServerActivityData[]> {
 export function getPipelineActivityData(): Promise<ServerActivityData[]> {
     return new Promise((resolve, reject) => {
         Promise.all([
-            getServerNotifications(['Pipeline']),
+            getServerNotifications('Pipeline'),
             getPipelineJobStatuses()
         ]).then((responses) => {
                 const [notifications, statuses] = responses;
                 resolve(
                     notifications
                         .concat(...statuses)
-                        .filter(data => data.ContainerId === getServerContext().container.id)
+                        // .filter(data => data.ContainerId === getServerContext().container.id)
                         .sort(naturalSortByProperty('Created'))
                 );
             })
@@ -108,5 +103,27 @@ export function getPipelineActivityData(): Promise<ServerActivityData[]> {
                 console.error(reason);
                 reject('There was a problem retrieving your notification data.  Try refreshing the page.');
             });
+    });
+}
+
+export function markNotificationsAsRead(rowIds: number[]): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('notification', 'markNotificationAsRead.api'),
+            method: 'POST',
+            jsonData: {rowIds},
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    resolve(true);
+                } else {
+                    console.error(response);
+                    resolve(false);
+                }
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(false);
+            }),
+        });
     });
 }

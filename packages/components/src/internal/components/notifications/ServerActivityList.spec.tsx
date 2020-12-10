@@ -1,8 +1,9 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { ServerActivityList } from './ServerActivityList';
 import { DONE_AND_READ, DONE_NOT_READ, IN_PROGRESS, UNREAD_WITH_ERROR } from '../../../test/data/notificationData';
+
+import { ServerActivityList } from './ServerActivityList';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -22,6 +23,7 @@ describe('<ServerActivityList>', () => {
                 onViewAll={jest.fn()}
                 activityData={undefined}
                 noActivityMsg={noActivityMsg}
+                onRead={jest.fn()}
             />
         );
         expect(wrapper.text()).toBe(noActivityMsg);
@@ -29,7 +31,7 @@ describe('<ServerActivityList>', () => {
     });
 
     test('empty list', () => {
-        const wrapper = mount(<ServerActivityList onViewAll={jest.fn()} activityData={[]} />);
+        const wrapper = mount(<ServerActivityList onViewAll={jest.fn()} activityData={[]} onRead={jest.fn()} />);
         expect(wrapper.text()).toBe(ServerActivityList.defaultProps.noActivityMsg);
         expect(wrapper.find('.server-notifications-listing')).toHaveLength(0);
     });
@@ -40,6 +42,7 @@ describe('<ServerActivityList>', () => {
                 onViewAll={jest.fn()}
                 activityData={[DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR]}
                 maxListingSize={2}
+                onRead={jest.fn()}
             />
         );
         const listing = wrapper.find('.server-notifications-listing');
@@ -56,6 +59,7 @@ describe('<ServerActivityList>', () => {
             <ServerActivityList
                 onViewAll={jest.fn()}
                 activityData={[DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR]}
+                onRead={jest.fn()}
             />
         );
         const listing = wrapper.find('.server-notifications-listing');
@@ -72,6 +76,7 @@ describe('<ServerActivityList>', () => {
                 activityData={[DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR]}
                 maxListingSize={2}
                 viewAllText={viewAllText}
+                onRead={jest.fn()}
             />
         );
         const footer = wrapper.find('.server-notifications-footer');
@@ -85,6 +90,7 @@ describe('<ServerActivityList>', () => {
                 onViewAll={jest.fn()}
                 activityData={[UNREAD_WITH_ERROR]}
                 maxListingSize={2}
+                onRead={jest.fn()}
             />
         );
         const item = wrapper.find('li');
@@ -93,12 +99,17 @@ describe('<ServerActivityList>', () => {
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(2);
         expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.HtmlContent);
-        expect(links.at(1).text()).toBe(ServerActivityList.defaultProps.viewErrorDetailsText)
+        expect(links.at(1).text()).toBe(ServerActivityList.defaultProps.viewErrorDetailsText);
     });
 
     test('in progress', () => {
         const wrapper = mount(
-            <ServerActivityList onViewAll={jest.fn()} activityData={[IN_PROGRESS]} maxListingSize={2} />
+            <ServerActivityList
+                onViewAll={jest.fn()}
+                activityData={[IN_PROGRESS]}
+                maxListingSize={2}
+                onRead={jest.fn()}
+            />
         );
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);
@@ -110,7 +121,12 @@ describe('<ServerActivityList>', () => {
 
     test('unread', () => {
         const wrapper = mount(
-            <ServerActivityList onViewAll={jest.fn()} activityData={[DONE_NOT_READ]} maxListingSize={2} />
+            <ServerActivityList
+                onViewAll={jest.fn()}
+                activityData={[DONE_NOT_READ]}
+                maxListingSize={2}
+                onRead={jest.fn()}
+            />
         );
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);
@@ -127,7 +143,12 @@ describe('<ServerActivityList>', () => {
 
     test('read', () => {
         const wrapper = mount(
-            <ServerActivityList onViewAll={jest.fn()} activityData={[DONE_AND_READ]} maxListingSize={2} />
+            <ServerActivityList
+                onViewAll={jest.fn()}
+                activityData={[DONE_AND_READ]}
+                maxListingSize={2}
+                onRead={jest.fn()}
+            />
         );
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);

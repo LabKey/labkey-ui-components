@@ -4,16 +4,17 @@ import classNames from 'classnames';
 import { ServerActivityData } from './model';
 import { formatDateTime, getDateTimeFormat, parseDate } from '../../util/Date';
 
-interface ServerActivityListProps {
+interface Props {
     activityData: ServerActivityData[];
     onViewAll: () => void;
     maxListingSize: number;
     viewAllText: string;
     noActivityMsg: string;
     viewErrorDetailsText: string;
+    onRead: (id: number) => void;
 }
 
-export class ServerActivityList extends React.PureComponent<ServerActivityListProps> {
+export class ServerActivityList extends React.PureComponent<Props> {
     static defaultProps = {
         maxListingSize: 10,
         viewAllText: 'View all activity',
@@ -22,11 +23,11 @@ export class ServerActivityList extends React.PureComponent<ServerActivityListPr
     };
 
     markRead = (notificationId: number): void => {
-        console.log('markRead ' + notificationId + ': not yet implemented');
+        this.props.onRead(notificationId);
     };
 
     showErrorDetails = (notificationId: number): void => {
-        console.log('showErrorDetails: not yet implemented');
+        console.log('showErrorDetails ' + notificationId + ': not yet implemented');
     };
 
     renderData(activity: ServerActivityData, key: number): ReactNode {

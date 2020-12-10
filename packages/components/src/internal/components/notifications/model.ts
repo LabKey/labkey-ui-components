@@ -17,7 +17,7 @@ import React from 'react';
 import { Record } from 'immutable';
 
 import { generateId, User } from '../../..';
-import { immerable } from "immer";
+import { Draft, immerable, produce } from "immer";
 
 export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;
 
@@ -97,6 +97,16 @@ export class ServerActivityData {
     readonly hasError: boolean;
 
     constructor(values?: Partial<ServerActivityData>) {
-        Object.assign(this, values);
+        const addedValues = {};
+        if (values.Type.indexOf('error') >= 0) {
+            Object.assign(addedValues, { hasError: true });
+        }
+        Object.assign(this, values, addedValues);
+    }
+
+    mutate(props: Partial<ServerActivityData>): ServerActivityData {
+        return produce(this, (draft: Draft<ServerActivityData>) => {
+            Object.assign(draft, props);
+        });
     }
 }

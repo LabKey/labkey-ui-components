@@ -3,7 +3,7 @@ import { DropdownButton } from 'react-bootstrap';
 
 import { User } from '../base/models/User';
 
-import { getPipelineActivityData } from './actions';
+import { getPipelineActivityData, markNotificationsAsRead } from './actions';
 import { ServerActivityData } from './model';
 import { ServerActivityList } from './ServerActivityList';
 import { LoadingSpinner } from '../../../index';
@@ -19,7 +19,7 @@ interface State {
     show: boolean;
 }
 
-export class ServerNotifications extends React.PureComponent<Props, State> {
+export class ServerNotifications extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
@@ -42,7 +42,35 @@ export class ServerNotifications extends React.PureComponent<Props, State> {
     }
 
     markAllRead = (): void => {
-        console.log("markAllRead: not yet implemented");
+        const { activityData } = this.state;
+        const notificationIds = [];
+        const now = new Date().toTimeString();
+        const updatedActivity = [];
+        activityData.forEach(data => {
+            if (data.RowId) {
+                notificationIds.push(data.RowId);
+                updatedActivity.push(data.mutate({ ReadOn: now }));
+            } else {
+                updatedActivity.push(data);
+            }
+        });
+        markNotificationsAsRead(notificationIds).then(() => {
+            this.setState(() => ({ activityData: updatedActivity }));
+        });
+    };
+
+    onRead = (id: number): void => {
+        markNotificationsAsRead([id]).then((response) => {
+            this.setState(state => {
+                const dataIndex = state.activityData.findIndex(d => d.RowId === id);
+                const update = state.activityData[dataIndex].mutate({ ReadOn: new Date().toTimeString() });
+                const updatedActivity = state.activityData;
+                updatedActivity[dataIndex] = update;
+                return {
+                    activityData: updatedActivity,
+                };
+            });
+        });
     };
 
     viewAll = (): void => {
@@ -51,6 +79,14 @@ export class ServerNotifications extends React.PureComponent<Props, State> {
 
     hasAnyUnread(): boolean {
         return this.state.activityData?.find(activity => activity.ReadOn == undefined) !== undefined;
+    }
+
+    getNumUnread(): number {
+        if (!this.state.activityData) {
+            return 0;
+        }
+
+        return this.state.activityData.filter(activity => activity.ReadOn == undefined).length;
     }
 
     hasAnyInProgress(): boolean {
@@ -63,12 +99,16 @@ export class ServerNotifications extends React.PureComponent<Props, State> {
 
     render(): ReactNode {
         const { activityData, error, isLoading, show } = this.state;
-
+        const numUnread = this.getNumUnread();
         const title = (
             <h3 className="server-notifications-header">
                 <div className="navbar-icon-connector" />
                 Notifications
-                {this.hasAnyUnread() && <div className="pull-right server-notifications-link" onClick={this.markAllRead}>Mark all as read</div>}
+                {numUnread > 0 && (
+                    <div className="pull-right server-notifications-link" onClick={this.markAllRead}>
+                        Mark all as read
+                    </div>
+                )}
             </h3>
         );
         let body;
@@ -77,10 +117,11 @@ export class ServerNotifications extends React.PureComponent<Props, State> {
         } else if (error) {
             body = <div className="server-notifications-footer server-notifications-error">{error}</div>;
         } else {
-            body = <ServerActivityList activityData={activityData} onViewAll={this.viewAll} />;
+            body = <ServerActivityList activityData={activityData} onViewAll={this.viewAll} onRead={this.onRead}/>;
         }
+
         const icon = (
-            <span className="fa-stack navbar-icon" data-count={activityData?.length ? activityData.length : undefined}>
+            <span className="fa-stack navbar-icon" data-count={numUnread || undefined}>
                 <i className="fa fa-circle fa-stack-1x" />
                 <i className={
                         'fa ' +

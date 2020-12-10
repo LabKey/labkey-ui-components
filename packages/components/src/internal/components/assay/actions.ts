@@ -34,6 +34,8 @@ import { AssayUploadTabs } from '../../AssayDefinitionModel';
 import { AssayUploadResultModel } from './models';
 import { IAssayUploadOptions } from './AssayWizardModel';
 
+export const GENERAL_ASSAY_PROVIDER_NAME = 'General';
+
 export const RUN_PROPERTIES_GRID_ID = 'assay-run-details';
 
 export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(

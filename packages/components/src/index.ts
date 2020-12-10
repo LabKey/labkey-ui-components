@@ -292,6 +292,7 @@ import {
     importAssayRun,
     RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
+    GENERAL_ASSAY_PROVIDER_NAME,
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
@@ -643,6 +644,7 @@ export {
     fetchAllAssays,
     RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
+    GENERAL_ASSAY_PROVIDER_NAME,
     // heatmap
     HeatMap,
     HeatMapCell,

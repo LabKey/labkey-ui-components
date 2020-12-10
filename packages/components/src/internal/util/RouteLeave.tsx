@@ -1,11 +1,10 @@
 import React from 'react';
+import {Location} from 'history';
 import { WithRouterProps } from 'react-router';
 
 import { AppURL } from '../..';
 
 import { BeforeUnload } from './BeforeUnload';
-import { Location } from 'history';
-import { getBrowserHistory } from './global';
 
 export const ON_LEAVE_DIRTY_STATE_MESSAGE =
     'You have unsaved changes that will be lost. Are you sure you want to continue?';
@@ -22,26 +21,27 @@ export const ON_LEAVE_DIRTY_STATE_MESSAGE =
  *  https://stackoverflow.com/questions/62792342/in-react-router-v6-how-to-check-form-is-dirty-before-leaving-page-route
  *
  * @param currentLocation the location of the current page
+ * @param event
+ * @param isUnload
  */
-export function confirmLeaveWhenDirty(currentLocation: Location): boolean {
+export function confirmLeaveWhenDirty(currentLocation: Location, event?: any,): boolean {
     const result = confirm(ON_LEAVE_DIRTY_STATE_MESSAGE);
 
     // navigation canceled, pushing the previous path
     if (!result && currentLocation) {
-        const currentHashPath = AppURL.create(
+        const appURL = AppURL.create(
             ...currentLocation.pathname
                 .substring(1)
                 .split('/')
                 .map(part => decodeURIComponent(part))
-        ).toHref() + currentLocation.search;
+        );
 
-        const history = getBrowserHistory();
-        // Needed because some links pre-add the history, while others don't Issue #41419
-        if (currentHashPath !== history.location.hash)
-            window.history.go(-1); //pop the stack as the new location was already pushed on
-
-        // Replace the state so things look handled -- prevents onbeforeunload from re-prompting
-        window.history.replaceState(null, null, currentHashPath);
+        // Issue 41419: handle different cases for route leave PUSH vs POP events
+        if (event?.action !== 'POP') {
+            window.history.replaceState(null, null, appURL.toHref() + currentLocation.search);
+        } else {
+            window.history.back();
+        }
     }
 
     return result;
@@ -67,10 +67,15 @@ export const withRouteLeave = (Component: React.ComponentType) => {
             this.props.router.setRouteLeaveHook(this.props.routes[this.props.routes.length - 1], this.onRouteLeave);
         }
 
+        onBeforeUnload = event => {
+            event.returnValue = ON_LEAVE_DIRTY_STATE_MESSAGE;
+            return ON_LEAVE_DIRTY_STATE_MESSAGE;
+        };
+
         onRouteLeave = event => {
             if (this._dirty) {
                 event.returnValue = true; // this is for the page reload case
-                return confirmLeaveWhenDirty(this.props.location);
+                return confirmLeaveWhenDirty(this.props.location, event);
             }
         };
 
@@ -84,7 +89,7 @@ export const withRouteLeave = (Component: React.ComponentType) => {
 
         render() {
             return (
-                <BeforeUnload beforeunload={this.onRouteLeave}>
+                <BeforeUnload beforeunload={this.onBeforeUnload}>
                     <Component setDirty={this.setDirty} isDirty={this.isDirty} {...this.props} />
                 </BeforeUnload>
             );

@@ -200,7 +200,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
         this.props.onFinish(model.isValid(), this.saveDomain);
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChange: DomainFieldIndexChange) => {
+    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges: DomainFieldIndexChange[]) => {
         const { onChange } = this.props;
         const { keyPropertyIndex, visitDatePropertyIndex } = this.state;
 
@@ -219,15 +219,17 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 if (keyPropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the keyPropertyIndex
                     // else if a different row was removed or reordered, refind out index by name
-                    if (rowIndexChange) {
-                        if (rowIndexChange.originalIndex === keyPropertyIndex) {
-                            draft.keyPropertyIndex = rowIndexChange.newIndex;
-                        } else {
-                            draft.keyPropertyIndex = this.findFieldIndexByName(
-                                draft.model.domain,
-                                draft.model.keyPropertyName
-                            );
-                        }
+                    if (rowIndexChanges) {
+                        rowIndexChanges.forEach((rowIndexChange) => {
+                            if (rowIndexChange.originalIndex === keyPropertyIndex) {
+                                draft.keyPropertyIndex = rowIndexChange.newIndex;
+                            } else {
+                                draft.keyPropertyIndex = this.findFieldIndexByName(
+                                    draft.model.domain,
+                                    draft.model.keyPropertyName
+                                );
+                            }
+                        });
                     }
 
                     // if row was removed, reset key property name
@@ -241,15 +243,17 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
 
                 if (visitDatePropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the visitDatePropertyIndex
-                    if (rowIndexChange) {
-                        if (rowIndexChange && rowIndexChange.originalIndex === visitDatePropertyIndex) {
-                            draft.visitDatePropertyIndex = rowIndexChange.newIndex;
-                        } else {
-                            draft.visitDatePropertyIndex = this.findFieldIndexByName(
-                                draft.model.domain,
-                                draft.model.visitDatePropertyName
-                            );
-                        }
+                    if (rowIndexChanges) {
+                        rowIndexChanges.forEach((rowIndexChange) => {
+                            if (rowIndexChange && rowIndexChange.originalIndex === visitDatePropertyIndex) {
+                                draft.visitDatePropertyIndex = rowIndexChange.newIndex;
+                            } else {
+                                draft.visitDatePropertyIndex = this.findFieldIndexByName(
+                                    draft.model.domain,
+                                    draft.model.visitDatePropertyName
+                                );
+                            }
+                        });
                     }
 
                     // if row was removed, reset visit date property name

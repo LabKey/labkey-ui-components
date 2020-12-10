@@ -74,6 +74,10 @@
   }
 }
 
+.domain-field-header {
+    padding: 0 0 15px 40px;
+}
+
 .domain-row-border-default {
   border-color: $gray-border;
 }
@@ -416,6 +420,10 @@
     }
 }
 
+.domain-form-preHdr-row {
+  left: -24px;
+}
+
 .domain-form-hdr-margins {
     padding: 0 0 15px 0;
 }
@@ -601,6 +609,16 @@
 
 .domain-remove-icon {
   padding-top: 5px;
+}
+
+.domain-panel-header-clear-all {
+ height: 20px;
+ width: 50px;
+ font-size: 10px;
+ vertical-align: middle;
+ text-align: center;
+ padding: 0;
+ margin-left: 10px;
 }
 
 .domain-panel-header {

@@ -15,6 +15,9 @@
  */
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
+import { List } from "immutable";
+import { DomainField } from "./models";
+import { Utils } from "@labkey/api";
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {
@@ -45,4 +48,39 @@ export function isFieldFullyLocked(lockType: string): boolean {
 export function isPrimaryKeyFieldLocked(lockType: string): boolean {
     // with PK locked, can't change type or required, but can change other properties
     return lockType == DOMAIN_FIELD_PRIMARY_KEY_LOCKED;
+}
+
+export function generateBulkDeleteWarning(deletabilityInfo, undeletableNames) {
+    const { pluralBasic, pluralize } = Utils;
+
+    const { deletableSelectedFields, undeletableFields } = deletabilityInfo;
+    const deletable = deletableSelectedFields.length;
+    const undeletable = undeletableFields.length;
+
+    const howManyDeleted = undeletable > 0
+        ? `${deletable} of ${deletable + undeletable} fields`
+        : `${deletable} ${pluralBasic(deletable, "field")}`;
+
+    const itIsA = pluralize(undeletable,"it is a", "they are");
+    const field = pluralBasic(undeletable, "field");
+    const undeletableWarning = undeletable > 0
+        ? `${undeletableNames.join(', ')} cannot be deleted as ${itIsA} necessary ${field}.`
+        : ``;
+
+    return ({howManyDeleted, undeletableWarning});
+}
+
+export function applySetOperation(oldSet, value, add: boolean) {
+    if (add) {
+        return oldSet.add(value);
+    } else {
+        oldSet.delete(value);
+        return oldSet;
+    }
+}
+
+export function getVisibleSelectedFieldIndexes(fields: List<DomainField>): Set<number> {
+    return fields.reduce((setOfIndexes, currentField, index) => {
+        return (currentField.visible && currentField.selected) ? setOfIndexes.add(index) : setOfIndexes;
+    }, new Set());
 }

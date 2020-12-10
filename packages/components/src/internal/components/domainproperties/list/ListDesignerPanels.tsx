@@ -63,13 +63,13 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
         );
     };
 
-    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange) => {
+    onDomainChange = (domain: DomainDesign, dirty: boolean, rowIndexChanges?: DomainFieldIndexChange[]) => {
         const { onChange } = this.props;
         const { model } = this.state;
 
         // Issue 40262: If we have a titleColumn selected and the name changes (not the row index), update the titleColumn
         let titleColumn = model.titleColumn;
-        if (titleColumn && !rowIndexChange) {
+        if (titleColumn && !rowIndexChanges) {
             const index = model.domain.findFieldIndexByName(titleColumn);
             titleColumn = index > -1 ? domain.fields.get(index).name : undefined;
         }

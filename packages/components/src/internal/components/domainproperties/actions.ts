@@ -435,24 +435,20 @@ export function addDomainField(domain: DomainDesign, fieldConfig: Partial<IDomai
     }) as DomainDesign;
 }
 
-function updateErrorIndexes(removedFieldIndex: number, domainException: DomainException) {
-    const errorsWithNewIndex = domainException.errors.map(error => {
-        const newRowIndexes = error.rowIndexes.map(rowIndex => {
-            if (rowIndex > removedFieldIndex) {
-                return rowIndex - 1;
-            }
-        });
-        return error.set('rowIndexes', newRowIndexes);
-    });
-    return domainException.set('errors', errorsWithNewIndex);
-}
-
-function updateErrorIndexesBulk(removedFieldIndexes: Number[], domainException: DomainException) {
+function updateErrorIndexes(removedFieldIndexes: Number[], domainException: DomainException) {
+    // Given sequence of field indexes that have existing errors, 'rowIndex', and
+    // array of indexes of removed fields, 'removedFieldIndexes' we must update each
+    // rowIndex based on if its position has been affected by a deleted field.
+    // Eg, rowIndex set [1, 4, 7, 8] with removedFieldIndexes [2, 5] becomes [1, 3, 5, 6].
     const errorsWithNewIndexes = domainException.errors.map(error => {
         const newRowIndexes = error.rowIndexes.map(rowIndex => {
             for (let i = 0; i < removedFieldIndexes.length; i++) {
-                if (rowIndex > removedFieldIndexes[i]) {
+                if (i !== removedFieldIndexes.length && removedFieldIndexes[i+1] < rowIndex) {
+                    continue;
+                } else if (rowIndex > removedFieldIndexes[i]) {
                     return rowIndex-(i+1);
+                } else {
+                    return rowIndex;
                 }
             }
         });
@@ -461,30 +457,22 @@ function updateErrorIndexesBulk(removedFieldIndexes: Number[], domainException: 
     return domainException.set('errors', errorsWithNewIndexes);
 }
 
-export function removeField(domain: DomainDesign, index: number): DomainDesign {
-    domain = updateDomainException(domain, index, undefined);
+export function removeFields(domain: DomainDesign, deletableSelectedFields: Number[]) {
+    // Removes from domain.domainException errors belonging to removed fields, and also clears domainException if
+    // a removed field was the final field with any error
+    deletableSelectedFields.forEach((value) => {
+        domain = updateDomainException(domain, value, undefined);
+    });
 
-    const newDomain = domain.merge({
-        fields: domain.fields.delete(index),
-    }) as DomainDesign;
-
-    // "move up" the indexes of the fields with error, i.e. the fields that are below the removed field
-    if (newDomain.hasException()) {
-        return newDomain.set('domainException', updateErrorIndexes(index, newDomain.domainException)) as DomainDesign;
-    }
-    return newDomain;
-}
-
-export function bulkRemoveFields(domain: DomainDesign, deletableSelectedFields: Number[]) {
     const fields = domain.fields;
     const newFields = fields.filter((field, i) => !deletableSelectedFields.includes(i));
     const updatedDomain = domain.merge({
         fields: newFields,
     }) as DomainDesign;
 
-    // "move up" the indexes of the fields with error, i.e. the fields that are below the removed field
+    // "move up" the indexes of the fields with error, i.e. the fields that are below the removed fields
     if (updatedDomain.hasException()) {
-        return updatedDomain.set('domainException', updateErrorIndexesBulk(deletableSelectedFields, updatedDomain.domainException)) as DomainDesign;
+        return updatedDomain.set('domainException', updateErrorIndexes(deletableSelectedFields, updatedDomain.domainException)) as DomainDesign;
     } else {
         return updatedDomain;
     }

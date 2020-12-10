@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Item 8226: ...
+* Item 8226: ...AssayStateModel.getDefinitionsByType
 
 ### version 1.7.0
 *Released*: 7 December 2020

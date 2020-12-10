@@ -65,6 +65,7 @@ import { Alert } from './internal/components/base/Alert';
 import { DeleteIcon } from './internal/components/base/DeleteIcon';
 import { LockIcon } from './internal/components/base/LockIcon';
 import { ExpandableFilterToggle } from './internal/components/base/ExpandableFilterToggle';
+import { ViewAsToggle } from './internal/components/base/ViewAsToggle';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
 import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
@@ -833,6 +834,7 @@ export {
     DeleteIcon,
     LockIcon,
     ExpandableFilterToggle,
+    ViewAsToggle,
     // base models, enums, constants
     Container,
     User,

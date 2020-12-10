@@ -102,6 +102,7 @@ class EntityGridLoader implements IGridLoader {
 interface OwnProps {
     disableMerge?: boolean;
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?) => void;
+    onBackgroundJobStart?: (entityTypeName, filename) => void;
     getFileTemplateUrl?: (queryInfo: QueryInfo) => string;
     location?: Location;
     onCancel?: () => void;
@@ -975,7 +976,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                 if (this.props.onDataChange) {
                     this.props.onDataChange(false);
                 }
-                if (this.props.afterEntityCreation) {
+                if (!useAsync && this.props.afterEntityCreation) {
                     this.props.afterEntityCreation(
                         insertModel.getTargetEntityTypeName(),
                         null,
@@ -983,6 +984,9 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                         'imported',
                         response.transactionAuditId
                     );
+                }
+                if (useAsync && this.props.onBackgroundJobStart) {
+                    this.props.onBackgroundJobStart(insertModel.getTargetEntityTypeName(), file.name)
                 }
             })
             .catch(error => {

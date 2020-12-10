@@ -221,8 +221,8 @@ pre.labkey-log-text.multiline.expanded {
 
 // add [-] icon before multiline block
 pre.labkey-log-text.multiline.expanded::before {
-  //font-family: FontAwesome;
-  //content: '\f147'; /* fa-minus-square-o */
+  font-family: FontAwesome;
+  content: '\f147'; /* fa-minus-square-o */
   float: left;
   margin-left: -1.4em;
   cursor: pointer;
@@ -230,8 +230,8 @@ pre.labkey-log-text.multiline.expanded::before {
 
 // add [+] icon before multiline block
 pre.labkey-log-text.multiline.collapsed::before {
-  //font-family: FontAwesome;
-  //content: '\f196'; /* fa-plus-square-o */
+  font-family: FontAwesome;
+  content: '\f196'; /* fa-plus-square-o */
   float: left;
   margin-left: -1.4em;
   cursor: pointer;

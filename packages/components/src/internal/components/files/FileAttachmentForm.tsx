@@ -390,6 +390,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             sizeLimitsHelpText,
             isSubmitting,
             compact,
+            allowOversize,
         } = this.props;
 
         return (
@@ -411,6 +412,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                                 sizeLimitsHelpText={sizeLimitsHelpText}
                                 labelLong={labelLong}
                                 compact={compact}
+                                allowOversize={allowOversize}
                             />
                             {compact && showButtons && this.renderButtons()}
                         </div>

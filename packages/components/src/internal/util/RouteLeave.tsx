@@ -21,8 +21,7 @@ export const ON_LEAVE_DIRTY_STATE_MESSAGE =
  *  https://stackoverflow.com/questions/62792342/in-react-router-v6-how-to-check-form-is-dirty-before-leaving-page-route
  *
  * @param currentLocation the location of the current page
- * @param event
- * @param isUnload
+ * @param event object triggering leave transition
  */
 export function confirmLeaveWhenDirty(currentLocation: Location, event?: any,): boolean {
     const result = confirm(ON_LEAVE_DIRTY_STATE_MESSAGE);
@@ -33,7 +32,7 @@ export function confirmLeaveWhenDirty(currentLocation: Location, event?: any,): 
             ...currentLocation.pathname
                 .substring(1)
                 .split('/')
-                .map(part => decodeURIComponent(part))
+                .map(decodeURIComponent)
         );
 
         // Issue 41419: handle different cases for route leave PUSH vs POP events

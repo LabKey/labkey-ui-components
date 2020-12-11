@@ -13,7 +13,7 @@ Generally, when doing development, you should:
 
 * Place source code in a `src` subdirectory (note the distinction between the `internal` code and `public` code.
 * Place typing files in a `src/typings` subdirectory.
-* Add documentation a-plenty and update the package [release notes](../releaseNotes/labkey/components.md) as you add/fix/update the package.
+* Add documentation a-plenty and update the package [release notes](../releaseNotes/components.md) as you add/fix/update the package.
 
 ### Local Development
 

@@ -1,22 +1,22 @@
 # @glass/querygrid
 
-Query Grid for LabKey schema/query data views 
+Query Grid for LabKey schema/query data views
 
 ## Release Notes ##
 
 ### version ???
 *Released*: ???
 * Move `domainproperties` and `base` packages into `querygrid`
-    * Old README for `domainproperties` can be found [here](domainproperties.md)
-    * Old README for `base` can be found [here](base.md)
-    
+    * Old README for `domainproperties` can be found [here](./domainproperties.md)
+    * Old README for `base` can be found [here](./base.md)
+
 ### version 0.24.1
 *Released*: 22 November 2019
 * Package patch update for changes to @glass/base v0.23.0
 
 ### version 0.24.0
 *Released*: 19 November 2019
-* update EditorModel with methods for converting from queryGrid results to the data format expected by 
+* update EditorModel with methods for converting from queryGrid results to the data format expected by
 the editable grid
 * move EditableGridLoader, EditableGridLoaderForSelection, EditableGridPanelForUpdate, EditableGridModal, BulkUpdateForm
 from sampleManagement
@@ -36,11 +36,11 @@ with a particular set of permissions, not just those in some project or global g
 ### version 0.23.0
 *Released*: 18 November 2019
 * Add components for user profile management in app - ChangePasswordModal, UserDetailHeader, UserProfile
-* QueryFormInputs - add disabledFields property 
+* QueryFormInputs - add disabledFields property
 * QueryInfoForm - add disabledFields and showErrorsAtBottom properties
 * FileInput - fix so that FieldLabel respects the showLabel boolean property
 * TextAreaInput, TextInput - fix for initial state isDisabled to only be based off of initiallyDisabled prop
-* NavigationBar, UserMenu - add showSwitchToLabKey boolean, default to true  
+* NavigationBar, UserMenu - add showSwitchToLabKey boolean, default to true
 
 ### version 0.22.4
 *Released*: 14 November 2019
@@ -67,7 +67,7 @@ with a particular set of permissions, not just those in some project or global g
 * Add optional properties for LookupSelectInput to allow filtering and sorting of options
 * Port UserSelect (as UserSelectInput) from Biologics
 * Add support for app metadata for QueryGridModel hideEmptyViewSelector and hideEmptyChartSelector
-* Fix problem with selection state after applying filters (as manifesting in GridSelectionBanner) 
+* Fix problem with selection state after applying filters (as manifesting in GridSelectionBanner)
 
 ### version 0.21.8
 *Released*: 5 November 2019
@@ -93,7 +93,7 @@ with a particular set of permissions, not just those in some project or global g
 ### version 0.21.3
 *Released*: 31 October 2019
 * Issue 38807: get a full calendar of months, even at the end of the month
- 
+
 ### version 0.21.2
 *Released*: 25 October 2019
 * Package patch update for changes to @glass/base 0.20.1
@@ -116,9 +116,9 @@ with a particular set of permissions, not just those in some project or global g
 ### version 0.20.0
 *Released*: 8 October 2019
 * Move `omnibox` package into `querygrid`
-    * Old README for `omnibox` can be found [here](omnibox.md)
+    * Old README for `omnibox` can be found [here](./omnibox.md)
 * Move `navigation` package into `querygrid`
-    * Old README for `navigation` can be found [here](navigation.md)
+    * Old README for `navigation` can be found [here](./navigation.md)
 
 ### version 0.19.2
 *Released*: 7 October 2019
@@ -144,7 +144,7 @@ with a particular set of permissions, not just those in some project or global g
 
 ### version 0.17.0
 *Released*: 25 September 2019
-* Issue 38527: move "Import Samples from File" link for SampleInsertPanel next to Sample Type input 
+* Issue 38527: move "Import Samples from File" link for SampleInsertPanel next to Sample Type input
 
 ### version 0.16.4
 *Released*: 24 September 2019
@@ -177,7 +177,7 @@ with a particular set of permissions, not just those in some project or global g
 ### version 0.14.0
 *Released*: 18 September 2019
 * Move `report-list` package into `querygrid`
-    * Old README for `report-list` can be found [here](report-list.md)
+    * Old README for `report-list` can be found [here](./report-list.md)
 * Update ReportList to improve rendering for Grids, Charts, and unsupported report types
 * Rename flattenApiResponse to flattenBrowseDataTreeResponse
     * Also added a new argument called urlMapper `(report: IDataViewInfo) => AppURL`
@@ -194,13 +194,13 @@ with a particular set of permissions, not just those in some project or global g
 
 ### version 0.13.7
 *Released*: 12 September 2019
-* SampleSetDetailsPanel fields touch up 
+* SampleSetDetailsPanel fields touch up
 
 ### version 0.13.6
 *Released*: 12 September 2019
 * add emptyGridMsg to EditableGrid
 * SampleInsertPanel: add import link, update text, remove "bypass grid option", start with 0 rows
-* RunDataPanel: start with 0 rows 
+* RunDataPanel: start with 0 rows
 
 ### version 0.13.5
 *Released*: 9 September 2019
@@ -213,7 +213,7 @@ with a particular set of permissions, not just those in some project or global g
 * Updated LabelOverlay to optionally use LabelHelpTip based on optional prop
 * Added some styles
 * updated test data
-  
+
 ### version 0.13.4
 *Released*: 6 September 2019
 * Package patch update for changes to @glass/base v0.15.1
@@ -292,7 +292,7 @@ with a particular set of permissions, not just those in some project or global g
 ### version 0.10.2
 *Released*: 23 July 2019
 * For QueryInfoForm, add ability to disable Submit until change is made
-* For QueryInfoForm, add onFormChange handler 
+* For QueryInfoForm, add onFormChange handler
 
 ### version 0.10.1
 *Released*: 17 July 2019
@@ -320,7 +320,7 @@ with a particular set of permissions, not just those in some project or global g
 ### version 0.8.0
 *Released*: 8 July 2019
 * Add createSampleSet, updateSampleSet, and deleteSampleSet functions
-* Add SampleSetDetailsPanel and SampleSetDeleteConfirmModal components 
+* Add SampleSetDetailsPanel and SampleSetDeleteConfirmModal components
 
 ### version 0.7.0
 *Released*: 3 July 2019
@@ -335,7 +335,7 @@ with a particular set of permissions, not just those in some project or global g
 * Add option to QueryInfoForm to show enable/disable toggle
 * Update styling of DetailEditing to be more consistent with other forms
 * Re-implement CheckboxInput to not use Checkbox from formsy-react-components
-* Add getSelectedData method for retrieving all data for the selectedIds in a QueryGridModel 
+* Add getSelectedData method for retrieving all data for the selectedIds in a QueryGridModel
 
 
 ### version 0.6.2
@@ -376,7 +376,7 @@ with a particular set of permissions, not just those in some project or global g
 * Port URLService, AssayResolver, AssayRunResolver, ListResolver, and SamplesResolver from Biologics
 * Port insertRows function from Biologics
 * Update package for changes to @glass/base
-* Add option for AddRowsControl to have a "quick add" menu option as well 
+* Add option for AddRowsControl to have a "quick add" menu option as well
 * When removing queryGridModel, also remove the corresponding editGridModel
 * Add DATA_CLASSES schema
 * convert InsertRowsResponse to class and export it

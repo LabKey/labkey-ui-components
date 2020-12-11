@@ -79,7 +79,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 1.0.0
 *Released*: 3 November 2020
-* First official stable release of the `@labkey/components` package. See [Public API Docs](../../docs/public.md) for details.
+* First official stable release of the `@labkey/components` package. See [Public API Docs](../docs/public.md) for details.
 
 ### version 0.105.0
 *Released*: 2 November 2020
@@ -1417,9 +1417,11 @@ and add a tooltip for the AddControls with info on the data size limits.
 ### version 0.1.0
 *Released*: 27 November 2019
 * Consolidate all `@glass` packages into this single `@labkey/components` package. The release notes for the previous
-packages ([@glass/base](../glass/base.md),
-[@glass/domainproperties](../glass/domainproperties.md),  [@glass/navigation](../glass/navigation.md), [@glass/omnibox](../glass/omnibox.md), [@glass/querygrid](../glass/querygrid.md), and [@glass/report-list](../glass/report-list.md))
-can be found in the [glass](../glass) directory.
+packages ([@glass/base](./archived/base.md),
+[@glass/domainproperties](./archived/domainproperties.md),  [@glass/navigation](./archived/navigation.md),
+[@glass/omnibox](./archived/omnibox.md), [@glass/querygrid](./archived/querygrid.md),
+and [@glass/report-list](./archived/report-list.md))
+can be found in the [archived](./archived) directory.
 * Convert build/bundle from rollupjs to webpack, output UMD format for module/app usages.
 * Move files from shared-config repository into this repository.
 

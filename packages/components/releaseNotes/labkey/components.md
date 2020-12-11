@@ -3,7 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Item 8226: ...AssayStateModel.getDefinitionsByType
+* Item 8226: Package updates to support packaging of LKSM workflow pages/components
+    - Add AssayStateModel.getDefinitionsByType helper function
+    - Add GENERAL_ASSAY_PROVIDER_NAME constant
+    - Move ExpandFilterToggle and ViewAsToggle components from LKSM to shared components
+    - Move withTimeout function from LKSM to shared components
 
 ### version 1.7.1
 *Released*: 10 December 2020

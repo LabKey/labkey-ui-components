@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 8226: ...AssayStateModel.getDefinitionsByType
 
+### version 1.7.1
+*Released*: 10 December 2020
+* Update @labkey/api dependency
+
 ### version 1.7.0
 *Released*: 7 December 2020
 * Item 8203: Domain designer row styling updates

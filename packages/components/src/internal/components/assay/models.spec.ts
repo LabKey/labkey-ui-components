@@ -13,12 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {
-    AssayDefinitionModel,
-    AssayStateModel,
-    GENERAL_ASSAY_PROVIDER_NAME,
-    LoadingState,
-} from '../../..';
+import { AssayDefinitionModel, AssayStateModel, GENERAL_ASSAY_PROVIDER_NAME, LoadingState } from '../../..';
 
 const ASSAY_STATE_MODEL = new AssayStateModel({
     definitionsLoadingState: LoadingState.LOADED,

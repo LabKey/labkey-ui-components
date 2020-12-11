@@ -19,7 +19,7 @@ interface State {
 
 export class ServerNotifications extends React.Component<Props, State> {
     static defaultProps = {
-        maxListingSize: 10,
+        maxListingSize: 8,
     };
 
     constructor(props: Props) {

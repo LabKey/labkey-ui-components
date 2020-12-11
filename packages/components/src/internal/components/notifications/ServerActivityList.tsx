@@ -75,16 +75,18 @@ export class ServerActivityList extends React.PureComponent<Props> {
         }
 
         return (
-            <div>
-                <ul className="server-notifications-listing">
-                    {serverActivity.data.slice(0, maxListingSize).map((data, index) => this.renderData(data, index))}
-                </ul>
+            <>
+                <div className="server-notifications-listing-container">
+                    <ul className="server-notifications-listing">
+                        {serverActivity.data.slice(0, maxListingSize).map((data, index) => this.renderData(data, index))}
+                    </ul>
+                </div>
                 {maxListingSize && serverActivity.totalRows > maxListingSize && (
                     <div className="server-notifications-footer server-notifications-link" onClick={onViewAll}>
                         {viewAllText}
                     </div>
                 )}
-            </div>
+            </>
         );
     }
 }

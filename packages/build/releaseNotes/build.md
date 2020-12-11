@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version TBD
+*Released*: TBD
+* Item 8226: Add support for webpack aliasing of @labkey/workflow package
+
 ### version 0.4.1
 *Released*: 11 November 2020
 * Add tsconfig path for freezerManagerPath

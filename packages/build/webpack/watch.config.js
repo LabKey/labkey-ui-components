@@ -72,6 +72,7 @@ module.exports = {
             // seem to cause any problems.
             '@labkey/components': constants.labkeyUIComponentsPath,
             '@labkey/freezermanager': constants.freezerManagerPath,
+            '@labkey/workflow': constants.workflowPath,
 
             // This assures there is only one copy of react and react-dom in the application
             react: path.resolve(__dirname, "../node_modules/react"),

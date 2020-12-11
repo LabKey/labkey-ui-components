@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "0.4.1",
+  "version": "0.4.1-fb-smWorkflowPackage.0",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

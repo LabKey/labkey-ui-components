@@ -636,7 +636,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
           "queryParameters": undefined,
           "allowSelection": false,
           "baseFilters": Immutable.List [
-            Filter {
+            Filter_Filter {
               "columnName": "LSID",
               "filterType": Object {
                 "getDisplaySymbol": [Function],
@@ -733,7 +733,7 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
                     "queryParameters": undefined,
                     "allowSelection": false,
                     "baseFilters": Immutable.List [
-                      Filter {
+                      Filter_Filter {
                         "columnName": "LSID",
                         "filterType": Object {
                           "getDisplaySymbol": [Function],

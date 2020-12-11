@@ -220,6 +220,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     // if the row was removed or reordered, update the keyPropertyIndex
                     // else if a different row was removed or reordered, refind out index by name
                     if (rowIndexChanges) {
+                        console.log("uhm", rowIndexChanges);
                         rowIndexChanges.forEach((rowIndexChange) => {
                             if (rowIndexChange.originalIndex === keyPropertyIndex) {
                                 draft.keyPropertyIndex = rowIndexChange.newIndex;

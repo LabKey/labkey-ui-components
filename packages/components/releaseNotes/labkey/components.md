@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8012: Row Selection Actions on Field Editor
+
 ### version 1.7.1
 *Released*: 10 December 2020
 * Update @labkey/api dependency

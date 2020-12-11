@@ -5286,6 +5286,39 @@ exports[`DataClassDesigner initModel 1`] = `
                                                   >
                                                     <Row
                                                       bsClass="row"
+                                                      componentClass="div"
+                                                    >
+                                                      <div
+                                                        className="row"
+                                                      >
+                                                        <div
+                                                          className="domain-field-header"
+                                                        >
+                                                          0
+                                                           fields selected
+                                                          <Button
+                                                            active={false}
+                                                            block={false}
+                                                            bsClass="btn"
+                                                            bsStyle="default"
+                                                            className="domain-panel-header-clear-all"
+                                                            disabled={true}
+                                                            onClick={[Function]}
+                                                          >
+                                                            <button
+                                                              className="domain-panel-header-clear-all btn btn-default"
+                                                              disabled={true}
+                                                              onClick={[Function]}
+                                                              type="button"
+                                                            >
+                                                              Clear All
+                                                            </button>
+                                                          </Button>
+                                                        </div>
+                                                      </div>
+                                                    </Row>
+                                                    <Row
+                                                      bsClass="row"
                                                       className="domain-row-container"
                                                       componentClass="div"
                                                     >

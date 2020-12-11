@@ -17,7 +17,6 @@
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
 import { List } from "immutable";
 import { DomainField } from "./models";
-import { Utils } from "@labkey/api";
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {
@@ -51,19 +50,18 @@ export function isPrimaryKeyFieldLocked(lockType: string): boolean {
 }
 
 export function generateBulkDeleteWarning(deletabilityInfo, undeletableNames) {
-    const { pluralBasic, pluralize } = Utils;
-
     const { deletableSelectedFields, undeletableFields } = deletabilityInfo;
-    const deletable = deletableSelectedFields.length;
-    const undeletable = undeletableFields.length;
+    const deletableCount = deletableSelectedFields.length;
+    const undeletableCount = undeletableFields.length;
 
-    const howManyDeleted = undeletable > 0
-        ? `${deletable} of ${deletable + undeletable} fields`
-        : `${deletable} ${pluralBasic(deletable, "field")}`;
+    const fields = deletableCount > 1 ? "fields" : "field";
+    const howManyDeleted = undeletableCount > 0
+        ? `${deletableCount} of ${deletableCount + undeletableCount} fields`
+        : `${deletableCount} ${fields}`;
 
-    const itIsA = pluralize(undeletable,"it is a", "they are");
-    const field = pluralBasic(undeletable, "field");
-    const undeletableWarning = undeletable > 0
+    const itIsA = undeletableCount > 1 ? "they are" : "it is a";
+    const field = undeletableCount > 1 ? "fields" : "field";
+    const undeletableWarning = undeletableCount > 0
         ? `${undeletableNames.join(', ')} cannot be deleted as ${itIsA} necessary ${field}.`
         : ``;
 

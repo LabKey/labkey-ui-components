@@ -1546,3 +1546,8 @@ export class OntologyModel {
         return this.name + ' (' + this.abbreviation + ')';
     }
 }
+
+export interface DeletabilityInfo {
+    deletableSelectedFields: number[];
+    undeletableFields: number[];
+}

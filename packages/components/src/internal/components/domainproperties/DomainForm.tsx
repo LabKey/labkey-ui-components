@@ -81,6 +81,7 @@ import {
     IFieldChange,
     DomainFieldIndexChange,
     FieldDetails,
+    DeletabilityInfo,
 } from './models';
 import { PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
@@ -141,7 +142,7 @@ interface IDomainFormState {
     filePreviewData: InferDomainResponse;
     file: File;
     filePreviewMsg: string;
-    deletabilityInfo: any;
+    deletabilityInfo: DeletabilityInfo;
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -353,25 +354,27 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         // if this domain has any Ontology Lookup field(s), check if we need to update the related field properties
         // based on the updated domain (i.e. check for any name changes to selected fields)
         // note: we skip any rowIndexChange which has a newIndex as those are just reorder changes
-        rowIndexChanges.forEach((rowIndexChange) => {
-            if (rowIndexChange?.newIndex === undefined && ontologyLookupIndices.length > 0) {
-                ontologyLookupIndices.forEach(index => {
-                    // skip any ontology lookup fields if they were removed
-                    const ontFieldRemoved = rowIndexChange?.originalIndex === index;
+        if (rowIndexChanges) {
+            rowIndexChanges.forEach((rowIndexChange) => {
+                if (rowIndexChange?.newIndex === undefined && ontologyLookupIndices.length > 0) {
+                    ontologyLookupIndices.forEach(index => {
+                        // skip any ontology lookup fields if they were removed
+                        const ontFieldRemoved = rowIndexChange?.originalIndex === index;
 
-                    if (!ontFieldRemoved) {
-                        updatedDomain = updateOntologyFieldProperties(
-                            // check for a field removal prior to the ontology lookup field
-                            rowIndexChange?.originalIndex < index ? index - 1 : index,
-                            domainIndex,
-                            updatedDomain,
-                            domain,
-                            rowIndexChange?.originalIndex
-                        );
-                    }
-                });
-            }
-        });
+                        if (!ontFieldRemoved) {
+                            updatedDomain = updateOntologyFieldProperties(
+                                // check for a field removal prior to the ontology lookup field
+                                rowIndexChange?.originalIndex < index ? index - 1 : index,
+                                domainIndex,
+                                updatedDomain,
+                                domain,
+                                rowIndexChange?.originalIndex
+                            );
+                        }
+                    });
+                }
+            });
+        }
 
         this.setState(() => ({ fieldDetails: updatedDomain.getFieldDetails() }));
 
@@ -449,7 +452,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const fields = domain.fields;
         let filteredFields = fields.filter((field: DomainField) => field.visible);
         // Respect selection, if any selection exists
-        filteredFields = visibleSelection.size > 1
+        filteredFields = visibleSelection.size > 0
             ? filteredFields.filter((field: DomainField) => field.selected)
             : filteredFields;
 
@@ -495,7 +498,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         visibleSelection.forEach((val) => {
             const field = fields.get(val);
 
-            if (field.isSaved() && field.isPrimaryKey) { // todo: other conditions
+            if (field.isSaved() && field.isPrimaryKey) {
                 undeletableFields.push(val);
             } else {
                 deletableSelectedFields.push(val);

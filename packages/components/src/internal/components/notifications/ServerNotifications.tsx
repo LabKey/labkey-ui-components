@@ -1,30 +1,34 @@
 import React, { ReactNode } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
-import { User } from '../base/models/User';
-
-import { getPipelineActivityData, markNotificationsAsRead } from './actions';
-import { ServerActivityData } from './model';
+import { getPipelineActivityData, markAllNotificationsAsRead, markNotificationsAsRead } from './actions';
+import { ServerActivity } from './model';
 import { ServerActivityList } from './ServerActivityList';
 import { LoadingSpinner } from '../../../index';
 
 interface Props {
-    user?: User;
+    maxListingSize?: number;
 }
 
 interface State {
-    activityData: ServerActivityData[];
+    serverActivity: ServerActivity;
     isLoading: boolean;
     error: string;
     show: boolean;
 }
 
 export class ServerNotifications extends React.Component<Props, State> {
+    static defaultProps = {
+        maxListingSize: 10,
+    };
+
     constructor(props: Props) {
         super(props);
 
         this.state = {
-            activityData: undefined,
+            serverActivity: undefined,
+            // activityData: undefined,
+            // totalRows: undefined,
             isLoading: true,
             error: undefined,
             show: false,
@@ -32,9 +36,9 @@ export class ServerNotifications extends React.Component<Props, State> {
     }
 
     componentDidMount(): void {
-        getPipelineActivityData()
+        getPipelineActivityData(this.props.maxListingSize)
             .then(response => {
-                this.setState(() => ({ activityData: response, isLoading: false }));
+                this.setState(() => ({ serverActivity: response, isLoading: false }));
             })
             .catch(reason => {
                 this.setState(() => ({ error: reason, isLoading: false }));
@@ -42,34 +46,43 @@ export class ServerNotifications extends React.Component<Props, State> {
     }
 
     markAllRead = (): void => {
-        const { activityData } = this.state;
+        const { data } = this.state.serverActivity;
         const notificationIds = [];
         const now = new Date().toTimeString();
-        const updatedActivity = [];
-        activityData.forEach(data => {
-            if (data.RowId) {
-                notificationIds.push(data.RowId);
-                updatedActivity.push(data.mutate({ ReadOn: now }));
+        const updatedData = [];
+        data.forEach(activity => {
+            if (activity.RowId) {
+                notificationIds.push(activity.RowId);
+                updatedData.push(activity.mutate({ ReadOn: now }));
             } else {
-                updatedActivity.push(data);
+                updatedData.push(activity);
             }
         });
-        markNotificationsAsRead(notificationIds).then(() => {
-            this.setState(() => ({ activityData: updatedActivity }));
+        markAllNotificationsAsRead().then(() => {
+            this.setState(state => (
+                { serverActivity: Object.assign({}, state.serverActivity, { data: updatedData, unreadCount: 0 })}
+            ));
+        }).catch(() => {
+                console.error('Unable to mark all notifications as read');
         });
     };
 
     onRead = (id: number): void => {
-        markNotificationsAsRead([id]).then((response) => {
+        markNotificationsAsRead([id]).then(() => {
             this.setState(state => {
-                const dataIndex = state.activityData.findIndex(d => d.RowId === id);
-                const update = state.activityData[dataIndex].mutate({ ReadOn: new Date().toTimeString() });
-                const updatedActivity = state.activityData;
-                updatedActivity[dataIndex] = update;
-                return {
-                    activityData: updatedActivity,
-                };
+                const dataIndex = state.serverActivity.data.findIndex(d => d.RowId === id);
+                if (dataIndex >= 0) {
+                    const update = state.serverActivity.data[dataIndex].mutate({ ReadOn: new Date().toTimeString() });
+                    const updatedActivity = state.serverActivity.data;
+                    updatedActivity[dataIndex] = update;
+                    return {
+                        serverActivity: Object.assign({}, state.serverActivity, { data: updatedActivity, unreadCount: state.serverActivity.unreadCount-1 })
+                    };
+                }
+                return { serverActivity: state.serverActivity };
             });
+        }).catch(() => {
+            console.error('Unable to mark notification ' + id + ' as read');
         });
     };
 
@@ -78,19 +91,19 @@ export class ServerNotifications extends React.Component<Props, State> {
     };
 
     hasAnyUnread(): boolean {
-        return this.state.activityData?.find(activity => activity.ReadOn == undefined) !== undefined;
+        return this.getNumUnread() > 0;
     }
 
     getNumUnread(): number {
-        if (!this.state.activityData) {
+        if (!this.state.serverActivity || this.state.isLoading) {
             return 0;
         }
 
-        return this.state.activityData.filter(activity => activity.ReadOn == undefined).length;
+        return this.state.serverActivity?.unreadCount;
     }
 
     hasAnyInProgress(): boolean {
-        return this.state.activityData?.find(activity => activity.inProgress === true) !== undefined;
+        return this.state.serverActivity?.inProgressCount > 0;
     }
 
     toggleMenu = (): void => {
@@ -98,7 +111,7 @@ export class ServerNotifications extends React.Component<Props, State> {
     };
 
     render(): ReactNode {
-        const { activityData, error, isLoading, show } = this.state;
+        const { serverActivity, error, isLoading, show } = this.state;
         const numUnread = this.getNumUnread();
         const title = (
             <h3 className="server-notifications-header">
@@ -117,7 +130,12 @@ export class ServerNotifications extends React.Component<Props, State> {
         } else if (error) {
             body = <div className="server-notifications-footer server-notifications-error">{error}</div>;
         } else {
-            body = <ServerActivityList activityData={activityData} onViewAll={this.viewAll} onRead={this.onRead}/>;
+            body = <ServerActivityList
+                        maxListingSize={this.props.maxListingSize}
+                        serverActivity={serverActivity}
+                        onViewAll={this.viewAll}
+                        onRead={this.onRead}
+                    />;
         }
 
         const icon = (

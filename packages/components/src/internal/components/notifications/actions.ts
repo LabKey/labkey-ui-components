@@ -17,7 +17,7 @@ import { ActionURL, Ajax, Filter, getServerContext, Utils } from '@labkey/api';
 
 import { buildURL, naturalSortByProperty, resolveErrorMessage, selectRows } from '../../..';
 
-import { NotificationItemModel, NotificationItemProps, ServerActivityData } from './model';
+import { NotificationItemModel, NotificationItemProps, ServerActivity, ServerActivityData } from './model';
 import { addNotification } from './global';
 
 export type NotificationCreatable = string | NotificationItemProps | NotificationItemModel;
@@ -52,19 +52,24 @@ export function setTrialBannerDismissSessionKey(): Promise<any> {
     });
 }
 
-export function getServerNotifications(type?: string): Promise<ServerActivityData[]> {
+export function getServerNotifications(typeLabels?: string[], maxRows?: number): Promise<ServerActivity> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('notification', 'getUserNotifications.api'),
             method: 'GET',
-            params: { container: getServerContext().container.id, type },
+            params: { container: getServerContext().container.id, typeLabels, maxRows },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     const notifications = [];
                     response.notifications.forEach(notification => {
                         notifications.push(new ServerActivityData(notification));
                     });
-                    resolve(notifications);
+                    resolve({
+                        data: notifications,
+                        totalRows: response.totalRows,
+                        unreadCount: response.unreadCount,
+                        inProgressCount: 0,
+                    });
                 } else {
                     console.error(response);
                     reject('There was a problem retrieving your notification data.');
@@ -78,7 +83,7 @@ export function getServerNotifications(type?: string): Promise<ServerActivityDat
     });
 }
 
-export function getPipelineJobStatuses(): Promise<ServerActivityData[]> {
+export function getPipelineJobStatuses(): Promise<ServerActivity> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: 'pipeline',
@@ -87,16 +92,23 @@ export function getPipelineJobStatuses(): Promise<ServerActivityData[]> {
             sort: 'Created',
         }).then(response => {
                 const model = response.models[response.key];
-                let activities = [];
+                const activities = [];
                 Object.values(model).forEach(row => {
-                    activities.push(new ServerActivityData({
-                        inProgress: true,
-                        HtmlContent: row['Description']['value'],
-                        Created: row['Created']['formattedValue'],
-                        CreatedBy: row['CreatedBy']['displayValue']
-                    }));
+                    activities.push(
+                        new ServerActivityData({
+                            inProgress: true,
+                            HtmlContent: row['Description']['value'],
+                            Created: row['Created']['formattedValue'],
+                            CreatedBy: row['CreatedBy']['displayValue'],
+                        })
+                    );
             });
-            resolve(activities);
+            resolve({
+                    data: activities,
+                    totalRows: response.totalRows,
+                    unreadCount: 0, // these are always considered to be read since they aren't actually notifications
+                    inProgressCount: response.totalRows,
+                });
         }).catch(reason => {
             console.error(reason);
             reject(resolveErrorMessage(reason));
@@ -104,18 +116,23 @@ export function getPipelineJobStatuses(): Promise<ServerActivityData[]> {
     });
 }
 
-export function getPipelineActivityData(): Promise<ServerActivityData[]> {
+export function getPipelineActivityData(maxListingSize?: number): Promise<ServerActivity> {
     return new Promise((resolve, reject) => {
         Promise.all([
-            getServerNotifications('Pipeline'),
+            getServerNotifications(['Pipeline'], maxListingSize),
             getPipelineJobStatuses()
         ]).then((responses) => {
                 const [notifications, statuses] = responses;
-                resolve(
-                    notifications
-                        .concat(...statuses)
-                        // .filter(data => data.ContainerId === getServerContext().container.id)
-                        .sort(naturalSortByProperty('Created'))
+
+                resolve({
+                        data: notifications.data
+                            .concat(...statuses.data)
+                            .sort(naturalSortByProperty('Created'))
+                            .slice(0, maxListingSize),
+                        totalRows: notifications.totalRows + statuses.totalRows,
+                        unreadCount: notifications.unreadCount,
+                        inProgressCount: statuses.inProgressCount
+                    }
                 );
             })
             .catch(reason => {
@@ -130,7 +147,28 @@ export function markNotificationsAsRead(rowIds: number[]): Promise<boolean> {
         Ajax.request({
             url: ActionURL.buildURL('notification', 'markNotificationAsRead.api'),
             method: 'POST',
-            jsonData: {rowIds},
+            jsonData: { rowIds },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    resolve(true);
+                } else {
+                    console.error(response);
+                    resolve(false);
+                }
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(false);
+            }),
+        });
+    });
+}
+
+export function markAllNotificationsAsRead(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('notification', 'markAllNotificationAsRead.api'),
+            method: 'POST',
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     resolve(true);

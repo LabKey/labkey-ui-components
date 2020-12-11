@@ -101,6 +101,8 @@ import issuesProjectGroups from '../test/data/issues-getProjectGroups.json';
 import issuesUsersForGroup from '../test/data/issues-getUsersForGroup.json';
 import ontologiesQuery from '../test/data/ontologies-getQuery.json';
 import serverNotifications from '../test/data/notification-getUserNotificationsForPanel.json';
+import pipelineJobQueryDetails from '../test/data/pipelineJob-getQueryDetails.json';
+import pipelineJobQuery from '../test/data/pipelineJob-getQuery.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -145,6 +147,9 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     lists: {
         mixturetypes: mixtureTypesQueryInfo,
         lookuplist: lookuplistQueryInfo,
+    },
+    pipeline: {
+        job: pipelineJobQueryDetails,
     },
     samples: {
         hemoglobin: hemoglobinLineageQueryInfo,
@@ -205,6 +210,9 @@ const QUERY_RESPONSES = fromJS({
     },
     ontology: {
         ontologies: ontologiesQuery,
+    },
+    pipeline: {
+        job: pipelineJobQuery,
     },
     samples: {
         hemoglobin: hemoglobinLineageQueryIn,

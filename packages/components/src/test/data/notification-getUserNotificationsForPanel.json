@@ -1,72 +1,52 @@
 {
   "success": true,
-  "notifications": {
-    "1": {
-      "RowId": 1,
+  "unreadCount": 1,
+  "totalRows": 14,
+  "notifications": [
+    {
+      "RowId": 6,
+      "CreatedBy": "susan",
+      "ObjectId": "1764cca1-1cc6-1039-996f-40fd35d9aef2",
+      "HtmlContent": "Background job complete<br> data_2020-12-10_07-48-08.xlsx",
+      "TypeLabel": "Pipeline",
+      "Created": "2020-12-10 07:49:15.889",
       "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete",
       "ActionLinkText": "view",
-      "CreatedBy": "susan",
-      "ActionLinkUrl": "/labkey/Study/project-begin.view?",
+      "ActionLinkUrl": "/labkey/Sam%20Man/assay-assayResults.view?rowId=66&Data.Run%2FRowId%7Eeq=86",
       "IconCls": "fa-check-circle",
-      "ObjectId": "fab36211-065a-1039-ab39-94ed22e93520",
-      "ContainerId": "testContainerEntityId",
-      "HtmlContent": "Background job complete<br> Folder import",
+      "ContainerId": "4040a9f1-01ed-1039-94fd-94ed22e9ffb8",
       "UserId": 1005,
-      "ReadOn": null,
-      "Created": "2020-11-11 07:47:32.317"
+      "ReadOn": null
     },
-    "2": {
-      "RowId": 2,
+    {
+      "RowId": 13,
+      "CreatedBy": "susan withthreallylongdisplaynamethatisjustsilly",
+      "ObjectId": "fake1",
+      "HtmlContent": "Background job complete<br> data_2020-12-10_07-48-08.xlsx",
+      "TypeLabel": "Pipeline",
+      "Created": "2020-12-10 07:49:15.889",
       "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete",
       "ActionLinkText": "view",
-      "CreatedBy": "susan",
-      "ActionLinkUrl": "/labkey/Biologics/pipeline-status-details.view?rowId=15",
+      "ActionLinkUrl": "/labkey/Sam%20Man/assay-assayResults.view?rowId=66&Data.Run%2FRowId%7Eeq=86",
       "IconCls": "fa-check-circle",
-      "ObjectId": "47521e4b-0d84-1039-ad79-371818df2e5c",
-      "ContainerId": "testContainerEntityId",
-      "HtmlContent": "Background job complete<br> Initialize Biologics folder with required data",
+      "ContainerId": "4040a9f1-01ed-1039-94fd-94ed22e9ffb8",
       "UserId": 1005,
-      "ReadOn": null,
-      "Created": "2020-11-20 11:58:19.426"
+      "ReadOn": "2020-12-10 13:02:41.847"
     },
-    "3": {
-      "RowId": 3,
+    {
+      "RowId": 14,
+      "CreatedBy": "susan withthreallylongdisplaynamethatisjustsilly",
+      "ObjectId": "fake2",
+      "HtmlContent": "Background job complete<br> data_2020-12-10_07-48-08.xlsx",
+      "TypeLabel": "Pipeline",
+      "Created": "2020-12-10 07:49:15.889",
       "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete",
       "ActionLinkText": "view",
-      "CreatedBy": "susan",
-      "ActionLinkUrl": "/labkey/Biologics/pipeline-status-details.view?rowId=16",
+      "ActionLinkUrl": "/labkey/Sam%20Man/assay-assayResults.view?rowId=66&Data.Run%2FRowId%7Eeq=86",
       "IconCls": "fa-check-circle",
-      "ObjectId": "8e3bff5e-0d98-1039-ad79-371818df2e5c",
-      "ContainerId": "testContainerEntityId",
-      "HtmlContent": "Background job complete<br> Import sample data &#039;test&#039;",
+      "ContainerId": "4040a9f1-01ed-1039-94fd-94ed22e9ffb8",
       "UserId": 1005,
-      "ReadOn": "2020-12-08 15:43:22",
-      "Created": "2020-11-20 12:03:06.078"
-    },
-    "4": {
-      "RowId": 3,
-      "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.error",
-      "ActionLinkText": "view",
-      "CreatedBy": "susan",
-      "ActionLinkUrl": "/labkey/Biologics/pipeline-status-details.view?rowId=16",
-      "IconCls": "fa-exclamation-circle",
-      "ObjectId": "8e3bff5e-0d98-1039-ad79-371818df2e5d",
-      "ContainerId": "testContainerEntityId",
-      "HtmlContent": "Error importing data",
-      "UserId": 1005,
-      "ReadOn": null,
-      "Created": "2020-11-20 12:03:06.078",
-      "hasError": true
-    },
-    "unreadCount": 3,
-    "hasRead": false,
-    "grouping": {
-      "Pipeline": [
-        4,
-        3,
-        2,
-        1
-      ]
+      "ReadOn": "2020-12-10 13:02:41.847"
     }
-  }
+  ]
 }

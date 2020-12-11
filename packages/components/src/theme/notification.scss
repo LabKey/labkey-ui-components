@@ -65,7 +65,11 @@
 
 .server-notification-data {
     color: $gray-light;
-    max-width: 200px
+    max-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .server-notifications-header {

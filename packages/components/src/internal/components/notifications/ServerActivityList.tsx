@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
-import { ServerActivityData } from './model';
+import { ServerActivity, ServerActivityData } from './model';
 import { formatDateTime, getDateTimeFormat, parseDate } from '../../util/Date';
 
 interface Props {
-    activityData: ServerActivityData[];
+    serverActivity: ServerActivity;
     onViewAll: () => void;
     maxListingSize: number;
     viewAllText: string;
@@ -56,26 +56,30 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         {this.props.viewErrorDetailsText}
                     </span>
                 ) : (
-                    <span className="server-notification-data field-hide-overflow" title={activity.CreatedBy}>{activity.CreatedBy}</span>
+                    <span className="server-notification-data" title={activity.CreatedBy}>
+                        {activity.CreatedBy}
+                    </span>
                 )}
-                <div className="pull-right server-notification-data">{formatDateTime(parseDate(activity.Created, getDateTimeFormat()))}</div>
+                <div className="pull-right server-notification-data">
+                    {formatDateTime(parseDate(activity.Created, getDateTimeFormat()))}
+                </div>
             </li>
         );
     }
 
     render(): ReactNode {
-        const { activityData, onViewAll, maxListingSize, noActivityMsg, viewAllText } = this.props;
+        const { serverActivity, onViewAll, maxListingSize, noActivityMsg, viewAllText } = this.props;
 
-        if (!activityData || activityData.length === 0) {
+        if (!serverActivity || serverActivity.totalRows === 0) {
             return <div className="server-notifications-footer">{noActivityMsg}</div>;
         }
 
         return (
             <div>
                 <ul className="server-notifications-listing">
-                    {activityData.slice(0, maxListingSize).map((data, index) => this.renderData(data, index))}
+                    {serverActivity.data.slice(0, maxListingSize).map((data, index) => this.renderData(data, index))}
                 </ul>
-                {maxListingSize && activityData.length > maxListingSize && (
+                {maxListingSize && serverActivity.totalRows > maxListingSize && (
                     <div className="server-notifications-footer server-notifications-link" onClick={onViewAll}>
                         {viewAllText}
                     </div>

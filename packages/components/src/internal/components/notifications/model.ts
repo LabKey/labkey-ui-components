@@ -77,6 +77,7 @@ function nextNotificationId(): string {
     return generateId('notification_');
 }
 
+
 export class ServerActivityData {
     [immerable] = true;
 
@@ -109,4 +110,11 @@ export class ServerActivityData {
             Object.assign(draft, props);
         });
     }
+}
+
+export interface ServerActivity {
+    data: ServerActivityData[];
+    totalRows: number;
+    unreadCount: number;
+    inProgressCount: number;
 }

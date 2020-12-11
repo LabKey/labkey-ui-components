@@ -18,18 +18,20 @@ storiesOf('ServerActivityList', module)
 
         return (
             <ServerActivityList
-                activityData={activityData}
+                serverActivity={{ data: activityData, totalRows: 4, unreadCount: 1, inProgressCount: 1 }}
                 onViewAll={() => {}}
                 maxListingSize={number('Maximum shown', 3)}
+                onRead={() => {}}
             />
         );
     })
     .add("without data", () => {
         return (
             <ServerActivityList
-                activityData={[]}
+                serverActivity={{ data: [], totalRows: 0, unreadCount: 0, inProgressCount: 0 }}
                 onViewAll={() => {}}
                 maxListingSize={number('Maximum shown', 3)}
+                onRead={() => {}}
             />
         );
     });

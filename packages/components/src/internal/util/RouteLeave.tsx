@@ -61,9 +61,12 @@ export const withRouteLeave = (Component: React.ComponentType) => {
 
         _dirty = false;
 
-        onBeforeUnload = (event): string => {
-            event.returnValue = ON_LEAVE_DIRTY_STATE_MESSAGE;
-            return ON_LEAVE_DIRTY_STATE_MESSAGE;
+        onBeforeUnload = (event): boolean | string => {
+            if (this._dirty) {
+                event.returnValue = ON_LEAVE_DIRTY_STATE_MESSAGE;
+                return ON_LEAVE_DIRTY_STATE_MESSAGE;
+            }
+            return true;
         };
 
         onRouteLeave = (event): boolean => {
@@ -71,7 +74,7 @@ export const withRouteLeave = (Component: React.ComponentType) => {
                 event.returnValue = true; // this is for the page reload case
                 return confirmLeaveWhenDirty(this.props.location, event);
             }
-            return false;
+            return true;
         };
 
         setDirty = (dirty: boolean): void => {

@@ -39,7 +39,6 @@ interface FileAttachmentContainerProps {
     initialFileNames?: string[];
     initialFiles?: { [key: string]: File };
     compact?: boolean;
-    allowOversize?: boolean;
 }
 
 interface FileAttachmentContainerState {
@@ -89,7 +88,7 @@ export class FileAttachmentContainer extends React.Component<
     }
 
     validateFiles = (fileList: FileList, transferItems?: DataTransferItemList): Set<string> => {
-        const { acceptedFormats, allowDirectories, sizeLimits, allowOversize } = this.props;
+        const { acceptedFormats, allowDirectories, sizeLimits } = this.props;
 
         this.setState({
             errorMsg: undefined,
@@ -118,7 +117,7 @@ export class FileAttachmentContainer extends React.Component<
                     invalidNames = invalidNames.add(file.name);
                 }
             }
-            if (sizeLimits && !allowOversize) {
+            if (sizeLimits) {
                 if (!invalidFileTypes.has(file.name) && invalidDirectories.indexOf(file.name) < 0) {
                     const sizeCheck = fileSizeLimitCompare(file, sizeLimits);
                     if (sizeCheck.isOversized) {

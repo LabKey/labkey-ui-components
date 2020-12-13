@@ -408,11 +408,10 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                                 initialFileNames={initialFileNames}
                                 initialFiles={initialFiles}
                                 allowMultiple={allowMultiple}
-                                sizeLimits={sizeLimits}
+                                sizeLimits={allowOversize ? null : sizeLimits}
                                 sizeLimitsHelpText={sizeLimitsHelpText}
                                 labelLong={labelLong}
                                 compact={compact}
-                                allowOversize={allowOversize}
                             />
                             {compact && showButtons && this.renderButtons()}
                         </div>

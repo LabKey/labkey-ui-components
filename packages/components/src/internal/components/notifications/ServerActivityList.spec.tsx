@@ -28,6 +28,7 @@ describe('<ServerActivityList>', () => {
         );
         expect(wrapper.text()).toBe(noActivityMsg);
         expect(wrapper.find('.server-notifications-listing')).toHaveLength(0);
+        wrapper.unmount();
     });
 
     test('empty list', () => {
@@ -40,6 +41,7 @@ describe('<ServerActivityList>', () => {
         );
         expect(wrapper.text()).toBe(ServerActivityList.defaultProps.noActivityMsg);
         expect(wrapper.find('.server-notifications-listing')).toHaveLength(0);
+        wrapper.unmount();
     });
 
     test('more items than max to show', () => {
@@ -49,7 +51,7 @@ describe('<ServerActivityList>', () => {
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
-                    unreadCount: 4,
+                    unreadCount: 2,
                     inProgressCount: 1,
                 }}
                 maxListingSize={2}
@@ -63,6 +65,7 @@ describe('<ServerActivityList>', () => {
         const footer = wrapper.find('.server-notifications-footer');
         expect(footer).toHaveLength(1);
         expect(footer.text()).toBe(ServerActivityList.defaultProps.viewAllText);
+        wrapper.unmount();
     });
 
     test('fewer items than max to show', () => {
@@ -72,7 +75,7 @@ describe('<ServerActivityList>', () => {
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
-                    unreadCount: 4,
+                    unreadCount: 2,
                     inProgressCount: 1,
                 }}
                 onRead={jest.fn()}
@@ -81,7 +84,9 @@ describe('<ServerActivityList>', () => {
         const listing = wrapper.find('.server-notifications-listing');
         const listings = listing.find('li');
         expect(listings).toHaveLength(4);
+        expect(listings.at(1).text()).toContain(DONE_AND_READ.HtmlContent);
         expect(wrapper.find('.server-notifications-footer')).toHaveLength(0);
+        wrapper.unmount();
     });
 
     test('custom viewAllText', () => {
@@ -103,6 +108,7 @@ describe('<ServerActivityList>', () => {
         const footer = wrapper.find('.server-notifications-footer');
         expect(footer).toHaveLength(1);
         expect(footer.text()).toBe(viewAllText);
+        wrapper.unmount();
     });
 
     test('with error', () => {
@@ -126,6 +132,33 @@ describe('<ServerActivityList>', () => {
         expect(links).toHaveLength(2);
         expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.HtmlContent);
         expect(links.at(1).text()).toBe(ServerActivityList.defaultProps.viewErrorDetailsText);
+        wrapper.unmount();
+    });
+
+    test('custom view error details text', () => {
+        const customText = 'custom text';
+        const wrapper = mount(
+            <ServerActivityList
+                onViewAll={jest.fn()}
+                serverActivity={{
+                    data: [UNREAD_WITH_ERROR],
+                    totalRows: 1,
+                    unreadCount: 1,
+                    inProgressCount: 0,
+                }}
+                maxListingSize={2}
+                viewErrorDetailsText={customText}
+                onRead={jest.fn()}
+            />
+        );
+        const item = wrapper.find('li');
+        expect(item).toHaveLength(1);
+        expect(item.find('.has-error')).toHaveLength(1);
+        const links = item.find('.server-notifications-link');
+        expect(links).toHaveLength(2);
+        expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.HtmlContent);
+        expect(links.at(1).text()).toBe(customText);
+        wrapper.unmount();
     });
 
     test('in progress', () => {
@@ -148,6 +181,7 @@ describe('<ServerActivityList>', () => {
         expect(item.find('.fa-spinner')).toHaveLength(1);
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(0);
+        wrapper.unmount();
     });
 
     test('unread', () => {
@@ -175,6 +209,7 @@ describe('<ServerActivityList>', () => {
         expect(data).toHaveLength(2);
         expect(data.at(0).text()).toBe(DONE_NOT_READ.CreatedBy);
         expect(data.at(1).text()).toBe('2020-11-11 12:47');
+        wrapper.unmount();
     });
 
     test('read', () => {
@@ -201,5 +236,6 @@ describe('<ServerActivityList>', () => {
         expect(data).toHaveLength(2);
         expect(data.at(0).text()).toBe(DONE_AND_READ.CreatedBy);
         expect(data.at(1).text()).toBe('2020-11-14 04:47');
+        wrapper.unmount();
     });
 });

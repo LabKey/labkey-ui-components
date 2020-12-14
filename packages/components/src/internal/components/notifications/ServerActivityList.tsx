@@ -16,7 +16,7 @@ interface Props {
 
 export class ServerActivityList extends React.PureComponent<Props> {
     static defaultProps = {
-        maxListingSize: 10,
+        maxListingSize: 8,
         viewAllText: 'View all activity',
         noActivityMsg: 'No notifications available.',
         viewErrorDetailsText: 'View error details',

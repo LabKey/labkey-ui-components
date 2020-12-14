@@ -58,32 +58,38 @@ export class ServerNotifications extends React.Component<Props, State> {
                 updatedData.push(activity);
             }
         });
-        markAllNotificationsAsRead().then(() => {
-            this.setState(state => (
-                { serverActivity: Object.assign({}, state.serverActivity, { data: updatedData, unreadCount: 0 })}
-            ));
-        }).catch(() => {
-                console.error('Unable to mark all notifications as read');
-        });
+        markAllNotificationsAsRead()
+            .then(() => {
+                this.setState(state => (
+                    { serverActivity: Object.assign({}, state.serverActivity, { data: updatedData, unreadCount: 0 })}
+                ));
+            })
+            .catch(() => {
+                    console.error('Unable to mark all notifications as read');
+            });
     };
 
     onRead = (id: number): void => {
-        markNotificationsAsRead([id]).then(() => {
-            this.setState(state => {
-                const dataIndex = state.serverActivity.data.findIndex(d => d.RowId === id);
-                if (dataIndex >= 0) {
-                    const update = state.serverActivity.data[dataIndex].mutate({ ReadOn: new Date().toTimeString() });
-                    const updatedActivity = state.serverActivity.data;
-                    updatedActivity[dataIndex] = update;
-                    return {
-                        serverActivity: Object.assign({}, state.serverActivity, { data: updatedActivity, unreadCount: state.serverActivity.unreadCount-1 })
-                    };
-                }
-                return { serverActivity: state.serverActivity };
+        markNotificationsAsRead([id])
+            .then(() => {
+                this.setState(state => {
+                    const dataIndex = state.serverActivity.data.findIndex(d => d.RowId === id);
+                    if (dataIndex >= 0) {
+                        const update = state.serverActivity.data[dataIndex].mutate({
+                            ReadOn: new Date().toTimeString(),
+                        });
+                        const updatedActivity = state.serverActivity.data;
+                        updatedActivity[dataIndex] = update;
+                        return {
+                            serverActivity: Object.assign({}, state.serverActivity, { data: updatedActivity, unreadCount: state.serverActivity.unreadCount-1 })
+                        };
+                    }
+                    return { serverActivity: state.serverActivity };
+                });
+            })
+            .catch(() => {
+                console.error('Unable to mark notification ' + id + ' as read');
             });
-        }).catch(() => {
-            console.error('Unable to mark notification ' + id + ' as read');
-        });
     };
 
     viewAll = (): void => {
@@ -130,12 +136,14 @@ export class ServerNotifications extends React.Component<Props, State> {
         } else if (error) {
             body = <div className="server-notifications-footer server-notifications-error">{error}</div>;
         } else {
-            body = <ServerActivityList
-                        maxListingSize={this.props.maxListingSize}
-                        serverActivity={serverActivity}
-                        onViewAll={this.viewAll}
-                        onRead={this.onRead}
-                    />;
+            body = (
+                <ServerActivityList
+                    maxListingSize={this.props.maxListingSize}
+                    serverActivity={serverActivity}
+                    onViewAll={this.viewAll}
+                    onRead={this.onRead}
+                />
+            );
         }
 
         const icon = (

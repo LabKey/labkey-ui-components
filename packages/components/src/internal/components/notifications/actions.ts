@@ -90,7 +90,8 @@ export function getPipelineJobStatuses(): Promise<ServerActivity> {
             queryName: 'job',
             filterArray: [Filter.create('Status', 'RUNNING')],
             sort: 'Created',
-        }).then(response => {
+        })
+            .then(response => {
                 const model = response.models[response.key];
                 const activities = [];
                 Object.values(model).forEach(row => {
@@ -102,38 +103,37 @@ export function getPipelineJobStatuses(): Promise<ServerActivity> {
                             CreatedBy: row['CreatedBy']['displayValue'],
                         })
                     );
-            });
-            resolve({
+                });
+                resolve({
                     data: activities,
                     totalRows: response.totalRows,
                     unreadCount: 0, // these are always considered to be read since they aren't actually notifications
                     inProgressCount: response.totalRows,
                 });
-        }).catch(reason => {
-            console.error(reason);
-            reject(resolveErrorMessage(reason));
-        });
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
     });
 }
 
 export function getPipelineActivityData(maxListingSize?: number): Promise<ServerActivity> {
     return new Promise((resolve, reject) => {
-        Promise.all([
-            getServerNotifications(['Pipeline'], maxListingSize),
-            getPipelineJobStatuses()
-        ]).then((responses) => {
+        Promise.all([getServerNotifications(['Pipeline'], maxListingSize), getPipelineJobStatuses()])
+            .then(responses => {
                 const [notifications, statuses] = responses;
 
                 resolve({
-                        data: notifications.data
-                            .concat(...statuses.data)
-                            .sort(naturalSortByProperty('Created'))
-                            .slice(0, maxListingSize),
-                        totalRows: notifications.totalRows + statuses.totalRows,
-                        unreadCount: notifications.unreadCount,
-                        inProgressCount: statuses.inProgressCount
-                    }
-                );
+                    data: notifications.data
+                        .concat(...statuses.data)
+                        .sort(naturalSortByProperty('Created'))
+                        .reverse()
+                        .slice(0, maxListingSize),
+                    totalRows: notifications.totalRows + statuses.totalRows,
+                    unreadCount: notifications.unreadCount,
+                    inProgressCount: statuses.inProgressCount,
+                });
             })
             .catch(reason => {
                 console.error(reason);

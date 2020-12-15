@@ -7,7 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     - Add AssayStateModel.getDefinitionsByType helper function
     - Add GENERAL_ASSAY_PROVIDER_NAME constant
     - Move ExpandFilterToggle and OptionsSelectToggle (renamed from ViewAsToggle) components from LKSM to shared components
-    - Move withTimeout function from LKSM to shared components
+    - Move withTimeout and getImmediateChildLineageFilterValue functions from LKSM to shared components
 
 ### version 1.7.2
 *Released*: 14 December 2020

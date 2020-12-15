@@ -53,7 +53,6 @@ import {
     isAsynchronousImportEnabled,
     isSampleManagerEnabled,
     isFreezerManagementEnabled,
-    isAsynchronousImportEnabled,
     getDateFormat,
     getMenuSectionConfigs,
 } from './utils';

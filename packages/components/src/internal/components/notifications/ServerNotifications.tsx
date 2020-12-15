@@ -27,8 +27,6 @@ export class ServerNotifications extends React.Component<Props, State> {
 
         this.state = {
             serverActivity: undefined,
-            // activityData: undefined,
-            // totalRows: undefined,
             isLoading: true,
             error: undefined,
             show: false,
@@ -47,12 +45,10 @@ export class ServerNotifications extends React.Component<Props, State> {
 
     markAllRead = (): void => {
         const { data } = this.state.serverActivity;
-        const notificationIds = [];
         const now = new Date().toTimeString();
         const updatedData = [];
         data.forEach(activity => {
             if (activity.RowId) {
-                notificationIds.push(activity.RowId);
                 updatedData.push(activity.mutate({ ReadOn: now }));
             } else {
                 updatedData.push(activity);
@@ -105,7 +101,7 @@ export class ServerNotifications extends React.Component<Props, State> {
             return 0;
         }
 
-        return this.state.serverActivity?.unreadCount;
+        return this.state.serverActivity.unreadCount;
     }
 
     hasAnyInProgress(): boolean {

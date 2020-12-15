@@ -52,6 +52,7 @@ import {
     userCanDesignSourceTypes,
     isSampleManagerEnabled,
     isFreezerManagementEnabled,
+    isAsynchronousImportEnabled,
     getDateFormat,
     getMenuSectionConfigs,
 } from './utils';
@@ -77,6 +78,7 @@ export {
     initWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
+    isAsynchronousImportEnabled,
     getDateFormat,
     getMenuSectionConfigs,
     getUserPermissions,

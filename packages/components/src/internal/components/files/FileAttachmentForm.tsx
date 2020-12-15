@@ -61,6 +61,7 @@ interface FileAttachmentFormProps {
     templateUrl?: string;
     compact?: boolean;
     ref?: any;
+    allowOversize?: boolean;
 }
 
 interface State {
@@ -143,7 +144,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
     };
 
     handleFileChange = (fileList: { [key: string]: File }): void => {
-        const { onFileChange, sizeLimits, fileSpecificCallback, allowMultiple } = this.props;
+        const { onFileChange, sizeLimits, fileSpecificCallback, allowMultiple, allowOversize } = this.props;
         const attachedFiles = this.state.attachedFiles.merge(fileList);
 
         this.setState(
@@ -156,7 +157,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
                     const fileTypeFn = fileSpecificCallback?.get(getFileExtension(firstFile.name));
                     if (fileTypeFn) {
-                        if (!sizeCheck.isOversized) {
+                        if (!sizeCheck.isOversized || allowOversize) {
                             fileTypeFn(firstFile)
                                 .then(res => {
                                     this.updateErrors(res.success ? null : res.msg);
@@ -389,6 +390,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
             sizeLimitsHelpText,
             isSubmitting,
             compact,
+            allowOversize,
         } = this.props;
 
         return (
@@ -406,7 +408,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                                 initialFileNames={initialFileNames}
                                 initialFiles={initialFiles}
                                 allowMultiple={allowMultiple}
-                                sizeLimits={sizeLimits}
+                                sizeLimits={allowOversize ? null : sizeLimits}
                                 sizeLimitsHelpText={sizeLimitsHelpText}
                                 labelLong={labelLong}
                                 compact={compact}

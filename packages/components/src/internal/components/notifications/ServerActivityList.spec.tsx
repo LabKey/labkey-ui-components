@@ -127,7 +127,7 @@ describe('<ServerActivityList>', () => {
         );
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);
-        checkActivityListItem(item, true, true);
+        checkActivityListItem(item, false, true, false);
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(2);
         expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.HtmlContent);
@@ -153,7 +153,7 @@ describe('<ServerActivityList>', () => {
         );
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);
-        checkActivityListItem(item, true, true);
+        checkActivityListItem(item, false, true, false);
         expect(item.find('.has-error')).toHaveLength(1);
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(2);
@@ -178,7 +178,7 @@ describe('<ServerActivityList>', () => {
         );
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);
-        checkActivityListItem(item, false, false);
+        checkActivityListItem(item, false, false, true);
         expect(item.find('.has-error')).toHaveLength(0);
         expect(item.find('.fa-spinner')).toHaveLength(1);
         const links = item.find('.server-notifications-link');
@@ -202,7 +202,7 @@ describe('<ServerActivityList>', () => {
         );
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);
-        checkActivityListItem(item, true, false);
+        checkActivityListItem(item, true, false, false);
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(1);
         expect(links.at(0).text()).toBe(DONE_NOT_READ.HtmlContent);
@@ -229,7 +229,7 @@ describe('<ServerActivityList>', () => {
         );
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);
-        checkActivityListItem(item, true, false);
+        checkActivityListItem(item, true, false, false);
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(0);
         const data = item.find('.server-notification-data');
@@ -239,9 +239,9 @@ describe('<ServerActivityList>', () => {
         wrapper.unmount();
     });
 
-    function checkActivityListItem(itemWrapper: ReactWrapper, isComplete: boolean, hasError: boolean): void {
+    function checkActivityListItem(itemWrapper: ReactWrapper, isComplete: boolean, hasError: boolean, inProgress: boolean): void {
         expect(itemWrapper.find('.is-complete')).toHaveLength(isComplete ? 1 : 0);
         expect(itemWrapper.find('.has-error')).toHaveLength(hasError ? 1 : 0);
-        expect(itemWrapper.find('.fa-spinner')).toHaveLength(!isComplete ? 1 : 0);
+        expect(itemWrapper.find('.fa-spinner')).toHaveLength(inProgress ? 1 : 0);
     }
 });

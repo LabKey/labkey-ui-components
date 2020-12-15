@@ -31,8 +31,9 @@ export class ServerActivityList extends React.PureComponent<Props> {
     };
 
     renderData(activity: ServerActivityData, key: number): ReactNode {
+        const isUnread = activity.isUnread() && !activity.inProgress;
         return (
-            <li key={key}>
+            <li key={key} className={isUnread ? 'is-unread' : undefined} onClick={isUnread ? () => this.markRead(activity.RowId) : undefined}>
                 <i
                     className={classNames('fa', {
                         'fa-spinner fa-pulse': activity.inProgress,
@@ -40,18 +41,12 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         'fa-check-circle is-complete': !activity.inProgress && !activity.hasError,
                     })}
                 />
-                {activity.isUnread() && !activity.inProgress ? (
-                    <span
-                        className={classNames('server-notifications-link server-notification-message ', {
-                            'is-unread': activity.isUnread(),
-                        })}
-                        onClick={() => this.markRead(activity.RowId)}
-                    >
-                        {activity.HtmlContent}
-                    </span>
-                ) : (
-                    <span className="server-notification-message">{activity.HtmlContent}</span>
-                )}
+                <span className={classNames('server-notification-message', {
+                        'is-unread server-notifications-link': isUnread,
+                    })}
+                >
+                    {activity.HtmlContent}
+                </span>
                 <br />
                 {activity.hasError ? (
                     <span className="server-notifications-link" onClick={() => this.showErrorDetails(activity.RowId)}>

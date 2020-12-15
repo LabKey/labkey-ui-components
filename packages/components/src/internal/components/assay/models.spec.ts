@@ -41,5 +41,6 @@ describe('AssayStateModel', () => {
         expect(ASSAY_STATE_MODEL.getDefinitionsByType('BOGUS')).toHaveLength(0);
         expect(ASSAY_STATE_MODEL.getDefinitionsByType(GENERAL_ASSAY_PROVIDER_NAME)).toHaveLength(2);
         expect(ASSAY_STATE_MODEL.getDefinitionsByType('NAb')).toHaveLength(1);
+        expect(ASSAY_STATE_MODEL.getDefinitionsByType('nab')).toHaveLength(1);
     });
 });

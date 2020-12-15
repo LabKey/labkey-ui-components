@@ -66,7 +66,8 @@ export class AssayStateModel {
     }
 
     getDefinitionsByType(type: string): AssayDefinitionModel[] {
-        return this.definitions.filter(def => def.type === type);
+        const lowerName = type.toLowerCase();
+        return this.definitions.filter(def => def.type.toLowerCase() === lowerName);
     }
 
     mutate(props: Partial<AssayStateModel>): AssayStateModel {

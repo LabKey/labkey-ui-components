@@ -124,11 +124,7 @@ export function getPipelineActivityData(maxRows?: number): Promise<ServerActivit
                 const [notifications, statuses] = responses;
 
                 resolve({
-                    data: notifications.data
-                        .concat(...statuses.data)
-                        .sort(naturalSortByProperty('Created'))
-                        .reverse()
-                        .slice(0, maxRows),
+                    data: statuses.data.concat(...notifications.data).slice(0, maxRows),
                     totalRows: notifications.totalRows + statuses.totalRows,
                     unreadCount: notifications.unreadCount,
                     inProgressCount: statuses.inProgressCount,

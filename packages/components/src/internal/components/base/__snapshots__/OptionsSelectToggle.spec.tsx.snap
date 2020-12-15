@@ -1,13 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ViewAsToggle/> default properties 1`] = `
+exports[`<OptionsSelectToggle/> default properties 1`] = `
 <div
   className="margin-bottom"
 >
   <span
     className="right-spacing"
   >
-    View:
+    View
+    :
   </span>
   <div
     style={
@@ -37,14 +38,15 @@ exports[`<ViewAsToggle/> default properties 1`] = `
 </div>
 `;
 
-exports[`<ViewAsToggle/> invalid selection and id prop 1`] = `
+exports[`<OptionsSelectToggle/> invalid selection and optional props 1`] = `
 <div
   className="margin-bottom"
 >
   <span
     className="right-spacing"
   >
-    View:
+    Test Label
+    :
   </span>
   <div
     style={

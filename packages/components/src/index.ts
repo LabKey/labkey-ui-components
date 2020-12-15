@@ -65,7 +65,7 @@ import { Alert } from './internal/components/base/Alert';
 import { DeleteIcon } from './internal/components/base/DeleteIcon';
 import { LockIcon } from './internal/components/base/LockIcon';
 import { ExpandableFilterToggle } from './internal/components/base/ExpandableFilterToggle';
-import { ViewAsToggle } from './internal/components/base/ViewAsToggle';
+import { OptionsSelectToggle } from './internal/components/base/OptionsSelectToggle';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
 import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
@@ -299,7 +299,7 @@ import {
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
-import { invalidateLineageResults } from './internal/components/lineage/actions';
+import { invalidateLineageResults, getImmediateChildLineageFilterValue } from './internal/components/lineage/actions';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -674,6 +674,7 @@ export {
     SampleTypeLineageCounts,
     VisGraphNode,
     invalidateLineageResults,
+    getImmediateChildLineageFilterValue,
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,
@@ -834,7 +835,7 @@ export {
     DeleteIcon,
     LockIcon,
     ExpandableFilterToggle,
-    ViewAsToggle,
+    OptionsSelectToggle,
     // base models, enums, constants
     Container,
     User,

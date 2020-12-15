@@ -6,11 +6,13 @@ interface Props {
     options: Map<string, string>;
     onSelectionChange: (selected: string) => void;
     id?: string;
+    label?: string;
 }
 
-export class ViewAsToggle extends PureComponent<Props> {
+export class OptionsSelectToggle extends PureComponent<Props> {
     static defaultProps = {
         id: 'view-select-toggle',
+        label: 'View',
     };
 
     onToggle = (evt): void => {
@@ -19,10 +21,10 @@ export class ViewAsToggle extends PureComponent<Props> {
     };
 
     render(): ReactNode {
-        const { options, selected, id } = this.props;
+        const { options, selected, id, label } = this.props;
         return (
             <div className="margin-bottom">
-                <span className="right-spacing">View:</span>
+                <span className="right-spacing">{label}:</span>
                 <div style={{ display: 'inline-block' }}>
                     <select className="form-control" onChange={this.onToggle} value={selected} id={id}>
                         {options.entrySeq().map(([option, label]) => {

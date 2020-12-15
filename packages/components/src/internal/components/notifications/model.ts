@@ -110,6 +110,10 @@ export class ServerActivityData {
             Object.assign(draft, props);
         });
     }
+
+    isUnread(): boolean {
+        return this.ReadOn == undefined;
+    }
 }
 
 export interface ServerActivity {

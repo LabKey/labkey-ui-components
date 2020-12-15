@@ -40,9 +40,11 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         'fa-check-circle is-complete': !activity.inProgress && !activity.hasError,
                     })}
                 />
-                {activity.ReadOn == undefined && !activity.inProgress ? (
+                {activity.isUnread() && !activity.inProgress ? (
                     <span
-                        className={'server-notifications-link server-notification-message ' + (activity.ReadOn == undefined ? 'is-unread' : '')}
+                        className={classNames('server-notifications-link server-notification-message ', {
+                            'is-unread': activity.isUnread(),
+                        })}
                         onClick={() => this.markRead(activity.RowId)}
                     >
                         {activity.HtmlContent}

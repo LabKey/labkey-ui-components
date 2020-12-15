@@ -60,10 +60,9 @@ export function getServerNotifications(typeLabels?: string[], maxRows?: number):
             params: { container: getServerContext().container.id, typeLabels, maxRows },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
-                    const notifications = [];
-                    response.notifications.forEach(notification => {
-                        notifications.push(new ServerActivityData(notification));
-                    });
+                    const notifications = response.notifications.map(
+                        notification => new ServerActivityData(notification)
+                    );
                     resolve({
                         data: notifications,
                         totalRows: response.totalRows,
@@ -83,7 +82,7 @@ export function getServerNotifications(typeLabels?: string[], maxRows?: number):
     });
 }
 
-export function getPipelineJobStatuses(): Promise<ServerActivity> {
+export function getRunningPipelineJobStatuses(): Promise<ServerActivity> {
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: 'pipeline',
@@ -120,7 +119,7 @@ export function getPipelineJobStatuses(): Promise<ServerActivity> {
 
 export function getPipelineActivityData(maxListingSize?: number): Promise<ServerActivity> {
     return new Promise((resolve, reject) => {
-        Promise.all([getServerNotifications(['Pipeline'], maxListingSize), getPipelineJobStatuses()])
+        Promise.all([getServerNotifications(['Pipeline'], maxListingSize), getRunningPipelineJobStatuses()])
             .then(responses => {
                 const [notifications, statuses] = responses;
 
@@ -169,6 +168,9 @@ export function markAllNotificationsAsRead(): Promise<boolean> {
         Ajax.request({
             url: ActionURL.buildURL('notification', 'markAllNotificationAsRead.api'),
             method: 'POST',
+            jsonData: {
+                container: getServerContext().container.id,
+            },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     resolve(true);

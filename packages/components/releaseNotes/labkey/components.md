@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 1.7.3
+*Released*: 15 December 2020
 * add allowAsync for EntityInsertPanel
 
 ### version 1.7.2

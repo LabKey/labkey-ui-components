@@ -37,7 +37,7 @@ interface NavigationBarProps {
     user?: User;
     showSwitchToLabKey: boolean;
     signOutUrl?: string;
-    notificationsConfig: ServerNotificationsConfig;
+    notificationsConfig?: ServerNotificationsConfig;
 }
 
 export class NavigationBar extends React.Component<NavigationBarProps, any> {

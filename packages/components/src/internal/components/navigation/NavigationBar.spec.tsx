@@ -22,6 +22,7 @@ import { TEST_USER_GUEST, TEST_USER_READER } from '../../../test/data/users';
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { List } from 'immutable';
+import { ServerActivity } from '../notifications/model';
 
 describe('<NavigationBar/>', () => {
     const productMenuModel = new ProductMenuModel({
@@ -30,6 +31,29 @@ describe('<NavigationBar/>', () => {
         isLoading: false,
         sections: List<MenuSectionModel>(),
     });
+
+    function getNotificationData(): Promise<ServerActivity> {
+        return new Promise(resolve => {
+            resolve({
+                data: [],
+                totalRows: 0,
+                unreadCount: 0,
+                inProgressCount: 0,
+            });
+        });
+    }
+
+    function markAllNotificationsRead(): Promise<boolean> {
+        return new Promise(resolve => {
+            resolve(true);
+        });
+    }
+
+    const notificationsConfig = {
+        maxRows: 1,
+        markAllNotificationsRead: markAllNotificationsRead,
+        getNotificationData: getNotificationData,
+    };
 
     test('default props', () => {
         const component = <NavigationBar model={null} />;
@@ -46,14 +70,14 @@ describe('<NavigationBar/>', () => {
     });
 
     test('with notifications no user', () => {
-        const component = mount(<NavigationBar model={productMenuModel} showNotifications={true} />);
+        const component = mount(<NavigationBar model={productMenuModel} notificationsConfig={notificationsConfig} />);
         expect(component.find(ServerNotifications)).toHaveLength(0);
         component.unmount();
     });
 
     test('with notifications, guest user', () => {
         const component = mount(
-            <NavigationBar model={productMenuModel} user={TEST_USER_GUEST} showNotifications={true} />
+            <NavigationBar model={productMenuModel} user={TEST_USER_GUEST} notificationsConfig={notificationsConfig} />
         );
         expect(component.find(ServerNotifications)).toHaveLength(0);
         component.unmount();
@@ -61,7 +85,7 @@ describe('<NavigationBar/>', () => {
 
     test('with notifications, non-guest user', () => {
         const component = mount(
-            <NavigationBar model={productMenuModel} user={TEST_USER_READER} showNotifications={true} />
+            <NavigationBar model={productMenuModel} user={TEST_USER_READER} notificationsConfig={notificationsConfig} />
         );
         expect(component.find(ServerNotifications)).toHaveLength(1);
         component.unmount();

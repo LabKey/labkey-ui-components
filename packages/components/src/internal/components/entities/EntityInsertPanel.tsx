@@ -986,7 +986,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                     );
                 }
                 if (useAsync && this.props.onBackgroundJobStart) {
-                    this.props.onBackgroundJobStart(insertModel.getTargetEntityTypeName(), file.name)
+                    this.props.onBackgroundJobStart(insertModel.getTargetEntityTypeName(), file.name);
                 }
             })
             .catch(error => {
@@ -1049,7 +1049,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                             {helpLinkNode(DATA_IMPORT_TOPIC, 'help article')} for best practices on data import.
                         </>
                     }
-                    allowOversize={allowAsyncImport}
+                    allowOversize={allowAsyncImport} // use allowOversize to bypass maxSize check, but sizeLimits maxPreviewSize remains effective
                 />
             </>
         );

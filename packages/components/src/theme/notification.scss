@@ -13,7 +13,7 @@
     padding:.6em;
     border-radius:999px;
     line-height:.75em;
-    color: white;
+    color: $white;
     background: $brand-warning;
     text-align:center;
     min-width:2em;
@@ -21,7 +21,7 @@
 }
 
 .server-notifications-icon {
-    color: white;
+    color: $white;
     font-size: 22px;
     margin-top: 5px;
 }

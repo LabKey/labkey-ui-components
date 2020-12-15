@@ -4,6 +4,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add optional Notifications icon and overlay in NavigationBar
 
+### version 1.7.3
+*Released*: 15 December 2020
+* add allowAsync for EntityInsertPanel
+
 ### version 1.7.2
 *Released*: 14 December 2020
 * Issue #41419: Update RouteLeave to better manage form transition confirmations

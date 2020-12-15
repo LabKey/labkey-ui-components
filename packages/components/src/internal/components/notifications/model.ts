@@ -122,3 +122,9 @@ export interface ServerActivity {
     unreadCount: number;
     inProgressCount: number;
 }
+
+export interface ServerNotificationsConfig {
+    maxRows: number;
+    markAllNotificationsRead: () => Promise<boolean>;
+    getNotificationData: (maxRows: number) => Promise<ServerActivity>;
+}

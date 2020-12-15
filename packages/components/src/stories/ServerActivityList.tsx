@@ -20,7 +20,7 @@ storiesOf('ServerActivityList', module)
             <ServerActivityList
                 serverActivity={{ data: activityData, totalRows: 4, unreadCount: 1, inProgressCount: 1 }}
                 onViewAll={() => {}}
-                maxListingSize={number('Maximum shown', 3)}
+                maxRows={number('Maximum shown', 3)}
                 onRead={() => {}}
             />
         );
@@ -30,7 +30,7 @@ storiesOf('ServerActivityList', module)
             <ServerActivityList
                 serverActivity={{ data: [], totalRows: 0, unreadCount: 0, inProgressCount: 0 }}
                 onViewAll={() => {}}
-                maxListingSize={number('Maximum shown', 3)}
+                maxRows={number('Maximum shown', 3)}
                 onRead={() => {}}
             />
         );

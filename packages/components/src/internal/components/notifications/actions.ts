@@ -117,9 +117,9 @@ export function getRunningPipelineJobStatuses(): Promise<ServerActivity> {
     });
 }
 
-export function getPipelineActivityData(maxListingSize?: number): Promise<ServerActivity> {
+export function getPipelineActivityData(maxRows?: number): Promise<ServerActivity> {
     return new Promise((resolve, reject) => {
-        Promise.all([getServerNotifications(['Pipeline'], maxListingSize), getRunningPipelineJobStatuses()])
+        Promise.all([getServerNotifications(['Pipeline'], maxRows), getRunningPipelineJobStatuses()])
             .then(responses => {
                 const [notifications, statuses] = responses;
 
@@ -128,7 +128,7 @@ export function getPipelineActivityData(maxListingSize?: number): Promise<Server
                         .concat(...statuses.data)
                         .sort(naturalSortByProperty('Created'))
                         .reverse()
-                        .slice(0, maxListingSize),
+                        .slice(0, maxRows),
                     totalRows: notifications.totalRows + statuses.totalRows,
                     unreadCount: notifications.unreadCount,
                     inProgressCount: statuses.inProgressCount,
@@ -163,14 +163,12 @@ export function markNotificationsAsRead(rowIds: number[]): Promise<boolean> {
     });
 }
 
-export function markAllNotificationsAsRead(): Promise<boolean> {
+export function markAllNotificationsAsRead(typeLabels: string[]): Promise<boolean> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: ActionURL.buildURL('notification', 'markAllNotificationAsRead.api'),
             method: 'POST',
-            jsonData: {
-                container: getServerContext().container.id,
-            },
+            jsonData: { container: getServerContext().container.id, typeLabels },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
                     resolve(true);

@@ -54,7 +54,7 @@ describe('<ServerActivityList>', () => {
                     unreadCount: 2,
                     inProgressCount: 1,
                 }}
-                maxListingSize={2}
+                maxRows={2}
                 onRead={jest.fn()}
             />
         );
@@ -100,7 +100,7 @@ describe('<ServerActivityList>', () => {
                     unreadCount: 4,
                     inProgressCount: 1,
                 }}
-                maxListingSize={2}
+                maxRows={2}
                 viewAllText={viewAllText}
                 onRead={jest.fn()}
             />
@@ -121,7 +121,7 @@ describe('<ServerActivityList>', () => {
                     unreadCount: 1,
                     inProgressCount: 0,
                 }}
-                maxListingSize={2}
+                maxRows={2}
                 onRead={jest.fn()}
             />
         );
@@ -146,7 +146,7 @@ describe('<ServerActivityList>', () => {
                     unreadCount: 1,
                     inProgressCount: 0,
                 }}
-                maxListingSize={2}
+                maxRows={2}
                 viewErrorDetailsText={customText}
                 onRead={jest.fn()}
             />
@@ -172,7 +172,7 @@ describe('<ServerActivityList>', () => {
                     unreadCount: 0,
                     inProgressCount: 1,
                 }}
-                maxListingSize={2}
+                maxRows={2}
                 onRead={jest.fn()}
             />
         );
@@ -196,7 +196,7 @@ describe('<ServerActivityList>', () => {
                     unreadCount: 1,
                     inProgressCount: 0,
                 }}
-                maxListingSize={2}
+                maxRows={2}
                 onRead={jest.fn()}
             />
         );
@@ -223,7 +223,7 @@ describe('<ServerActivityList>', () => {
                     unreadCount: 0,
                     inProgressCount: 0,
                 }}
-                maxListingSize={2}
+                maxRows={2}
                 onRead={jest.fn()}
             />
         );

@@ -1,14 +1,12 @@
 import React, { ReactNode } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
-import { getPipelineActivityData, markAllNotificationsAsRead, markNotificationsAsRead } from './actions';
-import { ServerActivity } from './model';
+import { markNotificationsAsRead } from './actions';
+import { ServerActivity, ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
 import { LoadingSpinner } from '../../../index';
 
-interface Props {
-    maxListingSize?: number;
-}
+type Props = ServerNotificationsConfig;
 
 interface State {
     serverActivity: ServerActivity;
@@ -19,7 +17,7 @@ interface State {
 
 export class ServerNotifications extends React.Component<Props, State> {
     static defaultProps = {
-        maxListingSize: 8,
+        maxRows: 8,
     };
 
     constructor(props: Props) {
@@ -34,7 +32,7 @@ export class ServerNotifications extends React.Component<Props, State> {
     }
 
     componentDidMount(): void {
-        getPipelineActivityData(this.props.maxListingSize)
+        this.props.getNotificationData(this.props.maxRows)
             .then(response => {
                 this.setState(() => ({ serverActivity: response, isLoading: false }));
             })
@@ -54,14 +52,14 @@ export class ServerNotifications extends React.Component<Props, State> {
                 updatedData.push(activity);
             }
         });
-        markAllNotificationsAsRead()
+        this.props.markAllNotificationsRead()
             .then(() => {
-                this.setState(state => (
-                    { serverActivity: Object.assign({}, state.serverActivity, { data: updatedData, unreadCount: 0 })}
-                ));
+                this.setState(state => ({
+                    serverActivity: Object.assign({}, state.serverActivity, { data: updatedData, unreadCount: 0 }),
+                }));
             })
             .catch(() => {
-                    console.error('Unable to mark all notifications as read');
+                console.error('Unable to mark all notifications as read');
             });
     };
 
@@ -74,7 +72,7 @@ export class ServerNotifications extends React.Component<Props, State> {
                         const update = state.serverActivity.data[dataIndex].mutate({
                             ReadOn: new Date().toTimeString(),
                         });
-                        const updatedActivity = state.serverActivity.data;
+                        const updatedActivity = [...state.serverActivity.data];
                         updatedActivity[dataIndex] = update;
                         return {
                             serverActivity: Object.assign({}, state.serverActivity, { data: updatedActivity, unreadCount: state.serverActivity.unreadCount-1 })
@@ -134,7 +132,7 @@ export class ServerNotifications extends React.Component<Props, State> {
         } else {
             body = (
                 <ServerActivityList
-                    maxListingSize={this.props.maxListingSize}
+                    maxRows={this.props.maxRows}
                     serverActivity={serverActivity}
                     onViewAll={this.viewAll}
                     onRead={this.onRead}

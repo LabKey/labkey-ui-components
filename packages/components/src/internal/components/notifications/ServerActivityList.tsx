@@ -7,7 +7,7 @@ import { formatDateTime, getDateTimeFormat, parseDate } from '../../util/Date';
 interface Props {
     serverActivity: ServerActivity;
     onViewAll: () => void;
-    maxListingSize: number;
+    maxRows: number;
     viewAllText: string;
     noActivityMsg: string;
     viewErrorDetailsText: string;
@@ -16,7 +16,7 @@ interface Props {
 
 export class ServerActivityList extends React.PureComponent<Props> {
     static defaultProps = {
-        maxListingSize: 8,
+        maxRows: 8,
         viewAllText: 'View all activity',
         noActivityMsg: 'No notifications available.',
         viewErrorDetailsText: 'View error details',
@@ -70,7 +70,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
     }
 
     render(): ReactNode {
-        const { serverActivity, onViewAll, maxListingSize, noActivityMsg, viewAllText } = this.props;
+        const { serverActivity, onViewAll, maxRows, noActivityMsg, viewAllText } = this.props;
 
         if (!serverActivity || serverActivity.totalRows === 0) {
             return <div className="server-notifications-footer">{noActivityMsg}</div>;
@@ -80,10 +80,10 @@ export class ServerActivityList extends React.PureComponent<Props> {
             <>
                 <div className="server-notifications-listing-container">
                     <ul className="server-notifications-listing">
-                        {serverActivity.data.slice(0, maxListingSize).map((data, index) => this.renderData(data, index))}
+                        {serverActivity.data.slice(0, maxRows).map((data, index) => this.renderData(data, index))}
                     </ul>
                 </div>
-                {maxListingSize && serverActivity.totalRows > maxListingSize && (
+                {maxRows && serverActivity.totalRows > maxRows && (
                     <div className="server-notifications-footer server-notifications-link" onClick={onViewAll}>
                         {viewAllText}
                     </div>

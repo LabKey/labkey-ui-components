@@ -1,11 +1,13 @@
 import React from 'react';
 
-import { ServerNotifications } from './ServerNotifications';
-
 import { mount } from 'enzyme';
+
 import { LoadingSpinner } from '../base/LoadingSpinner';
 import { DONE_AND_READ, DONE_NOT_READ, IN_PROGRESS, UNREAD_WITH_ERROR } from '../../../test/data/notificationData';
+
+import { ServerNotifications } from './ServerNotifications';
 import { ServerActivityList } from './ServerActivityList';
+import { ServerActivity } from './model';
 
 beforeAll(() => {
     LABKEY.container = {
@@ -18,8 +20,30 @@ beforeAll(() => {
 });
 
 describe('<ServerNotificaitons/>', () => {
+    function getNotificationData(): Promise<ServerActivity> {
+        return new Promise(resolve => {
+            resolve({
+                data: [],
+                totalRows: 0,
+                unreadCount: 0,
+                inProgressCount: 0,
+            });
+        });
+    }
+
+    function markAllNotificationsRead(): Promise<boolean> {
+        return new Promise(resolve => {
+            resolve(true);
+        });
+    }
+
     test('loading', () => {
-        const wrapper = mount(<ServerNotifications />);
+        const wrapper = mount(
+            <ServerNotifications
+                getNotificationData={getNotificationData}
+                markAllNotificationsRead={markAllNotificationsRead}
+            />
+        );
         wrapper.setState({ isLoading: true });
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
         const title = wrapper.find('.server-notifications-header');
@@ -29,7 +53,12 @@ describe('<ServerNotificaitons/>', () => {
     });
 
     test('error', () => {
-        const wrapper = mount(<ServerNotifications />);
+        const wrapper = mount(
+            <ServerNotifications
+                getNotificationData={getNotificationData}
+                markAllNotificationsRead={markAllNotificationsRead}
+            />
+        );
         const errorText = 'Something is wrong';
         wrapper.setState({ isLoading: false, error: errorText });
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -40,7 +69,12 @@ describe('<ServerNotificaitons/>', () => {
     });
 
     test('all read', () => {
-        const wrapper = mount(<ServerNotifications />);
+        const wrapper = mount(
+            <ServerNotifications
+                getNotificationData={getNotificationData}
+                markAllNotificationsRead={markAllNotificationsRead}
+            />
+        );
         wrapper.setState({
             isLoading: false,
             serverActivity: {
@@ -57,7 +91,12 @@ describe('<ServerNotificaitons/>', () => {
     });
 
     test('some unread', () => {
-        const wrapper = mount(<ServerNotifications />);
+        const wrapper = mount(
+            <ServerNotifications
+                getNotificationData={getNotificationData}
+                markAllNotificationsRead={markAllNotificationsRead}
+            />
+        );
         wrapper.setState({
             isLoading: false,
             serverActivity: {
@@ -74,7 +113,12 @@ describe('<ServerNotificaitons/>', () => {
     });
 
     test('none in progress', () => {
-        const wrapper = mount(<ServerNotifications />);
+        const wrapper = mount(
+            <ServerNotifications
+                getNotificationData={getNotificationData}
+                markAllNotificationsRead={markAllNotificationsRead}
+            />
+        );
         wrapper.setState({
             isLoading: false,
             serverActivity: {
@@ -91,7 +135,12 @@ describe('<ServerNotificaitons/>', () => {
     });
 
     test('some in progress', () => {
-        const wrapper = mount(<ServerNotifications />);
+        const wrapper = mount(
+            <ServerNotifications
+                getNotificationData={getNotificationData}
+                markAllNotificationsRead={markAllNotificationsRead}
+            />
+        );
         wrapper.setState({
             isLoading: false,
             serverActivity: {

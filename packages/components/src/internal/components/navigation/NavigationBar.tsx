@@ -24,6 +24,7 @@ import { UserMenu } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 import { ServerNotifications } from "../notifications/ServerNotifications";
+import { ServerNotificationsConfig } from '../notifications/model';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -36,14 +37,14 @@ interface NavigationBarProps {
     user?: User;
     showSwitchToLabKey: boolean;
     signOutUrl?: string;
-    showNotifications: boolean;
+    notificationsConfig: ServerNotificationsConfig;
 }
 
 export class NavigationBar extends React.Component<NavigationBarProps, any> {
     static defaultProps: {
         showSearchBox: false;
         showSwitchToLabKey: true;
-        showNotifications: false;
+        notificationsConfig: undefined;
     };
 
     render(): ReactNode {
@@ -56,7 +57,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
             onSearch,
             searchPlaceholder,
             user,
-            showNotifications,
+            notificationsConfig,
             showSwitchToLabKey,
             signOutUrl,
         } = this.props;
@@ -66,7 +67,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
             <UserMenu model={model} user={user} showSwitchToLabKey={showSwitchToLabKey} signOutUrl={signOutUrl} />
         ) : null;
 
-        const notifications = showNotifications && user && !user.isGuest ? <ServerNotifications /> : null;
+        const notifications = notificationsConfig && user && !user.isGuest ? <ServerNotifications {...notificationsConfig} /> : null;
 
         return (
             <nav className="navbar navbar-container test-loc-nav-header">

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * add allowAsync for EntityInsertPanel
 
+### version 1.7.2
+*Released*: 14 December 2020
+* Issue #41419: Update RouteLeave to better manage form transition confirmations
+
 ### version 1.7.1
 *Released*: 10 December 2020
 * Update @labkey/api dependency

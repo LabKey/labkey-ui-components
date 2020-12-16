@@ -363,3 +363,33 @@
     margin-top: 6px;
     color: $white;
 }
+
+.navbar-icon-button-right {
+    margin-top: -10px;
+    background-color: transparent !important;
+    border: none;
+    box-shadow: none !important;
+    padding-right: 0;
+    padding-left: 0;
+
+    // dropdown menu is a sibling of the button.
+    ~ ul.dropdown-menu {
+      padding-top: 0;
+    }
+}
+
+.navbar-icon {
+    color: $brand-primary;
+    margin-right: 15px;
+}
+
+.navbar-icon-connector {
+    position: absolute;
+    right: 18px;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+    border-color: transparent transparent $white transparent;
+}

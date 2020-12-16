@@ -87,7 +87,7 @@ export function getRunningPipelineJobStatuses(): Promise<ServerActivity> {
         selectRows({
             schemaName: 'pipeline',
             queryName: 'job',
-            filterArray: [Filter.create('Status', 'RUNNING')],
+            filterArray: [Filter.create('Status', ['RUNNING', 'WAITING', 'SPLITWAITING'], Filter.Types.IN)],
             sort: 'Created',
         })
             .then(response => {

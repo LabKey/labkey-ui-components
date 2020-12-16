@@ -1,6 +1,6 @@
 # @labkey/components
 
-[API Docs](./docs/public.md) | [Change Log](./releaseNotes/labkey/components.md) | [License](./LICENSE.txt) | [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)
+[API Docs](./docs/public.md) | [Change Log](./releaseNotes/components.md) | [License](./LICENSE.txt) | [![Build Status](https://teamcity.labkey.org/app/rest/builds/buildType:(id:LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)/statusIcon)](https://teamcity.labkey.org/viewType.html?buildTypeId=LabKey_Trunk_Premium_InternalSuites_GlassComponentsUnitTest)
 
 This package contains React components, models, actions, and utility functions for LabKey applications and pages.
 

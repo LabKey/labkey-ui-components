@@ -13,6 +13,7 @@ import { MenuSectionConfig, MenuItemModel, MenuSectionModel, ProductMenuModel, N
 import { ICON_URL } from './mock';
 import './stories.scss';
 import { TEST_USER_READER } from "../test/data/users";
+import { getNotificationData, markAllNotificationsRead } from '../test/data/notificationData';
 
 const fruitTree = [
     'Apple',
@@ -270,7 +271,11 @@ storiesOf('NavigationBar', module)
                 model={model}
                 showSearchBox={true}
                 user={user}
-                showNotifications={boolean("Show notifications?", true)}
+                notificationsConfig={
+                    boolean('Show notifications?', true)
+                        ? { maxRows: 8, markAllNotificationsRead: markAllNotificationsRead, getNotificationData: getNotificationData }
+                        : undefined
+                }
             />
         );
     });

@@ -3,7 +3,13 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { DONE_AND_READ, DONE_NOT_READ, IN_PROGRESS, UNREAD_WITH_ERROR } from '../../../test/data/notificationData';
+import {
+    DONE_AND_READ,
+    DONE_NOT_READ,
+    getNotificationData,
+    IN_PROGRESS, markAllNotificationsRead,
+    UNREAD_WITH_ERROR
+} from '../../../test/data/notificationData';
 
 import { ServerNotifications } from './ServerNotifications';
 import { ServerActivityList } from './ServerActivityList';
@@ -20,23 +26,6 @@ beforeAll(() => {
 });
 
 describe('<ServerNotificaitons/>', () => {
-    function getNotificationData(): Promise<ServerActivity> {
-        return new Promise(resolve => {
-            resolve({
-                data: [],
-                totalRows: 0,
-                unreadCount: 0,
-                inProgressCount: 0,
-            });
-        });
-    }
-
-    function markAllNotificationsRead(): Promise<boolean> {
-        return new Promise(resolve => {
-            resolve(true);
-        });
-    }
-
     test('loading', () => {
         const wrapper = mount(
             <ServerNotifications

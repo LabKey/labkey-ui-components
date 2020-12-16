@@ -1,4 +1,4 @@
-import { ServerActivityData } from '../../internal/components/notifications/model';
+import { ServerActivity, ServerActivityData } from '../../internal/components/notifications/model';
 
 export const DONE_NOT_READ = new ServerActivityData({
     RowId: 1,
@@ -61,3 +61,20 @@ export const UNREAD_WITH_ERROR = new ServerActivityData({
     Created: '2020-11-11 07:47:32.317',
     hasError: true,
 });
+
+export function getNotificationData(): Promise<ServerActivity> {
+    return new Promise(resolve => {
+        resolve({
+            data: [],
+            totalRows: 0,
+            unreadCount: 0,
+            inProgressCount: 0,
+        });
+    });
+}
+
+export function markAllNotificationsRead(): Promise<boolean> {
+    return new Promise(resolve => {
+        resolve(true);
+    });
+}

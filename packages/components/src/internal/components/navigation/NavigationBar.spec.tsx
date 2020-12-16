@@ -22,7 +22,7 @@ import { TEST_USER_GUEST, TEST_USER_READER } from '../../../test/data/users';
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { List } from 'immutable';
-import { ServerActivity } from '../notifications/model';
+import { getNotificationData, markAllNotificationsRead } from '../../../test/data/notificationData';
 
 describe('<NavigationBar/>', () => {
     const productMenuModel = new ProductMenuModel({
@@ -31,23 +31,6 @@ describe('<NavigationBar/>', () => {
         isLoading: false,
         sections: List<MenuSectionModel>(),
     });
-
-    function getNotificationData(): Promise<ServerActivity> {
-        return new Promise(resolve => {
-            resolve({
-                data: [],
-                totalRows: 0,
-                unreadCount: 0,
-                inProgressCount: 0,
-            });
-        });
-    }
-
-    function markAllNotificationsRead(): Promise<boolean> {
-        return new Promise(resolve => {
-            resolve(true);
-        });
-    }
 
     const notificationsConfig = {
         maxRows: 1,

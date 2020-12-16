@@ -1,5 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+
+### version 1.9.0
+*Released*: 16 December 2020
+* Item 8226: Package updates to support packaging of LKSM workflow pages/components
+    - Add AssayStateModel.getDefinitionsByType helper function
+    - Add GENERAL_ASSAY_PROVIDER_NAME constant
+    - Move ExpandFilterToggle and OptionsSelectToggle (renamed from ViewAsToggle) components from LKSM to shared components
+    - Move withTimeout and getImmediateChildLineageFilterValue functions from LKSM to shared components
+
 ### version 1.8.0
 *Released*: 15 December 2020
 * Add optional Notifications icon and overlay in NavigationBar
@@ -7,14 +16,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 1.7.3
 *Released*: 15 December 2020
 * add allowAsync for EntityInsertPanel
-
-### version TBD
-*Released*: TBD
-* Item 8226: Package updates to support packaging of LKSM workflow pages/components
-    - Add AssayStateModel.getDefinitionsByType helper function
-    - Add GENERAL_ASSAY_PROVIDER_NAME constant
-    - Move ExpandFilterToggle and OptionsSelectToggle (renamed from ViewAsToggle) components from LKSM to shared components
-    - Move withTimeout and getImmediateChildLineageFilterValue functions from LKSM to shared components
 
 ### version 1.7.2
 *Released*: 14 December 2020

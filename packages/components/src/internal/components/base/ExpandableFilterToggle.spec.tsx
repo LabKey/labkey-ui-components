@@ -22,7 +22,7 @@ describe('<ExpandableFilterToggle/>', () => {
             <ExpandableFilterToggle
                 filterExpanded={true}
                 hasFilter={true}
-                panelCls={'test-cls'}
+                panelCls="test-cls"
                 toggleFilterPanel={jest.fn()}
                 resetFilter={jest.fn()}
             />

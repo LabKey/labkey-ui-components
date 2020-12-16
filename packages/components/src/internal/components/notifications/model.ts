@@ -17,6 +17,7 @@ import React from 'react';
 import { Record } from 'immutable';
 
 import { generateId, User } from '../../..';
+import { Draft, immerable, produce } from "immer";
 
 export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;
 
@@ -74,4 +75,56 @@ export class NotificationItemModel
 
 function nextNotificationId(): string {
     return generateId('notification_');
+}
+
+
+export class ServerActivityData {
+    [immerable] = true;
+
+    readonly RowId: number;
+    readonly Type: string;
+    readonly Created: string;
+    readonly CreatedBy: string;
+    readonly UserId: number;
+    readonly ObjectId: string;
+    readonly ReadOn: string;
+    readonly ActionLinkText: string;
+    readonly ActionLinkUrl: string;
+    readonly ContainerId: string;
+    readonly HtmlContent: string;
+    readonly ContentType: string;
+    readonly IconCls: string;
+    readonly inProgress: boolean;
+    readonly hasError: boolean;
+
+    constructor(values?: Partial<ServerActivityData>) {
+        const addedValues = {};
+        if (values.Type?.indexOf('error') >= 0) {
+            Object.assign(addedValues, { hasError: true });
+        }
+        Object.assign(this, values, addedValues);
+    }
+
+    mutate(props: Partial<ServerActivityData>): ServerActivityData {
+        return produce(this, (draft: Draft<ServerActivityData>) => {
+            Object.assign(draft, props);
+        });
+    }
+
+    isUnread(): boolean {
+        return this.ReadOn == undefined;
+    }
+}
+
+export interface ServerActivity {
+    data: ServerActivityData[];
+    totalRows: number;
+    unreadCount: number;
+    inProgressCount: number;
+}
+
+export interface ServerNotificationsConfig {
+    maxRows: number;
+    markAllNotificationsRead: () => Promise<boolean>;
+    getNotificationData: (maxRows: number) => Promise<ServerActivity>;
 }

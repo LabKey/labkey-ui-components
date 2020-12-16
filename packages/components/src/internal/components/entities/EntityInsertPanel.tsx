@@ -102,12 +102,13 @@ class EntityGridLoader implements IGridLoader {
 interface OwnProps {
     disableMerge?: boolean;
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?) => void;
+    onBackgroundJobStart?: (entityTypeName, filename) => void;
     getFileTemplateUrl?: (queryInfo: QueryInfo) => string;
     location?: Location;
     onCancel?: () => void;
     maxEntities?: number;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
-    handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean) => Promise<any>;
+    handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean, isAsync?: boolean) => Promise<any>;
     canEditEntityTypeDetails?: boolean;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => void;
     nounSingular: string;
@@ -118,6 +119,8 @@ interface OwnProps {
     auditBehavior?: AuditBehaviorTypes;
     importOnly?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
+    allowAsyncImport?: boolean;
+    asyncSize?: number;
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -129,6 +132,7 @@ interface StateProps {
     error: ReactNode;
     isMerge: boolean;
     file: File;
+    useAsync: boolean;
 }
 
 export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
@@ -157,6 +161,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             error: undefined,
             isMerge: false,
             file: undefined,
+            useAsync: false,
         };
     }
 
@@ -932,12 +937,17 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
     };
 
     handleFileChange = (files: Map<string, File>): void => {
+        const { allowAsyncImport, asyncSize } = this.props;
+
         if (this.props.onDataChange) {
             this.props.onDataChange(files.size > 0, IMPORT_DATA_FORM_TYPES.FILE);
         }
+
+        const fileSize = files.valueSeq().first().size;
         this.setState(() => ({
             error: undefined,
             file: files.first(),
+            useAsync: allowAsyncImport && fileSize > asyncSize,
         }));
     };
 
@@ -948,24 +958,25 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
         this.setState(() => ({
             error: undefined,
             file: undefined,
+            useAsync: false,
         }));
     };
 
     submitFileHandler = (): void => {
         const { handleFileImport } = this.props;
-        const { insertModel, file, isMerge, originalQueryInfo } = this.state;
+        const { insertModel, file, isMerge, originalQueryInfo, useAsync } = this.state;
 
         if (!handleFileImport) return;
 
         this.setSubmitting(true);
 
-        handleFileImport(originalQueryInfo, file, isMerge)
+        handleFileImport(originalQueryInfo, file, isMerge, useAsync)
             .then(response => {
                 this.setSubmitting(false);
                 if (this.props.onDataChange) {
                     this.props.onDataChange(false);
                 }
-                if (this.props.afterEntityCreation) {
+                if (!useAsync && this.props.afterEntityCreation) {
                     this.props.afterEntityCreation(
                         insertModel.getTargetEntityTypeName(),
                         null,
@@ -973,6 +984,9 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                         'imported',
                         response.transactionAuditId
                     );
+                }
+                if (useAsync && this.props.onBackgroundJobStart) {
+                    this.props.onBackgroundJobStart(insertModel.getTargetEntityTypeName(), file.name);
                 }
             })
             .catch(error => {
@@ -1013,7 +1027,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
     };
 
     renderImportEntitiesFromFile = (): ReactNode => {
-        const { fileSizeLimits, disableMerge } = this.props;
+        const { fileSizeLimits, disableMerge, allowAsyncImport } = this.props;
 
         return (
             <>
@@ -1035,6 +1049,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                             {helpLinkNode(DATA_IMPORT_TOPIC, 'help article')} for best practices on data import.
                         </>
                     }
+                    allowOversize={allowAsyncImport} // use allowOversize to bypass maxSize check, but sizeLimits maxPreviewSize remains effective
                 />
             </>
         );

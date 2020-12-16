@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "1.7.2-fb-smWorkflowPackage.1",
+  "version": "1.8.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -44,7 +44,7 @@
     "@fortawesome/free-regular-svg-icons": "5.14.0",
     "@fortawesome/free-solid-svg-icons": "5.14.0",
     "@fortawesome/react-fontawesome": "0.1.11",
-    "@labkey/api": "1.1.3",
+    "@labkey/api": "1.1.4",
     "bootstrap": "3.4.1",
     "classnames": "2.2.6",
     "font-awesome": "4.7.0",

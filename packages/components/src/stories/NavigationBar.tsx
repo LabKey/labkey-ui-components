@@ -12,6 +12,8 @@ import { MenuSectionConfig, MenuItemModel, MenuSectionModel, ProductMenuModel, N
 
 import { ICON_URL } from './mock';
 import './stories.scss';
+import { TEST_USER_READER } from "../test/data/users";
+import { getNotificationData, markAllNotificationsRead } from '../test/data/notificationData';
 
 const fruitTree = [
     'Apple',
@@ -85,6 +87,7 @@ storiesOf('NavigationBar', module)
                 model={model}
                 showSearchBox={boolean('showSearchBox', true)}
                 onSearch={(value: string) => console.log('Search term: ' + value)}
+                user={TEST_USER_READER}
             />
         );
     })
@@ -266,8 +269,13 @@ storiesOf('NavigationBar', module)
             <NavigationBar
                 menuSectionConfigs={boolean('show 3 columns?', true) ? threeColConfigs : twoColConfigs}
                 model={model}
-                showSearchBox={false}
+                showSearchBox={true}
                 user={user}
+                notificationsConfig={
+                    boolean('Show notifications?', true)
+                        ? { maxRows: 8, markAllNotificationsRead: markAllNotificationsRead, getNotificationData: getNotificationData }
+                        : undefined
+                }
             />
         );
     });

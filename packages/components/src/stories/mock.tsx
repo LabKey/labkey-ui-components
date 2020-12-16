@@ -100,6 +100,9 @@ import source1QueryDetails from '../test/data/source1-getQueryDetails.json';
 import issuesProjectGroups from '../test/data/issues-getProjectGroups.json';
 import issuesUsersForGroup from '../test/data/issues-getUsersForGroup.json';
 import ontologiesQuery from '../test/data/ontologies-getQuery.json';
+import serverNotifications from '../test/data/notification-getUserNotificationsForPanel.json';
+import pipelineJobQueryDetails from '../test/data/pipelineJob-getQueryDetails.json';
+import pipelineJobQuery from '../test/data/pipelineJob-getQuery.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -144,6 +147,9 @@ const QUERY_DETAILS_RESPONSES = fromJS({
     lists: {
         mixturetypes: mixtureTypesQueryInfo,
         lookuplist: lookuplistQueryInfo,
+    },
+    pipeline: {
+        job: pipelineJobQueryDetails,
     },
     samples: {
         hemoglobin: hemoglobinLineageQueryInfo,
@@ -204,6 +210,9 @@ const QUERY_RESPONSES = fromJS({
     },
     ontology: {
         ontologies: ontologiesQuery,
+    },
+    pipeline: {
+        job: pipelineJobQuery,
     },
     samples: {
         hemoglobin: hemoglobinLineageQueryIn,
@@ -332,6 +341,8 @@ export function initMocks() {
     mock.get(/.*\/security\/?.*\/getRoles.*/, jsonResponse(getRolesJson));
 
     mock.get(/.*browseData.*/, delay(jsonResponse(browseData), 1000));
+
+    mock.get(/.*getUserNotification.*/, jsonResponse(serverNotifications));
 
     mock.use(proxy);
 }
@@ -611,7 +622,11 @@ export function initLineageMocks() {
     });
 }
 
-export function initUserPropsMocks() {
+export function initUserPropsMocks(): void {
     // TODO conditionalize based on userId
     mock.get(/.*\/user\/getUserProps.*/, jsonResponse(userPropsInfo));
+}
+
+export function initServerNotificationMocks(): void {
+    mock.get(/.*\/getUserNotification.*/, jsonResponse(serverNotifications));
 }

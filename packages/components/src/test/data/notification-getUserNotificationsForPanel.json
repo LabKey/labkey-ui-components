@@ -1,0 +1,52 @@
+{
+  "success": true,
+  "unreadCount": 1,
+  "totalRows": 14,
+  "notifications": [
+    {
+      "RowId": 6,
+      "CreatedBy": "susan",
+      "ObjectId": "1764cca1-1cc6-1039-996f-40fd35d9aef2",
+      "HtmlContent": "Background job complete<br> data_2020-12-10_07-48-08.xlsx",
+      "TypeLabel": "Pipeline",
+      "Created": "2020-12-10 07:49:15.889",
+      "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete",
+      "ActionLinkText": "view",
+      "ActionLinkUrl": "/labkey/Sam%20Man/assay-assayResults.view?rowId=66&Data.Run%2FRowId%7Eeq=86",
+      "IconCls": "fa-check-circle",
+      "ContainerId": "4040a9f1-01ed-1039-94fd-94ed22e9ffb8",
+      "UserId": 1005,
+      "ReadOn": null
+    },
+    {
+      "RowId": 13,
+      "CreatedBy": "susan withthreallylongdisplaynamethatisjustsilly",
+      "ObjectId": "fake1",
+      "HtmlContent": "Background job complete<br> data_2020-12-10_07-48-08.xlsx",
+      "TypeLabel": "Pipeline",
+      "Created": "2020-12-10 07:49:15.889",
+      "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete",
+      "ActionLinkText": "view",
+      "ActionLinkUrl": "/labkey/Sam%20Man/assay-assayResults.view?rowId=66&Data.Run%2FRowId%7Eeq=86",
+      "IconCls": "fa-check-circle",
+      "ContainerId": "4040a9f1-01ed-1039-94fd-94ed22e9ffb8",
+      "UserId": 1005,
+      "ReadOn": "2020-12-10 13:02:41.847"
+    },
+    {
+      "RowId": 14,
+      "CreatedBy": "susan withthreallylongdisplaynamethatisjustsilly",
+      "ObjectId": "fake2",
+      "HtmlContent": "Background job complete<br> data_2020-12-10_07-48-08.xlsx",
+      "TypeLabel": "Pipeline",
+      "Created": "2020-12-10 07:49:15.889",
+      "Type": "org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete",
+      "ActionLinkText": "view",
+      "ActionLinkUrl": "/labkey/Sam%20Man/assay-assayResults.view?rowId=66&Data.Run%2FRowId%7Eeq=86",
+      "IconCls": "fa-check-circle",
+      "ContainerId": "4040a9f1-01ed-1039-94fd-94ed22e9ffb8",
+      "UserId": 1005,
+      "ReadOn": "2020-12-10 13:02:41.847"
+    }
+  ]
+}

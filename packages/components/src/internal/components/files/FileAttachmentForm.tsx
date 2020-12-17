@@ -348,14 +348,14 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
     shouldRenderTemplateButton(): boolean {
         const { templateUrl } = this.props;
-        return templateUrl && templateUrl.length > 0 && !this.shouldShowPreviewGrid();
+        return templateUrl?.length > 0 && !this.shouldShowPreviewGrid();
     }
 
     renderTemplateButton() {
         return (
-            <Button bsStyle="info" title="Download Template" href={this.props.templateUrl}>
+            <a className="btn btn-info" title="Download Template" href={this.props.templateUrl} target="_blank">
                 <span className="fa fa-download" /> Template
-            </Button>
+            </a>
         );
     }
 

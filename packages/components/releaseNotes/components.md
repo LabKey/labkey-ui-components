@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8267: FileAttachmentForm fix to use anchor tag with target blank for template file download
+
 ### version 1.9.0
 *Released*: 16 December 2020
 * Item 8226: Package updates to support packaging of LKSM workflow pages/components

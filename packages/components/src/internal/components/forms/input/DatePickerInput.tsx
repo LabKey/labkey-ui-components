@@ -55,7 +55,6 @@ export interface DatePickerInputProps extends DisableableInputProps {
 
 interface DatePickerInputState extends DisableableInputState {
     selectedDate: any;
-    selectedDateStr: string;
 }
 
 class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
@@ -78,7 +77,6 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         this.state = {
             isDisabled: props.initiallyDisabled,
             selectedDate: this.getInitDate(props),
-            selectedDateStr: props.value,
         };
     }
 
@@ -100,40 +98,30 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         );
     };
 
-    getInitDate(props: DatePickerInputProps) {
-        return props.value ? parseDate(props.value, this.getDateFormat(false)) : undefined;
+    getInitDate(props: DatePickerInputProps): Date {
+        return props.value ? parseDate(props.value) : undefined;
     }
 
-    onChange = date => {
-        const selectedDateStr = date ? formatDate(date, null, this.getDateFormat(false)) : undefined;
+    onChange = (date): void => {
         this.setState(() => {
             return {
                 selectedDate: date,
-                selectedDateStr,
             };
         });
 
         if (this.props.onChange && Utils.isFunction(this.props.onChange)) this.props.onChange(date);
 
-        if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(selectedDateStr);
+        if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(date);
     };
 
-    getDateFormat(isDatePicker: boolean) {
+    getDateFormat(): string {
         const { dateFormat, queryColumn } = this.props;
-        if (dateFormat) return this.ensureDateFormat(dateFormat, isDatePicker);
+        const rawFormat = dateFormat || datePlaceholder(queryColumn);
 
-        return this.ensureDateFormat(datePlaceholder(queryColumn), isDatePicker);
-    }
-
-    ensureDateFormat(rawFormat: string, isDatePicker: boolean) {
-        if (!isDatePicker) return rawFormat;
-
-        // Moment.js and react datepicker date format is different
-        // https://github.com/Hacker0x01/react-datepicker/issues/1609
         return rawFormat.replace('YYYY', 'yyyy').replace('DD', 'dd');
     }
 
-    shouldShowTime() {
+    shouldShowTime(): boolean {
         const { showTime, queryColumn } = this.props;
         return showTime || isDateTimeCol(queryColumn);
     }
@@ -169,6 +157,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                             isFormsy: false,
                             inputId: queryColumn.name,
                             addLabelAsterisk,
+                            labelClass: 'control-label col-sm-3 col-xs-12 text-left',
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}
@@ -194,7 +183,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                         placeholderText={
                             placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`
                         }
-                        dateFormat={this.getDateFormat(true)}
+                        dateFormat={this.getDateFormat()}
                     />
                 </div>
             </div>

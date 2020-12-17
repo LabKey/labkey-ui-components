@@ -65,7 +65,7 @@ export function getDateTimeFormat(): string {
 export function parseDate(dateStr: string, dateFormat?: string) {
     if (!dateStr) return null;
 
-    const date = moment(dateStr, dateFormat ? dateFormat : getDateFormat());
+    const date = moment(dateStr, dateFormat);
     if (date) return date.toDate();
 
     return null;

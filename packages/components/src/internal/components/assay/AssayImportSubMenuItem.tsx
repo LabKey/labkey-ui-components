@@ -17,6 +17,7 @@ interface Props extends SubMenuItemProps {
     model?: QueryGridModel;
     requireSelection: boolean;
     nounPlural?: string;
+    providerType?: string;
 }
 
 class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAssayModel> {
@@ -27,9 +28,9 @@ class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAssayMode
     };
 
     getItems = (): ISubItem[] => {
-        const { assayModel, model } = this.props;
+        const { assayModel, model, providerType } = this.props;
 
-        return getImportItemsForAssayDefinitions(assayModel, model).reduce((subItems, href, assay) => {
+        return getImportItemsForAssayDefinitions(assayModel, model, providerType).reduce((subItems, href, assay) => {
             subItems.push({
                 text: assay.name,
                 href,

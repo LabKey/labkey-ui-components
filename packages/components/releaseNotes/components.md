@@ -3,7 +3,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Item 8267: FileAttachmentForm fix to use anchor tag with target blank for template file download
+* Item 8267: Misc bug fixes related to LKSM workflow
+    - FileAttachmentForm fix to use anchor tag with target blank for template file download
+    - AssayImportSubMenuItem and getImportItemsForAssayDefinitions option to filter assays by provider type
 
 ### version 1.9.0
 *Released*: 16 December 2020

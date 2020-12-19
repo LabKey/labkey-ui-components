@@ -68,14 +68,6 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
         }
     };
 
-    getLookupValidatorHelp = () => {
-        return (
-            <div>
-                Lookup validators allow you to require that any value is present in the lookup's target table or query
-            </div>
-        );
-    };
-
     render() {
         const {
             index,
@@ -142,7 +134,12 @@ export class LookupFieldOptions extends React.PureComponent<LookupFieldProps, an
                             onChange={this.addLookupValidator}
                         >
                             <span className="domain-lookup-validator-text">Ensure Value Exists in Lookup Target</span>
-                            <LabelHelpTip title="Lookup Validator" body={this.getLookupValidatorHelp} />
+                            <LabelHelpTip title="Lookup Validator">
+                                <div>
+                                    Lookup validators allow you to require that any value is present in the lookup's
+                                    target table or query
+                                </div>
+                            </LabelHelpTip>
                         </Checkbox>
                     </Col>
                 </Row>

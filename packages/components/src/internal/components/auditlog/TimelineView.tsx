@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { App, getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../..';
+import { getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../..';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 
@@ -145,18 +145,14 @@ export class TimelineView extends React.Component<Props, any> {
     renderComment(comment: string): React.ReactNode {
         if (!comment) return null;
 
-        const icon = <i className="timeline-comments-icon fa fa-comments" />;
         return (
             <LabelHelpTip
-                title="Comment"
-                body={() => {
-                    return <div className="detail-display">{comment}</div>;
-                }}
+                iconComponent={<i className="timeline-comments-icon fa fa-comments" />}
                 placement="bottom"
-                iconComponent={() => {
-                    return icon;
-                }}
-            />
+                title="Comment"
+            >
+                <div className="detail-display">{comment}</div>
+            </LabelHelpTip>
         );
     }
 

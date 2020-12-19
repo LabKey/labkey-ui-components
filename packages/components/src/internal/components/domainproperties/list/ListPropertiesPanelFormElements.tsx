@@ -24,7 +24,7 @@ export class NameInput extends React.PureComponent<BasicPropertiesInputsProps> {
                     <DomainFieldLabel
                         label="Name"
                         required={true}
-                        helpTipBody={() => 'The name for this list. Note that this can be changed after list creation.'}
+                        helpTipBody="The name for this list. Note that this can be changed after list creation."
                     />
                 </Col>
 

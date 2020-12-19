@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 
 import { LabelHelpTip } from '../../..';
 
 interface Props {
-    title: string;
     cls?: string;
-    helpTipBody?: () => any;
+    helpTipBody?: ReactNode;
+    title: string;
 }
 
-export function SectionHeading(props: Props) {
-    return (
-        <div className={'domain-field-section-heading' + (props.cls ? ' ' + props.cls : '')}>
-            {props.title}
+export const SectionHeading: FC<Props> = memo(props => (
+    <div className={'domain-field-section-heading' + (props.cls ? ' ' + props.cls : '')}>
+        {props.title}
+        {props.helpTipBody && <LabelHelpTip title={props.title}>{props.helpTipBody}</LabelHelpTip>}
+    </div>
+));
 
-            {props.helpTipBody && <LabelHelpTip title={props.title} body={props.helpTipBody} />}
-        </div>
-    );
-}
+SectionHeading.displayName = 'SectionHeading';

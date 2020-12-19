@@ -70,7 +70,12 @@ export class ChangePasswordModal extends React.Component<Props, State> {
             <Row className="form-group">
                 <Col xs={4}>
                     <div>
-                        {label} {description && <LabelHelpTip title={label} body={() => <p>{description}</p>} />}
+                        {label}{' '}
+                        {description && (
+                            <LabelHelpTip title={label}>
+                                <p>{description}</p>
+                            </LabelHelpTip>
+                        )}
                     </div>
                 </Col>
                 <Col xs={8}>

@@ -17,16 +17,16 @@ import React from 'react';
 
 import { ActionButton, ActionButtonProps } from "./ActionButton";
 
-interface EntityButtonProps extends ActionButtonProps {
+export interface AddEntityButtonProps extends ActionButtonProps {
     entity?: string;
 }
 
-export class AddEntityButton extends React.PureComponent<EntityButtonProps> {
+export class AddEntityButton extends React.PureComponent<AddEntityButtonProps> {
     render() {
-        const { entity } = this.props;
+        const { entity, ...rest } = this.props;
 
         return (
-            <ActionButton {...this.props}>
+            <ActionButton {...rest}>
                 <i className="fa fa-plus-circle container--addition-icon" /> Add {entity}
             </ActionButton>
         );

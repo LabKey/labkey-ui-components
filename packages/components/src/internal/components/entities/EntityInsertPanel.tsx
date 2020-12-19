@@ -903,26 +903,6 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
         this.setState(state => ({ isMerge: !state.isMerge }));
     };
 
-    importOptionHelpText = (): ReactNode => {
-        return (
-            <>
-                <p>
-                    By default, import will insert new {this.props.nounPlural} based on the file provided. The operation
-                    will fail if there are existing {this.capIdsText} that match those being imported.
-                </p>
-                <p>
-                    When update is selected, data will be updated for matching {this.capIdsText}, and new{' '}
-                    {this.props.nounPlural} will be created for any new {this.capIdsText} provided. Data will not be
-                    changed for any columns not in the imported file.
-                </p>
-                <p>
-                    For more information on import options for {this.props.nounPlural}, see the{' '}
-                    {this.props.importHelpLinkNode} documentation page.
-                </p>
-            </>
-        );
-    };
-
     renderImportOptions = (): ReactNode => {
         return (
             <div className="margin-bottom">
@@ -931,7 +911,21 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                     Update data for existing {this.props.nounPlural} during this file import
                 </span>
                 &nbsp;
-                <LabelHelpTip title="Import Options" body={this.importOptionHelpText} />
+                <LabelHelpTip title="Import Options">
+                    <p>
+                        By default, import will insert new {this.props.nounPlural} based on the file provided. The
+                        operation will fail if there are existing {this.capIdsText} that match those being imported.
+                    </p>
+                    <p>
+                        When update is selected, data will be updated for matching {this.capIdsText}, and new{' '}
+                        {this.props.nounPlural} will be created for any new {this.capIdsText} provided. Data will not be
+                        changed for any columns not in the imported file.
+                    </p>
+                    <p>
+                        For more information on import options for {this.props.nounPlural}, see the{' '}
+                        {this.props.importHelpLinkNode} documentation page.
+                    </p>
+                </LabelHelpTip>
             </div>
         );
     };
@@ -991,7 +985,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             })
             .catch(error => {
                 this.setState(() => ({
-                    error: resolveErrorMessage(error, this.props.nounPlural, this.props.nounPlural, "importing"),
+                    error: resolveErrorMessage(error, this.props.nounPlural, this.props.nounPlural, 'importing'),
                     isSubmitting: false,
                 }));
             });

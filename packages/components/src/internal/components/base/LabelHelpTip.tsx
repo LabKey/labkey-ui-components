@@ -1,11 +1,11 @@
-import React, { CSSProperties, FC, memo, ReactElement, useCallback, useRef, useState } from 'react';
+import React, { CSSProperties, FC, memo, ReactNode, useCallback, useRef, useState } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Props {
     customStyle?: CSSProperties; // additional style added to help icon
-    iconComponent?: ReactElement; // use a different icon than the question mark circle
+    iconComponent?: ReactNode; // use a different icon than the question mark circle
     id?: string;
     placement?: 'top' | 'right' | 'bottom' | 'left';
     required?: boolean; // will add required message at bottom of help tooltip

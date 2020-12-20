@@ -168,7 +168,7 @@ export class CommentSortDirectionDropDown extends PureComponent<IssuesListDefBas
 
         const sortDirectionOptions = [
             { label: 'Oldest first', id: 'ASC' },
-            { label: 'Newest first', id: 'DESC' }
+            { label: 'Newest first', id: 'DESC' },
         ];
 
         return (

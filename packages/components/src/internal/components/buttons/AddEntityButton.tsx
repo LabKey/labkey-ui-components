@@ -15,7 +15,7 @@
  */
 import React from 'react';
 
-import { ActionButton, ActionButtonProps } from "./ActionButton";
+import { ActionButton, ActionButtonProps } from './ActionButton';
 
 export interface AddEntityButtonProps extends ActionButtonProps {
     entity?: string;

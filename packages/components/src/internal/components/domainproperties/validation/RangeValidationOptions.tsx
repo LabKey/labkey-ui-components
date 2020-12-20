@@ -161,12 +161,12 @@ export class RangeValidationOptions extends PureComponent<RangeValidationOptions
                     </div>
                 )}
                 {!expanded && (
-                    <div>
-                        {(validator.name ? validator.name : 'Range Validator') +
-                            ': ' +
-                            (validator.expression
+                    <div className="domain-validator-collapse">
+                        {`${validator.name ?? 'Range Validator'}: ${
+                            validator.expression
                                 ? Filters.describeExpression(validator.expression)
-                                : 'Missing condition')}
+                                : 'Missing condition'
+                        }`}
                         <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
                             <FontAwesomeIcon icon={faPencilAlt} />
                         </div>

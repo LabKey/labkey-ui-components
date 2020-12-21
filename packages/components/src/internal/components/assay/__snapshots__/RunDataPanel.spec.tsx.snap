@@ -123,6 +123,7 @@ exports[`<RunDataPanel/> custom display props 1`] = `
                 <a
                   className="btn btn-info"
                   href="/labkey/Sample%20Management%202/assay-template.view?rowId=5051"
+                  rel="noopener noreferrer"
                   target="_blank"
                   title="Download Template"
                 >
@@ -518,6 +519,7 @@ exports[`<RunDataPanel/> default props 1`] = `
                 <a
                   className="btn btn-info"
                   href="/labkey/Sample%20Management%202/assay-template.view?rowId=5051"
+                  rel="noopener noreferrer"
                   target="_blank"
                   title="Download Template"
                 >

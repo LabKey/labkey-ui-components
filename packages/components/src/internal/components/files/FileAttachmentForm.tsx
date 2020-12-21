@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import classNames from 'classnames';
@@ -29,7 +29,7 @@ import {
     getFileExtension,
 } from './actions';
 
-import {FileSizeLimitProps, SimpleResponse} from './models';
+import { FileSizeLimitProps, SimpleResponse } from './models';
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -118,7 +118,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         }
     }
 
-    initPreviewData(props: FileAttachmentFormProps) {
+    initPreviewData(props: FileAttachmentFormProps): void {
         let previewData;
         if (props.previewGridProps && props.previewGridProps.initialData) {
             previewData = convertRowDataIntoPreviewData(
@@ -202,11 +202,11 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         );
     };
 
-    manuallyClearFiles = (attachmentName: string) => {
+    manuallyClearFiles = (attachmentName: string): void => {
         this.fileAttachmentContainerRef.current.handleRemove(attachmentName);
     };
 
-    handleSubmit = () => {
+    handleSubmit = (): void => {
         const { onSubmit } = this.props;
 
         if (onSubmit) onSubmit(this.state.attachedFiles);
@@ -216,7 +216,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         }));
     };
 
-    renderButtons() {
+    renderButtons(): ReactNode {
         const { cancelText, onCancel, submitText, compact } = this.props;
 
         const button = (
@@ -258,7 +258,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         return errorMessage || previewStatus || previewData;
     }
 
-    renderPreviewGrid() {
+    renderPreviewGrid(): ReactNode {
         const { previewGridProps } = this.props;
         const { errorMessage, previewData, previewStatus } = this.state;
 
@@ -277,15 +277,15 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         }
     }
 
-    updatePreviewStatus(previewStatus: string) {
+    updatePreviewStatus(previewStatus: string): void {
         this.setState(() => ({ previewStatus }));
     }
 
-    updateErrors(errorMessage: string) {
+    updateErrors(errorMessage: string): void {
         this.setState(() => ({ errorMessage }));
     }
 
-    uploadDataFileForPreview() {
+    uploadDataFileForPreview(): void {
         const { previewGridProps } = this.props;
         const { attachedFiles } = this.state;
 
@@ -337,7 +337,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         return acceptedFormats && showAcceptedFormats && !this.shouldShowPreviewGrid();
     }
 
-    renderAcceptedFormats() {
+    renderAcceptedFormats(): ReactNode {
         return (
             <div className="file-form-formats">
                 <strong>Supported formats include: </strong>
@@ -351,15 +351,21 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         return templateUrl?.length > 0 && !this.shouldShowPreviewGrid();
     }
 
-    renderTemplateButton() {
+    renderTemplateButton(): ReactNode {
         return (
-            <a className="btn btn-info" title="Download Template" href={this.props.templateUrl} target="_blank">
+            <a
+                className="btn btn-info"
+                title="Download Template"
+                href={this.props.templateUrl}
+                rel="noopener noreferrer"
+                target="_blank"
+            >
                 <span className="fa fa-download" /> Template
             </a>
         );
     }
 
-    renderFooter() {
+    renderFooter(): ReactNode {
         if (!this.shouldRenderAcceptedFormats() && !this.shouldRenderTemplateButton()) {
             return;
         }
@@ -374,7 +380,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         );
     }
 
-    render() {
+    render(): ReactNode {
         const {
             acceptedFormats,
             allowDirectories,

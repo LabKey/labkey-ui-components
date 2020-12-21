@@ -77,6 +77,7 @@ exports[`<FileAttachmentForm/> with attributes 1`] = `
         <a
           className="btn btn-info"
           href="#downloadtemplateurl"
+          rel="noopener noreferrer"
           target="_blank"
           title="Download Template"
         >

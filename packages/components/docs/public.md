@@ -41,7 +41,7 @@ fetch and render data from LabKey server.
 
 ## Related Documentation
 
-* [Demo Module](https://github.com/LabKey/tutorialModules/tree/develop/demo) - LabKey demo module with React page and
+* [Demo Module](https://github.com/LabKey/tutorialModules/tree/develop/demo/src/client/QueryModelPage) - LabKey demo module with React page and
 component usage examples
 in a GridPanel component
 * [Immer for Immutability](./immer.md) - information and examples on using the Immer library for JavaScript object immutability

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version #.#.#
-*Released*: ## December 2020
+### version 1.10.0
+*Released*: 21 December 2020
 * Remove `body` prop and update `iconComponent` prop to be of type `ReactNode`.
 * Simplify `Overlay` target to use a React reference element in LabelHelpTip. Simplifies tracking and significantly reduces component footprint in test snapshots.
 * `AssayPropertiesInput`, `DomainFieldLabel, and `SectionHeading` updated to reflect same change with `helpTipBody` now being of type `ReactNode`.

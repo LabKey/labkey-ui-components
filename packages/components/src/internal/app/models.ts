@@ -6,6 +6,7 @@ import { Record } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
 import { Container, User } from '../..';
+import { ServerNotificationModel } from "../components/notifications/model";
 
 const user = new User(getServerContext().user);
 
@@ -17,6 +18,7 @@ export class AppModel extends Record({
     reloadRequired: false,
     requestPermissions: true,
     user,
+    serverNotificationModel: new ServerNotificationModel(),
 }) {
     container: Container;
     contextPath: string;
@@ -25,6 +27,7 @@ export class AppModel extends Record({
     reloadRequired: boolean;
     requestPermissions: boolean;
     user: User;
+    serverNotificationModel?: ServerNotificationModel;
 
     hasUserChanged(): boolean {
         return this.initialUserId !== this.user.id;

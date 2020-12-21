@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* Wire up websocket and redux for server notifications
+
 ### version 1.9.0
 *Released*: 16 December 2020
 * Item 8226: Package updates to support packaging of LKSM workflow pages/components

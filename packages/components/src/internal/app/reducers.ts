@@ -21,7 +21,12 @@ import {
     MENU_LOADING_START,
     MENU_LOADING_ERROR,
     MENU_LOADING_END,
+    SERVER_NOTIFICATIONS_INVALIDATE,
+    SERVER_NOTIFICATIONS_LOADING_START,
+    SERVER_NOTIFICATIONS_LOADING_ERROR,
+    SERVER_NOTIFICATIONS_LOADING_END
 } from './constants';
+import { ServerNotificationModel } from "../components/notifications/model";
 
 export type AppReducerState = AppModel;
 
@@ -67,6 +72,32 @@ export const AppReducers = handleActions<AppReducerState, any>(
                 logoutReason: LogoutReason.SERVER_UNAVAILABLE,
             });
         },
+
+        [SERVER_NOTIFICATIONS_INVALIDATE]: (state: AppReducerState, action: any) => {
+            return state.merge({
+                serverNotificationModel: new ServerNotificationModel()
+            });
+        },
+
+        [SERVER_NOTIFICATIONS_LOADING_START]: (state: AppReducerState, action: any) => {
+            return state.merge({
+                serverNotificationModel: state.serverNotificationModel.setLoadingStart()
+            });
+        },
+
+        [SERVER_NOTIFICATIONS_LOADING_END]: (state: AppReducerState, action: any) => {
+            const { serverActivity } = action;
+            return state.merge({
+                serverNotificationModel: state.serverNotificationModel.setLoadingComplete(serverActivity)
+            });
+        },
+
+        [SERVER_NOTIFICATIONS_LOADING_ERROR]: (state: AppReducerState, action: any) => {
+            const { message } = action;
+            return state.serverNotificationModel.setError(message);
+        },
+
+
     },
     new AppModel()
 );

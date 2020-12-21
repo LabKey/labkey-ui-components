@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, memo } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
@@ -11,37 +11,38 @@ import {
     helpLinkNode,
     PROGRAMMATIC_QC_TOPIC,
 } from '../../../util/helpLinks';
-import { DomainFieldLabel } from '../DomainFieldLabel';
+import { DomainFieldLabel, DomainFieldLabelProps } from '../DomainFieldLabel';
 
 import { getValidPublishTargets } from './actions';
 
 import { AssayProtocolModel } from './models';
 import { FORM_IDS } from './AssayPropertiesPanel';
 
-interface AssayPropertiesInputProps {
-    label: string;
-    required?: boolean;
-    colSize?: number;
-    helpTipBody?: () => any;
+interface AssayPropertiesInputProps extends DomainFieldLabelProps {
     appPropertiesOnly?: boolean;
+    colSize?: number;
 }
 
-export class AssayPropertiesInput extends React.PureComponent<AssayPropertiesInputProps, any> {
-    render() {
-        const { label, required, helpTipBody, colSize, appPropertiesOnly, children } = this.props;
+export const AssayPropertiesInput: FC<AssayPropertiesInputProps> = memo(props => {
+    const { appPropertiesOnly, children, colSize, ...domainFieldProps } = props;
 
-        return (
-            <Row className="margin-top">
-                <Col xs={3} lg={appPropertiesOnly ? 2 : 4}>
-                    <DomainFieldLabel label={label} required={required} helpTipBody={helpTipBody} />
-                </Col>
-                <Col xs={colSize || 9} lg={appPropertiesOnly ? 10 : 8}>
-                    {children}
-                </Col>
-            </Row>
-        );
-    }
-}
+    return (
+        <Row className="margin-top">
+            <Col xs={3} lg={appPropertiesOnly ? 2 : 4}>
+                <DomainFieldLabel {...domainFieldProps} />
+            </Col>
+            <Col xs={colSize} lg={appPropertiesOnly ? 10 : 8}>
+                {children}
+            </Col>
+        </Row>
+    );
+});
+
+AssayPropertiesInput.displayName = 'AssayPropertiesInput';
+
+AssayPropertiesInput.defaultProps = {
+    colSize: 9,
+};
 
 interface InputProps {
     model: AssayProtocolModel;
@@ -55,16 +56,11 @@ export function NameInput(props: InputProps) {
             label="Name"
             required={true}
             appPropertiesOnly={props.appPropertiesOnly}
-            helpTipBody={() => {
-                return (
-                    <>
-                        <p>
-                            The name for this assay design. Note that this can't be changed after the assay design is
-                            created.
-                        </p>
-                    </>
-                );
-            }}
+            helpTipBody={
+                <p>
+                    The name for this assay design. Note that this can't be changed after the assay design is created.
+                </p>
+            }
         >
             <FormControl
                 id={FORM_IDS.ASSAY_NAME}
@@ -83,9 +79,7 @@ export function DescriptionInput(props: InputProps) {
         <AssayPropertiesInput
             label="Description"
             appPropertiesOnly={props.appPropertiesOnly}
-            helpTipBody={() => {
-                return <p>A short description for this assay design.</p>;
-            }}
+            helpTipBody={<p>A short description for this assay design.</p>}
         >
             <textarea
                 className="form-control textarea-noresize"
@@ -101,15 +95,12 @@ export function QCStatesInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label="QC States"
-            helpTipBody={() => {
-                return (
-                    <p>
-                        If enabled, QC states can be configured and assigned on a per run basis to control the
-                        visibility of imported run data. Users not in the QC Analyst role will not be able to view
-                        non-public data.
-                    </p>
-                );
-            }}
+            helpTipBody={
+                <p>
+                    If enabled, QC states can be configured and assigned on a per run basis to control the visibility of
+                    imported run data. Users not in the QC Analyst role will not be able to view non-public data.
+                </p>
+            }
         >
             <input type="checkbox" id={FORM_IDS.QC_ENABLED} checked={props.model.qcEnabled} onChange={props.onChange} />
         </AssayPropertiesInput>
@@ -123,17 +114,13 @@ export function PlateTemplatesInput(props: InputProps) {
             required={true}
             colSize={6}
             appPropertiesOnly={props.appPropertiesOnly}
-            helpTipBody={() => {
-                return (
-                    <>
-                        <p>
-                            Specify the plate template definition used to map spots or wells on the plate to data fields
-                            in this assay design. For additional information refer to the{' '}
-                            {helpLinkNode(ASSAY_EDIT_PLATE_TEMPLATE_TOPIC, 'help documentation')}.
-                        </p>
-                    </>
-                );
-            }}
+            helpTipBody={
+                <p>
+                    Specify the plate template definition used to map spots or wells on the plate to data fields in this
+                    assay design. For additional information refer to the{' '}
+                    {helpLinkNode(ASSAY_EDIT_PLATE_TEMPLATE_TOPIC, 'help documentation')}.
+                </p>
+            }
         >
             <FormControl
                 componentClass="select"
@@ -190,23 +177,21 @@ export function MetadataInputFormatsInput(props: InputProps) {
             required={true}
             colSize={6}
             appPropertiesOnly={props.appPropertiesOnly}
-            helpTipBody={() => {
-                return (
-                    <>
-                        <p>
-                            <strong>Manual: </strong> Metadata is provided as form based manual entry.
-                        </p>
-                        <p>
-                            <strong>File Upload (metadata only): </strong> Metadata is provided from a file upload
-                            (separate from the run data file).
-                        </p>
-                        <p>
-                            <strong>Combined File Upload (metadata & run data): </strong> Metadata and run data are
-                            combined into a single file upload.
-                        </p>
-                    </>
-                );
-            }}
+            helpTipBody={
+                <>
+                    <p>
+                        <strong>Manual: </strong> Metadata is provided as form based manual entry.
+                    </p>
+                    <p>
+                        <strong>File Upload (metadata only): </strong> Metadata is provided from a file upload (separate
+                        from the run data file).
+                    </p>
+                    <p>
+                        <strong>Combined File Upload (metadata & run data): </strong> Metadata and run data are combined
+                        into a single file upload.
+                    </p>
+                </>
+            }
         >
             <FormControl
                 componentClass="select"
@@ -229,14 +214,12 @@ export function EditableRunsInput(props: InputProps) {
         <AssayPropertiesInput
             label="Editable Runs"
             appPropertiesOnly={props.appPropertiesOnly}
-            helpTipBody={() => {
-                return (
-                    <p>
-                        If enabled, users with sufficient permissions can edit values at the run level after the initial
-                        import is complete. These changes will be audited.
-                    </p>
-                );
-            }}
+            helpTipBody={
+                <p>
+                    If enabled, users with sufficient permissions can edit values at the run level after the initial
+                    import is complete. These changes will be audited.
+                </p>
+            }
         >
             <input
                 type="checkbox"
@@ -253,15 +236,13 @@ export function EditableResultsInput(props: InputProps) {
         <AssayPropertiesInput
             label="Editable Results"
             appPropertiesOnly={props.appPropertiesOnly}
-            helpTipBody={() => {
-                return (
-                    <p>
-                        If enabled, users with sufficient permissions can edit and delete at the individual results row
-                        level after the initial import is complete. New result rows cannot be added to existing runs.
-                        These changes will be audited.
-                    </p>
-                );
-            }}
+            helpTipBody={
+                <p>
+                    If enabled, users with sufficient permissions can edit and delete at the individual results row
+                    level after the initial import is complete. New result rows cannot be added to existing runs. These
+                    changes will be audited.
+                </p>
+            }
         >
             <input
                 type="checkbox"
@@ -277,14 +258,12 @@ export function BackgroundUploadInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label="Import in Background"
-            helpTipBody={() => {
-                return (
-                    <p>
-                        If enabled, assay imports will be processed as jobs in the data pipeline. If there are any
-                        errors during the import, they can be viewed from the log file for that job.
-                    </p>
-                );
-            }}
+            helpTipBody={
+                <p>
+                    If enabled, assay imports will be processed as jobs in the data pipeline. If there are any errors
+                    during the import, they can be viewed from the log file for that job.
+                </p>
+            }
         >
             <input
                 type="checkbox"
@@ -327,20 +306,18 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
         return (
             <AssayPropertiesInput
                 label="Auto-Copy Data to Study"
-                helpTipBody={() => {
-                    return (
-                        <>
-                            <p>
-                                When new runs are imported, automatically copy their data rows to the specified target
-                                study. Only rows that include subject and visit/date information will be copied.
-                            </p>
-                            <p>
-                                The user performing the import must have insert permission in the target study and the
-                                corresponding dataset.
-                            </p>
-                        </>
-                    );
-                }}
+                helpTipBody={
+                    <>
+                        <p>
+                            When new runs are imported, automatically copy their data rows to the specified target
+                            study. Only rows that include subject and visit/date information will be copied.
+                        </p>
+                        <p>
+                            The user performing the import must have insert permission in the target study and the
+                            corresponding dataset.
+                        </p>
+                    </>
+                }
             >
                 {containers === undefined ? (
                     <LoadingSpinner />
@@ -372,23 +349,21 @@ export function ModuleProvidedScriptsInput(props: ModuleProvidedScriptsInputProp
     return (
         <AssayPropertiesInput
             label="Module-Provided Scripts"
-            helpTipBody={() => {
-                return (
-                    <>
-                        <p>
-                            These scripts are part of the assay type and cannot be removed. They will run after any
-                            custom scripts configured above.
-                        </p>
-                        <p>
-                            The extension of the script file identifies the script engine that will be used to run the
-                            validation script. For example, a script named test.pl will be run with the Perl scripting
-                            engine. The scripting engine must be configured on the Views and Scripting page in the Admin
-                            Console. For additional information refer to the{' '}
-                            {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, 'help documentation')}.
-                        </p>
-                    </>
-                );
-            }}
+            helpTipBody={
+                <>
+                    <p>
+                        These scripts are part of the assay type and cannot be removed. They will run after any custom
+                        scripts configured above.
+                    </p>
+                    <p>
+                        The extension of the script file identifies the script engine that will be used to run the
+                        validation script. For example, a script named test.pl will be run with the Perl scripting
+                        engine. The scripting engine must be configured on the Views and Scripting page in the Admin
+                        Console. For additional information refer to the{' '}
+                        {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, 'help documentation')}.
+                    </p>
+                </>
+            }
         >
             {props.model.moduleTransformScripts.map((script, i) => {
                 return (
@@ -406,7 +381,7 @@ interface TransformScriptsInputProps {
     onChange: (id: string, value: any) => void;
 }
 
-export class TransformScriptsInput extends React.PureComponent<TransformScriptsInputProps, any> {
+export class TransformScriptsInput extends React.PureComponent<TransformScriptsInputProps> {
     onChange = evt => {
         const id = evt.target.id;
         const index = parseInt(id.replace(FORM_IDS.PROTOCOL_TRANSFORM_SCRIPTS, ''));
@@ -432,35 +407,28 @@ export class TransformScriptsInput extends React.PureComponent<TransformScriptsI
     }
 
     renderLabel() {
-        const label = 'Transform Scripts';
-
         return (
             <Col xs={3} lg={4}>
                 <DomainFieldLabel
-                    label={label}
-                    helpTipBody={() => {
-                        return (
-                            <>
-                                <p>
-                                    The full path to the transform script file. Transform scripts run before the assay
-                                    data is imported and can reshape the data file to match the expected import format.
-                                    For help writing a transform script refer to the{' '}
-                                    {helpLinkNode(
-                                        PROGRAMMATIC_QC_TOPIC,
-                                        'Programmatic Quality Control & Transformations'
-                                    )}{' '}
-                                    guide.
-                                </p>
-                                <p>
-                                    The extension of the script file identifies the script engine that will be used to
-                                    run the validation script. For example, a script named test.pl will be run with the
-                                    Perl scripting engine. The scripting engine must be configured on the Views and
-                                    Scripting page in the Admin Console. For additional information refer to the{' '}
-                                    {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, 'help documentation')}.
-                                </p>
-                            </>
-                        );
-                    }}
+                    label="Transform Scripts"
+                    helpTipBody={
+                        <>
+                            <p>
+                                The full path to the transform script file. Transform scripts run before the assay data
+                                is imported and can reshape the data file to match the expected import format. For help
+                                writing a transform script refer to the{' '}
+                                {helpLinkNode(PROGRAMMATIC_QC_TOPIC, 'Programmatic Quality Control & Transformations')}{' '}
+                                guide.
+                            </p>
+                            <p>
+                                The extension of the script file identifies the script engine that will be used to run
+                                the validation script. For example, a script named test.pl will be run with the Perl
+                                scripting engine. The scripting engine must be configured on the Views and Scripting
+                                page in the Admin Console. For additional information refer to the{' '}
+                                {helpLinkNode(CONFIGURE_SCRIPTING_TOPIC, 'help documentation')}.
+                            </p>
+                        </>
+                    }
                 />
             </Col>
         );
@@ -527,22 +495,19 @@ export function SaveScriptDataInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label="Save Script Data for Debugging"
-            helpTipBody={() => {
-                return (
-                    <>
-                        <p>
-                            Typically transform and validation script data files are deleted on script completion. For
-                            debug purposes, it can be helpful to be able to view the files generated by the server that
-                            are passed to the script.
-                        </p>
-                        <p>
-                            If this checkbox is checked, files will be saved to a subfolder named:
-                            "TransformAndValidationFiles", located in the same folder that the original script is
-                            located.
-                        </p>
-                    </>
-                );
-            }}
+            helpTipBody={
+                <>
+                    <p>
+                        Typically transform and validation script data files are deleted on script completion. For debug
+                        purposes, it can be helpful to be able to view the files generated by the server that are passed
+                        to the script.
+                    </p>
+                    <p>
+                        If this checkbox is checked, files will be saved to a subfolder named:
+                        "TransformAndValidationFiles", located in the same folder that the original script is located.
+                    </p>
+                </>
+            }
         >
             <input
                 type="checkbox"
@@ -558,14 +523,12 @@ export function PlateMetadataInput(props: InputProps) {
     return (
         <AssayPropertiesInput
             label="Plate Metadata"
-            helpTipBody={() => {
-                return (
-                    <p>
-                        If enabled, plate template metadata can be added on a per run basis to combine tabular data that
-                        has well location information with plate based data.
-                    </p>
-                );
-            }}
+            helpTipBody={
+                <p>
+                    If enabled, plate template metadata can be added on a per run basis to combine tabular data that has
+                    well location information with plate based data.
+                </p>
+            }
         >
             <input
                 type="checkbox"

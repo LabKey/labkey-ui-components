@@ -317,7 +317,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                             : 'Parent Alias'
                                     }
                                     onClick={() => this.addParentAlias(SCHEMAS.SAMPLE_SETS.SCHEMA)}
-                                    helperBody={this.renderAddEntityHelper}
+                                    helperBody={this.renderAddEntityHelper()}
                                 />
                             </span>
                         </Col>
@@ -332,7 +332,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                 <AddEntityButton
                                     entity={dataClassAliasCaption}
                                     onClick={() => this.addParentAlias(SCHEMAS.DATA_CLASSES.SCHEMA)}
-                                    helperBody={() => this.renderAddEntityHelper(dataClassParentageLabel)}
+                                    helperBody={this.renderAddEntityHelper(dataClassParentageLabel)}
                                 />
                             </span>
                         </Col>
@@ -345,9 +345,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                             <Col xs={2}>
                                 <DomainFieldLabel
                                     label="Label Color"
-                                    helpTipBody={() =>
-                                        'The label color will be used to distinguish this sample type in various views in the application.'
-                                    }
+                                    helpTipBody="The label color will be used to distinguish this sample type in various views in the application."
                                 />
                             </Col>
                             <Col xs={10}>
@@ -365,7 +363,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                     <DomainFieldLabel
                                         label={metricUnitLabel}
                                         required={metricUnitRequired}
-                                        helpTipBody={() => metricUnitHelpMsg}
+                                        helpTipBody={metricUnitHelpMsg}
                                     />
                                 </Col>
                                 <Col xs={3}>

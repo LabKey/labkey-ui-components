@@ -547,14 +547,23 @@ exports[`<TimelineView /> Disable selection 1`] = `
           </div>
            
           <LabelHelpTip
-            body={[Function]}
             customStyle={Object {}}
-            iconComponent={[Function]}
+            iconComponent={
+              <i
+                className="timeline-comments-icon fa fa-comments"
+              />
+            }
             id="tooltip"
             placement="bottom"
             size="1x"
             title="Comment"
-          />
+          >
+            <div
+              className="detail-display"
+            >
+              This is why I checked it out.
+            </div>
+          </LabelHelpTip>
         </div>
       </td>
     </tr>
@@ -1077,14 +1086,23 @@ exports[`<TimelineView /> Hide user link 1`] = `
           </div>
            
           <LabelHelpTip
-            body={[Function]}
             customStyle={Object {}}
-            iconComponent={[Function]}
+            iconComponent={
+              <i
+                className="timeline-comments-icon fa fa-comments"
+              />
+            }
             id="tooltip"
             placement="bottom"
             size="1x"
             title="Comment"
-          />
+          >
+            <div
+              className="detail-display"
+            >
+              This is why I checked it out.
+            </div>
+          </LabelHelpTip>
         </div>
       </td>
     </tr>
@@ -1651,14 +1669,23 @@ exports[`<TimelineView /> with selection, completed entity 1`] = `
           </div>
            
           <LabelHelpTip
-            body={[Function]}
             customStyle={Object {}}
-            iconComponent={[Function]}
+            iconComponent={
+              <i
+                className="timeline-comments-icon fa fa-comments"
+              />
+            }
             id="tooltip"
             placement="bottom"
             size="1x"
             title="Comment"
-          />
+          >
+            <div
+              className="detail-display"
+            >
+              This is why I checked it out.
+            </div>
+          </LabelHelpTip>
         </div>
       </td>
     </tr>
@@ -2225,14 +2252,23 @@ exports[`<TimelineView /> with selection, open entity 1`] = `
           </div>
            
           <LabelHelpTip
-            body={[Function]}
             customStyle={Object {}}
-            iconComponent={[Function]}
+            iconComponent={
+              <i
+                className="timeline-comments-icon fa fa-comments"
+              />
+            }
             id="tooltip"
             placement="bottom"
             size="1x"
             title="Comment"
-          />
+          >
+            <div
+              className="detail-display"
+            >
+              This is why I checked it out.
+            </div>
+          </LabelHelpTip>
         </div>
       </td>
     </tr>

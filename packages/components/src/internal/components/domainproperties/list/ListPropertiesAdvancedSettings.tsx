@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Col, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
+import { Button, FormControl, FormGroup, Modal, Radio } from 'react-bootstrap';
 import { faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -93,7 +93,7 @@ class TitleIndexField extends React.PureComponent<TitleIndexFieldProps> {
         const title = titleTemplate == null ? '' : titleTemplate;
         return (
             <div>
-                <DomainFieldLabel label="Document title" helpTipBody={() => DOCUMENT_TITLE_TIP} />
+                <DomainFieldLabel label="Document title" helpTipBody={DOCUMENT_TITLE_TIP} />
                 <span>
                     <FormControl
                         className="list__advanced-settings-modal__text-field"
@@ -125,15 +125,15 @@ class MetadataIndexField extends React.PureComponent<MetadataIndexFieldProps> {
         return (
             <div>
                 <FormGroup>
-                    <Radio name={name} value={2} checked={indexSetting == 2} onChange={onRadioChange}>
+                    <Radio name={name} value={2} checked={indexSetting === 2} onChange={onRadioChange}>
                         Include both metadata and data
-                        <LabelHelpTip title="Warning" body={() => DATA_INDEXING_TIP} />
+                        <LabelHelpTip title="Warning">{DATA_INDEXING_TIP}</LabelHelpTip>
                     </Radio>
-                    <Radio name={name} value={1} checked={indexSetting == 1} onChange={onRadioChange}>
+                    <Radio name={name} value={1} checked={indexSetting === 1} onChange={onRadioChange}>
                         Include data only
-                        <LabelHelpTip title="Warning" body={() => DATA_INDEXING_TIP} />
+                        <LabelHelpTip title="Warning">{DATA_INDEXING_TIP}</LabelHelpTip>
                     </Radio>
-                    <Radio name={name} value={0} checked={indexSetting == 0} onChange={onRadioChange}>
+                    <Radio name={name} value={0} checked={indexSetting === 0} onChange={onRadioChange}>
                         Include metadata only (name and description of list and fields)
                     </Radio>
                 </FormGroup>
@@ -153,20 +153,20 @@ interface IndexFieldProps {
 export class IndexField extends React.PureComponent<IndexFieldProps> {
     render() {
         const { name, onRadioChange, bodySetting, bodyTemplate, onInputChange } = this.props;
-        const id = name == 'entireListBodySetting' ? 'entireListBodyTemplate' : 'eachItemBodyTemplate';
+        const id = name === 'entireListBodySetting' ? 'entireListBodyTemplate' : 'eachItemBodyTemplate';
 
         return (
             <div>
                 <FormGroup>
-                    <Radio name={name} value={0} checked={bodySetting == 0} onChange={onRadioChange}>
+                    <Radio name={name} value={0} checked={bodySetting === 0} onChange={onRadioChange}>
                         Index all non-PHI text fields
                     </Radio>
-                    <Radio name={name} value={1} checked={bodySetting == 1} onChange={onRadioChange}>
+                    <Radio name={name} value={1} checked={bodySetting === 1} onChange={onRadioChange}>
                         Index all non-PHI fields (text, number, date, and boolean)
                     </Radio>
-                    <Radio name={name} value={2} checked={bodySetting == 2} onChange={onRadioChange}>
+                    <Radio name={name} value={2} checked={bodySetting === 2} onChange={onRadioChange}>
                         Index using custom template
-                        <LabelHelpTip title="" body={() => CUSTOM_TEMPLATE_TIP} />
+                        <LabelHelpTip>{CUSTOM_TEMPLATE_TIP}</LabelHelpTip>
                     </Radio>
                 </FormGroup>
 
@@ -436,7 +436,7 @@ class SettingsContainer extends React.PureComponent<SettingsContainerProps> {
             <div className="list__advanced-settings-modal__section-container">
                 <div className="list__advanced-settings-modal__heading">
                     <span className="list__bold-text"> {title} </span>
-                    <LabelHelpTip title={tipTitle || title} body={() => tipBody} />
+                    <LabelHelpTip title={tipTitle || title}>{tipBody}</LabelHelpTip>
                 </div>
 
                 {fieldComponent}

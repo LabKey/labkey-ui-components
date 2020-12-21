@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { Button, Col, FormControl, Row } from 'react-bootstrap';
 
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
@@ -28,29 +28,26 @@ interface RangeValidationOptionsProps {
     mvEnabled: boolean;
     expanded: boolean;
     dataType: PropDescType;
-    onExpand: (index: number) => any;
-    onChange: (validator: PropertyValidator, index: number) => any;
-    onDelete: (index: number) => any;
+    onExpand?: (index: number) => void;
+    onChange: (validator: PropertyValidator, index: number) => void;
+    onDelete: (index: number) => void;
 }
 
-export class RangeValidationOptions extends React.PureComponent<RangeValidationOptionsProps, any> {
+export class RangeValidationOptions extends PureComponent<RangeValidationOptionsProps> {
     labelWidth = 4;
     fieldWidth = 8;
 
-    static isValid = (validator: PropertyValidator) => {
+    static isValid = (validator: PropertyValidator): boolean => {
         return Filters.isValid(validator.get('expression')) && !!validator.get('name');
     };
 
-    renderRowTextbox(label: string, name: string, value: string, tooltipTitle?: string, tooltipBody?: () => any) {
+    renderRowTextbox(label: string, name: string, value: string) {
         const { validatorIndex, domainIndex } = this.props;
 
         return (
             <Row className="domain-validator-filter-row">
                 <Col xs={this.labelWidth}>
-                    <div>
-                        {label}
-                        {tooltipTitle && tooltipBody && <LabelHelpTip title={tooltipTitle} body={tooltipBody} />}
-                    </div>
+                    <div>{label}</div>
                 </Col>
                 <Col xs={this.fieldWidth}>
                     <div>
@@ -69,109 +66,46 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
         );
     }
 
-    renderName(value: string) {
-        const { validatorIndex, domainIndex } = this.props;
-
-        return (
-            <Row>
-                <Col xs={this.labelWidth}>
-                    <div>Name *</div>
-                </Col>
-                <Col xs={this.fieldWidth}>
-                    <FormControl
-                        type="text"
-                        id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}
-                        name={createFormInputName(DOMAIN_VALIDATOR_NAME)}
-                        value={value}
-                        onChange={this.onChange}
-                    />
-                </Col>
-            </Row>
-        );
-    }
-
-    renderRemoveValidator() {
-        const { validatorIndex, domainIndex } = this.props;
-
-        return (
-            <Row>
-                <Col xs={12}>
-                    <Button
-                        className="domain-validation-delete"
-                        name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
-                        id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
-                        onClick={this.onDelete}
-                    >
-                        Remove Validator
-                    </Button>
-                </Col>
-            </Row>
-        );
-    }
-
-    onDelete = () => {
+    onDelete = (): void => {
         const { onDelete, validatorIndex } = this.props;
-
         onDelete(validatorIndex);
     };
 
-    onChange = evt => {
+    onChange = (evt): void => {
         const { onChange, validator, validatorIndex } = this.props;
 
         const value = evt.target.value;
         const name = getNameFromId(evt.target.id);
-
-        let newValidator;
-        newValidator = validator.set(name, value);
+        const newValidator = validator.set(name, value);
 
         onChange(newValidator, validatorIndex);
     };
 
-    onFilterChange = (expression: string) => {
+    onFilterChange = (expression: string): void => {
         const { validator, validatorIndex, onChange } = this.props;
 
         onChange(validator.set('expression', expression), validatorIndex);
     };
 
-    expandValidator = evt => {
+    expandValidator = (): void => {
         const { onExpand, validatorIndex } = this.props;
-
-        if (onExpand) {
-            onExpand(validatorIndex);
-        }
+        onExpand?.(validatorIndex);
     };
 
-    firstFilterTooltipText = () => {
-        return 'Add a condition to this validation rule that will be tested against the value for this field.';
-    };
-
-    firstFilterTooltip = () => {
-        return <LabelHelpTip title="First Condition" body={this.firstFilterTooltipText} required={true} />;
-    };
-
-    secondFilterTooltipText = () => {
+    firstFilterTooltip = (): ReactNode => {
         return (
-            'Add a condition to this validation rule that will be tested against the value for this field. ' +
-            'Both the first and second conditions will be tested for this field.'
+            <LabelHelpTip title="First Condition" required={true}>
+                Add a condition to this validation rule that will be tested against the value for this field.
+            </LabelHelpTip>
         );
     };
 
-    secondFilterTooltip = () => {
-        return <LabelHelpTip title="Second Condition" body={this.secondFilterTooltipText} />;
-    };
-
-    renderCollapsed = () => {
-        const { validator } = this.props;
-
+    secondFilterTooltip = (): ReactNode => {
         return (
-            <div>
-                {(validator.name ? validator.name : 'Range Validator') +
-                    ': ' +
-                    (validator.expression ? Filters.describeExpression(validator.expression) : 'Missing condition')}
-                <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
-                    <FontAwesomeIcon icon={faPencilAlt} />
-                </div>
-            </div>
+            <LabelHelpTip title="Second Condition">
+                Add a condition to this validation rule that will be tested against the value for this field. Both the
+                first and second conditions will be tested for this field.
+            </LabelHelpTip>
         );
     };
 
@@ -193,13 +127,51 @@ export class RangeValidationOptions extends React.PureComponent<RangeValidationO
                             firstFilterTooltip={this.firstFilterTooltip()}
                             secondFilterTooltip={this.secondFilterTooltip()}
                         />
+
                         {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validator.description)}
                         {this.renderRowTextbox('Error Message', DOMAIN_VALIDATOR_ERRORMESSAGE, validator.errorMessage)}
-                        {this.renderName(validator.name)}
-                        {this.renderRemoveValidator()}
+
+                        <Row>
+                            <Col xs={this.labelWidth}>
+                                <div>Name *</div>
+                            </Col>
+                            <Col xs={this.fieldWidth}>
+                                <FormControl
+                                    type="text"
+                                    id={createFormInputId(DOMAIN_VALIDATOR_NAME, domainIndex, validatorIndex)}
+                                    name={createFormInputName(DOMAIN_VALIDATOR_NAME)}
+                                    value={validator.name}
+                                    onChange={this.onChange}
+                                />
+                            </Col>
+                        </Row>
+
+                        <Row>
+                            <Col xs={12}>
+                                <Button
+                                    className="domain-validation-delete"
+                                    name={createFormInputName(DOMAIN_VALIDATOR_REMOVE)}
+                                    id={createFormInputId(DOMAIN_VALIDATOR_REMOVE, domainIndex, validatorIndex)}
+                                    onClick={this.onDelete}
+                                >
+                                    Remove Validator
+                                </Button>
+                            </Col>
+                        </Row>
                     </div>
                 )}
-                {!expanded && <div>{this.renderCollapsed()}</div>}
+                {!expanded && (
+                    <div className="domain-validator-collapse">
+                        {`${validator.name ?? 'Range Validator'}: ${
+                            validator.expression
+                                ? Filters.describeExpression(validator.expression)
+                                : 'Missing condition'
+                        }`}
+                        <div className="domain-validator-collapse-icon" onClick={this.expandValidator}>
+                            <FontAwesomeIcon icon={faPencilAlt} />
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }

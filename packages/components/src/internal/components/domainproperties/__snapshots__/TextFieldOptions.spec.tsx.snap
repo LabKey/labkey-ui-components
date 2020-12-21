@@ -58,8 +58,17 @@ exports[`TextFieldOptions Text data type 1`] = `
             <div
               className="domain-field-label"
             >
-              <DomainFieldLabel
-                helpTipBody={[Function]}
+              <Component
+                helpTipBody={
+                  <React.Fragment>
+                    <p>
+                      Sets the maximum character count for a text field.
+                    </p>
+                    <p>
+                      Anything over 4,000 characters will use the 'Unlimited' designation.
+                    </p>
+                  </React.Fragment>
+                }
                 label="Maximum Text Length"
               >
                 Maximum Text 
@@ -67,8 +76,7 @@ exports[`TextFieldOptions Text data type 1`] = `
                   className="domain-no-wrap"
                 >
                   Length
-                  <LabelHelpTip
-                    body={[Function]}
+                  <Component
                     customStyle={Object {}}
                     id="tooltip"
                     size="1x"
@@ -185,9 +193,9 @@ exports[`TextFieldOptions Text data type 1`] = `
                         />
                       </Overlay>
                     </span>
-                  </LabelHelpTip>
+                  </Component>
                 </span>
-              </DomainFieldLabel>
+              </Component>
             </div>
           </div>
         </Col>

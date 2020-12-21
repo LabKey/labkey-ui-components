@@ -15,7 +15,15 @@
  */
 import { List, Map } from 'immutable';
 
-import { AssayDefinitionModel, AssayDomainTypes, IFile, QueryInfo } from '../..';
+import {
+    AssayDefinitionModel,
+    AssayDomainTypes,
+    AssayStateModel,
+    GENERAL_ASSAY_PROVIDER_NAME,
+    IFile,
+    LoadingState,
+    QueryInfo,
+} from '../..';
 import { AssayWizardModel } from '../../internal/components/assay/AssayWizardModel';
 
 import assayWizardJSON from './assayWizardModel.json';
@@ -382,3 +390,12 @@ export const TIMELINE_DATA = [
         },
     },
 ];
+
+export const TEST_ASSAY_STATE_MODEL = new AssayStateModel({
+    definitionsLoadingState: LoadingState.LOADED,
+    definitions: [
+        AssayDefinitionModel.create({ id: 1, name: 'GPAT 1', type: GENERAL_ASSAY_PROVIDER_NAME }),
+        AssayDefinitionModel.create({ id: 2, name: 'GPAT 2', type: GENERAL_ASSAY_PROVIDER_NAME }),
+        AssayDefinitionModel.create({ id: 3, name: 'NAb 1', type: 'NAb' }),
+    ],
+});

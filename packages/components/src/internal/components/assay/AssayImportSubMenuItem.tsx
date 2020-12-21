@@ -20,7 +20,8 @@ interface Props extends SubMenuItemProps {
     providerType?: string;
 }
 
-class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAssayModel> {
+// exported for jest testing
+export class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAssayModel> {
     static defaultProps = {
         isLoaded: true,
         nounPlural: 'items',
@@ -56,7 +57,7 @@ class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAssayMode
         if (items.length) {
             const selectedCount = model ? model.selectedIds.size : -1;
             const overlayMessage =
-                requireSelection && selectedCount == 0
+                requireSelection && selectedCount === 0
                     ? 'Select one or more ' + nounPlural + '.'
                     : selectedCount > MAX_EDITABLE_GRID_ROWS
                     ? 'At most ' + MAX_EDITABLE_GRID_ROWS + ' ' + nounPlural + ' can be selected.'

@@ -21,7 +21,7 @@ import { Input } from 'formsy-react-components';
 import { Utils } from '@labkey/api';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import { LoadingSpinner, QueryColumn, QueryInfo, selectRows, SchemaQuery, Tip } from '../../..';
+import { formatDateTime, LoadingSpinner, QueryColumn, QueryInfo, SchemaQuery, selectRows, Tip } from '../../..';
 
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
 
@@ -173,7 +173,9 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         });
     };
 
-    filterDisabledFields = (data: any, requiredFields?: string[]): OrderedMap<string, any> => {
+    getUpdatedFields = (data: any, requiredFields?: string[]): OrderedMap<string, any> => {
+        const { submitForEdit } = this.state;
+
         const fieldsToUpdate = this.props.queryInfo.columns.filter(column => {
             const enabledKey = getFieldEnabledFieldName(column);
             return data[enabledKey] === undefined || data[enabledKey] === 'true';
@@ -183,7 +185,12 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         for (const key in data) {
             if (data.hasOwnProperty(key)) {
                 if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1) {
-                    filteredData = filteredData.set(key, data[key]);
+                    if (submitForEdit && this.props.queryInfo.getColumn(key).jsonType === 'date') {
+                        // TODO this produces a console error about missing timezone info.
+                        filteredData = filteredData.set(key, formatDateTime(data[key]));
+                    } else {
+                        filteredData = filteredData.set(key, data[key]);
+                    }
                 }
             }
         }
@@ -199,7 +206,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
             errorMsg: undefined,
             isSubmitting: true,
         });
-        const updatedRow = this.filterDisabledFields(row, ['numItems']);
+        const updatedRow = this.getUpdatedFields(row, ['numItems']);
         const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
         submitFn(updatedRow).then(

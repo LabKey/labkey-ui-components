@@ -50,7 +50,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
             // to populate the queryInfoForm.  If we don't have this data, we came directly to the editable grid
             // using values from the display grid to initialize the editable grid model, so we use that.
             const initData = selectionData ? selectionData : model.data;
-            const editorData = editorModel.getRawData(model, true, readOnlyColumns).toArray();
+            const editorData = editorModel.getRawData(model, false, true, readOnlyColumns).toArray();
             const updatedRows = getUpdatedDataFromGrid(initData, editorData, idField);
 
             if (updatedRows.length > 0) {
@@ -90,7 +90,7 @@ export class EditableGridPanelForUpdate extends React.Component<Props, State> {
                         'Finish Updating ' +
                         model.data.size +
                         ' ' +
-                        (model.data.size == 1 ? capitalizeFirstChar(singularNoun) : capitalizeFirstChar(pluralNoun))
+                        (model.data.size === 1 ? capitalizeFirstChar(singularNoun) : capitalizeFirstChar(pluralNoun))
                     }
                 />
             </>

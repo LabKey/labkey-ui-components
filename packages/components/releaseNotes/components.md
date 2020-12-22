@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released#: TBD
 * Issue 42088: Don't send formatted date values when saving data
 
+### version 1.11.1
+*Released*: 22 December 2020
+* Dependabot package updates
+
 ### version 1.11.0
 *Released*: 22 December 2020
 * Item 8267: Misc bug fixes related to LKSM workflow

@@ -660,7 +660,9 @@ export class EditorModel
             valueMap.get('value') !== null &&
             valueMap.get('value') !== undefined
         ) {
-            return valueMap.has('displayValue')
+            return valueMap.has('formattedValue')
+                ? List<any>([{ displayValue: valueMap.get('formattedValue'), value: valueMap.get('value') }])
+                : valueMap.has('displayValue')
                 ? List<any>([{ displayValue: valueMap.get('displayValue'), value: valueMap.get('value') }])
                 : valueMap.get('value');
         } else return undefined;

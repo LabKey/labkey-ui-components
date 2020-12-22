@@ -143,13 +143,11 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         } = this.props;
 
         const { isDisabled, selectedDate } = this.state;
-
+        const labelClass = 'control-label col-sm-3 text-left col-xs-12';
         return (
             <div className="form-group row">
                 {renderFieldLabel ? (
-                    <label className="control-label col-sm-3 text-left col-xs-12">
-                        {renderFieldLabel(queryColumn)}
-                    </label>
+                    <label className={labelClass}>{renderFieldLabel(queryColumn)}</label>
                 ) : (
                     <FieldLabel
                         label={label}
@@ -157,7 +155,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                             isFormsy: false,
                             inputId: queryColumn.name,
                             addLabelAsterisk,
-                            labelClass: 'control-label col-sm-3 col-xs-12 text-left',
+                            labelClass: allowDisable ? undefined : labelClass,
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}

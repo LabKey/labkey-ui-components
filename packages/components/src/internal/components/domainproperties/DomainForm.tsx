@@ -547,7 +547,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.onDomainChange(handleDomainUpdates(this.props.domain, changes));
 
         const firstChange = changes.get(0);
-        if (firstChange && firstChange.id.includes("domainpropertiesrow-selected")) {
+        if (firstChange?.id.includes("domainpropertiesrow-selected")) {
             this.setState((state) => {applySetOperation(state.visibleSelection, index, firstChange.value)});
         }
         if (expand) {

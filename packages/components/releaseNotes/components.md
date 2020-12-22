@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 1.11.1
+*Released*: 22 December 2020
 * Dependabot package updates
 
 ### version 1.11.0

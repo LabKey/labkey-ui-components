@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version TBD
-*Released*: TBD
+### version 0.5.1
+*Released*: 22 December 2020
 * Dependabot package updates
 
 ### version 0.5.0

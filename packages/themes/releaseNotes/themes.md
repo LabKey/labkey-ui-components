@@ -1,8 +1,8 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
-### version TBD
-*Released*: TBD
+### version 1.0.2
+*Released*: 22 December 2020
 * Dependabot package updates
 
 ### version 1.0.1

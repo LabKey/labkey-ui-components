@@ -1,8 +1,8 @@
 # @labkey/test
 Utilities and configurations for running JavaScript tests with LabKey Server.
 
-### version TBD
-*Released*: TBD
+### version 0.0.5
+*Released*: 22 December 2020
 * Dependabot package updates
 
 ### version 0.0.4

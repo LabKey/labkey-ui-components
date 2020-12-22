@@ -185,8 +185,9 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         for (const key in data) {
             if (data.hasOwnProperty(key)) {
                 if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1) {
+                    // Date values are Dates not strings. We convert them to strings in the desired format here.
+                    // They are converted back to dates when saving to the server.
                     if (submitForEdit && this.props.queryInfo.getColumn(key).jsonType === 'date') {
-                        // TODO this produces a console error about missing timezone info.
                         filteredData = filteredData.set(key, formatDateTime(data[key]));
                     } else {
                         filteredData = filteredData.set(key, data[key]);

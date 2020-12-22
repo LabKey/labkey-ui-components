@@ -62,11 +62,13 @@ export function getDateTimeFormat(): string {
     return moment().toMomentFormatString(LABKEY.container.formats.dateTimeFormat);
 }
 
-export function parseDate(dateStr: string, dateFormat?: string) {
+export function parseDate(dateStr: string, dateFormat?: string): Date {
     if (!dateStr) return null;
 
     const date = moment(dateStr, dateFormat);
-    if (date) return date.toDate();
+    if (date && date.isValid()) {
+        return date.toDate();
+    }
 
     return null;
 }

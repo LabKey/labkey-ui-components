@@ -116,8 +116,10 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
 
     getDateFormat(): string {
         const { dateFormat, queryColumn } = this.props;
-        const rawFormat = dateFormat || datePlaceholder(queryColumn);
+        const rawFormat = dateFormat || queryColumn.format || datePlaceholder(queryColumn);
 
+        // Moment.js and react datepicker date format is different
+        // https://github.com/Hacker0x01/react-datepicker/issues/1609
         return rawFormat.replace('YYYY', 'yyyy').replace('DD', 'dd');
     }
 

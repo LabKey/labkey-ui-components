@@ -74,20 +74,18 @@ exports[`<FileAttachmentForm/> with attributes 1`] = `
       <div
         className="pull-right"
       >
-        <Button
-          active={false}
-          block={false}
-          bsClass="btn"
-          bsStyle="info"
-          disabled={false}
+        <a
+          className="btn btn-info"
           href="#downloadtemplateurl"
+          rel="noopener noreferrer"
+          target="_blank"
           title="Download Template"
         >
           <span
             className="fa fa-download"
           />
            Template
-        </Button>
+        </a>
       </div>
     </div>
   </div>

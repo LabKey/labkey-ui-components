@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released#: TBD
 * Issue 42088: Don't send formatted date values when saving data
 
+### version 1.11.0
+*Released*: 22 December 2020
+* Item 8267: Misc bug fixes related to LKSM workflow
+    - FileAttachmentForm fix to use anchor tag with target blank for template file download
+    - AssayImportSubMenuItem and getImportItemsForAssayDefinitions option to filter assays by provider type
+
 ### version 1.10.0
 *Released*: 21 December 2020
 * Remove `body` prop and update `iconComponent` prop to be of type `ReactNode`.

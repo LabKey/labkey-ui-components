@@ -3,6 +3,7 @@ import classNames from 'classnames';
 
 import { ServerActivity, ServerActivityData } from './model';
 import { formatDateTime, getDateTimeFormat, parseDate } from '../../util/Date';
+import { resolveErrorMessage } from "../../..";
 
 interface Props {
     serverActivity: ServerActivity;
@@ -30,6 +31,30 @@ export class ServerActivityList extends React.PureComponent<Props> {
         console.log('showErrorDetails ' + notificationId + ': not yet implemented');
     };
 
+    renderNotificationContent = (content: string, isError?: boolean) => {
+        const newlineIndex = content.toLowerCase().indexOf("\n");
+        const brIndex = content.toLowerCase().indexOf("<br>");
+        let subject : string = undefined, details : string = undefined;
+        if (newlineIndex > 0 || brIndex > 0) {
+            if (newlineIndex > 0) {
+                subject = content.substr(0, newlineIndex);
+                details = content.substring(newlineIndex + 1, content.length);
+            }
+            else {
+                subject = content.substr(0, brIndex);
+                details = content.substring(brIndex + 4, content.length);
+            }
+
+            const detailsDisplay = isError ? resolveErrorMessage(details) : details;
+            return (<>
+                <span className={'server-notifications-item-subject'}>{subject}</span>
+                {detailsDisplay && <span className={'server-notifications-item-details'}>{detailsDisplay}</span>}
+            </>);
+        }
+
+        return <div dangerouslySetInnerHTML={{ __html: content }} />;
+    }
+
     renderData(activity: ServerActivityData, key: number): ReactNode {
         const isUnread = activity.isUnread() && !activity.inProgress;
         return (
@@ -42,10 +67,10 @@ export class ServerActivityList extends React.PureComponent<Props> {
                     })}
                 />
                 <span className={classNames('server-notification-message', {
-                        'is-unread server-notifications-link': isUnread,
+                        'is-unread server-notifications-item': isUnread,
                     })}
                 >
-                    {activity.HtmlContent}
+                    {this.renderNotificationContent(activity.HtmlContent, activity.hasError)}
                 </span>
                 <br />
                 {activity.hasError ? (

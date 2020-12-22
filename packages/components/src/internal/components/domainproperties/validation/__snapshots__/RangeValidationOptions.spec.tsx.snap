@@ -41,63 +41,63 @@ exports[`RangeValidationOptions Range Validator - collapsed 1`] = `
     className="domain-validator-panel"
     id="domain-range-validator-0"
   >
-    <div>
-      <div>
-        Test range validator: Is Greater Than 0 and Is Less Than 10
-        <div
-          className="domain-validator-collapse-icon"
-          onClick={[Function]}
-        >
-          <FontAwesomeIcon
-            border={false}
-            className=""
-            fixedWidth={false}
-            flip={null}
-            icon={
-              Object {
-                "icon": Array [
-                  512,
-                  512,
-                  Array [],
-                  "f303",
-                  "M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z",
-                ],
-                "iconName": "pencil-alt",
-                "prefix": "fas",
-              }
+    <div
+      className="domain-validator-collapse"
+    >
+      Test range validator: Is Greater Than 0 and Is Less Than 10
+      <div
+        className="domain-validator-collapse-icon"
+        onClick={[Function]}
+      >
+        <FontAwesomeIcon
+          border={false}
+          className=""
+          fixedWidth={false}
+          flip={null}
+          icon={
+            Object {
+              "icon": Array [
+                512,
+                512,
+                Array [],
+                "f303",
+                "M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z",
+              ],
+              "iconName": "pencil-alt",
+              "prefix": "fas",
             }
-            inverse={false}
-            listItem={false}
-            mask={null}
-            pull={null}
-            pulse={false}
-            rotation={null}
-            size={null}
-            spin={false}
-            swapOpacity={false}
-            symbol={false}
-            title=""
-            transform={null}
+          }
+          inverse={false}
+          listItem={false}
+          mask={null}
+          pull={null}
+          pulse={false}
+          rotation={null}
+          size={null}
+          spin={false}
+          swapOpacity={false}
+          symbol={false}
+          title=""
+          transform={null}
+        >
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-pencil-alt fa-w-16 "
+            data-icon="pencil-alt"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={Object {}}
+            viewBox="0 0 512 512"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <svg
-              aria-hidden="true"
-              className="svg-inline--fa fa-pencil-alt fa-w-16 "
-              data-icon="pencil-alt"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+            <path
+              d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
+              fill="currentColor"
               style={Object {}}
-              viewBox="0 0 512 512"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M497.9 142.1l-46.1 46.1c-4.7 4.7-12.3 4.7-17 0l-111-111c-4.7-4.7-4.7-12.3 0-17l46.1-46.1c18.7-18.7 49.1-18.7 67.9 0l60.1 60.1c18.8 18.7 18.8 49.1 0 67.9zM284.2 99.8L21.6 362.4.4 483.9c-2.9 16.4 11.4 30.6 27.8 27.8l121.5-21.3 262.6-262.6c4.7-4.7 4.7-12.3 0-17l-111-111c-4.8-4.7-12.4-4.7-17.1 0zM124.1 339.9c-5.5-5.5-5.5-14.3 0-19.8l154-154c5.5-5.5 14.3-5.5 19.8 0s5.5 14.3 0 19.8l-154 154c-5.5 5.5-14.3 5.5-19.8 0zM88 424h48v36.3l-64.5 11.3-31.1-31.1L51.7 376H88v48z"
-                fill="currentColor"
-                style={Object {}}
-              />
-            </svg>
-          </FontAwesomeIcon>
-        </div>
+            />
+          </svg>
+        </FontAwesomeIcon>
       </div>
     </div>
   </div>
@@ -150,14 +150,15 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
         domainIndex={1}
         expression="~gt=0&~lt=10"
         firstFilterTooltip={
-          <LabelHelpTip
-            body={[Function]}
+          <Memo(LabelHelpTip)
             customStyle={Object {}}
             id="tooltip"
             required={true}
             size="1x"
             title="First Condition"
-          />
+          >
+            Add a condition to this validation rule that will be tested against the value for this field.
+          </Memo(LabelHelpTip)>
         }
         firstFilterTypeLabel="First Condition *"
         firstFilterValueLabel=""
@@ -165,13 +166,14 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
         onChange={[Function]}
         range={true}
         secondFilterTooltip={
-          <LabelHelpTip
-            body={[Function]}
+          <Memo(LabelHelpTip)
             customStyle={Object {}}
             id="tooltip"
             size="1x"
             title="Second Condition"
-          />
+          >
+            Add a condition to this validation rule that will be tested against the value for this field. Both the first and second conditions will be tested for this field.
+          </Memo(LabelHelpTip)>
         }
         secondFilterTypeLabel="Second Condition"
         secondFilterValueLabel=""
@@ -198,8 +200,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   id="domain-filter-type-label-1"
                 >
                   First Condition *
-                  <LabelHelpTip
-                    body={[Function]}
+                  <Component
                     customStyle={Object {}}
                     id="tooltip"
                     required={true}
@@ -266,58 +267,16 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                         placement="right"
                         rootClose={false}
                         show={false}
-                        target={
-                          <span
-                            class="label-help-target"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                              data-icon="question-circle"
-                              data-prefix="fas"
-                              focusable="false"
-                              role="img"
-                              viewBox="0 0 512 512"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </span>
-                        }
                       >
                         <Overlay
                           placement="right"
                           rootClose={false}
                           show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <svg
-                                aria-hidden="true"
-                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                data-icon="question-circle"
-                                data-prefix="fas"
-                                focusable="false"
-                                role="img"
-                                viewBox="0 0 512 512"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                  fill="currentColor"
-                                />
-                              </svg>
-                            </span>
-                          }
                           transition={[Function]}
                         />
                       </Overlay>
                     </span>
-                  </LabelHelpTip>
+                  </Component>
                 </div>
               </div>
             </Col>
@@ -467,8 +426,7 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                   id="domain-filter-type-label-2"
                 >
                   Second Condition
-                  <LabelHelpTip
-                    body={[Function]}
+                  <Component
                     customStyle={Object {}}
                     id="tooltip"
                     size="1x"
@@ -534,58 +492,16 @@ exports[`RangeValidationOptions Range Validator - expanded 1`] = `
                         placement="right"
                         rootClose={false}
                         show={false}
-                        target={
-                          <span
-                            class="label-help-target"
-                          >
-                            <svg
-                              aria-hidden="true"
-                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                              data-icon="question-circle"
-                              data-prefix="fas"
-                              focusable="false"
-                              role="img"
-                              viewBox="0 0 512 512"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                fill="currentColor"
-                              />
-                            </svg>
-                          </span>
-                        }
                       >
                         <Overlay
                           placement="right"
                           rootClose={false}
                           show={false}
-                          target={
-                            <span
-                              class="label-help-target"
-                            >
-                              <svg
-                                aria-hidden="true"
-                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                data-icon="question-circle"
-                                data-prefix="fas"
-                                focusable="false"
-                                role="img"
-                                viewBox="0 0 512 512"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                  fill="currentColor"
-                                />
-                              </svg>
-                            </span>
-                          }
                           transition={[Function]}
                         />
                       </Overlay>
                     </span>
-                  </LabelHelpTip>
+                  </Component>
                 </div>
               </div>
             </Col>

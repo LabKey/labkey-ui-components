@@ -19,14 +19,14 @@ describe('<DomainFieldLabel/>', () => {
     });
 
     test('label and helpTip', () => {
-        const component = <DomainFieldLabel label="Field Label" helpTipBody={() => 'Help tip body'} />;
+        const component = <DomainFieldLabel label="Field Label" helpTipBody="Help tip body" />;
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
     });
 
     test('label, required, and helpTip', () => {
-        const component = <DomainFieldLabel label="Field Label" required={true} helpTipBody={() => 'Help tip body'} />;
+        const component = <DomainFieldLabel label="Field Label" required={true} helpTipBody="Help tip body" />;
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();

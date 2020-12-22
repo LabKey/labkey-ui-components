@@ -81,10 +81,8 @@ describe('RangeValidationOptions', () => {
 
         const validator = mount(<RangeValidationOptions {...props} />);
 
-        const collapsed = validator.find({ id: 'domain-range-validator-' + validatorIndex });
-        expect(collapsed.children().children().text()).toEqual(
-            'Test range validator: Is Greater Than 0 and Is Less Than 10'
-        );
+        const collapsed = validator.find(`#domain-range-validator-${validatorIndex} .domain-validator-collapse`);
+        expect(collapsed.text()).toEqual('Test range validator: Is Greater Than 0 and Is Less Than 10');
 
         expect(validator).toMatchSnapshot();
         validator.unmount();

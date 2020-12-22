@@ -105,12 +105,9 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
             <>
                 {/* Header help icon*/}
                 {iconHelpMsg && (
-                    <LabelHelpTip
-                        title={title}
-                        body={() => iconHelpMsg}
-                        placement="top"
-                        iconComponent={this.getHeaderIconComponent}
-                    />
+                    <LabelHelpTip iconComponent={this.getHeaderIconComponent()} placement="top" title={title}>
+                        {iconHelpMsg}
+                    </LabelHelpTip>
                 )}
                 {panelStatus && panelStatus !== 'NONE' && !iconHelpMsg && this.getHeaderIconComponent()}
 
@@ -126,8 +123,9 @@ export class CollapsiblePanelHeader extends React.PureComponent<Props, any> {
                         customStyle={{ verticalAlign: 'top', marginLeft: '5px' }}
                         placement="top"
                         title={title}
-                        body={() => children}
-                    />
+                    >
+                        {children}
+                    </LabelHelpTip>
                 )}
 
                 {/* Header details, shown on the right side*/}

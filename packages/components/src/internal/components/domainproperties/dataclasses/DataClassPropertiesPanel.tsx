@@ -107,9 +107,7 @@ export class DataClassPropertiesPanelImpl extends PureComponent<
                 <Col xs={2}>
                     <DomainFieldLabel
                         label="Sample Type"
-                        helpTipBody={() =>
-                            `The default Sample Type where new samples will be created for this ${nounSingular.toLowerCase()}.`
-                        }
+                        helpTipBody={`The default Sample Type where new samples will be created for this ${nounSingular.toLowerCase()}.`}
                     />
                 </Col>
                 <Col xs={10}>

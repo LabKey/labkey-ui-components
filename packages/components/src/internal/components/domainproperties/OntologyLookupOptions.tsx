@@ -72,40 +72,6 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
         this.props.onChange?.(id, value);
     }
 
-    getChooseSourceHelpText = (): ReactNode => {
-        return (
-            <>
-                <p>
-                    <i>
-                        This is currently an experimental feature and is not officially supported. By using this feature
-                        By using this feature you acknowledge that these functions may change, possibly affecting your
-                        possibly affecting your data.
-                    </i>
-                </p>
-                <p>Choose which ontology to use to lookup concept codes and preferred names.</p>
-                <p>Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.</p>
-            </>
-        );
-    };
-
-    getImportFieldHelpText = (): ReactNode => {
-        return (
-            <>
-                <p>Choose which text field to use when looking up a code against the selected ontology.</p>
-                <p>Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.</p>
-            </>
-        );
-    };
-
-    getLabelFieldHelpText = (): ReactNode => {
-        return (
-            <>
-                <p>Choose which text field to store the preferred name of the concept.</p>
-                <p>Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.</p>
-            </>
-        );
-    };
-
     getSourceInputId(): string {
         const { index, domainIndex } = this.props;
         return createFormInputId(DOMAIN_FIELD_ONTOLOGY_SOURCE, domainIndex, index);
@@ -159,19 +125,46 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                     <Col xs={3}>
                         <div className="domain-field-label">
                             Choose an Ontology
-                            <LabelHelpTip title="Experimental Feature" body={this.getChooseSourceHelpText} />
+                            <LabelHelpTip title="Experimental Feature">
+                                <>
+                                    <p>
+                                        <i>
+                                            This is currently an experimental feature and is not officially supported.
+                                            By using this feature By using this feature you acknowledge that these
+                                            functions may change, possibly affecting your possibly affecting your data.
+                                        </i>
+                                    </p>
+                                    <p>Choose which ontology to use to lookup concept codes and preferred names.</p>
+                                    <p>
+                                        Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in
+                                        LabKey.
+                                    </p>
+                                </>
+                            </LabelHelpTip>
                         </div>
                     </Col>
                     <Col xs={3}>
                         <div className="domain-field-label">
                             Choose an Import Field
-                            <LabelHelpTip title="Experimental Feature" body={this.getImportFieldHelpText} />
+                            <LabelHelpTip title="Experimental Feature">
+                                <p>
+                                    Choose which text field to use when looking up a code against the selected ontology.
+                                </p>
+                                <p>
+                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.
+                                </p>
+                            </LabelHelpTip>
                         </div>
                     </Col>
                     <Col xs={3}>
                         <div className="domain-field-label">
                             Choose a Label Field
-                            <LabelHelpTip title="Experimental Feature" body={this.getLabelFieldHelpText} />
+                            <LabelHelpTip title="Experimental Feature">
+                                <p>Choose which text field to store the preferred name of the concept.</p>
+                                <p>
+                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.
+                                </p>
+                            </LabelHelpTip>
                         </div>
                     </Col>
                 </Row>

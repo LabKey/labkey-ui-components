@@ -3,9 +3,10 @@ import { MenuItem, OverlayTrigger } from 'react-bootstrap';
 import { mount } from 'enzyme';
 import { List } from 'immutable';
 
-import { AssayImportSubMenuItemImpl } from './AssayImportSubMenuItem';
 import { TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
 import { GENERAL_ASSAY_PROVIDER_NAME, QueryGridModel, SubMenuItem } from '../../..';
+
+import { AssayImportSubMenuItemImpl } from './AssayImportSubMenuItem';
 
 const DEFAULT_PROPS = {
     assayModel: TEST_ASSAY_STATE_MODEL,
@@ -17,12 +18,7 @@ const DEFAULT_PROPS = {
 
 describe('AssayImportSubMenuItem', () => {
     test('loading', () => {
-        const wrapper = mount(
-            <AssayImportSubMenuItemImpl
-                {...DEFAULT_PROPS}
-                isLoaded={false}
-            />
-        );
+        const wrapper = mount(<AssayImportSubMenuItemImpl {...DEFAULT_PROPS} isLoaded={false} />);
 
         expect(wrapper.find('.fa-spinner')).toHaveLength(1);
         expect(wrapper.find(MenuItem)).toHaveLength(1);
@@ -34,10 +30,7 @@ describe('AssayImportSubMenuItem', () => {
 
     test('with items', () => {
         const wrapper = mount(
-            <AssayImportSubMenuItemImpl
-                {...DEFAULT_PROPS}
-                providerType={GENERAL_ASSAY_PROVIDER_NAME}
-            />
+            <AssayImportSubMenuItemImpl {...DEFAULT_PROPS} providerType={GENERAL_ASSAY_PROVIDER_NAME} />
         );
 
         expect(wrapper.find('.fa-spinner')).toHaveLength(0);
@@ -49,12 +42,7 @@ describe('AssayImportSubMenuItem', () => {
     });
 
     test('no items', () => {
-        const wrapper = mount(
-            <AssayImportSubMenuItemImpl
-                {...DEFAULT_PROPS}
-                providerType="BOGUS"
-            />
-        );
+        const wrapper = mount(<AssayImportSubMenuItemImpl {...DEFAULT_PROPS} providerType="BOGUS" />);
 
         expect(wrapper.find('.fa-spinner')).toHaveLength(0);
         expect(wrapper.find(MenuItem)).toHaveLength(0);
@@ -92,7 +80,9 @@ describe('AssayImportSubMenuItem', () => {
                 {...DEFAULT_PROPS}
                 text="Test Assay Import"
                 requireSelection={true}
-                model={new QueryGridModel({ selectedIds: List<string>(['test']) })}
+                model={
+                    new QueryGridModel({ selectedIds: List<string>(['test']) })
+                }
             />
         );
 

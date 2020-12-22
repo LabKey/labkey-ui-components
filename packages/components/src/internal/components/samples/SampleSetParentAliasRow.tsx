@@ -96,7 +96,7 @@ export class SampleSetParentAliasRow extends React.Component<IParentAliasRow> {
         return (
             <Row key={id}>
                 <Col xs={2}>
-                    <DomainFieldLabel label={aliasCaption} required={true} helpTipBody={() => helpMsg} />
+                    <DomainFieldLabel label={aliasCaption} required={true} helpTipBody={helpMsg} />
                 </Col>
                 <Col xs={3} className={classNames({ 'has-error': !ignoreAliasError && (aliasBlank || isDupe) })}>
                     <FormControl

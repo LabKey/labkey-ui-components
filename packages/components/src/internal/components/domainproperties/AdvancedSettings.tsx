@@ -195,57 +195,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         }
     };
 
-    getMeasureHelpText = () => {
-        return (
-            <div>
-                <p>
-                    Indicates fields that contain data subject to charting and other analysis. These are typically
-                    numeric results.
-                </p>
-                <p>
-                    Learn more about using{' '}
-                    {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, 'Measures and Dimensions')} for analysis.
-                </p>
-            </div>
-        );
-    };
-
-    getDimensionHelpText = () => {
-        return (
-            <div>
-                <p>
-                    Indicates a field of non-numerical categories that can be included in a chart. Dimensions define
-                    logical groupings of measures.
-                </p>
-                <p>
-                    Learn more about using{' '}
-                    {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, 'Measures and Dimensions')} for analysis.
-                </p>
-            </div>
-        );
-    };
-
-    getMissingValueHelpText = () => {
-        return (
-            <div>
-                <p>
-                    Fields using this can hold special values to indicate data that has failed review or was originally
-                    missing. Administrators can set custom Missing Value indicators at the site and folder levels.
-                </p>
-                <p>Learn more about using {helpLinkNode(MISSING_VALUES_TOPIC, 'Missing Value Indicators')}.</p>
-            </div>
-        );
-    };
-
-    getRecommendedVariableHelpText = () => {
-        return (
-            <div>
-                Indicates that this is an important variable. These variables will be displayed as recommended when
-                creating new charts or reports.
-            </div>
-        );
-    };
-
     getPhiHelpText = () => {
         return (
             <div>
@@ -267,10 +216,6 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <p>Learn more about using {helpLinkNode(ADVANCED_FIELD_EDITOR_TOPIC, 'Default Type')} settings.</p>
             </div>
         );
-    };
-
-    getExcludeFromDateShiftingText = () => {
-        return 'Participant date fields with this property checked will not be shifted on export/publication when the "Shift Participant Dates" option is selected.';
     };
 
     getPhiLevelIndex = (phi: string): number => {
@@ -344,7 +289,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div className="domain-adv-misc-options">Default Value Options</div>
                 <Row className="domain-adv-thick-row">
                     <Col xs={3}>
-                        <DomainFieldLabel label="Default Type" helpTipBody={this.getDefaultTypeHelpText} />
+                        <DomainFieldLabel label="Default Type" helpTipBody={this.getDefaultTypeHelpText()} />
                     </Col>
                     <Col xs={6}>
                         <FormControl
@@ -395,7 +340,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                 <div className="domain-adv-misc-options">Miscellaneous Options</div>
                 <Row>
                     <Col xs={3}>
-                        <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText} />
+                        <DomainFieldLabel label="PHI Level" helpTipBody={this.getPhiHelpText()} />
                     </Col>
                     <Col xs={6}>
                         <FormControl
@@ -423,7 +368,10 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         id={createFormInputId(DOMAIN_FIELD_EXCLUDE_FROM_SHIFTING, domainIndex, index)}
                     >
                         Exclude from "Participant Date Shifting" on export/publication
-                        <LabelHelpTip title="Exclude from Date Shifting" body={this.getExcludeFromDateShiftingText} />
+                        <LabelHelpTip title="Exclude from Date Shifting">
+                            Participant date fields with this property checked will not be shifted on export/publication
+                            when the "Shift Participant Dates" option is selected.
+                        </LabelHelpTip>
                     </Checkbox>
                 )}
                 {PropDescType.isMeasure(field.dataType.rangeURI) && (
@@ -434,7 +382,19 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         id={createFormInputId(DOMAIN_FIELD_MEASURE, domainIndex, index)}
                     >
                         Make this field available as a measure
-                        <LabelHelpTip title="Measure" body={this.getMeasureHelpText} />
+                        <LabelHelpTip title="Measure">
+                            <div>
+                                <p>
+                                    Indicates fields that contain data subject to charting and other analysis. These are
+                                    typically numeric results.
+                                </p>
+                                <p>
+                                    Learn more about using{' '}
+                                    {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, 'Measures and Dimensions')} for
+                                    analysis.
+                                </p>
+                            </div>
+                        </LabelHelpTip>
                     </Checkbox>
                 )}
                 {PropDescType.isDimension(field.dataType.rangeURI) && (
@@ -445,7 +405,19 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         id={createFormInputId(DOMAIN_FIELD_DIMENSION, domainIndex, index)}
                     >
                         Make this field available as a dimension
-                        <LabelHelpTip title="Data Dimension" body={this.getDimensionHelpText} />
+                        <LabelHelpTip title="Data Dimension">
+                            <div>
+                                <p>
+                                    Indicates a field of non-numerical categories that can be included in a chart.
+                                    Dimensions define logical groupings of measures.
+                                </p>
+                                <p>
+                                    Learn more about using{' '}
+                                    {helpLinkNode(CHART_MEASURES_AND_DIMENSIONS_TOPIC, 'Measures and Dimensions')} for
+                                    analysis.
+                                </p>
+                            </div>
+                        </LabelHelpTip>
                     </Checkbox>
                 )}
                 <Checkbox
@@ -455,7 +427,12 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                     id={createFormInputId(DOMAIN_FIELD_RECOMMENDEDVARIABLE, domainIndex, index)}
                 >
                     Make this field a recommended variable
-                    <LabelHelpTip title="Recommended Variable" body={this.getRecommendedVariableHelpText} />
+                    <LabelHelpTip title="Recommended Variable">
+                        <div>
+                            Indicates that this is an important variable. These variables will be displayed as
+                            recommended when creating new charts or reports.
+                        </div>
+                    </LabelHelpTip>
                 </Checkbox>
 
                 {PropDescType.isMvEnableable(field.dataType.rangeURI) && (
@@ -467,7 +444,19 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         disabled={domainFormDisplayOptions.disableMvEnabled}
                     >
                         Track reason for missing data values
-                        <LabelHelpTip title="Missing Value Indicators" body={this.getMissingValueHelpText} />
+                        <LabelHelpTip title="Missing Value Indicators">
+                            <div>
+                                <p>
+                                    Fields using this can hold special values to indicate data that has failed review or
+                                    was originally missing. Administrators can set custom Missing Value indicators at
+                                    the site and folder levels.
+                                </p>
+                                <p>
+                                    Learn more about using{' '}
+                                    {helpLinkNode(MISSING_VALUES_TOPIC, 'Missing Value Indicators')}.
+                                </p>
+                            </div>
+                        </LabelHelpTip>
                     </Checkbox>
                 )}
             </>

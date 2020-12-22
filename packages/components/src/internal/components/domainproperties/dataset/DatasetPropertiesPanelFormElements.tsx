@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Col, Checkbox, Radio, Row } from 'react-bootstrap';
 
 import { Creatable, Option } from 'react-select';
@@ -81,10 +80,6 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
         };
     }
 
-    getHelpTipElement(field: string): JSX.Element {
-        return (<> {getHelpTip(field)} </>) as JSX.Element;
-    }
-
     componentDidMount() {
         fetchCategories().then(data => {
             this.setState(() => ({
@@ -92,6 +87,10 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
             }));
         });
     }
+
+    getHelpTipElement = (field: string): ReactNode => {
+        return <> {getHelpTip(field)} </>;
+    };
 
     render() {
         const { model, onInputChange, onCategoryChange } = this.props;
@@ -131,7 +130,7 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                         <DomainFieldLabel
                             label="Category"
                             required={false}
-                            helpTipBody={() => this.getHelpTipElement('category')}
+                            helpTipBody={this.getHelpTipElement('category')}
                         />
                     </Col>
 
@@ -267,10 +266,7 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
 
         return (
             <>
-                <SectionHeading
-                    title="Data Row Uniqueness"
-                    helpTipBody={() => this.getHelpTipElement('dataRowUniqueness')}
-                />
+                <SectionHeading title="Data Row Uniqueness" helpTipBody={this.getHelpTipElement('dataRowUniqueness')} />
 
                 <DataRowUniquenessElements
                     onRadioChange={onRadioChange}

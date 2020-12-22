@@ -30,11 +30,13 @@ export function notificationInit() {
         },
     };
     LABKEY.container = {
+        path: "testContainer",
         formats: {
             dateTimeFormat: 'yyyy-MM-dd HH:mm',
             numberFormat: null,
             dateFormat: 'yyyy-MM-dd'
         },
+        id: "testContainerEntityId",
         activeModules: [
             "Wiki", "Issues", "Search", "FileContent", "Assay", "Experiment", "Query",
             "Pipeline", "Internal", "API", "Announcements", "Core", "Ontology"

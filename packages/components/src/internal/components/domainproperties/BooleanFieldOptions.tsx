@@ -49,7 +49,10 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
                 <Row>
                     <Col xs={12}>
                         <div className="domain-field-label">
-                            <DomainFieldLabel label="Format for Boolean Values" helpTipBody={this.getFormatHelpText} />
+                            <DomainFieldLabel
+                                label="Format for Boolean Values"
+                                helpTipBody={this.getFormatHelpText()}
+                            />
                         </div>
                     </Col>
                 </Row>

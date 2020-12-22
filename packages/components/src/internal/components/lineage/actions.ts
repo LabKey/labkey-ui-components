@@ -380,3 +380,8 @@ export function getPageNumberChangeURL(location: Location, seed: string, pageNum
 
     return url;
 }
+
+export function getImmediateChildLineageFilterValue(lsid: string): string {
+    const filterVals = [lsid, '1']; // depth 1
+    return '{json:' + JSON.stringify(filterVals) + '}';
+}

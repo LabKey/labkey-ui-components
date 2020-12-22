@@ -23,6 +23,8 @@ import { SearchBox } from './SearchBox';
 import { UserMenu } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
+import { ServerNotifications } from "../notifications/ServerNotifications";
+import { ServerNotificationsConfig } from '../notifications/model';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -35,15 +37,17 @@ interface NavigationBarProps {
     user?: User;
     showSwitchToLabKey: boolean;
     signOutUrl?: string;
+    notificationsConfig?: ServerNotificationsConfig;
 }
 
 export class NavigationBar extends React.Component<NavigationBarProps, any> {
     static defaultProps: {
         showSearchBox: false;
         showSwitchToLabKey: true;
+        notificationsConfig: undefined;
     };
 
-    render() {
+    render(): ReactNode {
         const {
             brand,
             menuSectionConfigs,
@@ -53,6 +57,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
             onSearch,
             searchPlaceholder,
             user,
+            notificationsConfig,
             showSwitchToLabKey,
             signOutUrl,
         } = this.props;
@@ -61,6 +66,8 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
         const userMenu = user ? (
             <UserMenu model={model} user={user} showSwitchToLabKey={showSwitchToLabKey} signOutUrl={signOutUrl} />
         ) : null;
+
+        const notifications = notificationsConfig && user && !user.isGuest ? <ServerNotifications {...notificationsConfig} /> : null;
 
         return (
             <nav className="navbar navbar-container test-loc-nav-header">
@@ -79,6 +86,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
                         </div>
                         <div className="navbar-right col-sm-7 col-xs-5">
                             <div className="navbar-item pull-right">{userMenu}</div>
+                            <div className="navbar-item pull-right">{notifications}</div>
                             <div className="navbar-item pull-right hidden-xs">{searchBox}</div>
                             <div className="navbar-item pull-right visible-xs">
                                 {showSearchBox && (

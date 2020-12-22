@@ -13,6 +13,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // NOTE: the LABKEY_UI_COMPONENTS_HOME environment variable must be set for this to work.
 let labkeyUIComponentsPath = path.resolve("./node_modules/@labkey/components");
 let freezerManagerPath = path.resolve("./node_modules/@labkey/freezermanager");
+let workflowPath = path.resolve("./node_modules/@labkey/workflow");
 if (process.env.LINK) {
     if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
         throw "ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.";
@@ -22,6 +23,9 @@ if (process.env.LINK) {
 
     const freezerManagerRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "inventory/packages/freezermanager";
     freezerManagerPath = path.resolve(__dirname, freezerManagerRelPath);
+
+    const workflowRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "sampleManagement/packages/workflow";
+    workflowPath = path.resolve(__dirname, workflowRelPath);
 }
 if (process.env.npm_package_dependencies__labkey_components) {
     console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
@@ -29,12 +33,16 @@ if (process.env.npm_package_dependencies__labkey_components) {
 if (process.env.npm_package_dependencies__labkey_freezermanager) {
     console.log("Using @labkey/freezermanager path: " + freezerManagerPath);
 }
+if (process.env.npm_package_dependencies__labkey_workflow) {
+    console.log("Using @labkey/workflow path: " + workflowPath);
+}
 
 const watchPort = process.env.WATCH_PORT || 3001;
 
 module.exports = {
     labkeyUIComponentsPath: labkeyUIComponentsPath,
     freezerManagerPath: freezerManagerPath,
+    workflowPath: workflowPath,
     watchPort: watchPort,
     context: function(dir) {
         return path.resolve(dir, '..');
@@ -185,7 +193,8 @@ module.exports = {
                             "paths": {
                                 "immutable": [labkeyUIComponentsPath + "/node_modules/immutable"],
                                 "@labkey/components": [labkeyUIComponentsPath],
-                                "@labkey/freezermanager": [freezerManagerPath]
+                                "@labkey/freezermanager": [freezerManagerPath],
+                                "@labkey/workflow": [workflowPath]
                             }
                         },
                         onlyCompileBundledFiles: true

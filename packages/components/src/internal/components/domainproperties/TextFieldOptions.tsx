@@ -100,7 +100,7 @@ export class TextFieldOptions extends React.PureComponent<TextFieldProps, TextFi
                 <Row>
                     <Col xs={12}>
                         <div className="domain-field-label">
-                            <DomainFieldLabel label="Maximum Text Length" helpTipBody={this.getMaxCountHelpText} />
+                            <DomainFieldLabel label="Maximum Text Length" helpTipBody={this.getMaxCountHelpText()} />
                         </div>
                     </Col>
                 </Row>

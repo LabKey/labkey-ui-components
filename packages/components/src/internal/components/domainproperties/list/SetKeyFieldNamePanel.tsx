@@ -106,7 +106,7 @@ export class SetKeyFieldNamePanel extends React.PureComponent<Props> {
                         <DomainFieldLabel
                             label="Key Field Name"
                             required={true}
-                            helpTipBody={() => 'Only integer or text fields can be made the primary key.'}
+                            helpTipBody="Only integer or text fields can be made the primary key."
                         />
                     </Col>
                     <Col xs={5}>

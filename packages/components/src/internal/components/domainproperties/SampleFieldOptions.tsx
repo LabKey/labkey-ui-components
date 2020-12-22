@@ -41,22 +41,6 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
         }
     };
 
-    getHelpText = () => {
-        return (
-            <>
-                <p>
-                    Select the sample reference for this field. You can choose to reference all available samples or
-                    select a specific sample type to filter by.
-                </p>
-                <p>
-                    This selection will be used to validate and link incoming data, populate lists for data entry, etc.
-                </p>
-                <p>Learn more about using {helpLinkNode(FIELD_EDITOR_SAMPLE_TYPES_TOPIC, 'sample types')} in LabKey.</p>{' '}
-                {/* TODO: contextualize help link based on app (SM, LKS, etc.)*/}
-            </>
-        );
-    };
-
     componentDidMount(): void {
         this.loadData();
     }
@@ -99,7 +83,21 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
                     <Col xs={5}>
                         <div className="domain-field-label">
                             Sample lookup to
-                            <LabelHelpTip title="Sample Reference" body={this.getHelpText} />
+                            <LabelHelpTip title="Sample Reference">
+                                <p>
+                                    Select the sample reference for this field. You can choose to reference all
+                                    available samples or select a specific sample type to filter by.
+                                </p>
+                                <p>
+                                    This selection will be used to validate and link incoming data, populate lists for
+                                    data entry, etc.
+                                </p>
+                                <p>
+                                    Learn more about using{' '}
+                                    {helpLinkNode(FIELD_EDITOR_SAMPLE_TYPES_TOPIC, 'sample types')} in LabKey.
+                                </p>{' '}
+                                {/* TODO: contextualize help link based on app (SM, LKS, etc.)*/}
+                            </LabelHelpTip>
                         </div>
                     </Col>
                 </Row>

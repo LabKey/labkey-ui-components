@@ -91,7 +91,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                 disabled={isFieldFullyLocked(field.lockType)}
                             />
                             <div className="domain-field-label">
-                                <DomainFieldLabel label="Import Aliases" helpTipBody={this.getImportAliasHelpText} />
+                                <DomainFieldLabel label="Import Aliases" helpTipBody={this.getImportAliasHelpText()} />
                             </div>
                             <FormControl
                                 type="text"
@@ -104,7 +104,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                         </Col>
                         <Col xs={4}>
                             <div className="domain-field-label">
-                                <DomainFieldLabel label="URL" helpTipBody={this.getURLHelpText} />
+                                <DomainFieldLabel label="URL" helpTipBody={this.getURLHelpText()} />
                             </div>
                             <FormControl
                                 type="text"

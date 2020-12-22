@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 
 import { faCaretDown, faCaretUp, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
@@ -118,12 +118,12 @@ export class ConditionalFormatOptions extends React.PureComponent<
         }
     };
 
-    firstFilterTooltipText = () => {
-        return 'Add a condition to this format rule that will be tested against the value for this field.';
-    };
-
-    firstFilterTooltip = () => {
-        return <LabelHelpTip title="First Condition" body={this.firstFilterTooltipText} required={true} />;
+    firstFilterTooltip = (): ReactNode => {
+        return (
+            <LabelHelpTip title="First Condition" required={true}>
+                Add a condition to this format rule that will be tested against the value for this field.
+            </LabelHelpTip>
+        );
     };
 
     renderCollapsed = () => {

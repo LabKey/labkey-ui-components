@@ -74,7 +74,7 @@ export function parseDate(dateStr: string, dateFormat?: string): Date {
 }
 
 function _formatDate(date: Date, dateFormat: string, timezone?: string): string {
-    if (!date) return null;
+    if (!date) return undefined;
     const _date = moment(timezone ? momentTZ(date).tz(timezone) : date);
     return _date.formatWithJDF(dateFormat);
 }

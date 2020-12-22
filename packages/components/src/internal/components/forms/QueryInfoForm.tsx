@@ -186,8 +186,8 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
             if (data.hasOwnProperty(key)) {
                 if (fieldsToUpdate.has(key.toLowerCase()) || requiredFields.indexOf(key) !== -1) {
                     // Date values are Dates not strings. We convert them to strings in the desired format here.
-                    // They are converted back to dates when saving to the server.
-                    if (submitForEdit && this.props.queryInfo.getColumn(key).jsonType === 'date') {
+                    // They are converted back to Dates when saving to the server.
+                    if (submitForEdit && this.props.queryInfo?.getColumn(key)?.jsonType === 'date') {
                         filteredData = filteredData.set(key, formatDateTime(data[key]));
                     } else {
                         filteredData = filteredData.set(key, data[key]);

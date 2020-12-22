@@ -478,7 +478,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <p> Do you wish to proceed? </p>
                     </div>
                 }
-                onConfirm={() => this.onBulkDeleteConfirm()}
+                onConfirm={this.onBulkDeleteConfirm}
                 onCancel={this.onConfirmBulkCancel}
                 confirmVariant="danger"
                 confirmButtonText="Yes, Delete Fields"

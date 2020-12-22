@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.11.1
+*Released*: 22 December 2020
+* Dependabot package updates
+
 ### version 1.11.0
 *Released*: 22 December 2020
 * Item 8267: Misc bug fixes related to LKSM workflow

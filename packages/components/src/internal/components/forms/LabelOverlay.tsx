@@ -105,7 +105,9 @@ export class LabelOverlay extends React.Component<LabelOverlayProps, any> {
                 <i className="fa fa-question-circle" />
             </OverlayTrigger>
         ) : (
-            <LabelHelpTip id={this._popoverId} title={label} body={this.overlayBody} placement={placement} />
+            <LabelHelpTip id={this._popoverId} title={label} placement={placement}>
+                {this.overlayBody()}
+            </LabelHelpTip>
         );
     }
 

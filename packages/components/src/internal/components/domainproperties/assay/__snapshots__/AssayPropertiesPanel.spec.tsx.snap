@@ -353,9 +353,14 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                 }
                 onChange={[Function]}
               >
-                <AssayPropertiesInput
+                <Component
                   appPropertiesOnly={true}
-                  helpTipBody={[Function]}
+                  colSize={9}
+                  helpTipBody={
+                    <p>
+                      The name for this assay design. Note that this can't be changed after the assay design is created.
+                    </p>
+                  }
                   label="Name"
                   required={true}
                 >
@@ -376,8 +381,12 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         <div
                           className="col-lg-2 col-xs-3"
                         >
-                          <DomainFieldLabel
-                            helpTipBody={[Function]}
+                          <Component
+                            helpTipBody={
+                              <p>
+                                The name for this assay design. Note that this can't be changed after the assay design is created.
+                              </p>
+                            }
                             label="Name"
                             required={true}
                           >
@@ -385,8 +394,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                               className="domain-no-wrap"
                             >
                               Name
-                              <LabelHelpTip
-                                body={[Function]}
+                              <Component
                                 customStyle={Object {}}
                                 id="tooltip"
                                 required={true}
@@ -453,61 +461,19 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                     placement="right"
                                     rootClose={false}
                                     show={false}
-                                    target={
-                                      <span
-                                        class="label-help-target"
-                                      >
-                                        <svg
-                                          aria-hidden="true"
-                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                          data-icon="question-circle"
-                                          data-prefix="fas"
-                                          focusable="false"
-                                          role="img"
-                                          viewBox="0 0 512 512"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <path
-                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                            fill="currentColor"
-                                          />
-                                        </svg>
-                                      </span>
-                                    }
                                   >
                                     <Overlay
                                       placement="right"
                                       rootClose={false}
                                       show={false}
-                                      target={
-                                        <span
-                                          class="label-help-target"
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                            data-icon="question-circle"
-                                            data-prefix="fas"
-                                            focusable="false"
-                                            role="img"
-                                            viewBox="0 0 512 512"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                              fill="currentColor"
-                                            />
-                                          </svg>
-                                        </span>
-                                      }
                                       transition={[Function]}
                                     />
                                   </Overlay>
                                 </span>
-                              </LabelHelpTip>
+                              </Component>
                                *
                             </span>
-                          </DomainFieldLabel>
+                          </Component>
                         </div>
                       </Col>
                       <Col
@@ -543,7 +509,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                       </Col>
                     </div>
                   </Row>
-                </AssayPropertiesInput>
+                </Component>
               </NameInput>
               <DescriptionInput
                 appPropertiesOnly={true}
@@ -647,9 +613,14 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                 }
                 onChange={[Function]}
               >
-                <AssayPropertiesInput
+                <Component
                   appPropertiesOnly={true}
-                  helpTipBody={[Function]}
+                  colSize={9}
+                  helpTipBody={
+                    <p>
+                      A short description for this assay design.
+                    </p>
+                  }
                   label="Description"
                 >
                   <Row
@@ -669,16 +640,19 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         <div
                           className="col-lg-2 col-xs-3"
                         >
-                          <DomainFieldLabel
-                            helpTipBody={[Function]}
+                          <Component
+                            helpTipBody={
+                              <p>
+                                A short description for this assay design.
+                              </p>
+                            }
                             label="Description"
                           >
                             <span
                               className="domain-no-wrap"
                             >
                               Description
-                              <LabelHelpTip
-                                body={[Function]}
+                              <Component
                                 customStyle={Object {}}
                                 id="tooltip"
                                 size="1x"
@@ -744,60 +718,18 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                     placement="right"
                                     rootClose={false}
                                     show={false}
-                                    target={
-                                      <span
-                                        class="label-help-target"
-                                      >
-                                        <svg
-                                          aria-hidden="true"
-                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                          data-icon="question-circle"
-                                          data-prefix="fas"
-                                          focusable="false"
-                                          role="img"
-                                          viewBox="0 0 512 512"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <path
-                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                            fill="currentColor"
-                                          />
-                                        </svg>
-                                      </span>
-                                    }
                                   >
                                     <Overlay
                                       placement="right"
                                       rootClose={false}
                                       show={false}
-                                      target={
-                                        <span
-                                          class="label-help-target"
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                            data-icon="question-circle"
-                                            data-prefix="fas"
-                                            focusable="false"
-                                            role="img"
-                                            viewBox="0 0 512 512"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                              fill="currentColor"
-                                            />
-                                          </svg>
-                                        </span>
-                                      }
                                       transition={[Function]}
                                     />
                                   </Overlay>
                                 </span>
-                              </LabelHelpTip>
+                              </Component>
                             </span>
-                          </DomainFieldLabel>
+                          </Component>
                         </div>
                       </Col>
                       <Col
@@ -819,7 +751,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                       </Col>
                     </div>
                   </Row>
-                </AssayPropertiesInput>
+                </Component>
               </DescriptionInput>
             </div>
             <div
@@ -936,9 +868,14 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                 }
                 onChange={[Function]}
               >
-                <AssayPropertiesInput
+                <Component
                   appPropertiesOnly={true}
-                  helpTipBody={[Function]}
+                  colSize={9}
+                  helpTipBody={
+                    <p>
+                      If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                    </p>
+                  }
                   label="Editable Runs"
                 >
                   <Row
@@ -958,8 +895,12 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         <div
                           className="col-lg-2 col-xs-3"
                         >
-                          <DomainFieldLabel
-                            helpTipBody={[Function]}
+                          <Component
+                            helpTipBody={
+                              <p>
+                                If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                              </p>
+                            }
                             label="Editable Runs"
                           >
                             Editable 
@@ -967,8 +908,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                               className="domain-no-wrap"
                             >
                               Runs
-                              <LabelHelpTip
-                                body={[Function]}
+                              <Component
                                 customStyle={Object {}}
                                 id="tooltip"
                                 size="1x"
@@ -1034,60 +974,18 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                     placement="right"
                                     rootClose={false}
                                     show={false}
-                                    target={
-                                      <span
-                                        class="label-help-target"
-                                      >
-                                        <svg
-                                          aria-hidden="true"
-                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                          data-icon="question-circle"
-                                          data-prefix="fas"
-                                          focusable="false"
-                                          role="img"
-                                          viewBox="0 0 512 512"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <path
-                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                            fill="currentColor"
-                                          />
-                                        </svg>
-                                      </span>
-                                    }
                                   >
                                     <Overlay
                                       placement="right"
                                       rootClose={false}
                                       show={false}
-                                      target={
-                                        <span
-                                          class="label-help-target"
-                                        >
-                                          <svg
-                                            aria-hidden="true"
-                                            class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                            data-icon="question-circle"
-                                            data-prefix="fas"
-                                            focusable="false"
-                                            role="img"
-                                            viewBox="0 0 512 512"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                          >
-                                            <path
-                                              d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                              fill="currentColor"
-                                            />
-                                          </svg>
-                                        </span>
-                                      }
                                       transition={[Function]}
                                     />
                                   </Overlay>
                                 </span>
-                              </LabelHelpTip>
+                              </Component>
                             </span>
-                          </DomainFieldLabel>
+                          </Component>
                         </div>
                       </Col>
                       <Col
@@ -1109,7 +1007,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                       </Col>
                     </div>
                   </Row>
-                </AssayPropertiesInput>
+                </Component>
               </EditableRunsInput>
             </div>
           </div>
@@ -1684,9 +1582,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={false}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    The name for this assay design. Note that this can't be changed after the assay design is created.
+                                  </p>
+                                }
                                 label="Name"
                                 required={true}
                               >
@@ -1707,8 +1610,12 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              The name for this assay design. Note that this can't be changed after the assay design is created.
+                                            </p>
+                                          }
                                           label="Name"
                                           required={true}
                                         >
@@ -1716,8 +1623,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Name
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               required={true}
@@ -1784,61 +1690,19 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                              *
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -1874,7 +1738,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </NameInput>
                             <DescriptionInput
                               appPropertiesOnly={false}
@@ -1978,9 +1842,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={false}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    A short description for this assay design.
+                                  </p>
+                                }
                                 label="Description"
                               >
                                 <Row
@@ -2000,16 +1869,19 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              A short description for this assay design.
+                                            </p>
+                                          }
                                           label="Description"
                                         >
                                           <span
                                             className="domain-no-wrap"
                                           >
                                             Description
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -2075,60 +1947,18 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -2150,7 +1980,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </DescriptionInput>
                           </div>
                           <div
@@ -2267,9 +2097,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={false}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                  </p>
+                                }
                                 label="Editable Runs"
                               >
                                 <Row
@@ -2289,8 +2124,12 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                            </p>
+                                          }
                                           label="Editable Runs"
                                         >
                                           Editable 
@@ -2298,8 +2137,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Runs
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -2365,60 +2203,18 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -2440,7 +2236,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </EditableRunsInput>
                           </div>
                         </div>
@@ -2567,8 +2363,18 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
-                                helpTipBody={[Function]}
+                              <Component
+                                colSize={9}
+                                helpTipBody={
+                                  <React.Fragment>
+                                    <p>
+                                      When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                    </p>
+                                    <p>
+                                      The user performing the import must have insert permission in the target study and the corresponding dataset.
+                                    </p>
+                                  </React.Fragment>
+                                }
                                 label="Auto-Copy Data to Study"
                               >
                                 <Row
@@ -2588,8 +2394,17 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <React.Fragment>
+                                              <p>
+                                                When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                              </p>
+                                              <p>
+                                                The user performing the import must have insert permission in the target study and the corresponding dataset.
+                                              </p>
+                                            </React.Fragment>
+                                          }
                                           label="Auto-Copy Data to Study"
                                         >
                                           Auto-Copy Data to 
@@ -2597,8 +2412,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Study
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -2664,60 +2478,18 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -2748,7 +2520,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </AutoCopyDataInput>
                           </div>
                         </div>
@@ -3320,9 +3092,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={false}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    The name for this assay design. Note that this can't be changed after the assay design is created.
+                                  </p>
+                                }
                                 label="Name"
                                 required={true}
                               >
@@ -3343,8 +3120,12 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              The name for this assay design. Note that this can't be changed after the assay design is created.
+                                            </p>
+                                          }
                                           label="Name"
                                           required={true}
                                         >
@@ -3352,8 +3133,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Name
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               required={true}
@@ -3420,61 +3200,19 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                              *
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -3510,7 +3248,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </NameInput>
                             <DescriptionInput
                               appPropertiesOnly={false}
@@ -3614,9 +3352,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={false}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    A short description for this assay design.
+                                  </p>
+                                }
                                 label="Description"
                               >
                                 <Row
@@ -3636,16 +3379,19 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              A short description for this assay design.
+                                            </p>
+                                          }
                                           label="Description"
                                         >
                                           <span
                                             className="domain-no-wrap"
                                           >
                                             Description
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -3711,60 +3457,18 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -3786,7 +3490,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </DescriptionInput>
                           </div>
                           <div
@@ -3903,9 +3607,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={false}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                  </p>
+                                }
                                 label="Editable Runs"
                               >
                                 <Row
@@ -3925,8 +3634,12 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                            </p>
+                                          }
                                           label="Editable Runs"
                                         >
                                           Editable 
@@ -3934,8 +3647,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Runs
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -4001,60 +3713,18 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -4076,7 +3746,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </EditableRunsInput>
                           </div>
                         </div>
@@ -4203,8 +3873,18 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
-                                helpTipBody={[Function]}
+                              <Component
+                                colSize={9}
+                                helpTipBody={
+                                  <React.Fragment>
+                                    <p>
+                                      When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                    </p>
+                                    <p>
+                                      The user performing the import must have insert permission in the target study and the corresponding dataset.
+                                    </p>
+                                  </React.Fragment>
+                                }
                                 label="Auto-Copy Data to Study"
                               >
                                 <Row
@@ -4224,8 +3904,17 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <React.Fragment>
+                                              <p>
+                                                When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                              </p>
+                                              <p>
+                                                The user performing the import must have insert permission in the target study and the corresponding dataset.
+                                              </p>
+                                            </React.Fragment>
+                                          }
                                           label="Auto-Copy Data to Study"
                                         >
                                           Auto-Copy Data to 
@@ -4233,8 +3922,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Study
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -4300,60 +3988,18 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -4384,7 +4030,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </AutoCopyDataInput>
                           </div>
                         </div>
@@ -4702,9 +4348,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={false}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    The name for this assay design. Note that this can't be changed after the assay design is created.
+                                  </p>
+                                }
                                 label="Name"
                                 required={true}
                               >
@@ -4725,8 +4376,12 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              The name for this assay design. Note that this can't be changed after the assay design is created.
+                                            </p>
+                                          }
                                           label="Name"
                                           required={true}
                                         >
@@ -4734,8 +4389,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Name
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               required={true}
@@ -4802,61 +4456,19 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                              *
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -4892,7 +4504,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </NameInput>
                             <DescriptionInput
                               appPropertiesOnly={false}
@@ -4932,9 +4544,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={false}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    A short description for this assay design.
+                                  </p>
+                                }
                                 label="Description"
                               >
                                 <Row
@@ -4954,16 +4571,19 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              A short description for this assay design.
+                                            </p>
+                                          }
                                           label="Description"
                                         >
                                           <span
                                             className="domain-no-wrap"
                                           >
                                             Description
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -5029,60 +4649,18 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -5104,7 +4682,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </DescriptionInput>
                           </div>
                           <div
@@ -5157,9 +4735,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={false}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                  </p>
+                                }
                                 label="Editable Runs"
                               >
                                 <Row
@@ -5179,8 +4762,12 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                            </p>
+                                          }
                                           label="Editable Runs"
                                         >
                                           Editable 
@@ -5188,8 +4775,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Runs
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -5255,60 +4841,18 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -5330,7 +4874,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </EditableRunsInput>
                           </div>
                         </div>
@@ -5393,8 +4937,18 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
-                                helpTipBody={[Function]}
+                              <Component
+                                colSize={9}
+                                helpTipBody={
+                                  <React.Fragment>
+                                    <p>
+                                      When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                    </p>
+                                    <p>
+                                      The user performing the import must have insert permission in the target study and the corresponding dataset.
+                                    </p>
+                                  </React.Fragment>
+                                }
                                 label="Auto-Copy Data to Study"
                               >
                                 <Row
@@ -5414,8 +4968,17 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <React.Fragment>
+                                              <p>
+                                                When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                              </p>
+                                              <p>
+                                                The user performing the import must have insert permission in the target study and the corresponding dataset.
+                                              </p>
+                                            </React.Fragment>
+                                          }
                                           label="Auto-Copy Data to Study"
                                         >
                                           Auto-Copy Data to 
@@ -5423,8 +4986,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Study
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -5490,60 +5052,18 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -5574,7 +5094,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </AutoCopyDataInput>
                           </div>
                         </div>
@@ -6117,9 +5637,14 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={true}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    The name for this assay design. Note that this can't be changed after the assay design is created.
+                                  </p>
+                                }
                                 label="Name"
                                 required={true}
                               >
@@ -6140,8 +5665,12 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       <div
                                         className="col-lg-2 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              The name for this assay design. Note that this can't be changed after the assay design is created.
+                                            </p>
+                                          }
                                           label="Name"
                                           required={true}
                                         >
@@ -6149,8 +5678,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Name
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               required={true}
@@ -6217,61 +5745,19 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                              *
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -6307,7 +5793,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </NameInput>
                             <DescriptionInput
                               appPropertiesOnly={true}
@@ -6411,9 +5897,14 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={true}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    A short description for this assay design.
+                                  </p>
+                                }
                                 label="Description"
                               >
                                 <Row
@@ -6433,16 +5924,19 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       <div
                                         className="col-lg-2 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              A short description for this assay design.
+                                            </p>
+                                          }
                                           label="Description"
                                         >
                                           <span
                                             className="domain-no-wrap"
                                           >
                                             Description
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -6508,60 +6002,18 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -6583,7 +6035,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </DescriptionInput>
                           </div>
                           <div
@@ -6700,9 +6152,14 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                               }
                               onChange={[Function]}
                             >
-                              <AssayPropertiesInput
+                              <Component
                                 appPropertiesOnly={true}
-                                helpTipBody={[Function]}
+                                colSize={9}
+                                helpTipBody={
+                                  <p>
+                                    If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                  </p>
+                                }
                                 label="Editable Runs"
                               >
                                 <Row
@@ -6722,8 +6179,12 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       <div
                                         className="col-lg-2 col-xs-3"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody={
+                                            <p>
+                                              If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
+                                            </p>
+                                          }
                                           label="Editable Runs"
                                         >
                                           Editable 
@@ -6731,8 +6192,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Runs
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -6798,60 +6258,18 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -6873,7 +6291,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
-                              </AssayPropertiesInput>
+                              </Component>
                             </EditableRunsInput>
                           </div>
                         </div>

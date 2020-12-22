@@ -55,7 +55,7 @@ export class DateTimeFieldOptions extends React.PureComponent<DateTimeFieldProps
                 <Row className="domain-row-expanded">
                     <Col xs={3}>
                         <div className="domain-field-label">
-                            <DomainFieldLabel label="Format for Dates" helpTipBody={this.getFormatHelpText} />
+                            <DomainFieldLabel label="Format for Dates" helpTipBody={this.getFormatHelpText()} />
                         </div>
                     </Col>
                     <Col xs={9} />

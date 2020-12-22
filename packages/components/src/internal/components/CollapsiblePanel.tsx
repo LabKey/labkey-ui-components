@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, ReactElement } from 'react';
 import { Panel } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,7 +9,7 @@ import { LabelHelpTip } from './base/LabelHelpTip';
 interface CollapsiblePanelProps {
     title: string;
     helpTitle?: string;
-    helpBody?: () => any;
+    helpBody?: ReactElement;
     bodyClass?: string;
     initCollapsed?: boolean;
 }
@@ -40,7 +40,11 @@ export class CollapsiblePanel extends PureComponent<CollapsiblePanelProps, Colla
                 {/* Header name*/}
                 <span>{title}</span>
 
-                {helpTitle && helpBody && <LabelHelpTip placement="top" title={helpTitle} body={helpBody} />}
+                {helpTitle && helpBody && (
+                    <LabelHelpTip placement="top" title={helpTitle}>
+                        {helpBody}
+                    </LabelHelpTip>
+                )}
 
                 {/* Expand/Collapse Icon*/}
                 {collapsed && (

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 1.11.0
+*Released*: 22 December 2020
 * Item 8267: Misc bug fixes related to LKSM workflow
     - FileAttachmentForm fix to use anchor tag with target blank for template file download
     - AssayImportSubMenuItem and getImportItemsForAssayDefinitions option to filter assays by provider type

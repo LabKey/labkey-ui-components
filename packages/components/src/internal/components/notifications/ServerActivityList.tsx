@@ -52,7 +52,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
             </>);
         }
 
-        return <div dangerouslySetInnerHTML={{ __html: content }} />;
+        return <span className={'server-notifications-item-subject'} dangerouslySetInnerHTML={{ __html: content }} />;
     }
 
     renderData(activity: ServerActivityData, key: number): ReactNode {

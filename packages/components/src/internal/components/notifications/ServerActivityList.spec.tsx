@@ -129,9 +129,15 @@ describe('<ServerActivityList>', () => {
         expect(item).toHaveLength(1);
         checkActivityListItem(item, false, true, false);
         const links = item.find('.server-notifications-link');
-        expect(links).toHaveLength(2);
-        expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.HtmlContent);
-        expect(links.at(1).text()).toBe(ServerActivityList.defaultProps.viewErrorDetailsText);
+        expect(links).toHaveLength(1);
+        expect(links.at(0).text()).toBe(ServerActivityList.defaultProps.viewErrorDetailsText);
+
+        const errorSubject = item.find('.server-notifications-item-subject');
+        const errorDetails = item.find('.server-notifications-item-details');
+        expect(errorSubject).toHaveLength(1);
+        expect(errorDetails).toHaveLength(1);
+        expect(errorSubject.text()).toBe("Sample import failed from file file1.xlsx");
+        expect(errorDetails.text()).toBe("There was a problem creating your data.  Check the existing data for possible duplicates and make sure any referenced data are still valid.");
         wrapper.unmount();
     });
 
@@ -156,9 +162,8 @@ describe('<ServerActivityList>', () => {
         checkActivityListItem(item, false, true, false);
         expect(item.find('.has-error')).toHaveLength(1);
         const links = item.find('.server-notifications-link');
-        expect(links).toHaveLength(2);
-        expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.HtmlContent);
-        expect(links.at(1).text()).toBe(customText);
+        expect(links).toHaveLength(1);
+        expect(links.at(0).text()).toBe(customText);
         wrapper.unmount();
     });
 
@@ -203,7 +208,7 @@ describe('<ServerActivityList>', () => {
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);
         checkActivityListItem(item, true, false, false);
-        const links = item.find('.server-notifications-link');
+        const links = item.find('.server-notifications-item');
         expect(links).toHaveLength(1);
         expect(links.at(0).text()).toBe(DONE_NOT_READ.HtmlContent);
         const data = item.find('.server-notification-data');

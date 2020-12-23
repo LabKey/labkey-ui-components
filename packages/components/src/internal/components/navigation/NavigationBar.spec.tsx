@@ -22,7 +22,8 @@ import { TEST_USER_GUEST, TEST_USER_READER } from '../../../test/data/users';
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { List } from 'immutable';
-import { getNotificationData, markAllNotificationsRead } from '../../../test/data/notificationData';
+import { markAllNotificationsRead } from '../../../test/data/notificationData';
+import {ServerNotificationModel} from "../notifications/model";
 
 describe('<NavigationBar/>', () => {
     const productMenuModel = new ProductMenuModel({
@@ -35,7 +36,7 @@ describe('<NavigationBar/>', () => {
     const notificationsConfig = {
         maxRows: 1,
         markAllNotificationsRead: markAllNotificationsRead,
-        getNotificationData: getNotificationData,
+        serverActivity: new ServerNotificationModel(),
     };
 
     test('default props', () => {

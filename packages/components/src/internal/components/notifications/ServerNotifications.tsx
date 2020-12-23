@@ -91,7 +91,7 @@ export class ServerNotifications extends React.Component<Props, State> {
         if (serverActivity && serverActivity.isError) {
             body = <div className="server-notifications-footer server-notifications-error">{serverActivity.errorMessage}</div>;
         }
-        if (!serverActivity || !serverActivity.isLoaded) {
+        else if (!serverActivity || !serverActivity.isLoaded) {
             body = <div className="server-notifications-footer"><LoadingSpinner /></div>;
         } else {
             body = (

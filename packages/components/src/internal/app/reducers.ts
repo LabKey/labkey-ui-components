@@ -5,7 +5,7 @@
 import { fromJS, Map } from 'immutable';
 import { handleActions } from 'redux-actions';
 
-import { ProductMenuModel } from '../..';
+import { ServerNotificationModel, ProductMenuModel } from '../..';
 
 import { AppModel, LogoutReason } from './models';
 import {
@@ -26,7 +26,6 @@ import {
     SERVER_NOTIFICATIONS_LOADING_ERROR,
     SERVER_NOTIFICATIONS_LOADING_END
 } from './constants';
-import { ServerNotificationModel } from "../components/notifications/model";
 
 export type AppReducerState = AppModel;
 
@@ -72,32 +71,6 @@ export const AppReducers = handleActions<AppReducerState, any>(
                 logoutReason: LogoutReason.SERVER_UNAVAILABLE,
             });
         },
-
-        [SERVER_NOTIFICATIONS_INVALIDATE]: (state: AppReducerState, action: any) => {
-            return state.merge({
-                serverNotificationModel: new ServerNotificationModel()
-            });
-        },
-
-        [SERVER_NOTIFICATIONS_LOADING_START]: (state: AppReducerState, action: any) => {
-            return state.merge({
-                serverNotificationModel: state.serverNotificationModel.setLoadingStart()
-            });
-        },
-
-        [SERVER_NOTIFICATIONS_LOADING_END]: (state: AppReducerState, action: any) => {
-            const { serverActivity } = action;
-            return state.merge({
-                serverNotificationModel: state.serverNotificationModel.setLoadingComplete(serverActivity)
-            });
-        },
-
-        [SERVER_NOTIFICATIONS_LOADING_ERROR]: (state: AppReducerState, action: any) => {
-            const { message } = action;
-            return state.serverNotificationModel.setError(message);
-        },
-
-
     },
     new AppModel()
 );
@@ -145,4 +118,29 @@ export const ProductMenuReducers = handleActions<ProductMenuState, any>(
         },
     },
     new ProductMenuModel()
+);
+
+export type ServerNotificationState = ServerNotificationModel;
+
+export const ServerNotificationReducers = handleActions<ServerNotificationState, any>(
+    {
+        [SERVER_NOTIFICATIONS_INVALIDATE]: (state: ServerNotificationState, action: any) => {
+            return new ServerNotificationModel();
+        },
+
+        [SERVER_NOTIFICATIONS_LOADING_START]: (state: ServerNotificationState, action: any) => {
+            return state.setLoadingStart();
+        },
+
+        [SERVER_NOTIFICATIONS_LOADING_END]: (state: ServerNotificationState, action: any) => {
+            const { serverActivity } = action;
+            return state.setLoadingComplete(serverActivity);
+        },
+
+        [SERVER_NOTIFICATIONS_LOADING_ERROR]: (state: ServerNotificationState, action: any) => {
+            const { message } = action;
+            return state.setError(message);
+        },
+    },
+    new ServerNotificationModel()
 );

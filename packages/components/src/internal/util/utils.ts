@@ -16,7 +16,7 @@
 import { List, Map, Set, Iterable } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { hasParameter, toggleParameter } from '../..';
+import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular loading
 
 const emptyList = List<string>();
 

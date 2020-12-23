@@ -16,8 +16,10 @@
 import React from 'react';
 import { Record } from 'immutable';
 
-import { generateId, User } from '../../..';
 import { Draft, immerable, produce } from "immer";
+
+import { User } from "../base/models/User"; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
+import { generateId } from "../../util/utils"; // // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
 
 export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;
 
@@ -145,9 +147,9 @@ export interface IServerNotificationModel
 
 const DEFAULT_SERVER_NOTIFICATION_MODEL : IServerNotificationModel = {
     data: undefined,
-    totalRows: undefined,
-    unreadCount: undefined,
-    inProgressCount: undefined,
+    totalRows: 0,
+    unreadCount: 0,
+    inProgressCount: 0,
 
     isError: false,
     isLoaded: false,

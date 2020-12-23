@@ -64,6 +64,8 @@ import {
     RoutingTableReducers,
     ProductMenuState,
     ProductMenuReducers,
+    ServerNotificationState,
+    ServerNotificationReducers,
 } from './reducers';
 
 export {
@@ -75,6 +77,8 @@ export {
     ProductMenuReducers,
     RoutingTableState,
     RoutingTableReducers,
+    ServerNotificationState,
+    ServerNotificationReducers,
     initWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,

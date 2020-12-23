@@ -107,8 +107,8 @@ export function menuInvalidate() {
 
 export function serverNotificationInit(serverActivitiesLoaderFn: (maxRows?: number) => Promise<ServerActivity>) {
     return (dispatch, getState) => {
-        let serverNotificationModel = getState().app.serverNotificationModel;
-        if (!serverNotificationModel.isLoaded && !serverNotificationModel.isLoading) {
+        let serverNotificationModel = getState().serverNotifications;
+        if (serverNotificationModel && !serverNotificationModel.isLoaded && !serverNotificationModel.isLoading) {
             dispatch({
                 type: SERVER_NOTIFICATIONS_LOADING_START,
                 serverActivitiesLoaderFn

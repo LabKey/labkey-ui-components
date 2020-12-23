@@ -15,10 +15,10 @@
  */
 import { fromJS } from 'immutable';
 
-import { AssayStateModel, QueryInfo, SchemaQuery } from '../../..';
+import { AssayStateModel, GENERAL_ASSAY_PROVIDER_NAME, QueryInfo, SchemaQuery } from '../../..';
 import { getStateQueryGridModel } from '../../models';
 import { initQueryGridState } from '../../global';
-import { ASSAY_DEFINITION_MODEL } from '../../../test/data/constants';
+import { ASSAY_DEFINITION_MODEL, TEST_ASSAY_STATE_MODEL } from '../../../test/data/constants';
 
 import sampleSet2QueryInfo from '../../../test/data/sampleSet2-getQueryDetails.json';
 
@@ -49,6 +49,15 @@ describe('getImportItemsForAssayDefinitions', () => {
         queryInfo = queryInfo.set('schemaQuery', SchemaQuery.create('samples', 'Sample set 10')) as QueryInfo;
         sampleModel = getStateQueryGridModel('jestTest-2', queryInfo.schemaQuery, { queryInfo });
         items = getImportItemsForAssayDefinitions(assayStateModel, sampleModel);
+        expect(items.size).toBe(1);
+    });
+
+    test('providerType filter', () => {
+        let items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, undefined);
+        expect(items.size).toBe(3);
+        items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, GENERAL_ASSAY_PROVIDER_NAME);
+        expect(items.size).toBe(2);
+        items = getImportItemsForAssayDefinitions(TEST_ASSAY_STATE_MODEL, undefined, 'NAb');
         expect(items.size).toBe(1);
     });
 });

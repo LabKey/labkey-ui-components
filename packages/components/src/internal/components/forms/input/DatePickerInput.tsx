@@ -21,7 +21,7 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 import { QueryColumn } from '../../../..';
-import { datePlaceholder, formatDate, isDateTimeCol, parseDate } from '../../../util/Date';
+import { datePlaceholder, isDateTimeCol, parseDate } from '../../../util/Date';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -128,7 +128,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         return showTime || isDateTimeCol(queryColumn);
     }
 
-    render() {
+    render(): ReactNode {
         const {
             inputClassName,
             inputWrapperClassName,

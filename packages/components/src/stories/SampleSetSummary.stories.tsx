@@ -14,28 +14,41 @@
  * limitations under the License.
  */
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { Location, User } from '..';
-import './stories.scss';
-import { SampleSetSummary } from '../internal/components/samples/SampleSetSummary';
+import { SampleSetSummary, User } from '..';
+import initGlobal from './initGlobal';
 
-storiesOf('SampleSetSummary', module)
-    .addDecorator(withKnobs)
-    .add('sample sets', () => {
-        const location: Location = {
-            query: {
-                viewAs: 'grid',
-            },
-        };
+initGlobal();
 
-        const user = new User({
-            avatar: undefined,
-            displayName: 'Test User',
-            isSignedIn: true,
-            isAdmin: true,
-        });
+export default {
+    title: 'Components/SampleSetSummary',
+    component: SampleSetSummary,
+    argTypes: {
+        navigate: {
+            action: 'navigate',
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+} as Meta;
 
-        return <SampleSetSummary location={location} navigate={() => {}} user={user} />;
-    });
+export const SampleSetSummaryStory: Story = props => (
+    <SampleSetSummary {...(props as any)} user={new User(props.user ?? {})} />
+);
+
+SampleSetSummaryStory.storyName = 'SampleSetSummary';
+
+SampleSetSummaryStory.args = {
+    location: {
+        query: {
+            viewAs: 'grid',
+        },
+    },
+    user: {
+        avatar: undefined,
+        displayName: 'Test User',
+        isSignedIn: true,
+        isAdmin: true,
+    },
+};

@@ -18,8 +18,16 @@ export default {
     title: 'Components/DataClassDesigner',
     component: DataClassDesigner,
     argTypes: {
-        onCancel: { action: 'cancelled', control: { type: null } },
-        onComplete: { action: 'completed' },
+        onCancel: {
+            action: 'cancelled',
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onComplete: {
+            action: 'completed',
+            control: { disable: true },
+            table: { disable: true },
+        },
     },
 } as Meta;
 

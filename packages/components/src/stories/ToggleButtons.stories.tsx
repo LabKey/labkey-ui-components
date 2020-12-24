@@ -3,44 +3,39 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import React, { useCallback, useState } from 'react';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { ToggleButtons } from '..';
-import './stories.scss';
 
-interface State {
-    selected: string;
-}
+export default {
+    title: 'Components/ToggleButtons',
+    component: ToggleButtons,
+    argTypes: {
+        active: {
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onClick: {
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+} as Meta;
 
-class WrappedToggleButtons extends React.Component<any, State> {
-    constructor(props: any) {
-        super(props);
+export const ToggleButtonsStory: Story = storyProps => {
+    const [selected, setSelected] = useState<string>(undefined);
 
-        this.state = {
-            selected: undefined,
-        };
-    }
+    const onClick = useCallback((newSelected: string) => {
+        setSelected(newSelected);
+    }, []);
 
-    onClick = (selected: string) => {
-        this.setState(() => ({ selected }));
-    };
+    return <ToggleButtons {...(storyProps as any)} active={selected} onClick={onClick} />;
+};
 
-    render() {
-        return (
-            <ToggleButtons
-                first={text('first button text', 'TSV')}
-                second={text('second button text', 'CSV')}
-                onClick={this.onClick}
-                active={this.state.selected}
-            />
-        );
-    }
-}
+ToggleButtonsStory.storyName = 'ToggleButtons';
 
-storiesOf('ToggleButtons', module)
-    .addDecorator(withKnobs)
-    .add('with knobs', () => {
-        return <WrappedToggleButtons />;
-    });
+ToggleButtonsStory.args = {
+    first: 'TSV',
+    second: 'CSV',
+};

@@ -14,22 +14,33 @@
  * limitations under the License.
  */
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
-import './stories.scss';
 import { ImportWithRenameConfirmModal } from '../internal/components/assay/ImportWithRenameConfirmModal';
 
-storiesOf('ImportWithRenameConfirmModal', module)
-    .addDecorator(withKnobs)
-    .add('with knobs', () => {
-        return (
-            <ImportWithRenameConfirmModal
-                originalName={text('Original file name', 'original.txt')}
-                newName={text('New file name', 'original_1.txt')}
-                folderType={text('Folder type', 'Product')}
-                onConfirm={() => console.log('confirm')}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    });
+export default {
+    title: 'Components/ImportWithRenameConfirmModal',
+    component: ImportWithRenameConfirmModal,
+    argTypes: {
+        onCancel: {
+            action: 'cancel',
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onConfirm: {
+            action: 'confirm',
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+} as Meta;
+
+export const ImportWithRenameConfirmModalStory: Story = props => <ImportWithRenameConfirmModal {...(props as any)} />;
+
+ImportWithRenameConfirmModalStory.storyName = 'ImportWithRenameConfirmModal';
+
+ImportWithRenameConfirmModalStory.args = {
+    folderType: 'Product',
+    newName: 'original_1.txt',
+    originalName: 'original.txt',
+};

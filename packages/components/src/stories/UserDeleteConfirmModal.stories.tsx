@@ -14,28 +14,34 @@
  * limitations under the License.
  */
 import React from 'react';
-import { storiesOf } from '@storybook/react';
 import { List } from 'immutable';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { UserDeleteConfirmModal } from '../internal/components/user/UserDeleteConfirmModal';
-import './stories.scss';
 
-storiesOf('UserDeleteConfirmModal', module)
-    .add('single user selected', () => {
-        return (
-            <UserDeleteConfirmModal
-                userIds={List<number>([1])}
-                onComplete={response => console.log('complete', response)}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    })
-    .add('multiple user selected', () => {
-        return (
-            <UserDeleteConfirmModal
-                userIds={List<number>([1, 2])}
-                onComplete={response => console.log('complete', response)}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    });
+export default {
+    title: 'Components/UserDeleteConfirmModal',
+    component: UserDeleteConfirmModal,
+    argTypes: {
+        onCancel: {
+            action: 'cancel',
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onComplete: {
+            action: 'complete',
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+} as Meta;
+
+export const UserDeleteConfirmModalStory: Story = storyProps => {
+    return <UserDeleteConfirmModal {...(storyProps as any)} userIds={List(storyProps.userIds ?? [])} />;
+};
+
+UserDeleteConfirmModalStory.storyName = 'UserDeleteConfirmModal';
+
+UserDeleteConfirmModalStory.args = {
+    userIds: [1, 2],
+};

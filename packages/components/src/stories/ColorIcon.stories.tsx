@@ -6,19 +6,21 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { ColorIcon as ColorIconComponent } from '..';
+import { ColorIcon } from '..';
 
 export default {
     title: 'Components/ColorIcon',
-    component: ColorIconComponent,
+    component: ColorIcon,
     argTypes: {
         value: { control: 'color' },
     },
 } as Meta;
 
-export const ColorIcon: Story = storyProps => <ColorIconComponent {...storyProps as any} />;
+export const ColorIconStory: Story = storyProps => <ColorIcon {...storyProps as any} />;
 
-ColorIcon.args = {
+ColorIconStory.storyName = 'ColorIcon';
+
+ColorIconStory.args = {
     asSquare: false,
     label: 'Color Label',
     useSmall: false,

@@ -15,8 +15,7 @@
  */
 
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { NEW_DATASET_MODEL_WITH_DATASPACE, NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../test/data/constants';
 import { DatasetDesignerPanels, DatasetModel } from '..';
@@ -24,53 +23,59 @@ import { DatasetDesignerPanels, DatasetModel } from '..';
 import getDatasetDesign from '../test/data/dataset-getDatasetDesign.json';
 import getDatasetDesignSharedStudy from '../test/data/dataset-getDatasetDesignSharedStudy.json';
 
-storiesOf('DatasetDesigner', module)
-    .addDecorator(withKnobs)
-    .add('create new dataset without dataspace', () => {
-        return (
-            <DatasetDesignerPanels
-                initModel={DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE, undefined)}
-                useTheme={false}
-                saveBtnText={text('saveBtnText', 'Save')}
-                successBsStyle={text('successBsStyle', undefined)}
-                onCancel={() => console.log('cancel')}
-                onComplete={() => console.log('onComplete')}
-            />
-        );
-    })
-    .add('create new dataset with dataspace', () => {
-        return (
-            <DatasetDesignerPanels
-                initModel={DatasetModel.create(NEW_DATASET_MODEL_WITH_DATASPACE, undefined)}
-                useTheme={false}
-                saveBtnText={text('saveBtnText', 'Save')}
-                successBsStyle={text('successBsStyle', undefined)}
-                onCancel={() => console.log('cancel')}
-                onComplete={() => console.log('onComplete')}
-            />
-        );
-    })
-    .add('edit dataset without dataspace', () => {
-        return (
-            <DatasetDesignerPanels
-                initModel={DatasetModel.create(null, getDatasetDesign)}
-                useTheme={false}
-                saveBtnText={text('saveBtnText', 'Save')}
-                successBsStyle={text('successBsStyle', undefined)}
-                onCancel={() => console.log('cancel')}
-                onComplete={() => console.log('onComplete')}
-            />
-        );
-    })
-    .add('edit dataset with dataspace', () => {
-        return (
-            <DatasetDesignerPanels
-                initModel={DatasetModel.create(null, getDatasetDesignSharedStudy)}
-                useTheme={false}
-                saveBtnText={text('saveBtnText', 'Save')}
-                successBsStyle={text('successBsStyle', undefined)}
-                onCancel={() => console.log('cancel')}
-                onComplete={() => console.log('onComplete')}
-            />
-        );
-    });
+export default {
+    title: 'Components/DatasetDesignerPanels',
+    component: DatasetDesignerPanels,
+    argTypes: {
+        initModel: {
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onCancel: {
+            action: 'cancelled',
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onComplete: {
+            action: 'completed',
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+    args: {
+        saveBtnText: 'Save',
+        useTheme: false,
+    },
+} as Meta;
+
+const DatasetDesignerPanelsStory: Story = storyProps => {
+    return <DatasetDesignerPanels {...(storyProps as any)} />;
+};
+
+export const CreateWithoutDataspace = DatasetDesignerPanelsStory.bind({});
+CreateWithoutDataspace.storyName = 'Create new dataset without dataspace';
+
+CreateWithoutDataspace.args = {
+    initModel: DatasetModel.create(NEW_DATASET_MODEL_WITHOUT_DATASPACE),
+};
+
+export const CreateWithDataspace = DatasetDesignerPanelsStory.bind({});
+CreateWithDataspace.storyName = 'Create new dataset with dataspace';
+
+CreateWithDataspace.args = {
+    initModel: DatasetModel.create(NEW_DATASET_MODEL_WITH_DATASPACE),
+};
+
+export const EditWithoutDataspace = DatasetDesignerPanelsStory.bind({});
+EditWithoutDataspace.storyName = 'Edit dataset without dataspace';
+
+EditWithoutDataspace.args = {
+    initModel: DatasetModel.create(null, getDatasetDesign),
+};
+
+export const EditWithDataspace = DatasetDesignerPanelsStory.bind({});
+EditWithDataspace.storyName = 'Edit dataset with dataspace';
+
+EditWithDataspace.args = {
+    initModel: DatasetModel.create(null, getDatasetDesignSharedStudy),
+};

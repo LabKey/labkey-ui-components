@@ -14,50 +14,35 @@
  * limitations under the License.
  */
 import React from 'react';
-import { storiesOf } from '@storybook/react';
 import { List } from 'immutable';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { UserActivateChangeConfirmModal } from '../internal/components/user/UserActivateChangeConfirmModal';
-import './stories.scss';
 
-storiesOf('UserActivateChangeConfirmModal', module)
-    .add('reactivate - single user selected', () => {
-        return (
-            <UserActivateChangeConfirmModal
-                userIds={List<number>([1])}
-                reactivate={true}
-                onComplete={response => console.log('complete', response)}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    })
-    .add('reactivate - multiple user selected', () => {
-        return (
-            <UserActivateChangeConfirmModal
-                userIds={List<number>([1, 2])}
-                reactivate={true}
-                onComplete={response => console.log('complete', response)}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    })
-    .add('deactivate - single user selected', () => {
-        return (
-            <UserActivateChangeConfirmModal
-                userIds={List<number>([1])}
-                reactivate={false}
-                onComplete={response => console.log('complete', response)}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    })
-    .add('deactivate - multiple user selected', () => {
-        return (
-            <UserActivateChangeConfirmModal
-                userIds={List<number>([1, 2])}
-                reactivate={false}
-                onComplete={response => console.log('complete', response)}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    });
+export default {
+    title: 'Components/UserActivateChangeConfirmModal',
+    component: UserActivateChangeConfirmModal,
+    argTypes: {
+        onCancel: {
+            action: 'cancel',
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onComplete: {
+            action: 'complete',
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+} as Meta;
+
+export const UserActivateChangeConfirmModalStory: Story = storyProps => {
+    return <UserActivateChangeConfirmModal {...(storyProps as any)} userIds={List(storyProps.userIds ?? [])} />;
+};
+
+UserActivateChangeConfirmModalStory.storyName = 'UserActivateChangeConfirmModal';
+
+UserActivateChangeConfirmModalStory.args = {
+    reactivate: true,
+    userIds: [1, 2],
+};

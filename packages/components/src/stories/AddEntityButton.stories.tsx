@@ -1,54 +1,25 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
-import {
-    AddEntityButton as AddEntityButtonComponent,
-    AddEntityButtonProps,
-} from '../internal/components/buttons/AddEntityButton';
-
-type WrappedAddEntityButtonProps = Omit<AddEntityButtonProps, 'onClick'>;
-
-interface State {
-    added: string[];
-}
-
-class WrappedAddEntityButton extends React.Component<WrappedAddEntityButtonProps, State> {
-    constructor(props: any) {
-        super(props);
-
-        this.state = {
-            added: [],
-        };
-    }
-
-    onClick = (): void => {
-        const { added } = this.state;
-        added.push('Another');
-        this.setState(() => ({ added }));
-    };
-
-    render() {
-        const { added } = this.state;
-
-        return (
-            <>
-                {added.map((val, index) => (
-                    <div key={index}>{val}</div>
-                ))}
-                <AddEntityButtonComponent {...this.props} onClick={this.onClick} />
-            </>
-        );
-    }
-}
+import { AddEntityButton, AddEntityButtonProps } from '../internal/components/buttons/AddEntityButton';
 
 export default {
     title: 'Components/AddEntityButton',
-    component: WrappedAddEntityButton,
+    component: AddEntityButton,
+    argTypes: {
+        onClick: {
+            action: 'click',
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
 } as Meta;
 
-export const AddEntityButton: Story = storyProps => <WrappedAddEntityButton {...storyProps} />;
+export const AddEntityButtonStory: Story<AddEntityButtonProps> = storyProps => <AddEntityButton {...storyProps} />;
 
-AddEntityButton.args = {
+AddEntityButtonStory.storyName = 'AddEntityButton';
+
+AddEntityButtonStory.args = {
     disabled: false,
     entity: 'Entity',
     helperBody: 'https://www.labkey.org',

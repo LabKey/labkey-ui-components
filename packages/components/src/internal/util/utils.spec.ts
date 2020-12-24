@@ -15,6 +15,8 @@
  */
 import { fromJS, List, Map } from 'immutable';
 
+import { QueryColumn, QueryInfo } from '../../index';
+
 import {
     caseInsensitive,
     getCommonDataValues,
@@ -649,6 +651,19 @@ describe('getUpdatedData', () => {
 });
 
 describe('getUpdatedDataFromGrid', () => {
+    const queryInfo = QueryInfo.create({
+        columns: Map<string, QueryColumn>({
+            rowid: new QueryColumn({ name: 'RowId' }),
+            value: new QueryColumn({ name: 'Value' }),
+            data: new QueryColumn({ name: 'Data' }),
+            andagain: new QueryColumn({ name: 'AndAgain' }),
+            name: new QueryColumn({ name: 'Name' }),
+            other: new QueryColumn({ name: 'Other' }),
+            bool: new QueryColumn({ name: 'Bool' }),
+            int: new QueryColumn({ name: 'Int' }),
+            date: new QueryColumn({ name: 'Date', jsonType: 'date' }),
+        }),
+    });
     const originalData = fromJS({
         448: {
             RowId: 448,
@@ -659,6 +674,7 @@ describe('getUpdatedDataFromGrid', () => {
             Other: 'other1',
             Bool: true,
             Int: 0,
+            Date: '2020-12-23 14:34',
         },
         447: {
             RowId: 447,
@@ -669,6 +685,7 @@ describe('getUpdatedDataFromGrid', () => {
             Other: 'other2',
             Bool: false,
             Int: 7,
+            Date: null,
         },
         446: {
             RowId: 446,
@@ -679,6 +696,7 @@ describe('getUpdatedDataFromGrid', () => {
             Other: 'other3',
             Bool: true,
             Int: 6,
+            Date: '1922-08-21 00:00',
         },
         445: {
             RowId: 445,
@@ -689,10 +707,11 @@ describe('getUpdatedDataFromGrid', () => {
             Other: null,
             Bool: false,
             Int: 5,
+            Date: null,
         },
     });
     test('no edited rows', () => {
-        const updatedData = getUpdatedDataFromGrid(originalData, [], 'RowId');
+        const updatedData = getUpdatedDataFromGrid(originalData, [], 'RowId', queryInfo);
         expect(updatedData).toHaveLength(0);
     });
 
@@ -709,6 +728,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: 'other1',
                     Bool: true,
                     Int: 0,
+                    Date: '2020-12-23 14:34',
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -719,6 +739,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: 'other2',
                     Bool: false,
                     Int: '7',
+                    Date: null,
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -729,6 +750,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: 'other3',
                     Bool: true,
                     Int: '6',
+                    Date: '1922-08-21 00:00',
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -739,9 +761,11 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: null,
                     Bool: false,
                     Int: 5,
+                    Date: null,
                 }),
             ],
-            'RowId'
+            'RowId',
+            queryInfo
         );
         expect(updatedData).toHaveLength(0);
     });
@@ -759,6 +783,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: 'other1',
                     Bool: undefined,
                     Int: undefined,
+                    Date: null,
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -769,6 +794,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: 'other2',
                     Bool: undefined,
                     Int: undefined,
+                    Date: null,
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -779,6 +805,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: 'other3',
                     Bool: true,
                     Int: 6,
+                    Date: '1922-08-21 00:00',
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -789,15 +816,18 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: null,
                     Bool: false,
                     Int: 5,
+                    Date: null,
                 }),
             ],
-            'RowId'
+            'RowId',
+            queryInfo
         );
         expect(updatedData).toHaveLength(2);
         expect(updatedData[0]).toStrictEqual({
             Int: null,
             Bool: null,
             Data: null,
+            Date: null,
             RowId: '448',
         });
         expect(updatedData[1]).toStrictEqual({
@@ -821,6 +851,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: 'other1',
                     Bool: '',
                     Int: '',
+                    Date: '2021-12-23 14:34',
                 }),
                 Map<string, any>({
                     RowId: '447',
@@ -831,6 +862,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: 'other2',
                     Bool: '',
                     Int: '0',
+                    Date: null,
                 }),
                 Map<string, any>({
                     RowId: '446',
@@ -841,6 +873,7 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: 'other3',
                     Bool: false,
                     Int: 66,
+                    Date: '1922-08-21 00:00',
                 }),
                 Map<string, any>({
                     RowId: '445',
@@ -851,15 +884,18 @@ describe('getUpdatedDataFromGrid', () => {
                     Other: null,
                     Bool: true,
                     Int: 5,
+                    Date: null,
                 }),
             ],
-            'RowId'
+            'RowId',
+            queryInfo
         );
         expect(updatedData).toHaveLength(4);
         expect(updatedData[0]).toStrictEqual({
             Int: null,
             Bool: null,
             Data: null,
+            Date: new Date('2021-12-23 14:34'),
             RowId: '448',
         });
         expect(updatedData[1]).toStrictEqual({
@@ -894,7 +930,8 @@ describe('getUpdatedDataFromGrid', () => {
                     Int2: 22,
                 }),
             ],
-            'RowId'
+            'RowId',
+            queryInfo
         );
         expect(updatedData).toHaveLength(1);
         expect(updatedData[0]).toStrictEqual({

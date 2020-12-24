@@ -57,9 +57,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         {activity.CreatedBy}
                     </span>
                 )}
-                <div className="pull-right server-notification-data">
-                    {formatDateTime(parseDate(activity.Created, getDateTimeFormat()))}
-                </div>
+                <div className="pull-right server-notification-data">{formatDateTime(parseDate(activity.Created))}</div>
             </li>
         );
     }

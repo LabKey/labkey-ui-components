@@ -120,11 +120,18 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
             case 'date':
                 if (useDatePicker && (!value || typeof value === 'string')) {
                     return (
-                        <DatePickerInput wrapperClassName="col-sm-12" name={col.name} queryColumn={col} value={value} />
+                        <DatePickerInput
+                            showLabel={false}
+                            wrapperClassName="col-sm-12"
+                            name={col.name}
+                            queryColumn={col}
+                            value={value}
+                        />
                     );
                 } else if (typeof value === 'string') {
                     return (
                         <DateInput
+                            showLabel={false}
                             elementWrapperClassName={[{ 'col-sm-9': false }, 'col-sm-12']}
                             name={col.name}
                             queryColumn={col}

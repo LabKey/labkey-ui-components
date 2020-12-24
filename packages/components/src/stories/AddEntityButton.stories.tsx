@@ -1,10 +1,10 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
-import './stories.scss';
-
-import { AddEntityButton, AddEntityButtonProps } from '../internal/components/buttons/AddEntityButton';
+import {
+    AddEntityButton as AddEntityButtonComponent,
+    AddEntityButtonProps,
+} from '../internal/components/buttons/AddEntityButton';
 
 type WrappedAddEntityButtonProps = Omit<AddEntityButtonProps, 'onClick'>;
 
@@ -32,32 +32,25 @@ class WrappedAddEntityButton extends React.Component<WrappedAddEntityButtonProps
 
         return (
             <>
-                {added.map((val: string, index: number) => (
+                {added.map((val, index) => (
                     <div key={index}>{val}</div>
                 ))}
-                <AddEntityButton {...this.props} onClick={this.onClick} />
+                <AddEntityButtonComponent {...this.props} onClick={this.onClick} />
             </>
         );
     }
 }
 
-storiesOf('AddEntityButton', module)
-    .addDecorator(withKnobs)
-    .add('with knobs', () => {
-        const entity = text('Entity', 'Entity', 'Entity');
-        const helperId = 'ToolTip';
-        const helperBody = text('HelperBody', 'https://www.labkey.org', helperId);
-        const helperTitle = text('HelperTitle', undefined, helperId);
-        const disabled = boolean('Disabled?', false);
-        const title = text('Button title', 'Button title');
+export default {
+    title: 'Components/AddEntityButton',
+    component: WrappedAddEntityButton,
+} as Meta;
 
-        return (
-            <WrappedAddEntityButton
-                disabled={disabled}
-                entity={entity}
-                helperBody={helperBody}
-                helperTitle={helperTitle}
-                title={title}
-            />
-        );
-    });
+export const AddEntityButton: Story = storyProps => <WrappedAddEntityButton {...storyProps} />;
+
+AddEntityButton.args = {
+    disabled: false,
+    entity: 'Entity',
+    helperBody: 'https://www.labkey.org',
+    title: 'Button title',
+};

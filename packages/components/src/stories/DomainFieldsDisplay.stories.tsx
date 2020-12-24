@@ -4,23 +4,27 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { DomainFieldsDisplay, DomainDesign } from '..';
 
 import data from '../test/data/property-getDomain.json';
-import './stories.scss';
 
-storiesOf('DomainFieldsDisplay', module)
-    .addDecorator(withKnobs)
-    .add('with empty domain', () => {
-        const domain = new DomainDesign();
+export default {
+    title: 'Components/DomainFieldsDisplay',
+    component: DomainFieldsDisplay,
+} as Meta;
 
-        return <DomainFieldsDisplay title="Empty Domain Properties Example" domain={domain} />;
-    })
-    .add('with knobs', () => {
-        const domain = new DomainDesign(data);
+const Template: Story = storyProps => <DomainFieldsDisplay {...storyProps as any} />;
 
-        return <DomainFieldsDisplay title={text('Title', 'Study Properties')} domain={domain} />;
-    });
+export const EmptyDomain = Template.bind({});
+EmptyDomain.args = {
+    domain: new DomainDesign(),
+    title: 'Empty Domain Properties Example',
+};
+
+export const DomainWithData = Template.bind({});
+DomainWithData.args = {
+    domain: new DomainDesign(data),
+    title: 'Study Properties',
+};

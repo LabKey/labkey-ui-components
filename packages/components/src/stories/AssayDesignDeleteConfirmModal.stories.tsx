@@ -14,37 +14,42 @@
  * limitations under the License.
  */
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { number, text, withKnobs } from '@storybook/addon-knobs';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
-import './stories.scss';
 import { AssayDesignDeleteConfirmModal } from '..';
 
-storiesOf('AssayDesignDeleteConfirmModal', module)
-    .addDecorator(withKnobs)
-    .add('without assay design name', () => {
-        return (
-            <AssayDesignDeleteConfirmModal
-                onConfirm={() => console.log('confirm')}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    })
-    .add('with assay design name', () => {
-        return (
-            <AssayDesignDeleteConfirmModal
-                assayDesignName={text('Assay Design Name', 'GPAT-10')}
-                onConfirm={() => console.log('confirm')}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    })
-    .add('with runs', () => {
-        return (
-            <AssayDesignDeleteConfirmModal
-                numRuns={number('Number of runs', 3)}
-                onConfirm={() => console.log('confirm')}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    });
+export default {
+    title: 'Components/AssayDesignDeleteConfirmModal',
+    component: AssayDesignDeleteConfirmModal,
+    argTypes: {
+        assayDesignName: {
+            label: 'Assay Design Name',
+        },
+        onCancel: {
+            action: 'cancelled',
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onConfirm: {
+            action: 'confirmed',
+            control: { disable: true },
+            table: { disable: true },
+        },
+        numRuns: {
+            label: 'Number of Runs',
+        },
+    },
+} as Meta;
+
+const Template: Story = storyProps => <AssayDesignDeleteConfirmModal {...(storyProps as any)} />;
+
+export const WithoutName = Template.bind({});
+export const WithName = Template.bind({});
+WithName.args = {
+    assayDesignName: 'GPAT-10',
+};
+
+export const WithRuns = Template.bind({});
+WithRuns.args = {
+    numRuns: 3,
+};

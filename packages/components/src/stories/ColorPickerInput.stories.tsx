@@ -3,30 +3,35 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React, { FC, useState } from 'react';
-import { storiesOf } from '@storybook/react';
-import { withKnobs, text, boolean } from '@storybook/addon-knobs';
+import React, { useState } from 'react';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { ColorPickerInput } from '..';
-import './stories.scss';
+import { ColorPickerInput as ColorPickerInputComponent } from '..';
 
-const WrappedColorPickerInput: FC<any> = props => {
+export default {
+    title: 'Components/ColorPickerInput',
+    component: ColorPickerInputComponent,
+    argTypes: {
+        onChange: {
+            control: { disable: true },
+            table: { disable: true },
+        },
+        value: {
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+} as Meta;
+
+export const ColorPickerInput: Story = storyProps => {
     const [selected, setSelected] = useState<string>('#009ce0');
-    const showLabel = boolean('showLabel', true);
-
     return (
-        <ColorPickerInput
-            name="color-input-value"
-            text={showLabel ? text('text', 'Select color') : undefined}
-            allowRemove={boolean('allowRemove', true)}
-            value={selected}
-            onChange={(name, value) => setSelected(value)}
-        />
+        <ColorPickerInputComponent {...storyProps} onChange={(name, value) => setSelected(value)} value={selected} />
     );
 };
 
-storiesOf('ColorPickerInput', module)
-    .addDecorator(withKnobs)
-    .add('with knobs', () => {
-        return <WrappedColorPickerInput />;
-    });
+ColorPickerInput.args = {
+    allowRemove: true,
+    showLabel: true,
+    text: 'Select color',
+};

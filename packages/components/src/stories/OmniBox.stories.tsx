@@ -4,19 +4,19 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import React, { PureComponent } from 'react';
-import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
 import { fromJS, List } from 'immutable';
 import { Query } from '@labkey/api';
+import { Meta, Story } from '@storybook/react/types-6-0';
+
+import { Grid, LoadingSpinner, QueryColumn, QueryGridModel, QueryInfo } from '..';
 
 import { SearchAction } from '../internal/components/omnibox/actions/Search';
 import { FilterAction } from '../internal/components/omnibox/actions/Filter';
 import { SortAction } from '../internal/components/omnibox/actions/Sort';
-import './stories.scss';
 import { OmniBox } from '../internal/components/omnibox/OmniBox';
-import { Grid, LoadingSpinner, QueryColumn, QueryGridModel, QueryInfo } from '..';
 import { ViewAction } from '../internal/components/omnibox/actions/View';
 import { makeQueryInfo, makeTestData } from '../internal/testHelpers';
+
 import mixturesQueryInfo from '../test/data/mixtures-getQueryDetails.json';
 import mixturesQuery from '../test/data/mixtures-getQuery.json';
 
@@ -117,17 +117,46 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
     }
 }
 
-storiesOf('Omnibox', module)
-    .addDecorator(withKnobs)
-    .add('search (only)', () => {
-        return <OmniBoxRenderer actions={['search']} placeholder="Search the data..." />;
-    })
-    .add('filter (only)', () => {
-        return <OmniBoxRenderer actions={['filter']} placeholder="Filter the data..." />;
-    })
-    .add('sort (only)', () => {
-        return <OmniBoxRenderer actions={['sort']} placeholder="Sort the data..." />;
-    })
-    .add('All actions', () => {
-        return <OmniBoxRenderer actions={['search', 'filter', 'sort', 'view']} placeholder="Do all the things..." />;
-    });
+export default {
+    title: 'Components/OmniBox',
+    component: OmniBoxRenderer,
+    parameters: {
+        controls: {
+            disabled: true,
+        },
+    },
+} as Meta;
+
+const OmniBoxStory: Story = storyProps => <OmniBoxRenderer {...(storyProps as any)} />;
+
+export const Search = OmniBoxStory.bind({});
+Search.storyName = 'Search (only)';
+
+Search.args = {
+    actions: ['search'],
+    placeholder: 'Search the data...',
+};
+
+export const Filter = OmniBoxStory.bind({});
+Filter.storyName = 'Filter (only)';
+
+Filter.args = {
+    actions: ['filter'],
+    placeholder: 'Filter the data...',
+};
+
+export const Sort = OmniBoxStory.bind({});
+Sort.storyName = 'Sort (only)';
+
+Sort.args = {
+    actions: ['sort'],
+    placeholder: 'Sort the data...',
+};
+
+export const All = OmniBoxStory.bind({});
+All.storyName = 'All actions';
+
+All.args = {
+    actions: ['search', 'filter', 'sort', 'view'],
+    placeholder: 'Do all the things...',
+};

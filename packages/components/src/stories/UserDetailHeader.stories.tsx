@@ -5,38 +5,39 @@
  */
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { storiesOf } from '@storybook/react';
-import { withKnobs, text } from '@storybook/addon-knobs';
-import { Map, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { UserDetailHeader, User } from '..';
 
 import { ICON_URL } from './mock';
-import './stories.scss';
 
-storiesOf('UserDetailHeader', module)
-    .addDecorator(withKnobs)
-    .add('default props', () => {
-        return (
-            <UserDetailHeader
-                title="Default User Title"
-                user={new User({ avatar: ICON_URL, isAdmin: true })}
-                userProperties={Map<string, any>()}
-                dateFormat="yyyy-MM-dd"
-            />
-        );
-    })
-    .add('custom props', () => {
-        return (
-            <UserDetailHeader
-                title={text('title', 'Custom User Title')}
-                user={new User({ avatar: ICON_URL, isAdmin: true })}
-                userProperties={fromJS({ lastlogin: '2019-12-02 01:02:03' })}
-                description={text('description', 'Testing with custom description')}
-                dateFormat={text('dateFormat', 'YYYY-MM')}
-                renderButtons={() => {
-                    return <Button className="pull-right">Test Button</Button>;
-                }}
-            />
-        );
-    });
+export default {
+    title: 'Components/UserDetailHeader',
+    component: UserDetailHeader,
+    argTypes: {
+        renderButtons: {
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+} as Meta;
+
+export const UserDetailHeaderStory: Story = storyProps => (
+    <UserDetailHeader
+        {...(storyProps as any)}
+        user={new User(storyProps.user ?? {})}
+        userProperties={fromJS(storyProps.userProperties ?? {})}
+    />
+);
+
+UserDetailHeaderStory.storyName = 'UserDetailHeader';
+
+UserDetailHeaderStory.args = {
+    dateFormat: 'yyyy-MM-DD',
+    description: 'Testing with custom description',
+    renderButtons: () => <Button className="pull-right">Test Button</Button>,
+    user: new User({ avatar: ICON_URL, isAdmin: true }).toJS(),
+    userProperties: { lastlogin: '2019-12-02 01:02:03' },
+    title: 'Custom User Title',
+};

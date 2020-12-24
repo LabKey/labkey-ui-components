@@ -4,13 +4,11 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { Meta } from '@storybook/react/types-6-0';
 
-import { Cards } from '..';
+import { Cards as CardsComponent } from '..';
 
 import { ICON_URL } from './mock';
-import './stories.scss';
 
 const cards = [
     {
@@ -41,8 +39,9 @@ const cards = [
     },
 ];
 
-storiesOf('Cards', module)
-    .addDecorator(withKnobs)
-    .add('default props', () => {
-        return <Cards cards={cards} />;
-    });
+export default {
+    title: 'Components/Cards',
+    component: CardsComponent,
+} as Meta;
+
+export const Cards = () => <CardsComponent cards={cards} />;

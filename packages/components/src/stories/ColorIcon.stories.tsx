@@ -4,21 +4,23 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { withKnobs, text, boolean } from '@storybook/addon-knobs';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { ColorIcon } from '..';
-import './stories.scss';
+import { ColorIcon as ColorIconComponent } from '..';
 
-storiesOf('ColorIcon', module)
-    .addDecorator(withKnobs)
-    .add('with knobs', () => {
-        return (
-            <ColorIcon
-                label={text('label', 'Color Label')}
-                value={text('value', '#009ce0')}
-                asSquare={boolean('asSquare', false)}
-                useSmall={boolean('useSmall', false)}
-            />
-        );
-    });
+export default {
+    title: 'Components/ColorIcon',
+    component: ColorIconComponent,
+    argTypes: {
+        value: { control: 'color' },
+    },
+} as Meta;
+
+export const ColorIcon: Story = storyProps => <ColorIconComponent {...storyProps as any} />;
+
+ColorIcon.args = {
+    asSquare: false,
+    label: 'Color Label',
+    useSmall: false,
+    value: '#009ce0',
+};

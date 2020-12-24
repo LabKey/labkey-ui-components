@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released#: TBD
+### version 1.11.2
+*Released#: 24 December 2020
 * Issue 42088: Don't send formatted date values when saving data
 
 ### version 1.11.1

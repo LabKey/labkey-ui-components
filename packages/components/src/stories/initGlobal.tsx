@@ -20,45 +20,54 @@ import { initBrowserHistoryState } from '../internal/util/global';
 
 import { initMocks } from './mock';
 
-const QUERY_METADATA = fromJS({
-    // hideEmptyChartSelector: true,
-    // hideEmptyViewSelector: true,
-    concepts: {
-        'http://www.labkey.org/exp/xml#alias': {
-            inputRenderer: 'ExperimentAlias',
-            columnRenderer: 'AliasRenderer',
-            detailRenderer: 'AliasRenderer',
-        },
-    },
-    columnDefaults: {
-        flag: {
-            removeFromViews: true,
-        },
-    },
-    schema: {
-        [SCHEMAS.SAMPLE_SETS.SCHEMA]: {
-            columnDefaults: {
-                name: {
-                    caption: 'Sample ID',
-                    shownInUpdateView: false,
-                    shownInDetailsView: false,
-                },
-                run: {
-                    shownInDetailsView: false,
-                },
-            },
-            queryDefaults: {
-                appEditableTable: true,
+let GLOBAL_INIT = false;
+
+const initGlobal = (): void => {
+    if (GLOBAL_INIT) return;
+    GLOBAL_INIT = true;
+
+    const QUERY_METADATA = fromJS({
+        // hideEmptyChartSelector: true,
+        // hideEmptyViewSelector: true,
+        concepts: {
+            'http://www.labkey.org/exp/xml#alias': {
+                inputRenderer: 'ExperimentAlias',
+                columnRenderer: 'AliasRenderer',
+                detailRenderer: 'AliasRenderer',
             },
         },
-    },
-});
+        columnDefaults: {
+            flag: {
+                removeFromViews: true,
+            },
+        },
+        schema: {
+            [SCHEMAS.SAMPLE_SETS.SCHEMA]: {
+                columnDefaults: {
+                    name: {
+                        caption: 'Sample ID',
+                        shownInUpdateView: false,
+                        shownInDetailsView: false,
+                    },
+                    run: {
+                        shownInDetailsView: false,
+                    },
+                },
+                queryDefaults: {
+                    appEditableTable: true,
+                },
+            },
+        },
+    });
 
-const COLUMN_RENDERERS = fromJS({
-    filecolumnrenderer: FileColumnRenderer,
-});
+    const COLUMN_RENDERERS = fromJS({
+        filecolumnrenderer: FileColumnRenderer,
+    });
 
-initQueryGridState(QUERY_METADATA, COLUMN_RENDERERS);
-initBrowserHistoryState();
-initNotificationsState();
-initMocks();
+    initQueryGridState(QUERY_METADATA, COLUMN_RENDERERS);
+    initBrowserHistoryState();
+    initNotificationsState();
+    initMocks();
+};
+
+export default initGlobal;

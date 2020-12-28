@@ -13,7 +13,7 @@
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
     "prepublishOnly": "yarn build",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 9001",
     "build-storybook": "build-storybook",
     "test": "cross-env NODE_ENV=test jest",
     "watch:build": "watch 'yarn build' ./src",

@@ -13,6 +13,12 @@ import data from '../test/data/property-getDomain.json';
 export default {
     title: 'Components/DomainFieldsDisplay',
     component: DomainFieldsDisplay,
+    argTypes: {
+        domain: {
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
 } as Meta;
 
 const Template: Story = storyProps => <DomainFieldsDisplay {...storyProps as any} />;

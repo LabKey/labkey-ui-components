@@ -11,8 +11,6 @@ interface AssayDesignUploadPanelProps {
 export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(props => {
 
 
-
-
     return (
         <div>
             <Row>
@@ -21,7 +19,15 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                         <b>Import .XAR or .XAR.XML file</b>
                     </div>
                     <p>To create an assay from an existing design, import a .XAR or .XAR.XML file here. You will be able to customize the design after importing.</p>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={12}>
                     <FileAttachmentForm label={''}/>
+                </Col>
+            </Row>
+            <Row>
+                <Col xs={6}>
                     <div className={'margin-top margin-bottom'}>
                         <b>Import through data pipeline</b>
                     </div>

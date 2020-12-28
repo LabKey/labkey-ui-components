@@ -1,10 +1,31 @@
-import React, {FC, memo, SyntheticEvent, useCallback, useState} from "react";
+import React, {FC, memo, SyntheticEvent, useCallback, useEffect, useState} from "react";
 import { Col, Nav, NavItem, Row, Tab, TabContainer } from "react-bootstrap";
 import {AssayContainerLocation} from "./AssayContainerLocation";
 import {SpecialtyAssayPanel} from "./SpecialtyAssayPanel";
 import {AssayDesignUploadPanel} from "./AssayDesignUploadPanel";
 import {StandardAssayPanel} from "./StandardAssayPanel";
+import {
+    createDeleteErrorNotification,
+    createDeleteSuccessNotification,
+    createNotification,
+    deleteRows,
+    Principal
+} from "../../..";
+import {ActionURL, Ajax, Utils} from "@labkey/api";
+import {List} from "immutable";
 
+
+export interface AssayProvider {
+    name: string
+    description: string
+    fileTypes: Array<string>
+}
+
+interface AssayProvidersOptions {
+    providers: Array<AssayProvider>
+    locations: {[key: string]: string}
+    defaultLocation: string
+}
 
 export const enum AssayPickerTabs {
     STANDARD_ASSAY_TAB = 'standard',
@@ -13,20 +34,59 @@ export const enum AssayPickerTabs {
 }
 
 interface AssayPickerProps {
-
+    showImport: boolean
 }
 
-const values = [{value: 'first', display: 'First'}, {value: 'second', display: 'Second'}]
-const specialty = [{value: 'first', display: 'First', description: 'This is the first', fileTypes: ['XLS', 'XLSX']},
-    {value: 'second', display: 'Second', description: 'This is the second specialty assay type. This type is second in the list ' +
-            'because it is in between the first and the third specialty assay type. Select the second dropdown option to select this assay.', fileTypes: ['XLS', 'XLSX']},
-    {value: 'third', display: 'Third', description: 'Third description.', fileTypes: ['XLS', 'XLSX', 'Flow', 'TSV', 'CSV', 'txt', 'py', 'java', 'js', 'doc', 'docx']}]
+const queryAssayProviders = (): Promise<AssayProvidersOptions> => {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('assay', 'getAssayDesignSelectOptions.api'),
+            method: 'GET',
+            scope: this,
+            success: Utils.getCallbackWrapper(data => {
+                resolve(data);
+            }),
+            failure: Utils.getCallbackWrapper(error => {
+                reject(error);
+            }),
+        });
+    });
+}
+
+const getAssayProviders = async(): Promise<AssayProvidersOptions> => {
+
+    try {
+        return await queryAssayProviders();
+    } catch (error) {
+        console.error(error);
+        createNotification({message: error, alertClass: 'danger'})
+    }
+}
+
+const getSelectedProvider = (providers: Array<AssayProvider>, name: string): AssayProvider => {
+    return providers?.find((p) => {
+        return p.name === name;
+    })
+}
 
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
+    const { showImport } = props;
 
+    const [ providers, setProviders ] = useState<Array<AssayProvider>>()
+    const [ containers, setContainers ] = useState<{[key: string]: string}>()
     const [ tabSelection, setTabSelection ] = useState(AssayPickerTabs.STANDARD_ASSAY_TAB)
     const [ containerValue, setContainerValue ] = useState<string>()
-    const [ specialtyValue, setSpecialtyValue ] = useState<number>(0)
+    const [ selectedProvider, setSelectedProvider ] = useState<AssayProvider>()
+
+    useEffect(() => {
+        getAssayProviders().then((options) => {
+                setProviders(options.providers);
+                setContainers(options.locations);
+                setContainerValue(options.defaultLocation);
+                setSelectedProvider(getSelectedProvider(options.providers,"General"))
+            }
+        );
+    }, []);
 
     const onTabChange = useCallback((event: SyntheticEvent<TabContainer, Event>) => {
         setTabSelection(event as any) // Crummy cast to make TS happy
@@ -36,11 +96,9 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
         setContainerValue(value)
     }, []);
 
-    const onSpecialtyAssayChange = useCallback((value) => {
-        const index = specialty.findIndex(val => val.value === value)
-        if (index > -1)
-            setSpecialtyValue(index);
-    }, []);
+    const onSelectedProviderChange = useCallback((value) => {
+        setSelectedProvider(getSelectedProvider(providers, value));
+    }, [providers]);
 
     const onXarUpload = useCallback((file) => {
 
@@ -61,17 +119,19 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                         <Tab.Content animation>
                             <Tab.Pane className={'margin-bottom margin-top'} eventKey={AssayPickerTabs.STANDARD_ASSAY_TAB}>
                                 <StandardAssayPanel>
-                                    <AssayContainerLocation values={values} selected={containerValue} onChange={onContainerChange}/>
+                                    <AssayContainerLocation locations={containers} selected={containerValue} onChange={onContainerChange}/>
                                 </StandardAssayPanel>
                             </Tab.Pane>
                             <Tab.Pane className={'margin-bottom margin-top'} eventKey={AssayPickerTabs.SPECIALTY_ASSAY_TAB}>
-                                <SpecialtyAssayPanel values={specialty} selected={specialty[specialtyValue]} onChange={onSpecialtyAssayChange}>
-                                    <AssayContainerLocation values={values} selected={containerValue} onChange={onContainerChange}/>
+                                <SpecialtyAssayPanel values={providers} selected={selectedProvider} onChange={onSelectedProviderChange}>
+                                    <AssayContainerLocation locations={containers} selected={containerValue} onChange={onContainerChange}/>
                                 </SpecialtyAssayPanel>
                             </Tab.Pane>
-                            <Tab.Pane className={'margin-bottom margin-top'} eventKey={AssayPickerTabs.XAR_IMPORT_TAB}>
-                                <AssayDesignUploadPanel onUpload={onXarUpload}/>
-                            </Tab.Pane>
+                            { showImport &&
+                                <Tab.Pane className={'margin-bottom margin-top'} eventKey={AssayPickerTabs.XAR_IMPORT_TAB}>
+                                    <AssayDesignUploadPanel onUpload={onXarUpload}/>
+                                </Tab.Pane>
+                            }
                         </Tab.Content>
                     </Col>
                 </Row>

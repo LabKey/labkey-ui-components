@@ -1,25 +1,25 @@
-import React, { FC, memo, useMemo, useCallback } from "react";
+import React, {FC, memo, useMemo, useCallback, ReactNode} from "react";
 import { Col, Row } from "react-bootstrap";
 
-export interface SelectOption {
-    value: string
-    display: string
-}
 
 interface AssayContainerLocationProps {
     selected?: string
-    values: Array<SelectOption>
+    locations?: {[key: string]: string}
     onChange: (value: string) => void
 }
 
 export const AssayContainerLocation: FC<AssayContainerLocationProps> = memo(props => {
-    const { values, selected, onChange } = props;
+    const { locations, selected, onChange } = props;
 
-    const options = useMemo(() => {
-        return values.map(val => {
-            return <option value={val.value}>{val.display}</option>
-        })
-    }, [values])
+    const options = useMemo((): ReactNode => {
+        const options = [];
+        if (locations) {
+            Object.entries(locations).forEach(([key, value]) => {
+                options.push(<option value={key}>{value}</option>)
+            })
+        }
+        return options;
+    }, [locations])
 
     const onSelectChange = useCallback((e) => {
         onChange(e.target.value);

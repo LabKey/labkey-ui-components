@@ -2,6 +2,7 @@ import React, {FC, memo, useMemo, useCallback, useState} from "react";
 import {Col, Row} from "react-bootstrap";
 import {Alert} from "../../../index";
 import {AssayProvider} from "./AssayPicker";
+import { Utils } from "@labkey/api";
 
 interface SpecialtyAssayPanelProps {
     selected?: AssayProvider
@@ -37,7 +38,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                             </select>
                         }
                     </div>
-                    <p>{ selected?.description }</p>
+                    <p><div dangerouslySetInnerHTML={{ __html: selected?.description }} /></p>
                     { warning &&
                         <Alert bsStyle={'warning'}>
                             <i className="fa fa-flag" style={{marginRight: '20px'}}/>{warning}

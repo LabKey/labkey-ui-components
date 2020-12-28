@@ -294,7 +294,7 @@ export function initMocks() {
     // TODO conditionalize based on queryName
     mock.post(/.*\/query\/?.*\/insertRows.*/, jsonResponse(samplesInsert));
 
-    mock.get(/.*\/assay\/?.*\/getAssayDesignSelectOptions.*/, jsonResponse(getAssayDesignSectionOptions));
+    mock.get(/.*\/assay\/?.*\/getAssayTypeSelectOptions.*/, jsonResponse(getAssayDesignSectionOptions));
 
     mock.get(/.*ConfirmationData.*/, (req, res) => {
         const queryParams = req.url().query;

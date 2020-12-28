@@ -12,6 +12,7 @@ mock.use(proxy);
 storiesOf('AssayPicker', module)
     .addDecorator(withKnobs)
     .add('assay picker', () => {
+        const onNoopSelect = () => {}
 
-        return <AssayPicker showImport={true}/>;
+        return <AssayPicker showImport={true} onProviderSelect={onNoopSelect} onContainerSelect={onNoopSelect}/>;
     });

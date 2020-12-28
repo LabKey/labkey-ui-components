@@ -1,8 +1,13 @@
 import React, { FC, memo } from "react";
 import { Col, Row } from "react-bootstrap";
+import { AssayProvider } from "./AssayPicker";
 
-export const StandardAssayPanel: FC<any> = memo(props => {
-    const { children } = props;
+interface StandardAssayPanelProps {
+    provider?: AssayProvider
+}
+
+export const StandardAssayPanel: FC<StandardAssayPanelProps> = memo(props => {
+    const { provider, children } = props;
 
     return (
         <div>
@@ -19,7 +24,7 @@ export const StandardAssayPanel: FC<any> = memo(props => {
                     <div className={'margin-bottom margin-top'}>
                         <b>Supported File Types</b>
                     </div>
-                    <p>XLS, XLSX, CSV, TSV</p>
+                    <p>{provider?.fileTypes.join(', ')}</p>
                 </Col>
             </Row>
             {children}

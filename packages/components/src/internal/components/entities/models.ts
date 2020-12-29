@@ -477,7 +477,7 @@ export class EntityIdCreationModel extends Record({
         }
 
         const rows = editorModel
-            .getRawData(queryGridModel)
+            .getRawData(queryGridModel, false)
             .valueSeq()
             .reduce((rows, row) => rows.push(row.toMap()), List<Map<string, any>>());
 

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Wire up websocket and redux for server notifications
 
+### version 1.11.2
+*Released#: 24 December 2020
+* Issue 42088: Don't send formatted date values when saving data
+
 ### version 1.11.1
 *Released*: 22 December 2020
 * Dependabot package updates

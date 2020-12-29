@@ -34,7 +34,7 @@ describe('formatDate', () => {
     const testDate = new Date(1596750283812); // Aug 6, 2020 14:44 America/Vancouver
 
     test('invalid date', () => {
-        expect(formatDate(undefined)).toBe(null);
+        expect(formatDate(undefined)).toBe(undefined);
     });
     test('default to context dateFormat', () => {
         const actualFormat = formatDate(testDate);
@@ -54,7 +54,7 @@ describe('formatDateTime', () => {
     const testDate = new Date(1596750283812); // Aug 6, 2020 14:44 America/Vancouver
 
     test('invalid date', () => {
-        expect(formatDateTime(undefined)).toBe(null);
+        expect(formatDateTime(undefined)).toBe(undefined);
     });
     test('default to context dateTimeFormat', () => {
         const actualFormat = formatDateTime(testDate);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap';
 
 import { getServerContext } from '@labkey/api';
@@ -22,7 +22,7 @@ import '../../../../theme/dataset.scss';
 interface DatasetSettingsSelectProps {
     name: string;
     label: string;
-    helpTip?: JSX.Element;
+    helpTip?: ReactNode;
     selectedValue?: any;
     selectOptions: any;
     onSelectChange: (name, formValue, selected) => void;
@@ -50,7 +50,7 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
         return (
             <Row className="margin-top">
                 <Col xs={5}>
-                    <DomainFieldLabel label={label} helpTipBody={() => helpTip} />
+                    <DomainFieldLabel label={label} helpTipBody={helpTip} />
                 </Col>
 
                 <Col xs={7}>
@@ -79,7 +79,7 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
 interface DatasetSettingsInputProps {
     name: string;
     label: string;
-    helpTip: JSX.Element;
+    helpTip: ReactNode;
     value?: any;
     placeholder?: string;
     onValueChange: (evt: any) => any;
@@ -105,7 +105,7 @@ export class DatasetSettingsInput extends React.PureComponent<DatasetSettingsInp
         return (
             <Row className="margin-top">
                 <Col xs={4}>
-                    <DomainFieldLabel label={label} required={required} helpTipBody={() => helpTip} />
+                    <DomainFieldLabel label={label} required={required} helpTipBody={helpTip} />
                 </Col>
 
                 {showInAdvancedSettings && <Col xs={1} />}
@@ -261,7 +261,7 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
                         <Row className="margin-top">
                             <Col xs={5}>
                                 {showInOverviewLabel}
-                                <LabelHelpTip title={showInOverviewLabel} body={() => SHOW_IN_OVERVIEW} />
+                                <LabelHelpTip title={showInOverviewLabel}>{SHOW_IN_OVERVIEW}</LabelHelpTip>
                             </Col>
                             <Col xs={7}>
                                 <Checkbox

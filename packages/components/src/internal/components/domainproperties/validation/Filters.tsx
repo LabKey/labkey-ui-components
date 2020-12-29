@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { Filter, Utils } from '@labkey/api';
@@ -28,8 +28,8 @@ interface FiltersProps {
     firstFilterValueLabel?: string;
     secondFilterTypeLabel?: string;
     secondFilterValueLabel?: string;
-    firstFilterTooltip?: ReactElement;
-    secondFilterTooltip?: ReactElement;
+    firstFilterTooltip?: ReactNode;
+    secondFilterTooltip?: ReactNode;
     onChange: (expression: string) => any;
 }
 

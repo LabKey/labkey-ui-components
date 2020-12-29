@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Button, Checkbox, Col, FormControl, Row } from 'react-bootstrap';
 
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
@@ -44,7 +44,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
         name: string,
         value: string,
         tooltipTitle?: string,
-        tooltipBody?: () => any,
+        tooltipBody?: ReactNode,
         required?: boolean
     ) {
         const { validatorIndex, domainIndex } = this.props;
@@ -55,7 +55,9 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                     <div>
                         {label}
                         {tooltipTitle && tooltipBody && (
-                            <LabelHelpTip title={tooltipTitle} body={tooltipBody} required={required} />
+                            <LabelHelpTip title={tooltipTitle} required={required}>
+                                {tooltipBody}
+                            </LabelHelpTip>
                         )}
                     </div>
                 </Col>
@@ -90,7 +92,11 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                         onChange={this.onChange}
                     >
                         Fail validation when pattern matches field value
-                        <LabelHelpTip title="Fail when pattern matches?" body={this.failOnMatchTooltip} />
+                        <LabelHelpTip title="Fail when pattern matches?">
+                            By default, validation will fail if the field value does not match the specified regular
+                            expression. Check this box if you want validation to fail when the pattern matches the field
+                            value.
+                        </LabelHelpTip>
                     </Checkbox>
                 </Col>
             </Row>
@@ -169,7 +175,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
     };
 
     renderCollapsed = () => {
-        const { validator, onExpand } = this.props;
+        const { validator } = this.props;
 
         return (
             <div>
@@ -180,24 +186,6 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                     <FontAwesomeIcon icon={faPencilAlt} />
                 </div>
             </div>
-        );
-    };
-
-    regExTooltip = () => {
-        return (
-            "The regular expression that this field's value will be evaluated against. All regular expressions must be " +
-            'compatible with Java regular expressions as implemented in the Pattern class.'
-        );
-    };
-
-    errorMsgTooltip = () => {
-        return 'The message that will be displayed to the user in the event that validation fails for this field.';
-    };
-
-    failOnMatchTooltip = () => {
-        return (
-            'By default, validation will fail if the field value does not match the specified regular expression. Check ' +
-            'this box if you want validation to fail when the pattern matches the field value.'
         );
     };
 
@@ -213,7 +201,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             DOMAIN_VALIDATOR_EXPRESSION,
                             validator.expression,
                             'Regular Expression',
-                            this.regExTooltip,
+                            "The regular expression that this field's value will be evaluated against. All regular expressions must be compatible with Java regular expressions as implemented in the Pattern class.",
                             true
                         )}
                         {this.renderRowTextbox('Description', DOMAIN_VALIDATOR_DESCRIPTION, validator.description)}
@@ -222,7 +210,7 @@ export class RegexValidationOptions extends React.PureComponent<RegexValidationO
                             DOMAIN_VALIDATOR_ERRORMESSAGE,
                             validator.errorMessage,
                             'Error Message',
-                            this.errorMsgTooltip
+                            'The message that will be displayed to the user in the event that validation fails for this field.'
                         )}
                         {this.renderFailValidationCheckbox(validator.properties.failOnMatch)}
                         {this.renderName(validator.name)}

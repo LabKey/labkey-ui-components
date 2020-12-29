@@ -1,6 +1,6 @@
 import { fromJS, List, Map, OrderedSet, Record } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
-import {QueryColumn, QueryInfo, resolveKey, SchemaQuery, ViewInfo } from '..';
+import { formatDate, formatDateTime, QueryColumn, QueryInfo, resolveKey, SchemaQuery, ViewInfo } from '..';
 import { intersect, toLowerSafe } from './util/utils';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
@@ -518,23 +518,6 @@ export class QueryGridModel
                 });
             })
             .toList();
-    }
-
-    getRowIdsList(useSelectedIds: boolean): List<Map<string, any>> {
-        // TODO: remove this method. It looks to only be used by SampleManager in a method called deleteSamples, but
-        //  that method looks to be unused.
-        let rows = List<Map<string, any>>();
-        if (!useSelectedIds) {
-            this.getData().forEach(data => {
-                rows = rows.push(Map(fromJS({ rowId: data.getIn(['RowId', 'value']) })));
-            });
-        } else {
-            this.selectedIds.forEach(rowId => {
-                rows = rows.push(Map(fromJS({ rowId })));
-            });
-        }
-
-        return rows;
     }
 
     get selectionKey() {

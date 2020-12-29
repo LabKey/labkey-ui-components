@@ -51,9 +51,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                         <DomainFieldLabel
                             label="Name"
                             required={true}
-                            helpTipBody={() =>
-                                `The name for this ${noun.toLowerCase()}. Note that this can\'t be changed after ${noun.toLowerCase()} creation.`
-                            }
+                            helpTipBody={`The name for this ${noun.toLowerCase()}. Note that this can\'t be changed after ${noun.toLowerCase()} creation.`}
                         />
                     </Col>
                     <Col xs={10}>
@@ -71,7 +69,7 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                     <Col xs={2}>
                         <DomainFieldLabel
                             label="Description"
-                            helpTipBody={() => `A short description for this ${noun.toLowerCase()}.`}
+                            helpTipBody={`A short description for this ${noun.toLowerCase()}.`}
                         />
                     </Col>
                     <Col xs={10}>
@@ -87,12 +85,12 @@ export class EntityDetailsForm extends React.PureComponent<EntityDetailsProps, a
                     <Col xs={2}>
                         <DomainFieldLabel
                             label="Naming Pattern"
-                            helpTipBody={() => (
+                            helpTipBody={
                                 <>
                                     <p>Pattern used for generating unique IDs for this {noun.toLowerCase()}.</p>
                                     {moreInfoLink}
                                 </>
-                            )}
+                            }
                         />
                     </Col>
                     <Col xs={10}>

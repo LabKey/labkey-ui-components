@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import { App, getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../..';
+import { getEventDataValueDisplay, LabelHelpTip, SVGIcon } from '../../..';
 
 import { TimelineEventModel, TimelineGroupedEventInfo } from './models';
 
@@ -62,7 +62,14 @@ export class TimelineView extends React.Component<Props, any> {
                 className={classNames('timeline-event-row', { 'timeline-row-selected': eventSelected })}
             >
                 {this.renderTimestampCol(event.timestamp)}
-                {this.renderIconCol(event.getIcon(), eventSelected, isFirstEvent, isLastEvent, isEventCompleted, isConnection)}
+                {this.renderIconCol(
+                    event.getIcon(),
+                    eventSelected,
+                    isFirstEvent,
+                    isLastEvent,
+                    isEventCompleted,
+                    isConnection
+                )}
                 {this.renderDetailCol(event.summary, event.user, event.entity, event.getComment())}
             </tr>
         );
@@ -145,18 +152,14 @@ export class TimelineView extends React.Component<Props, any> {
     renderComment(comment: string): React.ReactNode {
         if (!comment) return null;
 
-        const icon = <i className="timeline-comments-icon fa fa-comments" />;
         return (
             <LabelHelpTip
-                title="Comment"
-                body={() => {
-                    return <div className="detail-display">{comment}</div>;
-                }}
+                iconComponent={<i className="timeline-comments-icon fa fa-comments" />}
                 placement="bottom"
-                iconComponent={() => {
-                    return icon;
-                }}
-            />
+                title="Comment"
+            >
+                <div className="detail-display">{comment}</div>
+            </LabelHelpTip>
         );
     }
 
@@ -170,7 +173,8 @@ export class TimelineView extends React.Component<Props, any> {
                     {entity != null && getEventDataValueDisplay(entity)}
                 </div>
                 <div>
-                    <div className="field-text-nowrap">{getEventDataValueDisplay(user, showUserLinks)}</div> {this.renderComment(comment)}
+                    <div className="field-text-nowrap">{getEventDataValueDisplay(user, showUserLinks)}</div>{' '}
+                    {this.renderComment(comment)}
                 </div>
             </td>
         );

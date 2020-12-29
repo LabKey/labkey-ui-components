@@ -33,7 +33,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                     </div>
                     <div className={'margin-bottom'}>
                         { selected &&
-                            <select value={selected.name} onChange={onSelectChange} className={"form-control"}>
+                            <select id={"specialty-assay-type-select"} value={selected.name} onChange={onSelectChange} className={"form-control"}>
                                 {options}
                             </select>
                         }

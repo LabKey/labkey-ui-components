@@ -31,7 +31,7 @@ export const AssayContainerLocation: FC<AssayContainerLocationProps> = memo(prop
                 <Col xs={6}>
                     <div className={'margin-bottom'}><b>Assay Location</b></div>
                     <p>Choose where the assay will be used and visible within subfolders</p>
-                    <select value={selected} onChange={onSelectChange} className={"form-control"}>
+                    <select id={"assay-type-select-container"} value={selected} onChange={onSelectChange} className={"form-control"}>
                         {options}
                     </select>
                 </Col>

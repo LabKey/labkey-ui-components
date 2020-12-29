@@ -20,7 +20,8 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                     <div className={'margin-bottom'}>
                         <b>Import .XAR or .XAR.XML file</b>
                     </div>
-                    <p>To create an assay from an existing design, import a .XAR or .XAR.XML file here. You will be able to customize the design after importing.</p>
+                    <p>To create an assay from an existing design, import a <a href={'https://www.labkey.org/Documentation/Archive/20.11/wiki-page.view?name=XarTutorial'}>.XAR or .XAR.XML</a> file here.
+                        You will be able to customize the design after importing.</p>
                 </Col>
             </Row>
             <Row>

@@ -31,7 +31,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
         console.log('showErrorDetails ' + notificationId + ': not yet implemented');
     };
 
-    renderNotificationContent = (content: string, isError?: boolean) => {
+    renderNotificationContent = (content: string, isError?: boolean, isInProgress?: boolean) => {
         const newlineIndex = content.toLowerCase().indexOf("\n");
         const brIndex = content.toLowerCase().indexOf("<br>");
         let subject : string = undefined, details : string = undefined;
@@ -50,6 +50,18 @@ export class ServerActivityList extends React.PureComponent<Props> {
                 <span className={'server-notifications-item-subject'}>{subject}</span>
                 {detailsDisplay && <span className={'server-notifications-item-details'}>{detailsDisplay}</span>}
             </>);
+        }
+        else if (isInProgress) {
+            if (content.indexOf('samples') === 0 || content.indexOf('exp.data') === 0) {
+                let type = 'sources';
+                let importMsg = content.substring('exp.data - '.length, content.length);
+                if (content.indexOf('samples') === 0) {
+                    type = 'samples';
+                    importMsg = content.substring('samples - '.length, content.length);
+                }
+
+                return <span className={'server-notifications-item-subject'}>{`A background ${type} import is processing: ${importMsg}`}</span>
+            }
         }
 
         return <span className={'server-notifications-item-subject'} dangerouslySetInnerHTML={{ __html: content }} />;
@@ -70,7 +82,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         'is-unread server-notifications-item': isUnread,
                     })}
                 >
-                    {this.renderNotificationContent(activity.HtmlContent, activity.hasError)}
+                    {this.renderNotificationContent(activity.HtmlContent, activity.hasError, activity.inProgress)}
                 </span>
                 <br />
                 {activity.hasError ? (

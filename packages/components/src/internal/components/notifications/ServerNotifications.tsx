@@ -88,7 +88,7 @@ export class ServerNotifications extends React.Component<Props, State> {
             </h3>
         );
         let body;
-        if (serverActivity && serverActivity.isError) {
+        if (serverActivity?.isError) {
             body = <div className="server-notifications-footer server-notifications-error">{serverActivity.errorMessage}</div>;
         }
         else if (!serverActivity || !serverActivity.isLoaded) {
@@ -118,7 +118,7 @@ export class ServerNotifications extends React.Component<Props, State> {
         return (
             <DropdownButton
                 id="server-notifications-button"
-                className="navbar-icon-button-right"
+                className="navbar-icon-button-right server-notifications-button"
                 noCaret={true}
                 title={icon}
                 open={show}

@@ -107,3 +107,10 @@
         color: $brand-danger;
     }
 }
+
+.server-notifications-button {
+    .fa-stack {
+        height: 3em;
+        line-height: 3em;
+    }
+}

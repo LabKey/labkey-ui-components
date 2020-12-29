@@ -2,14 +2,16 @@ import React, {FC, memo, useMemo, useCallback, useState} from "react";
 import {Col, Row} from "react-bootstrap";
 import {FileAttachmentForm} from "../../../index";
 import {ActionURL} from "@labkey/api";
+import {Map} from "immutable";
 
 
 interface AssayDesignUploadPanelProps {
-    onUpload: (file: string) => void
+    onFileChange: (files: Map<string, File>) => void
+    onFileRemove: (name: string) => void
 }
 
 export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(props => {
-
+    const { onFileChange, onFileRemove } = props;
 
     return (
         <div>
@@ -23,7 +25,13 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
             </Row>
             <Row>
                 <Col xs={12}>
-                    <FileAttachmentForm label={''}/>
+                    <FileAttachmentForm
+                        allowDirectories={false}
+                        allowMultiple={false}
+                        showLabel={false}
+                        onFileChange={onFileChange}
+                        onFileRemoval={onFileRemove}
+                    />
                 </Col>
             </Row>
             <Row>

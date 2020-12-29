@@ -14,5 +14,11 @@ storiesOf('AssayPicker', module)
     .add('assay picker', () => {
         const onNoopSelect = () => {}
 
-        return <AssayPicker showImport={true} onProviderSelect={onNoopSelect} onContainerSelect={onNoopSelect}/>;
+        return <AssayPicker
+            showImport={true}
+            onProviderSelect={onNoopSelect}
+            onContainerSelect={onNoopSelect}
+            onFileChange={onNoopSelect}
+            setIsFileUpload={onNoopSelect}
+        />;
     });

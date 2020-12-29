@@ -6,6 +6,7 @@ import { AssayDesignUploadPanel } from "./AssayDesignUploadPanel";
 import { StandardAssayPanel } from "./StandardAssayPanel";
 import { createNotification } from "../../..";
 import { ActionURL, Ajax, Utils } from "@labkey/api";
+import { Map } from 'immutable';
 
 
 export interface AssayProvider {
@@ -30,6 +31,8 @@ interface AssayPickerProps {
     showImport: boolean
     onProviderSelect: (provider: string) => void
     onContainerSelect: (container: string) => void
+    onFileChange: (file: File) => void
+    setIsFileUpload: (upload: boolean) => void
 }
 
 const queryAssayProviders = (): Promise<AssayProvidersOptions> => {
@@ -65,7 +68,7 @@ const getSelectedProvider = (providers: Array<AssayProvider>, name: string): Ass
 }
 
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
-    const { showImport, onProviderSelect, onContainerSelect } = props;
+    const { showImport, onProviderSelect, onContainerSelect, onFileChange, setIsFileUpload } = props;
 
     const [ providers, setProviders ] = useState<Array<AssayProvider>>()
     const [ containers, setContainers ] = useState<{[key: string]: string}>()
@@ -93,7 +96,8 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
         const tab: AssayPickerTabs = event as any; // Crummy cast to make TS happy
         setTabSelection(tab)
         if(tab === AssayPickerTabs.STANDARD_ASSAY_TAB) {
-            onProviderSelect("General")
+            onProviderSelect("General");
+            setIsFileUpload(false);
         }
         else if(tab === AssayPickerTabs.SPECIALTY_ASSAY_TAB) {
             if(!selectedProvider || "General" == selectedProvider.name) {
@@ -102,6 +106,10 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
             else {
                 onProviderSelect(selectedProvider.name)
             }
+            setIsFileUpload(false);
+        }
+        else {
+            setIsFileUpload(true);
         }
     }, [onSelectedProviderChange, onProviderSelect]);
 
@@ -110,16 +118,21 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
         onContainerSelect(value)
     }, []);
 
-    const onXarUpload = useCallback((file) => {
-
-    }, []);
-
     const standardProvider = useMemo((): AssayProvider => {
         if (providers) {
             return getSelectedProvider(providers, "General");
         }
         return undefined
     }, [providers])
+
+    const onFileRemove = useCallback((name: string) => {
+        onFileChange(undefined);
+    }, [onFileChange])
+
+    const onFileSelect = useCallback((files: Map<string, File>): void => {
+        const file = files.values().next().value
+        onFileChange(file);
+    }, [onFileChange])
 
     return (
         <div>
@@ -146,7 +159,7 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                             </Tab.Pane>
                             { showImport &&
                                 <Tab.Pane className={'margin-bottom margin-top'} eventKey={AssayPickerTabs.XAR_IMPORT_TAB}>
-                                    <AssayDesignUploadPanel onUpload={onXarUpload}/>
+                                    <AssayDesignUploadPanel onFileChange={onFileSelect} onFileRemove={onFileRemove}/>
                                 </Tab.Pane>
                             }
                         </Tab.Content>

@@ -81,7 +81,9 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                 setProviders(options.providers);
                 setContainers(options.locations);
                 setContainerValue(options.defaultLocation);
-                setSelectedProvider(getSelectedProvider(options.providers,"General"))
+                setSelectedProvider(getSelectedProvider(options.providers,"General"));
+
+                onContainerSelect(Object.keys(options.locations)[0])
             }
         );
     }, []);

@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released#: TBD
+### version 1.11.3
+*Released#: 30 December 2020
 * Misc fixes for LKSM 21.01
   - Issue 41747: Add bottom margin to EditableGrid to prevent horizontal scroll bar from covering last row
   - Issue 42123: Assay import panels fix for dirty state being set on batch/run form init setValue calls

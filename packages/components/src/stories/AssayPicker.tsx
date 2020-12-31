@@ -3,8 +3,9 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
 import './stories.scss';
-import { AssayPicker } from "../internal/components/assay/AssayPicker";
 import mock, { proxy } from 'xhr-mock';
+
+import { AssayPicker } from '../internal/components/assay/AssayPicker';
 
 mock.setup();
 mock.use(proxy);
@@ -12,13 +13,15 @@ mock.use(proxy);
 storiesOf('AssayPicker', module)
     .addDecorator(withKnobs)
     .add('assay picker', () => {
-        const onNoopSelect = () => {}
+        const onNoopSelect = () => {};
 
-        return <AssayPicker
-            showImport={true}
-            onProviderSelect={onNoopSelect}
-            onContainerSelect={onNoopSelect}
-            onFileChange={onNoopSelect}
-            setIsFileUpload={onNoopSelect}
-        />;
+        return (
+            <AssayPicker
+                showImport={true}
+                onProviderSelect={onNoopSelect}
+                onContainerSelect={onNoopSelect}
+                onFileChange={onNoopSelect}
+                setIsFileUpload={onNoopSelect}
+            />
+        );
     });

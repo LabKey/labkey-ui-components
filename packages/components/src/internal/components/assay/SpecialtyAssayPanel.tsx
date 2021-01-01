@@ -18,10 +18,9 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
     const { values, selected, onChange, warning, children } = props;
 
     const options = useMemo(() => {
-        return values
-            ?.filter(v => v.name !== 'General')
+        return values?.filter(v => v.name !== 'General')
             .map(val => {
-                return <option value={val.name}>{val.name}</option>;
+                return <option key={val.name} value={val.name}>{val.name}</option>;
             });
     }, [values]);
 

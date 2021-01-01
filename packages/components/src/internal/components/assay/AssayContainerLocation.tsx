@@ -14,7 +14,7 @@ export const AssayContainerLocation: FC<AssayContainerLocationProps> = memo(prop
         const options = [];
         if (locations) {
             Object.entries(locations).forEach(([key, value]) => {
-                options.push(<option value={key}>{value}</option>);
+                options.push(<option key={key} value={key}>{value}</option>);
             });
         }
         return options;

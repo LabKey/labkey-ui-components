@@ -36,6 +36,7 @@ interface AssayPickerProps {
     onContainerSelect: (container: string) => void;
     onFileChange: (file: File) => void;
     setIsFileUpload: (upload: boolean) => void;
+    selectedTab?: AssayPickerTabs
 }
 
 const queryAssayProviders = (): Promise<AssayProvidersOptions> => {
@@ -70,11 +71,11 @@ const getSelectedProvider = (providers: AssayProvider[], name: string): AssayPro
 };
 
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
-    const { showImport, onProviderSelect, onContainerSelect, onFileChange, setIsFileUpload } = props;
+    const { showImport, onProviderSelect, onContainerSelect, onFileChange, setIsFileUpload, selectedTab } = props;
 
     const [providers, setProviders] = useState<AssayProvider[]>();
     const [containers, setContainers] = useState<{ [key: string]: string }>();
-    const [tabSelection, setTabSelection] = useState(AssayPickerTabs.STANDARD_ASSAY_TAB);
+    const [tabSelection, setTabSelection] = useState<AssayPickerTabs>(AssayPickerTabs.STANDARD_ASSAY_TAB);
     const [containerValue, setContainerValue] = useState<string>();
     const [selectedProvider, setSelectedProvider] = useState<AssayProvider>();
 
@@ -88,6 +89,10 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
             onContainerSelect(Object.keys(options.locations)[0]);
         });
     }, []);
+
+    useEffect(() => {
+        onTabChange((selectedTab ?? AssayPickerTabs.STANDARD_ASSAY_TAB) as any);
+    }, [providers])
 
     const onSelectedProviderChange = useCallback(
         value => {
@@ -106,17 +111,21 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                 onProviderSelect('General');
                 setIsFileUpload(false);
             } else if (tab === AssayPickerTabs.SPECIALTY_ASSAY_TAB) {
-                if (!selectedProvider || selectedProvider.name == 'General') {
-                    onSelectedProviderChange(providers[0].name);
-                } else {
-                    onProviderSelect(selectedProvider.name);
+                if (providers) {
+                    if (!selectedProvider || selectedProvider.name == 'General')
+                    {
+                        onSelectedProviderChange(providers[0].name);
+                    } else
+                    {
+                        onProviderSelect(selectedProvider.name);
+                    }
                 }
                 setIsFileUpload(false);
             } else {
                 setIsFileUpload(true);
             }
         },
-        [onSelectedProviderChange, onProviderSelect]
+        [onSelectedProviderChange, onProviderSelect, providers, selectedProvider, setIsFileUpload]
     );
 
     const onContainerChange = useCallback(value => {

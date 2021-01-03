@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version XXX
 *Released*: XXX
+* Enable async import for assay runs
+
+### version XXX
+*Released*: XXX
 * Wire up websocket and redux for server notifications
 
 ### version 1.11.2

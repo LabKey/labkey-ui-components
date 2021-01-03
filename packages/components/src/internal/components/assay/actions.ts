@@ -100,14 +100,17 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         const batchFiles = collectFiles(batchProperties);
         const runFiles = collectFiles(runProperties);
 
+        const maxRowCount = Array.isArray(data.dataRows) ? data.dataRows.length : undefined;
+
         if (Utils.isEmptyObj(batchFiles) && Utils.isEmptyObj(runFiles)) {
             // No files in the data, so just go ahead and resolve so we run the import.
-            resolve(data);
+            resolve({...data, maxRowCount});
             return;
         }
 
         // If we're this far along we've got files so let's process them.
         let fileCounter = 0;
+        let maxFileSize = 0;
         const formData = new FormData();
         const fileNameMap = {}; // Maps the file name "fileN" to the run/batch property it belongs to.
 
@@ -115,6 +118,8 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         Object.keys(batchFiles).forEach(columnName => {
             const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
             const file = batchFiles[columnName];
+            if (file.size > maxFileSize)
+                maxFileSize = file.size;
             fileNameMap[name] = {
                 columnName,
                 origin: 'batch',
@@ -126,6 +131,8 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         Object.keys(runFiles).forEach(columnName => {
             const name = fileCounter === 0 ? 'file' : `file${fileCounter}`;
             const file = runFiles[columnName];
+            if (file.size > maxFileSize)
+                maxFileSize = file.size;
             fileNameMap[name] = {
                 columnName,
                 origin: 'run',
@@ -175,6 +182,8 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
                         ...data.properties,
                         ...runPaths,
                     },
+                    maxRowCount,
+                    maxFileSize
                 });
             },
             failure: Utils.getCallbackWrapper(error => {

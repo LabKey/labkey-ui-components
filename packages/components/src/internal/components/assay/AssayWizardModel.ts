@@ -47,6 +47,8 @@ export function parseDataTextToRunRows(rawData: string): any[] {
 
 export interface IAssayUploadOptions extends AssayDOM.IImportRunOptions {
     dataRows?: any; // Array<any> | QueryGridModel
+    maxFileSize?: number;
+    maxRowCount?: number;
 }
 
 export class AssayWizardModel
@@ -76,6 +78,10 @@ export class AssayWizardModel
         queryInfo: undefined,
         toDelete: undefined,
         selectedSamples: undefined,
+
+        jobDescription: undefined,
+        jobNotificationProvider: undefined,
+        forceAsync: false,
     })
     implements FileAttachmentFormModel {
     assayDef: AssayDefinitionModel;
@@ -103,6 +109,10 @@ export class AssayWizardModel
     queryInfo: QueryInfo;
     toDelete?: string;
     selectedSamples?: Map<string, any>;
+
+    jobDescription?: string;
+    jobNotificationProvider?: string;
+    forceAsync?: boolean;
 
     isFilesTab(currentStep: AssayUploadTabs): boolean {
         return currentStep === AssayUploadTabs.Files;
@@ -166,6 +176,9 @@ export class AssayWizardModel
             runProperties,
             runId,
             usePreviousRunFile,
+            jobDescription,
+            jobNotificationProvider,
+            forceAsync
         } = this;
 
         const assayData: any = {
@@ -177,6 +190,9 @@ export class AssayWizardModel
             properties: runProperties.toObject(),
             reRunId: runId,
             saveDataAsFile: true,
+            jobDescription,
+            jobNotificationProvider,
+            forceAsync
         };
 
         Object.keys(assayData).forEach(k => {

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Use `ActionURL.getReturnUrl` and casing for 'returnUrl' parameter
+
 ### version 1.11.3
 *Released#: 30 December 2020
 * Misc fixes for LKSM 21.01

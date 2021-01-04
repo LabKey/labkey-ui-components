@@ -799,7 +799,7 @@ export function exportRows(type: EXPORT_TYPES, exportParams: Record<string, any>
         throw new Error('Unknown export type: ' + type);
     }
 
-    const url = buildURL(controller, action, undefined, { returnURL: false });
+    const url = buildURL(controller, action, undefined, { returnUrl: false });
 
     // POST a form
     const form = $(`<form method="POST" action="${url}">`);

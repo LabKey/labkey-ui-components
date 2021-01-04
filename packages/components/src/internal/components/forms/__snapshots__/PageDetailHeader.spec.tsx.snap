@@ -93,7 +93,7 @@ exports[`<PageDetailHeader/> without icon 1`] = `
     className="col-md-6 detail__header--container"
   >
     <div
-      className="detail__header-icon--body-container"
+      className=""
     >
       <h2
         className="no-margin-top detail__header--name"

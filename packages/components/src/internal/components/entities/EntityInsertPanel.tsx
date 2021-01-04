@@ -868,7 +868,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             <>
                 {this.renderHeader(true)}
                 <hr className="bottom-spacing" />
-                <div className="top-spacing bottom-spacing">
+                <div className="top-spacing">
                     {queryGridModel && queryGridModel.isLoaded ? (
                         <EditableGridPanel
                             addControlProps={addControlProps}

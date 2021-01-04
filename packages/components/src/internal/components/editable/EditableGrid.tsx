@@ -802,7 +802,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     };
 
     render() {
-        const { allowAdd, bordered, condensed, emptyGridMsg, isSubmitting, striped } = this.props;
+        const { allowAdd, bordered, condensed, emptyGridMsg, striped } = this.props;
         const model = this.getModel(this.props);
 
         if (!model || !model.isLoaded) {

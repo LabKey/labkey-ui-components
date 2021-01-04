@@ -31,6 +31,7 @@ import { getQueryColumnRenderers, getQueryMetadata } from './global';
 import { DefaultGridLoader } from './components/GridLoader';
 import { GRID_EDIT_INDEX } from './constants';
 import { IQueryGridModel } from './QueryGridModel';
+import { getDateTimeFormat, parseDate } from './util/Date';
 
 export function getStateModelId(gridId: string, schemaQuery: SchemaQuery, keyValue?: any): string {
     const parts = [gridId, resolveSchemaQuery(schemaQuery)];
@@ -375,7 +376,7 @@ export class EditorModel
         }
     }
 
-    getRawData(model: QueryGridModel, forUpdate = false, readOnlyColumns?: List<string>): List<Map<string, any>> {
+    getRawData(model: QueryGridModel, displayValues: boolean = true, forUpdate = false, readOnlyColumns?: List<string>): List<Map<string, any>> {
         let data = List<Map<string, any>>();
         const columns = this.getColumns(model, forUpdate, readOnlyColumns);
 
@@ -419,6 +420,16 @@ export class EditorModel
                     } else {
                         row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
                     }
+                } else if (col.jsonType === 'date' && !displayValues) {
+                    let dateVal;
+                    if (values.size === 1) {
+                        dateVal = values.first().raw;
+                        dateVal = parseDate(dateVal);
+                        if (!dateVal) {
+                            dateVal = parseDate(values.first().raw, getDateTimeFormat());
+                        }
+                    }
+                    row = row.set(col.name, dateVal);
                 } else {
                     row = row.set(col.name, values.size === 1 ? values.first().raw : undefined);
                 }
@@ -649,7 +660,9 @@ export class EditorModel
             valueMap.get('value') !== null &&
             valueMap.get('value') !== undefined
         ) {
-            return valueMap.has('displayValue')
+            return valueMap.has('formattedValue')
+                ? List<any>([{ displayValue: valueMap.get('formattedValue'), value: valueMap.get('value') }])
+                : valueMap.has('displayValue')
                 ? List<any>([{ displayValue: valueMap.get('displayValue'), value: valueMap.get('value') }])
                 : valueMap.get('value');
         } else return undefined;
@@ -683,7 +696,7 @@ export class EditorModel
         readOnlyColumns?: List<string>
     ): { newRows: List<Map<string, any>>; updatedRows: List<Map<string, any>> } {
         // find all the rows where the dataId has a prefix of GRID_EDIT_INDEX
-        const rawData: List<Map<string, any>> = this.getRawData(model, false, readOnlyColumns);
+        const rawData: List<Map<string, any>> = this.getRawData(model, true, false, readOnlyColumns);
         let updatedRows = List<Map<string, any>>();
         let newRows = List<Map<string, any>>();
         model.dataIds.forEach((id, index) => {

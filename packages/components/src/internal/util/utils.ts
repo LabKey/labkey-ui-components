@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { List, Map, Set, Iterable } from 'immutable';
+import { Iterable, List, Map, Set } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { hasParameter, toggleParameter } from '../..';
+import { hasParameter, QueryInfo, toggleParameter } from '../..';
+import { parseDate } from './Date';
 
 const emptyList = List<string>();
 
@@ -312,11 +313,13 @@ export function getUpdatedData(originalData: Map<string, any>, updatedValues: an
  * @param originalGridData a map from an id field to a Map from fieldKeys to values
  * @param editorRows An array of Maps from field keys to values
  * @param idField the fieldKey in the editorRow objects that is the id field that is the key for originalGridData
+ * @param queryInfo the query info behind this editable grid
  */
 export function getUpdatedDataFromGrid(
     originalGridData: Map<string, Map<string, any>>,
     editorRows: Array<Map<string, any>>,
-    idField: string
+    idField: string,
+    queryInfo: QueryInfo
 ): any[] {
     const updatedRows = [];
     editorRows.forEach(editedRow => {
@@ -325,7 +328,7 @@ export function getUpdatedDataFromGrid(
         if (originalRow) {
             const row = editedRow.reduce((row, value, key) => {
                 const originalValue = originalRow.has(key) ? originalRow.get(key) : undefined;
-
+                const isDate = queryInfo.getColumn(key)?.jsonType === 'date';
                 // Convert empty cell to null
                 if (value === '') value = null;
 
@@ -354,14 +357,14 @@ export function getUpdatedDataFromGrid(
                 // Lookup columns store a list but grid only holds a single value
                 else if (List.isList(originalValue) && !Array.isArray(value)) {
                     if (originalValue.get(0).value !== value) {
-                        row[key] = value ?? null;
+                        row[key] = (isDate ? parseDate(value) : value) ?? null;
                     }
                 } else if (originalValue !== value) {
                     // - only update if the value has changed
                     // - if the value is 'undefined', it will be removed from the update rows, so in order to
                     // erase an existing value we set the value to null in our update data
 
-                    row[key] = value ?? null;
+                    row[key] = (isDate ? parseDate(value) : value) ?? null;
                 }
                 return row;
             }, {});

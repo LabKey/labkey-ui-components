@@ -227,7 +227,8 @@ export function deleteAssayRuns(
 
 export function getImportItemsForAssayDefinitions(
     assayStateModel: AssayStateModel,
-    sampleModel?: QueryGridModel
+    sampleModel?: QueryGridModel,
+    providerType?: string
 ): OrderedMap<AssayDefinitionModel, string> {
     let targetSQ;
     const selectionKey = sampleModel ? sampleModel.selectionKey : undefined;
@@ -237,6 +238,7 @@ export function getImportItemsForAssayDefinitions(
     }
 
     return assayStateModel.definitions
+        .filter(assay => providerType === undefined || assay.type === providerType)
         .filter(assay => !targetSQ || assay.hasLookup(targetSQ))
         .sort(naturalSortByProperty('name'))
         .reduce((items, assay) => {

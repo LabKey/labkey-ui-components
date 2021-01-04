@@ -161,6 +161,10 @@
   display: block;
   padding-right: 15px;
   overflow: auto;
+
+  table {
+    margin-bottom: 15px;
+  }
 }
 
 .editable-grid__bulk-header {

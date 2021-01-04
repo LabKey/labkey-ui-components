@@ -62,17 +62,19 @@ export function getDateTimeFormat(): string {
     return moment().toMomentFormatString(LABKEY.container.formats.dateTimeFormat);
 }
 
-export function parseDate(dateStr: string, dateFormat?: string) {
+export function parseDate(dateStr: string, dateFormat?: string): Date {
     if (!dateStr) return null;
 
-    const date = moment(dateStr, dateFormat ? dateFormat : getDateFormat());
-    if (date) return date.toDate();
+    const date = moment(dateStr, dateFormat);
+    if (date && date.isValid()) {
+        return date.toDate();
+    }
 
     return null;
 }
 
 function _formatDate(date: Date, dateFormat: string, timezone?: string): string {
-    if (!date) return null;
+    if (!date) return undefined;
     const _date = moment(timezone ? momentTZ(date).tz(timezone) : date);
     return _date.formatWithJDF(dateFormat);
 }

@@ -5,6 +5,27 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 8012: Row Selection Actions on Field Editor
 
+### version 1.11.3
+*Released#: 30 December 2020
+* Misc fixes for LKSM 21.01
+  - Issue 41747: Add bottom margin to EditableGrid to prevent horizontal scroll bar from covering last row
+  - Issue 42123: Assay import panels fix for dirty state being set on batch/run form init setValue calls
+  - Fix for PageDetailHeader component left padding without icon
+
+### version 1.11.2
+*Released#: 24 December 2020
+* Issue 42088: Don't send formatted date values when saving data
+
+### version 1.11.1
+*Released*: 22 December 2020
+* Dependabot package updates
+
+### version 1.11.0
+*Released*: 22 December 2020
+* Item 8267: Misc bug fixes related to LKSM workflow
+    - FileAttachmentForm fix to use anchor tag with target blank for template file download
+    - AssayImportSubMenuItem and getImportItemsForAssayDefinitions option to filter assays by provider type
+
 ### version 1.10.0
 *Released*: 21 December 2020
 * Remove `body` prop and update `iconComponent` prop to be of type `ReactNode`.

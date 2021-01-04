@@ -66,6 +66,11 @@ export class AssayStateModel {
         return this.definitions.find(def => def.name.toLowerCase() === lowerName);
     }
 
+    getDefinitionsByType(type: string): AssayDefinitionModel[] {
+        const lowerName = type.toLowerCase();
+        return this.definitions.filter(def => def.type.toLowerCase() === lowerName);
+    }
+
     mutate(props: Partial<AssayStateModel>): AssayStateModel {
         return produce(this, (draft: Draft<AssayStateModel>) => {
             Object.assign(draft, props);

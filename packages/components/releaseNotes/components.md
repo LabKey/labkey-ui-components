@@ -9,6 +9,73 @@ Components, models, actions, and utility functions for LabKey applications and p
     - fix so that date picker input field label shows asterisk when required
     - add beforeFinish prop to allow usages of AssayImportPanels to manipulate data before import/save
 
+### version 1.11.3
+*Released#: 30 December 2020
+* Misc fixes for LKSM 21.01
+  - Issue 41747: Add bottom margin to EditableGrid to prevent horizontal scroll bar from covering last row
+  - Issue 42123: Assay import panels fix for dirty state being set on batch/run form init setValue calls
+  - Fix for PageDetailHeader component left padding without icon
+
+### version 1.11.2
+*Released#: 24 December 2020
+* Issue 42088: Don't send formatted date values when saving data
+
+### version 1.11.1
+*Released*: 22 December 2020
+* Dependabot package updates
+
+### version 1.11.0
+*Released*: 22 December 2020
+* Item 8267: Misc bug fixes related to LKSM workflow
+    - FileAttachmentForm fix to use anchor tag with target blank for template file download
+    - AssayImportSubMenuItem and getImportItemsForAssayDefinitions option to filter assays by provider type
+
+### version 1.10.0
+*Released*: 21 December 2020
+* Remove `body` prop and update `iconComponent` prop to be of type `ReactNode`.
+* Simplify `Overlay` target to use a React reference element in LabelHelpTip. Simplifies tracking and significantly reduces component footprint in test snapshots.
+* `AssayPropertiesInput`, `DomainFieldLabel, and `SectionHeading` updated to reflect same change with `helpTipBody` now being of type `ReactNode`.
+* Correctly pass props in `AddEntityButton`.
+
+### version 1.9.0
+*Released*: 16 December 2020
+* Item 8226: Package updates to support packaging of LKSM workflow pages/components
+    - Add AssayStateModel.getDefinitionsByType helper function
+    - Add GENERAL_ASSAY_PROVIDER_NAME constant
+    - Move ExpandFilterToggle and OptionsSelectToggle (renamed from ViewAsToggle) components from LKSM to shared components
+    - Move withTimeout and getImmediateChildLineageFilterValue functions from LKSM to shared components
+
+### version 1.8.0
+*Released*: 15 December 2020
+* Add optional Notifications icon and overlay in NavigationBar
+
+### version 1.7.3
+*Released*: 15 December 2020
+* add allowAsync for EntityInsertPanel
+
+### version 1.7.2
+*Released*: 14 December 2020
+* Issue #41419: Update RouteLeave to better manage form transition confirmations
+
+### version 1.7.1
+*Released*: 10 December 2020
+* Update @labkey/api dependency
+
+### version 1.7.0
+*Released*: 7 December 2020
+* Item 8203: Domain designer row styling updates
+    - Remove grey background of drag handle area on the far left of the row
+    - Move the expand/collapse icon to the left (next to the dnd handle) but keep the remove/delete icon on the far right
+    - Remove margin/padding between rows (i.e. no spacing below each row), so that they look more like a table of rows
+    - Remove box-shadow from rows and remove border radius (corners should be square now)
+    - For rows that can be reordered, styling updates for the row being dragged so that it has blue border and box drop shadow that makes it “sit” above the other rows
+    - Column titles/headings above the rows align with left side of the related inputs and those that are required have an * after the title
+
+### version 1.6.0
+*Released*: 6 December 2020
+* Issue 41737: Storage actions do not respect filters on the grid
+    - Add setSnapshotSelections utility function
+
 ### version 1.5.2
 *Released*: 4 December 2020
 * Remove check for experimental flag from isFreezerManagerEnabled
@@ -60,7 +127,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 1.0.0
 *Released*: 3 November 2020
-* First official stable release of the `@labkey/components` package. See [Public API Docs](../../docs/public.md) for details.
+* First official stable release of the `@labkey/components` package. See [Public API Docs](../docs/public.md) for details.
 
 ### version 0.105.0
 *Released*: 2 November 2020
@@ -1398,9 +1465,11 @@ and add a tooltip for the AddControls with info on the data size limits.
 ### version 0.1.0
 *Released*: 27 November 2019
 * Consolidate all `@glass` packages into this single `@labkey/components` package. The release notes for the previous
-packages ([@glass/base](../glass/base.md),
-[@glass/domainproperties](../glass/domainproperties.md),  [@glass/navigation](../glass/navigation.md), [@glass/omnibox](../glass/omnibox.md), [@glass/querygrid](../glass/querygrid.md), and [@glass/report-list](../glass/report-list.md))
-can be found in the [glass](../glass) directory.
+packages ([@glass/base](./archived/base.md),
+[@glass/domainproperties](./archived/domainproperties.md),  [@glass/navigation](./archived/navigation.md),
+[@glass/omnibox](./archived/omnibox.md), [@glass/querygrid](./archived/querygrid.md),
+and [@glass/report-list](./archived/report-list.md))
+can be found in the [archived](./archived) directory.
 * Convert build/bundle from rollupjs to webpack, output UMD format for module/app usages.
 * Move files from shared-config repository into this repository.
 

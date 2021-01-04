@@ -840,6 +840,7 @@ export interface IImportData {
     importLookupByAlternateKey?: boolean;
     saveToPipeline?: boolean;
     importUrl?: string;
+    useAsync?: boolean;
 }
 
 export function importData(config: IImportData): Promise<any> {

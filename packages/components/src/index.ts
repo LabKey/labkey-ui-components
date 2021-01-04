@@ -64,6 +64,8 @@ import { RemoveEntityButton } from './internal/components/buttons/RemoveEntityBu
 import { Alert } from './internal/components/base/Alert';
 import { DeleteIcon } from './internal/components/base/DeleteIcon';
 import { LockIcon } from './internal/components/base/LockIcon';
+import { ExpandableFilterToggle } from './internal/components/base/ExpandableFilterToggle';
+import { OptionsSelectToggle } from './internal/components/base/OptionsSelectToggle';
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
 import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
@@ -92,7 +94,13 @@ import { FileAttachmentEntry } from './internal/components/files/FileAttachmentE
 import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './internal/components/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
-import { createNotification, NotificationCreatable } from './internal/components/notifications/actions';
+import {
+    createNotification,
+    NotificationCreatable,
+    withTimeout,
+    getPipelineActivityData,
+    markAllNotificationsAsRead,
+} from './internal/components/notifications/actions';
 import {
     addNotification,
     dismissNotifications,
@@ -133,6 +141,7 @@ import {
     replaceSelected,
     schemaGridInvalidate,
     setSelected,
+    setSnapshotSelections,
     unselectAll,
 } from './internal/actions';
 import { cancelEvent } from './internal/events';
@@ -291,11 +300,12 @@ import {
     importAssayRun,
     RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
+    GENERAL_ASSAY_PROVIDER_NAME,
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
-import { invalidateLineageResults } from './internal/components/lineage/actions';
+import { invalidateLineageResults, getImmediateChildLineageFilterValue } from './internal/components/lineage/actions';
 import {
     LINEAGE_DIRECTIONS,
     LINEAGE_GROUPING_GENERATIONS,
@@ -453,6 +463,7 @@ export {
     gridShowError,
     replaceSelected,
     setSelected,
+    setSnapshotSelections,
     unselectAll,
     // query related items
     ISelectRowsResult,
@@ -641,6 +652,7 @@ export {
     fetchAllAssays,
     RUN_PROPERTIES_GRID_ID,
     RUN_PROPERTIES_REQUIRED_COLUMNS,
+    GENERAL_ASSAY_PROVIDER_NAME,
     // heatmap
     HeatMap,
     HeatMapCell,
@@ -668,6 +680,7 @@ export {
     SampleTypeLineageCounts,
     VisGraphNode,
     invalidateLineageResults,
+    getImmediateChildLineageFilterValue,
     // Navigation
     MenuSectionConfig,
     ProductMenuModel,
@@ -690,9 +703,12 @@ export {
     MessageFunction,
     createNotification,
     dismissNotifications,
+    getPipelineActivityData,
+    markAllNotificationsAsRead,
     addNotification,
     createDeleteSuccessNotification,
     createDeleteErrorNotification,
+    withTimeout,
     // domain designer related items
     DomainForm,
     DomainFieldsDisplay,
@@ -826,6 +842,8 @@ export {
     CreatedModified,
     DeleteIcon,
     LockIcon,
+    ExpandableFilterToggle,
+    OptionsSelectToggle,
     // base models, enums, constants
     Container,
     User,

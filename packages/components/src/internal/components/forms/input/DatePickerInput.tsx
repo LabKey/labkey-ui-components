@@ -21,7 +21,7 @@ import { Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 import { QueryColumn } from '../../../..';
-import { datePlaceholder, formatDate, isDateTimeCol, parseDate } from '../../../util/Date';
+import { datePlaceholder, isDateTimeCol, parseDate } from '../../../util/Date';
 
 import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
@@ -55,7 +55,6 @@ export interface DatePickerInputProps extends DisableableInputProps {
 
 interface DatePickerInputState extends DisableableInputState {
     selectedDate: any;
-    selectedDateStr: string;
 }
 
 class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePickerInputState> {
@@ -78,7 +77,6 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         this.state = {
             isDisabled: props.initiallyDisabled,
             selectedDate: this.getInitDate(props),
-            selectedDateStr: props.value,
         };
     }
 
@@ -100,45 +98,37 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         );
     };
 
-    getInitDate(props: DatePickerInputProps) {
-        return props.value ? parseDate(props.value, this.getDateFormat(false)) : undefined;
+    getInitDate(props: DatePickerInputProps): Date {
+        return props.value ? parseDate(props.value) : undefined;
     }
 
-    onChange = date => {
-        const selectedDateStr = date ? formatDate(date, null, this.getDateFormat(false)) : undefined;
+    onChange = (date): void => {
         this.setState(() => {
             return {
                 selectedDate: date,
-                selectedDateStr,
             };
         });
 
         if (this.props.onChange && Utils.isFunction(this.props.onChange)) this.props.onChange(date);
 
-        if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(selectedDateStr);
+        if (this.props.formsy && Utils.isFunction(this.props.setValue)) this.props.setValue(date);
     };
 
-    getDateFormat(isDatePicker: boolean) {
+    getDateFormat(): string {
         const { dateFormat, queryColumn } = this.props;
-        if (dateFormat) return this.ensureDateFormat(dateFormat, isDatePicker);
-
-        return this.ensureDateFormat(datePlaceholder(queryColumn), isDatePicker);
-    }
-
-    ensureDateFormat(rawFormat: string, isDatePicker: boolean) {
-        if (!isDatePicker) return rawFormat;
+        const rawFormat = dateFormat || queryColumn.format || datePlaceholder(queryColumn);
 
         // Moment.js and react datepicker date format is different
         // https://github.com/Hacker0x01/react-datepicker/issues/1609
         return rawFormat.replace('YYYY', 'yyyy').replace('DD', 'dd');
     }
 
-    shouldShowTime() {
+    shouldShowTime(): boolean {
         const { showTime, queryColumn } = this.props;
         return showTime || isDateTimeCol(queryColumn);
     }
 
-    render() {
+    render(): ReactNode {
         const {
             inputClassName,
             inputWrapperClassName,
@@ -155,13 +145,11 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
         } = this.props;
 
         const { isDisabled, selectedDate } = this.state;
-
+        const labelClass = 'control-label col-sm-3 text-left col-xs-12';
         return (
             <div className="form-group row">
                 {renderFieldLabel ? (
-                    <label className="control-label col-sm-3 text-left col-xs-12">
-                        {renderFieldLabel(queryColumn)}
-                    </label>
+                    <label className={labelClass}>{renderFieldLabel(queryColumn)}</label>
                 ) : (
                     <FieldLabel
                         label={label}
@@ -170,6 +158,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                             inputId: queryColumn.name,
                             required: queryColumn.required,
                             addLabelAsterisk,
+                            labelClass: allowDisable ? undefined : labelClass,
                         }}
                         showLabel={showLabel}
                         showToggle={allowDisable}
@@ -195,7 +184,7 @@ class DatePickerInputImpl extends DisableableInput<DatePickerInputProps, DatePic
                         placeholderText={
                             placeholderText ? placeholderText : `Select ${queryColumn.caption.toLowerCase()}`
                         }
-                        dateFormat={this.getDateFormat(true)}
+                        dateFormat={this.getDateFormat()}
                     />
                 </div>
             </div>

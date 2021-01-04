@@ -1,5 +1,13 @@
 # @labkey/build
 
+### version 0.5.1
+*Released*: 22 December 2020
+* Dependabot package updates
+
+### version 0.5.0
+*Released*: 16 December 2020
+* Item 8226: Add support for webpack aliasing of @labkey/workflow package
+
 ### version 0.4.1
 *Released*: 11 November 2020
 * Add tsconfig path for freezerManagerPath

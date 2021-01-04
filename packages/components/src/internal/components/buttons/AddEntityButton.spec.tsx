@@ -21,29 +21,23 @@ import { AddEntityButton } from './AddEntityButton';
 
 describe('<AddEntityButton />', () => {
     test('Minimal props', () => {
-        const onClick = jest.fn();
-        const wrapper = shallow(
-            <AddEntityButton
-                entity="EntityName"
-                onClick={onClick}
-            />);
+        const wrapper = shallow(<AddEntityButton entity="EntityName" onClick={jest.fn()} />);
         expect(wrapper).toMatchSnapshot();
     });
 
     test('Fully populated props', () => {
-        const onClick = jest.fn();
-        const helperBody = <p> Test Body Contents </p>;
         const wrapper = shallow(
             <AddEntityButton
                 entity="EntityName"
-                onClick={onClick}
-                buttonClass='test-button-class'
-                containerClass='test-container-class'
+                onClick={jest.fn()}
+                buttonClass="test-button-class"
+                containerClass="test-container-class"
                 disabled={false}
-                title='test-title'
-                helperTitle='test-helperTitle'
-                helperBody={() => {return helperBody}}
-            />);
+                title="test-title"
+                helperTitle="test-helperTitle"
+                helperBody={<p> Test Body Contents </p>}
+            />
+        );
         expect(wrapper).toMatchSnapshot();
     });
 });

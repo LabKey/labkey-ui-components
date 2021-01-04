@@ -34,6 +34,8 @@ import { AssayUploadTabs } from '../../AssayDefinitionModel';
 import { AssayUploadResultModel } from './models';
 import { IAssayUploadOptions } from './AssayWizardModel';
 
+export const GENERAL_ASSAY_PROVIDER_NAME = 'General';
+
 export const RUN_PROPERTIES_GRID_ID = 'assay-run-details';
 
 export const RUN_PROPERTIES_REQUIRED_COLUMNS = SCHEMAS.CBMB.concat(
@@ -225,7 +227,8 @@ export function deleteAssayRuns(
 
 export function getImportItemsForAssayDefinitions(
     assayStateModel: AssayStateModel,
-    sampleModel?: QueryGridModel
+    sampleModel?: QueryGridModel,
+    providerType?: string
 ): OrderedMap<AssayDefinitionModel, string> {
     let targetSQ;
     const selectionKey = sampleModel ? sampleModel.selectionKey : undefined;
@@ -235,6 +238,7 @@ export function getImportItemsForAssayDefinitions(
     }
 
     return assayStateModel.definitions
+        .filter(assay => providerType === undefined || assay.type === providerType)
         .filter(assay => !targetSQ || assay.hasLookup(targetSQ))
         .sort(naturalSortByProperty('name'))
         .reduce((items, assay) => {

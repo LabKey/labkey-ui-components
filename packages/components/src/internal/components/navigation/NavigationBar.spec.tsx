@@ -17,8 +17,27 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import { NavigationBar } from './NavigationBar';
+import { mount } from 'enzyme';
+import { TEST_USER_GUEST, TEST_USER_READER } from '../../../test/data/users';
+import { ServerNotifications } from '../notifications/ServerNotifications';
+import { MenuSectionModel, ProductMenuModel } from './model';
+import { List } from 'immutable';
+import { getNotificationData, markAllNotificationsRead } from '../../../test/data/notificationData';
 
 describe('<NavigationBar/>', () => {
+    const productMenuModel = new ProductMenuModel({
+        productIds: ['testNavBar'],
+        isLoaded: true,
+        isLoading: false,
+        sections: List<MenuSectionModel>(),
+    });
+
+    const notificationsConfig = {
+        maxRows: 1,
+        markAllNotificationsRead: markAllNotificationsRead,
+        getNotificationData: getNotificationData,
+    };
+
     test('default props', () => {
         const component = <NavigationBar model={null} />;
 
@@ -31,5 +50,27 @@ describe('<NavigationBar/>', () => {
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
+    });
+
+    test('with notifications no user', () => {
+        const component = mount(<NavigationBar model={productMenuModel} notificationsConfig={notificationsConfig} />);
+        expect(component.find(ServerNotifications)).toHaveLength(0);
+        component.unmount();
+    });
+
+    test('with notifications, guest user', () => {
+        const component = mount(
+            <NavigationBar model={productMenuModel} user={TEST_USER_GUEST} notificationsConfig={notificationsConfig} />
+        );
+        expect(component.find(ServerNotifications)).toHaveLength(0);
+        component.unmount();
+    });
+
+    test('with notifications, non-guest user', () => {
+        const component = mount(
+            <NavigationBar model={productMenuModel} user={TEST_USER_READER} notificationsConfig={notificationsConfig} />
+        );
+        expect(component.find(ServerNotifications)).toHaveLength(1);
+        component.unmount();
     });
 });

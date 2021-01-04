@@ -408,7 +408,6 @@ Array [
               >
                 Manually Define Fields
               </span>
-              
             </div>
           </div>
         </div>
@@ -906,7 +905,6 @@ Array [
               >
                 Manually Define Fields
               </span>
-              
             </div>
           </div>
         </div>
@@ -2128,8 +2126,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             <div
                                               className="col-xs-2"
                                             >
-                                              <DomainFieldLabel
-                                                helpTipBody={[Function]}
+                                              <Component
+                                                helpTipBody="The name for this sample type. Note that this can't be changed after sample type creation."
                                                 label="Name"
                                                 required={true}
                                               >
@@ -2137,8 +2135,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   className="domain-no-wrap"
                                                 >
                                                   Name
-                                                  <LabelHelpTip
-                                                    body={[Function]}
+                                                  <Component
                                                     customStyle={Object {}}
                                                     id="tooltip"
                                                     required={true}
@@ -2205,61 +2202,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         placement="right"
                                                         rootClose={false}
                                                         show={false}
-                                                        target={
-                                                          <span
-                                                            class="label-help-target"
-                                                          >
-                                                            <svg
-                                                              aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                              data-icon="question-circle"
-                                                              data-prefix="fas"
-                                                              focusable="false"
-                                                              role="img"
-                                                              viewBox="0 0 512 512"
-                                                              xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                              <path
-                                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                fill="currentColor"
-                                                              />
-                                                            </svg>
-                                                          </span>
-                                                        }
                                                       >
                                                         <Overlay
                                                           placement="right"
                                                           rootClose={false}
                                                           show={false}
-                                                          target={
-                                                            <span
-                                                              class="label-help-target"
-                                                            >
-                                                              <svg
-                                                                aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                data-icon="question-circle"
-                                                                data-prefix="fas"
-                                                                focusable="false"
-                                                                role="img"
-                                                                viewBox="0 0 512 512"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                              >
-                                                                <path
-                                                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                  fill="currentColor"
-                                                                />
-                                                              </svg>
-                                                            </span>
-                                                          }
                                                           transition={[Function]}
                                                         />
                                                       </Overlay>
                                                     </span>
-                                                  </LabelHelpTip>
+                                                  </Component>
                                                    *
                                                 </span>
-                                              </DomainFieldLabel>
+                                              </Component>
                                             </div>
                                           </Col>
                                           <Col
@@ -2310,16 +2265,15 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             <div
                                               className="col-xs-2"
                                             >
-                                              <DomainFieldLabel
-                                                helpTipBody={[Function]}
+                                              <Component
+                                                helpTipBody="A short description for this sample type."
                                                 label="Description"
                                               >
                                                 <span
                                                   className="domain-no-wrap"
                                                 >
                                                   Description
-                                                  <LabelHelpTip
-                                                    body={[Function]}
+                                                  <Component
                                                     customStyle={Object {}}
                                                     id="tooltip"
                                                     size="1x"
@@ -2385,60 +2339,18 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         placement="right"
                                                         rootClose={false}
                                                         show={false}
-                                                        target={
-                                                          <span
-                                                            class="label-help-target"
-                                                          >
-                                                            <svg
-                                                              aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                              data-icon="question-circle"
-                                                              data-prefix="fas"
-                                                              focusable="false"
-                                                              role="img"
-                                                              viewBox="0 0 512 512"
-                                                              xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                              <path
-                                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                fill="currentColor"
-                                                              />
-                                                            </svg>
-                                                          </span>
-                                                        }
                                                       >
                                                         <Overlay
                                                           placement="right"
                                                           rootClose={false}
                                                           show={false}
-                                                          target={
-                                                            <span
-                                                              class="label-help-target"
-                                                            >
-                                                              <svg
-                                                                aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                data-icon="question-circle"
-                                                                data-prefix="fas"
-                                                                focusable="false"
-                                                                role="img"
-                                                                viewBox="0 0 512 512"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                              >
-                                                                <path
-                                                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                  fill="currentColor"
-                                                                />
-                                                              </svg>
-                                                            </span>
-                                                          }
                                                           transition={[Function]}
                                                         />
                                                       </Overlay>
                                                     </span>
-                                                  </LabelHelpTip>
+                                                  </Component>
                                                 </span>
-                                              </DomainFieldLabel>
+                                              </Component>
                                             </div>
                                           </Col>
                                           <Col
@@ -2475,8 +2387,24 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             <div
                                               className="col-xs-2"
                                             >
-                                              <DomainFieldLabel
-                                                helpTipBody={[Function]}
+                                              <Component
+                                                helpTipBody={
+                                                  <React.Fragment>
+                                                    <p>
+                                                      Pattern used for generating unique IDs for this 
+                                                      sample type
+                                                      .
+                                                    </p>
+                                                    <p>
+                                                      <a
+                                                        href="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
+                                                        target="_blank"
+                                                      >
+                                                        More info
+                                                      </a>
+                                                    </p>
+                                                  </React.Fragment>
+                                                }
                                                 label="Naming Pattern"
                                               >
                                                 Naming 
@@ -2484,8 +2412,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   className="domain-no-wrap"
                                                 >
                                                   Pattern
-                                                  <LabelHelpTip
-                                                    body={[Function]}
+                                                  <Component
                                                     customStyle={Object {}}
                                                     id="tooltip"
                                                     size="1x"
@@ -2551,60 +2478,18 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         placement="right"
                                                         rootClose={false}
                                                         show={false}
-                                                        target={
-                                                          <span
-                                                            class="label-help-target"
-                                                          >
-                                                            <svg
-                                                              aria-hidden="true"
-                                                              class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                              data-icon="question-circle"
-                                                              data-prefix="fas"
-                                                              focusable="false"
-                                                              role="img"
-                                                              viewBox="0 0 512 512"
-                                                              xmlns="http://www.w3.org/2000/svg"
-                                                            >
-                                                              <path
-                                                                d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                fill="currentColor"
-                                                              />
-                                                            </svg>
-                                                          </span>
-                                                        }
                                                       >
                                                         <Overlay
                                                           placement="right"
                                                           rootClose={false}
                                                           show={false}
-                                                          target={
-                                                            <span
-                                                              class="label-help-target"
-                                                            >
-                                                              <svg
-                                                                aria-hidden="true"
-                                                                class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                data-icon="question-circle"
-                                                                data-prefix="fas"
-                                                                focusable="false"
-                                                                role="img"
-                                                                viewBox="0 0 512 512"
-                                                                xmlns="http://www.w3.org/2000/svg"
-                                                              >
-                                                                <path
-                                                                  d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                  fill="currentColor"
-                                                                />
-                                                              </svg>
-                                                            </span>
-                                                          }
                                                           transition={[Function]}
                                                         />
                                                       </Overlay>
                                                     </span>
-                                                  </LabelHelpTip>
+                                                  </Component>
                                                 </span>
-                                              </DomainFieldLabel>
+                                              </Component>
                                             </div>
                                           </Col>
                                           <Col
@@ -2665,8 +2550,8 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       <div
                                         className="col-xs-2"
                                       >
-                                        <DomainFieldLabel
-                                          helpTipBody={[Function]}
+                                        <Component
+                                          helpTipBody="The label color will be used to distinguish this sample type in various views in the application."
                                           label="Label Color"
                                         >
                                           Label 
@@ -2674,8 +2559,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             className="domain-no-wrap"
                                           >
                                             Color
-                                            <LabelHelpTip
-                                              body={[Function]}
+                                            <Component
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
@@ -2741,60 +2625,18 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   placement="right"
                                                   rootClose={false}
                                                   show={false}
-                                                  target={
-                                                    <span
-                                                      class="label-help-target"
-                                                    >
-                                                      <svg
-                                                        aria-hidden="true"
-                                                        class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                        data-icon="question-circle"
-                                                        data-prefix="fas"
-                                                        focusable="false"
-                                                        role="img"
-                                                        viewBox="0 0 512 512"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                      >
-                                                        <path
-                                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                          fill="currentColor"
-                                                        />
-                                                      </svg>
-                                                    </span>
-                                                  }
                                                 >
                                                   <Overlay
                                                     placement="right"
                                                     rootClose={false}
                                                     show={false}
-                                                    target={
-                                                      <span
-                                                        class="label-help-target"
-                                                      >
-                                                        <svg
-                                                          aria-hidden="true"
-                                                          class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                          data-icon="question-circle"
-                                                          data-prefix="fas"
-                                                          focusable="false"
-                                                          role="img"
-                                                          viewBox="0 0 512 512"
-                                                          xmlns="http://www.w3.org/2000/svg"
-                                                        >
-                                                          <path
-                                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                            fill="currentColor"
-                                                          />
-                                                        </svg>
-                                                      </span>
-                                                    }
                                                     transition={[Function]}
                                                   />
                                                 </Overlay>
                                               </span>
-                                            </LabelHelpTip>
+                                            </Component>
                                           </span>
-                                        </DomainFieldLabel>
+                                        </Component>
                                       </div>
                                     </Col>
                                     <Col
@@ -3149,10 +2991,45 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                           id="domainpropertiesrow-Test-Name-hdr"
                           onClick={[Function]}
                         >
-                          <LabelHelpTip
-                            body={[Function]}
+                          <Component
                             customStyle={Object {}}
-                            iconComponent={[Function]}
+                            iconComponent={
+                              <span
+                                className="domain-panel-status-icon domain-panel-status-icon-blue"
+                              >
+                                <FontAwesomeIcon
+                                  border={false}
+                                  className=""
+                                  fixedWidth={false}
+                                  flip={null}
+                                  icon={
+                                    Object {
+                                      "icon": Array [
+                                        512,
+                                        512,
+                                        Array [],
+                                        "f06a",
+                                        "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z",
+                                      ],
+                                      "iconName": "exclamation-circle",
+                                      "prefix": "fas",
+                                    }
+                                  }
+                                  inverse={false}
+                                  listItem={false}
+                                  mask={null}
+                                  pull={null}
+                                  pulse={false}
+                                  rotation={null}
+                                  size={null}
+                                  spin={false}
+                                  swapOpacity={false}
+                                  symbol={false}
+                                  title=""
+                                  transform={null}
+                                />
+                              </span>
+                            }
                             id="tooltip"
                             placement="top"
                             size="1x"
@@ -3221,66 +3098,16 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                 placement="top"
                                 rootClose={false}
                                 show={false}
-                                target={
-                                  <span
-                                    class="label-help-target"
-                                  >
-                                    <span
-                                      class="domain-panel-status-icon domain-panel-status-icon-blue"
-                                    >
-                                      <svg
-                                        aria-hidden="true"
-                                        class="svg-inline--fa fa-exclamation-circle fa-w-16 "
-                                        data-icon="exclamation-circle"
-                                        data-prefix="fas"
-                                        focusable="false"
-                                        role="img"
-                                        viewBox="0 0 512 512"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
-                                          fill="currentColor"
-                                        />
-                                      </svg>
-                                    </span>
-                                  </span>
-                                }
                               >
                                 <Overlay
                                   placement="top"
                                   rootClose={false}
                                   show={false}
-                                  target={
-                                    <span
-                                      class="label-help-target"
-                                    >
-                                      <span
-                                        class="domain-panel-status-icon domain-panel-status-icon-blue"
-                                      >
-                                        <svg
-                                          aria-hidden="true"
-                                          class="svg-inline--fa fa-exclamation-circle fa-w-16 "
-                                          data-icon="exclamation-circle"
-                                          data-prefix="fas"
-                                          focusable="false"
-                                          role="img"
-                                          viewBox="0 0 512 512"
-                                          xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                          <path
-                                            d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"
-                                            fill="currentColor"
-                                          />
-                                        </svg>
-                                      </span>
-                                    </span>
-                                  }
                                   transition={[Function]}
                                 />
                               </Overlay>
                             </span>
-                          </LabelHelpTip>
+                          </Component>
                           <span
                             className="domain-panel-title"
                           >
@@ -3412,7 +3239,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                           <ActionButton
                                             buttonClass="domain-toolbar-add-btn"
                                             containerClass="container--toolbar-button"
-                                            entity="Field"
                                             helperTitle="More Info"
                                             onClick={[Function]}
                                           >
@@ -3587,79 +3413,87 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   }
                                                 >
                                                   <div
-                                                    className="domain-floating-hdr"
+                                                    className="domain-field-row domain-row-border-default domain-floating-hdr"
                                                   >
                                                     <Row
                                                       bsClass="row"
-                                                      className="domain-form-hdr-row"
+                                                      className="domain-row-container"
                                                       componentClass="div"
                                                     >
                                                       <div
-                                                        className="domain-form-hdr-row row"
+                                                        className="domain-row-container row"
                                                       >
-                                                        <Col
-                                                          bsClass="col"
-                                                          componentClass="div"
-                                                          xs={6}
-                                                        >
-                                                          <div
-                                                            className="col-xs-6"
+                                                        <div
+                                                          className="domain-row-handle"
+                                                        />
+                                                        <div
+                                                          className="domain-row-expand"
+                                                        />
+                                                        <div>
+                                                          <Col
+                                                            bsClass="col"
+                                                            className="domain-row-base-fields"
+                                                            componentClass="div"
+                                                            xs={6}
                                                           >
-                                                            <Col
-                                                              bsClass="col"
-                                                              componentClass="div"
-                                                              xs={6}
+                                                            <div
+                                                              className="domain-row-base-fields col-xs-6"
                                                             >
-                                                              <div
-                                                                className="col-xs-6"
+                                                              <Col
+                                                                bsClass="col"
+                                                                componentClass="div"
+                                                                xs={6}
                                                               >
-                                                                <b>
-                                                                  Name
-                                                                </b>
-                                                              </div>
-                                                            </Col>
-                                                            <Col
-                                                              bsClass="col"
-                                                              componentClass="div"
-                                                              xs={4}
-                                                            >
-                                                              <div
-                                                                className="col-xs-4"
+                                                                <div
+                                                                  className="col-xs-6"
+                                                                >
+                                                                  <b>
+                                                                    Name *
+                                                                  </b>
+                                                                </div>
+                                                              </Col>
+                                                              <Col
+                                                                bsClass="col"
+                                                                componentClass="div"
+                                                                xs={4}
                                                               >
-                                                                <b>
-                                                                  Data Type
-                                                                </b>
-                                                              </div>
-                                                            </Col>
-                                                            <Col
-                                                              bsClass="col"
-                                                              className="domain-form-hdr-center"
-                                                              componentClass="div"
-                                                              xs={2}
-                                                            >
-                                                              <div
-                                                                className="domain-form-hdr-center col-xs-2"
+                                                                <div
+                                                                  className="col-xs-4"
+                                                                >
+                                                                  <b>
+                                                                    Data Type *
+                                                                  </b>
+                                                                </div>
+                                                              </Col>
+                                                              <Col
+                                                                bsClass="col"
+                                                                componentClass="div"
+                                                                xs={2}
                                                               >
-                                                                <b>
-                                                                  Required
-                                                                </b>
-                                                              </div>
-                                                            </Col>
-                                                          </div>
-                                                        </Col>
-                                                        <Col
-                                                          bsClass="col"
-                                                          componentClass="div"
-                                                          xs={6}
-                                                        >
-                                                          <div
-                                                            className="col-xs-6"
+                                                                <div
+                                                                  className="col-xs-2"
+                                                                >
+                                                                  <b>
+                                                                    Required
+                                                                  </b>
+                                                                </div>
+                                                              </Col>
+                                                            </div>
+                                                          </Col>
+                                                          <Col
+                                                            bsClass="col"
+                                                            componentClass="div"
+                                                            xs={6}
                                                           >
-                                                            <b>
-                                                              Details
-                                                            </b>
-                                                          </div>
-                                                        </Col>
+                                                            <div
+                                                              className="col-xs-6"
+                                                            >
+                                                              <b>
+                                                                Details
+                                                              </b>
+                                                            </div>
+                                                          </Col>
+                                                        </div>
                                                       </div>
                                                     </Row>
                                                   </div>
@@ -4250,16 +4084,85 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         </DragDropHandle>
                                                                       </div>
                                                                       <div
+                                                                        className="domain-row-expand"
+                                                                      >
+                                                                        <FieldExpansionToggle
+                                                                          cls="domain-field-expand-icon"
+                                                                          collapsedTitle="Show additional field properties"
+                                                                          expanded={false}
+                                                                          expandedTitle="Hide additional field properties"
+                                                                          id="domainpropertiesrow-expand-0-0"
+                                                                          onClick={[Function]}
+                                                                        >
+                                                                          <div
+                                                                            className="field-icon domain-field-expand-icon"
+                                                                            id="domainpropertiesrow-expand-0-0"
+                                                                            onClick={[Function]}
+                                                                            title="Show additional field properties"
+                                                                          >
+                                                                            <FontAwesomeIcon
+                                                                              border={false}
+                                                                              className=""
+                                                                              fixedWidth={false}
+                                                                              flip={null}
+                                                                              icon={
+                                                                                Object {
+                                                                                  "icon": Array [
+                                                                                    448,
+                                                                                    512,
+                                                                                    Array [],
+                                                                                    "f0fe",
+                                                                                    "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
+                                                                                  ],
+                                                                                  "iconName": "plus-square",
+                                                                                  "prefix": "fas",
+                                                                                }
+                                                                              }
+                                                                              inverse={false}
+                                                                              listItem={false}
+                                                                              mask={null}
+                                                                              pull={null}
+                                                                              pulse={false}
+                                                                              rotation={null}
+                                                                              size="lg"
+                                                                              spin={false}
+                                                                              swapOpacity={false}
+                                                                              symbol={false}
+                                                                              title=""
+                                                                              transform={null}
+                                                                            >
+                                                                              <svg
+                                                                                aria-hidden="true"
+                                                                                className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
+                                                                                data-icon="plus-square"
+                                                                                data-prefix="fas"
+                                                                                focusable="false"
+                                                                                role="img"
+                                                                                style={Object {}}
+                                                                                viewBox="0 0 448 512"
+                                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                              >
+                                                                                <path
+                                                                                  d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
+                                                                                  fill="currentColor"
+                                                                                  style={Object {}}
+                                                                                />
+                                                                              </svg>
+                                                                            </FontAwesomeIcon>
+                                                                          </div>
+                                                                        </FieldExpansionToggle>
+                                                                      </div>
+                                                                      <div
                                                                         className="domain-row-main"
                                                                       >
                                                                         <Col
                                                                           bsClass="col"
-                                                                          className="domain-row-base-fields"
+                                                                          className="domain-row-base-fields domain-row-base-fields-position"
                                                                           componentClass="div"
                                                                           xs={6}
                                                                         >
                                                                           <div
-                                                                            className="domain-row-base-fields col-xs-6"
+                                                                            className="domain-row-base-fields domain-row-base-fields-position col-xs-6"
                                                                           >
                                                                             <div
                                                                               id="domainpropertiesrow-row-0-0"
@@ -4418,12 +4321,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         </Col>
                                                                         <Col
                                                                           bsClass="col"
-                                                                          className="field-details-container"
+                                                                          className="domain-row-details-container"
                                                                           componentClass="div"
                                                                           xs={6}
                                                                         >
                                                                           <div
-                                                                            className="field-details-container col-xs-6"
+                                                                            className="domain-row-details-container col-xs-6"
                                                                           >
                                                                             <div
                                                                               className="domain-field-details"
@@ -4497,71 +4400,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   </FontAwesomeIcon>
                                                                                 </span>
                                                                               </DeleteIcon>
-                                                                              <FieldExpansionToggle
-                                                                                cls="domain-field-expand-icon"
-                                                                                collapsedTitle="Show additional field properties"
-                                                                                expanded={false}
-                                                                                expandedTitle="Hide additional field properties"
-                                                                                id="domainpropertiesrow-expand-0-0"
-                                                                                onClick={[Function]}
-                                                                              >
-                                                                                <div
-                                                                                  className="field-icon domain-field-expand-icon"
-                                                                                  id="domainpropertiesrow-expand-0-0"
-                                                                                  onClick={[Function]}
-                                                                                  title="Show additional field properties"
-                                                                                >
-                                                                                  <FontAwesomeIcon
-                                                                                    border={false}
-                                                                                    className=""
-                                                                                    fixedWidth={false}
-                                                                                    flip={null}
-                                                                                    icon={
-                                                                                      Object {
-                                                                                        "icon": Array [
-                                                                                          448,
-                                                                                          512,
-                                                                                          Array [],
-                                                                                          "f0fe",
-                                                                                          "M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z",
-                                                                                        ],
-                                                                                        "iconName": "plus-square",
-                                                                                        "prefix": "fas",
-                                                                                      }
-                                                                                    }
-                                                                                    inverse={false}
-                                                                                    listItem={false}
-                                                                                    mask={null}
-                                                                                    pull={null}
-                                                                                    pulse={false}
-                                                                                    rotation={null}
-                                                                                    size="lg"
-                                                                                    spin={false}
-                                                                                    swapOpacity={false}
-                                                                                    symbol={false}
-                                                                                    title=""
-                                                                                    transform={null}
-                                                                                  >
-                                                                                    <svg
-                                                                                      aria-hidden="true"
-                                                                                      className="svg-inline--fa fa-plus-square fa-w-14 fa-lg "
-                                                                                      data-icon="plus-square"
-                                                                                      data-prefix="fas"
-                                                                                      focusable="false"
-                                                                                      role="img"
-                                                                                      style={Object {}}
-                                                                                      viewBox="0 0 448 512"
-                                                                                      xmlns="http://www.w3.org/2000/svg"
-                                                                                    >
-                                                                                      <path
-                                                                                        d="M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-32 252c0 6.6-5.4 12-12 12h-92v92c0 6.6-5.4 12-12 12h-56c-6.6 0-12-5.4-12-12v-92H92c-6.6 0-12-5.4-12-12v-56c0-6.6 5.4-12 12-12h92v-92c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v92h92c6.6 0 12 5.4 12 12v56z"
-                                                                                        fill="currentColor"
-                                                                                        style={Object {}}
-                                                                                      />
-                                                                                    </svg>
-                                                                                  </FontAwesomeIcon>
-                                                                                </div>
-                                                                              </FieldExpansionToggle>
                                                                             </div>
                                                                           </div>
                                                                         </Col>
@@ -4709,7 +4547,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             className="domain-row-container"
                                                                           >
                                                                             <div
-                                                                              className="domain-row-handle"
+                                                                              className="domain-row-container-expand-spacer"
                                                                             />
                                                                             <div
                                                                               className="domain-row-container-expanded"
@@ -4779,8 +4617,17 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <DomainFieldLabel
-                                                                                                  helpTipBody={[Function]}
+                                                                                                <Component
+                                                                                                  helpTipBody={
+                                                                                                    <React.Fragment>
+                                                                                                      <p>
+                                                                                                        Sets the maximum character count for a text field.
+                                                                                                      </p>
+                                                                                                      <p>
+                                                                                                        Anything over 4,000 characters will use the 'Unlimited' designation.
+                                                                                                      </p>
+                                                                                                    </React.Fragment>
+                                                                                                  }
                                                                                                   label="Maximum Text Length"
                                                                                                 >
                                                                                                   Maximum Text 
@@ -4788,8 +4635,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                     className="domain-no-wrap"
                                                                                                   >
                                                                                                     Length
-                                                                                                    <LabelHelpTip
-                                                                                                      body={[Function]}
+                                                                                                    <Component
                                                                                                       customStyle={Object {}}
                                                                                                       id="tooltip"
                                                                                                       size="1x"
@@ -4906,9 +4752,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                           />
                                                                                                         </Overlay>
                                                                                                       </span>
-                                                                                                    </LabelHelpTip>
+                                                                                                    </Component>
                                                                                                   </span>
-                                                                                                </DomainFieldLabel>
+                                                                                                </Component>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -5239,8 +5085,15 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label"
                                                                                                 >
-                                                                                                  <DomainFieldLabel
-                                                                                                    helpTipBody={[Function]}
+                                                                                                  <Component
+                                                                                                    helpTipBody={
+                                                                                                      <React.Fragment>
+                                                                                                        Define alternate field names to be used when importing from a file.
+                                                                                                        <br />
+                                                                                                        <br />
+                                                                                                        Multiple aliases may be separated by spaces or commas. To define an alias that contains spaces, use double-quotes (") around it.
+                                                                                                      </React.Fragment>
+                                                                                                    }
                                                                                                     label="Import Aliases"
                                                                                                   >
                                                                                                     Import 
@@ -5248,8 +5101,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       className="domain-no-wrap"
                                                                                                     >
                                                                                                       Aliases
-                                                                                                      <LabelHelpTip
-                                                                                                        body={[Function]}
+                                                                                                      <Component
                                                                                                         customStyle={Object {}}
                                                                                                         id="tooltip"
                                                                                                         size="1x"
@@ -5315,60 +5167,18 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                             placement="right"
                                                                                                             rootClose={false}
                                                                                                             show={false}
-                                                                                                            target={
-                                                                                                              <span
-                                                                                                                class="label-help-target"
-                                                                                                              >
-                                                                                                                <svg
-                                                                                                                  aria-hidden="true"
-                                                                                                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                                                                  data-icon="question-circle"
-                                                                                                                  data-prefix="fas"
-                                                                                                                  focusable="false"
-                                                                                                                  role="img"
-                                                                                                                  viewBox="0 0 512 512"
-                                                                                                                  xmlns="http://www.w3.org/2000/svg"
-                                                                                                                >
-                                                                                                                  <path
-                                                                                                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                                                                    fill="currentColor"
-                                                                                                                  />
-                                                                                                                </svg>
-                                                                                                              </span>
-                                                                                                            }
                                                                                                           >
                                                                                                             <Overlay
                                                                                                               placement="right"
                                                                                                               rootClose={false}
                                                                                                               show={false}
-                                                                                                              target={
-                                                                                                                <span
-                                                                                                                  class="label-help-target"
-                                                                                                                >
-                                                                                                                  <svg
-                                                                                                                    aria-hidden="true"
-                                                                                                                    class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                                                                    data-icon="question-circle"
-                                                                                                                    data-prefix="fas"
-                                                                                                                    focusable="false"
-                                                                                                                    role="img"
-                                                                                                                    viewBox="0 0 512 512"
-                                                                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                                                                  >
-                                                                                                                    <path
-                                                                                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                                                                      fill="currentColor"
-                                                                                                                    />
-                                                                                                                  </svg>
-                                                                                                                </span>
-                                                                                                              }
                                                                                                               transition={[Function]}
                                                                                                             />
                                                                                                           </Overlay>
                                                                                                         </span>
-                                                                                                      </LabelHelpTip>
+                                                                                                      </Component>
                                                                                                     </span>
-                                                                                                  </DomainFieldLabel>
+                                                                                                  </Component>
                                                                                                 </div>
                                                                                                 <FormControl
                                                                                                   bsClass="form-control"
@@ -5403,16 +5213,29 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label"
                                                                                                 >
-                                                                                                  <DomainFieldLabel
-                                                                                                    helpTipBody={[Function]}
+                                                                                                  <Component
+                                                                                                    helpTipBody={
+                                                                                                      <React.Fragment>
+                                                                                                        Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
+                                                                                                        <br />
+                                                                                                        <br />
+                                                                                                        Learn more about using 
+                                                                                                        <a
+                                                                                                          href="https://www.labkey.org/Documentation/wiki-page.view?name=urlEncoding"
+                                                                                                          target="_blank"
+                                                                                                        >
+                                                                                                          URL Formatting Options
+                                                                                                        </a>
+                                                                                                        .
+                                                                                                      </React.Fragment>
+                                                                                                    }
                                                                                                     label="URL"
                                                                                                   >
                                                                                                     <span
                                                                                                       className="domain-no-wrap"
                                                                                                     >
                                                                                                       URL
-                                                                                                      <LabelHelpTip
-                                                                                                        body={[Function]}
+                                                                                                      <Component
                                                                                                         customStyle={Object {}}
                                                                                                         id="tooltip"
                                                                                                         size="1x"
@@ -5478,60 +5301,18 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                             placement="right"
                                                                                                             rootClose={false}
                                                                                                             show={false}
-                                                                                                            target={
-                                                                                                              <span
-                                                                                                                class="label-help-target"
-                                                                                                              >
-                                                                                                                <svg
-                                                                                                                  aria-hidden="true"
-                                                                                                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                                                                  data-icon="question-circle"
-                                                                                                                  data-prefix="fas"
-                                                                                                                  focusable="false"
-                                                                                                                  role="img"
-                                                                                                                  viewBox="0 0 512 512"
-                                                                                                                  xmlns="http://www.w3.org/2000/svg"
-                                                                                                                >
-                                                                                                                  <path
-                                                                                                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                                                                    fill="currentColor"
-                                                                                                                  />
-                                                                                                                </svg>
-                                                                                                              </span>
-                                                                                                            }
                                                                                                           >
                                                                                                             <Overlay
                                                                                                               placement="right"
                                                                                                               rootClose={false}
                                                                                                               show={false}
-                                                                                                              target={
-                                                                                                                <span
-                                                                                                                  class="label-help-target"
-                                                                                                                >
-                                                                                                                  <svg
-                                                                                                                    aria-hidden="true"
-                                                                                                                    class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                                                                    data-icon="question-circle"
-                                                                                                                    data-prefix="fas"
-                                                                                                                    focusable="false"
-                                                                                                                    role="img"
-                                                                                                                    viewBox="0 0 512 512"
-                                                                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                                                                  >
-                                                                                                                    <path
-                                                                                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                                                                      fill="currentColor"
-                                                                                                                    />
-                                                                                                                  </svg>
-                                                                                                                </span>
-                                                                                                              }
                                                                                                               transition={[Function]}
                                                                                                             />
                                                                                                           </Overlay>
                                                                                                         </span>
-                                                                                                      </LabelHelpTip>
+                                                                                                      </Component>
                                                                                                     </span>
-                                                                                                  </DomainFieldLabel>
+                                                                                                  </Component>
                                                                                                 </div>
                                                                                                 <FormControl
                                                                                                   bsClass="form-control"
@@ -5727,8 +5508,24 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <DomainFieldLabel
-                                                                                                    helpTipBody={[Function]}
+                                                                                                  <Component
+                                                                                                    helpTipBody={
+                                                                                                      <React.Fragment>
+                                                                                                        <p>
+                                                                                                          RegEx validators allow you to specify a regular expression that defines what string values are valid.
+                                                                                                        </p>
+                                                                                                        <p>
+                                                                                                          Learn more about using 
+                                                                                                          <a
+                                                                                                            href="https://www.labkey.org/Documentation/wiki-page.view?name=fieldEditor#regex"
+                                                                                                            target="_blank"
+                                                                                                          >
+                                                                                                            Regular Expression Validation
+                                                                                                          </a>
+                                                                                                          .
+                                                                                                        </p>
+                                                                                                      </React.Fragment>
+                                                                                                    }
                                                                                                     label="Create Regular Expression Validator"
                                                                                                   >
                                                                                                     Create Regular Expression 
@@ -5736,8 +5533,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       className="domain-no-wrap"
                                                                                                     >
                                                                                                       Validator
-                                                                                                      <LabelHelpTip
-                                                                                                        body={[Function]}
+                                                                                                      <Component
                                                                                                         customStyle={Object {}}
                                                                                                         id="tooltip"
                                                                                                         size="1x"
@@ -5803,60 +5599,18 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                             placement="right"
                                                                                                             rootClose={false}
                                                                                                             show={false}
-                                                                                                            target={
-                                                                                                              <span
-                                                                                                                class="label-help-target"
-                                                                                                              >
-                                                                                                                <svg
-                                                                                                                  aria-hidden="true"
-                                                                                                                  class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                                                                  data-icon="question-circle"
-                                                                                                                  data-prefix="fas"
-                                                                                                                  focusable="false"
-                                                                                                                  role="img"
-                                                                                                                  viewBox="0 0 512 512"
-                                                                                                                  xmlns="http://www.w3.org/2000/svg"
-                                                                                                                >
-                                                                                                                  <path
-                                                                                                                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                                                                    fill="currentColor"
-                                                                                                                  />
-                                                                                                                </svg>
-                                                                                                              </span>
-                                                                                                            }
                                                                                                           >
                                                                                                             <Overlay
                                                                                                               placement="right"
                                                                                                               rootClose={false}
                                                                                                               show={false}
-                                                                                                              target={
-                                                                                                                <span
-                                                                                                                  class="label-help-target"
-                                                                                                                >
-                                                                                                                  <svg
-                                                                                                                    aria-hidden="true"
-                                                                                                                    class="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
-                                                                                                                    data-icon="question-circle"
-                                                                                                                    data-prefix="fas"
-                                                                                                                    focusable="false"
-                                                                                                                    role="img"
-                                                                                                                    viewBox="0 0 512 512"
-                                                                                                                    xmlns="http://www.w3.org/2000/svg"
-                                                                                                                  >
-                                                                                                                    <path
-                                                                                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
-                                                                                                                      fill="currentColor"
-                                                                                                                    />
-                                                                                                                  </svg>
-                                                                                                                </span>
-                                                                                                              }
                                                                                                               transition={[Function]}
                                                                                                             />
                                                                                                           </Overlay>
                                                                                                         </span>
-                                                                                                      </LabelHelpTip>
+                                                                                                      </Component>
                                                                                                     </span>
-                                                                                                  </DomainFieldLabel>
+                                                                                                  </Component>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -5948,7 +5702,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                           <ActionButton
                                             buttonClass="domain-form-add-btn"
                                             containerClass="pull-right"
-                                            entity="Field"
                                             helperTitle="More Info"
                                             onClick={[Function]}
                                           >

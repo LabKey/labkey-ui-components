@@ -94,4 +94,4 @@ To use a configuration file set the environmental variable `TEAMCITY_BUILD_PROPE
 configuration file.
 
 ## Release Notes
-Release notes for this package are available [here](../components/releaseNotes/labkey/test.md).
+Release notes for this package are available [here](./releaseNotes/test.md).

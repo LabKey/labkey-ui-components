@@ -385,7 +385,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
         }));
     };
 
-    handleBatchChange = (fieldValues: any): void => {
+    handleBatchChange = (fieldValues: any, isChanged?: boolean): void => {
         // Here we have to merge incoming values with model.batchProperties because of the way Formsy works.
         // FileInput fields are not Formsy components, so when they send updates they only send the value for their
         // field. When formsy sends updates it sends the entire form (but not file fields). So we need to merge
@@ -394,11 +394,15 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             ...this.state.model.batchProperties.toObject(),
             ...fieldValues,
         };
-        this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
+
+        if (isChanged) {
+            this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
+        }
+
         this.handleChange('batchProperties', Map<string, any>(values ? values : {}));
     };
 
-    handleRunChange = (fieldValues: any): void => {
+    handleRunChange = (fieldValues: any, isChanged?: boolean): void => {
         // See the note in handleBatchChange for why this method exists.
         const values = {
             ...this.state.model.runProperties.toObject(),
@@ -419,7 +423,10 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             return result;
         }, {});
 
-        this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
+        if (isChanged) {
+            this.props.onDataChange?.(true, IMPORT_DATA_FORM_TYPES.OTHER);
+        }
+
         this.handleChange('runProperties', OrderedMap<string, any>(cleanedValues), () => {
             this.setState(state => ({
                 model: state.model.merge({

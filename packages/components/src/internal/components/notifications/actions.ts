@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Ajax, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, getServerContext, Utils } from '@labkey/api';
 
-import { buildURL } from '../../..';
+import { App, buildURL, resolveErrorMessage, selectRows } from '../../..';
 
-import { NotificationItemModel, NotificationItemProps } from './model';
+import { NotificationItemModel, NotificationItemProps, ServerActivity, ServerActivityData } from './model';
 import { addNotification } from './global';
 
 export type NotificationCreatable = string | NotificationItemProps | NotificationItemModel;
@@ -44,10 +44,155 @@ export function createNotification(creatable: NotificationCreatable) {
  * Used to notify the server that the trial banner has been dismissed
  */
 export function setTrialBannerDismissSessionKey(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    return new Promise(() => {
         Ajax.request({
             url: buildURL('core', 'dismissWarnings.api'),
             method: 'POST',
         });
     });
+}
+
+export function getServerNotifications(typeLabels?: string[], maxRows?: number): Promise<ServerActivity> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('notification', 'getUserNotifications.api'),
+            method: 'GET',
+            params: { container: getServerContext().container.id, typeLabels, maxRows },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    const notifications = response.notifications.map(
+                        notification => new ServerActivityData(notification)
+                    );
+                    resolve({
+                        data: notifications,
+                        totalRows: response.totalRows,
+                        unreadCount: response.unreadCount,
+                        inProgressCount: 0,
+                    });
+                } else {
+                    console.error(response);
+                    reject('There was a problem retrieving your notification data.');
+                }
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(resolveErrorMessage(response));
+            }),
+        });
+    });
+}
+
+export function getRunningPipelineJobStatuses(): Promise<ServerActivity> {
+    return new Promise((resolve, reject) => {
+        selectRows({
+            schemaName: 'pipeline',
+            queryName: 'job',
+            filterArray: [Filter.create('Status', ['RUNNING', 'WAITING', 'SPLITWAITING'], Filter.Types.IN)],
+            sort: 'Created',
+        })
+            .then(response => {
+                const model = response.models[response.key];
+                const activities = [];
+                Object.values(model).forEach(row => {
+                    activities.push(
+                        new ServerActivityData({
+                            inProgress: true,
+                            HtmlContent: row['Description']['value'],
+                            Created: row['Created']['formattedValue'],
+                            CreatedBy: row['CreatedBy']['displayValue'],
+                        })
+                    );
+                });
+                resolve({
+                    data: activities,
+                    totalRows: response.totalRows,
+                    unreadCount: 0, // these are always considered to be read since they aren't actually notifications
+                    inProgressCount: response.totalRows,
+                });
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject(resolveErrorMessage(reason));
+            });
+    });
+}
+
+export function getPipelineActivityData(maxRows?: number): Promise<ServerActivity> {
+    return new Promise((resolve, reject) => {
+        Promise.all([getServerNotifications(['Pipeline'], maxRows), getRunningPipelineJobStatuses()])
+            .then(responses => {
+                const [notifications, statuses] = responses;
+
+                resolve({
+                    data: statuses.data.concat(...notifications.data).slice(0, maxRows),
+                    totalRows: notifications.totalRows + statuses.totalRows,
+                    unreadCount: notifications.unreadCount,
+                    inProgressCount: statuses.inProgressCount,
+                });
+            })
+            .catch(reason => {
+                console.error(reason);
+                reject('There was a problem retrieving your notification data.  Try refreshing the page.');
+            });
+    });
+}
+
+export function markNotificationsAsRead(rowIds: number[]): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('notification', 'markNotificationAsRead.api'),
+            method: 'POST',
+            jsonData: { rowIds },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    resolve(true);
+                } else {
+                    console.error(response);
+                    resolve(false);
+                }
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(false);
+            }),
+        });
+    });
+}
+
+export function markAllNotificationsAsRead(typeLabels: string[]): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('notification', 'markAllNotificationAsRead.api'),
+            method: 'POST',
+            jsonData: { container: getServerContext().container.id, typeLabels },
+            success: Utils.getCallbackWrapper(response => {
+                if (response.success) {
+                    resolve(true);
+                } else {
+                    console.error(response);
+                    resolve(false);
+                }
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(false);
+            }),
+        });
+    });
+}
+
+/**
+ * Wrapper function for the window.setTimeout so that they can use a constant timeout value.
+ * @param callback function to call after timeout
+ * @param notification optional message/notification to be added after the timeout
+ */
+export function withTimeout(callback: any, notification?: NotificationCreatable): void {
+    window.setTimeout(callback, App.NOTIFICATION_TIMEOUT);
+
+    if (notification) {
+        // and then wait a bit to add the notification so the new component has mounted if the callback has a navigation
+        withTimeout(() => {
+            createNotification(notification);
+        });
+    }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { LabelHelpTip } from '../base/LabelHelpTip';
@@ -25,7 +25,7 @@ export interface ActionButtonProps {
     title?: string;
     onClick: () => void;
     helperTitle?: string;
-    helperBody?: () => any;
+    helperBody?: ReactNode;
 }
 
 export class ActionButton extends React.PureComponent<ActionButtonProps> {
@@ -45,7 +45,7 @@ export class ActionButton extends React.PureComponent<ActionButtonProps> {
                     <span className={buttonClasses} onClick={disabled ? undefined : onClick}>
                         {children}
                     </span>
-                    {helperBody ? <LabelHelpTip body={helperBody} title={helperTitle} /> : ''}
+                    {helperBody && <LabelHelpTip title={helperTitle}>{helperBody}</LabelHelpTip>}
                 </div>
             </div>
         );

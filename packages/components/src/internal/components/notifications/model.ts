@@ -16,8 +16,10 @@
 import React from 'react';
 import { Record } from 'immutable';
 
-import { generateId, User } from '../../..';
 import { Draft, immerable, produce } from "immer";
+
+import { User } from "../base/models/User"; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
+import { generateId } from "../../util/utils"; // // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
 
 export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;
 
@@ -126,5 +128,71 @@ export interface ServerActivity {
 export interface ServerNotificationsConfig {
     maxRows: number;
     markAllNotificationsRead: () => Promise<boolean>;
-    getNotificationData: (maxRows: number) => Promise<ServerActivity>;
+    serverActivity: ServerNotificationModel;
+    onRead?: () => any;
+}
+
+export interface IServerNotificationModel
+{
+    data: ServerActivityData[];
+    totalRows: number;
+    unreadCount: number;
+    inProgressCount: number;
+
+    isError: boolean;
+    isLoaded: boolean;
+    isLoading: boolean;
+    errorMessage: string;
+}
+
+const DEFAULT_SERVER_NOTIFICATION_MODEL : IServerNotificationModel = {
+    data: undefined,
+    totalRows: 0,
+    unreadCount: 0,
+    inProgressCount: 0,
+
+    isError: false,
+    isLoaded: false,
+    isLoading: false,
+    errorMessage: undefined
+};
+
+export class ServerNotificationModel implements IServerNotificationModel {
+    [immerable] = true;
+
+    readonly data: ServerActivityData[];
+    readonly totalRows: number;
+    readonly unreadCount: number;
+    readonly inProgressCount: number;
+
+    readonly isError: boolean;
+    readonly isLoaded: boolean;
+    readonly isLoading: boolean;
+    readonly errorMessage: string;
+
+    constructor(values?: Partial<ServerNotificationModel>) {
+        Object.assign(this, DEFAULT_SERVER_NOTIFICATION_MODEL, values);
+    }
+
+    mutate(props: Partial<ServerNotificationModel>): ServerNotificationModel {
+        return produce(this, (draft: Draft<ServerNotificationModel>) => {
+            Object.assign(draft, props);
+        });
+    }
+
+    setLoadingStart() {
+        return this.mutate({isLoading: true, isLoaded: false, isError: false, errorMessage: undefined})
+    }
+
+    setLoadingComplete(result: Partial<ServerNotificationModel>) {
+        return this
+            .mutate({isLoading: false, isLoaded: true, isError: false, errorMessage: undefined})
+            .mutate(result);
+    }
+
+    setError(errorMessage: string) {
+        return this
+            .mutate({isLoading: false, isLoaded: true, isError: true, errorMessage: errorMessage});
+    }
+
 }

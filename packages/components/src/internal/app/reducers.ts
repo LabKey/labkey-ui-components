@@ -5,7 +5,7 @@
 import { fromJS, Map } from 'immutable';
 import { handleActions } from 'redux-actions';
 
-import { ProductMenuModel } from '../..';
+import { ServerNotificationModel, ProductMenuModel } from '../..';
 
 import { AppModel, LogoutReason } from './models';
 import {
@@ -21,6 +21,10 @@ import {
     MENU_LOADING_START,
     MENU_LOADING_ERROR,
     MENU_LOADING_END,
+    SERVER_NOTIFICATIONS_INVALIDATE,
+    SERVER_NOTIFICATIONS_LOADING_START,
+    SERVER_NOTIFICATIONS_LOADING_ERROR,
+    SERVER_NOTIFICATIONS_LOADING_END
 } from './constants';
 
 export type AppReducerState = AppModel;
@@ -114,4 +118,29 @@ export const ProductMenuReducers = handleActions<ProductMenuState, any>(
         },
     },
     new ProductMenuModel()
+);
+
+export type ServerNotificationState = ServerNotificationModel;
+
+export const ServerNotificationReducers = handleActions<ServerNotificationState, any>(
+    {
+        [SERVER_NOTIFICATIONS_INVALIDATE]: (state: ServerNotificationState, action: any) => {
+            return new ServerNotificationModel();
+        },
+
+        [SERVER_NOTIFICATIONS_LOADING_START]: (state: ServerNotificationState, action: any) => {
+            return state.setLoadingStart();
+        },
+
+        [SERVER_NOTIFICATIONS_LOADING_END]: (state: ServerNotificationState, action: any) => {
+            const { serverActivity } = action;
+            return state.setLoadingComplete(serverActivity);
+        },
+
+        [SERVER_NOTIFICATIONS_LOADING_ERROR]: (state: ServerNotificationState, action: any) => {
+            const { message } = action;
+            return state.setError(message);
+        },
+    },
+    new ServerNotificationModel()
 );

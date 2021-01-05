@@ -2,16 +2,13 @@ import React, { ReactNode } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
 import { markNotificationsAsRead } from './actions';
-import { ServerActivity, ServerNotificationsConfig } from './model';
+import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
 import { LoadingSpinner } from '../../../index';
 
 type Props = ServerNotificationsConfig;
 
 interface State {
-    serverActivity: ServerActivity;
-    isLoading: boolean;
-    error: string;
     show: boolean;
 }
 
@@ -24,39 +21,15 @@ export class ServerNotifications extends React.Component<Props, State> {
         super(props);
 
         this.state = {
-            serverActivity: undefined,
-            isLoading: true,
-            error: undefined,
             show: false,
         };
     }
 
-    componentDidMount(): void {
-        this.props.getNotificationData(this.props.maxRows)
-            .then(response => {
-                this.setState(() => ({ serverActivity: response, isLoading: false }));
-            })
-            .catch(reason => {
-                this.setState(() => ({ error: reason, isLoading: false }));
-            });
-    }
-
     markAllRead = (): void => {
-        const { data } = this.state.serverActivity;
-        const now = new Date().toTimeString();
-        const updatedData = [];
-        data.forEach(activity => {
-            if (activity.RowId) {
-                updatedData.push(activity.mutate({ ReadOn: now }));
-            } else {
-                updatedData.push(activity);
-            }
-        });
         this.props.markAllNotificationsRead()
             .then(() => {
-                this.setState(state => ({
-                    serverActivity: Object.assign({}, state.serverActivity, { data: updatedData, unreadCount: 0 }),
-                }));
+                if (this.props.onRead)
+                    this.props.onRead();
             })
             .catch(() => {
                 console.error('Unable to mark all notifications as read');
@@ -66,20 +39,8 @@ export class ServerNotifications extends React.Component<Props, State> {
     onRead = (id: number): void => {
         markNotificationsAsRead([id])
             .then(() => {
-                this.setState(state => {
-                    const dataIndex = state.serverActivity.data.findIndex(d => d.RowId === id);
-                    if (dataIndex >= 0) {
-                        const update = state.serverActivity.data[dataIndex].mutate({
-                            ReadOn: new Date().toTimeString(),
-                        });
-                        const updatedActivity = [...state.serverActivity.data];
-                        updatedActivity[dataIndex] = update;
-                        return {
-                            serverActivity: Object.assign({}, state.serverActivity, { data: updatedActivity, unreadCount: state.serverActivity.unreadCount-1 })
-                        };
-                    }
-                    return { serverActivity: state.serverActivity };
-                });
+                if (this.props.onRead)
+                    this.props.onRead();
             })
             .catch(() => {
                 console.error('Unable to mark notification ' + id + ' as read');
@@ -95,15 +56,15 @@ export class ServerNotifications extends React.Component<Props, State> {
     }
 
     getNumUnread(): number {
-        if (!this.state.serverActivity || this.state.isLoading) {
+        if (!this.props.serverActivity || !this.props.serverActivity.isLoaded) {
             return 0;
         }
 
-        return this.state.serverActivity.unreadCount;
+        return this.props.serverActivity.unreadCount;
     }
 
     hasAnyInProgress(): boolean {
-        return this.state.serverActivity?.inProgressCount > 0;
+        return this.props.serverActivity?.inProgressCount > 0;
     }
 
     toggleMenu = (): void => {
@@ -111,7 +72,9 @@ export class ServerNotifications extends React.Component<Props, State> {
     };
 
     render(): ReactNode {
-        const { serverActivity, error, isLoading, show } = this.state;
+        const { serverActivity, maxRows } = this.props;
+        const { show } = this.state;
+
         const numUnread = this.getNumUnread();
         const title = (
             <h3 className="server-notifications-header">
@@ -125,14 +88,15 @@ export class ServerNotifications extends React.Component<Props, State> {
             </h3>
         );
         let body;
-        if (isLoading) {
+        if (serverActivity?.isError) {
+            body = <div className="server-notifications-footer server-notifications-error">{serverActivity.errorMessage}</div>;
+        }
+        else if (!serverActivity || !serverActivity.isLoaded) {
             body = <div className="server-notifications-footer"><LoadingSpinner /></div>;
-        } else if (error) {
-            body = <div className="server-notifications-footer server-notifications-error">{error}</div>;
         } else {
             body = (
                 <ServerActivityList
-                    maxRows={this.props.maxRows}
+                    maxRows={maxRows}
                     serverActivity={serverActivity}
                     onViewAll={this.viewAll}
                     onRead={this.onRead}
@@ -154,7 +118,7 @@ export class ServerNotifications extends React.Component<Props, State> {
         return (
             <DropdownButton
                 id="server-notifications-button"
-                className="navbar-icon-button-right"
+                className="navbar-icon-button-right server-notifications-button"
                 noCaret={true}
                 title={icon}
                 open={show}

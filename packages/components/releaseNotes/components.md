@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 1.12.0
+*Released*: 4 January 2021
 * Wire up websocket and redux for server notifications
 
 ### version 1.11.3

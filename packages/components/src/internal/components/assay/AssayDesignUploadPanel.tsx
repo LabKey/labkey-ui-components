@@ -4,7 +4,8 @@ import { Col, Row } from 'react-bootstrap';
 import { ActionURL } from '@labkey/api';
 import { Map } from 'immutable';
 
-import { FileAttachmentForm } from '../../../index';
+import {FileAttachmentForm, getHelpLink} from '../../../index';
+import {DATA_CLASS_NAME_EXPRESSION_TOPIC} from "../../util/helpLinks";
 
 interface AssayDesignUploadPanelProps {
     onFileChange: (files: Map<string, File>) => void;
@@ -23,9 +24,9 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                     </div>
                     <p>
                         To create an assay from an existing design, import a{' '}
-                        <a href="https://www.labkey.org/Documentation/Archive/20.11/wiki-page.view?name=XarTutorial">
+                        <a href={getHelpLink("XarTutorial")}>
                             .XAR or .XAR.XML
-                        </a>{' '}
+                        </a>
                         file here. You will be able to customize the design after importing.
                     </p>
                 </Col>
@@ -33,6 +34,7 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
             <Row>
                 <Col xs={12}>
                     <FileAttachmentForm
+                        acceptedFormats={".XAR, .XAR.XML"}
                         allowDirectories={false}
                         allowMultiple={false}
                         showLabel={false}

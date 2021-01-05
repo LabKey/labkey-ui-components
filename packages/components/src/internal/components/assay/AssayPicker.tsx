@@ -1,11 +1,12 @@
 import React, { FC, memo, SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { Col, Nav, NavItem, Row, Tab, TabContainer } from 'react-bootstrap';
+import { useImmer } from "use-immer";
 
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { Map } from 'immutable';
 
-import { createNotification } from '../../..';
+import {createNotification, GENERAL_ASSAY_PROVIDER_NAME} from '../../..';
 
 import { AssayContainerLocation } from './AssayContainerLocation';
 import { SpecialtyAssayPanel } from './SpecialtyAssayPanel';
@@ -32,11 +33,15 @@ export const enum AssayPickerTabs {
 
 interface AssayPickerProps {
     showImport: boolean;
-    onProviderSelect: (provider: string) => void;
-    onContainerSelect: (container: string) => void;
-    onFileChange: (file: File) => void;
-    setIsFileUpload: (upload: boolean) => void;
+    onChange: (model: AssayPickerSelectionModel) => void;
     selectedTab?: AssayPickerTabs
+}
+
+export interface AssayPickerSelectionModel {
+    provider: AssayProvider,
+    container: string,
+    file?: File,
+    tab: AssayPickerTabs
 }
 
 const queryAssayProviders = (): Promise<AssayProvidersOptions> => {
@@ -46,7 +51,7 @@ const queryAssayProviders = (): Promise<AssayProvidersOptions> => {
             method: 'GET',
             scope: this,
             success: Utils.getCallbackWrapper(data => {
-                resolve(data);
+                resolve(data as AssayProvidersOptions);
             }),
             failure: Utils.getCallbackWrapper(error => {
                 reject(error);
@@ -71,22 +76,25 @@ const getSelectedProvider = (providers: AssayProvider[], name: string): AssayPro
 };
 
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
-    const { showImport, onProviderSelect, onContainerSelect, onFileChange, setIsFileUpload, selectedTab } = props;
+    const { showImport, onChange, selectedTab } = props;
 
     const [providers, setProviders] = useState<AssayProvider[]>();
     const [containers, setContainers] = useState<{ [key: string]: string }>();
-    const [tabSelection, setTabSelection] = useState<AssayPickerTabs>(AssayPickerTabs.STANDARD_ASSAY_TAB);
-    const [containerValue, setContainerValue] = useState<string>();
-    const [selectedProvider, setSelectedProvider] = useState<AssayProvider>();
+    const [assaySelectionModel, setAssaySelectionModel] = useImmer<AssayPickerSelectionModel>({
+        provider: undefined,
+        container: "",
+        file: undefined,
+        tab: undefined
+    });
 
     useEffect(() => {
         getAssayProviders().then(options => {
             setProviders(options.providers);
             setContainers(options.locations);
-            setContainerValue(options.defaultLocation);
-            setSelectedProvider(getSelectedProvider(options.providers, 'General'));
 
-            onContainerSelect(Object.keys(options.locations)[0]);
+            setAssaySelectionModel(draft => {
+                draft.container = options.defaultLocation;
+            })
         });
     }, []);
 
@@ -94,11 +102,20 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
         onTabChange((selectedTab ?? AssayPickerTabs.STANDARD_ASSAY_TAB) as any);
     }, [providers])
 
+    useEffect(() => {
+        if (onChange) {
+            onChange(assaySelectionModel)
+        }
+    }, [onChange, assaySelectionModel])
+
     const onSelectedProviderChange = useCallback(
         value => {
             const provider = getSelectedProvider(providers, value);
-            setSelectedProvider(provider);
-            onProviderSelect(provider.name);
+            // setSelectedProvider(provider);
+
+            setAssaySelectionModel(draft => {
+                draft.provider = provider;
+            })
         },
         [providers]
     );
@@ -106,31 +123,30 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
     const onTabChange = useCallback(
         (event: SyntheticEvent<TabContainer, Event>) => {
             const tab: AssayPickerTabs = event as any; // Crummy cast to make TS happy
-            setTabSelection(tab);
+
+            setAssaySelectionModel(draft => {
+                draft.tab = tab;
+            })
+
             if (tab === AssayPickerTabs.STANDARD_ASSAY_TAB) {
-                onProviderSelect('General');
-                setIsFileUpload(false);
+                setAssaySelectionModel(draft => {
+                    draft.provider = getSelectedProvider(providers, GENERAL_ASSAY_PROVIDER_NAME);
+                })
             } else if (tab === AssayPickerTabs.SPECIALTY_ASSAY_TAB) {
                 if (providers) {
-                    if (!selectedProvider || selectedProvider.name == 'General')
-                    {
+                    if (!assaySelectionModel.provider || assaySelectionModel.provider.name == GENERAL_ASSAY_PROVIDER_NAME) {
                         onSelectedProviderChange(providers[0].name);
-                    } else
-                    {
-                        onProviderSelect(selectedProvider.name);
                     }
                 }
-                setIsFileUpload(false);
-            } else {
-                setIsFileUpload(true);
             }
         },
-        [onSelectedProviderChange, onProviderSelect, providers, selectedProvider, setIsFileUpload]
+        [onSelectedProviderChange, providers]
     );
 
     const onContainerChange = useCallback(value => {
-        setContainerValue(value);
-        onContainerSelect(value);
+        setAssaySelectionModel(draft => {
+            draft.container = value;
+        })
     }, []);
 
     const standardProvider = useMemo((): AssayProvider => {
@@ -142,17 +158,21 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
 
     const onFileRemove = useCallback(
         (name: string) => {
-            onFileChange(undefined);
+            setAssaySelectionModel(draft => {
+                draft.file = undefined;
+            })
         },
-        [onFileChange]
+        []
     );
 
     const onFileSelect = useCallback(
         (files: Map<string, File>): void => {
             const file = files.values().next().value;
-            onFileChange(file);
+            setAssaySelectionModel(draft => {
+                draft.file = file;
+            })
         },
-        [onFileChange]
+        []
     );
 
     return (
@@ -160,7 +180,7 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
             <Tab.Container
                 id="assay-picker-tabs"
                 onSelect={onTabChange}
-                activeKey={tabSelection}
+                activeKey={assaySelectionModel.tab}
                 defaultActiveKey={AssayPickerTabs.STANDARD_ASSAY_TAB}
             >
                 <Row className="clearfix">
@@ -168,7 +188,9 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                         <Nav bsStyle="tabs">
                             <NavItem eventKey={AssayPickerTabs.STANDARD_ASSAY_TAB}>Standard Assay</NavItem>
                             <NavItem eventKey={AssayPickerTabs.SPECIALTY_ASSAY_TAB}>Specialty Assays</NavItem>
-                            <NavItem eventKey={AssayPickerTabs.XAR_IMPORT_TAB}>Import Assay Design</NavItem>
+                            { showImport &&
+                                <NavItem eventKey={AssayPickerTabs.XAR_IMPORT_TAB}>Import Assay Design</NavItem>
+                            }
                         </Nav>
                     </Col>
                     <Col sm={12}>
@@ -178,11 +200,17 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                                 eventKey={AssayPickerTabs.STANDARD_ASSAY_TAB}
                             >
                                 <StandardAssayPanel provider={standardProvider}>
-                                    <AssayContainerLocation
-                                        locations={containers}
-                                        selected={containerValue}
-                                        onChange={onContainerChange}
-                                    />
+                                    <div className="margin-top">
+                                        <Row>
+                                            <Col xs={6}>
+                                                <AssayContainerLocation
+                                                    locations={containers}
+                                                    selected={assaySelectionModel.container}
+                                                    onChange={onContainerChange}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </div>
                                 </StandardAssayPanel>
                             </Tab.Pane>
                             <Tab.Pane
@@ -191,14 +219,20 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                             >
                                 <SpecialtyAssayPanel
                                     values={providers}
-                                    selected={selectedProvider}
+                                    selected={assaySelectionModel.provider}
                                     onChange={onSelectedProviderChange}
                                 >
-                                    <AssayContainerLocation
-                                        locations={containers}
-                                        selected={containerValue}
-                                        onChange={onContainerChange}
-                                    />
+                                    <div className="margin-top">
+                                        <Row>
+                                            <Col xs={6}>
+                                                <AssayContainerLocation
+                                                    locations={containers}
+                                                    selected={assaySelectionModel.container}
+                                                    onChange={onContainerChange}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </div>
                                 </SpecialtyAssayPanel>
                             </Tab.Pane>
                             {showImport && (

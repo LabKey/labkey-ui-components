@@ -3,13 +3,13 @@ import { Col, Row } from 'react-bootstrap';
 
 import { Utils } from '@labkey/api';
 
-import { Alert } from '../../../index';
+import {Alert, GENERAL_ASSAY_PROVIDER_NAME} from '../../../index';
 
 import { AssayProvider } from './AssayPicker';
 
 interface SpecialtyAssayPanelProps {
-    selected?: AssayProvider;
-    values?: AssayProvider[];
+    selected: AssayProvider;
+    values: AssayProvider[];
     onChange: (value: string) => void;
     warning?: string;
 }
@@ -18,7 +18,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
     const { values, selected, onChange, warning, children } = props;
 
     const options = useMemo(() => {
-        return values?.filter(v => v.name !== 'General')
+        return values?.filter(v => v.name !== GENERAL_ASSAY_PROVIDER_NAME)
             .map(val => {
                 return <option key={val.name} value={val.name}>{val.name}</option>;
             });
@@ -39,7 +39,7 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                         <b>Use Instrument Specific Data Format</b>
                     </div>
                     <div className="margin-bottom">
-                        {selected && (
+                        {selected && options && (
                             <select
                                 id="specialty-assay-type-select"
                                 value={selected.name}

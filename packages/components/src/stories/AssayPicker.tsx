@@ -18,10 +18,7 @@ storiesOf('AssayPicker', module)
         return (
             <AssayPicker
                 showImport={true}
-                onProviderSelect={onNoopSelect}
-                onContainerSelect={onNoopSelect}
-                onFileChange={onNoopSelect}
-                setIsFileUpload={onNoopSelect}
+                onChange={onNoopSelect}
             />
         );
     });

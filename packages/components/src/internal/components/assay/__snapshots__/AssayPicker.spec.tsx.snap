@@ -1,362 +1,812 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AssayPicker AssayPicker 1`] = `
-<div>
-  <div
-    className="clearfix row"
-    id="assay-picker-tabs"
-  >
-    <div
-      className="col-sm-12"
+<Memo()
+  onChange={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "container": "",
+            "file": undefined,
+            "provider": undefined,
+            "tab": undefined,
+          },
+        ],
+        Array [
+          Object {
+            "container": "",
+            "file": undefined,
+            "provider": undefined,
+            "tab": "standard",
+          },
+        ],
+        Array [
+          Object {
+            "container": "",
+            "file": undefined,
+            "provider": undefined,
+            "tab": "import",
+          },
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
+  showImport={true}
+>
+  <div>
+    <ForwardRef
+      activeKey="import"
+      defaultActiveKey="standard"
+      id="assay-picker-tabs"
+      onSelect={[Function]}
     >
-      <ul
-        className="nav nav-tabs"
-        role="tablist"
+      <Uncontrolled(TabContainer)
+        activeKey="import"
+        defaultActiveKey="standard"
+        id="assay-picker-tabs"
+        innerRef={null}
+        onSelect={[Function]}
       >
-        <li
-          className="active"
-          role="presentation"
+        <TabContainer
+          activeKey="import"
+          id="assay-picker-tabs"
+          onSelect={[Function]}
         >
-          <a
-            aria-controls="assay-picker-tabs-pane-standard"
-            aria-selected={true}
-            href="#"
-            id="assay-picker-tabs-tab-standard"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
+          <Row
+            bsClass="row"
+            className="clearfix"
+            componentClass="div"
+            id="assay-picker-tabs"
           >
-            Standard Assay
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-        >
-          <a
-            aria-controls="assay-picker-tabs-pane-specialty"
-            aria-selected={false}
-            href="#"
-            id="assay-picker-tabs-tab-specialty"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-          >
-            Specialty Assays
-          </a>
-        </li>
-        <li
-          className=""
-          role="presentation"
-        >
-          <a
-            aria-controls="assay-picker-tabs-pane-import"
-            aria-selected={false}
-            href="#"
-            id="assay-picker-tabs-tab-import"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-          >
-            Import Assay Design
-          </a>
-        </li>
-      </ul>
-    </div>
-    <div
-      className="col-sm-12"
-    >
-      <div
-        className="tab-content"
-      >
-        <div
-          aria-hidden={false}
-          aria-labelledby="assay-picker-tabs-tab-standard"
-          className="fade margin-bottom margin-top tab-pane active in"
-          id="assay-picker-tabs-pane-standard"
-          role="tabpanel"
-        >
-          <div>
             <div
-              className="row"
+              className="clearfix row"
+              id="assay-picker-tabs"
             >
-              <div
-                className="col-xs-6"
+              <Col
+                bsClass="col"
+                componentClass="div"
+                sm={12}
               >
                 <div
-                  className="margin-bottom"
+                  className="col-sm-12"
                 >
-                  <b>
-                    Standard Assay
-                  </b>
-                  <span
-                    style={
-                      Object {
-                        "color": "gray",
-                      }
-                    }
+                  <Nav
+                    bsClass="nav"
+                    bsStyle="tabs"
+                    justified={false}
+                    pullLeft={false}
+                    pullRight={false}
+                    stacked={false}
                   >
-                     (Recommended)
-                  </span>
+                    <ul
+                      className="nav nav-tabs"
+                      role="tablist"
+                    >
+                      <NavItem
+                        active={false}
+                        activeKey="import"
+                        aria-controls="assay-picker-tabs-pane-standard"
+                        disabled={false}
+                        eventKey="standard"
+                        id="assay-picker-tabs-tab-standard"
+                        key=".0"
+                        onKeyDown={[Function]}
+                        onSelect={[Function]}
+                        role="tab"
+                        tabIndex={-1}
+                      >
+                        <li
+                          className=""
+                          role="presentation"
+                        >
+                          <SafeAnchor
+                            aria-controls="assay-picker-tabs-pane-standard"
+                            aria-selected={false}
+                            componentClass="a"
+                            disabled={false}
+                            id="assay-picker-tabs-tab-standard"
+                            onClick={[Function]}
+                            onKeyDown={[Function]}
+                            role="tab"
+                            tabIndex={-1}
+                          >
+                            <a
+                              aria-controls="assay-picker-tabs-pane-standard"
+                              aria-selected={false}
+                              href="#"
+                              id="assay-picker-tabs-tab-standard"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="tab"
+                              tabIndex={-1}
+                            >
+                              Standard Assay
+                            </a>
+                          </SafeAnchor>
+                        </li>
+                      </NavItem>
+                      <NavItem
+                        active={false}
+                        activeKey="import"
+                        aria-controls="assay-picker-tabs-pane-specialty"
+                        disabled={false}
+                        eventKey="specialty"
+                        id="assay-picker-tabs-tab-specialty"
+                        key=".1"
+                        onKeyDown={[Function]}
+                        onSelect={[Function]}
+                        role="tab"
+                        tabIndex={-1}
+                      >
+                        <li
+                          className=""
+                          role="presentation"
+                        >
+                          <SafeAnchor
+                            aria-controls="assay-picker-tabs-pane-specialty"
+                            aria-selected={false}
+                            componentClass="a"
+                            disabled={false}
+                            id="assay-picker-tabs-tab-specialty"
+                            onClick={[Function]}
+                            onKeyDown={[Function]}
+                            role="tab"
+                            tabIndex={-1}
+                          >
+                            <a
+                              aria-controls="assay-picker-tabs-pane-specialty"
+                              aria-selected={false}
+                              href="#"
+                              id="assay-picker-tabs-tab-specialty"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="tab"
+                              tabIndex={-1}
+                            >
+                              Specialty Assays
+                            </a>
+                          </SafeAnchor>
+                        </li>
+                      </NavItem>
+                      <NavItem
+                        active={true}
+                        activeKey="import"
+                        aria-controls="assay-picker-tabs-pane-import"
+                        disabled={false}
+                        eventKey="import"
+                        id="assay-picker-tabs-tab-import"
+                        key=".2"
+                        onKeyDown={[Function]}
+                        onSelect={[Function]}
+                        role="tab"
+                      >
+                        <li
+                          className="active"
+                          role="presentation"
+                        >
+                          <SafeAnchor
+                            aria-controls="assay-picker-tabs-pane-import"
+                            aria-selected={true}
+                            componentClass="a"
+                            disabled={false}
+                            id="assay-picker-tabs-tab-import"
+                            onClick={[Function]}
+                            onKeyDown={[Function]}
+                            role="tab"
+                          >
+                            <a
+                              aria-controls="assay-picker-tabs-pane-import"
+                              aria-selected={true}
+                              href="#"
+                              id="assay-picker-tabs-tab-import"
+                              onClick={[Function]}
+                              onKeyDown={[Function]}
+                              role="tab"
+                            >
+                              Import Assay Design
+                            </a>
+                          </SafeAnchor>
+                        </li>
+                      </NavItem>
+                    </ul>
+                  </Nav>
                 </div>
-                <p>
-                  Standard assays are the most flexible choice for working with experimental data. Use this assay type to customize the format for mapping your experimental results.
-                </p>
-              </div>
-            </div>
-            <div
-              className="row"
-            >
-              <div
-                className="col-xs-6"
+              </Col>
+              <Col
+                bsClass="col"
+                componentClass="div"
+                sm={12}
               >
                 <div
-                  className="margin-bottom margin-top"
+                  className="col-sm-12"
                 >
-                  <b>
-                    Supported File Types
-                  </b>
-                </div>
-                <p />
-              </div>
-            </div>
-            <div
-              className="margin-top"
-            >
-              <div
-                className="row"
-              >
-                <div
-                  className="col-xs-6"
-                >
-                  <div
-                    className="margin-bottom"
-                  >
-                    <b>
-                      Assay Location
-                    </b>
-                  </div>
-                  <p>
-                    Choose where the assay will be used and visible within subfolders
-                  </p>
-                  <select
-                    className="form-control"
-                    id="assay-type-select-container"
-                    onChange={[Function]}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          aria-hidden={true}
-          aria-labelledby="assay-picker-tabs-tab-specialty"
-          className="fade margin-bottom margin-top tab-pane"
-          id="assay-picker-tabs-pane-specialty"
-          role="tabpanel"
-        >
-          <div>
-            <div
-              className="row"
-            >
-              <div
-                className="col-xs-6"
-              >
-                <div
-                  className="margin-bottom"
-                >
-                  <b>
-                    Use Instrument Specific Data Format
-                  </b>
-                </div>
-                <div
-                  className="margin-bottom"
-                />
-                <p>
-                  <div
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": undefined,
-                      }
-                    }
-                  />
-                </p>
-              </div>
-            </div>
-            <div
-              className="row"
-            >
-              <div
-                className="col-xs-6"
-              >
-                <div
-                  className="margin-top margin-bottom"
-                >
-                  <b>
-                    Supported File Types
-                  </b>
-                </div>
-                <p />
-              </div>
-            </div>
-            <div
-              className="margin-top"
-            >
-              <div
-                className="row"
-              >
-                <div
-                  className="col-xs-6"
-                >
-                  <div
-                    className="margin-bottom"
-                  >
-                    <b>
-                      Assay Location
-                    </b>
-                  </div>
-                  <p>
-                    Choose where the assay will be used and visible within subfolders
-                  </p>
-                  <select
-                    className="form-control"
-                    id="assay-type-select-container"
-                    onChange={[Function]}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          aria-hidden={true}
-          aria-labelledby="assay-picker-tabs-tab-import"
-          className="fade margin-bottom margin-top tab-pane"
-          id="assay-picker-tabs-pane-import"
-          role="tabpanel"
-        >
-          <div>
-            <div
-              className="row"
-            >
-              <div
-                className="col-xs-6"
-              >
-                <div
-                  className="margin-bottom"
-                >
-                  <b>
-                    Import .XAR or .XAR.XML file
-                  </b>
-                </div>
-                <p>
-                  To create an assay from an existing design, import a
-                   
-                  <a
-                    href="https://www.labkey.org/Documentation/Archive/20.11/wiki-page.view?name=XarTutorial"
-                  >
-                    .XAR or .XAR.XML
-                  </a>
-                   
-                  file here. You will be able to customize the design after importing.
-                </p>
-              </div>
-            </div>
-            <div
-              className="row"
-            >
-              <div
-                className="col-xs-12"
-              >
-                <span
-                  className="translator--toggle__wizard"
-                >
-                  <div
-                    className="row"
+                  <TabContent
+                    animation={true}
+                    bsClass="tab"
+                    componentClass="div"
+                    mountOnEnter={false}
+                    unmountOnExit={false}
                   >
                     <div
-                      className="col-sm-12"
+                      className="tab-content"
                     >
-                      <div
-                        className="wizard-row--container"
+                      <TabPane
+                        bsClass="tab-pane"
+                        className="margin-bottom margin-top"
+                        eventKey="standard"
                       >
-                        <div
-                          className=""
+                        <Fade
+                          appear={false}
+                          in={false}
+                          mountOnEnter={false}
+                          onEnter={[Function]}
+                          onExited={[Function]}
+                          timeout={300}
+                          unmountOnExit={false}
                         >
-                          <div
-                            className="file-upload--container block"
+                          <Transition
+                            appear={false}
+                            enter={true}
+                            exit={true}
+                            in={false}
+                            mountOnEnter={false}
+                            onEnter={[Function]}
+                            onEntered={[Function]}
+                            onEntering={[Function]}
+                            onExit={[Function]}
+                            onExited={[Function]}
+                            onExiting={[Function]}
+                            timeout={300}
+                            unmountOnExit={false}
                           >
-                            <label
-                              className="file-upload--label"
-                              htmlFor="fileUpload"
-                              onDragEnter={[Function]}
-                              onDragLeave={[Function]}
-                              onDragOver={[Function]}
-                              onDrop={[Function]}
+                            <div
+                              aria-hidden={false}
+                              aria-labelledby="assay-picker-tabs-tab-standard"
+                              className="fade margin-bottom margin-top tab-pane active"
+                              id="assay-picker-tabs-pane-standard"
+                              role="tabpanel"
                             >
-                              <i
-                                aria-hidden="true"
-                                className="fa fa-cloud-upload fa-2x cloud-logo"
-                              />
-                              Select file or drag and drop here.
-                            </label>
-                            <input
-                              accept=""
-                              className="file-upload--input"
-                              id="fileUpload"
-                              multiple={false}
-                              name="fileUpload"
-                              onChange={[Function]}
-                              type="file"
-                            />
-                          </div>
-                        </div>
-                      </div>
+                              <Memo()>
+                                <div>
+                                  <Row
+                                    bsClass="row"
+                                    componentClass="div"
+                                  >
+                                    <div
+                                      className="row"
+                                    >
+                                      <Col
+                                        bsClass="col"
+                                        componentClass="div"
+                                        xs={6}
+                                      >
+                                        <div
+                                          className="col-xs-6"
+                                        >
+                                          <div
+                                            className="margin-bottom"
+                                          >
+                                            <b>
+                                              Standard Assay
+                                            </b>
+                                            <span
+                                              className="gray-text"
+                                            >
+                                               (Recommended)
+                                            </span>
+                                          </div>
+                                          <p>
+                                            Standard assays are the most flexible choice for working with experimental data. Use this assay type to customize the format for mapping your experimental results.
+                                          </p>
+                                        </div>
+                                      </Col>
+                                    </div>
+                                  </Row>
+                                  <Row
+                                    bsClass="row"
+                                    componentClass="div"
+                                  >
+                                    <div
+                                      className="row"
+                                    >
+                                      <Col
+                                        bsClass="col"
+                                        componentClass="div"
+                                        xs={6}
+                                      >
+                                        <div
+                                          className="col-xs-6"
+                                        >
+                                          <div
+                                            className="margin-bottom margin-top"
+                                          >
+                                            <b>
+                                              Supported File Types
+                                            </b>
+                                          </div>
+                                          <p />
+                                        </div>
+                                      </Col>
+                                    </div>
+                                  </Row>
+                                  <div
+                                    className="margin-top"
+                                  >
+                                    <Row
+                                      bsClass="row"
+                                      componentClass="div"
+                                    >
+                                      <div
+                                        className="row"
+                                      >
+                                        <Col
+                                          bsClass="col"
+                                          componentClass="div"
+                                          xs={6}
+                                        >
+                                          <div
+                                            className="col-xs-6"
+                                          >
+                                            <Memo()
+                                              onChange={[Function]}
+                                              selected=""
+                                            >
+                                              <div
+                                                className="margin-bottom"
+                                              >
+                                                <b>
+                                                  Assay Location
+                                                </b>
+                                              </div>
+                                              <p>
+                                                Choose where the assay will be used and visible within subfolders.
+                                              </p>
+                                              <select
+                                                className="form-control"
+                                                id="assay-type-select-container"
+                                                onChange={[Function]}
+                                                value=""
+                                              />
+                                            </Memo()>
+                                          </div>
+                                        </Col>
+                                      </div>
+                                    </Row>
+                                  </div>
+                                </div>
+                              </Memo()>
+                            </div>
+                          </Transition>
+                        </Fade>
+                      </TabPane>
+                      <TabPane
+                        bsClass="tab-pane"
+                        className="margin-bottom margin-top"
+                        eventKey="specialty"
+                      >
+                        <Fade
+                          appear={false}
+                          in={false}
+                          mountOnEnter={false}
+                          onEnter={[Function]}
+                          onExited={[Function]}
+                          timeout={300}
+                          unmountOnExit={false}
+                        >
+                          <Transition
+                            appear={false}
+                            enter={true}
+                            exit={true}
+                            in={false}
+                            mountOnEnter={false}
+                            onEnter={[Function]}
+                            onEntered={[Function]}
+                            onEntering={[Function]}
+                            onExit={[Function]}
+                            onExited={[Function]}
+                            onExiting={[Function]}
+                            timeout={300}
+                            unmountOnExit={false}
+                          >
+                            <div
+                              aria-hidden={true}
+                              aria-labelledby="assay-picker-tabs-tab-specialty"
+                              className="fade margin-bottom margin-top tab-pane"
+                              id="assay-picker-tabs-pane-specialty"
+                              role="tabpanel"
+                            >
+                              <Memo()
+                                onChange={[Function]}
+                              >
+                                <div>
+                                  <Row
+                                    bsClass="row"
+                                    componentClass="div"
+                                  >
+                                    <div
+                                      className="row"
+                                    >
+                                      <Col
+                                        bsClass="col"
+                                        componentClass="div"
+                                        xs={6}
+                                      >
+                                        <div
+                                          className="col-xs-6"
+                                        >
+                                          <div
+                                            className="margin-bottom"
+                                          >
+                                            <b>
+                                              Use Instrument Specific Data Format
+                                            </b>
+                                          </div>
+                                          <div
+                                            className="margin-bottom"
+                                          />
+                                          <p>
+                                            <div
+                                              dangerouslySetInnerHTML={
+                                                Object {
+                                                  "__html": undefined,
+                                                }
+                                              }
+                                            />
+                                          </p>
+                                        </div>
+                                      </Col>
+                                    </div>
+                                  </Row>
+                                  <Row
+                                    bsClass="row"
+                                    componentClass="div"
+                                  >
+                                    <div
+                                      className="row"
+                                    >
+                                      <Col
+                                        bsClass="col"
+                                        componentClass="div"
+                                        xs={6}
+                                      >
+                                        <div
+                                          className="col-xs-6"
+                                        >
+                                          <div
+                                            className="margin-top margin-bottom"
+                                          >
+                                            <b>
+                                              Supported File Types
+                                            </b>
+                                          </div>
+                                          <p />
+                                        </div>
+                                      </Col>
+                                    </div>
+                                  </Row>
+                                  <div
+                                    className="margin-top"
+                                  >
+                                    <Row
+                                      bsClass="row"
+                                      componentClass="div"
+                                    >
+                                      <div
+                                        className="row"
+                                      >
+                                        <Col
+                                          bsClass="col"
+                                          componentClass="div"
+                                          xs={6}
+                                        >
+                                          <div
+                                            className="col-xs-6"
+                                          >
+                                            <Memo()
+                                              onChange={[Function]}
+                                              selected=""
+                                            >
+                                              <div
+                                                className="margin-bottom"
+                                              >
+                                                <b>
+                                                  Assay Location
+                                                </b>
+                                              </div>
+                                              <p>
+                                                Choose where the assay will be used and visible within subfolders.
+                                              </p>
+                                              <select
+                                                className="form-control"
+                                                id="assay-type-select-container"
+                                                onChange={[Function]}
+                                                value=""
+                                              />
+                                            </Memo()>
+                                          </div>
+                                        </Col>
+                                      </div>
+                                    </Row>
+                                  </div>
+                                </div>
+                              </Memo()>
+                            </div>
+                          </Transition>
+                        </Fade>
+                      </TabPane>
+                      <TabPane
+                        bsClass="tab-pane"
+                        className="margin-bottom margin-top"
+                        eventKey="import"
+                      >
+                        <Fade
+                          appear={false}
+                          in={false}
+                          mountOnEnter={false}
+                          onEnter={[Function]}
+                          onExited={[Function]}
+                          timeout={300}
+                          unmountOnExit={false}
+                        >
+                          <Transition
+                            appear={false}
+                            enter={true}
+                            exit={true}
+                            in={false}
+                            mountOnEnter={false}
+                            onEnter={[Function]}
+                            onEntered={[Function]}
+                            onEntering={[Function]}
+                            onExit={[Function]}
+                            onExited={[Function]}
+                            onExiting={[Function]}
+                            timeout={300}
+                            unmountOnExit={false}
+                          >
+                            <div
+                              aria-hidden={true}
+                              aria-labelledby="assay-picker-tabs-tab-import"
+                              className="fade margin-bottom margin-top tab-pane"
+                              id="assay-picker-tabs-pane-import"
+                              role="tabpanel"
+                            >
+                              <Memo()
+                                onFileChange={[Function]}
+                                onFileRemove={[Function]}
+                              >
+                                <div>
+                                  <Row
+                                    bsClass="row"
+                                    componentClass="div"
+                                  >
+                                    <div
+                                      className="row"
+                                    >
+                                      <Col
+                                        bsClass="col"
+                                        componentClass="div"
+                                        xs={6}
+                                      >
+                                        <div
+                                          className="col-xs-6"
+                                        >
+                                          <div
+                                            className="margin-bottom"
+                                          >
+                                            <b>
+                                              Import .XAR or .XAR.XML file
+                                            </b>
+                                          </div>
+                                          <p>
+                                            To create an assay from an existing design, import a
+                                             
+                                            <a
+                                              href="https://www.labkey.org/Documentation/wiki-page.view?name=XarTutorial"
+                                            >
+                                              .XAR or .XAR.XML
+                                            </a>
+                                            file here. You will be able to customize the design after importing.
+                                          </p>
+                                        </div>
+                                      </Col>
+                                    </div>
+                                  </Row>
+                                  <Row
+                                    bsClass="row"
+                                    componentClass="div"
+                                  >
+                                    <div
+                                      className="row"
+                                    >
+                                      <Col
+                                        bsClass="col"
+                                        componentClass="div"
+                                        xs={12}
+                                      >
+                                        <div
+                                          className="col-xs-12"
+                                        >
+                                          <FileAttachmentForm
+                                            acceptedFormats=".XAR, .XAR.XML"
+                                            allowDirectories={false}
+                                            allowMultiple={false}
+                                            cancelText="Cancel"
+                                            compact={false}
+                                            label="Attachments"
+                                            labelLong="Select file or drag and drop here."
+                                            onFileChange={[Function]}
+                                            onFileRemoval={[Function]}
+                                            showAcceptedFormats={true}
+                                            showButtons={false}
+                                            showLabel={false}
+                                            showProgressBar={false}
+                                            submitText="Upload"
+                                          >
+                                            <span
+                                              className="translator--toggle__wizard"
+                                            >
+                                              <FormSection
+                                                iconSpacer={false}
+                                                label="Attachments"
+                                                showLabel={false}
+                                              >
+                                                <div
+                                                  className="row"
+                                                >
+                                                  <div
+                                                    className="col-sm-12"
+                                                  >
+                                                    <div
+                                                      className="wizard-row--container"
+                                                    >
+                                                      <div
+                                                        className=""
+                                                      >
+                                                        <FileAttachmentContainer
+                                                          acceptedFormats=".XAR, .XAR.XML"
+                                                          allowDirectories={false}
+                                                          allowMultiple={false}
+                                                          compact={false}
+                                                          handleChange={[Function]}
+                                                          handleRemoval={[Function]}
+                                                          labelLong="Select file or drag and drop here."
+                                                        >
+                                                          <div
+                                                            className="file-upload--container block"
+                                                          >
+                                                            <label
+                                                              className="file-upload--label"
+                                                              htmlFor="fileUpload"
+                                                              onDragEnter={[Function]}
+                                                              onDragLeave={[Function]}
+                                                              onDragOver={[Function]}
+                                                              onDrop={[Function]}
+                                                            >
+                                                              <i
+                                                                aria-hidden="true"
+                                                                className="fa fa-cloud-upload fa-2x cloud-logo"
+                                                              />
+                                                              Select file or drag and drop here.
+                                                            </label>
+                                                            <input
+                                                              accept=".XAR, .XAR.XML"
+                                                              className="file-upload--input"
+                                                              id="fileUpload"
+                                                              multiple={false}
+                                                              name="fileUpload"
+                                                              onChange={[Function]}
+                                                              type="file"
+                                                            />
+                                                          </div>
+                                                        </FileAttachmentContainer>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </FormSection>
+                                            </span>
+                                            <div
+                                              className="row"
+                                            >
+                                              <div
+                                                className="col-md-9"
+                                              >
+                                                <div
+                                                  className="file-form-formats"
+                                                >
+                                                  <strong>
+                                                    Supported formats include: 
+                                                  </strong>
+                                                  .XAR, .XAR.XML
+                                                </div>
+                                              </div>
+                                              <div
+                                                className="col-md-3"
+                                              >
+                                                <div
+                                                  className="pull-right"
+                                                />
+                                              </div>
+                                            </div>
+                                          </FileAttachmentForm>
+                                        </div>
+                                      </Col>
+                                    </div>
+                                  </Row>
+                                  <Row
+                                    bsClass="row"
+                                    componentClass="div"
+                                  >
+                                    <div
+                                      className="row"
+                                    >
+                                      <Col
+                                        bsClass="col"
+                                        componentClass="div"
+                                        xs={6}
+                                      >
+                                        <div
+                                          className="col-xs-6"
+                                        >
+                                          <div
+                                            className="margin-top margin-bottom"
+                                          >
+                                            <b>
+                                              Import through data pipeline
+                                            </b>
+                                          </div>
+                                          <div
+                                            className="margin-top margin-bottom"
+                                          >
+                                            <p>
+                                              If you have an existing assay .XAR file on this server, you can directly upload this assay design using this folder's data pipeline.
+                                            </p>
+                                          </div>
+                                          <div
+                                            className="margin-top"
+                                          >
+                                            <p>
+                                              <a
+                                                href="/labkey/pipeline/browse.view"
+                                              >
+                                                Use data pipeline
+                                              </a>
+                                            </p>
+                                          </div>
+                                        </div>
+                                      </Col>
+                                    </div>
+                                  </Row>
+                                </div>
+                              </Memo()>
+                            </div>
+                          </Transition>
+                        </Fade>
+                      </TabPane>
                     </div>
-                  </div>
-                </span>
-              </div>
+                  </TabContent>
+                </div>
+              </Col>
             </div>
-            <div
-              className="row"
-            >
-              <div
-                className="col-xs-6"
-              >
-                <div
-                  className="margin-top margin-bottom"
-                >
-                  <b>
-                    Import through data pipeline
-                  </b>
-                </div>
-                <div
-                  className="margin-top margin-bottom"
-                >
-                  <p>
-                    If you have an existing assay .XAR file on this server, you can directly upload this assay design using this folder's data pipeline.
-                  </p>
-                </div>
-                <div
-                  className="margin-top"
-                >
-                  <p>
-                    <a
-                      href="/labkey/pipeline/browse.view"
-                    >
-                      Use data pipeline
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Row>
+        </TabContainer>
+      </Uncontrolled(TabContainer)>
+    </ForwardRef>
   </div>
-</div>
+</Memo()>
 `;

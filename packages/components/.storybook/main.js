@@ -8,6 +8,7 @@ module.exports = {
         '../src/stories/CreateUsersModal.stories.tsx',
         '../src/stories/DataClassDesigner.stories.tsx',
         '../src/stories/DatasetDesignerPanels.stories.tsx',
+        '../src/stories/DetailEditing.stories.tsx',
         '../src/stories/DomainFieldsDisplay.stories.tsx',
         '../src/stories/ExpandableContainer.stories.tsx',
         '../src/stories/FileTree.stories.tsx',

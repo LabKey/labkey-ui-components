@@ -88,7 +88,15 @@ module.exports = function(env) {
                             }
                         },
                         {
-                            loader: 'postcss-loader'
+                            loader: 'postcss-loader',
+                            options: {
+                                postcssOptions: (ctx) => {
+                                    return {
+                                        parser: ctx.parser ? 'sugarss' : false,
+                                        map: ctx.env === 'development' ? ctx.map : false
+                                    }
+                                }
+                            }
                         },
                         {
                             loader: 'sass-loader',
@@ -114,7 +122,15 @@ module.exports = function(env) {
                             }
                         },
                         {
-                            loader: 'postcss-loader'
+                            loader: 'postcss-loader',
+                            options: {
+                                postcssOptions: (ctx) => {
+                                    return {
+                                        parser: ctx.parser ? 'sugarss' : false,
+                                        map: ctx.env === 'development' ? ctx.map : false
+                                    }
+                                }
+                            }
                         },
                         {
                             loader: 'sass-loader',

@@ -50,9 +50,9 @@ export const SpecialtyAssayPanel: FC<SpecialtyAssayPanelProps> = memo(props => {
                             </select>
                         )}
                     </div>
-                    <p>
-                        <div dangerouslySetInnerHTML={{ __html: selected?.description }} />
-                    </p>
+
+                    <div className={"small-margin-bottom"} dangerouslySetInnerHTML={{ __html: selected?.description }} />
+
                     {warning && (
                         <Alert bsStyle="warning">
                             <i className="fa fa-flag" style={{ marginRight: '20px' }} />

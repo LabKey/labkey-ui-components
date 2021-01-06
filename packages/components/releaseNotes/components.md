@@ -3,7 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Use `ActionURL.getReturnUrl` and casing for 'returnUrl' parameter
+* Use consistent casing for 'returnUrl' parameter
+
+### version 1.12.0
+*Released*: 4 January 2021
+* Wire up websocket and redux for server notifications
 
 ### version 1.11.3
 *Released#: 30 December 2020

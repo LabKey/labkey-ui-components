@@ -23,9 +23,11 @@ import {
     USER_KEY,
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
+    MENU_INVALIDATE,
+    SERVER_NOTIFICATIONS_INVALIDATE,
 } from './constants';
 
-export function initWebSocketListeners(store): void {
+export function initWebSocketListeners(store, notificationListeners?: string[], menuReloadListeners?: string[]): void {
     // register websocket listener for the case where a user logs out in another tab
     LABKEY.WebSocket.addServerEventListener('org.labkey.api.security.AuthNotify#LoggedOut', function (evt) {
         window.setTimeout(() => store.dispatch({ type: SECURITY_LOGOUT }), 1000);
@@ -43,6 +45,22 @@ export function initWebSocketListeners(store): void {
             window.setTimeout(() => store.dispatch({ type: SECURITY_SERVER_UNAVAILABLE }), 1000);
         }
     });
+
+    if (notificationListeners) {
+        notificationListeners.forEach(listener => {
+            LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
+                window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
+            });
+        })
+    }
+
+    if (menuReloadListeners) {
+        menuReloadListeners.forEach(listener => {
+            LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
+                window.setTimeout(() => store.dispatch({ type: MENU_INVALIDATE }), 1000);
+            });
+        })
+    }
 }
 
 export function userCanDesignSourceTypes(user: User): boolean {

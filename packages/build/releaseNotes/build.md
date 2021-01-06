@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 0.6.0
+*Released*: XX January 2021
+* Add option to add permissionClasses to entry points
+
 ### version 0.5.1
 *Released*: 22 December 2020
 * Dependabot package updates

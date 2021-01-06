@@ -13,7 +13,7 @@ import { SpecialtyAssayPanel } from './SpecialtyAssayPanel';
 import { AssayDesignUploadPanel } from './AssayDesignUploadPanel';
 import { StandardAssayPanel } from './StandardAssayPanel';
 
-interface AssayProvider {
+export interface AssayProvider {
     name: string;
     description: string;
     fileTypes: string[];

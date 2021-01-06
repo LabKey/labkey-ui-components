@@ -37,6 +37,8 @@ import {
     updateOntologyFieldProperties,
     processJsonImport,
     downloadJsonFile,
+    updateErrorIndexes,
+    removeFields,
 } from './actions';
 import { DomainDesign, DomainException, DomainField } from './models';
 import {
@@ -515,5 +517,43 @@ describe('domain properties actions', () => {
         result.fields.forEach(field => {
             expect(field).not.toMatchObject({ propertyId: 'value', propertyURI: 'value' });
         });
+    });
+
+    // For more detail as to expected behavior of updateErrorIndexes, see comment above the function definition
+    test('updateErrorIndexes', () => {
+        const message = "Generic error message";
+
+        const initialErrors = [{rowIndexes: [1]}, {rowIndexes: [4]}, {rowIndexes: [8]}];
+        let initialRawModel = { exception: message, success: false, errors: initialErrors };
+        let initialDomainException = DomainException.create(initialRawModel, SEVERITY_LEVEL_ERROR);
+
+        const newErrors = [{rowIndexes: [1]}, {rowIndexes: [3]}, {rowIndexes: [5]}];
+        let newRawModel = { exception: message, success: false, errors: newErrors };
+        let newDomainException = DomainException.create(newRawModel, SEVERITY_LEVEL_ERROR);
+
+        expect(updateErrorIndexes([2, 5, 7], initialDomainException)).toEqual(newDomainException);
+    });
+
+    test('removeFields', () => {
+        const message = "Generic error message";
+        const initialErrors = [{rowIndexes: [1]}, {rowIndexes: [4]}, {rowIndexes: [8]}];
+        let initialRawModel = { exception: message, success: false, errors: initialErrors };
+        let initialDomainException = DomainException.create(initialRawModel, SEVERITY_LEVEL_ERROR);
+        const initialDomain = DomainDesign.create({
+            name: "GenericList",
+            domainException: initialDomainException,
+            fields: [{name:'zero'}, {name:'one'}, {name:'two'}, {name:'three'}, {name:'four'}, {name:'five'}, {name:'six'}, {name:'seven'}, {name:'eight'}],
+        });
+
+        const newErrors = [{rowIndexes: [1]}, {rowIndexes: [3]}, {rowIndexes: [5]}];
+        let newRawModel = { exception: message, success: false, errors: newErrors };
+        let newDomainException = DomainException.create(newRawModel, SEVERITY_LEVEL_ERROR);
+        const newDomain = DomainDesign.create({
+            name: "GenericList",
+            domainException: newDomainException,
+            fields: [{name:'zero'}, {name:'one'}, {name:'three'}, {name:'four'},  {name:'six'}, {name:'eight'}],
+        });
+
+        expect(removeFields(initialDomain, [2, 5, 7])).toEqual(newDomain);
     });
 });

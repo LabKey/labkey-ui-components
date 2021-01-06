@@ -463,28 +463,3 @@ export function isNonNegativeInteger(value: number | string): boolean {
 export function isNonNegativeFloat(value: number | string): boolean {
     return isFloat(value) && Number(value) >= 0;
 }
-
-/**
- * Use a binary search to find the index of the value
- * not need this if/when we upgrade React Bootstrap to something beyond the pre-release version we are using.
- */
-export function binarySearch(arr: number[], num: number) {
-    let begin = 0;
-    let end = arr.length - 1;
-
-    // lo => begin
-    while (end - begin > 1) {
-        let mid = Math.floor((begin + end) / 2);
-        if (arr[mid] < num) {
-            begin = mid;
-        } else {
-            end = mid;
-        }
-    }
-
-    if (num - arr[begin] <= arr[end] - num) {
-        return arr[begin];
-    }
-    return arr[end];
-}
-

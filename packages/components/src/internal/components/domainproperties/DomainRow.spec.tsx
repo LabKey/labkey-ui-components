@@ -617,4 +617,64 @@ describe('DomainRow', () => {
         expect(row).toMatchSnapshot();
         row.unmount();
     });
+
+    test('selected status', () => {
+        const field = DomainField.create({
+            name: 'genericField',
+            rangeURI: TEXT_TYPE.rangeURI,
+            propertyId: 1,
+            propertyURI: 'test',
+            selected: true
+        });
+        const treeSelected = mount(
+            wrapDraggable(
+                <DomainRow
+                    key="domain-row-key-1"
+                    index={1}
+                    domainIndex={1}
+                    field={field}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
+                    showDefaultValueSettings={true}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
+                />
+            )
+        );
+        expect(treeSelected.find('.domain-field-check-icon').first().props().checked).toBeTruthy();
+
+        const treeNonselected = mount(
+            wrapDraggable(
+                <DomainRow
+                    key="domain-row-key-1"
+                    index={1}
+                    domainIndex={1}
+                    field={field.set('selected', false) as DomainField}
+                    onChange={jest.fn()}
+                    onExpand={jest.fn()}
+                    onDelete={jest.fn()}
+                    expanded={false}
+                    expandTransition={EXPAND_TRANSITION}
+                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                    availableTypes={PROP_DESC_TYPES}
+                    dragging={false}
+                    showDefaultValueSettings={true}
+                    defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
+                    defaultValueOptions={DEFAULT_OPTIONS}
+                    helpNoun="domain"
+                />
+            )
+        );
+        expect(treeNonselected.find('.domain-field-check-icon').first().props().checked).toBeFalsy();
+
+        treeSelected.unmount();
+        treeNonselected.unmount();
+    });
 });

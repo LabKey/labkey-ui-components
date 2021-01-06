@@ -261,7 +261,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         draft.model.visitDatePropertyName = undefined;
                     } else {
                         // pick up any name changes to the selected field
-                        draft.model.visitDatePropertyName = domain.fields.get(draft.visitDatePropertyIndex).name; //ping
+                        draft.model.visitDatePropertyName = domain.fields.get(draft.visitDatePropertyIndex).name;
                     }
                 }
             }),

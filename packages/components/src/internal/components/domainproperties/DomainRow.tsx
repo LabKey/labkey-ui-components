@@ -499,7 +499,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     className="domain-field-check-icon"
                                     name={createFormInputName(DOMAIN_FIELD_SELECTED)}
                                     id={createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, index)}
-                                    checked={field.selected}
+                                    checked={selected}
                                     onChange={this.onFieldChange}
                                     disabled={false}
                                 />

@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version TBD
+*Released*: TBD
+* postcss-loader: inline the postcss.config.js properties
+
 ### version 0.5.1
 *Released*: 22 December 2020
 * Dependabot package updates

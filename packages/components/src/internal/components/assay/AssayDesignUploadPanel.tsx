@@ -34,7 +34,8 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
             <Row>
                 <Col xs={12}>
                     <FileAttachmentForm
-                        acceptedFormats={".XAR, .XAR.XML"}
+                        acceptedFormats={".XAR, .XAR.XML, .xar, .xar.xml"}
+                        showAcceptedFormats={false}
                         allowDirectories={false}
                         allowMultiple={false}
                         showLabel={false}

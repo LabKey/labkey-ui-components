@@ -509,9 +509,9 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             const errorPrefix = 'There was a problem importing the assay results.';
             uploadAssayRunFiles(data)
                 .then(processedData => {
-                    let backgroundUpload = assayProtocol && assayProtocol.backgroundUpload;
+                    let backgroundUpload = assayProtocol?.backgroundUpload;
                     let forceAsync = false;
-                    if (allowAsyncImport && !backgroundUpload && assayProtocol && assayProtocol.allowBackgroundUpload) {
+                    if (allowAsyncImport && !backgroundUpload && assayProtocol?.allowBackgroundUpload) {
                         if ((processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize)
                             || (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize))
                             forceAsync = true;

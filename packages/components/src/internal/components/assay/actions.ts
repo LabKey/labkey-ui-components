@@ -110,7 +110,7 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
 
         // If we're this far along we've got files so let's process them.
         let fileCounter = 0;
-        let maxFileSize = 0;
+        let maxFileSize = 0; // return the largest file size, used to determine if async mode should be used
         const formData = new FormData();
         const fileNameMap = {}; // Maps the file name "fileN" to the run/batch property it belongs to.
 

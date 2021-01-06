@@ -51,7 +51,13 @@ import {
 } from './models';
 import { PropDescType } from './PropDescType';
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
-import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName, isPrimaryKeyFieldLocked } from './propertiesUtil';
+import {
+    isFieldFullyLocked,
+    isFieldPartiallyLocked,
+    isLegalName,
+    isPrimaryKeyFieldLocked,
+    isFieldDeletable
+} from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 
@@ -391,15 +397,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         );
     }
 
-    showDeleteIcon(field: DomainField): boolean {
-        return (
-            !isFieldFullyLocked(field.lockType) &&
-            !isFieldPartiallyLocked(field.lockType) &&
-            !isPrimaryKeyFieldLocked(field.lockType) &&
-            !field.lockExistingField // existingField defaults to false. used for query metadata editor
-        );
-    }
-
     renderButtons() {
         const { expanded, index, field, appPropertiesOnly, domainIndex } = this.props;
         const { closing } = this.state;
@@ -417,7 +414,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         Advanced Settings
                     </Button>
                 )}
-                {this.showDeleteIcon(field) && (
+                {isFieldDeletable(field) && (
                     <DeleteIcon
                         id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
                         title="Remove field"

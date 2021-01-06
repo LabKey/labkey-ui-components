@@ -3459,7 +3459,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                           className="domain-field-header"
                                                         >
                                                           0
-                                                           fields selected
+                                                           
+                                                          field
+                                                           selected
                                                           <Button
                                                             active={false}
                                                             block={false}
@@ -3475,7 +3477,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                               onClick={[Function]}
                                                               type="button"
                                                             >
-                                                              Clear All
+                                                              Clear
                                                             </button>
                                                           </Button>
                                                         </div>

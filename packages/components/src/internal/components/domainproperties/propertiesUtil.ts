@@ -16,7 +16,7 @@
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
 import { List } from "immutable";
-import { DomainField } from "./models";
+import {DomainDesign, DomainField} from "./models";
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {
@@ -68,7 +68,7 @@ export function generateBulkDeleteWarning(deletabilityInfo, undeletableNames) {
     return ({howManyDeleted, undeletableWarning});
 }
 
-export function applySetOperation(oldSet, value, add: boolean) {
+export function applySetOperation(oldSet: Set<any>, value: any, add: boolean) {
     if (add) {
         return oldSet.add(value);
     } else {
@@ -81,4 +81,17 @@ export function getVisibleSelectedFieldIndexes(fields: List<DomainField>): Set<n
     return fields.reduce((setOfIndexes, currentField, index) => {
         return (currentField.visible && currentField.selected) ? setOfIndexes.add(index) : setOfIndexes;
     }, new Set());
+}
+
+export function isFieldDeletable(field: DomainField): boolean {
+    return (
+        !isFieldFullyLocked(field.lockType) &&
+        !isFieldPartiallyLocked(field.lockType) &&
+        !isPrimaryKeyFieldLocked(field.lockType) &&
+        !field.lockExistingField // existingField defaults to false. used for query metadata editor
+    );
+}
+
+export function getVisibleFieldCount(domain: DomainDesign): number {
+    return domain.fields.filter((field: DomainField) => field.visible).size;
 }

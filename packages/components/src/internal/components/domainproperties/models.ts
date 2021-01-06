@@ -1547,7 +1547,7 @@ export class OntologyModel {
     }
 }
 
-export interface DeletabilityInfo {
+export interface BulkDeleteConfirmInfo {
     deletableSelectedFields: number[];
     undeletableFields: number[];
 }

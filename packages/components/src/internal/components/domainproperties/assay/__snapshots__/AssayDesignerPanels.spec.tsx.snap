@@ -11033,7 +11033,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           className="domain-field-header"
                                                         >
                                                           0
-                                                           fields selected
+                                                           
+                                                          field
+                                                           selected
                                                           <Button
                                                             active={false}
                                                             block={false}
@@ -11049,7 +11051,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                               onClick={[Function]}
                                                               type="button"
                                                             >
-                                                              Clear All
+                                                              Clear
                                                             </button>
                                                           </Button>
                                                         </div>
@@ -32192,7 +32194,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           className="domain-field-header"
                                                         >
                                                           0
-                                                           fields selected
+                                                           
+                                                          field
+                                                           selected
                                                           <Button
                                                             active={false}
                                                             block={false}
@@ -32208,7 +32212,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                               onClick={[Function]}
                                                               type="button"
                                                             >
-                                                              Clear All
+                                                              Clear
                                                             </button>
                                                           </Button>
                                                         </div>
@@ -47299,7 +47303,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           className="domain-field-header"
                                                         >
                                                           0
-                                                           fields selected
+                                                           
+                                                          field
+                                                           selected
                                                           <Button
                                                             active={false}
                                                             block={false}
@@ -47315,7 +47321,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                               onClick={[Function]}
                                                               type="button"
                                                             >
-                                                              Clear All
+                                                              Clear
                                                             </button>
                                                           </Button>
                                                         </div>

@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 8012: Row Selection Actions on Field Editor
 
+### version 1.12.0
+*Released*: 4 January 2021
+* Wire up websocket and redux for server notifications
+
 ### version 1.11.3
 *Released#: 30 December 2020
 * Misc fixes for LKSM 21.01

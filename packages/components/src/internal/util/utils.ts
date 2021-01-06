@@ -16,7 +16,8 @@
 import { Iterable, List, Map, Set } from 'immutable';
 import { Utils } from '@labkey/api';
 
-import { hasParameter, QueryInfo, toggleParameter } from '../..';
+import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular loading
+import { QueryInfo } from '../../public/QueryInfo';
 import { parseDate } from './Date';
 
 const emptyList = List<string>();

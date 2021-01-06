@@ -14,7 +14,7 @@
     border-radius:999px;
     line-height:.75em;
     color: $white;
-    background: $brand-warning;
+    background: #FA6400;
     text-align:center;
     min-width:2em;
     font-weight:bold;
@@ -23,7 +23,6 @@
 .server-notifications-icon {
     color: $white;
     font-size: 22px;
-    margin-top: 5px;
 }
 
 .server-notifications-listing-container {
@@ -38,9 +37,8 @@
     width: 350px;
 
     & > li {
-        margin-bottom: 5px;
         border-bottom: 1px solid $gray-lighter;
-        padding: 0 15px 5px 15px;
+        padding: 5px 15px;
         cursor: default;
 
         &:hover {
@@ -56,17 +54,28 @@
             cursor: pointer;
         }
         .is-unread {
-            font-weight: bold;
+            .server-notifications-item-subject {
+                font-weight: bold;
+            }
         }
   }
 }
 
 .server-notification-message {
     margin-left: 5px;
+
+    .server-notifications-item-subject {
+        color: $brand-primary;
+    }
+
+    .server-notifications-item-details {
+        padding-top: 5px;
+        display: inline-block;
+    }
+
 }
 
-.server-notifications-link {
-    color: $brand-primary;
+.server-notifications-item {
     &:hover {
         cursor: pointer;
     }
@@ -95,5 +104,12 @@
     width: 350px;
     &.server-notifications-error {
         color: $brand-danger;
+    }
+}
+
+.server-notifications-button {
+    .fa-stack {
+        height: 3em;
+        line-height: 3em;
     }
 }

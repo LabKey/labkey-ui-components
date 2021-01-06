@@ -1,9 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+
 ### version 1.1X.X
 *Released*: XX January 2021
 * Add new Assay Picker. Used for selection of assay design types.
+
+### version 1.12.0
+*Released*: 4 January 2021
+* Wire up websocket and redux for server notifications
 
 ### version 1.11.3
 *Released*: 30 December 2020

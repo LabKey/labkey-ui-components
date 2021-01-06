@@ -115,6 +115,7 @@ import {
     NotificationItemModel,
     NotificationItemProps,
     Persistence,
+    ServerNotificationModel,
 } from './internal/components/notifications/model';
 import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
@@ -707,6 +708,7 @@ export {
     NotificationItemModel,
     Notification,
     NotificationCreatable,
+    ServerNotificationModel,
     Persistence,
     MessageFunction,
     createNotification,

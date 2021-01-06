@@ -6,14 +6,14 @@ import { ActionURL, Ajax, Utils } from '@labkey/api';
 
 import { Map } from 'immutable';
 
-import {createNotification, GENERAL_ASSAY_PROVIDER_NAME} from '../../..';
+import { createNotification, GENERAL_ASSAY_PROVIDER_NAME } from '../../..';
 
 import { AssayContainerLocation } from './AssayContainerLocation';
 import { SpecialtyAssayPanel } from './SpecialtyAssayPanel';
 import { AssayDesignUploadPanel } from './AssayDesignUploadPanel';
 import { StandardAssayPanel } from './StandardAssayPanel';
 
-export interface AssayProvider {
+interface AssayProvider {
     name: string;
     description: string;
     fileTypes: string[];

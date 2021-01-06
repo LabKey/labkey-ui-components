@@ -286,8 +286,7 @@ import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteM
 import {
     AssayPicker,
     AssayPickerTabs,
-    AssayPickerSelectionModel,
-    AssayProvider
+    AssayPickerSelectionModel
 } from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
@@ -637,7 +636,6 @@ export {
     AssayPicker,
     AssayPickerTabs,
     AssayPickerSelectionModel,
-    AssayProvider,
     assayPage,
     withAssayModels,
     withAssayModelsFromLocation,

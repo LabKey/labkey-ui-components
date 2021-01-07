@@ -48,7 +48,7 @@ export class PageDetailHeader extends PureComponent<Props> {
         if (iconCls) {
             titleIconDisplay = <i className={classNames('fa', 'fa-' + iconCls)}/>;
             if (iconHelpText) {
-                titleIconDisplay = <Tip caption={iconHelpText}>{iconHelpText}</Tip>;
+                titleIconDisplay = <Tip caption={iconHelpText}>{titleIconDisplay}</Tip>;
             }
         }
         return iconCls ? (<>

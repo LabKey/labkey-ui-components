@@ -821,7 +821,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     renderRowHeaders() {
         const { domainFormDisplayOptions } = this.props;
         const { visibleSelection, selectAll, visibleFieldsCount } = this.state;
-        const fieldPlural = visibleSelection.size > 0 ? "fields" : "field";
+        const fieldPlural = visibleSelection.size !== 1 ? "fields" : "field";
         const clearText = visibleFieldsCount !== 0 && (visibleSelection.size === visibleFieldsCount) ? "Clear All" : "Clear";
 
         return (

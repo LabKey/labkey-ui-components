@@ -457,7 +457,7 @@ export function updateErrorIndexes(removedFieldIndexes: number[], domainExceptio
     return domainException.set('errors', errorsWithNewIndexes);
 }
 
-export function removeFields(domain: DomainDesign, deletableSelectedFields: Number[]): DomainDesign {
+export function removeFields(domain: DomainDesign, deletableSelectedFields: number[]): DomainDesign {
     // Removes from domain.domainException errors belonging to removed fields, and also clears domainException if
     // a removed field was the final field with any error
     deletableSelectedFields.forEach((value) => {

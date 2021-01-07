@@ -19,6 +19,7 @@ import { Record } from 'immutable';
 import { AppURL, naturalSort, createProductUrlFromParts } from '../../..';
 
 import { MenuSectionModel } from './model';
+import classNames from "classnames";
 
 function getHref(url: AppURL | string): string {
     return typeof url === 'string' ? url : url.toHref();
@@ -87,20 +88,28 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
                     : items
                           .sortBy(item => item.label, naturalSort)
                           .map(item => {
+                              const itemIcon = item.iconCls ? (
+                                  <i
+                                      className={classNames('fa', 'fa-' + item.iconCls)}
+                                      style={{ paddingRight: '5px' }}
+                                  />
+                              ) : null;
+
                               if (item.url) {
                                   const url = item.url instanceof AppURL ? item.url.toHref() : item.url;
                                   return (
                                       <li key={item.label}>
                                           <a href={url} target={item.key === 'docs' ? '_blank' : '_self'}>
-                                              {item.label}
+                                              {item.label}{itemIcon}
                                           </a>
                                       </li>
                                   );
                               }
-                              return <li key={item.label}>{item.label}</li>;
+                              return <li key={item.label}>{item.label}{itemIcon}</li>;
                           })}
             </ul>
         );
+        // add spinner, check notification active
     };
 
     render(): ReactNode {

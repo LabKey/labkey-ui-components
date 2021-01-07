@@ -23,8 +23,8 @@ import {
     USER_KEY,
     WORKFLOW_HOME_HREF,
     WORKFLOW_KEY,
-    MENU_INVALIDATE,
     SERVER_NOTIFICATIONS_INVALIDATE,
+    MENU_RELOAD,
 } from './constants';
 
 export function initWebSocketListeners(store, notificationListeners?: string[], menuReloadListeners?: string[]): void {
@@ -57,7 +57,7 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
     if (menuReloadListeners) {
         menuReloadListeners.forEach(listener => {
             LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
-                window.setTimeout(() => store.dispatch({ type: MENU_INVALIDATE }), 1000);
+                window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
             });
         })
     }

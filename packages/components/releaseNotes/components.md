@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version XXX
 *Released*: XXX
+* menu item icon
+
+### version XXX
+*Released*: XXX
 * Enable async import for assay runs
 
 ### version 1.12.0

@@ -37,7 +37,7 @@ export class UserMenu extends React.Component<UserMenuProps, any> {
         const menuSection = model.getSection('user');
 
         if (menuSection) {
-            const beginUrl = buildURL('project', 'begin', undefined, { returnURL: false });
+            const beginUrl = buildURL('project', 'begin', undefined, { returnUrl: false });
             const switchToLabKeyItem = (
                 <MenuItem key="projectBegin" href={beginUrl}>
                     Switch to LabKey

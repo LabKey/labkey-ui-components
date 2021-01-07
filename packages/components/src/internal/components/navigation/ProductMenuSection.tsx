@@ -88,24 +88,24 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
                     : items
                           .sortBy(item => item.label, naturalSort)
                           .map(item => {
-                              const itemIcon = item.iconCls ? (
-                                  <i
-                                      className={classNames('fa', 'fa-' + item.iconCls)}
-                                      style={{ paddingRight: '5px' }}
-                                  />
-                              ) : null;
+                              const labelDisplay = item.iconCls ? (
+                                      <>
+                                          <span className={'product-menu-item'}>{item.label}</span>
+                                          <i className={classNames('fa', 'fa-' + item.iconCls)}/>
+                                      </>
+                                  ) : item.label;
 
                               if (item.url) {
                                   const url = item.url instanceof AppURL ? item.url.toHref() : item.url;
                                   return (
                                       <li key={item.label}>
                                           <a href={url} target={item.key === 'docs' ? '_blank' : '_self'}>
-                                              {item.label}{itemIcon}
+                                              {labelDisplay}
                                           </a>
                                       </li>
                                   );
                               }
-                              return <li key={item.label}>{item.label}{itemIcon}</li>;
+                              return <li key={item.label}>{labelDisplay}</li>;
                           })}
             </ul>
         );

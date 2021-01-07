@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 1.12.1
+### version 1.12.2
 *Released*: 7 January 2021
 * Use consistent casing for 'returnUrl' parameter
 

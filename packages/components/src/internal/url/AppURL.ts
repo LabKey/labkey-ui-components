@@ -34,7 +34,7 @@ export function createProductUrl(
 ): string | AppURL {
     if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
         const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
-        return buildURL(urlProductId.toLowerCase(), 'app.view', undefined, { returnURL: false }) + href;
+        return buildURL(urlProductId.toLowerCase(), 'app.view', undefined, { returnUrl: false }) + href;
     } else {
         return appUrl;
     }
@@ -51,10 +51,10 @@ export function applyURL(prop: string, options?: BuildURLOptions): string {
 }
 
 interface BuildURLOptions {
-    cancelURL?: string | AppURL;
+    cancelUrl?: string | AppURL;
     container?: string;
-    returnURL?: boolean | string | AppURL; // defaults to true when action does not end in '.api'
-    successURL?: string | AppURL;
+    returnUrl?: boolean | string | AppURL; // defaults to true when action does not end in '.api'
+    successUrl?: string | AppURL;
 }
 
 export function buildURL(controller: string, action: string, params?: any, options?: BuildURLOptions): string {
@@ -65,19 +65,19 @@ export function buildURL(controller: string, action: string, params?: any, optio
         successUrl: undefined,
     };
 
-    const applyReturnURL = !options || (options && options.returnURL !== false);
+    const applyReturnURL = !options || (options && options.returnUrl !== false);
 
     if (applyReturnURL) {
-        if (options && (typeof options.returnURL === 'string' || options.returnURL instanceof AppURL)) {
-            constructedParams.returnUrl = applyURL('returnURL', options);
+        if (options && (typeof options.returnUrl === 'string' || options.returnUrl instanceof AppURL)) {
+            constructedParams.returnUrl = applyURL('returnUrl', options);
         } else if (action.toLowerCase().indexOf('.api') === -1 && action.toLowerCase().indexOf('.post') === -1) {
             // use the current URL
             constructedParams.returnUrl = window.location.pathname + (window.location.hash ? window.location.hash : '');
         }
     }
 
-    constructedParams.cancelUrl = applyURL('cancelURL', options);
-    constructedParams.successUrl = applyURL('successURL', options);
+    constructedParams.cancelUrl = applyURL('cancelUrl', options);
+    constructedParams.successUrl = applyURL('successUrl', options);
 
     Object.keys(constructedParams).forEach(key => {
         if (!constructedParams[key]) {

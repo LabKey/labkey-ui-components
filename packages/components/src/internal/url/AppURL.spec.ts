@@ -81,7 +81,7 @@ describe('AppURL', () => {
         expect(buildURL('controller', 'action', { p1: 'test1' })).toBe(expected);
 
         expected = '/labkey/controller/action.view?returnUrl=somewhere';
-        expect(buildURL('controller', 'action', {}, { returnURL: 'somewhere' })).toBe(expected);
+        expect(buildURL('controller', 'action', {}, { returnUrl: 'somewhere' })).toBe(expected);
     });
 });
 

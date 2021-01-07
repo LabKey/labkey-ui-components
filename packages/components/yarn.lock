@@ -1359,10 +1359,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.1.5-fb-returnUrl.1":
-  version "1.1.5-fb-returnUrl.1"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.5-fb-returnUrl.1.tgz#fad11e241757ea5fb644402c8e5a1fe091ef9813"
-  integrity sha1-+tEeJBdX6l+2REAsjlof4JHvmBM=
+"@labkey/api@1.1.5":
+  version "1.1.5"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.5.tgz#792f33f1a2f0c439cc31c1d70073e28e212c12ca"
+  integrity sha1-eS8z8aLwxDnMMcHXAHPijiEsEso=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"

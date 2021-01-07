@@ -54,7 +54,7 @@ export function generateBulkDeleteWarning(deletabilityInfo, undeletableNames) {
     const deletableCount = deletableSelectedFields.length;
     const undeletableCount = undeletableFields.length;
 
-    const fields = deletableCount > 1 ? "fields" : "field";
+    const fields = deletableCount !== 1 ? "fields" : "field";
     const howManyDeleted = undeletableCount > 0
         ? `${deletableCount} of ${deletableCount + undeletableCount} fields`
         : `${deletableCount} ${fields}`;

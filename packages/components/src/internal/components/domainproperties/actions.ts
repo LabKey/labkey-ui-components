@@ -439,7 +439,7 @@ export function addDomainField(domain: DomainDesign, fieldConfig: Partial<IDomai
 // array of indexes of removed fields, 'removedFieldIndexes' we must update each
 // rowIndex based on if its position has been affected by a deleted field.
 // Eg, rowIndex set [1, 4, 7, 8] with removedFieldIndexes [2, 5] becomes [1, 3, 5, 6].
-export function updateErrorIndexes(removedFieldIndexes: Number[], domainException: DomainException) {
+export function updateErrorIndexes(removedFieldIndexes: number[], domainException: DomainException) {
     const errorsWithNewIndexes = domainException.errors.map(error => {
         const newRowIndexes = error.rowIndexes.map(rowIndex => {
             for (let i = 0; i < removedFieldIndexes.length; i++) {

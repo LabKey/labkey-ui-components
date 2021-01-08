@@ -69,7 +69,7 @@ describe('<FormStep/>', () => {
     });
 
     test('initialStep', () => {
-        let wrapper = mount(<FormStepTest/>);
+        let wrapper = mount(<FormStepTest />);
         expect(wrapper.state('currentStep')).toBe(1);
         wrapper.unmount();
 

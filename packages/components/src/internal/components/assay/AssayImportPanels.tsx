@@ -669,8 +669,16 @@ class AssayImportPanelsImpl extends Component<Props, State> {
                         hasBatchProperties={model.batchColumns.size > 0}
                     />
                 )}
-                <BatchPropertiesPanel model={model} showQuerySelectPreviewOptions={showQuerySelectPreviewOptions} onChange={this.handleBatchChange} />
-                <RunPropertiesPanel model={model} showQuerySelectPreviewOptions={showQuerySelectPreviewOptions} onChange={this.handleRunChange} />
+                <BatchPropertiesPanel
+                    model={model}
+                    showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
+                    onChange={this.handleBatchChange}
+                />
+                <RunPropertiesPanel
+                    model={model}
+                    showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
+                    onChange={this.handleRunChange}
+                />
                 <RunDataPanel
                     currentStep={currentStep}
                     wizardModel={model}

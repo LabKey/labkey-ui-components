@@ -155,7 +155,9 @@ export const withFormSteps = (Component: any, defaultState?: WithFormStepsState)
             this.state = {
                 currentStep: props.initialStep
                     ? props.initialStep
-                    : (defaultState && defaultState.currentStep !== undefined ? defaultState.currentStep : 1),
+                    : defaultState && defaultState.currentStep !== undefined
+                    ? defaultState.currentStep
+                    : 1,
                 furthestStep: defaultState && defaultState.furthestStep !== undefined ? defaultState.furthestStep : 1,
                 hasDependentSteps:
                     defaultState && defaultState.hasDependentSteps !== undefined

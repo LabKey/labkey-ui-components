@@ -194,7 +194,6 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                 <label
                   className="col-sm-3 col-xs-12 entity-insert--parent-label text__truncate-and-wrap"
                   htmlFor="entityType0"
-                  title="Data Type 1"
                 >
                   <span>
                     Data Type 1

@@ -5,19 +5,23 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Enable async import for assay runs
 
+### version 1.12.2
+*Released*: 7 January 2021
+* Use consistent casing for 'returnUrl' parameter
+
 ### version 1.12.0
 *Released*: 4 January 2021
 * Wire up websocket and redux for server notifications
 
 ### version 1.11.3
-*Released#: 30 December 2020
+*Released*: 30 December 2020
 * Misc fixes for LKSM 21.01
   - Issue 41747: Add bottom margin to EditableGrid to prevent horizontal scroll bar from covering last row
   - Issue 42123: Assay import panels fix for dirty state being set on batch/run form init setValue calls
   - Fix for PageDetailHeader component left padding without icon
 
 ### version 1.11.2
-*Released#: 24 December 2020
+*Released*: 24 December 2020
 * Issue 42088: Don't send formatted date values when saving data
 
 ### version 1.11.1

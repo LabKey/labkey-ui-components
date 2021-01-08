@@ -99,18 +99,24 @@ export function uploadAssayRunFiles(data: IAssayUploadOptions): Promise<IAssayUp
         const runProperties = data.properties;
         const batchFiles = collectFiles(batchProperties);
         const runFiles = collectFiles(runProperties);
+        let maxFileSize = 0; // return the largest file size, used to determine if async mode should be used
 
         const maxRowCount = Array.isArray(data.dataRows) ? data.dataRows.length : undefined;
+        if (data.files) {
+            data.files.forEach(file => {
+                if (file.size > maxFileSize)
+                    maxFileSize = file.size;
+            })
+        }
 
         if (Utils.isEmptyObj(batchFiles) && Utils.isEmptyObj(runFiles)) {
             // No files in the data, so just go ahead and resolve so we run the import.
-            resolve({...data, maxRowCount});
+            resolve({...data, maxRowCount, maxFileSize});
             return;
         }
 
         // If we're this far along we've got files so let's process them.
         let fileCounter = 0;
-        let maxFileSize = 0; // return the largest file size, used to determine if async mode should be used
         const formData = new FormData();
         const fileNameMap = {}; // Maps the file name "fileN" to the run/batch property it belongs to.
 

@@ -71,7 +71,13 @@ module.exports = {
                     },{
                         loader: 'postcss-loader',
                         options: {
-                            sourceMap: true
+                            sourceMap: true,
+                            postcssOptions: (ctx) => {
+                                return {
+                                    parser: ctx.parser ? 'sugarss' : false,
+                                    map: ctx.env === 'development' ? ctx.map : false
+                                }
+                            }
                         }
                     },{
                         loader: 'resolve-url-loader'

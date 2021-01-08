@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "0.5.1-fb-assay-picker.4",
+  "version": "1.0.0-fb-assay-picker.0",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

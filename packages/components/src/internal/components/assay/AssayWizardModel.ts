@@ -58,7 +58,7 @@ export class AssayWizardModel
         isLoading: false,
         batchId: undefined, // batchId is null for first run
         lastRunId: undefined,
-        returnURL: undefined,
+        returnUrl: undefined,
         isSubmitted: undefined,
         isSubmitting: undefined,
         errorMsg: undefined,
@@ -85,7 +85,7 @@ export class AssayWizardModel
     isWarning?: boolean;
     batchId?: number;
     lastRunId?: number;
-    returnURL?: AppURL;
+    returnUrl?: AppURL;
     isSubmitted?: boolean;
     isSubmitting?: boolean;
     errorMsg?: ReactNode;

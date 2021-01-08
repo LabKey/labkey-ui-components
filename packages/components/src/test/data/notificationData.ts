@@ -1,4 +1,4 @@
-import { ServerActivity, ServerActivityData } from '../../internal/components/notifications/model';
+import { ServerActivityData } from '../../internal/components/notifications/model';
 
 export const DONE_NOT_READ = new ServerActivityData({
     RowId: 1,
@@ -48,30 +48,19 @@ export const IN_PROGRESS = new ServerActivityData({
 
 export const UNREAD_WITH_ERROR = new ServerActivityData({
     RowId: 3,
-    Type: 'org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete',
+    Type: 'org.labkey.api.pipeline.PipelineJob$TaskStatus$3.error',
     ActionLinkText: 'view',
     CreatedBy: 'susan',
     ActionLinkUrl: '/labkey/Study/project-begin.view?',
     IconCls: 'fa-check-circle',
     ObjectId: 'B',
     ContainerId: 'testContainerEntityId',
-    HtmlContent: 'Sample import from file file1.xlsx',
+    HtmlContent: 'Sample import failed from file file1.xlsx\n ERROR: duplicate key value violates unique constraint &quot;uq_material_lsid&quot;Detail: Key (lsid)=(urn:lsid:labkey.com:Sample.8.blood:s-d-001) already exists.',
     UserId: 1005,
     ReadOn: null,
     Created: '2020-11-11 07:47:32.317',
     hasError: true,
 });
-
-export function getNotificationData(): Promise<ServerActivity> {
-    return new Promise(resolve => {
-        resolve({
-            data: [],
-            totalRows: 0,
-            unreadCount: 0,
-            inProgressCount: 0,
-        });
-    });
-}
 
 export function markAllNotificationsRead(): Promise<boolean> {
     return new Promise(resolve => {

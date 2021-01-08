@@ -14,7 +14,12 @@ import {
     UPDATE_USER_DISPLAY_NAME,
     USER_PERMISSIONS_REQUEST,
     USER_PERMISSIONS_SUCCESS,
+    SERVER_NOTIFICATIONS_LOADING_START,
+    SERVER_NOTIFICATIONS_LOADING_END,
+    SERVER_NOTIFICATIONS_LOADING_ERROR,
+    SERVER_NOTIFICATIONS_INVALIDATE,
 } from './constants';
+import { ServerActivity } from "../components/notifications/model";
 
 function successUserPermissions(response) {
     return {
@@ -97,5 +102,37 @@ export function menuInit(currentProductId: string, userMenuProductId: string, pr
 export function menuInvalidate() {
     return (dispatch, getState) => {
         dispatch({ type: MENU_INVALIDATE });
+    };
+}
+
+export function serverNotificationInit(serverActivitiesLoaderFn: (maxRows?: number) => Promise<ServerActivity>) {
+    return (dispatch, getState) => {
+        let serverNotificationModel = getState().serverNotifications;
+        if (serverNotificationModel && !serverNotificationModel.isLoaded && !serverNotificationModel.isLoading) {
+            dispatch({
+                type: SERVER_NOTIFICATIONS_LOADING_START,
+                serverActivitiesLoaderFn
+            });
+            serverActivitiesLoaderFn()
+                .then(serverActivity => {
+                    dispatch({
+                        type: SERVER_NOTIFICATIONS_LOADING_END,
+                        serverActivity,
+                    });
+                })
+                .catch(reason => {
+                    console.error('Unable to retrieve notifications.', reason);
+                    dispatch({
+                        type: SERVER_NOTIFICATIONS_LOADING_ERROR,
+                        message: 'Unable to retrieve notifications.',
+                    });
+                });
+        }
+    };
+}
+
+export function serverNotificationInvalidate() {
+    return (dispatch, getState) => {
+        dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE });
     };
 }

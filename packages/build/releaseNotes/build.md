@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version TBD
+*Released*: TBD
+* Remove postcss-loader
+
 ### version 1.0.0
 *Released*: 7 January 2021
 * postcss-loader: inline the postcss.config.js properties

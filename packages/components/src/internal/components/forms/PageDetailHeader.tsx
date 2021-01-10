@@ -16,10 +16,9 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { PermissionTypes } from '@labkey/api';
 
-import {hasAllPermissions, SVGIcon, Tip, User} from '../../..';
+import { hasAllPermissions, SVGIcon, User } from '../../..';
 
 import { FieldEditorOverlay, FieldEditorOverlayProps } from './FieldEditorOverlay';
-import classNames from "classnames";
 
 interface Props {
     description?: ReactNode;
@@ -32,30 +31,12 @@ interface Props {
     subTitle?: ReactNode;
     title: ReactNode;
     user?: User;
-    titleIconCls?: string;
-    titleIconHelpText?: string;
-    subTitleIconCls?: string;
-    subTitleIconHelpText?: string;
 }
 
 export class PageDetailHeader extends PureComponent<Props> {
     static defaultProps = {
         leftColumns: 6,
     };
-
-    getTitleDisplay(content: ReactNode, iconCls?: string, iconHelpText?: string) {
-        let titleIconDisplay = null;
-        if (iconCls) {
-            titleIconDisplay = <i className={classNames('fa', 'fa-' + iconCls)}/>;
-            if (iconHelpText) {
-                titleIconDisplay = <Tip caption={iconHelpText}>{titleIconDisplay}</Tip>;
-            }
-        }
-        return iconCls ? (<>
-            <span className={'page-detail-header-title-content'}>{content}</span>
-            {titleIconDisplay}
-        </>) : content;
-    }
 
     render(): ReactNode {
         const {
@@ -70,19 +51,12 @@ export class PageDetailHeader extends PureComponent<Props> {
             subTitle,
             title,
             user,
-            titleIconCls,
-            titleIconHelpText,
-            subTitleIconCls,
-            subTitleIconHelpText
         } = this.props;
         const hasIcon = iconUrl || iconSrc;
 
         if (fieldTriggerProps && !user) {
             throw Error('PageDetailHeader: If supplying "fieldTriggerProps", then "user" prop must be specified.');
         }
-
-        const titleDisplay = this.getTitleDisplay(title, titleIconCls, titleIconHelpText);
-        const subTitleDisplay = this.getTitleDisplay(subTitle, subTitleIconCls, subTitleIconHelpText);
 
         return (
             <div className="page-header">
@@ -102,8 +76,8 @@ export class PageDetailHeader extends PureComponent<Props> {
                         </div>
                     )}
                     <div className={hasIcon ? 'detail__header-icon--body-container' : ''}>
-                        <h2 className="no-margin-top detail__header--name">{titleDisplay}</h2>
-                        {subTitle && <h4 className="test-loc-detail-subtitle">{subTitleDisplay}</h4>}
+                        <h2 className="no-margin-top detail__header--name">{title}</h2>
+                        {subTitle && <h4 className="test-loc-detail-subtitle">{subTitle}</h4>}
                         {description && <span className="detail__header--desc">{description}</span>}
                         {fieldTriggerProps && (
                             <div className="text__truncate">

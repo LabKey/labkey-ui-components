@@ -4,7 +4,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * add menu item icon
-* add title icon for PageDetailHeader
+* add PipelineJobsPage
+* modify assay url resolver to work with Data.Run/RowId~eq=rowId
 
 ### version XXX
 *Released*: XXX

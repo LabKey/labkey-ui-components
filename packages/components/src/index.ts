@@ -305,6 +305,7 @@ import {
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
+import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
 import { invalidateLineageResults, getImmediateChildLineageFilterValue } from './internal/components/lineage/actions';
 import {
@@ -660,6 +661,8 @@ export {
     addDateRangeFilter,
     last12Months,
     monthSort,
+    // pipeline
+    PipelineJobsPage,
     // report / chart related items
     BaseBarChart,
     processChartData,

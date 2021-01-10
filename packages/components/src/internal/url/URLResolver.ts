@@ -286,6 +286,19 @@ const ASSAY_MAPPERS = [
 
             if (rowId) {
                 delete params.rowId; // strip the rowId and pass through the remaining params
+
+                // filter on Data.Run/RowId~eq=<rowId>
+                const filters = Filter.getFiltersFromUrl(url, 'Data');
+                if (filters.length > 0) {
+                    for (let i = 0; i < filters.length; i++) {
+                        if (filters[i].getColumnName().toLowerCase() === 'run/rowid') {
+                            const runId = filters[i].getValue();
+                            const url = ['rd', 'assayrun', runId];
+                            return AppURL.create(...url);
+                        }
+                    }
+                }
+
                 return AppURL.create('assays', rowId, 'data').addParams(params);
             }
         }

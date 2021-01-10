@@ -9,6 +9,7 @@ import {
     LoadingSpinner,
     Page,
     PageHeader,
+    QuerySort,
     SchemaQuery,
     withQueryModels
 } from "../../..";
@@ -53,7 +54,8 @@ export class PipelineJobsPageImpl extends React.PureComponent<Props & InjectedQu
         const queryConfig = {
             id: gridId,
             schemaQuery: SchemaQuery.create("pipeline", "job"),
-            baseFilters
+            baseFilters,
+            sorts: [new QuerySort({ fieldKey: 'Created', dir: '-' })],
         };
         actions.addModel(queryConfig, true);
     }

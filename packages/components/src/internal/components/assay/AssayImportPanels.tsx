@@ -16,7 +16,7 @@
 import React, { Component, ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable';
-import { Utils } from '@labkey/api';
+import { AssayDOM, Utils } from '@labkey/api';
 
 import { IMPORT_DATA_FORM_TYPES } from '../../constants';
 
@@ -49,6 +49,7 @@ import {
     withFormSteps,
     WithFormStepsProps,
     WizardNavButtons,
+    AssayProtocolModel,
 } from '../../..';
 
 import { AssayUploadTabs } from '../../AssayDefinitionModel';
@@ -72,8 +73,8 @@ interface OwnProps {
     assayDefinition: AssayDefinitionModel;
     runId?: string;
     onCancel: () => any;
-    onComplete: (response: AssayUploadResultModel) => any;
-    onSave?: (response: AssayUploadResultModel) => any;
+    onComplete: (response: AssayUploadResultModel, isAsync?: boolean) => any;
+    onSave?: (response: AssayUploadResultModel, isAsync?: boolean) => any;
     acceptedPreviewFileFormats?: string;
     location?: Location;
     allowBulkRemove?: boolean;
@@ -87,6 +88,13 @@ interface OwnProps {
     showQuerySelectPreviewOptions?: boolean;
     runDataPanelTitle?: string;
     beforeFinish?: (data: IAssayUploadOptions) => IAssayUploadOptions;
+    getJobDescription?: (options: AssayDOM.IImportRunOptions) => string;
+    jobNotificationProvider?: string;
+    assayProtocol?: AssayProtocolModel;
+    backgroundUpload?: boolean; // assay design setting
+    allowAsyncImport?: boolean;
+    asyncFileSize?: number;
+    asyncRowSize?: number;
 }
 
 type Props = OwnProps & WithFormStepsProps;
@@ -485,7 +493,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
     };
 
     onFinish = (importAgain: boolean): void => {
-        const { currentStep, onSave, maxInsertRows, beforeFinish } = this.props;
+        const { currentStep, onSave, maxInsertRows, beforeFinish, getJobDescription, jobNotificationProvider, assayProtocol, allowAsyncImport, asyncFileSize, asyncRowSize } = this.props;
         const { model } = this.state;
         let data = model.prepareFormData(currentStep, this.getDataGridModel());
 
@@ -511,15 +519,24 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             const errorPrefix = 'There was a problem importing the assay results.';
             uploadAssayRunFiles(data)
                 .then(processedData => {
-                    importAssayRun(processedData)
+                    let backgroundUpload = assayProtocol?.backgroundUpload;
+                    let forceAsync = false;
+                    if (allowAsyncImport && !backgroundUpload && assayProtocol?.allowBackgroundUpload) {
+                        if ((processedData.maxFileSize && processedData.maxFileSize >= asyncFileSize)
+                            || (processedData.maxRowCount && processedData.maxRowCount >= asyncRowSize))
+                            forceAsync = true;
+                    }
+
+                    const jobDescription = getJobDescription ? getJobDescription(data) : undefined;
+                    importAssayRun({...processedData, forceAsync, jobDescription, jobNotificationProvider})
                         .then((response: AssayUploadResultModel) => {
                             if (this.props.onDataChange) {
                                 this.props.onDataChange(false);
                             }
                             if (importAgain && onSave) {
-                                this.onSuccessContinue(response);
+                                this.onSuccessContinue(response, backgroundUpload || forceAsync);
                             } else {
-                                this.onSuccessComplete(response);
+                                this.onSuccessComplete(response, backgroundUpload || forceAsync);
                             }
                         })
                         .catch(reason => {
@@ -544,8 +561,8 @@ class AssayImportPanelsImpl extends Component<Props, State> {
         }
     };
 
-    onSuccessContinue = (response: AssayUploadResultModel): void => {
-        this.props.onSave?.(response);
+    onSuccessContinue = (response: AssayUploadResultModel, isAsync?: boolean): void => {
+        this.props.onSave?.(response, isAsync);
 
         // update the local state model so that it clears the data
         this.setState(
@@ -571,9 +588,9 @@ class AssayImportPanelsImpl extends Component<Props, State> {
         );
     };
 
-    onSuccessComplete = (response: AssayUploadResultModel): void => {
+    onSuccessComplete = (response: AssayUploadResultModel, isAsync?: boolean): void => {
         this.setModelState(false, undefined);
-        this.props.onComplete(response);
+        this.props.onComplete(response, isAsync);
     };
 
     onFailure = (error: any): void => {
@@ -645,6 +662,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             showUploadTabs,
             showQuerySelectPreviewOptions,
             runDataPanelTitle,
+            allowAsyncImport
         } = this.props;
         const { duplicateFileResponse, model, showRenameModal } = this.state;
 
@@ -691,7 +709,7 @@ class AssayImportPanelsImpl extends Component<Props, State> {
                     allowBulkRemove={allowBulkRemove}
                     allowBulkInsert={allowBulkInsert}
                     allowBulkUpdate={allowBulkUpdate}
-                    fileSizeLimits={this.props.fileSizeLimits}
+                    fileSizeLimits={allowAsyncImport ? undefined : this.props.fileSizeLimits}
                     maxInsertRows={this.props.maxInsertRows}
                     onGridDataChange={this.props.onDataChange}
                     showTabs={showUploadTabs}

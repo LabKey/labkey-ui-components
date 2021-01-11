@@ -875,17 +875,4 @@ describe('DomainForm', () => {
 
         form.unmount();
     });
-
-    test('with selectAll', () => {
-        const fields = [];
-        fields.push({name: 'UndeletableField'});
-        fields.push({name: 'DeletableField1'});
-        fields.push({name: 'DeletableField2'});
-        const domain = DomainDesign.create({fields});
-        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()}/>);
-
-        expect(form.find('#domain-select-all-checkbox').get(1).props.checked).toBeFalsy();
-        form.find('.domain-field-check-icon #domain-select-all-checkbox').simulate('click');
-        // expect(form.find('#domain-select-all-checkbox').get(1).props.checked).toBeTruthy();
-    });
 });

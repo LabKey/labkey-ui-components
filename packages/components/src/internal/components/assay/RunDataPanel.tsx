@@ -63,6 +63,7 @@ interface Props {
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     maxInsertRows?: number;
     onGridDataChange?: (dirty: boolean, changeType: IMPORT_DATA_FORM_TYPES) => any;
+    showTabs?: boolean;
 }
 
 interface PreviousRunData {
@@ -86,6 +87,7 @@ export class RunDataPanel extends React.Component<Props, State> {
         allowBulkInsert: false,
         allowBulkUpdate: false,
         title: 'Results',
+        showTabs: true,
     };
 
     constructor(props: Props) {
@@ -225,6 +227,7 @@ export class RunDataPanel extends React.Component<Props, State> {
             allowBulkUpdate,
             title,
             maxInsertRows,
+            showTabs,
         } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
@@ -242,7 +245,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                         <LoadingSpinner />
                     ) : (
                         <>
-                            <FormTabs tabs={TABS} onTabChange={this.onTabChange} />
+                            {showTabs && <FormTabs tabs={TABS} onTabChange={this.onTabChange} />}
 
                             <div className="row">
                                 <div className="col-sm-12">

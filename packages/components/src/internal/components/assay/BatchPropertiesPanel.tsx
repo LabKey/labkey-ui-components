@@ -32,7 +32,7 @@ export class BatchPropertiesPanel extends React.Component<AssayPropertiesPanelPr
     }
 
     render() {
-        const { model, onChange, title } = this.props;
+        const { model, onChange, title, showQuerySelectPreviewOptions } = this.props;
         const panelTitle = title || 'Batch Details';
 
         if (model.batchColumns.size) {
@@ -49,6 +49,7 @@ export class BatchPropertiesPanel extends React.Component<AssayPropertiesPanelPr
                                 queryColumns={model.batchColumns}
                                 fieldValues={model.batchProperties.toObject()}
                                 onChange={onChange}
+                                showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
                             />
                         </Formsy>
                     </div>

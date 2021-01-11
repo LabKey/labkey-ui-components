@@ -1,10 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
 import { getQueryGridModel } from '../../global';
 import { getStateQueryGridModel } from '../../models';
 import { gridInit } from '../../actions';
-import { withFormSteps, WithFormStepsProps } from '../../..';
+import { FormTabs, withFormSteps, WithFormStepsProps } from '../../..';
 import { ASSAY_WIZARD_MODEL } from '../../../test/data/constants';
 import { initUnitTestMocks } from '../../testHelpers';
 import { AssayUploadTabs } from '../../AssayDefinitionModel';
@@ -37,12 +38,13 @@ beforeAll(() => {
 interface OwnProps {
     fullWidth?: boolean;
     allowBulkRemove?: boolean;
+    showTabs?: boolean;
 }
 type Props = OwnProps & WithFormStepsProps;
 
 class RunDataPanelWrapperImpl extends React.Component<Props, any> {
     render() {
-        const { currentStep, fullWidth, allowBulkRemove } = this.props;
+        const { currentStep, fullWidth, allowBulkRemove, showTabs } = this.props;
         const gridModel = getQueryGridModel(MODEL_ID_LOADED);
 
         return (
@@ -55,6 +57,7 @@ class RunDataPanelWrapperImpl extends React.Component<Props, any> {
                 onTextChange={jest.fn}
                 fullWidth={fullWidth}
                 allowBulkRemove={allowBulkRemove}
+                showTabs={showTabs}
             />
         );
     }
@@ -95,5 +98,15 @@ describe('<RunDataPanel/>', () => {
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
+    });
+
+    test('showsTabs', () => {
+        let wrapper = mount(<RunDataPanelWrapper showTabs={true} />);
+        expect(wrapper.find(FormTabs)).toHaveLength(1);
+        wrapper.unmount();
+
+        wrapper = mount(<RunDataPanelWrapper showTabs={false} />);
+        expect(wrapper.find(FormTabs)).toHaveLength(0);
+        wrapper.unmount();
     });
 });

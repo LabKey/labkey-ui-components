@@ -23,7 +23,7 @@ import { ActionButton } from '../buttons/ActionButton';
 import { initUnitTestMocks, sleep } from '../../testHelpers';
 
 import { DomainDesign } from './models';
-import DomainForm from './DomainForm';
+import DomainForm, { DomainFormImpl } from './DomainForm';
 import {
     ATTACHMENT_RANGE_URI,
     BOOLEAN_RANGE_URI,
@@ -815,5 +815,77 @@ describe('DomainForm', () => {
         expect(actionButtons.length).toBe(3);
 
         form.unmount();
+    });
+
+    test('with bulkDeleteConfirmInfo', () => {
+        const fields = [];
+        fields.push({name: 'UndeletableField'});
+        fields.push({name: 'DeletableField1'});
+        fields.push({name: 'DeletableField2'});
+        const domain = DomainDesign.create({fields});
+        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()}/>);
+
+        expect(form.find('.modal-title').length).toEqual(0);
+        form.setState({bulkDeleteConfirmInfo: {deletableSelectedFields: [1, 2], undeletableFields: [0]}});
+        expect(form.find('.modal-title').length).toEqual(1);
+        expect(form.text()).toContain("UndeletableField cannot be deleted as it is a necessary field.");
+        expect(form.text()).toContain("2 of 3 fields will be deleted.");
+
+        form.setState({bulkDeleteConfirmInfo: {deletableSelectedFields: [1, 2], undeletableFields: []}});
+        expect(form.text()).toContain("2 fields will be deleted.");
+
+        form.setState({bulkDeleteConfirmInfo: {deletableSelectedFields: [1], undeletableFields: []}});
+        expect(form.text()).toContain("1 field will be deleted.");
+
+        form.setState({bulkDeleteConfirmInfo: {deletableSelectedFields: [], undeletableFields: [0]}});
+        expect(form.text()).toContain("None of the selected fields can be deleted.");
+
+        form.unmount();
+    });
+
+    test('with visibleFieldsCount and visibleSelection', () => {
+        const fields = [];
+        fields.push({name: 'Field1'});
+        fields.push({name: 'Field2'});
+        const domain = DomainDesign.create({fields});
+        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()}/>);
+
+        const visibleSelection = new Set();
+        visibleSelection.add(0).add(1);
+
+        form.setState({visibleFieldsCount: 2, visibleSelection});
+        expect(form.find('.domain-panel-header-clear-all').get(0).props.disabled).toBeFalsy();
+        expect(form.find('.domain-toolbar-delete-btn').closest(ActionButton).props().disabled).toBeFalsy();
+        expect(form.text()).toContain("2 fields selected");
+        expect(form.text()).toContain("Clear All");
+
+        const visibleSelectionNew = new Set();
+        visibleSelectionNew.add(0);
+        form.setState({visibleFieldsCount: 2, visibleSelection: visibleSelectionNew});
+        expect(form.find('.domain-panel-header-clear-all').get(0).props.disabled).toBeFalsy();
+        expect(form.find('.domain-toolbar-delete-btn').closest(ActionButton).props().disabled).toBeFalsy();
+        expect(form.text()).toContain("1 field selected");
+        expect(form.text()).toContain("Clear");
+
+        form.setState({visibleFieldsCount: 2, visibleSelection: new Set()});
+        expect(form.find('.domain-panel-header-clear-all').get(0).props.disabled).toBeTruthy();
+        expect(form.find('.domain-toolbar-delete-btn').closest(ActionButton).props().disabled).toBeTruthy();
+        expect(form.text()).toContain("0 fields selected");
+        expect(form.text()).toContain("Clear");
+
+        form.unmount();
+    });
+
+    test('with selectAll', () => {
+        const fields = [];
+        fields.push({name: 'UndeletableField'});
+        fields.push({name: 'DeletableField1'});
+        fields.push({name: 'DeletableField2'});
+        const domain = DomainDesign.create({fields});
+        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()}/>);
+
+        expect(form.find('#domain-select-all-checkbox').get(1).props.checked).toBeFalsy();
+        form.find('.domain-field-check-icon #domain-select-all-checkbox').simulate('click');
+        // expect(form.find('#domain-select-all-checkbox').get(1).props.checked).toBeTruthy();
     });
 });

@@ -66,6 +66,7 @@ import {
     hasActiveModule,
     updateOntologyFieldProperties,
     removeFields,
+    getNameFromId,
 } from './actions';
 import { DomainRow } from './DomainRow';
 import {
@@ -378,35 +379,30 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             });
         }
 
-        const visibleFieldsCount = getVisibleFieldCount(updatedDomain);
-        this.setState(() => ({ fieldDetails: updatedDomain.getFieldDetails(), visibleFieldsCount }));
+        this.setState(() => ({ fieldDetails: updatedDomain.getFieldDetails() }));
 
         this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChanges);
     }
 
-    clearFilePreviewData = (currentState: Partial<IDomainFormState>) => {
+    clearFilePreviewData = () => {
+        const { filePreviewData, file } = this.state;
         let fieldCount = this.props.domain.fields.size;
 
         this.setState({
-            filePreviewData: fieldCount === 0 ? undefined : currentState.filePreviewData,
-            file: fieldCount === 0 ? undefined : currentState.file,
+            filePreviewData: fieldCount === 0 ? undefined : filePreviewData,
+            file: fieldCount === 0 ? undefined : file,
             filePreviewMsg: undefined,
         });
     }
 
     onDeleteConfirm(index: number) {
-        let visibleSelection;
-        let visibleFieldsCount;
-        let selectAll;
-        if (index !== undefined) {
-            const rowIndexChange = { originalIndex: index, newIndex: undefined } as DomainFieldIndexChange;
-            const updatedDomain = removeFields(this.props.domain, [index]);
-            visibleFieldsCount = getVisibleFieldCount(updatedDomain);
-            visibleSelection = getVisibleSelectedFieldIndexes(updatedDomain.fields);
-            selectAll = visibleFieldsCount !== 0 && (visibleSelection.size === visibleFieldsCount);
+        const rowIndexChange = { originalIndex: index, newIndex: undefined } as DomainFieldIndexChange;
+        const updatedDomain = removeFields(this.props.domain, [index]);
+        const visibleFieldsCount = getVisibleFieldCount(updatedDomain);
+        const visibleSelection = getVisibleSelectedFieldIndexes(updatedDomain.fields);
+        const selectAll = visibleFieldsCount !== 0 && (visibleSelection.size === visibleFieldsCount);
 
-            this.onDomainChange(updatedDomain, true, [rowIndexChange]);
-        }
+        this.onDomainChange(updatedDomain, true, [rowIndexChange]);
 
         this.setState({
             visibleSelection,
@@ -414,7 +410,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             selectAll,
             expandedRowIndex: undefined,
             confirmDeleteRowIndex: undefined,
-        }, () => {this.clearFilePreviewData(this.state)})
+        }, () => {this.clearFilePreviewData()})
     }
 
     initNewDesign = () => {
@@ -482,6 +478,17 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         const thisFieldPlural = bulkDeleteConfirmInfo.deletableSelectedFields.length > 1 ? 'these fields' : 'this field';
 
+        if (bulkDeleteConfirmInfo.deletableSelectedFields.length === 0) {
+            return(
+                <ConfirmModal
+                    title="Cannot Delete Required Fields"
+                    msg={<div> <p> None of the selected fields can be deleted. </p> </div>}
+                    onCancel={this.onConfirmBulkCancel}
+                    cancelButtonText="Close"
+                />
+            );
+        }
+
         return (
             <ConfirmModal
                 title="Confirm Delete Selected Fields"
@@ -504,10 +511,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     onBulkDeleteClick = () => {
         const { domain } = this.props;
         const { visibleSelection } = this.state;
-        let fields = domain.fields;
+        const fields = domain.fields;
 
-        let undeletableFields = [];
-        let deletableSelectedFields = [];
+        const undeletableFields = [];
+        const deletableSelectedFields = [];
 
         visibleSelection.forEach((val) => {
             const field = fields.get(val);
@@ -542,7 +549,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             visibleFieldsCount,
             selectAll: visibleFieldsCount !== 0 && (visibleSelection.size === visibleFieldsCount),
             bulkDeleteConfirmInfo: undefined,
-        }, () => {this.clearFilePreviewData(this.state)})
+        }, () => {this.clearFilePreviewData()})
     }
 
     onAddField = () => {
@@ -556,14 +563,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         this.collapseRow();
     };
 
-    // for ticking single
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
         const { domain } = this.props;
         const { visibleFieldsCount } = this.state;
         this.onDomainChange(handleDomainUpdates(domain, changes));
 
         const firstChange = changes.get(0);
-        if (firstChange?.id.includes("domainpropertiesrow-selected")) {
+        if (getNameFromId(firstChange?.id) === "selected") {
             this.setState((state) => {
                 const visibleSelection = applySetOperation(state.visibleSelection, index, firstChange.value);
                 const selectAll = visibleFieldsCount !== 0 && (visibleSelection.size === visibleFieldsCount);
@@ -823,6 +829,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { visibleSelection, selectAll, visibleFieldsCount } = this.state;
         const fieldPlural = visibleSelection.size !== 1 ? "fields" : "field";
         const clearText = visibleFieldsCount !== 0 && (visibleSelection.size === visibleFieldsCount) ? "Clear All" : "Clear";
+
+        console.log("HEY YOU", visibleFieldsCount, visibleSelection.size);
 
         return (
             <div className="domain-field-row domain-row-border-default domain-floating-hdr">
@@ -1136,9 +1144,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             filtered,
         } = this.state;
         const hasFields = domain.fields.size > 0;
-
-        // console.log(" ");
-        // console.log("RENDER");
 
         return (
             <>

@@ -506,7 +506,8 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
     const field = domain.fields.get(index);
 
     if (field) {
-        let newField = field.set('updatedField', true) as DomainField;
+        const isSelection = type === "selected";
+        let newField = isSelection ? field : field.set('updatedField', true) as DomainField;
 
         switch (type) {
             case DOMAIN_FIELD_TYPE:

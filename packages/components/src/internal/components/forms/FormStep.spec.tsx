@@ -15,11 +15,13 @@
  */
 import React from 'react';
 import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
 import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './FormStep';
 
 interface OwnProps {
     step?: number;
+    initialStep?: number;
 }
 type Props = OwnProps & WithFormStepsProps;
 
@@ -64,5 +66,15 @@ describe('<FormStep/>', () => {
 
         const tree = renderer.create(component).toJSON();
         expect(tree).toMatchSnapshot();
+    });
+
+    test('initialStep', () => {
+        let wrapper = mount(<FormStepTest />);
+        expect(wrapper.state('currentStep')).toBe(1);
+        wrapper.unmount();
+
+        wrapper = mount(<FormStepTest initialStep={2} />);
+        expect(wrapper.state('currentStep')).toBe(2);
+        wrapper.unmount();
     });
 });

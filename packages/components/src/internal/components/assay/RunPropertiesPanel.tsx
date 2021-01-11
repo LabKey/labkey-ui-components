@@ -45,7 +45,7 @@ export class RunPropertiesPanel extends React.Component<AssayPropertiesPanelProp
     }
 
     render() {
-        const { model, onChange, title } = this.props;
+        const { model, onChange, title, showQuerySelectPreviewOptions } = this.props;
         const panelTitle = title || 'Run Details';
 
         return (
@@ -76,6 +76,7 @@ export class RunPropertiesPanel extends React.Component<AssayPropertiesPanelProp
                                 queryColumns={model.runColumns}
                                 fieldValues={model.runProperties.toObject()}
                                 onChange={onChange}
+                                showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
                             />
                         )}
                     </Formsy>

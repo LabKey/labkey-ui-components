@@ -7,23 +7,39 @@ Components, models, actions, and utility functions for LabKey applications and p
 * add PipelineJobsPage
 * modify assay url resolver to work with Data.Run/RowId~eq=rowId
 
-### version XXX
-*Released*: XXX
+### version 1.14.1
+*Released*: 11 January 2021
 * Enable async import for assay runs
+
+### version 1.14.0
+*Released*: 11 January 2021
+* Add new Assay Picker. Used for selection of assay design types.
+
+### version 1.13.0
+*Released*: 8 January 2021
+* Item 8141: AssayImportPanels updates to support file based assay scenario
+    - add props to allow setting initial assay upload tab and hiding other tabs
+    - add props to allow batch/run property QuerySelects to not show full preview options
+    - fix so that date picker input field label shows asterisk when required
+    - add beforeFinish prop to allow usages of AssayImportPanels to manipulate data before import/save
+
+### version 1.12.2
+*Released*: 7 January 2021
+* Use consistent casing for 'returnUrl' parameter
 
 ### version 1.12.0
 *Released*: 4 January 2021
 * Wire up websocket and redux for server notifications
 
 ### version 1.11.3
-*Released#: 30 December 2020
+*Released*: 30 December 2020
 * Misc fixes for LKSM 21.01
   - Issue 41747: Add bottom margin to EditableGrid to prevent horizontal scroll bar from covering last row
   - Issue 42123: Assay import panels fix for dirty state being set on batch/run form init setValue calls
   - Fix for PageDetailHeader component left padding without icon
 
 ### version 1.11.2
-*Released#: 24 December 2020
+*Released*: 24 December 2020
 * Issue 42088: Don't send formatted date values when saving data
 
 ### version 1.11.1
@@ -450,7 +466,7 @@ library is used (for a component). Switch a couple of usages from `ReactN` to `R
 * Fix sorts issue with QueryModel.urlQueryParams
 
 ### version 0.82.0
-*Release*: 30 July 2020
+*Released*: 30 July 2020
 * Add method for applications to register their URL Mappers so different applications can choose to route Server URLs differently.
 * Add a productId property to ActionMapper so it can be used to construct a URL to a separate application.
 

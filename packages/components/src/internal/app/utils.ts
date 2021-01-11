@@ -192,7 +192,7 @@ function getApplicationUrlBase(moduleName: string, currentApp: string): string {
     const appName = getProductId(moduleName);
     return !appName || appName === currentApp.toLowerCase()
         ? ''
-        : buildURL(appName, 'app.view', undefined, { returnURL: false });
+        : buildURL(appName, 'app.view', undefined, { returnUrl: false });
 }
 
 export function getDateFormat(): string {

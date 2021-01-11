@@ -39,7 +39,7 @@ export const AssayReimportRunButton: FC<AssayReImportRunButtonProps> = memo(({ r
                             assayDefinition.links.get(AssayLink.IMPORT) +
                             '&reRunId=' +
                             runId +
-                            applyURL('returnURL', { returnURL: assayDefinition.getRunsUrl() });
+                            applyURL('returnUrl', { returnUrl: assayDefinition.getRunsUrl() });
                     }
                     return (
                         <OverlayTrigger

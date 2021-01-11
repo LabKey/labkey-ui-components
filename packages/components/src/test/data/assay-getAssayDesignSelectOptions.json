@@ -1,0 +1,64 @@
+{
+  "locations" : {
+    "ea7c355b-0b2e-1039-8359-225b19643884" : "Current Folder (BiologicsAssayTest Project)",
+    "ce3fb429-92f9-1038-8523-225b19648208" : "Shared Folder"
+  },
+  "providers" : [ {
+    "name" : "ELISA",
+    "description" : "Imports raw data files from BioTek ELISA Microplate reader.",
+    "fileTypes" : [ ".xls", ".xlsx" ]
+  }, {
+    "name" : "ELISpot",
+    "description" : "Imports raw data files from CTL and AID instruments.",
+    "fileTypes" : [ ".txt", ".xls", ".xlsx" ]
+  }, {
+    "name" : "Expression Matrix",
+    "description" : "Import a GEO series matrix-like TSV file of probe/sample values.",
+    "fileTypes" : [ ".tsv" ]
+  }, {
+    "name" : "General",
+    "description" : "Imports data from simple Excel or TSV files.",
+    "fileTypes" : [ ".tsv", ".csv", ".xls", ".xlsx", ".txt", ".fna", ".fasta" ]
+  }, {
+    "name" : "LabKey Example",
+    "description" : "LabKey example file-based assay.",
+    "fileTypes" : [ ".tsv", ".csv", ".xls", ".xlsx", ".txt", ".fna", ".fasta" ]
+  }, {
+    "name" : "Luminex",
+    "description" : "Imports data in the multi-sheet BioPlex Excel file format.",
+    "fileTypes" : [ ".xls", ".xlsx" ]
+  }, {
+    "name" : "Noblis Simple",
+    "description" : "Noblis Simple file-based assay",
+    "fileTypes" : [ ".tsv", ".csv", ".xls", ".xlsx", ".txt", ".fna", ".fasta" ]
+  }, {
+    "name" : "Protein Expression Matrix",
+    "description" : "Import a matrix-like TSV file of protein sequence/sample values.",
+    "fileTypes" : [ ".tsv" ]
+  }, {
+    "name" : "Simple2",
+    "description" : "Simple2 file-based assay (used in Biologics testing)",
+    "fileTypes" : [ ".tsv", ".csv", ".xls", ".xlsx", ".txt", ".fna", ".fasta" ]
+  }, {
+    "name" : "TZM-bl Neutralization (NAb)",
+    "description" : "Imports a specially formatted TSV, CSV or Excel file. Measures neutralization in TZM-bl cells as a function of a reduction in Tat-induced luciferase (Luc) reporter gene expression after a single round of infection. Montefiori, D.C. 2004<a href=\"#\" tabindex=\"-1\" onClick=\"return showHelpDiv(this, &#039;NAb&#039;, &#039;\\x3Ca href=\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\&quot;\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\x3C/a\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\" onMouseOut=\"return hideHelpDivDelay();\" onMouseOver=\"return showHelpDivDelay(this, &#039;NAb&#039;, &#039;\\x3Ca href=\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\&quot;\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\x3C/a\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\"><span class=\"labkey-help-pop-up\">?</span></a>",
+    "fileTypes" : [ ".xls", ".xlsx" ]
+  }, {
+    "name" : "TZM-bl Neutralization (NAb), High-throughput (Cross Plate Dilution)",
+    "description" : "Imports a specially formatted CSV or XLS file that contains data from multiple plates.  The high-throughput NAb assay differs from the standard NAb assay in that dilutions are assumed to occur across plates, rather than within a single plate.  Both NAb assay types measure neutralization in TZM-bl cells as a function of a reduction in Tat-induced luciferase (Luc) reporter gene expression after a single round of infection. Montefiori, D.C. 2004<a href=\"#\" tabindex=\"-1\" onClick=\"return showHelpDiv(this, &#039;NAb&#039;, &#039;\\x3Ca href=\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\&quot;\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\x3C/a\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\" onMouseOut=\"return hideHelpDivDelay();\" onMouseOver=\"return showHelpDivDelay(this, &#039;NAb&#039;, &#039;\\x3Ca href=\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\&quot;\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\x3C/a\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\"><span class=\"labkey-help-pop-up\">?</span></a>",
+    "fileTypes" : [ ".csv" ]
+  }, {
+    "name" : "TZM-bl Neutralization (NAb), High-throughput (Single Plate Dilution)",
+    "description" : "Imports a specially formatted CSV or XLS file that contains data from multiple plates.  This high-throughput NAb assay differs from the standard NAb assay in that samples are identical across plates but with a different virus per plate. Dilutions are assumed to occur within a single plate.  Both NAb assay types measure neutralization in TZM-bl cells as a function of a reduction in Tat-induced luciferase (Luc) reporter gene expression after a single round of infection. Montefiori, D.C. 2004<a href=\"#\" tabindex=\"-1\" onClick=\"return showHelpDiv(this, &#039;NAb&#039;, &#039;\\x3Ca href=\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\&quot;\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\x3C/a\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\" onMouseOut=\"return hideHelpDivDelay();\" onMouseOver=\"return showHelpDivDelay(this, &#039;NAb&#039;, &#039;\\x3Ca href=\\&quot;http://www.ncbi.nlm.nih.gov/pubmed/18432938\\&quot;\\x3EEvaluating neutralizing antibodies against HIV, SIV and SHIV in luciferase reporter gene assays\\x3C/a\\x3E.  Current Protocols in Immunology, (Coligan, J.E., A.M. Kruisbeek, D.H. Margulies, E.M. Shevach, W. Strober, and R. Coico, eds.), John Wiley &amp; Sons, 12.11.1-12.11.15.&#039;);\"><span class=\"labkey-help-pop-up\">?</span></a>",
+    "fileTypes" : [ ".csv" ]
+  }, {
+    "name" : "Viability",
+    "description" : "Imports Guava ViaCount and ExpressPlus cell count and viability data.",
+    "fileTypes" : [ ".csv" ]
+  }, {
+    "name" : "Viral Loads",
+    "description" : "Viral Load Assay",
+    "fileTypes" : [ ".tsv", ".csv", ".xls", ".xlsx", ".txt", ".fna", ".fasta" ]
+  } ],
+  "defaultLocation" : "ea7c355b-0b2e-1039-8359-225b19643884"
+}

@@ -132,6 +132,28 @@ storiesOf('AssayImportPanels', module)
                 'For uploading files, choose a .tsv or .csv file to see the duplicate modal.  Choose a .xls or .xlsx file for the no duplicate experience.  Any other file extension will produce an error message.',
         }
     )
+    .add(
+        'AssayImportPanels - grid upload only',
+        () => {
+            return (
+                <AssayImportPanels
+                    initialStep={AssayUploadTabs.Grid}
+                    showUploadTabs={false}
+                    assayDefinition={ASSAY_WIZARD_MODEL.assayDef}
+                    onCancel={() => console.log('onCancel clicked')}
+                    onComplete={response => console.log('onComplete', response)}
+                    allowBulkInsert={boolean('Allow bulk insert', true)}
+                    allowBulkUpdate={boolean('Allow bulk update', true)}
+                    allowBulkRemove={boolean('Allow bulk remove', true)}
+                    maxInsertRows={number('Max cut-and-paste insert rows', undefined)}
+                />
+            );
+        },
+        {
+            notes:
+                'For uploading files, choose a .tsv or .csv file to see the duplicate modal.  Choose a .xls or .xlsx file for the no duplicate experience.  Any other file extension will produce an error message.',
+        }
+    )
     .add('AssayImportPanels for re-import', () => {
         return (
             <AssayImportPanels

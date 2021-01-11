@@ -68,6 +68,7 @@ interface QueryFormInputsProps {
     useDatePicker?: boolean;
     disabledFields?: List<string>;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
+    showQuerySelectPreviewOptions?: boolean;
 }
 
 interface State {
@@ -83,6 +84,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         allowFieldDisable: false,
         initiallyDisableFields: false,
         disabledFields: List<string>(),
+        showQuerySelectPreviewOptions: true,
     };
 
     private _fieldEnabledCount = 0;
@@ -178,6 +180,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             disabledFields,
             useDatePicker,
             renderFieldLabel,
+            showQuerySelectPreviewOptions,
         } = this.props;
 
         const filter = columnFilter ? columnFilter : insertColumnFilter;
@@ -260,7 +263,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                                         onQSChange={this.onQSChange}
                                         placeholder="Select or type to search..."
                                         preLoad
-                                        previewOptions={true}
+                                        previewOptions={showQuerySelectPreviewOptions}
                                         required={col.required}
                                         schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
                                         displayColumn={col.lookup.displayColumn}

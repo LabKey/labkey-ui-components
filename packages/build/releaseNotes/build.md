@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 1.1.0
+*Released*: 11 January 2021
+* Add option to add permissionClasses to entry points
+
 ### version 1.0.0
 *Released*: 7 January 2021
 * postcss-loader: inline the postcss.config.js properties

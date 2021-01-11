@@ -1359,10 +1359,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.1.7-fb-smAssayAsync.1":
-  version "1.1.7-fb-smAssayAsync.1"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.7-fb-smAssayAsync.1.tgz#f443c1c51d02248fe3e2acf801097795ab26aa41"
-  integrity sha1-9EPBxR0CJI/j4qz4AQl3lasmqkE=
+"@labkey/api@1.1.7":
+  version "1.1.7"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.7.tgz#f1dc812e740c4f1fa8042951aad415b9a86bf7b9"
+  integrity sha1-8dyBLnQMTx+oBClRqtQVuahr97k=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"
@@ -12374,6 +12374,11 @@ use-force-update@^1.0.5:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/use-force-update/-/use-force-update-1.0.7.tgz#f5e672633f5a398b25c33b2287150918bcb3526b"
   integrity sha512-k5dppYhO+I5X/cd7ildbrzeMZJkWwdAh5adaIk0qKN2euh7J0h2GBGBcB4QZ385eyHHnp7LIygvebdRx3XKdwA==
+
+use-immer@0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/use-immer/-/use-immer-0.4.2.tgz#7d7e7d3386cc834d45b2279f37d8974023550f4f"
+  integrity sha512-ONfZHEv/gzt/jyYxrJD3ZFUllKJED8F1mds9Fr9CYj54LmsiuGDg3vkx+R7WHS72p7DbSS1QbM7xNYrVWX+KcA==
 
 use-memo-one@^1.1.1:
   version "1.1.1"

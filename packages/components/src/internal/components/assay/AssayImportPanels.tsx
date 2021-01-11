@@ -60,7 +60,7 @@ import { RunDataPanel } from './RunDataPanel';
 import { RunPropertiesPanel } from './RunPropertiesPanel';
 import { BatchPropertiesPanel } from './BatchPropertiesPanel';
 import { AssayUploadGridLoader } from './AssayUploadGridLoader';
-import { AssayWizardModel } from './AssayWizardModel';
+import { AssayWizardModel, IAssayUploadOptions } from './AssayWizardModel';
 import {
     checkForDuplicateAssayFiles,
     DuplicateFilesResponse,
@@ -84,6 +84,10 @@ interface OwnProps {
     maxInsertRows?: number;
     onDataChange?: (dirty: boolean, changeType?: IMPORT_DATA_FORM_TYPES) => any;
     loadSelections?: (location: any, sampleColumn: QueryColumn) => Promise<OrderedMap<any, any>>;
+    showUploadTabs?: boolean;
+    showQuerySelectPreviewOptions?: boolean;
+    runDataPanelTitle?: string;
+    beforeFinish?: (data: IAssayUploadOptions) => IAssayUploadOptions;
     getJobDescription?: (options: AssayDOM.IImportRunOptions) => string;
     jobNotificationProvider?: string;
     assayProtocol?: AssayProtocolModel;
@@ -107,6 +111,7 @@ interface State {
 class AssayImportPanelsImpl extends Component<Props, State> {
     static defaultProps = {
         loadSelections: loadSelectedSamples,
+        showUploadTabs: true,
     };
 
     assayUploadTimer: number;
@@ -488,9 +493,14 @@ class AssayImportPanelsImpl extends Component<Props, State> {
     };
 
     onFinish = (importAgain: boolean): void => {
-        const { currentStep, onSave, maxInsertRows, getJobDescription, jobNotificationProvider, assayProtocol, allowAsyncImport, asyncFileSize, asyncRowSize } = this.props;
+        const { currentStep, onSave, maxInsertRows, beforeFinish, getJobDescription, jobNotificationProvider, assayProtocol, allowAsyncImport, asyncFileSize, asyncRowSize } = this.props;
         const { model } = this.state;
-        const data = model.prepareFormData(currentStep, this.getDataGridModel());
+        let data = model.prepareFormData(currentStep, this.getDataGridModel());
+
+        if (beforeFinish) {
+            data = beforeFinish(data);
+        }
+
         if (
             model.isCopyTab(currentStep) &&
             maxInsertRows &&
@@ -649,6 +659,9 @@ class AssayImportPanelsImpl extends Component<Props, State> {
             allowBulkInsert,
             allowBulkUpdate,
             onSave,
+            showUploadTabs,
+            showQuerySelectPreviewOptions,
+            runDataPanelTitle,
             allowAsyncImport
         } = this.props;
         const { duplicateFileResponse, model, showRenameModal } = this.state;
@@ -674,8 +687,16 @@ class AssayImportPanelsImpl extends Component<Props, State> {
                         hasBatchProperties={model.batchColumns.size > 0}
                     />
                 )}
-                <BatchPropertiesPanel model={model} onChange={this.handleBatchChange} />
-                <RunPropertiesPanel model={model} onChange={this.handleRunChange} />
+                <BatchPropertiesPanel
+                    model={model}
+                    showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
+                    onChange={this.handleBatchChange}
+                />
+                <RunPropertiesPanel
+                    model={model}
+                    showQuerySelectPreviewOptions={showQuerySelectPreviewOptions}
+                    onChange={this.handleRunChange}
+                />
                 <RunDataPanel
                     currentStep={currentStep}
                     wizardModel={model}
@@ -691,6 +712,8 @@ class AssayImportPanelsImpl extends Component<Props, State> {
                     fileSizeLimits={allowAsyncImport ? undefined : this.props.fileSizeLimits}
                     maxInsertRows={this.props.maxInsertRows}
                     onGridDataChange={this.props.onDataChange}
+                    showTabs={showUploadTabs}
+                    title={runDataPanelTitle}
                 />
                 {this.state.error && <Alert bsStyle="danger">{this.state.error}</Alert>}
                 <WizardNavButtons cancel={onCancel} containerClassName="" includeNext={false}>

@@ -2,8 +2,8 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 
-### version 1.1X.X
-*Released*: XX January 2021
+### version 1.14.0
+*Released*: 11 January 2021
 * Add new Assay Picker. Used for selection of assay design types.
 
 ### version 1.13.0

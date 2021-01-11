@@ -1,7 +1,7 @@
 # @labkey/build
 
-### version 1.0.X
-*Released*: XX January 2021
+### version 1.1.0
+*Released*: 11 January 2021
 * Add option to add permissionClasses to entry points
 
 ### version 1.0.0

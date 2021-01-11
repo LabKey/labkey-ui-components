@@ -58,6 +58,7 @@ import sampleSetAllFieldTypesQueryInfo from '../test/data/sampleSetAllFieldTypes
 import assayGpatRunsQueryInfo from '../test/data/assayGpatRuns-getQueryDetails.json';
 import assayGpatDataQueryInfo from '../test/data/assayGpatData-getQueryDetails.json';
 import assayGpatRunData from '../test/data/assayGpatRuns-getQuery.json';
+import getAssayDesignSectionOptions from '../test/data/assay-getAssayDesignSelectOptions.json';
 import filePreviewData from '../test/data/property-getFilePreview.json';
 import visualizationConfig from '../test/data/visualization-getVisualization.json';
 import lineageRunDetail from '../test/data/aminoAcidDetail-getQuery.json';
@@ -292,6 +293,8 @@ export function initMocks() {
 
     // TODO conditionalize based on queryName
     mock.post(/.*\/query\/?.*\/insertRows.*/, jsonResponse(samplesInsert));
+
+    mock.get(/.*\/assay\/?.*\/getAssayTypeSelectOptions.*/, jsonResponse(getAssayDesignSectionOptions));
 
     mock.get(/.*ConfirmationData.*/, (req, res) => {
         const queryParams = req.url().query;

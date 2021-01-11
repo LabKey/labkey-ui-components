@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -73,6 +73,7 @@
     "react-treebeard": "3.2.4",
     "reactn": "2.2.7",
     "redux-actions": "2.3.2",
+    "use-immer": "0.4.2",
     "vis-network": "6.5.2"
   },
   "devDependencies": {

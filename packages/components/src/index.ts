@@ -284,6 +284,11 @@ import {
 import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
+import {
+    AssayPicker,
+    AssayPickerTabs,
+    AssayPickerSelectionModel
+} from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
@@ -629,6 +634,9 @@ export {
     AssayRunDeleteModal,
     AssayStateModel,
     AssayImportPanels,
+    AssayPicker,
+    AssayPickerTabs,
+    AssayPickerSelectionModel,
     assayPage,
     withAssayModels,
     withAssayModelsFromLocation,

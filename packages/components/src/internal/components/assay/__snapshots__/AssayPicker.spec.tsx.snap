@@ -459,15 +459,14 @@ exports[`AssayPicker AssayPicker 1`] = `
                                           <div
                                             className="margin-bottom"
                                           />
-                                          <p>
-                                            <div
-                                              dangerouslySetInnerHTML={
-                                                Object {
-                                                  "__html": undefined,
-                                                }
+                                          <div
+                                            className="small-margin-bottom"
+                                            dangerouslySetInnerHTML={
+                                              Object {
+                                                "__html": undefined,
                                               }
-                                            />
-                                          </p>
+                                            }
+                                          />
                                         </div>
                                       </Col>
                                     </div>
@@ -617,6 +616,7 @@ exports[`AssayPicker AssayPicker 1`] = `
                                              
                                             <a
                                               href="https://www.labkey.org/Documentation/wiki-page.view?name=XarTutorial"
+                                              target="_blank"
                                             >
                                               .XAR or .XAR.XML
                                             </a>
@@ -642,7 +642,7 @@ exports[`AssayPicker AssayPicker 1`] = `
                                           className="col-xs-12"
                                         >
                                           <FileAttachmentForm
-                                            acceptedFormats=".XAR, .XAR.XML"
+                                            acceptedFormats=".XAR, .XAR.XML, .xar, .xar.xml"
                                             allowDirectories={false}
                                             allowMultiple={false}
                                             cancelText="Cancel"
@@ -651,7 +651,7 @@ exports[`AssayPicker AssayPicker 1`] = `
                                             labelLong="Select file or drag and drop here."
                                             onFileChange={[Function]}
                                             onFileRemoval={[Function]}
-                                            showAcceptedFormats={true}
+                                            showAcceptedFormats={false}
                                             showButtons={false}
                                             showLabel={false}
                                             showProgressBar={false}
@@ -678,7 +678,7 @@ exports[`AssayPicker AssayPicker 1`] = `
                                                         className=""
                                                       >
                                                         <FileAttachmentContainer
-                                                          acceptedFormats=".XAR, .XAR.XML"
+                                                          acceptedFormats=".XAR, .XAR.XML, .xar, .xar.xml"
                                                           allowDirectories={false}
                                                           allowMultiple={false}
                                                           compact={false}
@@ -704,7 +704,7 @@ exports[`AssayPicker AssayPicker 1`] = `
                                                               Select file or drag and drop here.
                                                             </label>
                                                             <input
-                                                              accept=".XAR, .XAR.XML"
+                                                              accept=".XAR, .XAR.XML, .xar, .xar.xml"
                                                               className="file-upload--input"
                                                               id="fileUpload"
                                                               multiple={false}
@@ -720,29 +720,6 @@ exports[`AssayPicker AssayPicker 1`] = `
                                                 </div>
                                               </FormSection>
                                             </span>
-                                            <div
-                                              className="row"
-                                            >
-                                              <div
-                                                className="col-md-9"
-                                              >
-                                                <div
-                                                  className="file-form-formats"
-                                                >
-                                                  <strong>
-                                                    Supported formats include: 
-                                                  </strong>
-                                                  .XAR, .XAR.XML
-                                                </div>
-                                              </div>
-                                              <div
-                                                className="col-md-3"
-                                              >
-                                                <div
-                                                  className="pull-right"
-                                                />
-                                              </div>
-                                            </div>
                                           </FileAttachmentForm>
                                         </div>
                                       </Col>

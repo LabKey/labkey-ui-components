@@ -3460,7 +3460,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         >
                                                           0
                                                            
-                                                          field
+                                                          fields
                                                            selected
                                                           <Button
                                                             active={false}

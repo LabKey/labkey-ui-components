@@ -5137,7 +5137,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         >
                                                           0
                                                            
-                                                          field
+                                                          fields
                                                            selected
                                                           <Button
                                                             active={false}

@@ -11034,7 +11034,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         >
                                                           0
                                                            
-                                                          field
+                                                          fields
                                                            selected
                                                           <Button
                                                             active={false}
@@ -32195,7 +32195,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         >
                                                           0
                                                            
-                                                          field
+                                                          fields
                                                            selected
                                                           <Button
                                                             active={false}
@@ -47304,7 +47304,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         >
                                                           0
                                                            
-                                                          field
+                                                          fields
                                                            selected
                                                           <Button
                                                             active={false}

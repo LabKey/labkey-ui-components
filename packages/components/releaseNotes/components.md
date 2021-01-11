@@ -1,10 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 1.14.1
+*Released*: 11 January 2021
 * Enable async import for assay runs
-
 
 ### version 1.14.0
 *Released*: 11 January 2021

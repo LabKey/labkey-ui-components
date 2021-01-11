@@ -244,6 +244,7 @@ module.exports = {
                         name: app.name,
                         title: app.title,
                         permission: app.permission,
+                        permissionClasses: app.permissionClasses,
                         viewTemplate: app.template,
                         filename: '../../../views/gen/' + app.name + '.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
@@ -260,6 +261,7 @@ module.exports = {
                         name: app.name,
                         title: app.title,
                         permission: app.permission,
+                        permissionClasses: app.permissionClasses,
                         viewTemplate: app.template,
                         filename: '../../../views/gen/' + app.name + 'Dev.view.xml',
                         template: 'node_modules/@labkey/build/webpack/app.view.template.xml'

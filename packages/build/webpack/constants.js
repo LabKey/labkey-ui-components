@@ -69,17 +69,6 @@ module.exports = {
                             importLoaders: 1
                         }
                     },{
-                        loader: 'postcss-loader',
-                        options: {
-                            sourceMap: true,
-                            postcssOptions: (ctx) => {
-                                return {
-                                    parser: ctx.parser ? 'sugarss' : false,
-                                    map: ctx.env === 'development' ? ctx.map : false
-                                }
-                            }
-                        }
-                    },{
                         loader: 'resolve-url-loader'
                     },{
                         loader: 'sass-loader',
@@ -112,11 +101,6 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             importLoaders: 1
-                        }
-                    },{
-                        loader: 'postcss-loader',
-                        options: {
-                            sourceMap: true
                         }
                     },{
                         loader: 'resolve-url-loader'

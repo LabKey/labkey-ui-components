@@ -943,6 +943,7 @@ export function getOntologyUpdatedFieldName(
         : removedFieldIndexes;
 
     if (removedFieldIndexes) {
+        removedFieldIndexes.sort((a, b) => a.originalIndex - b.originalIndex);
         for (let i = 0; i < removedFieldIndexes.length; i++) {
             if (i+1 < removedFieldIndexes.length && removedFieldIndexes[i+1].originalIndex < origFieldIndex) {
                 continue;

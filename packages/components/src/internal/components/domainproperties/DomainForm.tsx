@@ -699,6 +699,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             domainException: domainExceptionWithMovedErrors,
         }) as DomainDesign;
 
+        const oldVisibleSelection = applySetOperation(this.state.visibleSelection, srcIndex, false);
+        const visibleSelection = applySetOperation(oldVisibleSelection, destIndex, true);
+        this.setState({visibleSelection});
         const rowIndexChange = { originalIndex: srcIndex, newIndex: destIndex } as DomainFieldIndexChange;
 
         this.onDomainChange(newDomain, true, [rowIndexChange]);

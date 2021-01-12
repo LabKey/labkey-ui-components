@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Item 8012: Row Selection Actions on Field Editor
 
+### version 1.14.1
+*Released*: 11 January 2021
+* Enable async import for assay runs
+
 ### version 1.14.0
 *Released*: 11 January 2021
 * Add new Assay Picker. Used for selection of assay design types.

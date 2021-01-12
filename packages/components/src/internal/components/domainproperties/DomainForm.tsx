@@ -829,9 +829,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { visibleSelection, selectAll, visibleFieldsCount } = this.state;
         const fieldPlural = visibleSelection.size !== 1 ? "fields" : "field";
         const clearText = visibleFieldsCount !== 0 && (visibleSelection.size === visibleFieldsCount) ? "Clear All" : "Clear";
-
-        console.log("HEY YOU", visibleFieldsCount, visibleSelection.size);
-
         return (
             <div className="domain-field-row domain-row-border-default domain-floating-hdr">
                 <Row>

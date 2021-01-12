@@ -356,25 +356,23 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
         // if this domain has any Ontology Lookup field(s), check if we need to update the related field properties
         // based on the updated domain (i.e. check for any name changes to selected fields)
-        // note: we skip any rowIndexChange which has a newIndex as those are just reorder changes
         if (rowIndexChanges) {
-            rowIndexChanges.forEach((rowIndexChange) => {
-                if (rowIndexChange?.newIndex === undefined && ontologyLookupIndices.length > 0) {
-                    ontologyLookupIndices.forEach(index => {
-                        // skip any ontology lookup fields if they were removed
-                        const ontFieldRemoved = rowIndexChange?.originalIndex === index;
+            ontologyLookupIndices.forEach(index => {
+                for (let i = 0; i < rowIndexChanges.length; i++) {
+                    const currentIndex = rowIndexChanges[i]?.originalIndex;
 
-                        if (!ontFieldRemoved) {
-                            updatedDomain = updateOntologyFieldProperties(
-                                // check for a field removal prior to the ontology lookup field
-                                rowIndexChange?.originalIndex < index ? index - 1 : index,
-                                domainIndex,
-                                updatedDomain,
-                                domain,
-                                rowIndexChange?.originalIndex
-                            );
-                        }
-                    });
+                    // we skip any rowIndexChange which has a newIndex as those are just reorder changes
+                    if (rowIndexChanges[i]?.newIndex !== undefined) {
+                        return;
+                    // skip any ontology lookup fields if they were removed
+                    } else if (currentIndex === index) {
+                        continue;
+                    } else if (i+1 < rowIndexChanges.length && rowIndexChanges[i+1].originalIndex < index) {
+                        continue;
+                    } else if (index > currentIndex) {
+                        updatedDomain = updateOntologyFieldProperties(index - (i + 1), domainIndex, updatedDomain, domain, rowIndexChanges);
+                        return;
+                    }
                 }
             });
         }

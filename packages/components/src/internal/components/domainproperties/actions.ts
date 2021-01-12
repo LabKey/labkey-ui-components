@@ -29,6 +29,7 @@ import {
     DomainException,
     DomainField,
     DomainFieldError,
+    DomainFieldIndexChange,
     DomainPanelStatus,
     IBannerMessage,
     IDomainField,
@@ -896,7 +897,7 @@ export function updateOntologyFieldProperties(
     domainIndex: number,
     updatedDomain: DomainDesign,
     origDomain: DomainDesign,
-    removedFieldIndex: number
+    removedFieldIndexes: DomainFieldIndexChange[]
 ): DomainDesign {
     // make sure it is still an ontology lookup data type field before changing anything
     const ontField = updatedDomain.fields.get(fieldIndex);
@@ -908,7 +909,7 @@ export function updateOntologyFieldProperties(
                 ontField.conceptImportColumn,
                 updatedDomain,
                 origDomain,
-                removedFieldIndex
+                removedFieldIndexes
             );
             updatedDomain = updateDomainField(updatedDomain, { id, value });
         }
@@ -918,7 +919,7 @@ export function updateOntologyFieldProperties(
                 ontField.conceptLabelColumn,
                 updatedDomain,
                 origDomain,
-                removedFieldIndex
+                removedFieldIndexes
             );
             updatedDomain = updateDomainField(updatedDomain, { id, value });
         }
@@ -932,14 +933,25 @@ export function getOntologyUpdatedFieldName(
     propFieldName: string,
     updatedDomain: DomainDesign,
     origDomain: DomainDesign,
-    removedFieldIndex: number
+    removedFieldIndexes: DomainFieldIndexChange[]
 ): string {
     let origFieldIndex = origDomain.findFieldIndexByName(propFieldName);
-    const propFieldRemoved = origFieldIndex === removedFieldIndex;
 
     // check for a field removal prior to the ontology lookup field
-    origFieldIndex = removedFieldIndex < origFieldIndex ? origFieldIndex - 1 : origFieldIndex;
-    const updatedPropField = updatedDomain.fields.get(origFieldIndex);
+    const propFieldRemoved = removedFieldIndexes
+        ? removedFieldIndexes.some(removedField => removedField.originalIndex === origFieldIndex && removedField.newIndex === undefined)
+        : removedFieldIndexes;
 
+    if (removedFieldIndexes) {
+        for (let i = 0; i < removedFieldIndexes.length; i++) {
+            if (i+1 < removedFieldIndexes.length && removedFieldIndexes[i+1].originalIndex < origFieldIndex) {
+                continue;
+            } else if (origFieldIndex > removedFieldIndexes[i].originalIndex) {
+                origFieldIndex = origFieldIndex-(i+1);
+            }
+        }
+    }
+
+    const updatedPropField = updatedDomain.fields.get(origFieldIndex);
     return !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined;
 }

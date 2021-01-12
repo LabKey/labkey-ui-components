@@ -415,7 +415,8 @@ describe('domain properties actions', () => {
                 { name: 'text1', rangeURI: TEXT_TYPE.rangeURI },
             ],
         });
-        testDomain = updateOntologyFieldProperties(0, 0, removedChangesDomain, origDomain, 2);
+        const removedFieldIndexes = [{originalIndex: 2, newIndex: undefined}];
+        testDomain = updateOntologyFieldProperties(0, 0, removedChangesDomain, origDomain, removedFieldIndexes);
         expect(testDomain.fields.get(0).sourceOntology).toBe('SRC');
         expect(testDomain.fields.get(0).conceptImportColumn).toBe('text1');
         expect(testDomain.fields.get(0).conceptLabelColumn).toBe(undefined);
@@ -454,10 +455,11 @@ describe('domain properties actions', () => {
             ],
         });
 
+        const removedFieldIndexes = [{originalIndex: 0, newIndex: undefined}];
         expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, undefined)).toBe('text');
         expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, undefined)).toBe('textUpdated');
-        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, 0)).toBe(undefined);
-        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, 0)).toBe(undefined);
+        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, removedFieldIndexes)).toBe(undefined);
+        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, removedFieldIndexes)).toBe(undefined);
         expect(getOntologyUpdatedFieldName('int', origDomain, origDomain, undefined)).toBe(undefined);
         expect(getOntologyUpdatedFieldName('int', updatedDomain, origDomain, undefined)).toBe(undefined);
     });

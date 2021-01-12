@@ -1,8 +1,8 @@
 # @labkey/build
 
-### version TBD
-*Released*: TBD
-* Remove postcss-loader
+### version 1.1.1
+*Released*: 12 January 2021
+* Remove, no longer used, postcss-loader
 
 ### version 1.1.0
 *Released*: 11 January 2021

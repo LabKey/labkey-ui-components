@@ -79,6 +79,7 @@ import {
 import { PropDescType } from './PropDescType';
 import { CollapsiblePanelHeader } from './CollapsiblePanelHeader';
 import { ImportDataFilePreview } from './ImportDataFilePreview';
+import {ToggleWithInputField} from "../forms/input/ToggleWithInputField";
 
 interface IDomainFormInput {
     domain: DomainDesign;
@@ -121,6 +122,7 @@ interface IDomainFormState {
     maxPhiLevel: string;
     dragId?: number;
     availableTypes: List<PropDescType>;
+    summaryViewMode: boolean;
     // used for quicker access to field information (i.e. details display info and if a field is an ontology)
     fieldDetails: FieldDetails;
     filtered: boolean;
@@ -171,6 +173,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             filePreviewData: undefined,
             file: undefined,
             filePreviewMsg: undefined,
+            summaryViewMode: false,
         };
     }
 
@@ -795,6 +798,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
     }
 
+    onToggleSummaryView = () => {
+        this.setState(state => ({ summaryViewMode: !state.summaryViewMode }));
+    }
+
     onSearch = evt => {
         const { value } = evt.target;
         this.updateFilteredFields(value);
@@ -851,6 +858,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderToolbar() {
         const { domain, domainIndex, allowImportExport, domainFormDisplayOptions } = this.props;
+        const { summaryViewMode } = this.state;
         const { fields } = domain;
         const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
 
@@ -890,6 +898,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             type="text"
                             placeholder="Search Fields"
                             onChange={this.onSearch}
+                        />
+
+                        {/*ROSALINE consider moving the style somewhere else....?*/}
+                        <ToggleWithInputField
+                            active={summaryViewMode}
+                            id={'domain-toggle-summary-' + domainIndex}
+                            onClick={this.onToggleSummaryView}
+                            on="Summary mode"
+                            off="TODO text"
+                            style={{height: '34px', marginLeft: '10px'}}
                         />
                     </div>
                 </Col>

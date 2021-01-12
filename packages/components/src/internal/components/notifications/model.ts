@@ -130,6 +130,7 @@ export interface ServerNotificationsConfig {
     markAllNotificationsRead: () => Promise<boolean>;
     serverActivity: ServerNotificationModel;
     onRead?: () => any;
+    onViewAll?: () => any;
 }
 
 export interface IServerNotificationModel

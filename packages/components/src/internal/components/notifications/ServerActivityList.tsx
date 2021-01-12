@@ -52,20 +52,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
             </>);
         }
         else if (isInProgress) {
-            if (content.indexOf('samples') === 0 || content.indexOf('exp.data') === 0 || content.indexOf('assays') === 0) {
-                let type = 'sources';
-                let importMsg = content.substring('exp.data - '.length, content.length);
-                if (content.indexOf('samples') === 0) {
-                    type = 'samples';
-                    importMsg = content.substring('samples - '.length, content.length);
-                }
-                else if (content.indexOf('assays') === 0) {
-                    type = 'assay run';
-                    importMsg = content.substring('assays - '.length, content.length);
-                }
-
-                return <span className={'server-notifications-item-subject'}>{`A background ${type} import is processing: ${importMsg}`}</span>
-            }
+            return <span className={'server-notifications-item-subject'}>{`A background import is processing: ${content}`}</span>
         }
 
         return <span className={'server-notifications-item-subject'} dangerouslySetInnerHTML={{ __html: content }} />;

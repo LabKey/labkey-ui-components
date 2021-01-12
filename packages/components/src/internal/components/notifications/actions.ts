@@ -82,12 +82,13 @@ export function getServerNotifications(typeLabels?: string[], maxRows?: number):
     });
 }
 
-export function getRunningPipelineJobStatuses(): Promise<ServerActivity> {
+export function getRunningPipelineJobStatuses(filters?: Filter.IFilter[]): Promise<ServerActivity> {
+    const statusFilter = Filter.create('Status', ['RUNNING', 'WAITING', 'SPLITWAITING'], Filter.Types.IN);
     return new Promise((resolve, reject) => {
         selectRows({
             schemaName: 'pipeline',
             queryName: 'job',
-            filterArray: [Filter.create('Status', ['RUNNING', 'WAITING', 'SPLITWAITING'], Filter.Types.IN)],
+            filterArray: [...filters, statusFilter],
             sort: 'Created',
         })
             .then(response => {
@@ -117,9 +118,9 @@ export function getRunningPipelineJobStatuses(): Promise<ServerActivity> {
     });
 }
 
-export function getPipelineActivityData(maxRows?: number): Promise<ServerActivity> {
+export function getPipelineActivityData(maxRows?: number, filters?: Filter.IFilter[]): Promise<ServerActivity> {
     return new Promise((resolve, reject) => {
-        Promise.all([getServerNotifications(['Pipeline'], maxRows), getRunningPipelineJobStatuses()])
+        Promise.all([getServerNotifications(['Pipeline'], maxRows), getRunningPipelineJobStatuses(filters)])
             .then(responses => {
                 const [notifications, statuses] = responses;
 

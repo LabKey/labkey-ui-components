@@ -28,6 +28,7 @@
 .server-notifications-listing-container {
     max-height: 500px;
     overflow-y: scroll;
+    border-bottom: 1px solid lightgray;
 }
 
 .server-notifications-listing {
@@ -100,7 +101,7 @@
 }
 
 .server-notifications-footer {
-    margin: 5px 0 5px 15px;
+    margin: 15px 0 5px 15px;
     width: 350px;
     &.server-notifications-error {
         color: $brand-danger;
@@ -111,5 +112,12 @@
     .fa-stack {
         height: 3em;
         line-height: 3em;
+    }
+}
+
+.server-notifications-link {
+    color: $brand-primary;
+    &:hover {
+        cursor: pointer;
     }
 }

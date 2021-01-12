@@ -6,9 +6,18 @@
       frame="none"
       title="<%= htmlWebpackPlugin.options.title %>"
 >
+    <% if (htmlWebpackPlugin.options.permission) { %>
     <permissions>
         <permission name="<%= htmlWebpackPlugin.options.permission %>"/>
     </permissions>
+    <% } %>
+    <% if (htmlWebpackPlugin.options.permissionClasses) { %>
+    <permissionClasses>
+        <% htmlWebpackPlugin.options.permissionClasses.forEach((permissionClass) => { %>
+        <permissionClass name="<%= permissionClass %>"/>
+        <% }); %>
+    </permissionClasses>
+    <% } %>
     <dependencies>
         <dependency path="clientapi"/>
         <dependency path="vis/vis"/>

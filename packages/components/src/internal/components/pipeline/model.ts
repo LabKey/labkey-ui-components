@@ -38,7 +38,7 @@ export class PipelineStatusDetailModel {
             active: data['active'],
             fetchCount: data['fetchCount'],
             nextOffset: data['nextOffset'],
-            logEntries: data['log']['records'],
+            logEntries: data['log'] ? data['log']['records'] : [],
             isLoaded: true,
             isLoading: false
         })

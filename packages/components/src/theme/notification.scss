@@ -121,3 +121,19 @@
         cursor: pointer;
     }
 }
+
+.job-status-log-entry {
+    white-space: pre-wrap;
+}
+
+.job-status-log-entry {
+    white-space: pre-wrap;
+}
+
+.job-status-log-entry-warn {
+    color: $brand-warning;;
+}
+
+.job-status-log-entry-error {
+    color: $brand-danger;
+}

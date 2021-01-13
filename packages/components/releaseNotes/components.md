@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * add menu item icon
 * add PipelineJobsPage
+* add PipelineStatusDetailPage
 * modify assay url resolver to work with Data.Run/RowId~eq=rowId
 
 ### version 1.14.1

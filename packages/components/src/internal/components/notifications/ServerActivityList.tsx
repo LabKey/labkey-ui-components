@@ -7,7 +7,8 @@ import { resolveErrorMessage } from "../../..";
 
 interface Props {
     serverActivity: ServerActivity;
-    onViewAll: () => void;
+    onViewAll: () => any;
+    onShowErrorDetail: (notification: ServerActivityData) => any;
     maxRows: number;
     viewAllText: string;
     noActivityMsg: string;
@@ -27,8 +28,8 @@ export class ServerActivityList extends React.PureComponent<Props> {
         this.props.onRead(notificationId);
     };
 
-    showErrorDetails = (notificationId: number): void => {
-        console.log('showErrorDetails ' + notificationId + ': not yet implemented');
+    showErrorDetails = (notificationItem: ServerActivityData): void => {
+        this.props.onShowErrorDetail(notificationItem);
     };
 
     renderNotificationContent = (content: string, isError?: boolean, isInProgress?: boolean) => {
@@ -77,7 +78,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
                 </span>
                 <br />
                 {activity.hasError ? (
-                    <span className="server-notifications-link" onClick={() => this.showErrorDetails(activity.RowId)}>
+                    <span className="server-notifications-link" onClick={() => this.showErrorDetails(activity)}>
                         {this.props.viewErrorDetailsText}
                     </span>
                 ) : (

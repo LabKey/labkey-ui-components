@@ -129,8 +129,9 @@ export interface ServerNotificationsConfig {
     maxRows: number;
     markAllNotificationsRead: () => Promise<boolean>;
     serverActivity: ServerNotificationModel;
+    onViewAll: () => any;
+    onShowErrorDetail: (notification: ServerActivityData) => any;
     onRead?: () => any;
-    onViewAll?: () => any;
 }
 
 export interface IServerNotificationModel

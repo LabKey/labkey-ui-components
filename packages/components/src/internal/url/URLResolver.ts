@@ -123,7 +123,11 @@ export function parsePathName(path: string) {
     let controller = null;
 
     const dash = action.indexOf('-');
-    if (dash > 0) {
+    if (action.toLowerCase().indexOf('pipeline-status-details') === 0) {
+        controller = 'pipeline-status';
+        action = 'details';
+    }
+    else if (dash > 0) {
         controller = action.substring(0, dash);
         action = action.substring(dash + 1);
     } else {
@@ -449,6 +453,15 @@ const LOOKUP_MAPPER = new LookupMapper('q', {
     issues: () => false, // 33680: Prevent remapping issues lookup
 });
 
+const PIPELINE_MAPPER = new ActionMapper('pipeline-status', 'details', (row) => {
+        const url = row.get('url');
+        if (url) {
+            const params = ActionURL.getParameters(url);
+            return AppURL.create('pipeline', params.rowId);
+        }
+        return false;
+    })
+
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,
     DATA_CLASS_MAPPERS,
@@ -460,6 +473,7 @@ export const URL_MAPPERS = {
     DOWNLOAD_FILE_LINK_MAPPER,
     AUDIT_DETAILS_MAPPER,
     LOOKUP_MAPPER,
+    PIPELINE_MAPPER
 };
 
 export class URLResolver {

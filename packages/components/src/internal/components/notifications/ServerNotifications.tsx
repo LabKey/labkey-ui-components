@@ -68,7 +68,7 @@ export class ServerNotifications extends React.Component<Props, State> {
     };
 
     render(): ReactNode {
-        const { serverActivity, maxRows, onViewAll } = this.props;
+        const { serverActivity, maxRows, onViewAll, onShowErrorDetail } = this.props;
         const { show } = this.state;
 
         const numUnread = this.getNumUnread();
@@ -95,6 +95,7 @@ export class ServerNotifications extends React.Component<Props, State> {
                     maxRows={maxRows}
                     serverActivity={serverActivity}
                     onViewAll={onViewAll}
+                    onShowErrorDetail={onShowErrorDetail}
                     onRead={this.onRead}
                 />
             );

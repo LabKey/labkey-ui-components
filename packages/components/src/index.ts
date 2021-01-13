@@ -116,6 +116,7 @@ import {
     NotificationItemProps,
     Persistence,
     ServerNotificationModel,
+    ServerActivityData
 } from './internal/components/notifications/model';
 import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
@@ -311,6 +312,7 @@ import {
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
+import { PipelineStatusDetailPage }  from './internal/components/pipeline/PipelineStatusDetailPage';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
 import { invalidateLineageResults, getImmediateChildLineageFilterValue } from './internal/components/lineage/actions';
 import {
@@ -671,6 +673,7 @@ export {
     monthSort,
     // pipeline
     PipelineJobsPage,
+    PipelineStatusDetailPage,
     // report / chart related items
     BaseBarChart,
     processChartData,
@@ -712,6 +715,7 @@ export {
     Notification,
     NotificationCreatable,
     ServerNotificationModel,
+    ServerActivityData,
     Persistence,
     MessageFunction,
     createNotification,

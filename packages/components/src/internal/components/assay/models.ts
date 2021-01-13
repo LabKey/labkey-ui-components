@@ -34,6 +34,7 @@ export class AssayUploadResultModel {
     runId: number;
     success: boolean;
     successurl?: string;
+    jobId?: number;
 
     constructor(values?: Partial<AssayUploadResultModel>) {
         Object.assign(this, values);

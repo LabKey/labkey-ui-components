@@ -25,7 +25,7 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
     private _task : any;
 
     static defaultProps = {
-        interval: 1000
+        interval: 2000
     }
 
     constructor(props) {
@@ -48,19 +48,26 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
     refresh = () => {
         const model = this.state.model;
 
-        const offset = model ? model.nextOffset : 0;
-        const count = model ? model.fetchCount + 1 : 1;
-        getPipelineStatusDetail(this.props.rowId, offset, count)
-            .then((model: PipelineStatusDetailModel) => {
-                this.setState((state) => ({
-                    model
-                }));
-            })
-            .catch((error) => {
-                this.setState((state) => ({
-                    error: error
-                }));
-            })
+        const offset = model?.nextOffset ? model.nextOffset : 0;
+        const count = model?.fetchCount ? model.fetchCount + 1 : 1;
+        if (!model?.isLoading) {
+            this.setState((state) => ({
+                model: model.mutate({isLoading: true, isLoaded: false})
+            }), () => {
+                getPipelineStatusDetail(this.props.rowId, offset, count)
+                    .then((model: PipelineStatusDetailModel) => {
+                        this.setState((state) => ({
+                            model
+                        }));
+                    })
+                    .catch((error) => {
+                        this.setState((state) => ({
+                            error: error
+                        }));
+                    })
+            });
+        }
+
 
         if (!this.shouldFetchUpdate())
             return;
@@ -69,7 +76,7 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
     }
 
     shouldFetchUpdate = () => {
-        return !this.state.error && (!this.state.model || this.state.model?.active);
+        return !this.state.error && (this.state.model?.active !== false);
     };
 
     stopRefresh = () => {

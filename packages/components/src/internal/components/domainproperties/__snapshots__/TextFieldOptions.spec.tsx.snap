@@ -12,11 +12,10 @@ exports[`TextFieldOptions Text data type 1`] = `
   <div>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"
@@ -41,11 +40,10 @@ exports[`TextFieldOptions Text data type 1`] = `
     </Row>
     <Row
       bsClass="row"
-      className="domain-row-expanded "
       componentClass="div"
     >
       <div
-        className="domain-row-expanded  row"
+        className="row"
       >
         <Col
           bsClass="col"
@@ -203,11 +201,10 @@ exports[`TextFieldOptions Text data type 1`] = `
     </Row>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"
@@ -248,11 +245,10 @@ exports[`TextFieldOptions Text data type 1`] = `
     </Row>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"

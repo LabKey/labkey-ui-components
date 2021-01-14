@@ -85,6 +85,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "sourceOntology": undefined,
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
+      "selected": false,
     }
   }
   index={1}
@@ -93,11 +94,10 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
   <div>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <Col
           bsClass="col"
@@ -123,11 +123,10 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
     </Row>
     <Row
       bsClass="row"
-      className="domain-row-expanded"
       componentClass="div"
     >
       <div
-        className="domain-row-expanded row"
+        className="row"
       >
         <div>
           <Col

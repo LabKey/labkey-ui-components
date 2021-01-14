@@ -244,12 +244,12 @@ export class ConditionalFormattingAndValidation extends React.PureComponent<
 
         return (
             <div>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={12}>
                         <SectionHeading title={title} cls="domain-field-section-hdr" />
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={12}>
                         {showCondFormatSection && this.renderConditionalFormats()}
                         {showRegexSection && this.renderValidator(false)}

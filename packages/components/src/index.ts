@@ -311,8 +311,6 @@ import {
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
 import { processChartData } from './internal/components/chart/utils';
-import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
-import { PipelineStatusDetailPage }  from './internal/components/pipeline/PipelineStatusDetailPage';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
 import { invalidateLineageResults, getImmediateChildLineageFilterValue } from './internal/components/lineage/actions';
 import {
@@ -438,6 +436,8 @@ import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPan
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
+import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
+import { PipelineStatusDetailPage }  from './internal/components/pipeline/PipelineStatusDetailPage';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -671,9 +671,6 @@ export {
     addDateRangeFilter,
     last12Months,
     monthSort,
-    // pipeline
-    PipelineJobsPage,
-    PipelineStatusDetailPage,
     // report / chart related items
     BaseBarChart,
     processChartData,
@@ -924,6 +921,9 @@ export {
     TimelineEventModel,
     TimelineGroupedEventInfo,
     TimelineView,
+    // pipeline
+    PipelineJobsPage,
+    PipelineStatusDetailPage,
     // Test Helpers
     mountWithServerContext,
     sleep,

@@ -122,12 +122,8 @@ export function parsePathName(path: string) {
 
     let controller = null;
 
-    const dash = action.indexOf('-');
-    if (action.toLowerCase().indexOf('pipeline-status-details') === 0) {
-        controller = 'pipeline-status';
-        action = 'details';
-    }
-    else if (dash > 0) {
+    const dash = action.lastIndexOf('-');
+    if (dash > 0) {
         controller = action.substring(0, dash);
         action = action.substring(dash + 1);
     } else {
@@ -289,20 +285,21 @@ const ASSAY_MAPPERS = [
             const rowId = params.rowId;
 
             if (rowId) {
-                delete params.rowId; // strip the rowId and pass through the remaining params
-
                 // filter on Data.Run/RowId~eq=<rowId>
                 const filters = Filter.getFiltersFromUrl(url, 'Data');
                 if (filters.length > 0) {
                     for (let i = 0; i < filters.length; i++) {
                         if (filters[i].getColumnName().toLowerCase() === 'run/rowid') {
+                            if (Object.keys(params.length > 2))
+                                console.warn("Params mapping skipped for: " + url);
+
                             const runId = filters[i].getValue();
-                            const url = ['rd', 'assayrun', runId];
-                            return AppURL.create(...url);
+                            return AppURL.create('rd', 'assayrun', runId);
                         }
                     }
                 }
 
+                delete params.rowId; // strip the rowId and pass through the remaining params
                 return AppURL.create('assays', rowId, 'data').addParams(params);
             }
         }

@@ -48,12 +48,13 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
     refresh = () => {
         const model = this.state.model;
 
-        const offset = model?.nextOffset ? model.nextOffset : 0;
-        const count = model?.fetchCount ? model.fetchCount + 1 : 1;
         if (!model?.isLoading) {
             this.setState((state) => ({
-                model: model.mutate({isLoading: true, isLoaded: false})
+                model: state.model.mutate({isLoading: true, isLoaded: false})
             }), () => {
+                const offset = this.state.model?.nextOffset ? this.state.model?.nextOffset : 0;
+                const count = this.state.model?.fetchCount ? this.state.model?.fetchCount + 1 : 1;
+
                 getPipelineStatusDetail(this.props.rowId, offset, count)
                     .then((model: PipelineStatusDetailModel) => {
                         this.setState((state) => ({

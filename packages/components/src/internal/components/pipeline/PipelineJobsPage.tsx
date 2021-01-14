@@ -75,17 +75,17 @@ export class PipelineJobsPageImpl extends React.PureComponent<Props & InjectedQu
 
     toggleAutoRefresh = () => {
         const { interval } = this.props;
-        const { refreshOn } = this.state;
-
-        if (!refreshOn) {
-            this._interval = setInterval(this.refresh, interval);
-        }
-        else
-            this.stopRefresh();
 
         this.setState((state) => ({
-            refreshOn: !refreshOn
-        }));
+            refreshOn: !state.refreshOn
+        }), () => {
+            const { refreshOn } = this.state;
+            if (refreshOn) {
+                this._interval = setInterval(this.refresh, interval);
+            }
+            else
+                this.stopRefresh();
+        });
     }
 
     stopRefresh = () => {

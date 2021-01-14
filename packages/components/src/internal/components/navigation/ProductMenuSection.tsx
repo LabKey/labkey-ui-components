@@ -36,6 +36,8 @@ export class MenuSectionConfig extends Record({
     emptyURLText: 'Get started...',
     headerURL: undefined,
     headerText: undefined,
+    showActiveJobIcon: true,
+    activeJobIconCls: 'fa-spinner fa-pulse'
 }) {
     emptyText?: string;
     iconURL?: string;
@@ -47,6 +49,8 @@ export class MenuSectionConfig extends Record({
     emptyURLText: string;
     headerURL: AppURL | string;
     headerText?: string;
+    showActiveJobIcon?: boolean;
+    activeJobIconCls?: string;
 }
 
 interface MenuSectionProps {
@@ -78,9 +82,10 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
         );
     };
 
-    renderMenuItemsList = (items, columnNumber = 1, totalColumns = 1, withOverflow = false): ReactNode => {
+    renderMenuItemsList = (items, columnNumber = 1, totalColumns = 1, withOverflow = false, config?: MenuSectionConfig): ReactNode => {
         const { section } = this.props;
-
+        const activeJobCls = config?.activeJobIconCls;
+        const showActiveJobIcon = config?.showActiveJobIcon;
         return (
             <ul className={'col-' + totalColumns} key={section.key + 'col-' + columnNumber}>
                 {items.isEmpty()
@@ -88,10 +93,10 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
                     : items
                           .sortBy(item => item.label, naturalSort)
                           .map(item => {
-                              const labelDisplay = item.iconCls ? (
+                              const labelDisplay = (item.hasActiveJob && showActiveJobIcon) ? (
                                       <>
                                           <span className={'product-menu-item'}>{item.label}</span>
-                                          <i className={classNames('fa', 'fa-' + item.iconCls)}/>
+                                          <i className={classNames('fa', activeJobCls)}/>
                                       </>
                                   ) : item.label;
 
@@ -109,7 +114,6 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
                           })}
             </ul>
         );
-        // add spinner, check notification active
     };
 
     render(): ReactNode {
@@ -168,13 +172,13 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
         let endIndex = Math.min(config.maxItemsPerColumn, allItems.size);
         const numColumns = Math.min(config.maxColumns, Math.ceil(allItems.size / config.maxItemsPerColumn));
         const columns = [
-            this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, haveOverflow),
+            this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, haveOverflow, config),
         ];
         while (endIndex < allItems.size && columnNum < config.maxColumns) {
             startIndex = endIndex;
             endIndex = Math.min(endIndex + config.maxItemsPerColumn, allItems.size);
             columnNum++;
-            columns.push(this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, false));
+            columns.push(this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, false, config));
         }
         if (haveOverflow) {
             const seeAllUrl = config.seeAllURL || AppURL.create(section.key);

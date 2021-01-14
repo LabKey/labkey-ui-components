@@ -74,8 +74,8 @@ export function setReloadRequired() {
 export function menuInit(currentProductId: string, userMenuProductId: string, productIds?: List<string>) {
     return (dispatch, getState) => {
         let menu = getState().routing.menu;
-        if ((!menu.isLoaded && !menu.isLoading) || menu.needReload) {
-            if ((!menu.isLoaded && !menu.isLoading)) {
+        if ((!menu.isLoaded && !menu.isLoading) || menu.needsReload) {
+            if (!menu.needsReload) {
                 dispatch({
                     type: MENU_LOADING_START,
                     currentProductId,

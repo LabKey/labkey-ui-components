@@ -98,7 +98,7 @@ export const ProductMenuReducers = handleActions<ProductMenuState, any>(
         },
 
         [MENU_RELOAD]: (state: ProductMenuState, action: any) => {
-            return state.setNeedReload();
+            return state.setNeedsReload();
         },
 
         [MENU_LOADING_START]: (state: ProductMenuState, action: any) => {

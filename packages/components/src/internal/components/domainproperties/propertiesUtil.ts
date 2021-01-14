@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
+import { List } from 'immutable';
+
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
-import { List } from "immutable";
-import {DomainDesign, DomainField} from "./models";
+import { DomainDesign, DomainField } from './models';
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {
@@ -54,18 +55,18 @@ export function generateBulkDeleteWarning(deletabilityInfo, undeletableNames) {
     const deletableCount = deletableSelectedFields.length;
     const undeletableCount = undeletableFields.length;
 
-    const fields = deletableCount !== 1 ? "fields" : "field";
-    const howManyDeleted = undeletableCount > 0
-        ? `${deletableCount} of ${deletableCount + undeletableCount} fields`
-        : `${deletableCount} ${fields}`;
+    const fields = deletableCount !== 1 ? 'fields' : 'field';
+    const howManyDeleted =
+        undeletableCount > 0
+            ? `${deletableCount} of ${deletableCount + undeletableCount} fields`
+            : `${deletableCount} ${fields}`;
 
-    const itIsA = undeletableCount > 1 ? "they are" : "it is a";
-    const field = undeletableCount > 1 ? "fields" : "field";
-    const undeletableWarning = undeletableCount > 0
-        ? `${undeletableNames.join(', ')} cannot be deleted as ${itIsA} necessary ${field}.`
-        : ``;
+    const itIsA = undeletableCount > 1 ? 'they are' : 'it is a';
+    const field = undeletableCount > 1 ? 'fields' : 'field';
+    const undeletableWarning =
+        undeletableCount > 0 ? `${undeletableNames.join(', ')} cannot be deleted as ${itIsA} necessary ${field}.` : '';
 
-    return ({howManyDeleted, undeletableWarning});
+    return { howManyDeleted, undeletableWarning };
 }
 
 export function applySetOperation(oldSet: Set<any>, value: any, add: boolean) {
@@ -79,7 +80,7 @@ export function applySetOperation(oldSet: Set<any>, value: any, add: boolean) {
 
 export function getVisibleSelectedFieldIndexes(fields: List<DomainField>): Set<number> {
     return fields.reduce((setOfIndexes, currentField, index) => {
-        return (currentField.visible && currentField.selected) ? setOfIndexes.add(index) : setOfIndexes;
+        return currentField.visible && currentField.selected ? setOfIndexes.add(index) : setOfIndexes;
     }, new Set());
 }
 

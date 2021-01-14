@@ -444,10 +444,10 @@ export function updateErrorIndexes(removedFieldIndexes: number[], domainExceptio
     const errorsWithNewIndexes = domainException.errors.map(error => {
         const newRowIndexes = error.rowIndexes.map(rowIndex => {
             for (let i = 0; i < removedFieldIndexes.length; i++) {
-                if (i !== removedFieldIndexes.length && removedFieldIndexes[i+1] < rowIndex) {
+                if (i !== removedFieldIndexes.length && removedFieldIndexes[i + 1] < rowIndex) {
                     continue;
                 } else if (rowIndex > removedFieldIndexes[i]) {
-                    return rowIndex-(i+1);
+                    return rowIndex - (i + 1);
                 } else {
                     return rowIndex;
                 }
@@ -461,7 +461,7 @@ export function updateErrorIndexes(removedFieldIndexes: number[], domainExceptio
 export function removeFields(domain: DomainDesign, deletableSelectedFields: number[]): DomainDesign {
     // Removes from domain.domainException errors belonging to removed fields, and also clears domainException if
     // a removed field was the final field with any error
-    deletableSelectedFields.forEach((value) => {
+    deletableSelectedFields.forEach(value => {
         domain = updateDomainException(domain, value, undefined);
     });
 
@@ -473,7 +473,10 @@ export function removeFields(domain: DomainDesign, deletableSelectedFields: numb
 
     // "move up" the indexes of the fields with error, i.e. the fields that are below the removed fields
     if (updatedDomain.hasException()) {
-        return updatedDomain.set('domainException', updateErrorIndexes(deletableSelectedFields, updatedDomain.domainException)) as DomainDesign;
+        return updatedDomain.set(
+            'domainException',
+            updateErrorIndexes(deletableSelectedFields, updatedDomain.domainException)
+        ) as DomainDesign;
     } else {
         return updatedDomain;
     }
@@ -507,8 +510,8 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
     const field = domain.fields.get(index);
 
     if (field) {
-        const isSelection = type === "selected";
-        let newField = isSelection ? field : field.set('updatedField', true) as DomainField;
+        const isSelection = type === 'selected';
+        let newField = isSelection ? field : (field.set('updatedField', true) as DomainField);
 
         switch (type) {
             case DOMAIN_FIELD_TYPE:
@@ -945,10 +948,10 @@ export function getOntologyUpdatedFieldName(
     if (removedFieldIndexes) {
         removedFieldIndexes.sort((a, b) => a.originalIndex - b.originalIndex);
         for (let i = 0; i < removedFieldIndexes.length; i++) {
-            if (i+1 < removedFieldIndexes.length && removedFieldIndexes[i+1].originalIndex < origFieldIndex) {
+            if (i + 1 < removedFieldIndexes.length && removedFieldIndexes[i + 1].originalIndex < origFieldIndex) {
                 continue;
             } else if (origFieldIndex > removedFieldIndexes[i].originalIndex) {
-                origFieldIndex = origFieldIndex-(i+1);
+                origFieldIndex = origFieldIndex - (i + 1);
             }
         }
     }

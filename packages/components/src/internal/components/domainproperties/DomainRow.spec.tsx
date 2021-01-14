@@ -624,7 +624,7 @@ describe('DomainRow', () => {
             rangeURI: TEXT_TYPE.rangeURI,
             propertyId: 1,
             propertyURI: 'test',
-            selected: true
+            selected: true,
         });
         const treeSelected = mount(
             wrapDraggable(

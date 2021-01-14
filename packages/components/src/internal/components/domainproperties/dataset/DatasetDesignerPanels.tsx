@@ -220,7 +220,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                     // if the row was removed or reordered, update the keyPropertyIndex
                     // else if a different row was removed or reordered, refind out index by name
                     if (rowIndexChanges) {
-                        rowIndexChanges.forEach((rowIndexChange) => {
+                        rowIndexChanges.forEach(rowIndexChange => {
                             if (rowIndexChange.originalIndex === keyPropertyIndex) {
                                 draft.keyPropertyIndex = rowIndexChange.newIndex;
                             } else {
@@ -244,7 +244,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                 if (visitDatePropertyIndex !== undefined) {
                     // if the row was removed or reordered, update the visitDatePropertyIndex
                     if (rowIndexChanges) {
-                        rowIndexChanges.forEach((rowIndexChange) => {
+                        rowIndexChanges.forEach(rowIndexChange => {
                             if (rowIndexChange && rowIndexChange.originalIndex === visitDatePropertyIndex) {
                                 draft.visitDatePropertyIndex = rowIndexChange.newIndex;
                             } else {

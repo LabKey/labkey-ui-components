@@ -56,7 +56,7 @@ import {
     isFieldPartiallyLocked,
     isLegalName,
     isPrimaryKeyFieldLocked,
-    isFieldDeletable
+    isFieldDeletable,
 } from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
@@ -180,7 +180,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         closing: boolean,
         dragging: boolean,
         selected: boolean,
-        fieldError: DomainFieldError,
+        fieldError: DomainFieldError
     ): string => {
         const classes = List<string>().asMutable();
         classes.push('domain-field-row');

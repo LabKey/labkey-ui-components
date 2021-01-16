@@ -114,6 +114,9 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
     };
 
     renderLogEntry = (entry: PipelineLogEntry, ind) => {
+        if (!entry.lines)
+            return null;
+
         return (
             <tr
                 key={'log-' + ind}
@@ -122,7 +125,7 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
                     'job-status-log-entry-error': entry.level.toLowerCase() === 'error' || entry.level.toLowerCase() === 'danger'
                 })}
             >
-                {entry.lines}
+                <td>{entry.lines}</td>
             </tr>
         );
     };

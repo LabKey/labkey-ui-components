@@ -14,7 +14,6 @@ export function getPipelineStatusDetail(rowId: number, offset?: number, count?: 
             },
             success: Utils.getCallbackWrapper(response => {
                 if (response.success) {
-
                     resolve(PipelineStatusDetailModel.loadResult(response.data));
                 } else {
                     console.error(response);

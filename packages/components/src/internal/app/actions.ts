@@ -21,6 +21,7 @@ import {
     SERVER_NOTIFICATIONS_INVALIDATE,
 } from './constants';
 import { ServerActivity } from "../components/notifications/model";
+import { resetQueryGridState } from "../global";
 
 function successUserPermissions(response) {
     return {
@@ -75,7 +76,10 @@ export function menuInit(currentProductId: string, userMenuProductId: string, pr
     return (dispatch, getState) => {
         let menu = getState().routing.menu;
         if ((!menu.isLoaded && !menu.isLoading) || menu.needsReload) {
-            if (!menu.needsReload) {
+            if (menu.needsReload) {
+                resetQueryGridState(); // when import is completed, force reset for all grids
+            }
+            else if (menu.needsReload) {
                 dispatch({
                     type: MENU_LOADING_START,
                     currentProductId,

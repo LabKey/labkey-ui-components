@@ -31,6 +31,7 @@ describe('ProductMenuSection render', () => {
         {
             id: 2,
             label: 'Sample Set 2',
+            hasActiveJob: true
         },
         {
             id: 3,
@@ -163,6 +164,7 @@ describe('ProductMenuSection render', () => {
             />
         );
         expect(menuSection.find('ul').length).toBe(1);
+        expect(menuSection.find('i.fa-spinner').length).toBe(1); // verify active job indicator
         expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
     });
@@ -187,6 +189,7 @@ describe('ProductMenuSection render', () => {
         );
 
         expect(menuSection.find('ul').length).toBe(2);
+        expect(menuSection.find('i.fa-spinner').length).toBe(0); // no active jobs present
         expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
     });
@@ -215,4 +218,53 @@ describe('ProductMenuSection render', () => {
         expect(menuSection).toMatchSnapshot();
         menuSection.unmount();
     });
+
+    test('do not show active job', () => {
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
+            items: List<MenuSectionModel>(),
+            itemLimit: 3,
+            key: 'samples',
+        });
+
+        const menuSection = mount(
+            <ProductMenuSection
+                currentProductId="testProductHeaderUrl"
+                section={section}
+                config={
+                    new MenuSectionConfig({
+                        showActiveJobIcon: false
+                    })
+                }
+            />
+        );
+
+        expect(menuSection.find('i.fa-spinner').length).toBe(0);
+    });
+
+    test('use custom active job cls', () => {
+        const section = MenuSectionModel.create({
+            label: 'Sample Sets',
+            items: List<MenuSectionModel>(),
+            itemLimit: 3,
+            key: 'samples',
+        });
+
+        const menuSection = mount(
+            <ProductMenuSection
+                currentProductId="testProductHeaderUrl"
+                section={section}
+                config={
+                    new MenuSectionConfig({
+                        activeJobIconCls: 'job-running-icon'
+                    })
+                }
+            />
+        );
+
+        expect(menuSection.find('i.fa-spinner').length).toBe(0);
+        expect(menuSection.find('i.job-running-icon').length).toBe(0);
+    });
+
+
 });

@@ -290,7 +290,7 @@ const ASSAY_MAPPERS = [
                 if (filters.length > 0) {
                     for (let i = 0; i < filters.length; i++) {
                         if (filters[i].getColumnName().toLowerCase() === 'run/rowid') {
-                            if (Object.keys(params.length > 2))
+                            if (Object.keys(params).length > 2)
                                 console.warn("Params mapping skipped for: " + url);
 
                             const runId = filters[i].getValue();

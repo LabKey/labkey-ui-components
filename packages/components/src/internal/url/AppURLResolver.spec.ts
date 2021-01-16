@@ -79,6 +79,13 @@ describe('URL Resolvers', () => {
                         queryName: 'runs',
                     },
                 },
+                {
+                    fieldKey: 'LookupExpRun2',
+                    lookup: {
+                        schemaName: 'exp',
+                        queryName: 'results',
+                    },
+                }
             ],
         },
         rows: [
@@ -120,6 +127,11 @@ describe('URL Resolvers', () => {
                     url: '/labkey/biologics/assay-assayDetailRedirect.view?runId=584',
                     value: 584,
                 },
+                LookupExpRun2: {
+                    displayValue: 'An Assay Run - 2',
+                    url: '/labkey/biologics/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253',
+                    value: 584,
+                }
             },
         ],
     });
@@ -132,7 +144,7 @@ describe('URL Resolvers', () => {
 
         // http://facebook.github.io/jest/docs/en/expect.html#expectassertionsnumber
         // avoid false positives by defining number of assertions in a test
-        expect.assertions(8);
+        expect.assertions(9);
 
         return resolver.resolveSelectRows(selectRowsResult).then(result => {
             const newResult = fromJS(result);
@@ -164,6 +176,9 @@ describe('URL Resolvers', () => {
 
             // validate LookupMapper('exp-runs')
             expect(newResult.getIn(['rows', 0, 'LookupExpRun', 'url'])).toBe('#/rd/assayrun/584');
+
+            // validate ActionMapper('assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253')
+            expect(newResult.getIn(['rows', 0, 'LookupExpRun2', 'url'])).toBe('#/rd/assayrun/253');
         });
     });
 });

@@ -60,12 +60,12 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
 
         return (
             <div>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={12}>
                         <SectionHeading title="Name and Linking Options" cls="domain-field-section-hdr" />
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row>
                     <div>
                         <Col xs={5}>
                             <div className="domain-field-label">Description</div>

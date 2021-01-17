@@ -29,6 +29,7 @@ import {
     DomainException,
     DomainField,
     DomainFieldError,
+    DomainFieldIndexChange,
     DomainPanelStatus,
     IBannerMessage,
     IDomainField,
@@ -435,31 +436,50 @@ export function addDomainField(domain: DomainDesign, fieldConfig: Partial<IDomai
     }) as DomainDesign;
 }
 
-function updateErrorIndexes(removedFieldIndex: number, domainException: DomainException) {
-    const errorsWithNewIndex = domainException.errors.map(error => {
+// Given sequence of field indexes that have existing errors, 'rowIndex', and
+// array of indexes of removed fields, 'removedFieldIndexes' we must update each
+// rowIndex based on if its position has been affected by a deleted field.
+// Eg, rowIndex set [1, 4, 7, 8] with removedFieldIndexes [2, 5] becomes [1, 3, 5, 6].
+export function updateErrorIndexes(removedFieldIndexes: number[], domainException: DomainException) {
+    const errorsWithNewIndexes = domainException.errors.map(error => {
         const newRowIndexes = error.rowIndexes.map(rowIndex => {
-            if (rowIndex > removedFieldIndex) {
-                return rowIndex - 1;
+            for (let i = 0; i < removedFieldIndexes.length; i++) {
+                if (i !== removedFieldIndexes.length && removedFieldIndexes[i + 1] < rowIndex) {
+                    continue;
+                } else if (rowIndex > removedFieldIndexes[i]) {
+                    return rowIndex - (i + 1);
+                } else {
+                    return rowIndex;
+                }
             }
         });
         return error.set('rowIndexes', newRowIndexes);
     });
-
-    return domainException.set('errors', errorsWithNewIndex);
+    return domainException.set('errors', errorsWithNewIndexes);
 }
 
-export function removeField(domain: DomainDesign, index: number): DomainDesign {
-    domain = updateDomainException(domain, index, undefined);
+export function removeFields(domain: DomainDesign, deletableSelectedFields: number[]): DomainDesign {
+    // Removes from domain.domainException errors belonging to removed fields, and also clears domainException if
+    // a removed field was the final field with any error
+    deletableSelectedFields.forEach(value => {
+        domain = updateDomainException(domain, value, undefined);
+    });
 
-    const newDomain = domain.merge({
-        fields: domain.fields.delete(index),
+    const fields = domain.fields;
+    const newFields = fields.filter((field, i) => !deletableSelectedFields.includes(i));
+    const updatedDomain = domain.merge({
+        fields: newFields,
     }) as DomainDesign;
 
-    // "move up" the indexes of the fields with error, i.e. the fields that are below the removed field
-    if (newDomain.hasException()) {
-        return newDomain.set('domainException', updateErrorIndexes(index, newDomain.domainException)) as DomainDesign;
+    // "move up" the indexes of the fields with error, i.e. the fields that are below the removed fields
+    if (updatedDomain.hasException()) {
+        return updatedDomain.set(
+            'domainException',
+            updateErrorIndexes(deletableSelectedFields, updatedDomain.domainException)
+        ) as DomainDesign;
+    } else {
+        return updatedDomain;
     }
-    return newDomain;
 }
 
 /**
@@ -490,7 +510,8 @@ export function updateDomainField(domain: DomainDesign, change: IFieldChange): D
     const field = domain.fields.get(index);
 
     if (field) {
-        let newField = field.set('updatedField', true) as DomainField;
+        const isSelection = type === 'selected';
+        let newField = isSelection ? field : (field.set('updatedField', true) as DomainField);
 
         switch (type) {
             case DOMAIN_FIELD_TYPE:
@@ -879,7 +900,7 @@ export function updateOntologyFieldProperties(
     domainIndex: number,
     updatedDomain: DomainDesign,
     origDomain: DomainDesign,
-    removedFieldIndex: number
+    removedFieldIndexes: DomainFieldIndexChange[]
 ): DomainDesign {
     // make sure it is still an ontology lookup data type field before changing anything
     const ontField = updatedDomain.fields.get(fieldIndex);
@@ -891,7 +912,7 @@ export function updateOntologyFieldProperties(
                 ontField.conceptImportColumn,
                 updatedDomain,
                 origDomain,
-                removedFieldIndex
+                removedFieldIndexes
             );
             updatedDomain = updateDomainField(updatedDomain, { id, value });
         }
@@ -901,7 +922,7 @@ export function updateOntologyFieldProperties(
                 ontField.conceptLabelColumn,
                 updatedDomain,
                 origDomain,
-                removedFieldIndex
+                removedFieldIndexes
             );
             updatedDomain = updateDomainField(updatedDomain, { id, value });
         }
@@ -915,14 +936,26 @@ export function getOntologyUpdatedFieldName(
     propFieldName: string,
     updatedDomain: DomainDesign,
     origDomain: DomainDesign,
-    removedFieldIndex: number
+    removedFieldIndexes: DomainFieldIndexChange[]
 ): string {
     let origFieldIndex = origDomain.findFieldIndexByName(propFieldName);
-    const propFieldRemoved = origFieldIndex === removedFieldIndex;
 
     // check for a field removal prior to the ontology lookup field
-    origFieldIndex = removedFieldIndex < origFieldIndex ? origFieldIndex - 1 : origFieldIndex;
-    const updatedPropField = updatedDomain.fields.get(origFieldIndex);
+    const propFieldRemoved = removedFieldIndexes
+        ? removedFieldIndexes.some(removedField => removedField.originalIndex === origFieldIndex && removedField.newIndex === undefined)
+        : removedFieldIndexes;
 
+    if (removedFieldIndexes) {
+        removedFieldIndexes.sort((a, b) => a.originalIndex - b.originalIndex);
+        for (let i = 0; i < removedFieldIndexes.length; i++) {
+            if (i + 1 < removedFieldIndexes.length && removedFieldIndexes[i + 1].originalIndex < origFieldIndex) {
+                continue;
+            } else if (origFieldIndex > removedFieldIndexes[i].originalIndex) {
+                origFieldIndex = origFieldIndex - (i + 1);
+            }
+        }
+    }
+
+    const updatedPropField = updatedDomain.fields.get(origFieldIndex);
     return !propFieldRemoved && updatedPropField.dataType.isString() ? updatedPropField.name : undefined;
 }

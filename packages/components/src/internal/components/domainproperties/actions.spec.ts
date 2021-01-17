@@ -37,6 +37,8 @@ import {
     updateOntologyFieldProperties,
     processJsonImport,
     downloadJsonFile,
+    updateErrorIndexes,
+    removeFields,
 } from './actions';
 import { DomainDesign, DomainException, DomainField } from './models';
 import {
@@ -413,7 +415,8 @@ describe('domain properties actions', () => {
                 { name: 'text1', rangeURI: TEXT_TYPE.rangeURI },
             ],
         });
-        testDomain = updateOntologyFieldProperties(0, 0, removedChangesDomain, origDomain, 2);
+        const removedFieldIndexes = [{ originalIndex: 2, newIndex: undefined }];
+        testDomain = updateOntologyFieldProperties(0, 0, removedChangesDomain, origDomain, removedFieldIndexes);
         expect(testDomain.fields.get(0).sourceOntology).toBe('SRC');
         expect(testDomain.fields.get(0).conceptImportColumn).toBe('text1');
         expect(testDomain.fields.get(0).conceptLabelColumn).toBe(undefined);
@@ -452,10 +455,11 @@ describe('domain properties actions', () => {
             ],
         });
 
+        const removedFieldIndexes = [{ originalIndex: 0, newIndex: undefined }];
         expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, undefined)).toBe('text');
         expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, undefined)).toBe('textUpdated');
-        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, 0)).toBe(undefined);
-        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, 0)).toBe(undefined);
+        expect(getOntologyUpdatedFieldName('text', origDomain, origDomain, removedFieldIndexes)).toBe(undefined);
+        expect(getOntologyUpdatedFieldName('text', updatedDomain, origDomain, removedFieldIndexes)).toBe(undefined);
         expect(getOntologyUpdatedFieldName('int', origDomain, origDomain, undefined)).toBe(undefined);
         expect(getOntologyUpdatedFieldName('int', updatedDomain, origDomain, undefined)).toBe(undefined);
     });
@@ -515,5 +519,60 @@ describe('domain properties actions', () => {
         result.fields.forEach(field => {
             expect(field).not.toMatchObject({ propertyId: 'value', propertyURI: 'value' });
         });
+    });
+
+    // For more detail as to expected behavior of updateErrorIndexes, see comment above the function definition
+    test('updateErrorIndexes', () => {
+        const message = 'Generic error message';
+
+        const initialErrors = [{ rowIndexes: [1] }, { rowIndexes: [4] }, { rowIndexes: [8] }];
+        const initialRawModel = { exception: message, success: false, errors: initialErrors };
+        const initialDomainException = DomainException.create(initialRawModel, SEVERITY_LEVEL_ERROR);
+
+        const newErrors = [{ rowIndexes: [1] }, { rowIndexes: [3] }, { rowIndexes: [5] }];
+        const newRawModel = { exception: message, success: false, errors: newErrors };
+        const newDomainException = DomainException.create(newRawModel, SEVERITY_LEVEL_ERROR);
+
+        expect(updateErrorIndexes([2, 5, 7], initialDomainException)).toEqual(newDomainException);
+    });
+
+    test('removeFields', () => {
+        const message = 'Generic error message';
+        const initialErrors = [{ rowIndexes: [1] }, { rowIndexes: [4] }, { rowIndexes: [8] }];
+        const initialRawModel = { exception: message, success: false, errors: initialErrors };
+        const initialDomainException = DomainException.create(initialRawModel, SEVERITY_LEVEL_ERROR);
+        const initialDomain = DomainDesign.create({
+            name: 'GenericList',
+            domainException: initialDomainException,
+            fields: [
+                { name: 'zero' },
+                { name: 'one' },
+                { name: 'two' },
+                { name: 'three' },
+                { name: 'four' },
+                { name: 'five' },
+                { name: 'six' },
+                { name: 'seven' },
+                { name: 'eight' },
+            ],
+        });
+
+        const newErrors = [{ rowIndexes: [1] }, { rowIndexes: [3] }, { rowIndexes: [5] }];
+        const newRawModel = { exception: message, success: false, errors: newErrors };
+        const newDomainException = DomainException.create(newRawModel, SEVERITY_LEVEL_ERROR);
+        const newDomain = DomainDesign.create({
+            name: 'GenericList',
+            domainException: newDomainException,
+            fields: [
+                { name: 'zero' },
+                { name: 'one' },
+                { name: 'three' },
+                { name: 'four' },
+                { name: 'six' },
+                { name: 'eight' },
+            ],
+        });
+
+        expect(removeFields(initialDomain, [2, 5, 7])).toEqual(newDomain);
     });
 });

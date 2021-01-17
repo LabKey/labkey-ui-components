@@ -74,12 +74,12 @@ export class SampleFieldOptions extends React.PureComponent<SampleFieldProps, an
 
         return (
             <div>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={12}>
                         <SectionHeading title={label} />
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={5}>
                         <div className="domain-field-label">
                             Sample lookup to

@@ -68,10 +68,23 @@
   margin-bottom: -1px;
   background-color: white;
   outline: none;
-};
+
+  &.selected {
+    background-color: $blue-bkgrd-selected;
+  }
+}
+
+.domain-field-header {
+    padding: 0 0 15px 40px;
+}
 
 .domain-row-border-default {
   border-color: $gray-border;
+}
+
+.domain-row-border-selected {
+  border-color: $blue-border-solid;
+  margin-bottom: 0; // to offset the margin-bottom from domain-field-row
 }
 
 .domain-row-border-error {
@@ -165,11 +178,21 @@
     display: flex;
 };
 
-.domain-row-expand {
+.domain-row-action-section {
     display: table-cell;
     vertical-align: top;
     padding-top: 10px;
-    width: 55px;
+    width: 80px;
+
+    .domain-field-expand-icon {
+        padding-left: 15px;
+    }
+
+    .domain-field-check-icon {
+        display: inline-block;
+        padding-left: 10px;
+        margin: 0;
+    }
 }
 
 .domain-field-expand-icon, .domain-form-expand-btn {
@@ -386,7 +409,19 @@
     margin-bottom: 0;
     padding-top: 5px;
     padding-bottom: 15px;
-    color: $gray;
+    color: $gray-dark;
+
+    .domain-row-action-section {
+        padding-top: 0;
+    }
+
+    .domain-field-check-icon {
+        padding-left: 10px;
+    }
+}
+
+.domain-form-preHdr-row {
+  left: -24px;
 }
 
 .domain-form-hdr-margins {
@@ -430,7 +465,7 @@
 }
 
 .domain-row-container-expand-spacer {
-    width: 20px;
+    width: 10px;
     display: table-cell;
 }
 
@@ -574,6 +609,16 @@
 
 .domain-remove-icon {
   padding-top: 5px;
+}
+
+.domain-panel-header-clear-all {
+ height: 20px;
+ width: 50px;
+ font-size: 10px;
+ vertical-align: middle;
+ text-align: center;
+ padding: 0;
+ margin-left: 10px;
 }
 
 .domain-panel-header {

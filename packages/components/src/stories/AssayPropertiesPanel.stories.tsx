@@ -3,69 +3,71 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { boolean, withKnobs } from '@storybook/addon-knobs';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { AssayProtocolModel, AssayPropertiesPanel } from '..';
+
+import initGlobal from './initGlobal';
 
 import generalAssayTemplate from '../test/data/assay-getProtocolGeneralTemplate.json';
 import generalAssaySaved from '../test/data/assay-getProtocolGeneral.json';
 import elispotAssayTemplate from '../test/data/assay-getProtocolELISpotTemplate.json';
 import elispotAssaySaved from '../test/data/assay-getProtocolELISpot.json';
 
-import './stories.scss';
+const DATA_MODELS = {
+    'GPAT Template': generalAssayTemplate.data,
+    'GPAT Saved Assay': generalAssaySaved.data,
+    'ELISpot Template': elispotAssayTemplate.data,
+    'ELISpot Saved Assay': elispotAssaySaved.data,
+};
 
-interface Props {
-    data: {};
-}
+// TODO: This needs to be reinitialized every time data changes...
+initGlobal();
 
-interface State {
-    model: AssayProtocolModel;
-}
+export default {
+    title: 'Components/AssayPropertiesPanel',
+    component: AssayPropertiesPanel,
+    argTypes: {
+        data: {
+            control: {
+                type: 'select',
+                options: Object.keys(DATA_MODELS),
+            },
+        },
+        model: {
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onChange: {
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+} as Meta;
 
-class WrappedAssayPropertiesPanel extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
+export const AssayPropertiesPanelStory: Story = props => {
+    const dataModel = useMemo(() => AssayProtocolModel.create(DATA_MODELS[props.data]), [props.data]);
+    const [model, setModel] = useState(dataModel);
 
-        this.state = {
-            model: AssayProtocolModel.create(props.data),
-        };
-    }
+    useEffect(() => {
+        setModel(dataModel);
+    }, [dataModel]);
 
-    onAssayPropertiesChange = (model: AssayProtocolModel) => {
-        this.setState(() => ({ model }));
-    };
+    return <AssayPropertiesPanel {...(props as any)} key={props.data} model={model} onChange={setModel} />;
+};
 
-    render() {
-        return (
-            <AssayPropertiesPanel
-                model={this.state.model}
-                controlledCollapse={false}
-                panelStatus="NONE"
-                validate={false}
-                useTheme={false}
-                onChange={this.onAssayPropertiesChange}
-                asPanel={boolean('asPanel', true)}
-                appPropertiesOnly={boolean('appPropertiesOnly', false)}
-                initCollapsed={boolean('initCollapsed', false)}
-                collapsible={boolean('collapsible', true)}
-            />
-        );
-    }
-}
+AssayPropertiesPanelStory.storyName = 'AssayPropertiesPanel';
 
-storiesOf('AssayPropertiesPanel', module)
-    .addDecorator(withKnobs)
-    .add('GPAT Template', () => {
-        return <WrappedAssayPropertiesPanel data={generalAssayTemplate.data} />;
-    })
-    .add('GPAT Saved Assay', () => {
-        return <WrappedAssayPropertiesPanel data={generalAssaySaved.data} />;
-    })
-    .add('ELISpot Template', () => {
-        return <WrappedAssayPropertiesPanel data={elispotAssayTemplate.data} />;
-    })
-    .add('ELISpot Saved Assay', () => {
-        return <WrappedAssayPropertiesPanel data={elispotAssaySaved.data} />;
-    });
+AssayPropertiesPanelStory.args = {
+    appPropertiesOnly: true,
+    asPanel: true,
+    collapsible: true,
+    controlledCollapse: false,
+    data: 'GPAT Template',
+    initCollapsed: false,
+    model: AssayProtocolModel.create(generalAssayTemplate.data),
+    panelStatus: 'NONE',
+    useTheme: false,
+    validate: false,
+};

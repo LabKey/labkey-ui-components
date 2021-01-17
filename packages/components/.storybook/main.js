@@ -2,6 +2,8 @@ module.exports = {
     stories: [
         '../src/stories/AddEntityButton.stories.tsx',
         '../src/stories/AssayDesignDeleteConfirmModal.stories.tsx',
+        '../src/stories/AssayPicker.stories.tsx',
+        '../src/stories/AssayPropertiesPanel.stories.tsx',
         '../src/stories/Cards.stories.tsx',
         '../src/stories/ColorIcon.stories.tsx',
         '../src/stories/ColorPickerInput.stories.tsx',

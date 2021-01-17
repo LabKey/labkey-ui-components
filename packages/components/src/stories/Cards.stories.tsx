@@ -4,10 +4,9 @@
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import React from 'react';
-import { Meta } from '@storybook/react/types-6-0';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { Cards as CardsComponent } from '..';
-
+import { Cards } from '..';
 import { ICON_URL } from './mock';
 
 const cards = [
@@ -41,7 +40,8 @@ const cards = [
 
 export default {
     title: 'Components/Cards',
-    component: CardsComponent,
+    component: Cards,
 } as Meta;
 
-export const Cards = () => <CardsComponent cards={cards} />;
+export const CardsStory: Story = () => <Cards cards={cards} />;
+CardsStory.storyName = 'Cards';

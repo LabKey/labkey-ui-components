@@ -27,6 +27,7 @@ export default {
 export const CreateUsersModal: Story = ({ showRoleOptions, ...props }) => {
     return <CreateUsersModalComponent {...(props as any)} roleOptions={showRoleOptions ? ROLE_OPTIONS : undefined} />;
 };
+
 CreateUsersModal.args = {
     showRoleOptions: true,
     show: true,

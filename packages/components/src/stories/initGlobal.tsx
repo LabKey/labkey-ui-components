@@ -15,16 +15,13 @@
  */
 import { fromJS } from 'immutable';
 
-import { FileColumnRenderer, initNotificationsState, initQueryGridState, SCHEMAS } from '..';
+import { FileColumnRenderer, initNotificationsState, SCHEMAS } from '..';
 import { initBrowserHistoryState } from '../internal/util/global';
+import { initUnitTests } from '../internal/testHelpers';
 
 import { initMocks } from './mock';
 
-let GLOBAL_INIT = false;
-
 const initGlobal = (): void => {
-    if (GLOBAL_INIT) return;
-    GLOBAL_INIT = true;
 
     const QUERY_METADATA = fromJS({
         // hideEmptyChartSelector: true,
@@ -64,7 +61,7 @@ const initGlobal = (): void => {
         filecolumnrenderer: FileColumnRenderer,
     });
 
-    initQueryGridState(QUERY_METADATA, COLUMN_RENDERERS);
+    initUnitTests(QUERY_METADATA, COLUMN_RENDERERS);
     initBrowserHistoryState();
     initNotificationsState();
     initMocks();

@@ -3,14 +3,14 @@
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { ColorPickerInput as ColorPickerInputComponent } from '..';
+import { ColorPickerInput } from '..';
 
 export default {
     title: 'Components/ColorPickerInput',
-    component: ColorPickerInputComponent,
+    component: ColorPickerInput,
     argTypes: {
         onChange: {
             control: { disable: true },
@@ -23,14 +23,16 @@ export default {
     },
 } as Meta;
 
-export const ColorPickerInput: Story = storyProps => {
+export const ColorPickerInputStory: Story = storyProps => {
     const [selected, setSelected] = useState<string>('#009ce0');
-    return (
-        <ColorPickerInputComponent {...storyProps} onChange={(name, value) => setSelected(value)} value={selected} />
-    );
+    const onChange = useCallback((name, value) => { setSelected(value); }, []);
+
+    return <ColorPickerInput {...storyProps} onChange={onChange} value={selected} />;
 };
 
-ColorPickerInput.args = {
+ColorPickerInputStory.storyName = 'ColorPickerInput';
+
+ColorPickerInputStory.args = {
     allowRemove: true,
     showLabel: true,
     text: 'Select color',

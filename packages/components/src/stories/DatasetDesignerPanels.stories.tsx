@@ -20,8 +20,12 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import { NEW_DATASET_MODEL_WITH_DATASPACE, NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../test/data/constants';
 import { DatasetDesignerPanels, DatasetModel } from '..';
 
+import initGlobal from './initGlobal';
+
 import getDatasetDesign from '../test/data/dataset-getDatasetDesign.json';
 import getDatasetDesignSharedStudy from '../test/data/dataset-getDatasetDesignSharedStudy.json';
+
+initGlobal();
 
 export default {
     title: 'Components/DatasetDesignerPanels',

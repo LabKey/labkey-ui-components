@@ -1,37 +1,37 @@
 /*
- * Copyright (c) 2019 LabKey Corporation
+ * Copyright (c) 2019-2021 LabKey Corporation
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
 import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { EntityTypeDeleteConfirmModal } from '..';
 
-import './stories.scss';
+export default {
+    title: 'Components/EntityTypeDeleteConfirmModal',
+    component: EntityTypeDeleteConfirmModal,
+    argTypes: {
+        onCancel: {
+            action: 'cancel',
+            control: { disable: true },
+            table: { disable: true },
+        },
+        onConfirm: {
+            action: 'confirm',
+            control: { disable: true },
+            table: { disable: true },
+        },
+    },
+} as Meta;
 
-storiesOf('EntityTypeDeleteConfirmModal', module)
-    .addDecorator(withKnobs)
-    .add('with knobs', () => {
-        return (
-            <EntityTypeDeleteConfirmModal
-                rowId={0}
-                noun={text('noun', 'sample')}
-                deleteConfirmationActionName={text('lkDeleteAction', 'deleteSampleTypes')}
-                showDependenciesLink={boolean('showDependenciesLink', false)}
-                onConfirm={() => console.log('confirm')}
-                onCancel={() => console.log('cancel')}
-            />
-        );
-    });
+export const EntityTypeDeleteConfirmModalStory: Story = props => <EntityTypeDeleteConfirmModal {...(props as any)} />;
+
+EntityTypeDeleteConfirmModalStory.storyName = 'EntityTypeDeleteConfirmModal';
+
+EntityTypeDeleteConfirmModalStory.args = {
+    deleteConfirmationActionName: 'deleteSampleTypes',
+    noun: 'sample',
+    rowId: 0,
+    showDependenciesLink: false,
+};

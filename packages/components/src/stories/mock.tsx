@@ -263,6 +263,7 @@ export function initMocks() {
     initLineageMocks();
     initUserPropsMocks();
     initDomainPropertiesMocks();
+    initPipelineStatusDetailsMocks();
 
     mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
         const body = decodeURIComponent(req.body());

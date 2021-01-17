@@ -22,6 +22,7 @@ storiesOf('ServerActivityList', module)
                 onViewAll={() => {}}
                 maxRows={number('Maximum shown', 3)}
                 onRead={() => {}}
+                onShowErrorDetail={() => {}}
             />
         );
     })
@@ -32,6 +33,7 @@ storiesOf('ServerActivityList', module)
                 onViewAll={() => {}}
                 maxRows={number('Maximum shown', 3)}
                 onRead={() => {}}
+                onShowErrorDetail={() => {}}
             />
         );
     });

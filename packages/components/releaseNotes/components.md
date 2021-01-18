@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 1.16.0
+*Released*: 18 January 2021
 * add menu item active job icon
 * add PipelineJobsPage
 * add PipelineStatusDetailPage

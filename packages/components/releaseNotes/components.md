@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.16.0
+*Released*: 18 January 2021
+* add menu item active job icon
+* add PipelineJobsPage
+* add PipelineStatusDetailPage
+* modify assay url resolver to work with Data.Run/RowId~eq=rowId
+* add pipeline jobId to EntityInsertPanel and AssayUploadResultModel
+
 ### version 1.15.0
 *Released*: 14 January 2021
 * Item 8012: Row Selection Actions on Field Editor

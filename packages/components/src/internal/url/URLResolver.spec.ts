@@ -97,4 +97,22 @@ describe('parsePathName', () => {
             containerPath: '/my folder/my path',
         });
     });
+
+    test('controller with dash', () => {
+        const url = '/labkey/my%20folder/my%20path/pipeline-status-details.view?rowId=123';
+        expect(parsePathName(url)).toEqual({
+            controller: 'pipeline-status',
+            action: 'details',
+            containerPath: '/my folder/my path',
+        });
+    });
+
+    test('controller with dash - old style', () => {
+        const url = '/labkey/pipeline-status/my%20folder/my%20path/details.view?rowId=123';
+        expect(parsePathName(url)).toEqual({
+            controller: 'pipeline-status',
+            action: 'details',
+            containerPath: '/my folder/my path',
+        });
+    });
 });

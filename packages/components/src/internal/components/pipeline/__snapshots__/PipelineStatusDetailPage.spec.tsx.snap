@@ -1,0 +1,423 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PipelineStatusDetailPage> Completed job, no warn, no error 1`] = `
+Array [
+  <div
+    className="page-header"
+  >
+    <h2
+      className="text-capitalize no-margin-top"
+    >
+      assays - Workflow_Assay01
+    </h2>
+  </div>,
+  <div
+    className="g-section"
+  >
+    <div
+      className="panel panel-default pipeline-job-status-detail"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="section-panel--title-container-medium"
+        >
+          <div
+            className="section-panel--title-medium"
+          >
+            Status
+          </div>
+        </div>
+        <table>
+          <tbody>
+            <tr
+              className="pipeline-job-status-detail-row"
+            >
+              <td>
+                Created
+                : 
+              </td>
+              <td>
+                11:16 2021-01-08
+              </td>
+            </tr>
+            <tr
+              className="pipeline-job-status-detail-row"
+            >
+              <td>
+                Status
+                : 
+              </td>
+              <td>
+                COMPLETE
+              </td>
+            </tr>
+            <tr
+              className="pipeline-job-status-detail-row"
+            >
+              <td>
+                Info
+                : 
+              </td>
+              <td />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+  <div
+    className="g-section"
+  >
+    <div
+      className="panel panel-default pipeline-job-status-log"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="section-panel--title-container-medium"
+        >
+          <div
+            className="section-panel--title-medium"
+          >
+            Log
+          </div>
+        </div>
+        <table>
+          <tbody>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,328 INFO : ----- Start Batch Properties -----
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,330 INFO : ----- End Batch Properties -----
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,331 INFO : ----- Start Run Properties -----
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,331 INFO : 	Uploaded Files:
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,332 INFO : 		* data_2021-01-08_10-50-22-4.xlsx
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,332 INFO : 	Assay ID: [Blank]
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,332 INFO : 	Run Comments: [Blank]
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,333 INFO : 	dateField1: [Blank]
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,333 INFO : ----- End Run Properties -----
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:11,757 INFO : Starting assay upload
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:12,338 DEBUG: No ExperimentDataHandler registered for data file file:///Users/xing/dev/trunk/build/deploy/files/SM_Workflow_UpdateJob_Test/@files/assaydata/data_2021-01-08_10-50-22-4.log, no special loading will be done on this file.
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                08 Jan 2021 11:16:12,727 INFO : Finished assay upload
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<PipelineStatusDetailPage> Failed job, with error 1`] = `
+Array [
+  <div
+    className="page-header"
+  >
+    <h2
+      className="text-capitalize no-margin-top"
+    >
+      SampleType_01 - SampleType_01_00.xlsx
+    </h2>
+  </div>,
+  <div
+    className="g-section"
+  >
+    <div
+      className="panel panel-default pipeline-job-status-detail"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="section-panel--title-container-medium"
+        >
+          <div
+            className="section-panel--title-medium"
+          >
+            Status
+          </div>
+        </div>
+        <table>
+          <tbody>
+            <tr
+              className="pipeline-job-status-detail-row"
+            >
+              <td>
+                Created
+                : 
+              </td>
+              <td>
+                13:42 2021-01-13
+              </td>
+            </tr>
+            <tr
+              className="pipeline-job-status-detail-row"
+            >
+              <td>
+                Status
+                : 
+              </td>
+              <td>
+                ERROR
+              </td>
+            </tr>
+            <tr
+              className="pipeline-job-status-detail-row"
+            >
+              <td>
+                Info
+                : 
+              </td>
+              <td />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+  <div
+    className="g-section"
+  >
+    <div
+      className="panel panel-default pipeline-job-status-log"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="section-panel--title-container-medium"
+        >
+          <div
+            className="section-panel--title-medium"
+          >
+            Log
+          </div>
+        </div>
+        <table>
+          <tbody>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                14 Jan 2021 09:31:23,636 INFO : Retrying job.
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                14 Jan 2021 09:31:23,637 DEBUG: Database indicates active task ID is null
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                14 Jan 2021 09:31:23,640 DEBUG: Retry details: Old Job ID: 85d9aaa5-3815-1039-9527-87771aa77304
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                14 Jan 2021 09:31:23,652 INFO : Starting importing SampleType_01 - SampleType_01_00.xlsx
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry job-status-log-entry-error"
+            >
+              <td>
+                14 Jan 2021 09:31:29,851 ERROR: Import failed: ERROR: duplicate key value violates unique constraint "uq_material_lsid"
+  Detail: Key (lsid)=(urn:lsid:labkey.com:Sample.8.SampleType_01:S1_1) already exists.
+  Where: SQL statement "INSERT INTO exp.material (rowid, lsid, name, cpastype, created, container, createdby, modifiedby, modified, lastindexed, description, objectid)
+SELECT $1.RowId, $1.lsid, $1.Name, 'urn:lsid:labkey.com:SampleSet.Folder-8:SampleType_01', CURRENT_TIMESTAMP, '6e20520f-8c10-1038-8703-f26082cf2989', 1005, 1005, CURRENT_TIMESTAMP, $1.LastIndexed, $1.Description, _$objectid$_"
+PL/pgSQL function temp.fn_df328d95c900e606a17f6d5d8021e973(temp.fn_df328d95c900e606a17f6d5d8021e973type) line 9 at SQL statement
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+]
+`;
+
+exports[`<PipelineStatusDetailPage> Running job, with warning 1`] = `
+Array [
+  <div
+    className="page-header"
+  >
+    <h2
+      className="text-capitalize no-margin-top"
+    >
+      exp.data - sourceType1 - data_2021-01-10_06-02-08-2.xlsx
+    </h2>
+  </div>,
+  <div
+    className="g-section"
+  >
+    <div
+      className="panel panel-default pipeline-job-status-detail"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="section-panel--title-container-medium"
+        >
+          <div
+            className="section-panel--title-medium"
+          >
+            Status
+          </div>
+        </div>
+        <table>
+          <tbody>
+            <tr
+              className="pipeline-job-status-detail-row"
+            >
+              <td>
+                Created
+                : 
+              </td>
+              <td>
+                07:17 2021-01-10
+              </td>
+            </tr>
+            <tr
+              className="pipeline-job-status-detail-row"
+            >
+              <td>
+                Status
+                : 
+              </td>
+              <td>
+                COMPLETE
+              </td>
+            </tr>
+            <tr
+              className="pipeline-job-status-detail-row"
+            >
+              <td>
+                Info
+                : 
+              </td>
+              <td />
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+  <div
+    className="g-section"
+  >
+    <div
+      className="panel panel-default pipeline-job-status-log"
+    >
+      <div
+        className="panel-body"
+      >
+        <div
+          className="section-panel--title-container-medium"
+        >
+          <div
+            className="section-panel--title-medium"
+          >
+            Log
+          </div>
+        </div>
+        <table>
+          <tbody>
+            <tr
+              className="job-status-log-entry"
+            >
+              <td>
+                10 Jan 2021 07:17:27,112 INFO : Starting importing exp.data - sourceType1 - data_2021-01-10_06-02-08-2.xlsx
+              </td>
+            </tr>
+            <tr
+              className="job-status-log-entry job-status-log-entry-warn"
+            >
+              <td>
+                10 Jan 2021 07:17:29,693 WARN : Parent source not found, skipping...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>,
+]
+`;

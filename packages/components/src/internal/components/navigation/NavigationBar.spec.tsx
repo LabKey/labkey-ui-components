@@ -24,6 +24,7 @@ import { MenuSectionModel, ProductMenuModel } from './model';
 import { List } from 'immutable';
 import { markAllNotificationsRead } from '../../../test/data/notificationData';
 import {ServerNotificationModel} from "../notifications/model";
+import {ServerActivityList} from "../notifications/ServerActivityList";
 
 describe('<NavigationBar/>', () => {
     const productMenuModel = new ProductMenuModel({
@@ -37,6 +38,8 @@ describe('<NavigationBar/>', () => {
         maxRows: 1,
         markAllNotificationsRead: markAllNotificationsRead,
         serverActivity: new ServerNotificationModel(),
+        onViewAll:jest.fn(),
+        onShowErrorDetail:jest.fn()
     };
 
     test('default props', () => {

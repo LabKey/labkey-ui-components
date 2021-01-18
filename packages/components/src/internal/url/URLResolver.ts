@@ -122,7 +122,7 @@ export function parsePathName(path: string) {
 
     let controller = null;
 
-    const dash = action.indexOf('-');
+    const dash = action.lastIndexOf('-');
     if (dash > 0) {
         controller = action.substring(0, dash);
         action = action.substring(dash + 1);
@@ -285,6 +285,20 @@ const ASSAY_MAPPERS = [
             const rowId = params.rowId;
 
             if (rowId) {
+                // filter on Data.Run/RowId~eq=<rowId>
+                const filters = Filter.getFiltersFromUrl(url, 'Data');
+                if (filters.length > 0) {
+                    for (let i = 0; i < filters.length; i++) {
+                        if (filters[i].getColumnName().toLowerCase() === 'run/rowid') {
+                            if (Object.keys(params).length > 2)
+                                console.warn("Params mapping skipped for: " + url);
+
+                            const runId = filters[i].getValue();
+                            return AppURL.create('rd', 'assayrun', runId);
+                        }
+                    }
+                }
+
                 delete params.rowId; // strip the rowId and pass through the remaining params
                 return AppURL.create('assays', rowId, 'data').addParams(params);
             }
@@ -436,6 +450,15 @@ const LOOKUP_MAPPER = new LookupMapper('q', {
     issues: () => false, // 33680: Prevent remapping issues lookup
 });
 
+const PIPELINE_MAPPER = new ActionMapper('pipeline-status', 'details', (row) => {
+        const url = row.get('url');
+        if (url) {
+            const params = ActionURL.getParameters(url);
+            return AppURL.create('pipeline', params.rowId);
+        }
+        return false;
+    })
+
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,
     DATA_CLASS_MAPPERS,
@@ -447,6 +470,7 @@ export const URL_MAPPERS = {
     DOWNLOAD_FILE_LINK_MAPPER,
     AUDIT_DETAILS_MAPPER,
     LOOKUP_MAPPER,
+    PIPELINE_MAPPER
 };
 
 export class URLResolver {

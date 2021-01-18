@@ -116,6 +116,7 @@ import {
     NotificationItemProps,
     Persistence,
     ServerNotificationModel,
+    ServerActivityData
 } from './internal/components/notifications/model';
 import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
@@ -435,6 +436,8 @@ import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPan
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
+import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
+import { PipelineStatusDetailPage }  from './internal/components/pipeline/PipelineStatusDetailPage';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -709,6 +712,7 @@ export {
     Notification,
     NotificationCreatable,
     ServerNotificationModel,
+    ServerActivityData,
     Persistence,
     MessageFunction,
     createNotification,
@@ -917,6 +921,9 @@ export {
     TimelineEventModel,
     TimelineGroupedEventInfo,
     TimelineView,
+    // pipeline
+    PipelineJobsPage,
+    PipelineStatusDetailPage,
     // Test Helpers
     mountWithServerContext,
     sleep,

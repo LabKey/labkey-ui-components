@@ -104,6 +104,7 @@ import ontologiesQuery from '../test/data/ontologies-getQuery.json';
 import serverNotifications from '../test/data/notification-getUserNotificationsForPanel.json';
 import pipelineJobQueryDetails from '../test/data/pipelineJob-getQueryDetails.json';
 import pipelineJobQuery from '../test/data/pipelineJob-getQuery.json';
+import pipelineStatusDetails from '../test/data/pipelineStatusDetails.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -262,6 +263,7 @@ export function initMocks() {
     initLineageMocks();
     initUserPropsMocks();
     initDomainPropertiesMocks();
+    initPipelineStatusDetailsMocks();
 
     mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
         const body = decodeURIComponent(req.body());
@@ -632,4 +634,17 @@ export function initUserPropsMocks(): void {
 
 export function initServerNotificationMocks(): void {
     mock.get(/.*\/getUserNotification.*/, jsonResponse(serverNotifications));
+}
+
+export function initPipelineStatusDetailsMocks(): void {
+    mock.get(/.*\/pipeline-status\/?.*\/statusDetails.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+
+        responseBody = pipelineStatusDetails.filter(detail => {
+            return detail.rowId == parseInt(queryParams.rowId);
+        });
+
+        return jsonResponse(responseBody.length > 0 ? responseBody[0] : {success: false}, res);
+    });
 }

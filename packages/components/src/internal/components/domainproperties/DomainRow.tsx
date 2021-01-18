@@ -35,6 +35,7 @@ import {
     DOMAIN_FIELD_NAME,
     DOMAIN_FIELD_REQUIRED,
     DOMAIN_FIELD_ROW,
+    DOMAIN_FIELD_SELECTED,
     DOMAIN_FIELD_TYPE,
     FIELD_NAME_CHAR_WARNING_INFO,
     FIELD_NAME_CHAR_WARNING_MSG,
@@ -50,7 +51,13 @@ import {
 } from './models';
 import { PropDescType } from './PropDescType';
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
-import { isFieldFullyLocked, isFieldPartiallyLocked, isLegalName, isPrimaryKeyFieldLocked } from './propertiesUtil';
+import {
+    isFieldFullyLocked,
+    isFieldPartiallyLocked,
+    isLegalName,
+    isPrimaryKeyFieldLocked,
+    isFieldDeletable,
+} from './propertiesUtil';
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { AdvancedSettings } from './AdvancedSettings';
 
@@ -158,9 +165,9 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         );
     }
 
-    getFieldErrorClass = (fieldError: DomainFieldError): string => {
+    getFieldBorderClass = (fieldError: DomainFieldError, selected: boolean): string => {
         if (!fieldError) {
-            return 'domain-row-border-default';
+            return selected ? 'domain-row-border-selected' : 'domain-row-border-default';
         } else if (fieldError.severity === SEVERITY_LEVEL_ERROR) {
             return 'domain-row-border-error';
         } else {
@@ -172,14 +179,18 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         expanded: boolean,
         closing: boolean,
         dragging: boolean,
+        selected: boolean,
         fieldError: DomainFieldError
     ): string => {
         const classes = List<string>().asMutable();
-
         classes.push('domain-field-row');
 
+        if (selected) {
+            classes.push('selected');
+        }
+
         if (!dragging) {
-            classes.push(this.getFieldErrorClass(fieldError));
+            classes.push(this.getFieldBorderClass(fieldError, selected));
         } else {
             classes.push('domain-row-border-dragging');
         }
@@ -386,15 +397,6 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         );
     }
 
-    showDeleteIcon(field: DomainField): boolean {
-        return (
-            !isFieldFullyLocked(field.lockType) &&
-            !isFieldPartiallyLocked(field.lockType) &&
-            !isPrimaryKeyFieldLocked(field.lockType) &&
-            !field.lockExistingField // existingField defaults to false. used for query metadata editor
-        );
-    }
-
     renderButtons() {
         const { expanded, index, field, appPropertiesOnly, domainIndex } = this.props;
         const { closing } = this.state;
@@ -412,7 +414,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                         Advanced Settings
                     </Button>
                 )}
-                {this.showDeleteIcon(field) && (
+                {isFieldDeletable(field) && (
                     <DeleteIcon
                         id={createFormInputId(DOMAIN_FIELD_DELETE, domainIndex, index)}
                         title="Remove field"
@@ -445,6 +447,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             domainFormDisplayOptions,
             getDomainFields,
         } = this.props;
+        const selected = field.selected;
 
         return (
             <Draggable
@@ -454,7 +457,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             >
                 {provided => (
                     <div
-                        className={this.getRowCssClasses(expanded, closing, dragging, fieldError)}
+                        className={this.getRowCssClasses(expanded, closing, dragging, selected, fieldError)}
                         {...provided.draggableProps}
                         ref={provided.innerRef}
                         tabIndex={index}
@@ -491,7 +494,15 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
                                     }
                                 />
                             </div>
-                            <div className="domain-row-expand">
+                            <div className="domain-row-action-section">
+                                <Checkbox
+                                    className="domain-field-check-icon"
+                                    name={createFormInputName(DOMAIN_FIELD_SELECTED)}
+                                    id={createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, index)}
+                                    checked={selected}
+                                    onChange={this.onFieldChange}
+                                    disabled={false}
+                                />
                                 <FieldExpansionToggle
                                     cls="domain-field-expand-icon"
                                     expanded={expanded}

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.15.0
+*Released*: 14 January 2021
+* Item 8012: Row Selection Actions on Field Editor
+
 ### version 1.14.1
 *Released*: 11 January 2021
 * Enable async import for assay runs

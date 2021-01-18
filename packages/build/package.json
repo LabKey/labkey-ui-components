@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"
@@ -26,7 +26,6 @@
     "html-webpack-plugin": "4.5.0",
     "mini-css-extract-plugin": "0.11.3",
     "node-sass": "4.14.1",
-    "postcss-loader": "3.0.0",
     "react-hot-loader": "4.13.0",
     "resolve-url-loader": "3.1.2",
     "rimraf": "3.0.2",

@@ -39,6 +39,21 @@ if (process.env.npm_package_dependencies__labkey_workflow) {
 
 const watchPort = process.env.WATCH_PORT || 3001;
 
+// These minification options are a re-declaration of the default minification options
+// for the HtmlWebpackPlugin with the addition of `caseSensitive` because LabKey's
+// view templates can contain case-sensitive elements (e.g. `<permissionClasses>`).
+// For more information see https://github.com/jantimon/html-webpack-plugin#minification.
+const minifyTemplateOptions = {
+    caseSensitive: true,
+    collapseWhitespace: process.env.NODE_ENV === "production",
+    keepClosingSlash: true,
+    removeComments: true,
+    removeRedundantAttributes: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    useShortDoctype: true
+}
+
 module.exports = {
     labkeyUIComponentsPath: labkeyUIComponentsPath,
     freezerManagerPath: freezerManagerPath,
@@ -67,17 +82,6 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             importLoaders: 1
-                        }
-                    },{
-                        loader: 'postcss-loader',
-                        options: {
-                            sourceMap: true,
-                            postcssOptions: (ctx) => {
-                                return {
-                                    parser: ctx.parser ? 'sugarss' : false,
-                                    map: ctx.env === 'development' ? ctx.map : false
-                                }
-                            }
                         }
                     },{
                         loader: 'resolve-url-loader'
@@ -112,11 +116,6 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             importLoaders: 1
-                        }
-                    },{
-                        loader: 'postcss-loader',
-                        options: {
-                            sourceMap: true
                         }
                     },{
                         loader: 'resolve-url-loader'
@@ -233,7 +232,8 @@ module.exports = {
                         permission: app.permission,
                         viewTemplate: app.template,
                         filename: '../../../web/' + lkModule + '/gen/' + app.name + '.lib.xml',
-                        template: 'node_modules/@labkey/build/webpack/lib.template.xml'
+                        template: 'node_modules/@labkey/build/webpack/lib.template.xml',
+                        minify: minifyTemplateOptions
                     }),
                 ]);
             } else {
@@ -247,12 +247,14 @@ module.exports = {
                         permissionClasses: app.permissionClasses,
                         viewTemplate: app.template,
                         filename: '../../../views/gen/' + app.name + '.view.xml',
-                        template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
+                        template: 'node_modules/@labkey/build/webpack/app.view.template.xml',
+                        minify: minifyTemplateOptions
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
                         filename: '../../../views/gen/' + app.name + '.html',
-                        template: 'node_modules/@labkey/build/webpack/app.template.html'
+                        template: 'node_modules/@labkey/build/webpack/app.template.html',
+                        minify: minifyTemplateOptions
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
@@ -264,7 +266,8 @@ module.exports = {
                         permissionClasses: app.permissionClasses,
                         viewTemplate: app.template,
                         filename: '../../../views/gen/' + app.name + 'Dev.view.xml',
-                        template: 'node_modules/@labkey/build/webpack/app.view.template.xml'
+                        template: 'node_modules/@labkey/build/webpack/app.view.template.xml',
+                        minify: minifyTemplateOptions
                     }),
                     new HtmlWebpackPlugin({
                         inject: false,
@@ -272,7 +275,8 @@ module.exports = {
                         port: watchPort,
                         name: app.name,
                         filename: '../../../views/gen/' + app.name + 'Dev.html',
-                        template: 'node_modules/@labkey/build/webpack/app.template.html'
+                        template: 'node_modules/@labkey/build/webpack/app.template.html',
+                        minify: minifyTemplateOptions
                     })
                 ]);
             }

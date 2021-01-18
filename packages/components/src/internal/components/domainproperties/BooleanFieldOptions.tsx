@@ -41,12 +41,12 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
 
         return (
             <div>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={12}>
                         <SectionHeading title={label} />
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={12}>
                         <div className="domain-field-label">
                             <DomainFieldLabel
@@ -56,7 +56,7 @@ export class BooleanFieldOptions extends React.PureComponent<BooleanFieldProps, 
                         </div>
                     </Col>
                 </Row>
-                <Row className="domain-row-expanded">
+                <Row>
                     <Col xs={3}>
                         <FormControl
                             type="text"

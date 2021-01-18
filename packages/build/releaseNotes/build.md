@@ -1,5 +1,13 @@
 # @labkey/build
 
+### version 1.1.2
+*Released*: 12 January 2021
+* Add minify options to HtmlWebpackPlugin configurations
+
+### version 1.1.1
+*Released*: 12 January 2021
+* Remove, no longer used, postcss-loader
+
 ### version 1.1.0
 *Released*: 11 January 2021
 * Add option to add permissionClasses to entry points

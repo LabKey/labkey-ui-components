@@ -57,12 +57,12 @@ export class PipelineStatusDetailPage extends React.PureComponent<Props, State> 
 
                 getPipelineStatusDetail(this.props.rowId, offset, count)
                     .then((model: PipelineStatusDetailModel) => {
-                        this.setState((state) => ({
+                        this.setState(() => ({
                             model
                         }));
                     })
                     .catch((error) => {
-                        this.setState((state) => ({
+                        this.setState(() => ({
                             error: error
                         }));
                     })

@@ -79,7 +79,7 @@ export function menuInit(currentProductId: string, userMenuProductId: string, pr
             if (menu.needsReload) {
                 resetQueryGridState(); // when import is completed, force reset for all grids
             }
-            else if (menu.needsReload) {
+            else {
                 dispatch({
                     type: MENU_LOADING_START,
                     currentProductId,

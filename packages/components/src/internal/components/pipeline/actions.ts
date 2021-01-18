@@ -17,7 +17,7 @@ export function getPipelineStatusDetail(rowId: number, offset?: number, count?: 
                     resolve(PipelineStatusDetailModel.loadResult(response.data));
                 } else {
                     console.error(response);
-                    reject('There was a problem retrieving the the status detail.');
+                    reject('There was a problem retrieving the status detail.');
                 }
             }),
             failure: Utils.getCallbackWrapper(response => {

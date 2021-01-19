@@ -48,8 +48,8 @@ export class ServerActivityList extends React.PureComponent<Props> {
 
             const detailsDisplay = isError ? resolveErrorMessage(details) : details;
             return (<>
-                <span className={'server-notifications-item-subject'}>{subject}</span>
-                {detailsDisplay && <span className={'server-notifications-item-details'}>{detailsDisplay}</span>}
+                <span className={'server-notifications-item-subject'} dangerouslySetInnerHTML={{ __html: subject }} />
+                {detailsDisplay && <span className={'server-notifications-item-details'} dangerouslySetInnerHTML={{ __html: detailsDisplay }} />}
             </>);
         }
         else if (isInProgress) {

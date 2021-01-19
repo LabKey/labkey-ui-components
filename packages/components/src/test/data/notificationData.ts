@@ -62,6 +62,23 @@ export const UNREAD_WITH_ERROR = new ServerActivityData({
     hasError: true,
 });
 
+export const UNREAD_WITH_ERROR2 = new ServerActivityData({
+    RowId: 4,
+    Type: 'org.labkey.api.pipeline.PipelineJob$TaskStatus$3.error',
+    ActionLinkText: 'view',
+    CreatedBy: 'susan',
+    ActionLinkUrl: '/labkey/Study/project-begin.view?',
+    IconCls: 'fa-check-circle',
+    ObjectId: 'B',
+    ContainerId: 'testContainerEntityId',
+    HtmlContent: 'Assay import failed from file file1.xlsx\n ERROR:Failed to import assay run from Workflow_Assay01-2021-01-11-123227.tmp\n' +
+        'SampleId: Failed to convert &#039;SampleId&#039;: Could not translate value: sdfs.',
+    UserId: 1005,
+    ReadOn: null,
+    Created: '2020-11-11 07:47:32.317',
+    hasError: true,
+});
+
 export function markAllNotificationsRead(): Promise<boolean> {
     return new Promise(resolve => {
         resolve(true);

@@ -17,13 +17,12 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
-import { Location, User } from '..';
+import {AssayTypeSummary, Location, User} from '..';
 import './stories.scss';
-import { SampleSetSummary } from '../internal/components/samples/SampleSetSummary';
 
-storiesOf('SampleSetSummary', module)
+storiesOf('AssayTypeSummary', module)
     .addDecorator(withKnobs)
-    .add('sample sets', () => {
+    .add('assay types', () => {
         const location: Location = {
             query: {
                 viewAs: 'grid',
@@ -37,5 +36,5 @@ storiesOf('SampleSetSummary', module)
             isAdmin: true,
         });
 
-        return <SampleSetSummary location={location} navigate={() => {}} user={user} />;
+        return <AssayTypeSummary location={location} navigate={() => {}} user={user} />;
     });

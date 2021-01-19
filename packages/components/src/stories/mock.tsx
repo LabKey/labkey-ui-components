@@ -50,6 +50,8 @@ import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQ
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json';
 import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json';
+import assayAssayListDetails from '../test/data/assay-assayListDetails.json';
+import assayAssayList from '../test/data/assay-assayList.json';
 import deleteAllConfirmation from '../test/data/deleteAll-getMaterialDeleteConfirmationData.json';
 import deleteNoneConfirmation from '../test/data/deleteNone-getMaterialDeleteConfirmationData.json';
 import deleteOneConfirmation from '../test/data/deleteOne-getMaterialDeleteConfirmationData.json';
@@ -109,6 +111,9 @@ export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/c
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
 const QUERY_DETAILS_RESPONSES = fromJS({
+    assay: {
+        assaylist: assayAssayListDetails
+    },
     'assay.general.amino acids': {
         runs: assayRunsWithQCFlagsQueryInfo,
         data: assayAminoAcidsDataQueryInfo,
@@ -169,6 +174,9 @@ const QUERY_DETAILS_RESPONSES = fromJS({
 });
 
 const QUERY_RESPONSES = fromJS({
+    assay: {
+        assaylist: assayAssayList
+    },
     'assay.general.amino acids': {
         runs: assayRunsWithQCFlagsQuery,
         data: assayAminoAcidsDataQuery,

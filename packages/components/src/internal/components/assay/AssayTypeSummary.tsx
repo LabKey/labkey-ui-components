@@ -2,50 +2,55 @@ import React, { FC, memo, useCallback, useEffect, useState, useMemo } from 'reac
 
 import { Filter } from '@labkey/api';
 
-import { GridPanelWithModel, SCHEMAS, AppURL, SelectInput, User, Location } from '../../..';
-
-import { SampleSetCards } from './SampleSetCards';
-import { SampleSetHeatMap } from './SampleSetHeatMap';
+import {
+    GridPanelWithModel,
+    SCHEMAS,
+    AppURL,
+    SelectInput,
+    User,
+    Location,
+    AssaysHeatMap
+} from '../../..';
+import {ASSAY_TABLES} from "../../schemas";
 
 const SELECTION_HEATMAP = 'heatmap';
-const SELECTION_CARDS = 'cards';
 const SELECTION_GRID = 'grid';
 
-const SAMPLESET_VIEW_OPTIONS = [
-    { value: SELECTION_CARDS, label: 'Cards' },
+const ASSAY_VIEW_OPTIONS = [
     { value: SELECTION_GRID, label: 'Grid' },
     { value: SELECTION_HEATMAP, label: 'Heatmap' },
 ];
 
-const SAMPLE_SET_GRID_GRID_ID = 'samplesets-grid-panel';
+const ASSAY_GRID_GRID_ID = 'assaytypes-grid-panel';
 
 const SAMPLE_QUERY_CONFIG = {
-    urlPrefix: 'samplesetgrid',
+    urlPrefix: 'assaysgrid',
     isPaged: true,
-    id: SAMPLE_SET_GRID_GRID_ID,
-    schemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
+    id: ASSAY_GRID_GRID_ID,
+    schemaQuery: SCHEMAS.ASSAY_TABLES.ASSAY_LIST,
+    bindURL: true,
 };
 
-interface SampleSetSummaryProps {
-    location?: Location;
+interface AssayTypeSummaryProps {
     navigate: (url: string | AppURL) => any;
     user: User;
-    excludedSampleSets?: string[];
+    location?: Location;
+    assayTypes?: string[];
 }
 
-export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
-    const { location, navigate, user, excludedSampleSets } = props;
+export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
+    const { location, navigate, assayTypes } = props;
 
     const [selected, setSelected] = useState<string>();
 
     const queryConfig = useMemo(() => {
         return {
             ...SAMPLE_QUERY_CONFIG,
-            baseFilters: excludedSampleSets
-                ? [Filter.create('Name', excludedSampleSets, Filter.Types.NOT_IN)]
+            baseFilters: assayTypes
+                ? [Filter.create('Type', assayTypes, Filter.Types.IN)]
                 : undefined,
         };
-    }, [excludedSampleSets]);
+    }, [assayTypes]);
 
     useEffect(() => {
         setSelected(location?.query?.viewAs ?? 'grid');
@@ -58,8 +63,8 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
     return (
         <>
             <SelectInput
-                key="sample-sets-view-select"
-                name="sample-sets-view-select"
+                key="assay-types-view-select"
+                name="assay-types-view-select"
                 placeholder="Select a view..."
                 inputClass="col-xs-4 col-md-2"
                 formsy={false}
@@ -70,10 +75,9 @@ export const SampleSetSummary: FC<SampleSetSummaryProps> = memo(props => {
                 valueKey="value"
                 labelKey="label"
                 onChange={onSelectionChange}
-                options={SAMPLESET_VIEW_OPTIONS}
+                options={ASSAY_VIEW_OPTIONS}
             />
-            {selected === SELECTION_HEATMAP && <SampleSetHeatMap navigate={navigate} user={user} />}
-            {selected === SELECTION_CARDS && <SampleSetCards excludedSampleSets={excludedSampleSets} />}
+            {selected === SELECTION_HEATMAP && <AssaysHeatMap navigate={navigate} />}
             {(selected === SELECTION_GRID || selected === undefined) && (
                 <GridPanelWithModel
                     queryConfig={queryConfig}

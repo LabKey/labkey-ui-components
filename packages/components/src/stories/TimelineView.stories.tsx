@@ -9,6 +9,7 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import { TimelineEventModel, TimelineView } from '..';
 
 import { TIMELINE_DATA } from '../test/data/constants';
+import { disableControls } from './storyUtils';
 
 const events = TIMELINE_DATA.map(evt => TimelineEventModel.create(evt, 'UTC'));
 
@@ -16,11 +17,10 @@ export default {
     title: 'Components/TimelineView',
     component: TimelineView,
     argTypes: {
-        onEventSelection: {
-            action: 'eventSelection',
-            control: { disable: true },
-            table: { disable: true },
-        },
+        events: disableControls(),
+        onEventSelection: { action: 'eventSelection', ...disableControls() },
+        selectedEvent: disableControls(),
+        selectedEntityConnectionInfo: disableControls(),
     },
 } as Meta;
 

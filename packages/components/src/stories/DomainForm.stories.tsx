@@ -1,16 +1,18 @@
 /*
- * Copyright (c) 2019 LabKey Corporation
+ * Copyright (c) 2019-2021 LabKey Corporation
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
  */
-import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
+import React, { useState } from 'react';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { DomainDesign } from '..';
-import { DomainFormImpl } from '../internal/components/domainproperties/DomainForm';
+import DomainForm, { DomainFormImpl } from '../internal/components/domainproperties/DomainForm';
 import { MockLookupProvider } from '../test/components/Lookup';
 import { PHILEVEL_RESTRICTED_PHI } from '../internal/components/domainproperties/constants';
+
+import { disableControls } from './storyUtils';
+
 import domainData from '../test/data/property-getDomain.json';
 import errorData from '../test/data/property-saveDomainWithDuplicateField.json';
 import warningData from '../test/data/property-unexpectedCharInFieldName.json';
@@ -18,96 +20,80 @@ import exceptionDataServer from '../test/data/property-domainExceptionFromServer
 import exceptionDataClient from '../test/data/property-domainExceptionClient.json';
 import fullyLockedData from '../test/data/property-getDomainWithFullyLockedFields.json';
 import partiallyLockedData from '../test/data/property-getDomainWithPartiallyLockedFields.json';
-import './stories.scss';
 
-interface Props {
-    showInferFromFile?: boolean;
-    data: {};
-    exception?: {};
-    helpNoun?: any;
-    helpTopic?: any;
-    appPropertiesOnly?: boolean;
-    allowImportExport?: boolean;
-}
+export default {
+    title: 'Components/DomainForm',
+    component: DomainForm,
+    argTypes: {
+        data: disableControls(),
+        domain: disableControls(),
+        exception: disableControls(),
+        fieldsAdditionalRenderer: disableControls(),
+        maxPhiLevel: disableControls(),
+        onChange: disableControls(),
+        onToggle: { action: 'toggle', ...disableControls() },
+        setFileImportData: disableControls(),
+    },
+} as Meta;
 
-class DomainFormContainer extends React.PureComponent<Props, any> {
-    constructor(props: Props) {
-        super(props);
+const Template: Story = props => {
+    const [domain, setDomain] = useState(() => DomainDesign.create(props.data ?? {}, props.exception));
 
-        this.state = {
-            domain: DomainDesign.create(props.data, props.exception),
-        };
-    }
-
-    onChange = (newDomain: DomainDesign) => {
-        this.setState(() => ({
-            domain: newDomain,
-        }));
-    };
-
-    render() {
-        const { domain } = this.state;
-
-        return (
-            <MockLookupProvider>
-                <DomainFormImpl
-                    {...this.props}
-                    domain={domain}
-                    onChange={this.onChange}
-                    maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
-                />
-            </MockLookupProvider>
-        );
-    }
-}
-
-storiesOf('DomainForm', module)
-    .addDecorator(withKnobs)
-    .add('with empty domain', () => {
-        return (
-            <DomainFormContainer
-                data={undefined}
-                helpNoun={text('helpNoun', undefined)}
-                helpTopic={text('helpTopic', undefined)}
-                allowImportExport={boolean('allowImportExport', false)}
+    return (
+        <MockLookupProvider>
+            <DomainFormImpl
+                {...(props as any)}
+                domain={domain}
+                maxPhiLevel={PHILEVEL_RESTRICTED_PHI}
+                onChange={setDomain}
             />
-        );
-    })
-    .add('infer from file', () => {
-        return <DomainFormContainer
-            data={undefined}
-            showInferFromFile={boolean('showInferFromFile', true)}
-            allowImportExport={boolean('allowImportExport', false)}
-        />;
-    })
-    .add('import from file', () => {
-        return <DomainFormContainer
-            data={undefined}
-            showInferFromFile={boolean('showInferFromFile', false)}
-            allowImportExport={boolean('allowImportExport', true)}
-        />;
-    })
-    .add('with domain properties', () => {
-        return <DomainFormContainer
-            data={domainData}
-            appPropertiesOnly={false}
-        />;
-    })
-    .add('appPropertiesOnly', () => {
-        return <DomainFormContainer
-            data={domainData}
-            appPropertiesOnly={true}
-        />;
-    })
-    .add('with server side errors and no file or flag types', () => {
-        return <DomainFormContainer data={errorData} exception={exceptionDataServer} />;
-    })
-    .add('with client side warnings and no attachment types', () => {
-        return <DomainFormContainer data={warningData} exception={exceptionDataClient} />;
-    })
-    .add('with fully locked fields', () => {
-        return <DomainFormContainer data={fullyLockedData} />;
-    })
-    .add('with partially locked fields', () => {
-        return <DomainFormContainer data={partiallyLockedData} />;
-    });
+        </MockLookupProvider>
+    );
+};
+
+export const EmptyDomainStory = Template.bind({});
+EmptyDomainStory.storyName = 'Empty domain';
+
+export const InferFileStory = Template.bind({});
+InferFileStory.storyName = 'Infer from file';
+
+InferFileStory.args = {
+    showInferFromFile: true,
+};
+
+export const DefaultDomainStory = Template.bind({});
+DefaultDomainStory.storyName = 'With a domain';
+
+DefaultDomainStory.args = {
+    data: domainData,
+};
+
+export const FullyLockedStory = Template.bind({});
+FullyLockedStory.storyName = 'Fully locked fields';
+
+FullyLockedStory.args = {
+    data: fullyLockedData,
+};
+
+export const PartiallyLockedStory = Template.bind({});
+PartiallyLockedStory.storyName = 'Partially locked fields';
+
+PartiallyLockedStory.args = {
+    data: partiallyLockedData,
+};
+
+export const ServerSideErrorsStory = Template.bind({});
+ServerSideErrorsStory.storyName = 'Server side errors and no file or flag types';
+
+ServerSideErrorsStory.args = {
+    data: errorData,
+    exception: exceptionDataServer,
+};
+
+export const ClientSideErrorsStory = Template.bind({});
+ClientSideErrorsStory.storyName = 'Client side errors and no file or flag types';
+
+ClientSideErrorsStory.args = {
+    data: warningData,
+    exception: exceptionDataClient,
+};

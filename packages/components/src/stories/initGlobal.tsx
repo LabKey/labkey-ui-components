@@ -22,7 +22,6 @@ import { initUnitTests } from '../internal/testHelpers';
 import { initMocks } from './mock';
 
 const initGlobal = (): void => {
-
     const QUERY_METADATA = fromJS({
         // hideEmptyChartSelector: true,
         // hideEmptyViewSelector: true,

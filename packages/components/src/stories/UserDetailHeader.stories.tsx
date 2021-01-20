@@ -11,15 +11,13 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import { UserDetailHeader, User } from '..';
 
 import { ICON_URL } from './mock';
+import { disableControls } from './storyUtils';
 
 export default {
     title: 'Components/UserDetailHeader',
     component: UserDetailHeader,
     argTypes: {
-        renderButtons: {
-            control: { disable: true },
-            table: { disable: true },
-        },
+        renderButtons: disableControls(),
     },
 } as Meta;
 

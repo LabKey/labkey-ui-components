@@ -18,18 +18,16 @@ import { Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import classNames from 'classnames';
 
-import { FormSection, Progress, LoadingSpinner, InferDomainResponse, inferDomainFromFile } from '../../..';
-
-import { FileAttachmentContainer } from './FileAttachmentContainer';
-import { FileGridPreviewProps, FilePreviewGrid } from './FilePreviewGrid';
+import { FileSizeLimitProps, FileGridPreviewProps } from './models';
+import { FileAttachmentContainer } from "../../internal/components/files/FileAttachmentContainer";
 import {
-    convertRowDataIntoPreviewData,
-    fileMatchesAcceptedFormat,
+    convertRowDataIntoPreviewData, fileMatchesAcceptedFormat,
     fileSizeLimitCompare,
-    getFileExtension,
-} from './actions';
-
-import { FileSizeLimitProps, SimpleResponse } from './models';
+    getFileExtension
+} from "../../internal/components/files/actions";
+import { FilePreviewGrid } from "../../internal/components/files/FilePreviewGrid";
+import { SimpleResponse } from "../../internal/components/files/models";
+import { FormSection, Progress, LoadingSpinner, InferDomainResponse, inferDomainFromFile } from "../..";
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'

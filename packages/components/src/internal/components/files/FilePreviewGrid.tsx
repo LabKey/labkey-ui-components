@@ -2,16 +2,8 @@ import React from 'react';
 import { List, Map } from 'immutable';
 
 import { Alert, Grid, GridColumn, InferDomainResponse } from '../../..';
+import {FileGridPreviewProps} from "../../../public/files/models";
 
-export interface FileGridPreviewProps {
-    previewCount: number;
-    header?: string;
-    infoMsg?: any;
-    onPreviewLoad?: (response: InferDomainResponse, fileData?: File) => any;
-    acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
-    initialData?: InferDomainResponse;
-    skipPreviewGrid?: boolean;
-}
 
 type Props = FileGridPreviewProps & {
     data: List<Map<string, any>>;

@@ -86,12 +86,13 @@ import { Tip } from './internal/components/base/Tip';
 import { Grid, GridColumn, GridProps } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
-import { FileAttachmentForm } from './internal/components/files/FileAttachmentForm';
-import { DEFAULT_FILE, FileAttachmentFormModel, IFile, FileSizeLimitProps } from './internal/components/files/models';
+import { FileAttachmentForm } from './public/files/FileAttachmentForm';
+import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './internal/components/files/models';
+import { FileSizeLimitProps } from './public/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
-import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './internal/components/files/WebDav';
+import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
 import {

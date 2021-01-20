@@ -3,8 +3,8 @@ import { Button } from 'react-bootstrap';
 import { Map, Set, List } from 'immutable';
 
 import { IFile } from './models';
-import { FileAttachmentForm } from './FileAttachmentForm';
 import { FilesListing } from './FilesListing';
+import {FileAttachmentForm} from "../../..";
 
 interface Props {
     addFileText?: string;

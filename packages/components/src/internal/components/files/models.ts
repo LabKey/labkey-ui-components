@@ -73,16 +73,6 @@ export const DEFAULT_FILE: IFile = {
     propertiesRowId: undefined,
 };
 
-export interface FileSizeLimitProps {
-    maxSize?: {
-        value: number;
-        displayValue: string;
-    };
-    maxPreviewSize?: {
-        value: number;
-        displayValue: string;
-    };
-}
 
 export interface SimpleResponse {
     success: boolean;

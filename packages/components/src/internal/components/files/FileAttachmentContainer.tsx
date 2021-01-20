@@ -22,7 +22,9 @@ import { Map, Set } from 'immutable';
 
 import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
-import { ALL_FILES_LIMIT_KEY, FileSizeLimitProps } from './models';
+import { ALL_FILES_LIMIT_KEY } from './models';
+import {FileSizeLimitProps} from "../../..";
+
 
 interface FileAttachmentContainerProps {
     acceptedFormats?: string; // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'

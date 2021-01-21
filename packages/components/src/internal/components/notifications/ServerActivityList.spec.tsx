@@ -1,7 +1,13 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { DONE_AND_READ, DONE_NOT_READ, IN_PROGRESS, UNREAD_WITH_ERROR } from '../../../test/data/notificationData';
+import {
+    DONE_AND_READ,
+    DONE_NOT_READ,
+    IN_PROGRESS,
+    UNREAD_WITH_ERROR,
+    UNREAD_WITH_ERROR_HTML
+} from '../../../test/data/notificationData';
 
 import { ServerActivityList } from './ServerActivityList';
 
@@ -144,6 +150,34 @@ describe('<ServerActivityList>', () => {
         expect(errorDetails).toHaveLength(1);
         expect(errorSubject.text()).toBe("Sample import failed from file file1.xlsx");
         expect(errorDetails.text()).toBe("There was a problem creating your data.  Check the existing data for possible duplicates and make sure any referenced data are still valid.");
+        wrapper.unmount();
+    });
+
+    test('html content type', () => {
+        const wrapper = mount(
+            <ServerActivityList
+                onViewAll={jest.fn()}
+                onShowErrorDetail={jest.fn()}
+                serverActivity={{
+                    data: [UNREAD_WITH_ERROR_HTML],
+                    totalRows: 1,
+                    unreadCount: 1,
+                    inProgressCount: 0,
+                }}
+                maxRows={2}
+                onRead={jest.fn()}
+            />
+        );
+        const item = wrapper.find('li');
+        expect(item).toHaveLength(1);
+        checkActivityListItem(item, false, true, false);
+
+        const errorSubject = item.find('.server-notifications-item-subject');
+        const errorDetails = item.find('.server-notifications-item-details');
+        expect(errorSubject).toHaveLength(1);
+        expect(errorDetails).toHaveLength(1);
+        expect(errorSubject.text()).toBe("Assay import failed from file file1.xlsx");
+        expect(errorDetails.text()).toContain("SampleId: Failed to convert \'SampleId\': Could not translate value: sdfs");
         wrapper.unmount();
     });
 

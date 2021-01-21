@@ -32,7 +32,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
         this.props.onShowErrorDetail(notificationItem);
     };
 
-    renderNotificationContent = (content: string, isError?: boolean, isInProgress?: boolean) => {
+    renderNotificationContent = (content: string, isHtml?: boolean, isError?: boolean, isInProgress?: boolean) => {
         const newlineIndex = content.toLowerCase().indexOf("\n");
         const brIndex = content.toLowerCase().indexOf("<br>");
         let subject : string = undefined, details : string = undefined;
@@ -48,15 +48,22 @@ export class ServerActivityList extends React.PureComponent<Props> {
 
             const detailsDisplay = isError ? resolveErrorMessage(details) : details;
             return (<>
-                <span className={'server-notifications-item-subject'} dangerouslySetInnerHTML={{ __html: subject }} />
-                {detailsDisplay && <span className={'server-notifications-item-details'} dangerouslySetInnerHTML={{ __html: detailsDisplay }} />}
+                {this.renderContent(subject, 'server-notifications-item-subject', isHtml)}
+                {detailsDisplay && this.renderContent(detailsDisplay, 'server-notifications-item-details', isHtml)}
             </>);
         }
         else if (isInProgress) {
-            return <span className={'server-notifications-item-subject'}>{`A background import is processing: ${content}`}</span>
+            return this.renderContent(`A background import is processing: ${content}`, 'server-notifications-item-subject', isHtml);
         }
 
-        return <span className={'server-notifications-item-subject'} dangerouslySetInnerHTML={{ __html: content }} />;
+        return this.renderContent(content, 'server-notifications-item-subject', isHtml);
+    }
+
+    renderContent = (content: string, clsName: string, isHtml: boolean) => {
+        if (isHtml)
+            return <span className={clsName} dangerouslySetInnerHTML={{ __html: content }} />;
+
+        return <span className={clsName}>{content}</span>;
     }
 
     renderData(activity: ServerActivityData, key: number): ReactNode {
@@ -74,7 +81,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         'is-unread server-notifications-item': isUnread,
                     })}
                 >
-                    {this.renderNotificationContent(activity.HtmlContent, activity.hasError, activity.inProgress)}
+                    {this.renderNotificationContent(activity.Content, activity.isHTML(), activity.hasError, activity.inProgress)}
                 </span>
                 <br />
                 {activity.hasError ? (

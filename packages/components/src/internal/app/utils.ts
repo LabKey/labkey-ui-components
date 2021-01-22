@@ -53,9 +53,8 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
     if (notificationListeners) {
         notificationListeners.forEach(listener => {
             LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
-                if (evt.wasClean) {
-                    window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
-                }
+                // not checking evt.wasClean since we want this event for all user sessions
+                window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
             });
         });
     }
@@ -63,9 +62,8 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
     if (menuReloadListeners) {
         menuReloadListeners.forEach(listener => {
             LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
-                if (evt.wasClean) {
-                    window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
-                }
+                // not checking evt.wasClean since we want this event for all user sessions
+                window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
             });
         });
     }

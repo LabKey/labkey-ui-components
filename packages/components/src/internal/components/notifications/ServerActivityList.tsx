@@ -7,7 +7,8 @@ import { resolveErrorMessage } from "../../..";
 
 interface Props {
     serverActivity: ServerActivity;
-    onViewAll: () => void;
+    onViewAll: () => any;
+    onShowErrorDetail: (notification: ServerActivityData) => any;
     maxRows: number;
     viewAllText: string;
     noActivityMsg: string;
@@ -27,8 +28,8 @@ export class ServerActivityList extends React.PureComponent<Props> {
         this.props.onRead(notificationId);
     };
 
-    showErrorDetails = (notificationId: number): void => {
-        console.log('showErrorDetails ' + notificationId + ': not yet implemented');
+    showErrorDetails = (notificationItem: ServerActivityData): void => {
+        this.props.onShowErrorDetail(notificationItem);
     };
 
     renderNotificationContent = (content: string, isError?: boolean, isInProgress?: boolean) => {
@@ -52,20 +53,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
             </>);
         }
         else if (isInProgress) {
-            if (content.indexOf('samples') === 0 || content.indexOf('exp.data') === 0 || content.indexOf('assays') === 0) {
-                let type = 'sources';
-                let importMsg = content.substring('exp.data - '.length, content.length);
-                if (content.indexOf('samples') === 0) {
-                    type = 'samples';
-                    importMsg = content.substring('samples - '.length, content.length);
-                }
-                else if (content.indexOf('assays') === 0) {
-                    type = 'assay run';
-                    importMsg = content.substring('assays - '.length, content.length);
-                }
-
-                return <span className={'server-notifications-item-subject'}>{`A background ${type} import is processing: ${importMsg}`}</span>
-            }
+            return <span className={'server-notifications-item-subject'}>{`A background import is processing: ${content}`}</span>
         }
 
         return <span className={'server-notifications-item-subject'} dangerouslySetInnerHTML={{ __html: content }} />;
@@ -90,7 +78,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
                 </span>
                 <br />
                 {activity.hasError ? (
-                    <span className="server-notifications-link" onClick={() => this.showErrorDetails(activity.RowId)}>
+                    <span className="server-notifications-link" onClick={() => this.showErrorDetails(activity)}>
                         {this.props.viewErrorDetailsText}
                     </span>
                 ) : (

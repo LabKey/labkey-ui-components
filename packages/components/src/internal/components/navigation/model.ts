@@ -62,6 +62,7 @@ export class MenuItemModel extends Record({
     url: undefined,
     orderNum: undefined,
     requiresLogin: false,
+    hasActiveJob: false,
 }) {
     id: number;
     key: string;
@@ -69,6 +70,7 @@ export class MenuItemModel extends Record({
     url: string | AppURL;
     orderNum: number;
     requiresLogin: boolean;
+    hasActiveJob: boolean;
 
     static create(rawData, sectionKey: string, currentProductId?: string): MenuItemModel {
         if (rawData) {
@@ -129,6 +131,7 @@ export class ProductMenuModel extends Record({
     currentProductId: undefined,
     userMenuProductId: undefined,
     productIds: undefined,
+    needsReload: false,
 }) {
     isError: boolean;
     isLoaded: boolean;
@@ -138,6 +141,7 @@ export class ProductMenuModel extends Record({
     currentProductId: string; // the current product's id
     userMenuProductId: string; // the product's id for the user menu items
     productIds: List<string>; // the list of all product ids to be included in the menu; leave undefined for all products in the container
+    needsReload: boolean;
 
     init(): void {
         if (!this.isLoaded && !this.isLoading) {
@@ -187,6 +191,7 @@ export class ProductMenuModel extends Record({
         return this.merge({
             isLoaded: true,
             isLoading: false,
+            needsReload: false,
             sections,
         }) as ProductMenuModel;
     }
@@ -195,6 +200,7 @@ export class ProductMenuModel extends Record({
         return this.merge({
             isLoading: false,
             isLoaded: true,
+            needsReload: false,
             isError: true,
             message,
         }) as ProductMenuModel;
@@ -209,5 +215,11 @@ export class ProductMenuModel extends Record({
     hasSectionItems(key: string): boolean {
         const section = this.getSection(key);
         return this.isLoaded && section && section.totalCount > 0;
+    }
+
+    setNeedsReload(): ProductMenuModel {
+        return this.merge({
+            needsReload: true
+        }) as ProductMenuModel;
     }
 }

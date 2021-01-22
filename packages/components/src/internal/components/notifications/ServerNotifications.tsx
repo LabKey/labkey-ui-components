@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
 import { markNotificationsAsRead } from './actions';
-import { ServerNotificationsConfig } from './model';
+import { ServerActivityData, ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
 import { LoadingSpinner } from '../../../index';
 
@@ -47,10 +47,6 @@ export class ServerNotifications extends React.Component<Props, State> {
             });
     };
 
-    viewAll = (): void => {
-        console.log("viewAll: not yet implemented");
-    };
-
     hasAnyUnread(): boolean {
         return this.getNumUnread() > 0;
     }
@@ -71,8 +67,17 @@ export class ServerNotifications extends React.Component<Props, State> {
         this.setState(state => ({ show: !state.show }));
     };
 
+    onShowErrorDetail = (notificationItem: ServerActivityData): void => {
+        const { onShowErrorDetail } = this.props;
+
+        if (onShowErrorDetail)
+            onShowErrorDetail(notificationItem);
+
+        this.setState(state => ({ show: false }));
+    };
+
     render(): ReactNode {
-        const { serverActivity, maxRows } = this.props;
+        const { serverActivity, maxRows, onViewAll } = this.props;
         const { show } = this.state;
 
         const numUnread = this.getNumUnread();
@@ -98,7 +103,8 @@ export class ServerNotifications extends React.Component<Props, State> {
                 <ServerActivityList
                     maxRows={maxRows}
                     serverActivity={serverActivity}
-                    onViewAll={this.viewAll}
+                    onViewAll={onViewAll}
+                    onShowErrorDetail={this.onShowErrorDetail}
                     onRead={this.onRead}
                 />
             );

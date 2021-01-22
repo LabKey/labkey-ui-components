@@ -45,13 +45,14 @@ const vegetableGarden = [
     'Kale',
 ];
 
-function makeMenuItems(nounPlural: string, options, menuItemLimit): List<MenuItemModel> {
+function makeMenuItems(nounPlural: string, options, menuItemLimit, hasActiveJob?: boolean): List<MenuItemModel> {
     const items = List<MenuItemModel>().asMutable();
     for (let i = 0; i < menuItemLimit; i++) {
         items.push(
             new MenuItemModel({
                 key: options[i].toLowerCase(),
                 label: options[i],
+                hasActiveJob,
                 url: 'http://' + nounPlural.toLowerCase() + '/' + options[i].toLowerCase(),
             })
         );
@@ -159,14 +160,15 @@ storiesOf('NavigationBar', module)
             },
             fruitGroup
         );
+        const hasActiveJob = boolean('hasActiveJob', false, fruitGroup);
         sections.push(
             new MenuSectionModel({
                 label: 'Fruits',
                 url: undefined,
-                items: makeMenuItems('fruits', fruitTree, fruitMenuLimit),
+                items: makeMenuItems('fruits', fruitTree, fruitMenuLimit, hasActiveJob),
                 totalCount: totalFruitCount,
                 itemLimit: fruitMenuLimit,
-                key: 'fruits',
+                key: 'fruits'
             })
         );
 
@@ -233,6 +235,7 @@ storiesOf('NavigationBar', module)
             iconURL: text('Fruit Section iconURL', ICON_URL, fruitGroup),
             maxItemsPerColumn: number('Max Fruits per column', 2, {}, fruitGroup),
             maxColumns: number('Max Fruit columns', 1, {}, fruitGroup),
+            activeJobIconCls: text('active job icon', 'fa-spinner fa-pulse', fruitGroup)
         });
 
         const vegetablesSectionConfigs = new MenuSectionConfig({
@@ -266,6 +269,14 @@ storiesOf('NavigationBar', module)
             isSignedIn,
             isGuest: !isSignedIn,
         });
+
+        const notificationConfig = {
+            maxRows: 8,
+            markAllNotificationsRead: markAllNotificationsRead,
+            serverActivity: new ServerNotificationModel(),
+            onShowErrorDetail: () => {},
+            onViewAll: () => {},
+        }
         return (
             <NavigationBar
                 menuSectionConfigs={boolean('show 3 columns?', true) ? threeColConfigs : twoColConfigs}
@@ -273,10 +284,10 @@ storiesOf('NavigationBar', module)
                 showSearchBox={true}
                 user={user}
                 notificationsConfig={
-                    boolean('Show notifications?', true)
-                        ? { maxRows: 8, markAllNotificationsRead: markAllNotificationsRead, serverActivity: new ServerNotificationModel() }
-                        : undefined
+                    boolean('Show notifications?', true) ? notificationConfig : undefined
                 }
             />
         );
     });
+
+// TODO

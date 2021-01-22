@@ -21,6 +21,7 @@ import {
     MENU_LOADING_START,
     MENU_LOADING_ERROR,
     MENU_LOADING_END,
+    MENU_RELOAD,
     SERVER_NOTIFICATIONS_INVALIDATE,
     SERVER_NOTIFICATIONS_LOADING_START,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
@@ -94,6 +95,10 @@ export const ProductMenuReducers = handleActions<ProductMenuState, any>(
     {
         [MENU_INVALIDATE]: (state: ProductMenuState, action: any) => {
             return new ProductMenuModel();
+        },
+
+        [MENU_RELOAD]: (state: ProductMenuState, action: any) => {
+            return state.setNeedsReload();
         },
 
         [MENU_LOADING_START]: (state: ProductMenuState, action: any) => {

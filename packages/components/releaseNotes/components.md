@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version XXX
-*Released*: XXX
+*Released*: XXXX
 * fix server notification content html encoding
 * allow setSelected to validate ids against dataregion
 

@@ -30,18 +30,22 @@ import {
 export function initWebSocketListeners(store, notificationListeners?: string[], menuReloadListeners?: string[]): void {
     // register websocket listener for the case where a user logs out in another tab
     LABKEY.WebSocket.addServerEventListener('org.labkey.api.security.AuthNotify#LoggedOut', function (evt) {
-        window.setTimeout(() => store.dispatch({ type: SECURITY_LOGOUT }), 1000);
+        if (evt.wasClean) {
+            window.setTimeout(() => store.dispatch({type: SECURITY_LOGOUT}), 1000);
+        }
     });
 
     // register websocket listener for session timeout code
     LABKEY.WebSocket.addServerEventListener(1008, function (evt) {
-        window.setTimeout(() => store.dispatch({ type: SECURITY_SESSION_TIMEOUT }), 1000);
+        if (evt.wasClean) {
+            window.setTimeout(() => store.dispatch({ type: SECURITY_SESSION_TIMEOUT }), 1000);
+        }
     });
 
     // register websocket listener for server being shutdown
     LABKEY.WebSocket.addServerEventListener(1001, function (evt) {
         // Issue 39473: 1001 sent when server is shutdown normally (AND on page reload in FireFox, but that one doesn't have a reason)
-        if (evt.code === 1001 && evt.reason && evt.reason !== '') {
+        if (evt.wasClean && evt.code === 1001 && evt.reason && evt.reason !== '') {
             window.setTimeout(() => store.dispatch({ type: SECURITY_SERVER_UNAVAILABLE }), 1000);
         }
     });
@@ -51,7 +55,7 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
             LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
                 window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
             });
-        })
+        });
     }
 
     if (menuReloadListeners) {
@@ -59,7 +63,7 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
             LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
                 window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
             });
-        })
+        });
     }
 }
 

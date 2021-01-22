@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 42216: Fix for logout event notification issue with different user sessions (i.e. different browsers)
+
 ### version 1.16.1
 *Released*: 22 January 2021
 * fix server notification content html encoding

@@ -36,10 +36,11 @@ interface AssayTypeSummaryProps {
     user: User;
     location?: Location;
     assayTypes?: string[];
+    excludedAssayTypes?: string[];
 }
 
 export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
-    const { location, navigate, assayTypes } = props;
+    const { location, navigate, assayTypes, excludedAssayTypes } = props;
 
     const [selected, setSelected] = useState<string>();
 
@@ -48,9 +49,11 @@ export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
             ...SAMPLE_QUERY_CONFIG,
             baseFilters: assayTypes
                 ? [Filter.create('Type', assayTypes, Filter.Types.IN)]
-                : undefined,
+                : (excludedAssayTypes
+                    ? [Filter.create('Type', excludedAssayTypes, Filter.Types.NOT_IN)]
+                    : undefined),
         };
-    }, [assayTypes]);
+    }, [assayTypes, excludedAssayTypes]);
 
     useEffect(() => {
         setSelected(location?.query?.viewAs ?? 'grid');
@@ -65,6 +68,7 @@ export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
             <SelectInput
                 key="assay-types-view-select"
                 name="assay-types-view-select"
+                id="assay-types-view-select"
                 placeholder="Select a view..."
                 inputClass="col-xs-4 col-md-2"
                 formsy={false}

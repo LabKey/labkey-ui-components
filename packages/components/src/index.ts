@@ -282,6 +282,7 @@ import {
     WithAssayModelProps,
 } from './internal/components/assay/withAssayModels';
 import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
+import { AssayDesignDeleteModal } from './internal/components/assay/AssayDesignDeleteModal';
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
 import { AssaysHeatMap } from './internal/components/assay/AssaysHeatMap';
@@ -631,6 +632,7 @@ export {
     SearchResultCardData,
     // assay
     AssayUploadResultModel,
+    AssayDesignDeleteModal,
     AssayDesignDeleteConfirmModal,
     AssayResultDeleteModal,
     AssayRunDeleteModal,

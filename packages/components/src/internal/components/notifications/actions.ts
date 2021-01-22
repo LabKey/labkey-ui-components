@@ -98,7 +98,8 @@ export function getRunningPipelineJobStatuses(filters?: Filter.IFilter[]): Promi
                     activities.push(
                         new ServerActivityData({
                             inProgress: true,
-                            HtmlContent: row['Description']['value'],
+                            Content: row['Description']['value'],
+                            ContentType: 'text/plain',
                             Created: row['Created']['formattedValue'],
                             CreatedBy: row['CreatedBy']['displayValue'],
                         })

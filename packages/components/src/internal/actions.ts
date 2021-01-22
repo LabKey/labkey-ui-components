@@ -1069,12 +1069,24 @@ export function clearSelected(
  * @param checked whether to set selected or unselected
  * @param ids ids to change selection for
  * @param containerPath optional path to the container for this grid.  Default is the current container path
+ * @param validateIds if true, check the ids are present in dataregion before setting selection in session
+ * @param schemaName? name of the schema for the query grid
+ * @param queryName? name of the query
+ * @param filterList? list of filters to use
+ * @param queryParameters? the parameters to the underlying query
  */
 export function setSelected(
     key: string,
     checked: boolean,
     ids: string[] | string,
-    containerPath?: string
+    containerPath?: string,
+
+    validateIds?: boolean,
+    schemaName?: string,
+    queryName?: string,
+    filterList?: List<Filter.IFilter>,
+    queryParameters?: { [key: string]: any }
+
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -1086,6 +1098,11 @@ export function setSelected(
                 id: ids,
                 key,
                 checked,
+                validateIds,
+                schemaName,
+                queryName,
+                filterList,
+                queryParameters
             },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);

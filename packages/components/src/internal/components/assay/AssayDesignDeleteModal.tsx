@@ -7,11 +7,12 @@ import {
     SchemaQuery,
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
-    withQueryModels,
-    InjectedQueryModels,
     isLoading,
     AssayDesignDeleteConfirmModal
 } from '../../..';
+
+// These need to be direct imports from files to avoid circular dependencies in index.ts
+import { InjectedQueryModels, withQueryModels } from '../../../public/QueryModel/withQueryModels';
 
 const ASSAY_RUN_MODEL_ID = 'assay-runs-all';
 

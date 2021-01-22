@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Issue 42216: Fix for logout event notification issue with different user sessions (i.e. different browsers)
+    * add check for evt.wasClean in event listener callbacks before dispatching (to match platform dom/WebSocket.js)
 
 ### version 1.16.1
 *Released*: 22 January 2021

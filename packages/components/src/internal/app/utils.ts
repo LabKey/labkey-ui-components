@@ -53,7 +53,9 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
     if (notificationListeners) {
         notificationListeners.forEach(listener => {
             LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
-                window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
+                if (evt.wasClean) {
+                    window.setTimeout(() => store.dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE }), 1000);
+                }
             });
         });
     }
@@ -61,7 +63,9 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
     if (menuReloadListeners) {
         menuReloadListeners.forEach(listener => {
             LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
-                window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
+                if (evt.wasClean) {
+                    window.setTimeout(() => store.dispatch({ type: MENU_RELOAD }), 1000);
+                }
             });
         });
     }

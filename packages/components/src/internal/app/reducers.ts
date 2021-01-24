@@ -25,8 +25,11 @@ import {
     SERVER_NOTIFICATIONS_INVALIDATE,
     SERVER_NOTIFICATIONS_LOADING_START,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
-    SERVER_NOTIFICATIONS_LOADING_END
+    SERVER_NOTIFICATIONS_LOADING_END,
+    SET_RESET_QUERY_GRID_STATE,
+    RESET_QUERY_GRID_STATE,
 } from './constants';
+import { resetQueryGridState } from "../global";
 
 export type AppReducerState = AppModel;
 
@@ -72,6 +75,20 @@ export const AppReducers = handleActions<AppReducerState, any>(
                 logoutReason: LogoutReason.SERVER_UNAVAILABLE,
             });
         },
+
+        [SET_RESET_QUERY_GRID_STATE]: (state: AppReducerState, action: any) => {
+            return state.merge({
+                needsInvalidateQueryGrid: true
+            });
+        },
+
+        [RESET_QUERY_GRID_STATE]: (state: AppReducerState, action: any) => {
+            resetQueryGridState();
+            return state.merge({
+                needsInvalidateQueryGrid: false
+            });
+        },
+
     },
     new AppModel()
 );

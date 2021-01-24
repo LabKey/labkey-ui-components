@@ -55,7 +55,7 @@ export const IN_PROGRESS = new ServerActivityData({
 export const UNREAD_WITH_ERROR = new ServerActivityData({
     RowId: 3,
     Type: 'org.labkey.api.pipeline.PipelineJob$TaskStatus$3.error',
-    ActionLinkText: 'view',
+    ActionLinkText: 'View error',
     CreatedBy: 'susan',
     ActionLinkUrl: '/labkey/Study/project-begin.view?',
     IconCls: 'fa-check-circle',

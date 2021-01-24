@@ -34,7 +34,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={new ServerNotificationModel({'isLoading': true})}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
@@ -62,7 +61,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={new ServerNotificationModel(serverActivity)}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -89,7 +87,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
 
@@ -116,7 +113,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
 
@@ -143,7 +139,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
 
@@ -170,7 +165,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
 

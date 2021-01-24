@@ -95,8 +95,8 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
                           .map(item => {
                               const labelDisplay = (item.hasActiveJob && showActiveJobIcon) ? (
                                       <>
-                                          <span className={'product-menu-item'}>{item.label}</span>
                                           <i className={classNames('fa', activeJobCls)}/>
+                                          <span className={'product-menu-item'}>{item.label}</span>
                                       </>
                                   ) : item.label;
 

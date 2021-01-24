@@ -27,7 +27,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={undefined}
                 noActivityMsg={noActivityMsg}
                 onRead={jest.fn()}
@@ -42,7 +41,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{ data: [], totalRows: 0, unreadCount: 0, inProgressCount: 0 }}
                 onRead={jest.fn()}
             />
@@ -56,7 +54,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
@@ -81,7 +78,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
+                
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
@@ -104,7 +101,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
@@ -126,7 +122,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [UNREAD_WITH_ERROR],
                     totalRows: 1,
@@ -142,7 +137,7 @@ describe('<ServerActivityList>', () => {
         checkActivityListItem(item, false, true, false);
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(1);
-        expect(links.at(0).text()).toBe(ServerActivityList.defaultProps.viewErrorDetailsText);
+        expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.ActionLinkText);
 
         const errorSubject = item.find('.server-notifications-item-subject');
         const errorDetails = item.find('.server-notifications-item-details');
@@ -157,7 +152,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [UNREAD_WITH_ERROR_HTML],
                     totalRows: 1,
@@ -181,38 +175,11 @@ describe('<ServerActivityList>', () => {
         wrapper.unmount();
     });
 
-    test('custom view error details text', () => {
-        const customText = 'custom text';
-        const wrapper = mount(
-            <ServerActivityList
-                onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
-                serverActivity={{
-                    data: [UNREAD_WITH_ERROR],
-                    totalRows: 1,
-                    unreadCount: 1,
-                    inProgressCount: 0,
-                }}
-                maxRows={2}
-                viewErrorDetailsText={customText}
-                onRead={jest.fn()}
-            />
-        );
-        const item = wrapper.find('li');
-        expect(item).toHaveLength(1);
-        checkActivityListItem(item, false, true, false);
-        expect(item.find('.has-error')).toHaveLength(1);
-        const links = item.find('.server-notifications-link');
-        expect(links).toHaveLength(1);
-        expect(links.at(0).text()).toBe(customText);
-        wrapper.unmount();
-    });
-
     test('in progress', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
+                
                 serverActivity={{
                     data: [IN_PROGRESS],
                     totalRows: 1,
@@ -237,7 +204,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ],
                     totalRows: 1,
@@ -265,7 +231,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [DONE_AND_READ],
                     totalRows: 1,

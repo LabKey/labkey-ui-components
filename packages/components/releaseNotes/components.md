@@ -1,6 +1,17 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* wire up query grid reset on appModel 
+    - add needsInvalidateQueryGrid field to AppModel
+    - add methods for invalidate grids in AppReducers
+    - register resetQueryGridListeners in initWebSocketListeners
+* remove isAsynchronousImportEnabled
+* add maxEditableGridRowMsg to RunDataPanel and invalidCountMsg to Controls props
+* move spinner to be before menu labels for ProductMenuSection
+* show ActionLinkUrl for success and error notifications
+ 
 ### version 1.16.1
 *Released*: 22 January 2021
 * fix server notification content html encoding

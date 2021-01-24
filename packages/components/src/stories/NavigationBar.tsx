@@ -274,7 +274,6 @@ storiesOf('NavigationBar', module)
             maxRows: 8,
             markAllNotificationsRead: markAllNotificationsRead,
             serverActivity: new ServerNotificationModel(),
-            onShowErrorDetail: () => {},
             onViewAll: () => {},
         }
         return (

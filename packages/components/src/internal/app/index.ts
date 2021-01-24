@@ -12,7 +12,7 @@ import {
     TEST_USER_READER,
 } from '../../test/data/users';
 
-import { getUserPermissions, setReloadRequired, updateUserDisplayName, menuInit, menuInvalidate, menuReload, serverNotificationInit, serverNotificationInvalidate } from './actions';
+import { getUserPermissions, setReloadRequired, updateUserDisplayName, doResetQueryGridState, menuInit, menuInvalidate, menuReload, serverNotificationInit, serverNotificationInvalidate } from './actions';
 import {
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
@@ -51,7 +51,6 @@ import {
     initWebSocketListeners,
     userCanDesignLocations,
     userCanDesignSourceTypes,
-    isAsynchronousImportEnabled,
     isSampleManagerEnabled,
     isFreezerManagementEnabled,
     getDateFormat,
@@ -83,10 +82,10 @@ export {
     initWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
-    isAsynchronousImportEnabled,
     getDateFormat,
     getMenuSectionConfigs,
     getUserPermissions,
+    doResetQueryGridState,
     menuInit,
     menuInvalidate,
     menuReload,

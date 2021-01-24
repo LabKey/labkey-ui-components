@@ -16,7 +16,7 @@
 import React from 'react';
 
 import { shallow } from 'enzyme';
-import { MenuItem } from 'react-bootstrap';
+import {Button, MenuItem} from 'react-bootstrap';
 
 import { AddRowsControl } from './Controls';
 
@@ -59,4 +59,28 @@ describe('Controls', () => {
         menuItemWrapper.simulate('click');
         expect(quickAddFn).toHaveBeenCalledTimes(1);
     });
+
+    test('invalid row count', () => {
+        const addFn = jest.fn();
+        const wrapper = shallow(<AddRowsControl initialCount={6} maxCount={10} onAdd={addFn} />);
+        const inputWrapper = wrapper.find('input');
+        inputWrapper.simulate('focus');
+        inputWrapper.simulate('change', { target: { value: 100 } });
+        wrapper.update();
+        expect(wrapper.find('.text-danger')).toHaveLength(1);
+        expect(wrapper.find('.text-danger').text()).toContain('1-10 rows allowed');
+    });
+
+    test('invalid row count with custom invalidCountMsg', () => {
+        const addFn = jest.fn();
+        const wrapper = shallow(<AddRowsControl initialCount={6} maxCount={10} onAdd={addFn} invalidCountMsg={'A max of 10 rows are allowed'}/>);
+        const inputWrapper = wrapper.find('input');
+        inputWrapper.simulate('focus');
+        inputWrapper.simulate('change', { target: { value: 100 } });
+        wrapper.update();
+
+        expect(wrapper.find('.text-danger')).toHaveLength(1);
+        expect(wrapper.find('.text-danger').text()).toContain('A max of 10 rows are allowed');
+    });
+
 });

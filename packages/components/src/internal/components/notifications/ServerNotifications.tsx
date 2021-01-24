@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
 import { markNotificationsAsRead } from './actions';
-import { ServerActivityData, ServerNotificationsConfig } from './model';
+import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
 import { LoadingSpinner } from '../../../index';
 
@@ -67,15 +67,6 @@ export class ServerNotifications extends React.Component<Props, State> {
         this.setState(state => ({ show: !state.show }));
     };
 
-    onShowErrorDetail = (notificationItem: ServerActivityData): void => {
-        const { onShowErrorDetail } = this.props;
-
-        if (onShowErrorDetail)
-            onShowErrorDetail(notificationItem);
-
-        this.setState(state => ({ show: false }));
-    };
-
     render(): ReactNode {
         const { serverActivity, maxRows, onViewAll } = this.props;
         const { show } = this.state;
@@ -104,7 +95,6 @@ export class ServerNotifications extends React.Component<Props, State> {
                     maxRows={maxRows}
                     serverActivity={serverActivity}
                     onViewAll={onViewAll}
-                    onShowErrorDetail={this.onShowErrorDetail}
                     onRead={this.onRead}
                 />
             );

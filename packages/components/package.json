@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "1.17.0-fb-smEnableNotification.2",
+  "version": "1.17.0-fb-smEnableNotification.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

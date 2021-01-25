@@ -5,24 +5,8 @@
     }
 }
 
-.fa-stack[data-count]:after{
-    position:absolute;
-    right:-16px;
-    content: attr(data-count);
-    font-size:75%;
-    padding:.6em;
-    border-radius:999px;
-    line-height:.75em;
-    color: $white;
-    background: #FA6400;
-    text-align:center;
-    min-width:2em;
-    font-weight:bold;
-}
-
 .server-notifications-icon {
     color: $white;
-    font-size: 22px;
 }
 
 .server-notifications-listing-container {
@@ -108,13 +92,6 @@
     }
 }
 
-.server-notifications-button {
-    .fa-stack {
-        height: 3em;
-        line-height: 3em;
-    }
-}
-
 .server-notifications-link {
     color: $brand-primary;
     &:hover {
@@ -137,3 +114,20 @@
 .job-status-log-entry-error {
     color: $brand-danger;
 }
+
+.navbar-icon-button-right.server-notifications-button {
+    margin-top: 0;
+
+    .server-notifications-icon {
+        line-height: 1em;
+        vertical-align: -15%;
+        font-size: 1.5em;
+    }
+}
+
+.btn.server-notifications-button {
+    .badge {
+        background: #FA6400;
+    }
+}
+

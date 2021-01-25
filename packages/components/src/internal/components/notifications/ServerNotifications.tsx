@@ -101,14 +101,14 @@ export class ServerNotifications extends React.Component<Props, State> {
         }
 
         const icon = (
-            <span className="fa-stack navbar-icon" data-count={numUnread || undefined}>
-                <i className="fa fa-circle fa-stack-1x" />
+            <span>
                 <i className={
                         'fa ' +
-                        (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') +
-                        ' fa-stack-1x server-notifications-icon'
+                        (this.hasAnyInProgress() ? 'fa-spinner fa-pulse server-notifications-icon' : 'fa-bell server-notifications-icon') +
+                        ' server-notifications-icon'
                     }
                 />
+                {this.hasAnyUnread() && <span className="badge badge-light">{numUnread}</span>}
             </span>
         );
         return (

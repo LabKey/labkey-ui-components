@@ -11,6 +11,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * add maxEditableGridRowMsg to RunDataPanel and invalidCountMsg to Controls props
 * move spinner to be before menu labels for ProductMenuSection
 * show ActionLinkUrl for success and error notifications
+* use bootstrap badge for notification count display
  
 ### version 1.16.1
 *Released*: 22 January 2021

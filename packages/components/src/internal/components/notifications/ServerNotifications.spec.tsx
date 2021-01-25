@@ -10,7 +10,8 @@ import {
     DONE_NOT_READ,
     IN_PROGRESS,
     markAllNotificationsRead,
-    UNREAD_WITH_ERROR
+    UNREAD_WITH_ERROR,
+    UNREAD_WITH_ERROR2
 } from '../../../test/data/notificationData';
 
 import { ServerNotifications } from './ServerNotifications';
@@ -100,7 +101,7 @@ describe('<ServerNotificaitons/>', () => {
 
     test('some unread', () => {
         const serverActivity = new ServerNotificationModel({
-            data: [DONE_AND_READ, DONE_NOT_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
+            data: [DONE_AND_READ, DONE_NOT_READ, IN_PROGRESS, UNREAD_WITH_ERROR, UNREAD_WITH_ERROR2],
             totalRows: 2,
             unreadCount: 2,
             inProgressCount: 1,
@@ -127,7 +128,7 @@ describe('<ServerNotificaitons/>', () => {
 
     test('none in progress', () => {
         const serverActivity = new ServerNotificationModel({
-            data: [DONE_AND_READ, DONE_NOT_READ, UNREAD_WITH_ERROR],
+            data: [DONE_AND_READ, DONE_NOT_READ, UNREAD_WITH_ERROR, UNREAD_WITH_ERROR2],
             totalRows: 2,
             unreadCount: 2,
             inProgressCount: 0,

@@ -94,6 +94,7 @@ export class ServerActivityData {
     readonly ActionLinkUrl: string;
     readonly ContainerId: string;
     readonly HtmlContent: string;
+    readonly Content: string;
     readonly ContentType: string;
     readonly IconCls: string;
     readonly inProgress: boolean;
@@ -115,6 +116,10 @@ export class ServerActivityData {
 
     isUnread(): boolean {
         return this.ReadOn == undefined;
+    }
+
+    isHTML(): boolean {
+        return this.ContentType?.toLowerCase() === 'text/html';
     }
 }
 

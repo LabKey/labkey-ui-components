@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "1.16.0-fb-bio-assay-design-crud.5",
+  "version": "1.16.1-fb-bio-assay-design-crud.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

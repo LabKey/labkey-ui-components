@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.16.1
+*Released*: 22 January 2021
+* fix server notification content html encoding
+* allow setSelected to validate ids against dataregion
+
 ### version 1.16.0
 *Released*: 18 January 2021
 * add menu item active job icon

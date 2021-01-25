@@ -27,25 +27,48 @@ import {
     MENU_RELOAD,
 } from './constants';
 
+// Type definition not provided for event codes so here we provide our own
+// Source: https://www.iana.org/assignments/websocket/websocket.xml#close-code-number
+export enum CloseEventCode {
+    NORMAL_CLOSURE = 1000,
+    GOING_AWAY = 1001,
+    PROTOCOL_ERROR = 1002,
+    UNSUPPORTED_DATA = 1003,
+    RESERVED = 1004,
+    NO_STATUS_RCVD = 1005,
+    ABNORMAL_CLOSURE = 1006,
+    INVALID_FRAME_PAYLOAD_DATA = 1007,
+    POLICY_VIOLATION = 1008,
+    MESSAGE_TOO_BIG = 1009,
+    MISSING_EXT = 1010,
+    INTERNAL_ERROR = 1011,
+    SERVICE_RESTART = 1012,
+    TRY_AGAIN_LATER = 1013,
+    BAD_GATEWAY = 1014,
+    TLS_HANDSHAKE = 1015,
+}
+
 export function initWebSocketListeners(store, notificationListeners?: string[], menuReloadListeners?: string[]): void {
     // register websocket listener for the case where a user logs out in another tab
-    LABKEY.WebSocket.addServerEventListener('org.labkey.api.security.AuthNotify#LoggedOut', function (evt) {
-        if (evt.wasClean) {
+    function _logOutCallback(evt) {
+        if (evt.wasClean && evt.reason === 'org.labkey.api.security.AuthNotify#SessionLogOut') {
             window.setTimeout(() => store.dispatch({type: SECURITY_LOGOUT}), 1000);
         }
-    });
+    }
+    LABKEY.WebSocket.addServerEventListener(CloseEventCode.NORMAL_CLOSURE, _logOutCallback);
+    LABKEY.WebSocket.addServerEventListener(CloseEventCode.UNSUPPORTED_DATA, _logOutCallback);
 
     // register websocket listener for session timeout code
-    LABKEY.WebSocket.addServerEventListener(1008, function (evt) {
+    LABKEY.WebSocket.addServerEventListener(CloseEventCode.POLICY_VIOLATION, function (evt) {
         if (evt.wasClean) {
             window.setTimeout(() => store.dispatch({ type: SECURITY_SESSION_TIMEOUT }), 1000);
         }
     });
 
     // register websocket listener for server being shutdown
-    LABKEY.WebSocket.addServerEventListener(1001, function (evt) {
+    LABKEY.WebSocket.addServerEventListener(CloseEventCode.GOING_AWAY, function (evt) {
         // Issue 39473: 1001 sent when server is shutdown normally (AND on page reload in FireFox, but that one doesn't have a reason)
-        if (evt.wasClean && evt.code === 1001 && evt.reason && evt.reason !== '') {
+        if (evt.wasClean && evt.reason && evt.reason !== '') {
             window.setTimeout(() => store.dispatch({ type: SECURITY_SERVER_UNAVAILABLE }), 1000);
         }
     });

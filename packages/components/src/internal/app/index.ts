@@ -56,6 +56,7 @@ import {
     isFreezerManagementEnabled,
     getDateFormat,
     getMenuSectionConfigs,
+    CloseEventCode,
 } from './utils';
 
 import {
@@ -80,6 +81,7 @@ export {
     RoutingTableReducers,
     ServerNotificationState,
     ServerNotificationReducers,
+    CloseEventCode,
     initWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,

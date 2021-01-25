@@ -18,6 +18,18 @@ storiesOf('AssayPicker', module)
         return (
             <AssayPicker
                 showImport={true}
+                showContainerSelect={true}
+                onChange={onNoopSelect}
+            />
+        );
+    })
+    .add('assay picker minimal', () => {
+        const onNoopSelect = () => {};
+
+        return (
+            <AssayPicker
+                showImport={false}
+                showContainerSelect={false}
                 onChange={onNoopSelect}
             />
         );

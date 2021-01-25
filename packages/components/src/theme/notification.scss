@@ -82,6 +82,10 @@
     background-color: $gray-lighter;
     border-bottom: 1px solid $gray-light;
     border-radius: 5px 5px 0 0;
+
+    .navbar-icon-connector {
+        border-color: transparent transparent $gray-lighter transparent;
+    }
 }
 
 .server-notifications-footer {
@@ -130,4 +134,3 @@
         background: #FA6400;
     }
 }
-

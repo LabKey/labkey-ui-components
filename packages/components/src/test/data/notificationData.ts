@@ -3,7 +3,7 @@ import { ServerActivityData } from '../../internal/components/notifications/mode
 export const DONE_NOT_READ = new ServerActivityData({
     RowId: 1,
     Type: 'org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete',
-    ActionLinkText: 'view',
+    ActionLinkText: 'view sample details',
     CreatedBy: 'susan',
     ActionLinkUrl: '/labkey/Study/project-begin.view?',
     IconCls: 'fa-check-circle',
@@ -20,7 +20,7 @@ export const DONE_NOT_READ = new ServerActivityData({
 export const DONE_AND_READ = new ServerActivityData({
     RowId: 2,
     Type: 'org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete',
-    ActionLinkText: 'view',
+    ActionLinkText: 'view sources',
     CreatedBy: 'susan',
     ActionLinkUrl: '/labkey/Study/project-begin.view?',
     IconCls: 'fa-check-circle',
@@ -35,19 +35,9 @@ export const DONE_AND_READ = new ServerActivityData({
 });
 
 export const IN_PROGRESS = new ServerActivityData({
-    RowId: undefined,
-    Type: 'org.labkey.api.pipeline.PipelineJob$TaskStatus$3.complete',
-    ActionLinkText: 'view',
     CreatedBy: 'susan',
-    ActionLinkUrl: '/labkey/Study/project-begin.view?',
-    IconCls: 'fa-check-circle',
-    ObjectId: 'C',
-    ContainerId: 'testContainerEntityId',
-    HtmlContent: 'Source import started',
     Content: 'Source import started',
     ContentType: 'text/plain',
-    UserId: 1005,
-    ReadOn: null,
     Created: '2020-01-22 13:47:32.317',
     inProgress: true,
 });

@@ -13,7 +13,13 @@ import { MenuSectionConfig, MenuItemModel, MenuSectionModel, ProductMenuModel, N
 import { ICON_URL } from './mock';
 import './stories.scss';
 import { TEST_USER_READER } from "../test/data/users";
-import { markAllNotificationsRead } from '../test/data/notificationData';
+import {
+    DONE_AND_READ,
+    DONE_NOT_READ,
+    IN_PROGRESS,
+    markAllNotificationsRead,
+    UNREAD_WITH_ERROR
+} from '../test/data/notificationData';
 import { ServerNotificationModel } from "../internal/components/notifications/model";
 
 const fruitTree = [
@@ -270,10 +276,21 @@ storiesOf('NavigationBar', module)
             isGuest: !isSignedIn,
         });
 
+        const serverActivity = hasActiveJob ? {
+            data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
+            totalRows: 4,
+            unreadCount: 2,
+            inProgressCount: 1,
+        } : {
+            data: [DONE_NOT_READ, DONE_AND_READ, UNREAD_WITH_ERROR],
+            totalRows: 3,
+            unreadCount: 1,
+            inProgressCount: 0,
+        };
         const notificationConfig = {
             maxRows: 8,
             markAllNotificationsRead: markAllNotificationsRead,
-            serverActivity: new ServerNotificationModel(),
+            serverActivity: new ServerNotificationModel(serverActivity),
             onViewAll: () => {},
         }
         return (

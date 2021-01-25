@@ -108,7 +108,7 @@ export class ServerNotifications extends React.Component<Props, State> {
                         ' server-notifications-icon'
                     }
                 />
-                {this.hasAnyUnread() && <span className="badge badge-light">{numUnread}</span>}
+                {this.hasAnyUnread() && <span className="badge">{numUnread}</span>}
             </span>
         );
         return (

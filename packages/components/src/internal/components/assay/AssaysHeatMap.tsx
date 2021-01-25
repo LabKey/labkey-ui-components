@@ -1,8 +1,10 @@
-import React, { FC, memo } from 'react'
+import React, {FC, memo, useMemo} from 'react'
 import { Alert, AppURL, SCHEMAS, HeatMap, App, HeatMapCell } from '../../..';
+import {Filter} from "@labkey/api";
 
 interface Props {
     navigate: (url: AppURL) => any
+    excludedAssayProviders?: string[]
 }
 
 const getAssayUrl = (provider: string, protocol: string, page?: string): AppURL => {
@@ -35,7 +37,14 @@ const getTotalUrl = (cell: HeatMapCell) => {
 const emptyDisplay = <Alert bsStyle={'warning'}>No assay runs have been imported within the last 12 months.</Alert>;
 
 export const AssaysHeatMap: FC<Props> = memo((props) => {
-    const { navigate } = props;
+    const { navigate, excludedAssayProviders } = props;
+
+    const filters = useMemo(() => {
+        if (excludedAssayProviders)
+            return [Filter.create('Provider', excludedAssayProviders, Filter.Types.NOT_IN)]
+
+        return undefined;
+    }, [excludedAssayProviders])
 
     return (
         <HeatMap
@@ -53,6 +62,7 @@ export const AssaysHeatMap: FC<Props> = memo((props) => {
             headerClickUrl={AppURL.create('q', 'exp', 'assayruns')}
             emptyDisplay={emptyDisplay}
             navigate={navigate}
+            filters={filters}
         />
     )
 

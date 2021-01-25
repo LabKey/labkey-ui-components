@@ -33,8 +33,10 @@ export const enum AssayPickerTabs {
 
 interface AssayPickerProps {
     showImport: boolean;
+    showContainerSelect: boolean;
     onChange: (model: AssayPickerSelectionModel) => void;
     selectedTab?: AssayPickerTabs
+    excludedProviders?: string[]
 }
 
 export interface AssayPickerSelectionModel {
@@ -76,7 +78,7 @@ const getSelectedProvider = (providers: AssayProvider[], name: string): AssayPro
 };
 
 export const AssayPicker: FC<AssayPickerProps> = memo(props => {
-    const { showImport, onChange, selectedTab } = props;
+    const { showImport, showContainerSelect, onChange, selectedTab, excludedProviders } = props;
 
     const [providers, setProviders] = useState<AssayProvider[]>();
     const [containers, setContainers] = useState<{ [key: string]: string }>();
@@ -89,7 +91,12 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
 
     useEffect(() => {
         getAssayProviders().then(options => {
-            setProviders(options.providers);
+            let providers = options.providers;
+            if (excludedProviders) {
+                providers = providers.filter((provider) => (excludedProviders.indexOf(provider.name) === -1))
+            }
+
+            setProviders(providers);
             setContainers(options.locations);
 
             setAssaySelectionModel(draft => {
@@ -201,15 +208,17 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                             >
                                 <StandardAssayPanel provider={standardProvider}>
                                     <div className="margin-top">
-                                        <Row>
-                                            <Col xs={6}>
-                                                <AssayContainerLocation
-                                                    locations={containers}
-                                                    selected={assaySelectionModel.container}
-                                                    onChange={onContainerChange}
-                                                />
-                                            </Col>
-                                        </Row>
+                                        {showContainerSelect &&
+                                            <Row>
+                                                <Col xs={6}>
+                                                    <AssayContainerLocation
+                                                        locations={containers}
+                                                        selected={assaySelectionModel.container}
+                                                        onChange={onContainerChange}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        }
                                     </div>
                                 </StandardAssayPanel>
                             </Tab.Pane>
@@ -223,15 +232,17 @@ export const AssayPicker: FC<AssayPickerProps> = memo(props => {
                                     onChange={onSelectedProviderChange}
                                 >
                                     <div className="margin-top">
-                                        <Row>
-                                            <Col xs={6}>
-                                                <AssayContainerLocation
-                                                    locations={containers}
-                                                    selected={assaySelectionModel.container}
-                                                    onChange={onContainerChange}
-                                                />
-                                            </Col>
-                                        </Row>
+                                        {showContainerSelect &&
+                                            <Row>
+                                                <Col xs={6}>
+                                                    <AssayContainerLocation
+                                                        locations={containers}
+                                                        selected={assaySelectionModel.container}
+                                                        onChange={onContainerChange}
+                                                    />
+                                                </Col>
+                                            </Row>
+                                        }
                                     </div>
                                 </SpecialtyAssayPanel>
                             </Tab.Pane>

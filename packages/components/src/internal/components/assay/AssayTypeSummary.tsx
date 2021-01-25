@@ -36,11 +36,11 @@ interface AssayTypeSummaryProps {
     user: User;
     location?: Location;
     assayTypes?: string[];
-    excludedAssayTypes?: string[];
+    excludedAssayProviders?: string[];
 }
 
 export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
-    const { location, navigate, assayTypes, excludedAssayTypes } = props;
+    const { location, navigate, assayTypes, excludedAssayProviders } = props;
 
     const [selected, setSelected] = useState<string>();
 
@@ -49,11 +49,11 @@ export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
             ...SAMPLE_QUERY_CONFIG,
             baseFilters: assayTypes
                 ? [Filter.create('Type', assayTypes, Filter.Types.IN)]
-                : (excludedAssayTypes
-                    ? [Filter.create('Type', excludedAssayTypes, Filter.Types.NOT_IN)]
+                : (excludedAssayProviders
+                    ? [Filter.create('Type', excludedAssayProviders, Filter.Types.NOT_IN)]
                     : undefined),
         };
-    }, [assayTypes, excludedAssayTypes]);
+    }, [assayTypes, excludedAssayProviders]);
 
     useEffect(() => {
         setSelected(location?.query?.viewAs ?? 'grid');
@@ -81,7 +81,7 @@ export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
                 onChange={onSelectionChange}
                 options={ASSAY_VIEW_OPTIONS}
             />
-            {selected === SELECTION_HEATMAP && <AssaysHeatMap navigate={navigate} />}
+            {selected === SELECTION_HEATMAP && <AssaysHeatMap navigate={navigate} excludedAssayProviders={excludedAssayProviders} />}
             {(selected === SELECTION_GRID || selected === undefined) && (
                 <GridPanelWithModel
                     queryConfig={queryConfig}

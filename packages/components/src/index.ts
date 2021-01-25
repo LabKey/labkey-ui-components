@@ -116,7 +116,7 @@ import {
     NotificationItemProps,
     Persistence,
     ServerNotificationModel,
-    ServerActivityData
+    ServerActivityData,
 } from './internal/components/notifications/model';
 import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
@@ -288,11 +288,7 @@ import { AssayResultDeleteModal } from './internal/components/assay/AssayResultD
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
 import { AssaysHeatMap } from './internal/components/assay/AssaysHeatMap';
 import { AssayTypeSummary } from './internal/components/assay/AssayTypeSummary';
-import {
-    AssayPicker,
-    AssayPickerTabs,
-    AssayPickerSelectionModel
-} from './internal/components/assay/AssayPicker';
+import { AssayPicker, AssayPickerTabs, AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
@@ -440,7 +436,7 @@ import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUti
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
-import { PipelineStatusDetailPage }  from './internal/components/pipeline/PipelineStatusDetailPage';
+import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();

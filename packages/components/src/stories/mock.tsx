@@ -113,7 +113,7 @@ const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
 const QUERY_DETAILS_RESPONSES = fromJS({
     assay: {
-        assaylist: assayAssayListDetails
+        assaylist: assayAssayListDetails,
     },
     'assay.general.amino acids': {
         runs: assayRunsWithQCFlagsQueryInfo,
@@ -176,7 +176,7 @@ const QUERY_DETAILS_RESPONSES = fromJS({
 
 const QUERY_RESPONSES = fromJS({
     assay: {
-        assaylist: assayAssayList
+        assaylist: assayAssayList,
     },
     'assay.general.amino acids': {
         runs: assayRunsWithQCFlagsQuery,
@@ -653,6 +653,6 @@ export function initPipelineStatusDetailsMocks(): void {
             return detail.rowId == parseInt(queryParams.rowId);
         });
 
-        return jsonResponse(responseBody.length > 0 ? responseBody[0] : {success: false}, res);
+        return jsonResponse(responseBody.length > 0 ? responseBody[0] : { success: false }, res);
     });
 }

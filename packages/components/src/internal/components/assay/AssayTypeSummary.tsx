@@ -2,16 +2,8 @@ import React, { FC, memo, useCallback, useEffect, useState, useMemo } from 'reac
 
 import { Filter } from '@labkey/api';
 
-import {
-    GridPanelWithModel,
-    SCHEMAS,
-    AppURL,
-    SelectInput,
-    User,
-    Location,
-    AssaysHeatMap
-} from '../../..';
-import {ASSAY_TABLES} from "../../schemas";
+import { GridPanelWithModel, SCHEMAS, AppURL, SelectInput, User, Location, AssaysHeatMap } from '../../..';
+import { ASSAY_TABLES } from '../../schemas';
 
 const SELECTION_HEATMAP = 'heatmap';
 const SELECTION_GRID = 'grid';
@@ -49,9 +41,9 @@ export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
             ...SAMPLE_QUERY_CONFIG,
             baseFilters: assayTypes
                 ? [Filter.create('Type', assayTypes, Filter.Types.IN)]
-                : (excludedAssayProviders
-                    ? [Filter.create('Type', excludedAssayProviders, Filter.Types.NOT_IN)]
-                    : undefined),
+                : excludedAssayProviders
+                ? [Filter.create('Type', excludedAssayProviders, Filter.Types.NOT_IN)]
+                : undefined,
         };
     }, [assayTypes, excludedAssayProviders]);
 
@@ -81,7 +73,9 @@ export const AssayTypeSummary: FC<AssayTypeSummaryProps> = memo(props => {
                 onChange={onSelectionChange}
                 options={ASSAY_VIEW_OPTIONS}
             />
-            {selected === SELECTION_HEATMAP && <AssaysHeatMap navigate={navigate} excludedAssayProviders={excludedAssayProviders} />}
+            {selected === SELECTION_HEATMAP && (
+                <AssaysHeatMap navigate={navigate} excludedAssayProviders={excludedAssayProviders} />
+            )}
             {(selected === SELECTION_GRID || selected === undefined) && (
                 <GridPanelWithModel
                     queryConfig={queryConfig}

@@ -1,16 +1,13 @@
 import React from 'react';
-import {mount} from 'enzyme';
-import {AssayPicker, AssayPickerTabs} from '../../..';
+import { mount } from 'enzyme';
 
-import {Simulate} from "react-dom/test-utils";
+import { Simulate } from 'react-dom/test-utils';
+
+import { AssayPicker, AssayPickerTabs } from '../../..';
 
 describe('AssayPicker', () => {
     test('AssayPicker', () => {
-        const component = <AssayPicker
-            showImport={true}
-            showContainerSelect={true}
-            onChange={jest.fn()}
-        />;
+        const component = <AssayPicker showImport={true} showContainerSelect={true} onChange={jest.fn()} />;
 
         const wrapper = mount(component);
 
@@ -23,7 +20,7 @@ describe('AssayPicker', () => {
         expect(wrapper.find('.nav-tabs li.active a#assay-picker-tabs-tab-import')).toHaveLength(0);
         const importTab = wrapper.find('.nav-tabs li a#assay-picker-tabs-tab-import');
         expect(importTab).toHaveLength(1);
-        importTab.simulate("click");
+        importTab.simulate('click');
         expect(wrapper.find('.nav-tabs li.active a#assay-picker-tabs-tab-import')).toHaveLength(1);
         expect(wrapper.find('.file-upload--container')).toHaveLength(1);
 
@@ -32,12 +29,14 @@ describe('AssayPicker', () => {
     });
 
     test('AssayPicker No Import, No Container, Selected Specialty tab', () => {
-        const component = <AssayPicker
-            showImport={false}
-            showContainerSelect={false}
-            selectedTab={AssayPickerTabs.SPECIALTY_ASSAY_TAB}
-            onChange={jest.fn()}
-        />;
+        const component = (
+            <AssayPicker
+                showImport={false}
+                showContainerSelect={false}
+                selectedTab={AssayPickerTabs.SPECIALTY_ASSAY_TAB}
+                onChange={jest.fn()}
+            />
+        );
 
         const wrapper = mount(component);
 
@@ -49,13 +48,9 @@ describe('AssayPicker', () => {
 
         const activeTab = wrapper.find('.nav-tabs li a#assay-picker-tabs-tab-standard');
         expect(activeTab).toHaveLength(1);
-        activeTab.simulate("click");
+        activeTab.simulate('click');
         expect(wrapper.find('#assay-type-select-container')).toHaveLength(0);
-
-
 
         wrapper.unmount();
     });
-
-
 });

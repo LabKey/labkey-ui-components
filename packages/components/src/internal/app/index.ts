@@ -12,7 +12,16 @@ import {
     TEST_USER_READER,
 } from '../../test/data/users';
 
-import { getUserPermissions, setReloadRequired, updateUserDisplayName, menuInit, menuInvalidate, menuReload, serverNotificationInit, serverNotificationInvalidate } from './actions';
+import {
+    getUserPermissions,
+    setReloadRequired,
+    updateUserDisplayName,
+    menuInit,
+    menuInvalidate,
+    menuReload,
+    serverNotificationInit,
+    serverNotificationInvalidate,
+} from './actions';
 import {
     SECURITY_LOGOUT,
     SECURITY_SERVER_UNAVAILABLE,
@@ -43,7 +52,7 @@ import {
     SAMPLE_MANAGER_PRODUCT_ID,
     STICKY_HEADER_HEIGHT,
     NOTIFICATION_TIMEOUT,
-    SERVER_NOTIFICATION_MAX_ROWS
+    SERVER_NOTIFICATION_MAX_ROWS,
 } from './constants';
 import { AppModel, LogoutReason } from './models';
 
@@ -56,6 +65,7 @@ import {
     isFreezerManagementEnabled,
     getDateFormat,
     getMenuSectionConfigs,
+    CloseEventCode,
 } from './utils';
 
 import {
@@ -80,6 +90,7 @@ export {
     RoutingTableReducers,
     ServerNotificationState,
     ServerNotificationReducers,
+    CloseEventCode,
     initWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,

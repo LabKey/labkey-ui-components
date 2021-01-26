@@ -52,7 +52,7 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
     // register websocket listener for the case where a user logs out in another tab
     function _logOutCallback(evt) {
         if (evt.wasClean && evt.reason === 'org.labkey.api.security.AuthNotify#SessionLogOut') {
-            window.setTimeout(() => store.dispatch({type: SECURITY_LOGOUT}), 1000);
+            window.setTimeout(() => store.dispatch({ type: SECURITY_LOGOUT }), 1000);
         }
     }
     LABKEY.WebSocket.addServerEventListener(CloseEventCode.NORMAL_CLOSURE, _logOutCallback);

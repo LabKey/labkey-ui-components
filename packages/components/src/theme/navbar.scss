@@ -230,6 +230,16 @@
   }
 }
 
+.navbar-item.navbar-item-notification {
+  .navbar-icon-button-right ~ ul.dropdown-menu {
+    padding: 0;
+  }
+
+  .navbar-icon-connector.notification-all-read {
+    right: 2px;
+  }
+}
+
 
 .sub-nav {
   border-radius: 0;

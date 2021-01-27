@@ -44,7 +44,12 @@ export class ServerActivityList extends React.PureComponent<Props> {
             const detailsDisplay = isError ? resolveErrorMessage(details) : details;
             return (<>
                 {this.renderContent(subject, 'server-notifications-item-subject', isHtml)}
-                {detailsDisplay && this.renderContent(detailsDisplay, 'server-notifications-item-details', isHtml)}
+                {detailsDisplay &&
+                    <>
+                        <br/>
+                        {this.renderContent(detailsDisplay, 'server-notifications-item-details', isHtml)}
+                    </>
+                }
             </>);
         }
         else if (isInProgress) {

@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.16.2
+*Released*: 26 January 2021
+* Issue 42216: Fix for logout event notification issue with different user sessions (i.e. different browsers)
+    * add check for evt.wasClean in server event listener callbacks before dispatching (to match platform dom/WebSocket.js)
+    * move CloseEventCode enum type from Biologics to use in App.initWebSocketListeners
+
 ### version 1.16.1
 *Released*: 22 January 2021
 * fix server notification content html encoding

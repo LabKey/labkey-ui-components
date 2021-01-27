@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 1.17.0
+*Released*: 26 January 2021
 * wire up query grid reset on appModel 
     - add needsInvalidateQueryGrid field to AppModel
     - add methods for invalidate grids in AppReducers

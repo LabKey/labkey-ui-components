@@ -7,28 +7,17 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { WizardNavButtons } from '..';
+import { disableControls } from './storyUtils';
 
 export default {
     title: 'Components/WizardNavButtons',
     component: WizardNavButtons,
     argTypes: {
-        cancel: {
-            action: 'cancelled',
-            control: { disable: true },
-            table: { disable: true },
-        },
-        nextStep: {
-            action: 'nextStep',
-            control: { disable: true },
-            table: { disable: true },
-        },
-        previousStep: {
-            action: 'previousStep',
-            control: { disable: true },
-            table: { disable: true },
-        },
+        cancel: { action: 'cancelled', ...disableControls() },
+        nextStep: { action: 'nextStep', ...disableControls() },
+        previousStep: { action: 'previousStep', ...disableControls() },
     },
 } as Meta;
 
-export const WizardNavButtonsStory: Story = storyProps => <WizardNavButtons {...storyProps as any} />;
+export const WizardNavButtonsStory: Story = props => <WizardNavButtons {...props} />;
 WizardNavButtonsStory.storyName = 'WizardNavButtons';

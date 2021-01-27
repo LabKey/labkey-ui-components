@@ -8,7 +8,7 @@ export default {
     component: Section,
 } as Meta;
 
-export const SectionStory: Story = props => <Section {...(props as any)} />;
+export const SectionStory: Story = props => <Section {...props} />;
 
 SectionStory.storyName = 'Section';
 

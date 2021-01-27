@@ -7,6 +7,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { ISubItem, SubMenuItem } from '..';
+import { disableControls } from './storyUtils';
 
 const allItems: ISubItem[] = [
     {
@@ -33,18 +34,9 @@ export default {
     title: 'Components/SubMenuItem',
     component: SubMenuItem,
     argTypes: {
-        items: {
-            control: { disable: true },
-            table: { disable: true },
-        },
-        onMouseOut: {
-            control: { disable: true },
-            table: { disable: true },
-        },
-        onMouseOver: {
-            control: { disable: true },
-            table: { disable: true },
-        },
+        items: disableControls(),
+        onMouseOut: disableControls(),
+        onMouseOver: disableControls(),
     },
 } as Meta;
 

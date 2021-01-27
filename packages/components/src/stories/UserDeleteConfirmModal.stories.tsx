@@ -18,21 +18,14 @@ import { List } from 'immutable';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { UserDeleteConfirmModal } from '../internal/components/user/UserDeleteConfirmModal';
+import { disableControls } from './storyUtils';
 
 export default {
     title: 'Components/UserDeleteConfirmModal',
     component: UserDeleteConfirmModal,
     argTypes: {
-        onCancel: {
-            action: 'cancel',
-            control: { disable: true },
-            table: { disable: true },
-        },
-        onComplete: {
-            action: 'complete',
-            control: { disable: true },
-            table: { disable: true },
-        },
+        onCancel: { action: 'cancel', ...disableControls() },
+        onComplete: { action: 'complete', ...disableControls() },
     },
 } as Meta;
 

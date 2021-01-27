@@ -13,64 +13,68 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
-import { storiesOf } from '@storybook/react';
-import { boolean, withKnobs } from '@storybook/addon-knobs';
+import React, { useMemo } from 'react';
+import { Meta, Story } from '@storybook/react/types-6-0';
 
+import { getStateQueryGridModel, SchemaQuery } from '..';
 import { QueryGrid } from '../internal/components/QueryGrid';
-import { updateQueryGridModel } from '../internal/global';
-import { getStateQueryGridModel, QueryGridModel, SchemaQuery } from '..';
+import initGlobal from './initGlobal';
+import { disableControls } from './storyUtils';
 
-import './stories.scss';
+initGlobal();
 
-storiesOf('QueryGrid', module)
-    .addDecorator(withKnobs)
-    .add('No data available', () => {
-        const modelId = 'basicRendering';
-        const schemaQuery = new SchemaQuery({
-            schemaName: 'schema',
-            queryName: 'q-snapshot',
-        });
-        const model = new QueryGridModel({
-            allowSelection: boolean('allowSelection?', false),
-            id: modelId,
-            isLoaded: boolean('isLoaded?', true),
-            isLoading: boolean('isLoading?', false),
-            isError: boolean('isError?', false),
-            schema: schemaQuery.schemaName,
-            query: schemaQuery.queryName,
-        });
-        updateQueryGridModel(model, {}, undefined, false);
-        return <QueryGrid model={model} schemaQuery={schemaQuery} />;
-    })
-    .add('without data', () => {
-        const modelId = 'gridWithoutData';
-        const schemaQuery = new SchemaQuery({
-            schemaName: 'schema',
-            queryName: 'gridWithoutData',
-        });
-        const model = getStateQueryGridModel(modelId, schemaQuery, {
+export default {
+    title: 'Components/QueryGrid',
+    component: QueryGrid,
+    argTypes: {
+        allowSelection: disableControls(),
+        highlightLastSelectedRow: disableControls(),
+        model: disableControls(),
+        modelId: disableControls(),
+        onSelectionChange: { action: 'selectionChange', ...disableControls() },
+        schemaQuery: disableControls(),
+    },
+} as Meta;
+
+const Template: Story = props => {
+    const { modelId, schemaQuery } = props;
+    const model = useMemo(() => {
+        return getStateQueryGridModel(modelId, schemaQuery, () => ({
             allowSelection: false,
-        });
+        }));
+    }, [modelId, schemaQuery]);
 
-        return <QueryGrid model={model} />;
-    })
-    .add('with data', () => {
-        const modelId = 'gridWithData';
-        const schemaQuery = new SchemaQuery({
-            schemaName: 'exp.data',
-            queryName: 'mixtures',
-        });
-        const model = getStateQueryGridModel(modelId, schemaQuery);
+    return <QueryGrid model={model} />;
+};
 
-        return <QueryGrid model={model} />;
-    })
-    .add('with message', () => {
-        const modelId = 'gridWithMessage';
-        const schemaQuery = new SchemaQuery({
-            schemaName: 'assay.General.Amino Acids',
-            queryName: 'Runs',
-        });
-        const model = getStateQueryGridModel(modelId, schemaQuery);
-        return <QueryGrid model={model} />;
-    });
+export const NoDataStory = Template.bind({});
+NoDataStory.storyName = 'No data available';
+
+NoDataStory.args = {
+    modelId: 'basicRendering',
+    schemaQuery: SchemaQuery.create('schema', 'q-snapshot'),
+};
+
+export const WithoutData = Template.bind({});
+WithoutData.storyName = 'Without data';
+
+WithoutData.args = {
+    modelId: 'gridWithoutData',
+    schemaQuery: SchemaQuery.create('schema', 'gridWithoutData'),
+};
+
+export const WithData = Template.bind({});
+WithData.storyName = 'With data';
+
+WithData.args = {
+    modelId: 'gridWithData',
+    schemaQuery: SchemaQuery.create('exp.data', 'mixtures'),
+};
+
+export const WithMessage = Template.bind({});
+WithMessage.storyName = 'With message';
+
+WithMessage.args = {
+    modelId: 'gridWithMessage',
+    schemaQuery: SchemaQuery.create('assay.General.Amino Acids', 'Runs'),
+};

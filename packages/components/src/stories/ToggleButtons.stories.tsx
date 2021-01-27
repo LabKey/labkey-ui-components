@@ -18,9 +18,9 @@ export default {
     },
 } as Meta;
 
-export const ToggleButtonsStory: Story = storyProps => {
+export const ToggleButtonsStory: Story = props => {
     const [selected, setSelected] = useState<string>(undefined);
-    return <ToggleButtons {...(storyProps as any)} active={selected} onClick={setSelected} />;
+    return <ToggleButtons {...props} active={selected} onClick={setSelected} />;
 };
 
 ToggleButtonsStory.storyName = 'ToggleButtons';

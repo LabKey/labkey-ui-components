@@ -63,6 +63,12 @@ describe('<Cards/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
+    test('error message with custom style', () => {
+        const component = <FilePreviewGrid data={DATA} previewCount={null} errorMsg="Testing error message" errorStyle="danger"/>;
+        const tree = renderer.create(component).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
     test('custom header and info message', () => {
         const component = (
             <FilePreviewGrid data={DATA} previewCount={null} header="Custom Header" infoMsg="Custom info message." />

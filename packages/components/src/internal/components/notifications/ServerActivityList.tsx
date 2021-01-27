@@ -2,18 +2,17 @@ import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { ServerActivity, ServerActivityData } from './model';
-import { formatDateTime, getDateTimeFormat, parseDate } from '../../util/Date';
-import { resolveErrorMessage } from "../../..";
+import { formatDateTime, parseDate } from '../../util/Date';
+import { capitalizeFirstChar, resolveErrorMessage } from "../../..";
 
 interface Props {
     serverActivity: ServerActivity;
     onViewAll: () => any;
-    onShowErrorDetail: (notification: ServerActivityData) => any;
     maxRows: number;
     viewAllText: string;
     noActivityMsg: string;
-    viewErrorDetailsText: string;
     onRead: (id: number) => void;
+    actionLinkLabel: string
 }
 
 export class ServerActivityList extends React.PureComponent<Props> {
@@ -21,15 +20,11 @@ export class ServerActivityList extends React.PureComponent<Props> {
         maxRows: 8,
         viewAllText: 'View all activity',
         noActivityMsg: 'No notifications available.',
-        viewErrorDetailsText: 'View error details',
+        actionLinkLabel: 'View details'
     };
 
     markRead = (notificationId: number): void => {
         this.props.onRead(notificationId);
-    };
-
-    showErrorDetails = (notificationItem: ServerActivityData): void => {
-        this.props.onShowErrorDetail(notificationItem);
     };
 
     renderNotificationContent = (content: string, isHtml?: boolean, isError?: boolean, isInProgress?: boolean) => {
@@ -67,6 +62,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
     }
 
     renderData(activity: ServerActivityData, key: number): ReactNode {
+        const { actionLinkLabel } = this.props;
         const isUnread = activity.isUnread() && !activity.inProgress;
         return (
             <li key={key} className={isUnread ? 'is-unread' : undefined} onClick={isUnread ? () => this.markRead(activity.RowId) : undefined}>
@@ -84,9 +80,9 @@ export class ServerActivityList extends React.PureComponent<Props> {
                     {this.renderNotificationContent(activity.Content, activity.isHTML(), activity.hasError, activity.inProgress)}
                 </span>
                 <br />
-                {activity.hasError ? (
-                    <span className="server-notifications-link" onClick={() => this.showErrorDetails(activity)}>
-                        {this.props.viewErrorDetailsText}
+                {activity.ActionLinkUrl ? (
+                    <span className="server-notifications-link">
+                        <a href={activity.ActionLinkUrl}>{capitalizeFirstChar(activity.ActionLinkText ? activity.ActionLinkText : actionLinkLabel)}</a>
                     </span>
                 ) : (
                     <span className="server-notification-data" title={activity.CreatedBy}>

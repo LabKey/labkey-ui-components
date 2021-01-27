@@ -21,6 +21,7 @@ import {
     menuReload,
     serverNotificationInit,
     serverNotificationInvalidate,
+    doResetQueryGridState
 } from './actions';
 import {
     SECURITY_LOGOUT,
@@ -60,7 +61,6 @@ import {
     initWebSocketListeners,
     userCanDesignLocations,
     userCanDesignSourceTypes,
-    isAsynchronousImportEnabled,
     isSampleManagerEnabled,
     isFreezerManagementEnabled,
     getDateFormat,
@@ -94,10 +94,10 @@ export {
     initWebSocketListeners,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
-    isAsynchronousImportEnabled,
     getDateFormat,
     getMenuSectionConfigs,
     getUserPermissions,
+    doResetQueryGridState,
     menuInit,
     menuInvalidate,
     menuReload,

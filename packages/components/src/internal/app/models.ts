@@ -17,6 +17,7 @@ export class AppModel extends Record({
     reloadRequired: false,
     requestPermissions: true,
     user,
+    needsInvalidateQueryGrid: false,
 }) {
     container: Container;
     contextPath: string;
@@ -25,6 +26,7 @@ export class AppModel extends Record({
     reloadRequired: boolean;
     requestPermissions: boolean;
     user: User;
+    needsInvalidateQueryGrid: boolean; // separate query grid invalidate from menu reload, allow grid to invalidate on route change, to avoid invalid query grid state
 
     hasUserChanged(): boolean {
         return this.initialUserId !== this.user.id;
@@ -65,6 +67,11 @@ export class AppModel extends Record({
 
         return undefined;
     }
+
+    shouldInvalidateQueryGrid(): boolean {
+        return this.needsInvalidateQueryGrid;
+    }
+
 }
 
 export enum LogoutReason {

@@ -709,7 +709,8 @@ class AssayImportPanelsImpl extends Component<Props, State> {
                     allowBulkRemove={allowBulkRemove}
                     allowBulkInsert={allowBulkInsert}
                     allowBulkUpdate={allowBulkUpdate}
-                    fileSizeLimits={allowAsyncImport ? undefined : this.props.fileSizeLimits}
+                    maxEditableGridRowMsg={allowAsyncImport ? 'A max of 1,000 rows are allowed. Please use the \'Upload Files\' or \'Copy-and-Paste Data\' tab if you need to import more than 1,000 rows.' : undefined}
+                    fileSizeLimits={this.props.fileSizeLimits}
                     maxInsertRows={this.props.maxInsertRows}
                     onGridDataChange={this.props.onDataChange}
                     showTabs={showUploadTabs}

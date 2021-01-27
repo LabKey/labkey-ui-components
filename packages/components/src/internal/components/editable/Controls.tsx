@@ -36,6 +36,7 @@ export interface AddRowsControlProps {
     onQuickAdd?: Function;
     placement?: PlacementType;
     wrapperClass?: string;
+    invalidCountMsg?: string;
 }
 
 interface AddRowsControlState {
@@ -129,10 +130,11 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     renderButton() {
-        const { disable, quickAddText, onQuickAdd, addText, nounSingular, nounPlural } = this.props;
+        const { disable, quickAddText, onQuickAdd, addText, nounSingular, nounPlural, invalidCountMsg } = this.props;
         const { count } = this.state;
 
         const title = addText + ' ' + (count === 1 ? nounSingular : nounPlural);
+        const disabledMsg = invalidCountMsg ? invalidCountMsg : ('Maximum number of ' + nounPlural + ' reached.');
         return (
             <span className="input-group-btn">
                 {quickAddText && onQuickAdd ? (
@@ -142,7 +144,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                 ) : (
                     <Button
                         bsStyle="primary"
-                        title={disable ? 'Maximum number of ' + nounPlural + ' reached.' : undefined}
+                        title={disable ? disabledMsg : undefined}
                         disabled={disable || this.hasError()}
                         onClick={this.onAdd}
                     >
@@ -163,7 +165,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
     }
 
     render() {
-        const { disable, minCount, nounPlural, nounSingular, placement, wrapperClass } = this.props;
+        const { disable, minCount, nounPlural, nounSingular, placement, wrapperClass, invalidCountMsg } = this.props;
         const { count } = this.state;
 
         const hasError = !disable && this.hasError();
@@ -172,7 +174,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
             'has-error': hasError,
         });
         const maxToAdd = this.getMaxRowsToAdd();
-
+        const errorMsg = minCount == maxToAdd ? `${minCount} ${nounSingular.toLowerCase()} allowed` : `${minCount}-${maxToAdd} ${nounPlural.toLowerCase()} allowed`;
         return (
             <div className={wrapperClasses}>
                 <span className="input-group input-group-align">
@@ -193,9 +195,7 @@ export class AddRowsControl extends React.Component<AddRowsControlProps, AddRows
                 </span>
                 {hasError && (
                     <span className="text-danger pull-left add-control--error-message">
-                        {minCount == maxToAdd
-                            ? `${minCount} ${nounSingular.toLowerCase()} allowed`
-                            : `${minCount}-${maxToAdd} ${nounPlural.toLowerCase()} allowed`}
+                        {invalidCountMsg ? invalidCountMsg : errorMsg}
                     </span>
                 )}
             </div>

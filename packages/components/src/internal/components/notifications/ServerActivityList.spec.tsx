@@ -27,7 +27,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={undefined}
                 noActivityMsg={noActivityMsg}
                 onRead={jest.fn()}
@@ -42,7 +41,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{ data: [], totalRows: 0, unreadCount: 0, inProgressCount: 0 }}
                 onRead={jest.fn()}
             />
@@ -56,7 +54,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
@@ -81,7 +78,7 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
+                
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
@@ -104,7 +101,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
                     totalRows: 4,
@@ -126,7 +122,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [UNREAD_WITH_ERROR],
                     totalRows: 1,
@@ -142,7 +137,7 @@ describe('<ServerActivityList>', () => {
         checkActivityListItem(item, false, true, false);
         const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(1);
-        expect(links.at(0).text()).toBe(ServerActivityList.defaultProps.viewErrorDetailsText);
+        expect(links.at(0).text()).toBe(UNREAD_WITH_ERROR.ActionLinkText);
 
         const errorSubject = item.find('.server-notifications-item-subject');
         const errorDetails = item.find('.server-notifications-item-details');
@@ -157,7 +152,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [UNREAD_WITH_ERROR_HTML],
                     totalRows: 1,
@@ -181,38 +175,10 @@ describe('<ServerActivityList>', () => {
         wrapper.unmount();
     });
 
-    test('custom view error details text', () => {
-        const customText = 'custom text';
-        const wrapper = mount(
-            <ServerActivityList
-                onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
-                serverActivity={{
-                    data: [UNREAD_WITH_ERROR],
-                    totalRows: 1,
-                    unreadCount: 1,
-                    inProgressCount: 0,
-                }}
-                maxRows={2}
-                viewErrorDetailsText={customText}
-                onRead={jest.fn()}
-            />
-        );
-        const item = wrapper.find('li');
-        expect(item).toHaveLength(1);
-        checkActivityListItem(item, false, true, false);
-        expect(item.find('.has-error')).toHaveLength(1);
-        const links = item.find('.server-notifications-link');
-        expect(links).toHaveLength(1);
-        expect(links.at(0).text()).toBe(customText);
-        wrapper.unmount();
-    });
-
     test('in progress', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [IN_PROGRESS],
                     totalRows: 1,
@@ -237,7 +203,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [DONE_NOT_READ],
                     totalRows: 1,
@@ -251,13 +216,15 @@ describe('<ServerActivityList>', () => {
         const item = wrapper.find('li');
         expect(item).toHaveLength(1);
         checkActivityListItem(item, true, false, false);
-        const links = item.find('.server-notifications-item');
+        const content = item.find('.server-notifications-item');
+        expect(content).toHaveLength(1);
+        expect(content.at(0).text()).toBe(DONE_NOT_READ.Content);
+        const links = item.find('.server-notifications-link');
         expect(links).toHaveLength(1);
-        expect(links.at(0).text()).toBe(DONE_NOT_READ.HtmlContent);
+        expect(links.at(0).text()).toBe('View sample details');
         const data = item.find('.server-notification-data');
-        expect(data).toHaveLength(2);
-        expect(data.at(0).text()).toBe(DONE_NOT_READ.CreatedBy);
-        expect(data.at(1).text()).toBe('2020-11-11 12:47');
+        expect(data).toHaveLength(1);
+        expect(data.at(0).text()).toBe('2020-11-11 12:47');
         wrapper.unmount();
     });
 
@@ -265,7 +232,6 @@ describe('<ServerActivityList>', () => {
         const wrapper = mount(
             <ServerActivityList
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
                 serverActivity={{
                     data: [DONE_AND_READ],
                     totalRows: 1,
@@ -280,11 +246,11 @@ describe('<ServerActivityList>', () => {
         expect(item).toHaveLength(1);
         checkActivityListItem(item, true, false, false);
         const links = item.find('.server-notifications-link');
-        expect(links).toHaveLength(0);
+        expect(links).toHaveLength(1);
+        expect(links.at(0).text()).toBe('View sources');
         const data = item.find('.server-notification-data');
-        expect(data).toHaveLength(2);
-        expect(data.at(0).text()).toBe(DONE_AND_READ.CreatedBy);
-        expect(data.at(1).text()).toBe('2020-11-14 04:47');
+        expect(data).toHaveLength(1);
+        expect(data.at(0).text()).toBe('2020-11-14 04:47');
         wrapper.unmount();
     });
 

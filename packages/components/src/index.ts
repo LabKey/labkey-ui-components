@@ -179,6 +179,10 @@ import {
     MAX_EDITABLE_GRID_ROWS,
     NO_UPDATES_MESSAGE,
     EXPORT_TYPES,
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT,
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR
 } from './internal/constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
@@ -709,6 +713,10 @@ export {
     confirmLeaveWhenDirty,
     // notification related items
     NO_UPDATES_MESSAGE,
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT,
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
     NotificationItemProps,
     NotificationItemModel,
     Notification,

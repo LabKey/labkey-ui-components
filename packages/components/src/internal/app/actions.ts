@@ -19,9 +19,9 @@ import {
     SERVER_NOTIFICATIONS_LOADING_END,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
     SERVER_NOTIFICATIONS_INVALIDATE,
+    RESET_QUERY_GRID_STATE,
 } from './constants';
 import { ServerActivity } from "../components/notifications/model";
-import { resetQueryGridState } from "../global";
 
 function successUserPermissions(response) {
     return {
@@ -72,14 +72,17 @@ export function setReloadRequired() {
     };
 }
 
+export function doResetQueryGridState() {
+    return {
+        type: RESET_QUERY_GRID_STATE
+    };
+}
+
 export function menuInit(currentProductId: string, userMenuProductId: string, productIds?: List<string>) {
     return (dispatch, getState) => {
         let menu = getState().routing.menu;
         if ((!menu.isLoaded && !menu.isLoading) || menu.needsReload) {
-            if (menu.needsReload) {
-                resetQueryGridState(); // when import is completed, force reset for all grids
-            }
-            else {
+            if (!menu.needsReload) {
                 dispatch({
                     type: MENU_LOADING_START,
                     currentProductId,

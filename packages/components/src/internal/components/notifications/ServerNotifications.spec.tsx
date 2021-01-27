@@ -34,7 +34,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={new ServerNotificationModel({'isLoading': true})}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
@@ -62,7 +61,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={new ServerNotificationModel(serverActivity)}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(0);
@@ -89,13 +87,13 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
 
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
         const title = wrapper.find('.server-notifications-header');
         expect(title.text()).toBe('Notifications');
+        expect(wrapper.find('.badge')).toHaveLength(0);
         wrapper.unmount();
     });
 
@@ -116,13 +114,13 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
 
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
         const title = wrapper.find('.server-notifications-header');
         expect(title.text()).toContain('Mark all as read');
+        expect(wrapper.find('.badge')).toHaveLength(1);
         wrapper.unmount();
     });
 
@@ -143,7 +141,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
 
@@ -170,7 +167,6 @@ describe('<ServerNotificaitons/>', () => {
                 serverActivity={serverActivity}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
-                onShowErrorDetail={jest.fn()}
             />
         );
 
@@ -178,6 +174,7 @@ describe('<ServerNotificaitons/>', () => {
         // one spinner for the menu icon and one within the menu itself.
         expect(wrapper.find('.fa-spinner')).toHaveLength(2);
         expect(wrapper.find('.fa-bell')).toHaveLength(0);
+        expect(wrapper.find('.badge')).toHaveLength(1);
         wrapper.unmount();
     });
 });

@@ -93,6 +93,13 @@ export class PipelineJobsPageImpl extends React.PureComponent<Props & InjectedQu
             clearInterval(this._interval);
     }
 
+    renderButtons = (refreshOn: boolean) => {
+        return (<Checkbox checked={refreshOn} onChange={this.toggleAutoRefresh}>
+                Automatically refresh grid
+            </Checkbox>
+        );
+    }
+
     render() {
         const { queryModels, actions, gridId, title } = this.props;
         const { refreshOn } = this.state;
@@ -104,17 +111,14 @@ export class PipelineJobsPageImpl extends React.PureComponent<Props & InjectedQu
         return (
             <Page title={title} hasHeader={true}>
                 <PageHeader title={title} />
-                <Checkbox checked={refreshOn} onChange={this.toggleAutoRefresh}>
-                    Automatically refresh grid
-                </Checkbox>
                 <GridPanel
                     actions={actions}
                     model={model}
+                    ButtonsComponent={() => this.renderButtons(refreshOn)}
                 />
             </Page>
         );
     }
-
 }
 
 export const PipelineJobsPage = withQueryModels<Props>(PipelineJobsPageImpl);

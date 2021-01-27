@@ -222,14 +222,14 @@ exports[`ProductMenuSection render one-column section 1`] = `
     <li
       key="Sample Set 2"
     >
-      <span
-        className="product-menu-item"
-      >
-        Sample Set 2
-      </span>
       <i
         className="fa fa-spinner fa-pulse"
       />
+      <span
+        className="spacer-left product-menu-item"
+      >
+        Sample Set 2
+      </span>
     </li>
     <li
       key="Sample Set 3"

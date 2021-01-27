@@ -1,6 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.17.0
+*Released*: 26 January 2021
+* wire up query grid reset on appModel 
+    - add needsInvalidateQueryGrid field to AppModel
+    - add methods for invalidate grids in AppReducers
+    - register resetQueryGridListeners in initWebSocketListeners
+* remove isAsynchronousImportEnabled
+* add maxEditableGridRowMsg to RunDataPanel and invalidCountMsg to Controls props
+* move spinner to be before menu labels for ProductMenuSection
+* show ActionLinkUrl for success and error notifications
+* use bootstrap badge for notification count display
+ 
 ### version 1.16.2
 *Released*: 26 January 2021
 * Issue 42216: Fix for logout event notification issue with different user sessions (i.e. different browsers)

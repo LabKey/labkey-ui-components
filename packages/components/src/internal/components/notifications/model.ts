@@ -135,7 +135,6 @@ export interface ServerNotificationsConfig {
     markAllNotificationsRead: () => Promise<boolean>;
     serverActivity: ServerNotificationModel;
     onViewAll: () => any;
-    onShowErrorDetail: (notification: ServerActivityData) => any;
     onRead?: () => any;
 }
 

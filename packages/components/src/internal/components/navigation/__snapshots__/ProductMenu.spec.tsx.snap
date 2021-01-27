@@ -440,14 +440,14 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                               <li
                                 key="Sample Set 2"
                               >
-                                <span
-                                  className="product-menu-item"
-                                >
-                                  Sample Set 2
-                                </span>
                                 <i
                                   className="fa fa-spinner fa-pulse"
                                 />
+                                <span
+                                  className="spacer-left product-menu-item"
+                                >
+                                  Sample Set 2
+                                </span>
                               </li>
                               <li
                                 key="Sample Set 3"
@@ -555,14 +555,14 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                               <li
                                 key="Assay 1"
                               >
-                                <span
-                                  className="product-menu-item"
-                                >
-                                  Assay 1
-                                </span>
                                 <i
                                   className="fa fa-spinner fa-pulse"
                                 />
+                                <span
+                                  className="spacer-left product-menu-item"
+                                >
+                                  Assay 1
+                                </span>
                               </li>
                               <li
                                 key="Assay 2"
@@ -1156,14 +1156,14 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                               <li
                                 key="Assay 1"
                               >
-                                <span
-                                  className="product-menu-item"
-                                >
-                                  Assay 1
-                                </span>
                                 <i
                                   className="fa fa-spinner fa-pulse"
                                 />
+                                <span
+                                  className="spacer-left product-menu-item"
+                                >
+                                  Assay 1
+                                </span>
                               </li>
                               <li
                                 key="Assay 2"

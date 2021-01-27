@@ -4,7 +4,7 @@ interface Props {
     cls?: string;
     value: string;
     asSquare?: boolean;
-    label?: string;
+    label?: ReactNode;
     useSmall?: boolean;
 }
 

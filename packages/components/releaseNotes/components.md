@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version XXX
-*Released*: XXX
+### version 1.17.1
+*Released*: 27 January 2021
 * Issue 42342: Formatting issues with notifications drawer
     - align chevron properly with the bell icon without unread msgs
     - For a "Folder import" notification, there's a space missing

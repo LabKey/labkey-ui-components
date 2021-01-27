@@ -104,7 +104,7 @@ export class ServerNotifications extends React.Component<Props, State> {
             <span>
                 <i className={
                         'fa ' +
-                        (this.hasAnyInProgress() ? 'fa-spinner fa-pulse server-notifications-icon' : 'fa-bell server-notifications-icon') +
+                        (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') +
                         ' server-notifications-icon'
                     }
                 />

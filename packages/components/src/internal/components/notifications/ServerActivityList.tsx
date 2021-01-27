@@ -12,13 +12,15 @@ interface Props {
     viewAllText: string;
     noActivityMsg: string;
     onRead: (id: number) => void;
+    actionLinkLabel: string
 }
 
 export class ServerActivityList extends React.PureComponent<Props> {
     static defaultProps = {
         maxRows: 8,
         viewAllText: 'View all activity',
-        noActivityMsg: 'No notifications available.'
+        noActivityMsg: 'No notifications available.',
+        actionLinkLabel: 'View details'
     };
 
     markRead = (notificationId: number): void => {
@@ -60,6 +62,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
     }
 
     renderData(activity: ServerActivityData, key: number): ReactNode {
+        const { actionLinkLabel } = this.props;
         const isUnread = activity.isUnread() && !activity.inProgress;
         return (
             <li key={key} className={isUnread ? 'is-unread' : undefined} onClick={isUnread ? () => this.markRead(activity.RowId) : undefined}>
@@ -79,7 +82,7 @@ export class ServerActivityList extends React.PureComponent<Props> {
                 <br />
                 {activity.ActionLinkUrl ? (
                     <span className="server-notifications-link">
-                        <a href={activity.ActionLinkUrl}>{capitalizeFirstChar(activity.ActionLinkText)}</a>
+                        <a href={activity.ActionLinkUrl}>{capitalizeFirstChar(activity.ActionLinkText ? activity.ActionLinkText : actionLinkLabel)}</a>
                     </span>
                 ) : (
                     <span className="server-notification-data" title={activity.CreatedBy}>

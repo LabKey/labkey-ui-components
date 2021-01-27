@@ -11,6 +11,7 @@ export interface FileGridPreviewProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
     initialData?: InferDomainResponse;
     skipPreviewGrid?: boolean;
+    errorStyle?: string;
 }
 
 type Props = FileGridPreviewProps & {
@@ -23,16 +24,17 @@ export class FilePreviewGrid extends React.Component<Props, any> {
     static defaultProps = {
         header: 'File preview:',
         msg: '',
+        errorStyle: 'warning'
     };
 
     render() {
-        const { data, columns, header, infoMsg, errorMsg } = this.props;
+        const { data, columns, header, infoMsg, errorMsg, errorStyle } = this.props;
         const numRows = data ? data.size : 0;
 
         return (
             <>
                 {errorMsg ? (
-                    <Alert>{errorMsg}</Alert>
+                    <Alert bsStyle={errorStyle}>{errorMsg}</Alert>
                 ) : (
                     <>
                         <strong>{header}</strong>

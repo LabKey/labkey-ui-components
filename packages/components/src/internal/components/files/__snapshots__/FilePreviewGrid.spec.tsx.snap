@@ -331,6 +331,15 @@ Array [
 
 exports[`<Cards/> error message 1`] = `
 <div
+  className="alert alert-warning"
+  role="alert"
+>
+  Testing error message
+</div>
+`;
+
+exports[`<Cards/> error message with custom style 1`] = `
+<div
   className="alert alert-danger"
   role="alert"
 >

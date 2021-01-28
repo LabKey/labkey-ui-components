@@ -5,7 +5,7 @@
 import React, { Component } from 'react';
 import { List } from 'immutable';
 import { WithRouterProps } from 'react-router';
-import { App, AppURL, InjectedAssayModel, ITab, SubNav, withAssayModelsFromLocation } from '@labkey/components';
+import { App, AppURL, InjectedAssayModel, ITab, SubNav, withAssayModelsFromLocation } from '../../..';
 
 const PARENT_TAB: ITab = {
     text: 'Assays',
@@ -14,13 +14,13 @@ const PARENT_TAB: ITab = {
 const BATCHES_TAB = 'Batches';
 const TABS_WITHOUT_BATCHES = List<string>(['Overview', 'Runs', 'Results']);
 
-interface AssaySubNavProps {
-    getUrl: (provider: string, protocol: string, text: string) => string
+interface AssaySubNavMenuProps {
+    getUrl: (provider: string, protocol: string, text: string) => AppURL
 }
 
-type Props = InjectedAssayModel & WithRouterProps & AssaySubNavProps;
+type Props = InjectedAssayModel & WithRouterProps & AssaySubNavMenuProps;
 
-export class AssaySubNavImpl extends Component<Props> {
+export class AssaySubNavMenuImpl extends Component<Props> {
 
     generateTabs(): List<ITab> {
         const { assayProtocol, params, getUrl } = this.props;
@@ -45,4 +45,4 @@ export class AssaySubNavImpl extends Component<Props> {
     }
 }
 
-export const AssaySubNav = withAssayModelsFromLocation(AssaySubNavImpl);
+export const AssaySubNavMenu = withAssayModelsFromLocation(AssaySubNavMenuImpl);

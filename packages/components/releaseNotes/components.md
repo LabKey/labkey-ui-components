@@ -1,9 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
+### version TBD
+*Released*: TBD
+* Fix default grid rendered so it displays values that are 0.
+
+### version 1.17.1
+*Released*: 27 January 2021
+* Issue 42342: Formatting issues with notifications drawer
+    - align chevron properly with the bell icon without unread msgs
+    - For a "Folder import" notification, there's a space missing
 
 ### version 1.17.0
 *Released*: 26 January 2021
-* wire up query grid reset on appModel 
+* wire up query grid reset on appModel
     - add needsInvalidateQueryGrid field to AppModel
     - add methods for invalidate grids in AppReducers
     - register resetQueryGridListeners in initWebSocketListeners
@@ -12,7 +21,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * move spinner to be before menu labels for ProductMenuSection
 * show ActionLinkUrl for success and error notifications
 * use bootstrap badge for notification count display
- 
+
 ### version 1.16.2
 *Released*: 26 January 2021
 * Issue 42216: Fix for logout event notification issue with different user sessions (i.e. different browsers)

@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "1.17.1",
+  "version": "1.17.1-fb-ontBrowser.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",
@@ -13,7 +13,7 @@
     "clean": "nps clean",
     "cleanAll": "nps cleanAll",
     "prepublishOnly": "yarn build",
-    "storybook": "start-storybook -p 9001 -s ./static -c .storybook",
+    "storybook": "NODE_OPTIONS=--max_old_space_size=4096 start-storybook -p 9001 -s ./static -c .storybook",
     "build-storybook": "NODE_OPTIONS=--max_old_space_size=4096 build-storybook -c .storybook -o .storybook-out",
     "test": "cross-env NODE_ENV=test jest",
     "watch:build": "watch 'yarn build' ./src",

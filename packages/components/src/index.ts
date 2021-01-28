@@ -442,6 +442,8 @@ import { QueryDetailPage } from './internal/components/listing/pages/QueryDetail
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineStatusDetailPage }  from './internal/components/pipeline/PipelineStatusDetailPage';
+import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
+import { OntologyTabs } from './internal/components/ontology/OntologyTabs';  //TODO Remove
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -720,7 +722,6 @@ export {
     Notification,
     NotificationCreatable,
     ServerNotificationModel,
-    ServerActivityData,
     Persistence,
     MessageFunction,
     createNotification,
@@ -936,4 +937,6 @@ export {
     mountWithServerContext,
     sleep,
     waitForLifecycle,
+    OntologyBrowserPanel,
+    OntologyTabs,  //TODO remove
 };

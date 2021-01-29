@@ -1,8 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
-### version TBD
-*Released*: TBD
-* Fix default grid rendered so it displays values that are 0.
+
+### version 1.17.2
+*Released*: 29 January 2021
+* Fix default grid cell rendered so it displays values that are 0.
 
 ### version 1.17.1
 *Released*: 27 January 2021

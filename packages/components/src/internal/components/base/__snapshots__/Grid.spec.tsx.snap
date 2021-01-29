@@ -209,6 +209,37 @@ exports[`Grid component render with messages 1`] = `
           5
         </td>
       </tr>
+      <tr
+        className=""
+      >
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Zero
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          0
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          0
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -353,6 +384,37 @@ exports[`Grid component render with non-default properties 1`] = `
           }
         >
           3B
+        </td>
+      </tr>
+      <tr
+        className=""
+      >
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Zero
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          0
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Bench
         </td>
       </tr>
     </tbody>
@@ -501,6 +563,37 @@ exports[`Grid component rendering with data 1`] = `
           5
         </td>
       </tr>
+      <tr
+        className=""
+      >
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Zero
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          0
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          0
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -645,6 +738,37 @@ exports[`Grid component rendering with data and columns 1`] = `
           }
         >
           3B
+        </td>
+      </tr>
+      <tr
+        className=""
+      >
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Zero
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          0
+        </td>
+        <td
+          style={
+            Object {
+              "textAlign": "left",
+            }
+          }
+        >
+          Bench
         </td>
       </tr>
     </tbody>

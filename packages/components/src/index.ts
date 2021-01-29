@@ -291,6 +291,7 @@ import { AssayDesignDeleteModal } from './internal/components/assay/AssayDesignD
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
 import { AssaysHeatMap } from './internal/components/assay/AssaysHeatMap';
+import { AssaySubNavMenu } from './internal/components/assay/AssaySubNavMenu';
 import { AssayTypeSummary } from './internal/components/assay/AssayTypeSummary';
 import { AssayPicker, AssayPickerTabs, AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
@@ -640,6 +641,7 @@ export {
     AssayResultDeleteModal,
     AssayRunDeleteModal,
     AssaysHeatMap,
+    AssaySubNavMenu,
     AssayTypeSummary,
     AssayStateModel,
     AssayImportPanels,

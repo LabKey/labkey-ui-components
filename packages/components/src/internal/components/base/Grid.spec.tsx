@@ -36,6 +36,11 @@ const gridData = fromJS([
         number: 15,
         position: 5,
     },
+    {
+        name: 'Zero',
+        number: 0,
+        position: 0,
+    }
 ]);
 
 const gridMessages = fromJS([
@@ -60,6 +65,8 @@ const gridColumns = List([
         title: 'Position',
         cell: posNumber => {
             switch (posNumber) {
+                case 0:
+                    return 'Bench';
                 case 2:
                     return 'C';
                 case 4:

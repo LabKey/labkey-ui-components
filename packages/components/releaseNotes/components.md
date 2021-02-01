@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.18.0
+*Released*: 1 February 2021
+* Addition of AssayDesignDeleteModal, AssaysHeatmap and AssayTypeSummary
+* Updates for app version of AssayPicker
+
 ### version 1.17.2
 *Released*: 29 January 2021
 * Fix default grid cell rendered so it displays values that are 0.

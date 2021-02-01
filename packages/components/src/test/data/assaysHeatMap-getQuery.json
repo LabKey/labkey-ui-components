@@ -91,7 +91,7 @@
       "facetingBehaviorType" : "AUTOMATIC",
       "caption" : "Provider"
     }, {
-      "fieldKey" : [ "2019-2::MonthCount" ],
+      "fieldKey" : [ "2020-12::MonthCount" ],
       "friendlyType" : "Integer",
       "type" : "int",
       "jsonType" : "int",
@@ -122,15 +122,15 @@
       "excludeFromShifting" : false,
       "conceptURI" : null,
       "inputType" : "text",
-      "shortCaption" : "2019-2",
+      "shortCaption" : "2020-12",
       "facetingBehaviorType" : "AUTOMATIC",
       "crosstabColumnMember" : {
         "dimensionFieldKey" : [ "YearMonth" ],
-        "caption" : "2019-2",
-        "value" : "2019-2"
+        "caption" : "2020-12",
+        "value" : "2020-12"
       },
       "crosstabColumnDimension" : [ "MonthCount" ],
-      "caption" : "2019-2"
+      "caption" : "2020-12"
     }, {
       "fieldKey" : [ "CompleteCount" ],
       "friendlyType" : "Integer",
@@ -217,7 +217,7 @@
       "Provider" : {
         "value" : "General"
       },
-      "2019-2::MonthCount" : {
+      "2020-12::MonthCount" : {
         "value" : 4
       },
       "CompleteCount" : {
@@ -236,7 +236,7 @@
       "Provider" : {
         "value" : "General"
       },
-      "2019-2::MonthCount" : {
+      "2020-12::MonthCount" : {
         "value" : 1
       },
       "CompleteCount" : {
@@ -255,7 +255,7 @@
       "Provider" : {
         "value" : "General"
       },
-      "2019-2::MonthCount" : {
+      "2020-12::MonthCount" : {
         "value" : 1
       },
       "CompleteCount" : {
@@ -274,7 +274,7 @@
       "Provider" : {
         "value" : "General"
       },
-      "2019-2::MonthCount" : {
+      "2020-12::MonthCount" : {
         "value" : 1
       },
       "CompleteCount" : {
@@ -293,7 +293,7 @@
       "Provider" : {
         "value" : "General"
       },
-      "2019-2::MonthCount" : {
+      "2020-12::MonthCount" : {
         "value" : 4
       },
       "CompleteCount" : {
@@ -312,7 +312,7 @@
       "Provider" : {
         "value" : "General"
       },
-      "2019-2::MonthCount" : {
+      "2020-12::MonthCount" : {
         "value" : 3
       },
       "CompleteCount" : {
@@ -331,7 +331,7 @@
       "Provider" : {
         "value" : "Noblis Simple"
       },
-      "2019-2::MonthCount" : {
+      "2020-12::MonthCount" : {
         "value" : 1
       },
       "CompleteCount" : {

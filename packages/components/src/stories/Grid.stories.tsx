@@ -18,6 +18,7 @@ import { fromJS, List, Map } from 'immutable';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { Grid, GridColumn } from '..';
+
 import { disableControls } from './storyUtils';
 
 const gridColumns = List([

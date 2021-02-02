@@ -9,6 +9,7 @@ import { List } from 'immutable';
 
 import { FilesListingForm } from '..';
 import { FILES_DATA, FILES_DATA_2 } from '../test/data/constants';
+
 import { disableControls } from './storyUtils';
 
 export default {

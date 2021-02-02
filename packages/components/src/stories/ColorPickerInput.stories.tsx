@@ -25,7 +25,9 @@ export default {
 
 export const ColorPickerInputStory: Story = storyProps => {
     const [selected, setSelected] = useState<string>('#009ce0');
-    const onChange = useCallback((name, value) => { setSelected(value); }, []);
+    const onChange = useCallback((name, value) => {
+        setSelected(value);
+    }, []);
 
     return <ColorPickerInput {...storyProps} onChange={onChange} value={selected} />;
 };

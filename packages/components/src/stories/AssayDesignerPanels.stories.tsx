@@ -12,14 +12,14 @@ import { DomainException } from '../internal/components/domainproperties/models'
 import { setAssayDomainException } from '../internal/components/domainproperties/assay/actions';
 import { SEVERITY_LEVEL_ERROR } from '../internal/components/domainproperties/constants';
 
-import { initGlobal } from './storyUtils';
-
 import generalAssayTemplate from '../test/data/assay-getProtocolGeneralTemplate.json';
 import generalAssaySaved from '../test/data/assay-getProtocolGeneral.json';
 import generalAssayDupes from '../test/data/assay-getProtocolGeneralDuplicateFields.json';
 import domainAssayException from '../test/data/assay-domainExceptionFromServer.json';
 import elispotAssayTemplate from '../test/data/assay-getProtocolELISpotTemplate.json';
 import elispotAssaySaved from '../test/data/assay-getProtocolELISpot.json';
+
+import { initGlobal } from './storyUtils';
 
 initGlobal();
 

@@ -8,12 +8,12 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { AssayProtocolModel, AssayPropertiesPanel } from '..';
 
-import { initGlobal } from './storyUtils';
-
 import generalAssayTemplate from '../test/data/assay-getProtocolGeneralTemplate.json';
 import generalAssaySaved from '../test/data/assay-getProtocolGeneral.json';
 import elispotAssayTemplate from '../test/data/assay-getProtocolELISpotTemplate.json';
 import elispotAssaySaved from '../test/data/assay-getProtocolELISpot.json';
+
+import { initGlobal } from './storyUtils';
 
 initGlobal();
 

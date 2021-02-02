@@ -18,12 +18,7 @@ export default {
             description: 'Where the overlay appears relative to the icon',
             control: {
                 type: 'select',
-                options: [
-                    'top',
-                    'bottom',
-                    'left',
-                    'right',
-                ],
+                options: ['top', 'bottom', 'left', 'right'],
             },
         },
     },

@@ -18,6 +18,7 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { getStateQueryGridModel, SchemaQuery } from '..';
 import { QueryGrid } from '../internal/components/QueryGrid';
+
 import { disableControls, initGlobal } from './storyUtils';
 
 initGlobal();

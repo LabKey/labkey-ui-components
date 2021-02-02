@@ -7,9 +7,10 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { DomainFieldsDisplay, DomainDesign } from '..';
-import { disableControls } from './storyUtils';
 
 import data from '../test/data/property-getDomain.json';
+
+import { disableControls } from './storyUtils';
 
 export default {
     title: 'Components/DomainFieldsDisplay',
@@ -22,7 +23,7 @@ export default {
     },
 } as Meta;
 
-const Template: Story = storyProps => <DomainFieldsDisplay {...storyProps as any} />;
+const Template: Story = storyProps => <DomainFieldsDisplay {...(storyProps as any)} />;
 
 export const EmptyDomain = Template.bind({});
 EmptyDomain.args = {

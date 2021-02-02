@@ -11,8 +11,6 @@ import DomainForm, { DomainFormImpl } from '../internal/components/domainpropert
 import { MockLookupProvider } from '../test/components/Lookup';
 import { PHILEVEL_RESTRICTED_PHI } from '../internal/components/domainproperties/constants';
 
-import { disableControls } from './storyUtils';
-
 import domainData from '../test/data/property-getDomain.json';
 import errorData from '../test/data/property-saveDomainWithDuplicateField.json';
 import warningData from '../test/data/property-unexpectedCharInFieldName.json';
@@ -20,6 +18,8 @@ import exceptionDataServer from '../test/data/property-domainExceptionFromServer
 import exceptionDataClient from '../test/data/property-domainExceptionClient.json';
 import fullyLockedData from '../test/data/property-getDomainWithFullyLockedFields.json';
 import partiallyLockedData from '../test/data/property-getDomainWithPartiallyLockedFields.json';
+
+import { disableControls } from './storyUtils';
 
 export default {
     title: 'Components/DomainForm',

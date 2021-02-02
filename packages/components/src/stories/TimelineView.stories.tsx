@@ -9,6 +9,7 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import { TimelineEventModel, TimelineView } from '..';
 
 import { TIMELINE_DATA } from '../test/data/constants';
+
 import { disableControls } from './storyUtils';
 
 const events = TIMELINE_DATA.map(evt => TimelineEventModel.create(evt, 'UTC'));

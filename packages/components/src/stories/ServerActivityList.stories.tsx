@@ -8,6 +8,7 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { ServerActivityList } from '../internal/components/notifications/ServerActivityList';
 import { DONE_AND_READ, DONE_NOT_READ, IN_PROGRESS, UNREAD_WITH_ERROR } from '../test/data/notificationData';
+
 import { disableControls } from './storyUtils';
 
 export default {

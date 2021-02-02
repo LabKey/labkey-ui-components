@@ -16,7 +16,7 @@ export default {
     },
 } as Meta;
 
-export const ColorIconStory: Story = storyProps => <ColorIcon {...storyProps as any} />;
+export const ColorIconStory: Story = storyProps => <ColorIcon {...(storyProps as any)} />;
 
 ColorIconStory.storyName = 'ColorIcon';
 

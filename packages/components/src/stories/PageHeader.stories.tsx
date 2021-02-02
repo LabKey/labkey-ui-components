@@ -9,6 +9,7 @@ import { Button } from 'react-bootstrap';
 
 import { NotificationItemModel, Persistence, createNotification, PageHeader } from '..';
 import { notificationInit } from '../test/setupUtils';
+
 import { disableControls } from './storyUtils';
 
 export default {

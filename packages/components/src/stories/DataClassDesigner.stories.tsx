@@ -7,9 +7,10 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { DataClassDesigner, DataClassModel, IDomainField } from '..';
-import { disableControls } from './storyUtils';
 
 import getDomainDetailsJSON from '../test/data/dataclass-getDomainDetails.json';
+
+import { disableControls } from './storyUtils';
 
 const DEFAULT_NAME_FIELD_CONFIG = {
     name: 'SourceId',

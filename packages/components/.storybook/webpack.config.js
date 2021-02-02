@@ -17,6 +17,9 @@ module.exports = async ({ config, mode }) => {
         loaders: ['babel-loader', {
             loader: 'ts-loader',
             options: {
+                compilerOptions: {
+                    declaration: false,
+                },
                 // this flag and the test regex will make sure that test files do not get bundled
                 // see: https://github.com/TypeStrong/ts-loader/issues/267
                 onlyCompileBundledFiles: true

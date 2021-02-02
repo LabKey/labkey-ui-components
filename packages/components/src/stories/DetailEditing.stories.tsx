@@ -17,7 +17,7 @@ import {
     SchemaQuery,
 } from '..';
 
-import initGlobal from './initGlobal';
+import { initGlobal } from './storyUtils';
 
 initGlobal();
 

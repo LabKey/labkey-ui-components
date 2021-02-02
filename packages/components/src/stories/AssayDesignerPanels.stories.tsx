@@ -12,7 +12,7 @@ import { DomainException } from '../internal/components/domainproperties/models'
 import { setAssayDomainException } from '../internal/components/domainproperties/assay/actions';
 import { SEVERITY_LEVEL_ERROR } from '../internal/components/domainproperties/constants';
 
-import initGlobal from './initGlobal';
+import { initGlobal } from './storyUtils';
 
 import generalAssayTemplate from '../test/data/assay-getProtocolGeneralTemplate.json';
 import generalAssaySaved from '../test/data/assay-getProtocolGeneral.json';

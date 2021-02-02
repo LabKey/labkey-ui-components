@@ -42,12 +42,7 @@ export default {
 
 export const SubMenuItemStory: Story = props => {
     const { disableItem, disabledItemMsg, numItems, ...subMenuProps } = props;
-    // const numItems = number('number of items', 2, {
-    //     range: true,
-    //     min: 0,
-    //     max: allItems.length,
-    //     step: 1,
-    // });
+
     if (numItems > 1) {
         if (disableItem) {
             allItems[1].disabled = true;

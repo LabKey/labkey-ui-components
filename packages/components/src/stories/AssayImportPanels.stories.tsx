@@ -7,7 +7,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { AssayImportPanels } from '..';
-import initGlobal from './initGlobal';
+import { initGlobal } from './storyUtils';
 import { ASSAY_WIZARD_MODEL } from '../test/data/constants';
 import { AssayUploadTabs } from '../internal/AssayDefinitionModel';
 

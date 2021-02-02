@@ -1211,7 +1211,7 @@ select a schema for the QuerySelect to use.
     - Factor out EntityDetailsForm.tsx from SampleSetDetailsPanel.tsx
     - Factor out DomainPropertiesPanelContext.tsx and CollapsiblePanelHeader.tsx for reuse and put back into AssayPropertiesPanel.tsx and DomainForm.tsx
     - DataClassDesigner.tsx and DataClassPropertiesPanel.tsx
-    - Move AssayProtocolModel to domainproperties/assay/models.ts
+    - Move AssayProtocolModel to domainproperties/assay/models.tsx
 
 ### version 0.24.0
 *Released*: 13 February 2020

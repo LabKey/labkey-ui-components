@@ -23,7 +23,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip } from '../../..';
+import {DeleteIcon, DomainOnChange, DragDropHandle, FieldExpansionToggle, LabelHelpTip} from '../../..';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -71,7 +71,7 @@ interface IDomainRowProps {
     index: number;
     maxPhiLevel: string;
     availableTypes: List<PropDescType>;
-    onChange: (changes: List<IFieldChange>, index?: number, expand?: boolean) => any;
+    onChange: DomainOnChange;
     fieldError?: DomainFieldError;
     onDelete: (any) => void;
     onExpand: (index?: number) => void;
@@ -111,7 +111,11 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             showingModal: false,
             isDragDisabled: props.domainFormDisplayOptions.isDragDisabled,
         };
+
+        this[`${props.index}_ref`] = React.createRef()
     }
+
+    scrollIntoView = () => this[`${this.props.index}_ref`].current.scrollIntoView();
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled
@@ -340,7 +344,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         } = this.props;
 
         return (
-            <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)}>
+            <div id={createFormInputId(DOMAIN_FIELD_ROW, domainIndex, index)} ref={this[`${this.props.index}_ref`]}>
                 <Col xs={6}>
                     <FormControl
                         // autoFocus={field.isNew()}  // TODO: This is not working great with drag and drop, need to investigate

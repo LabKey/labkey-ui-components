@@ -17,7 +17,13 @@ import { fromJS, List, Map, Record } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
 import { immerable } from 'immer';
 
-import { caseInsensitive, SCHEMAS } from '../../..';
+import React from 'react';
+
+import { Checkbox } from 'react-bootstrap';
+
+import { caseInsensitive, createFormInputId, GridColumn, SCHEMAS } from '../../..';
+
+import { GRID_SELECTION_INDEX } from '../../constants';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -26,6 +32,7 @@ import {
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_NOT_LOCKED,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
+    DOMAIN_FIELD_SELECTED,
     DOMAIN_FILTER_HASANYVALUE,
     INT_RANGE_URI,
     MAX_TEXT_LENGTH,
@@ -44,19 +51,23 @@ import {
     FLAG_TYPE,
     INTEGER_TYPE,
     LOOKUP_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
     PARTICIPANT_TYPE,
-    PropDescType,
     PROP_DESC_TYPES,
+    PropDescType,
     READONLY_DESC_TYPES,
     SAMPLE_TYPE,
     TEXT_TYPE,
     USERS_TYPE,
-    ONTOLOGY_LOOKUP_TYPE,
 } from './PropDescType';
 
 export interface IFieldChange {
     id: string;
     value: any;
+}
+
+export interface DomainOnChange {
+    (changes: List<IFieldChange>, index?: number, expand?: boolean): any;
 }
 
 export interface IBannerMessage {
@@ -75,6 +86,12 @@ export interface ITypeDependentProps {
 export interface FieldDetails {
     detailsInfo: { [key: string]: string };
     ontologyLookupIndices: number[];
+}
+
+export interface SummaryGrid {
+    index: string;
+    caption: string;
+    sortable: boolean;
 }
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -282,6 +299,68 @@ export class DomainDesign
         });
 
         return mapping;
+    }
+
+    getGridData(): List<any> {
+        return this.fields.map((field, i) => {
+            if (field.conditionalFormats.size > 0) {
+                field.conditionalFormats.forEach(cf => {
+                    console.log(cf.formatFilter);
+                });
+            }
+
+            return Map({
+                name: field.name,
+                selected: field.selected,
+                datatype: field.dataType.display,
+                required: field.required ? 'True' : 'False',
+                visible: field.visible,
+                fieldIndex: i,
+                details: field.getDetailsTextArray()[0],
+                conditionalFormats: field.conditionalFormats.toJS().toString(), // Rosaline: toString this
+                label: field.label,
+                importAliases: field.importAliases,
+            });
+        }) as List<Map<string, any>>;
+    }
+
+    getGridColumns(onFieldsChange: DomainOnChange): List<GridColumn | SummaryGrid> {
+        const selectionCol = new GridColumn({
+            index: GRID_SELECTION_INDEX,
+            title: GRID_SELECTION_INDEX,
+            align: 'center',
+            cell: (data: any, row: any) => {
+                const domainIndex = row.get('domainIndex');
+                const fieldIndex = row.get('fieldIndex');
+                const selected = row.get('selected');
+                const formInputId = createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, fieldIndex);
+
+                const changes = List.of({ id: formInputId, value: !selected });
+                return (
+                    <>
+                        <Checkbox
+                            className="domain-summary-selection"
+                            id={formInputId}
+                            checked={selected}
+                            onChange={() => {
+                                onFieldsChange(changes, fieldIndex, false);
+                            }}
+                        />
+                    </>
+                );
+            },
+        });
+
+        return List([
+            selectionCol,
+            { index: 'name', caption: 'Name', sortable: true },
+            { index: 'datatype', caption: 'Data Type', sortable: true },
+            { index: 'required', caption: 'Required', sortable: true },
+            { index: 'details', caption: 'Details', sortable: true },
+            { index: 'conditionalFormats', caption: 'Format Strings', sortable: true },
+            { index: 'label', caption: 'Label', sortable: true },
+            { index: 'importAliases', caption: 'Import Aliases', sortable: true },
+        ]);
     }
 }
 

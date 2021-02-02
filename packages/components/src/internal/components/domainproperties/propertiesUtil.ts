@@ -96,3 +96,17 @@ export function isFieldDeletable(field: DomainField): boolean {
 export function getVisibleFieldCount(domain: DomainDesign): number {
     return domain.fields.filter((field: DomainField) => field.visible).size;
 }
+
+export function compareStringsAlphabetically(a: string, b: string, direction): number {
+    const aStr = a ? a.toUpperCase() : "";
+    const bStr = b ? b.toUpperCase() : "";
+    const isAsc = direction === '+';
+
+    if (aStr < bStr) {
+        return isAsc ? -1 : 1;
+    }
+    if (aStr > bStr) {
+        return isAsc ? 1 : -1;
+    }
+    return 0;
+}

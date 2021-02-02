@@ -391,6 +391,7 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
+    DomainOnChange,
 } from './internal/components/domainproperties/models';
 import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType';
 import DomainForm from './internal/components/domainproperties/DomainForm';
@@ -734,6 +735,7 @@ export {
     inferDomainFromFile,
     InferDomainResponse,
     IFieldChange,
+    DomainOnChange,
     IBannerMessage,
     IAppDomainHeader,
     BasePropertiesPanel,

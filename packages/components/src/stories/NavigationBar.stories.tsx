@@ -10,17 +10,17 @@ import { List, Map } from 'immutable';
 
 import { MenuSectionConfig, MenuItemModel, MenuSectionModel, ProductMenuModel, NavigationBar, User, AppURL } from '..';
 
-import { ICON_URL } from './mock';
-import './stories.scss';
-import { TEST_USER_READER } from "../test/data/users";
+import { TEST_USER_READER } from '../test/data/users';
 import {
     DONE_AND_READ,
     DONE_NOT_READ,
     IN_PROGRESS,
     markAllNotificationsRead,
-    UNREAD_WITH_ERROR
+    UNREAD_WITH_ERROR,
 } from '../test/data/notificationData';
-import { ServerNotificationModel } from "../internal/components/notifications/model";
+import { ServerNotificationModel } from '../internal/components/notifications/model';
+
+import { ICON_URL } from './mock';
 
 const fruitTree = [
     'Apple',
@@ -174,7 +174,7 @@ storiesOf('NavigationBar', module)
                 items: makeMenuItems('fruits', fruitTree, fruitMenuLimit, hasActiveJob),
                 totalCount: totalFruitCount,
                 itemLimit: fruitMenuLimit,
-                key: 'fruits'
+                key: 'fruits',
             })
         );
 
@@ -241,7 +241,7 @@ storiesOf('NavigationBar', module)
             iconURL: text('Fruit Section iconURL', ICON_URL, fruitGroup),
             maxItemsPerColumn: number('Max Fruits per column', 2, {}, fruitGroup),
             maxColumns: number('Max Fruit columns', 1, {}, fruitGroup),
-            activeJobIconCls: text('active job icon', 'fa-spinner fa-pulse', fruitGroup)
+            activeJobIconCls: text('active job icon', 'fa-spinner fa-pulse', fruitGroup),
         });
 
         const vegetablesSectionConfigs = new MenuSectionConfig({
@@ -276,34 +276,32 @@ storiesOf('NavigationBar', module)
             isGuest: !isSignedIn,
         });
 
-        const serverActivity = hasActiveJob ? {
-            data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
-            totalRows: 4,
-            unreadCount: 2,
-            inProgressCount: 1,
-        } : {
-            data: [DONE_NOT_READ, DONE_AND_READ, UNREAD_WITH_ERROR],
-            totalRows: 3,
-            unreadCount: 1,
-            inProgressCount: 0,
-        };
+        const serverActivity = hasActiveJob
+            ? {
+                  data: [DONE_NOT_READ, DONE_AND_READ, IN_PROGRESS, UNREAD_WITH_ERROR],
+                  totalRows: 4,
+                  unreadCount: 2,
+                  inProgressCount: 1,
+              }
+            : {
+                  data: [DONE_NOT_READ, DONE_AND_READ, UNREAD_WITH_ERROR],
+                  totalRows: 3,
+                  unreadCount: 1,
+                  inProgressCount: 0,
+              };
         const notificationConfig = {
             maxRows: 8,
-            markAllNotificationsRead: markAllNotificationsRead,
+            markAllNotificationsRead,
             serverActivity: new ServerNotificationModel(serverActivity),
             onViewAll: () => {},
-        }
+        };
         return (
             <NavigationBar
                 menuSectionConfigs={boolean('show 3 columns?', true) ? threeColConfigs : twoColConfigs}
                 model={model}
                 showSearchBox={true}
                 user={user}
-                notificationsConfig={
-                    boolean('Show notifications?', true) ? notificationConfig : undefined
-                }
+                notificationsConfig={boolean('Show notifications?', true) ? notificationConfig : undefined}
             />
         );
     });
-
-// TODO

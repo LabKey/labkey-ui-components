@@ -8,7 +8,6 @@ import { Button } from 'react-bootstrap';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 
-import './stories.scss';
 import { PageHeader, Page } from '..';
 
 storiesOf('Page', module)

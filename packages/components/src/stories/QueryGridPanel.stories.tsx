@@ -29,8 +29,6 @@ import {
 } from '..';
 import { DataViewInfo, getStateQueryGridModel } from '../internal/models';
 
-import './stories.scss';
-
 class QueryGridPanelWrapper extends React.Component {
     renderButtons = (model: QueryGridModel) => {
         if (model) {

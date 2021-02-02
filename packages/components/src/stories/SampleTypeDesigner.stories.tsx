@@ -22,7 +22,6 @@ import { Domain } from '@labkey/api';
 import { DomainDetails, SampleTypeDesigner } from '..';
 
 import domainData from '../test/data/property-getDomain-sampleType.json';
-import './stories.scss';
 
 function isValidParentOption(row: any, isDataClass: boolean): boolean {
     if (!isDataClass) return true;

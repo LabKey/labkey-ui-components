@@ -28,8 +28,6 @@ import {
     LINEAGE_GROUPING_GENERATIONS,
 } from '..';
 
-import './stories.scss';
-
 storiesOf('Lineage', module)
     .addDecorator(withKnobs)
     .add('LineageGraph', () => {

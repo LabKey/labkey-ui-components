@@ -2,7 +2,6 @@ import React from 'react';
 import { Option } from 'react-select';
 import { storiesOf } from '@storybook/react';
 
-import './stories.scss';
 import { SelectInput, QuerySelect, SchemaQuery } from '..';
 
 const DATA_CLASSES = {

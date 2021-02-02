@@ -19,8 +19,6 @@ import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import { Location, EntityInsertPanel, helpLinkNode, DataClassDataType, SampleTypeDataType, EntityDataType } from '..';
 
-import './stories.scss';
-
 import { List } from 'immutable';
 
 storiesOf('EntityInsertPanel', module)

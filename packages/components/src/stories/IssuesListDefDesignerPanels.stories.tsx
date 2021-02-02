@@ -6,8 +6,6 @@ import { IssuesListDefDesignerPanels, IssuesListDefModel } from '..';
 
 import getDomainDetailsJSON from '../test/data/issuesListDef-getDomainDetails.json';
 
-import './stories.scss';
-
 storiesOf('IssuesListDefDesignerPanels', module)
     .addDecorator(withKnobs)
     .add('for create', () => {

@@ -17,7 +17,6 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
 
-import './stories.scss';
 import { List } from 'immutable';
 
 import { DataClassDataType, IEntityTypeOption } from '..';

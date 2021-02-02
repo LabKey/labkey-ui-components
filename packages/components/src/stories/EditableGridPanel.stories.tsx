@@ -19,8 +19,6 @@ import {
 
 import * as constants from '../test/data/constants';
 
-import './stories.scss';
-
 import { PlacementType } from '../internal/components/editable/Controls';
 
 import { GRID_EDIT_INDEX } from '../internal/constants';

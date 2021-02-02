@@ -21,8 +21,6 @@ import { getStateQueryGridModel, gridInit, getQueryGridModel, LoadingSpinner, Qu
 import { QueryInfoForm } from '../internal/components/forms/QueryInfoForm';
 import * as constants from '../test/data/constants';
 
-import './stories.scss';
-
 function formSubmit(data: any): Promise<any> {
     console.log(data);
     return new Promise((resolve, reject) => {

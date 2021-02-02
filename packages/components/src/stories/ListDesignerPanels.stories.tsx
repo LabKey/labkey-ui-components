@@ -6,7 +6,6 @@ import { ListDesignerPanels, ListModel } from '..';
 
 import getDomainDetailsJSON from '../test/data/list-getDomainDetails.json';
 import { DEFAULT_LIST_SETTINGS } from '../test/data/constants';
-import './stories.scss';
 
 class Wrapped extends React.Component<any, any> {
     constructor(props) {

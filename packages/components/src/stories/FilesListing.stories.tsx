@@ -3,8 +3,6 @@ import { List, Set } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import './stories.scss';
-
 import { FILES_DATA } from '../test/data/constants';
 import { IFile, FilesListing } from '..';
 

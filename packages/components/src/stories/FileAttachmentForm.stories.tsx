@@ -13,7 +13,6 @@ import { FileAttachmentForm } from '..';
 import inferDomainJson from '../test/data/property-inferDomainWithSpecimenId.json';
 import filePreviewJson from '../test/data/property-getFilePreview.json';
 
-import './stories.scss';
 import { ALL_FILES_LIMIT_KEY, FileSizeLimitProps } from '../internal/components/files/models';
 
 mock.setup();

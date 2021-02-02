@@ -20,7 +20,6 @@ import { text, withKnobs } from '@storybook/addon-knobs';
 import { PageDetailHeader, CreatedModified } from '..';
 
 import { ICON_URL } from './mock';
-import './stories.scss';
 
 storiesOf('PageDetailHeader', module)
     .addDecorator(withKnobs)

@@ -29,8 +29,6 @@ import {
     ParentEntityEditPanel,
 } from '..';
 
-import './stories.scss';
-
 interface Props {
     canUpdate: boolean;
     title?: string;

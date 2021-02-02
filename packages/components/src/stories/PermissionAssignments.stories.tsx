@@ -20,7 +20,6 @@ import {
 } from '../internal/components/permissions/actions';
 import { JEST_SITE_ADMIN_USER_ID } from '../test/data/constants';
 import policyJSON from '../test/data/security-getPolicy.json';
-import './stories.scss';
 
 interface Props {
     title?: string;

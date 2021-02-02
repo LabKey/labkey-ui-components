@@ -8,7 +8,6 @@ import { List, Map } from 'immutable';
 import { storiesOf } from '@storybook/react';
 import { select, text, withKnobs } from '@storybook/addon-knobs';
 
-import './stories.scss';
 import { MenuOption, SubMenu, MultiMenuButton } from '..';
 
 // Note that usually the key and name are not the same, but we use the same values

@@ -13,7 +13,6 @@ import { SecurityPolicy, SecurityRole, SiteUsersGridPanel } from '..';
 import { getRolesByUniqueName, processGetRolesResponse } from '../internal/components/permissions/actions';
 
 import policyJSON from '../test/data/security-getPolicy.json';
-import './stories.scss';
 import { SECURITY_ROLE_AUTHOR, SECURITY_ROLE_EDITOR, SECURITY_ROLE_READER } from '../test/data/constants';
 
 const ROLE_OPTIONS = [

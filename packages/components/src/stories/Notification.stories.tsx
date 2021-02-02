@@ -8,7 +8,6 @@ import moment from 'moment';
 import { storiesOf } from '@storybook/react';
 import { boolean, radios, text, withKnobs } from '@storybook/addon-knobs';
 
-import './stories.scss';
 import { Notification, createNotification, User, NotificationItemModel, generateId } from '..';
 
 import { notificationInit } from '../test/setupUtils';

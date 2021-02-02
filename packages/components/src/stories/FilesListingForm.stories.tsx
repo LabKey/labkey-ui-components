@@ -1,74 +1,53 @@
+/*
+ * Copyright (c) 2019-2021 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
 import React from 'react';
+import { Meta, Story } from '@storybook/react/types-6-0';
 import { List } from 'immutable';
-import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import './stories.scss';
-import { FilesListingForm, IFile } from '..';
+import { FilesListingForm } from '..';
 import { FILES_DATA, FILES_DATA_2 } from '../test/data/constants';
+import { disableControls } from './storyUtils';
 
-storiesOf('FilesListingForm', module)
-    .addDecorator(withKnobs)
-    .add('with no files', () => {
-        return (
-            <FilesListingForm
-                files={List<IFile>()}
-                handleUpload={async () => {}}
-                handleDelete={() => {}}
-                handleDownload={() => {}}
-                addFileText={text('addFileText', undefined)}
-                noFilesMessage={text('noFilesMessage', 'No files currently attached.')}
-                canInsert={boolean('canInsert', true)}
-                canDelete={boolean('canDelete', true)}
-                useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
-                getFilePropertiesEditTrigger={() => (
-                    <>
-                        <b>click me!</b>
-                    </>
-                )}
-            />
-        );
-    })
-    .add('with files', () => {
-        return (
-            <FilesListingForm
-                files={FILES_DATA}
-                handleUpload={async () => {}}
-                handleDelete={() => {}}
-                handleDownload={() => {}}
-                addFileText={text('addFileText', undefined)}
-                noFilesMessage={text('noFilesMessage', 'No files currently attached.')}
-                canInsert={boolean('canInsert', true)}
-                canDelete={boolean('canDelete', true)}
-                useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
-                getFilePropertiesEditTrigger={() => (
-                    <>
-                        <b>click me!</b>
-                    </>
-                )}
-            />
-        );
-    })
-    .add('with readOnly files', () => {
-        return (
-            <FilesListingForm
-                files={FILES_DATA}
-                readOnlyFiles={FILES_DATA_2}
-                headerText={text('headerText', 'Editable files')}
-                readOnlyHeaderText={text('readOnlyHeaderText', 'Read-only files')}
-                handleUpload={async () => {}}
-                handleDelete={() => {}}
-                handleDownload={() => {}}
-                addFileText={text('addFileText', undefined)}
-                noFilesMessage={text('noFilesMessage', 'No files currently attached.')}
-                canInsert={boolean('canInsert', true)}
-                canDelete={boolean('canDelete', true)}
-                useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
-                getFilePropertiesEditTrigger={() => (
-                    <>
-                        <b>click me!</b>
-                    </>
-                )}
-            />
-        );
-    });
+export default {
+    title: 'Components/FilesListingForm',
+    component: FilesListingForm,
+    argTypes: {
+        files: disableControls(),
+        readOnlyFiles: disableControls(),
+        getFilePropertiesEditTrigger: {
+            defaultValue: () => <b>Click Me!</b>,
+            ...disableControls(),
+        },
+        handleDelete: disableControls(),
+        handleDownload: disableControls(),
+        handleFileChange: { action: 'fileChange', ...disableControls() },
+        handleUpload: disableControls(),
+        onPropertyUpdate: { action: 'propertyUpdate', ...disableControls() },
+        onSubmit: { action: 'submit', ...disableControls() },
+        onUploadFiles: { action: 'uploadFiles', ...disableControls() },
+    },
+} as Meta;
+
+export const FilesListingFormStory: Story = props => (
+    <FilesListingForm
+        {...(props as any)}
+        files={props.withFiles ? FILES_DATA : List()}
+        readOnlyFiles={props.withReadOnlyFiles ? FILES_DATA_2 : undefined}
+    />
+);
+
+FilesListingFormStory.storyName = 'FilesListingForm';
+
+FilesListingFormStory.args = {
+    canDelete: true,
+    canInsert: true,
+    noFilesMessage: 'No files currently attached.',
+    useFilePropertiesEditTrigger: true,
+
+    // story only props
+    withFiles: true,
+    withReadOnlyFiles: true,
+};

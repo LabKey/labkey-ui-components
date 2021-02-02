@@ -7,6 +7,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { DataClassDesigner, DataClassModel, IDomainField } from '..';
+import { disableControls } from './storyUtils';
 
 import getDomainDetailsJSON from '../test/data/dataclass-getDomainDetails.json';
 
@@ -18,16 +19,8 @@ export default {
     title: 'Components/DataClassDesigner',
     component: DataClassDesigner,
     argTypes: {
-        onCancel: {
-            action: 'cancelled',
-            control: { disable: true },
-            table: { disable: true },
-        },
-        onComplete: {
-            action: 'completed',
-            control: { disable: true },
-            table: { disable: true },
-        },
+        onCancel: { action: 'cancelled', ...disableControls() },
+        onComplete: { action: 'completed', ...disableControls() },
     },
 } as Meta;
 
@@ -40,9 +33,9 @@ ForCreate.args = {
     successBsStyle: 'success',
 };
 
-export const ForUpdate: Story = storyProps => (
+export const ForUpdate: Story = props => (
     <DataClassDesigner
-        {...(storyProps as any)}
+        {...(props as any)}
         defaultNameFieldConfig={DEFAULT_NAME_FIELD_CONFIG}
         initModel={DataClassModel.create(getDomainDetailsJSON)}
     />

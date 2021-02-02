@@ -18,6 +18,7 @@ import { fromJS, List, Map } from 'immutable';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { Grid, GridColumn } from '..';
+import { disableControls } from './storyUtils';
 
 const gridColumns = List([
     {
@@ -76,18 +77,11 @@ export default {
     title: 'Components/Grid',
     component: Grid,
     argTypes: {
-        data: {
-            control: { disable: true },
-            table: { disable: true },
-        },
-        columns: {
-            control: { disable: true },
-            table: { disable: true },
-        },
+        data: disableControls(),
+        columns: disableControls(),
         messages: {
             defaultValue: List<Map<string, string>>(),
-            control: { disable: true },
-            table: { disable: true },
+            ...disableControls(),
         },
     },
 } as Meta;

@@ -7,6 +7,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
 import { DomainFieldsDisplay, DomainDesign } from '..';
+import { disableControls } from './storyUtils';
 
 import data from '../test/data/property-getDomain.json';
 
@@ -15,8 +16,8 @@ export default {
     component: DomainFieldsDisplay,
     argTypes: {
         domain: {
-            control: { disable: true },
-            table: { disable: true },
+            control: disableControls(),
+            table: disableControls(),
         },
     },
 } as Meta;

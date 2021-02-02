@@ -14,6 +14,8 @@ exports[`ProductMenuSection render empty section no text 1`] = `
       "emptyURLText": "Get started...",
       "headerURL": undefined,
       "headerText": undefined,
+      "showActiveJobIcon": true,
+      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProduct"
@@ -69,6 +71,8 @@ exports[`ProductMenuSection render empty section with empty text and create link
       "emptyURLText": "Test empty link",
       "headerURL": undefined,
       "headerText": undefined,
+      "showActiveJobIcon": true,
+      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProduct"
@@ -137,6 +141,8 @@ exports[`ProductMenuSection render one-column section 1`] = `
       "emptyURLText": "Get started...",
       "headerURL": undefined,
       "headerText": undefined,
+      "showActiveJobIcon": true,
+      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProduct3Columns"
@@ -153,6 +159,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "url": undefined,
           "orderNum": undefined,
           "requiresLogin": false,
+          "hasActiveJob": false,
         },
         Immutable.Record {
           "id": 2,
@@ -161,6 +168,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "url": undefined,
           "orderNum": undefined,
           "requiresLogin": false,
+          "hasActiveJob": true,
         },
         Immutable.Record {
           "id": 3,
@@ -169,6 +177,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "url": undefined,
           "orderNum": undefined,
           "requiresLogin": false,
+          "hasActiveJob": false,
         },
         Immutable.Record {
           "id": 4,
@@ -177,6 +186,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
           "url": undefined,
           "orderNum": undefined,
           "requiresLogin": false,
+          "hasActiveJob": false,
         },
       ],
       "totalCount": 0,
@@ -212,7 +222,14 @@ exports[`ProductMenuSection render one-column section 1`] = `
     <li
       key="Sample Set 2"
     >
-      Sample Set 2
+      <i
+        className="fa fa-spinner fa-pulse"
+      />
+      <span
+        className="spacer-left product-menu-item"
+      >
+        Sample Set 2
+      </span>
     </li>
     <li
       key="Sample Set 3"
@@ -248,6 +265,8 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
         },
       },
       "headerText": "Custom Sample Sets",
+      "showActiveJobIcon": true,
+      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProductHeaderUrl"
@@ -303,6 +322,8 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
       "emptyURLText": "Get started...",
       "headerURL": undefined,
       "headerText": undefined,
+      "showActiveJobIcon": true,
+      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProductOverflowLink"
@@ -412,6 +433,8 @@ exports[`ProductMenuSection render two-column section 1`] = `
       "emptyURLText": "Get started...",
       "headerURL": undefined,
       "headerText": undefined,
+      "showActiveJobIcon": true,
+      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProduct4Columns"
@@ -428,6 +451,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "url": undefined,
           "orderNum": undefined,
           "requiresLogin": false,
+          "hasActiveJob": false,
         },
         Immutable.Record {
           "id": 12,
@@ -436,6 +460,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "url": undefined,
           "orderNum": undefined,
           "requiresLogin": false,
+          "hasActiveJob": false,
         },
         Immutable.Record {
           "id": 13,
@@ -444,6 +469,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "url": undefined,
           "orderNum": undefined,
           "requiresLogin": false,
+          "hasActiveJob": false,
         },
         Immutable.Record {
           "id": 14,
@@ -452,6 +478,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "url": undefined,
           "orderNum": undefined,
           "requiresLogin": false,
+          "hasActiveJob": false,
         },
         Immutable.Record {
           "id": 15,
@@ -460,6 +487,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
           "url": undefined,
           "orderNum": undefined,
           "requiresLogin": false,
+          "hasActiveJob": false,
         },
       ],
       "totalCount": 0,

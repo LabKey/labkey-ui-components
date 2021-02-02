@@ -375,7 +375,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     // we skip any rowIndexChange which has a newIndex as those are just reorder changes
                     if (rowIndexChanges[i]?.newIndex !== undefined) {
                         return;
-                    // skip any ontology lookup fields if they were removed
+                        // skip any ontology lookup fields if they were removed
                     } else if (currentIndex === index) {
                         continue;
                     } else if (i + 1 < rowIndexChanges.length && rowIndexChanges[i + 1].originalIndex < index) {
@@ -507,7 +507,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return (
                 <ConfirmModal
                     title="Cannot Delete Required Fields"
-                    msg={<div> <p> None of the selected fields can be deleted. </p> </div>}
+                    msg={
+                        <div>
+                            {' '}
+                            <p> None of the selected fields can be deleted. </p>{' '}
+                        </div>
+                    }
                     onCancel={this.onConfirmBulkCancel}
                     cancelButtonText="Close"
                 />
@@ -521,7 +526,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <div>
                         <p> {howManyDeleted} will be deleted. </p>
                         <p> {undeletableWarning} </p>
-                        <p> Are you sure you want to delete {thisFieldPlural}? All of the related field data will also be deleted. </p>
+                        <p>
+                            {' '}
+                            Are you sure you want to delete {thisFieldPlural}? All of the related field data will also
+                            be deleted.{' '}
+                        </p>
                     </div>
                 }
                 onConfirm={this.onBulkDeleteConfirm}
@@ -1216,10 +1225,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                             appPropertiesOnly={appPropertiesOnly}
                                             showFilePropertyType={showFilePropertyType}
                                             successBsStyle={successBsStyle}
-                                            domainFormDisplayOptions={{
-                                                ...domainFormDisplayOptions,
-                                                isDragDisabled: valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled,
-                                            }}
+                                            isDragDisabled={
+                                                valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
+                                            }
+                                            domainFormDisplayOptions={domainFormDisplayOptions}
                                         />
                                     );
                                 })}

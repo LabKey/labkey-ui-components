@@ -121,6 +121,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 2,
@@ -129,6 +130,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": true,
             },
             Immutable.Record {
               "id": 3,
@@ -137,6 +139,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 4,
@@ -145,6 +148,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
           ],
           "totalCount": 0,
@@ -163,6 +167,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": true,
             },
             Immutable.Record {
               "id": 12,
@@ -171,6 +176,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 13,
@@ -179,6 +185,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 14,
@@ -187,6 +194,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 15,
@@ -195,6 +203,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
           ],
           "totalCount": 0,
@@ -213,6 +222,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
           ],
           "totalCount": 0,
@@ -227,6 +237,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
       "productIds": Array [
         "testProduct3Columns",
       ],
+      "needsReload": false,
     }
   }
 >
@@ -357,6 +368,8 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "showActiveJobIcon": true,
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             maxColumns={1}
@@ -372,6 +385,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 2,
@@ -380,6 +394,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": true,
                                   },
                                   Immutable.Record {
                                     "id": 3,
@@ -388,6 +403,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 4,
@@ -396,6 +412,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                 ],
                                 "totalCount": 0,
@@ -423,7 +440,14 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                               <li
                                 key="Sample Set 2"
                               >
-                                Sample Set 2
+                                <i
+                                  className="fa fa-spinner fa-pulse"
+                                />
+                                <span
+                                  className="spacer-left product-menu-item"
+                                >
+                                  Sample Set 2
+                                </span>
                               </li>
                               <li
                                 key="Sample Set 3"
@@ -455,6 +479,8 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "showActiveJobIcon": true,
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             maxColumns={1}
@@ -470,6 +496,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": true,
                                   },
                                   Immutable.Record {
                                     "id": 12,
@@ -478,6 +505,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 13,
@@ -486,6 +514,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 14,
@@ -494,6 +523,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 15,
@@ -502,6 +532,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                 ],
                                 "totalCount": 0,
@@ -524,7 +555,14 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                               <li
                                 key="Assay 1"
                               >
-                                Assay 1
+                                <i
+                                  className="fa fa-spinner fa-pulse"
+                                />
+                                <span
+                                  className="spacer-left product-menu-item"
+                                >
+                                  Assay 1
+                                </span>
                               </li>
                               <li
                                 key="Assay 2"
@@ -566,6 +604,8 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "showActiveJobIcon": true,
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             maxColumns={1}
@@ -581,6 +621,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                 ],
                                 "totalCount": 0,
@@ -642,6 +683,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 2,
@@ -650,6 +692,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": true,
             },
             Immutable.Record {
               "id": 3,
@@ -658,6 +701,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 4,
@@ -666,6 +710,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
           ],
           "totalCount": 0,
@@ -684,6 +729,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": true,
             },
             Immutable.Record {
               "id": 12,
@@ -692,6 +738,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 13,
@@ -700,6 +747,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 14,
@@ -708,6 +756,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
             Immutable.Record {
               "id": 15,
@@ -716,6 +765,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
           ],
           "totalCount": 0,
@@ -734,6 +784,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
               "url": undefined,
               "orderNum": undefined,
               "requiresLogin": false,
+              "hasActiveJob": false,
             },
           ],
           "totalCount": 0,
@@ -748,6 +799,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
       "productIds": Array [
         "testProduct2Columns",
       ],
+      "needsReload": false,
     }
   }
   sectionConfigs={
@@ -764,6 +816,8 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
           "emptyURLText": "Get started...",
           "headerURL": undefined,
           "headerText": undefined,
+          "showActiveJobIcon": false,
+          "activeJobIconCls": "fa-spinner fa-pulse",
         },
       },
       Immutable.Map {
@@ -778,6 +832,8 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
           "emptyURLText": "Get started...",
           "headerURL": undefined,
           "headerText": undefined,
+          "showActiveJobIcon": true,
+          "activeJobIconCls": "fa-spinner fa-pulse",
         },
       },
     ]
@@ -910,6 +966,8 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "showActiveJobIcon": false,
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             key="samples"
@@ -926,6 +984,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 2,
@@ -934,6 +993,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": true,
                                   },
                                   Immutable.Record {
                                     "id": 3,
@@ -942,6 +1002,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 4,
@@ -950,6 +1011,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                 ],
                                 "totalCount": 0,
@@ -1013,6 +1075,8 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "showActiveJobIcon": true,
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             key="assays"
@@ -1029,6 +1093,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": true,
                                   },
                                   Immutable.Record {
                                     "id": 12,
@@ -1037,6 +1102,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 13,
@@ -1045,6 +1111,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 14,
@@ -1053,6 +1120,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                   Immutable.Record {
                                     "id": 15,
@@ -1061,6 +1129,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                     "url": undefined,
                                     "orderNum": undefined,
                                     "requiresLogin": false,
+                                    "hasActiveJob": false,
                                   },
                                 ],
                                 "totalCount": 0,
@@ -1087,7 +1156,14 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                               <li
                                 key="Assay 1"
                               >
-                                Assay 1
+                                <i
+                                  className="fa fa-spinner fa-pulse"
+                                />
+                                <span
+                                  className="spacer-left product-menu-item"
+                                >
+                                  Assay 1
+                                </span>
                               </li>
                               <li
                                 key="Assay 2"

@@ -3867,6 +3867,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         getDomainFields={[Function]}
                                                         helpNoun="field designer"
                                                         index={0}
+                                                        isDragDisabled={false}
                                                         key="domain-row-key-0"
                                                         maxPhiLevel="NotPHI"
                                                         onChange={[Function]}

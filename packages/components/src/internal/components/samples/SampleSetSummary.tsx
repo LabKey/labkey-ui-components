@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode, useCallback, useEffect, useState, useMemo } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState, useMemo } from 'react';
 
 import { Filter } from '@labkey/api';
 

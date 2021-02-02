@@ -64,6 +64,7 @@ interface Props {
     maxInsertRows?: number;
     onGridDataChange?: (dirty: boolean, changeType: IMPORT_DATA_FORM_TYPES) => any;
     showTabs?: boolean;
+    maxEditableGridRowMsg?: string;
 }
 
 interface PreviousRunData {
@@ -228,6 +229,7 @@ export class RunDataPanel extends React.Component<Props, State> {
             title,
             maxInsertRows,
             showTabs,
+            maxEditableGridRowMsg,
         } = this.props;
         const { message, messageStyle, previousRunData } = this.state;
         const isLoading = !wizardModel.isInit || !gridModel || !gridModel.isLoaded;
@@ -322,6 +324,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 placement: 'top',
                                                 nounPlural: 'rows',
                                                 nounSingular: 'row',
+                                                invalidCountMsg: maxEditableGridRowMsg
                                             }}
                                             initialEmptyRowCount={0}
                                             emptyGridMsg="Start by adding the quantity of assay data rows you want to create."

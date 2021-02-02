@@ -2,17 +2,17 @@ import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { ServerActivity, ServerActivityData } from './model';
-import { formatDateTime, getDateTimeFormat, parseDate } from '../../util/Date';
-import { resolveErrorMessage } from "../../..";
+import { formatDateTime, parseDate } from '../../util/Date';
+import { capitalizeFirstChar, resolveErrorMessage } from "../../..";
 
 interface Props {
     serverActivity: ServerActivity;
-    onViewAll: () => void;
+    onViewAll: () => any;
     maxRows: number;
     viewAllText: string;
     noActivityMsg: string;
-    viewErrorDetailsText: string;
     onRead: (id: number) => void;
+    actionLinkLabel: string
 }
 
 export class ServerActivityList extends React.PureComponent<Props> {
@@ -20,18 +20,14 @@ export class ServerActivityList extends React.PureComponent<Props> {
         maxRows: 8,
         viewAllText: 'View all activity',
         noActivityMsg: 'No notifications available.',
-        viewErrorDetailsText: 'View error details',
+        actionLinkLabel: 'View details'
     };
 
     markRead = (notificationId: number): void => {
         this.props.onRead(notificationId);
     };
 
-    showErrorDetails = (notificationId: number): void => {
-        console.log('showErrorDetails ' + notificationId + ': not yet implemented');
-    };
-
-    renderNotificationContent = (content: string, isError?: boolean, isInProgress?: boolean) => {
+    renderNotificationContent = (content: string, isHtml?: boolean, isError?: boolean, isInProgress?: boolean) => {
         const newlineIndex = content.toLowerCase().indexOf("\n");
         const brIndex = content.toLowerCase().indexOf("<br>");
         let subject : string = undefined, details : string = undefined;
@@ -47,31 +43,31 @@ export class ServerActivityList extends React.PureComponent<Props> {
 
             const detailsDisplay = isError ? resolveErrorMessage(details) : details;
             return (<>
-                <span className={'server-notifications-item-subject'}>{subject}</span>
-                {detailsDisplay && <span className={'server-notifications-item-details'}>{detailsDisplay}</span>}
+                {this.renderContent(subject, 'server-notifications-item-subject', isHtml)}
+                {detailsDisplay &&
+                    <>
+                        <br/>
+                        {this.renderContent(detailsDisplay, 'server-notifications-item-details', isHtml)}
+                    </>
+                }
             </>);
         }
         else if (isInProgress) {
-            if (content.indexOf('samples') === 0 || content.indexOf('exp.data') === 0 || content.indexOf('assays') === 0) {
-                let type = 'sources';
-                let importMsg = content.substring('exp.data - '.length, content.length);
-                if (content.indexOf('samples') === 0) {
-                    type = 'samples';
-                    importMsg = content.substring('samples - '.length, content.length);
-                }
-                else if (content.indexOf('assays') === 0) {
-                    type = 'assay run';
-                    importMsg = content.substring('assays - '.length, content.length);
-                }
-
-                return <span className={'server-notifications-item-subject'}>{`A background ${type} import is processing: ${importMsg}`}</span>
-            }
+            return this.renderContent(`A background import is processing: ${content}`, 'server-notifications-item-subject', isHtml);
         }
 
-        return <span className={'server-notifications-item-subject'} dangerouslySetInnerHTML={{ __html: content }} />;
+        return this.renderContent(content, 'server-notifications-item-subject', isHtml);
+    }
+
+    renderContent = (content: string, clsName: string, isHtml: boolean) => {
+        if (isHtml)
+            return <span className={clsName} dangerouslySetInnerHTML={{ __html: content }} />;
+
+        return <span className={clsName}>{content}</span>;
     }
 
     renderData(activity: ServerActivityData, key: number): ReactNode {
+        const { actionLinkLabel } = this.props;
         const isUnread = activity.isUnread() && !activity.inProgress;
         return (
             <li key={key} className={isUnread ? 'is-unread' : undefined} onClick={isUnread ? () => this.markRead(activity.RowId) : undefined}>
@@ -86,12 +82,12 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         'is-unread server-notifications-item': isUnread,
                     })}
                 >
-                    {this.renderNotificationContent(activity.HtmlContent, activity.hasError, activity.inProgress)}
+                    {this.renderNotificationContent(activity.Content, activity.isHTML(), activity.hasError, activity.inProgress)}
                 </span>
                 <br />
-                {activity.hasError ? (
-                    <span className="server-notifications-link" onClick={() => this.showErrorDetails(activity.RowId)}>
-                        {this.props.viewErrorDetailsText}
+                {activity.ActionLinkUrl ? (
+                    <span className="server-notifications-link">
+                        <a href={activity.ActionLinkUrl}>{capitalizeFirstChar(activity.ActionLinkText ? activity.ActionLinkText : actionLinkLabel)}</a>
                     </span>
                 ) : (
                     <span className="server-notification-data" title={activity.CreatedBy}>

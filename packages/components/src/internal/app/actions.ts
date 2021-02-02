@@ -10,6 +10,7 @@ import {
     MENU_LOADING_END,
     MENU_LOADING_ERROR,
     MENU_LOADING_START,
+    MENU_RELOAD,
     SET_RELOAD_REQUIRED,
     UPDATE_USER_DISPLAY_NAME,
     USER_PERMISSIONS_REQUEST,
@@ -18,6 +19,7 @@ import {
     SERVER_NOTIFICATIONS_LOADING_END,
     SERVER_NOTIFICATIONS_LOADING_ERROR,
     SERVER_NOTIFICATIONS_INVALIDATE,
+    RESET_QUERY_GRID_STATE,
 } from './constants';
 import { ServerActivity } from "../components/notifications/model";
 
@@ -70,16 +72,24 @@ export function setReloadRequired() {
     };
 }
 
+export function doResetQueryGridState() {
+    return {
+        type: RESET_QUERY_GRID_STATE
+    };
+}
+
 export function menuInit(currentProductId: string, userMenuProductId: string, productIds?: List<string>) {
     return (dispatch, getState) => {
         let menu = getState().routing.menu;
-        if (!menu.isLoaded && !menu.isLoading) {
-            dispatch({
-                type: MENU_LOADING_START,
-                currentProductId,
-                userMenuProductId,
-                productIds, // when undefined, this returns all menu sections for modules in this container
-            });
+        if ((!menu.isLoaded && !menu.isLoading) || menu.needsReload) {
+            if (!menu.needsReload) {
+                dispatch({
+                    type: MENU_LOADING_START,
+                    currentProductId,
+                    userMenuProductId,
+                    productIds, // when undefined, this returns all menu sections for modules in this container
+                });
+            }
             menu = getState().routing.menu;
             menu.getMenuSections()
                 .then(sections => {
@@ -102,6 +112,13 @@ export function menuInit(currentProductId: string, userMenuProductId: string, pr
 export function menuInvalidate() {
     return (dispatch, getState) => {
         dispatch({ type: MENU_INVALIDATE });
+    };
+}
+
+// an alternative to menuInvalidate, which doesn't erase current menu during reload
+export function menuReload() {
+    return (dispatch, getState) => {
+        dispatch({ type: MENU_RELOAD });
     };
 }
 

@@ -85,6 +85,7 @@ interface IDomainRowProps {
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
     getDomainFields?: () => List<DomainField>;
     fieldDetailsInfo?: { [key: string]: string };
+    isDragDisabled?: boolean;
 }
 
 interface IDomainRowState {
@@ -109,7 +110,7 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             showAdv: false,
             closing: false,
             showingModal: false,
-            isDragDisabled: props.domainFormDisplayOptions.isDragDisabled,
+            isDragDisabled: props.isDragDisabled,
         };
 
         this[`${props.index}_ref`] = React.createRef()
@@ -119,8 +120,8 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled
-        if (nextProps.domainFormDisplayOptions.isDragDisabled !== this.props.domainFormDisplayOptions.isDragDisabled) {
-            this.setDragDisabled(nextProps.domainFormDisplayOptions.isDragDisabled, false);
+        if (nextProps.isDragDisabled !== this.props.isDragDisabled) {
+            this.setDragDisabled(nextProps.isDragDisabled, false);
         }
     }
 
@@ -280,13 +281,13 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
     onShowAdvanced = (): any => {
         this.setState(() => ({ showAdv: true }));
 
-        this.setDragDisabled(this.props.domainFormDisplayOptions.isDragDisabled, true);
+        this.setDragDisabled(this.props.isDragDisabled, true);
     };
 
     onHideAdvanced = (): any => {
         this.setState(() => ({ showAdv: false }));
 
-        this.setDragDisabled(this.props.domainFormDisplayOptions.isDragDisabled, false);
+        this.setDragDisabled(this.props.isDragDisabled, false);
     };
 
     onDelete = (): any => {

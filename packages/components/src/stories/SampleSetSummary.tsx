@@ -15,9 +15,9 @@
  */
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { text, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 
-import { AppURL, HeatMap, Location, SCHEMAS, User } from '..';
+import { Location, User } from '..';
 import './stories.scss';
 import { SampleSetSummary } from '../internal/components/samples/SampleSetSummary';
 

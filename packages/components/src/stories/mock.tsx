@@ -50,6 +50,8 @@ import assayRunsWithQCFlagsQueryInfo from '../test/data/assayQCFlagsWarning-getQ
 import assayRunsWithQCFlagsQuery from '../test/data/assayQCFlagsWarning-getQuery.json';
 import assayFileDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck.json';
 import assayFileNoDuplicateCheck from '../test/data/assay-assayFileDuplicateCheck_false.json';
+import assayAssayListDetails from '../test/data/assay-assayListDetails.json';
+import assayAssayList from '../test/data/assay-assayList.json';
 import deleteAllConfirmation from '../test/data/deleteAll-getMaterialDeleteConfirmationData.json';
 import deleteNoneConfirmation from '../test/data/deleteNone-getMaterialDeleteConfirmationData.json';
 import deleteOneConfirmation from '../test/data/deleteOne-getMaterialDeleteConfirmationData.json';
@@ -104,11 +106,15 @@ import ontologiesQuery from '../test/data/ontologies-getQuery.json';
 import serverNotifications from '../test/data/notification-getUserNotificationsForPanel.json';
 import pipelineJobQueryDetails from '../test/data/pipelineJob-getQueryDetails.json';
 import pipelineJobQuery from '../test/data/pipelineJob-getQuery.json';
+import pipelineStatusDetails from '../test/data/pipelineStatusDetails.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 
 const QUERY_DETAILS_RESPONSES = fromJS({
+    assay: {
+        assaylist: assayAssayListDetails,
+    },
     'assay.general.amino acids': {
         runs: assayRunsWithQCFlagsQueryInfo,
         data: assayAminoAcidsDataQueryInfo,
@@ -169,6 +175,9 @@ const QUERY_DETAILS_RESPONSES = fromJS({
 });
 
 const QUERY_RESPONSES = fromJS({
+    assay: {
+        assaylist: assayAssayList,
+    },
     'assay.general.amino acids': {
         runs: assayRunsWithQCFlagsQuery,
         data: assayAminoAcidsDataQuery,
@@ -262,6 +271,7 @@ export function initMocks() {
     initLineageMocks();
     initUserPropsMocks();
     initDomainPropertiesMocks();
+    initPipelineStatusDetailsMocks();
 
     mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
         const body = decodeURIComponent(req.body());
@@ -632,4 +642,17 @@ export function initUserPropsMocks(): void {
 
 export function initServerNotificationMocks(): void {
     mock.get(/.*\/getUserNotification.*/, jsonResponse(serverNotifications));
+}
+
+export function initPipelineStatusDetailsMocks(): void {
+    mock.get(/.*\/pipeline-status\/?.*\/statusDetails.*/, (req, res) => {
+        const queryParams = req.url().query;
+        let responseBody;
+
+        responseBody = pipelineStatusDetails.filter(detail => {
+            return detail.rowId == parseInt(queryParams.rowId);
+        });
+
+        return jsonResponse(responseBody.length > 0 ? responseBody[0] : { success: false }, res);
+    });
 }

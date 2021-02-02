@@ -47,10 +47,6 @@ export class ServerNotifications extends React.Component<Props, State> {
             });
     };
 
-    viewAll = (): void => {
-        console.log("viewAll: not yet implemented");
-    };
-
     hasAnyUnread(): boolean {
         return this.getNumUnread() > 0;
     }
@@ -72,13 +68,13 @@ export class ServerNotifications extends React.Component<Props, State> {
     };
 
     render(): ReactNode {
-        const { serverActivity, maxRows } = this.props;
+        const { serverActivity, maxRows, onViewAll } = this.props;
         const { show } = this.state;
 
         const numUnread = this.getNumUnread();
         const title = (
             <h3 className="server-notifications-header">
-                <div className="navbar-icon-connector" />
+                <div className={"navbar-icon-connector" + (numUnread > 0 ? '' : ' notification-all-read')} />
                 Notifications
                 {numUnread > 0 && (
                     <div className="pull-right server-notifications-link" onClick={this.markAllRead}>
@@ -98,21 +94,21 @@ export class ServerNotifications extends React.Component<Props, State> {
                 <ServerActivityList
                     maxRows={maxRows}
                     serverActivity={serverActivity}
-                    onViewAll={this.viewAll}
+                    onViewAll={onViewAll}
                     onRead={this.onRead}
                 />
             );
         }
 
         const icon = (
-            <span className="fa-stack navbar-icon" data-count={numUnread || undefined}>
-                <i className="fa fa-circle fa-stack-1x" />
+            <span>
                 <i className={
                         'fa ' +
                         (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') +
-                        ' fa-stack-1x server-notifications-icon'
+                        ' server-notifications-icon'
                     }
                 />
+                {this.hasAnyUnread() && <span className="badge">{numUnread}</span>}
             </span>
         );
         return (

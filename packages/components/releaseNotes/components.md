@@ -1,6 +1,52 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.18.0
+*Released*: 1 February 2021
+* Addition of AssayDesignDeleteModal, AssaysHeatmap and AssayTypeSummary
+* Updates for app version of AssayPicker
+
+### version 1.17.2
+*Released*: 29 January 2021
+* Fix default grid cell rendered so it displays values that are 0.
+
+### version 1.17.1
+*Released*: 27 January 2021
+* Issue 42342: Formatting issues with notifications drawer
+    - align chevron properly with the bell icon without unread msgs
+    - For a "Folder import" notification, there's a space missing
+
+### version 1.17.0
+*Released*: 26 January 2021
+* wire up query grid reset on appModel
+    - add needsInvalidateQueryGrid field to AppModel
+    - add methods for invalidate grids in AppReducers
+    - register resetQueryGridListeners in initWebSocketListeners
+* remove isAsynchronousImportEnabled
+* add maxEditableGridRowMsg to RunDataPanel and invalidCountMsg to Controls props
+* move spinner to be before menu labels for ProductMenuSection
+* show ActionLinkUrl for success and error notifications
+* use bootstrap badge for notification count display
+
+### version 1.16.2
+*Released*: 26 January 2021
+* Issue 42216: Fix for logout event notification issue with different user sessions (i.e. different browsers)
+    * add check for evt.wasClean in server event listener callbacks before dispatching (to match platform dom/WebSocket.js)
+    * move CloseEventCode enum type from Biologics to use in App.initWebSocketListeners
+
+### version 1.16.1
+*Released*: 22 January 2021
+* fix server notification content html encoding
+* allow setSelected to validate ids against dataregion
+
+### version 1.16.0
+*Released*: 18 January 2021
+* add menu item active job icon
+* add PipelineJobsPage
+* add PipelineStatusDetailPage
+* modify assay url resolver to work with Data.Run/RowId~eq=rowId
+* add pipeline jobId to EntityInsertPanel and AssayUploadResultModel
+
 ### version 1.15.0
 *Released*: 14 January 2021
 * Item 8012: Row Selection Actions on Field Editor

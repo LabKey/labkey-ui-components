@@ -1,76 +1,47 @@
-import * as React from 'react';
+/*
+ * Copyright (c) 2019-2021 LabKey Corporation
+ *
+ * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+ */
+import React from 'react';
+import { Meta, Story } from '@storybook/react/types-6-0';
+import { disableControls } from "./storyUtils";
 import { List, Set } from 'immutable';
-import { storiesOf } from '@storybook/react';
-import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
 import { FILES_DATA } from '../test/data/constants';
-import { IFile, FilesListing } from '..';
+import { FilesListingProps, FilesListing } from "../internal/components/files/FilesListing";
+import { IFile } from "../internal/components/files/models";
 
-storiesOf('FilesListing', module)
-    .addDecorator(withKnobs)
-    .add('with no files', () => {
-        return (
-            <FilesListing
-                files={List<IFile>()}
-                noFilesMessage={text('noFilesMessage', undefined)}
-                onFileSelection={event => {
-                    console.log('selecting ');
-                }}
-                canDelete={boolean('canDelete', true)}
-                onDelete={name => {
-                    console.log('delete ' + name);
-                }}
-                selectedFiles={Set<string>()}
-                useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
-                getFilePropertiesEditTrigger={() => (
-                    <>
-                        <b>click me!</b>
-                    </>
-                )}
-            />
-        );
-    })
-    .add('with files', () => {
-        return (
-            <FilesListing
-                files={FILES_DATA}
-                noFilesMessage={text('noFilesMessage', undefined)}
-                onFileSelection={event => {
-                    console.log('selecting ');
-                }}
-                canDelete={boolean('canDelete', true)}
-                onDelete={name => {
-                    console.log('delete ' + name);
-                }}
-                selectedFiles={Set<string>()}
-                useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
-                getFilePropertiesEditTrigger={() => (
-                    <>
-                        <b>click me!</b>
-                    </>
-                )}
-            />
-        );
-    })
-    .add('with selection', () => {
-        return (
-            <FilesListing
-                files={FILES_DATA}
-                noFilesMessage={text('noFilesMessage', undefined)}
-                onFileSelection={event => {
-                    console.log('onFileSelection ', event);
-                }}
-                canDelete={boolean('canDelete', true)}
-                onDelete={name => {
-                    console.log('delete ' + name);
-                }}
-                selectedFiles={Set<string>(['exam.xlsx'])}
-                useFilePropertiesEditTrigger={boolean('useFilePropertiesEditTrigger', true)}
-                getFilePropertiesEditTrigger={() => (
-                    <>
-                        <b>click me!</b>
-                    </>
-                )}
-            />
-        );
-    });
+export default {
+    title: 'Components/FilesListing',
+    component: FilesListing,
+    argTypes: {
+        files: disableControls(),
+        selectedFiles: disableControls(),
+        onDelete: disableControls(),
+        onFileSelection: disableControls(),
+        getFilePropertiesEditTrigger: {
+            defaultValue: () => <b>Click Me!</b>,
+            ...disableControls(),
+        },
+    },
+} as Meta;
+
+export const FilesListingStory: Story<FilesListingProps> = props => (
+    <FilesListing
+        {...props}
+        files={props.withFiles ? FILES_DATA : List<IFile>()}
+        selectedFiles={props.withSelectedFiles ? Set<string>([FILES_DATA.first().name]) : Set<string>()}
+    />
+);
+
+FilesListingStory.storyName = 'FilesListing';
+
+FilesListingStory.args = {
+    canDelete: true,
+    noFilesMessage: 'No files currently available.',
+
+    // story only props
+    withFiles: true,
+    withSelectedFiles: true,
+};

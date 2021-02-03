@@ -141,12 +141,23 @@ describe('<ReportListItem />', () => {
 
 describe('<ReportItemModal />', () => {
     test('ReportItemModal renders', () => {
+        // Arrange
         const report = flattenBrowseDataTreeResponse(exampleData, urlMapper)[0];
-        const component = <ReportItemModal report={report} onClose={noop} />;
-        const wrapper = mount(component);
-        // Have to use mount + wrapper.debug for snapshot here because react-test-renderer does not work with
-        // React portals, which react-bootstrap uses for their modal component.
-        expect(wrapper.debug()).toMatchSnapshot();
-        wrapper.unmount();
+        const onClose = jest.fn();
+
+        // Act
+        const wrapper = mount(<ReportItemModal report={report} onClose={onClose} />);
+
+        // Assert
+        // Verify modal displays properly (in this case a SampleComparisonReportBody)
+        expect(wrapper.find('.report-item-modal .modal-title').text()).toEqual(report.name);
+        expect(wrapper.find('.report-item-modal .report-list__scr-preview').exists()).toEqual(true);
+
+        // Verify report items are listed
+        const reportItems = wrapper.find('.report-item-modal .report-item__metadata-item span');
+        expect(reportItems.length).toEqual(3);
+        expect(reportItems.at(0).text()).toEqual(report.createdBy);
+        expect(reportItems.at(1).text()).toEqual(report.type);
+        expect(reportItems.at(2).text()).toEqual(report.description);
     });
 });

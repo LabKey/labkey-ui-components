@@ -5,12 +5,14 @@
  */
 import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
-import { disableControls } from "./storyUtils";
+
 import { List, Set } from 'immutable';
 
 import { FILES_DATA } from '../test/data/constants';
-import { FilesListingProps, FilesListing } from "../internal/components/files/FilesListing";
-import { IFile } from "../internal/components/files/models";
+import { FilesListingProps, FilesListing } from '../internal/components/files/FilesListing';
+import { IFile } from '../internal/components/files/models';
+
+import { disableControls } from './storyUtils';
 
 export default {
     title: 'Components/FilesListing',

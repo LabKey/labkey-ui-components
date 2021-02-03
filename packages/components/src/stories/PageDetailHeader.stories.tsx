@@ -5,11 +5,12 @@
  */
 import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
-import { disableControls } from "./storyUtils";
 
-import { PageDetailHeader, PageDetailHeaderProps } from "../internal/components/forms/PageDetailHeader";
-import { CreatedModified } from "../internal/components/base/CreatedModified";
-import { ICON_URL } from "./mock";
+import { PageDetailHeader, PageDetailHeaderProps } from '../internal/components/forms/PageDetailHeader';
+import { CreatedModified } from '../internal/components/base/CreatedModified';
+
+import { disableControls } from './storyUtils';
+import { ICON_URL } from './mock';
 
 const CREATED_ROW = {
     Created: {

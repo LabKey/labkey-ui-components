@@ -21,7 +21,7 @@ import React from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 
-import { caseInsensitive, createFormInputId, GridColumn, SCHEMAS } from '../../..';
+import {caseInsensitive, createFormInputId, GridColumn, SCHEMAS, valueIsEmpty} from '../../..';
 
 import {GRID_NAME_INDEX, GRID_SELECTION_INDEX} from '../../constants';
 
@@ -303,26 +303,33 @@ export class DomainDesign
 
     getGridData(scrollFunction): List<any> {
         return this.fields.map((field, i) => {
-            const conditionalFormatString = field.conditionalFormats.reduce((cfString, cf) => {
-                return (cfString.concat(cf.formatFilter + "\n"));
-            }, "");
             const name = <a onClick={() => scrollFunction(i)} style={{cursor: 'pointer'}}> {field.name} </a>;
             const nameObjTemp = Map();
             nameObjTemp.set('custom', name);
 
+            let fieldSerial = DomainField.serialize(field);
+            fieldSerial['fieldIndex'] = i;
+            fieldSerial['selected'] = field.selected;
+            fieldSerial['visible'] = field.visible;
 
-            return Map({
-                name: field.name,
-                selected: field.selected,
-                datatype: field.dataType.display,
-                required: field.required ? 'True' : 'False',
-                visible: field.visible,
-                fieldIndex: i,
-                details: field.getDetailsTextArray()[0],
-                conditionalFormats: conditionalFormatString,
-                label: field.label,
-                importAliases: field.importAliases,
-            });
+
+            return Map(Object.keys(fieldSerial).map(key => {
+                const rawVal = fieldSerial[key];
+                let value = valueIsEmpty(rawVal) ? "" : rawVal;
+                const valueType = typeof value;
+                if (key !== 'visible' && key !== 'selected' && rawVal === false) {
+                    value = 'false';
+                }
+
+                if (key === "conditionalFormats" && value !== "") {
+                    // console.log("\nkey", key);
+                    // console.log("value", value);
+                    // console.log("valueType", valueType);
+                    value = JSON.stringify(value);
+                }
+
+                return([key, value]);
+            }))
         }) as List<Map<string, any>>;
     }
 
@@ -368,17 +375,17 @@ export class DomainDesign
             },
         });
 
-        return List([
-            selectionCol,
-            nameCol,
-            { index: 'name', caption: 'Name', sortable: true },
-            { index: 'datatype', caption: 'Data Type', sortable: true },
-            { index: 'required', caption: 'Required', sortable: true },
-            { index: 'details', caption: 'Details', sortable: true },
-            { index: 'conditionalFormats', caption: 'Format Strings', sortable: true },
-            { index: 'label', caption: 'Label', sortable: true },
-            { index: 'importAliases', caption: 'Import Aliases', sortable: true },
-        ]);
+        const specialCols = List([selectionCol, nameCol]);
+
+        const firstField = this.fields.get(0);
+        const what = DomainField.serialize(firstField);
+        // console.log("what", what);
+
+        const newList = List(Object.keys(what).map(key => {
+            // console.log("key", key);
+            return { index: key, caption: key, sortable: true }
+        }));
+        return specialCols.concat(newList) as List<GridColumn | SummaryGrid>;
     }
 }
 

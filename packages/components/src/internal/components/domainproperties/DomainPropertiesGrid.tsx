@@ -76,14 +76,17 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const { gridData } = this.state;
         const { initGridData } = this.props;
 
+        console.log("initGridData", initGridData.toJS());
+        console.log("gridData", gridData.toJS());
+
         const updatedGridData = gridData.reduce((updatedGridData, row) => {
             const newRowIndex = initGridData.findIndex(newRow => newRow.get('name') === row.get('name'));
-            if (newRowIndex !== -1) {
-                return updatedGridData.set(updatedGridData.size, row.set('fieldIndex', newRowIndex));
-            } else {
-                return updatedGridData;
-            }
+            return (newRowIndex !== -1)
+                ? updatedGridData.set(updatedGridData.size, row.set('fieldIndex', newRowIndex))
+                : updatedGridData;
         }, List());
+
+        console.log("updatedGridData", updatedGridData.toJS());
         const visibleGridData = this.getVisibleGridData(updatedGridData);
 
         this.setState({ gridData: updatedGridData, visibleGridData });
@@ -152,7 +155,10 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
     render() {
         const { gridColumns } = this.props;
-        const { visibleGridData } = this.state;
+        const { visibleGridData, gridData } = this.state;
+
+        // console.log('initGridData', this.props.initGridData.toJS());
+        // console.log('gridColumns', this.props.gridColumns.toJS())
 
         return (
             <>

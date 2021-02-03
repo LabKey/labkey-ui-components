@@ -70,6 +70,7 @@ export class GridColumn implements ColumnProps {
 
 const defaultCell = (d, row, col: GridColumn) => {
     let display = null;
+    // console.log("d", d);
     if (d != undefined) {
         if (typeof d === 'string' || typeof d === 'number') {
             display = d;
@@ -261,15 +262,20 @@ class GridBody extends React.PureComponent<GridBodyProps> {
         // "textAlign" property correctly for <td> elements.
         return (
             <tr key={key} className={classNames({ 'grid-row-highlight': highlight })}>
-                {columns.map((column: GridColumn, c: number) =>
-                    column.tableCell ? (
+                {columns.map((column: GridColumn, c: number) => {
+                    // console.log("column", column);
+                    // console.log("row", row);
+
+                    return column.tableCell ? (
                         column.cell(row.get(column.index), row, column, r, c)
                     ) : (
                         <td key={column.index} style={{ textAlign: column.align || 'left' } as any}>
+
                             {column.cell(row.get(column.index), row, column, r, c)}
                         </td>
-                    )
-                )}
+                    );
+                }
+            )}
             </tr>
         );
     }

@@ -23,7 +23,7 @@ import { Checkbox } from 'react-bootstrap';
 
 import { caseInsensitive, createFormInputId, GridColumn, SCHEMAS } from '../../..';
 
-import { GRID_SELECTION_INDEX } from '../../constants';
+import {GRID_NAME_INDEX, GRID_SELECTION_INDEX} from '../../constants';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -301,13 +301,15 @@ export class DomainDesign
         return mapping;
     }
 
-    getGridData(): List<any> {
+    getGridData(scrollFunction): List<any> {
         return this.fields.map((field, i) => {
-            if (field.conditionalFormats.size > 0) {
-                field.conditionalFormats.forEach(cf => {
-                    console.log(cf.formatFilter);
-                });
-            }
+            const conditionalFormatString = field.conditionalFormats.reduce((cfString, cf) => {
+                return (cfString.concat(cf.formatFilter + "\n"));
+            }, "");
+            const name = <a onClick={() => scrollFunction(i)} style={{cursor: 'pointer'}}> {field.name} </a>;
+            const nameObjTemp = Map();
+            nameObjTemp.set('custom', name);
+
 
             return Map({
                 name: field.name,
@@ -317,18 +319,18 @@ export class DomainDesign
                 visible: field.visible,
                 fieldIndex: i,
                 details: field.getDetailsTextArray()[0],
-                conditionalFormats: field.conditionalFormats.toJS().toString(), // Rosaline: toString this
+                conditionalFormats: conditionalFormatString,
                 label: field.label,
                 importAliases: field.importAliases,
             });
         }) as List<Map<string, any>>;
     }
 
-    getGridColumns(onFieldsChange: DomainOnChange): List<GridColumn | SummaryGrid> {
+    getGridColumns(onFieldsChange: DomainOnChange, scrollFunction: (i: number) => void): List<GridColumn | SummaryGrid> {
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,
             title: GRID_SELECTION_INDEX,
-            align: 'center',
+            width: 20,
             cell: (data: any, row: any) => {
                 const domainIndex = row.get('domainIndex');
                 const fieldIndex = row.get('fieldIndex');
@@ -351,8 +353,24 @@ export class DomainDesign
             },
         });
 
+        const nameCol = new GridColumn({
+            index: GRID_NAME_INDEX,
+            title: GRID_NAME_INDEX,
+            cell: (data: any, row: any) => {
+                const text = row.get('name');
+                const fieldIndex = row.get('fieldIndex');
+
+                return (
+                    <>
+                        <a onClick={() => scrollFunction(fieldIndex)} style={{cursor: 'pointer'}}> {text} </a>
+                    </>
+                );
+            },
+        });
+
         return List([
             selectionCol,
+            nameCol,
             { index: 'name', caption: 'Name', sortable: true },
             { index: 'datatype', caption: 'Data Type', sortable: true },
             { index: 'required', caption: 'Required', sortable: true },

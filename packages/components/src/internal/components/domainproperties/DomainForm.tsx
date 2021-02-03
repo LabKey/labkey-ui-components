@@ -160,6 +160,7 @@ export default class DomainForm extends React.PureComponent<IDomainFormInput> {
  * Form containing all properties of a domain
  */
 export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomainFormState> {
+    refsArray: DomainRow[];
     static defaultProps = {
         helpNoun: 'field designer',
         helpTopic: FIELD_EDITOR_TOPIC,
@@ -194,6 +195,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             summaryViewMode: false,
             search: undefined,
         };
+
+        this.refsArray = [];
     }
 
     componentDidMount = async (): Promise<void> => {
@@ -1164,6 +1167,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     }
 
+    scrollFunction = (i: number) : void => {
+        this.setState({summaryViewMode: false}, () => {
+            this.refsArray[i].scrollIntoView();
+        });
+    }
+
     renderDetailedFieldView = () => {
         const {
             domain,
@@ -1202,6 +1211,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                                     return (
                                         <DomainRow
+                                            ref={ref => {this.refsArray[i] = ref;}}
                                             domainId={domain.domainId}
                                             helpNoun={helpNoun}
                                             key={'domain-row-key-' + i}
@@ -1226,7 +1236,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                             showFilePropertyType={showFilePropertyType}
                                             successBsStyle={successBsStyle}
                                             isDragDisabled={
-                                                valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
+                                                !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
                                             }
                                             domainFormDisplayOptions={domainFormDisplayOptions}
                                         />
@@ -1269,11 +1279,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <StickyContainer>
                             {summaryViewMode ? (
                                 <DomainPropertiesGrid
-                                    initGridData={domain.getGridData()}
-                                    gridColumns={domain.getGridColumns(this.onFieldsChange)}
+                                    initGridData={domain.getGridData(this.scrollFunction)}
+                                    gridColumns={domain.getGridColumns(this.onFieldsChange, this.scrollFunction)}
                                     search={search}
                                     selectAll={selectAll}
                                     toggleSelectAll={this.toggleSelectAll}
+                                    scrollFunction={this.scrollFunction}
                                 />
                             ) : (
                                 this.renderDetailedFieldView()

@@ -78,6 +78,8 @@ const defaultCell = (d, row, col: GridColumn) => {
         } else {
             if (d.has('formattedValue')) {
                 display = d.get('formattedValue');
+            // } else if (d.has('custom')) {
+            //     display = d.get('custom');
             } else {
                 const o = d.has('displayValue') ? d.get('displayValue') : d.get('value');
                 display = o !== null && o !== undefined ? o.toString() : null;

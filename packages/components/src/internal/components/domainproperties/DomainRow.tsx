@@ -116,7 +116,10 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
         this[`${props.index}_ref`] = React.createRef()
     }
 
-    scrollIntoView = () => this[`${this.props.index}_ref`].current.scrollIntoView();
+    // Used in DomainPropertiesGrid
+    scrollIntoView = () => {
+        this[`${this.props.index}_ref`].current.scrollIntoView({ behavior: "smooth" });
+    };
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {
         // if there was a prop change to isDragDisabled, need to call setDragDisabled

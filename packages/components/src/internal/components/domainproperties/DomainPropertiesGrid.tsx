@@ -7,7 +7,7 @@ import { Checkbox } from 'react-bootstrap';
 import { Grid, GridColumn } from '../../..';
 import { headerCell } from '../../renderers';
 
-import { GRID_SELECTION_INDEX } from '../../constants';
+import {GRID_NAME_INDEX, GRID_SELECTION_INDEX} from '../../constants';
 
 import { compareStringsAlphabetically } from './propertiesUtil';
 
@@ -19,10 +19,12 @@ interface DomainPropertiesGridProps {
     search: string;
     selectAll: boolean;
     toggleSelectAll: () => void;
+    scrollFunction: (i: number) => void;
 }
 
 interface DomainPropertiesGridState {
     gridData: List<any>;
+    visibleGridData: List<any>;
     search: string;
 }
 
@@ -32,13 +34,12 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
         this.state = {
             gridData: this.props.initGridData,
+            visibleGridData: this.getVisibleGridData(this.props.initGridData),
             search: this.props.search,
         };
     }
 
     componentDidUpdate(prevProps: Readonly<DomainPropertiesGridProps>): void {
-        const { gridData } = this.state;
-
         const prevSearch = prevProps.search;
         const newSearch = this.props.search;
         const prevGridData = prevProps.initGridData;
@@ -46,7 +47,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
         // When new field added
         if (prevGridData.size < newGridData.size) {
-            this.setState({ gridData: gridData.push(newGridData.get(-1)) });
+            this.uponRowAdd(newGridData);
         // When fields are deleted
         } else if (prevGridData.size > newGridData.size) {
             this.uponRowDelete();
@@ -57,6 +58,18 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         } else {
             this.uponRowSelection();
         }
+    }
+
+    getVisibleGridData = (gridData: List<any>): List<any> => {
+        return gridData.filter(row => row.get('visible')) as List<any>;
+    }
+
+    uponRowAdd = (newGridData: List<any>): void => {
+        const { gridData, visibleGridData } = this.state;
+        const updatedGridData = gridData.push(newGridData.get(-1));
+        const updatedVisibleGridData = visibleGridData.push(newGridData.get(-1));
+
+        this.setState({ gridData: updatedGridData, visibleGridData: updatedVisibleGridData });
     }
 
     uponRowDelete = (): void => {
@@ -71,8 +84,9 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
                 return updatedGridData;
             }
         }, List());
+        const visibleGridData = this.getVisibleGridData(updatedGridData);
 
-        this.setState({ gridData: updatedGridData });
+        this.setState({ gridData: updatedGridData, visibleGridData });
     };
 
     uponFilter = (): void => {
@@ -83,7 +97,9 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
             const nextRowIndex = initGridData.findIndex(nextRow => nextRow.get('name') === row.get('name'));
             return row.set('visible', initGridData.get(nextRowIndex).get('visible'));
         }) as List<any>;
-        this.setState({ gridData: updatedGridData });
+        const visibleGridData = this.getVisibleGridData(updatedGridData);
+
+        this.setState({ gridData: updatedGridData, visibleGridData });
     };
 
     uponRowSelection = (): void => {
@@ -100,7 +116,9 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
             if (rowSelection !== newRowSelection) {
                 const updatedGridData = gridData.update(i, field => field.set('selected', newRowSelection));
-                this.setState({ gridData: updatedGridData });
+                const visibleGridData = this.getVisibleGridData(updatedGridData);
+
+                this.setState({ gridData: updatedGridData, visibleGridData });
                 break;
             }
         }
@@ -114,15 +132,19 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
             return compareStringsAlphabetically(field1.get(col), field2.get(col), direction);
         }) as List<any>;
+        const updatedVisibleGridData = this.getVisibleGridData(sortedFields);
 
-        this.setState({ gridData: sortedFields });
+        this.setState({ gridData: sortedFields, visibleGridData: updatedVisibleGridData });
     };
 
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
         const { selectAll, toggleSelectAll } = this.props;
-
         if (column.index === GRID_SELECTION_INDEX) {
             return <Checkbox className="domain-summary-selectAll" checked={selectAll} onChange={toggleSelectAll} />;
+        }
+
+        if (column.index === GRID_NAME_INDEX) {
+            return "Name";
         }
 
         return headerCell(this.sortColumn, column, index, false, true, columnCount);
@@ -130,13 +152,11 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
     render() {
         const { gridColumns } = this.props;
-        const { gridData } = this.state;
-
-        const gridDataFiltered = gridData.filter(row => row.get('visible')) as List<any>; // maybe for efficiency we make this its own state thing?
+        const { visibleGridData } = this.state;
 
         return (
             <>
-                <Grid data={gridDataFiltered} columns={gridColumns} headerCell={this.headerCell} />
+                <Grid data={visibleGridData} columns={gridColumns} headerCell={this.headerCell} condensed={true} calcWidths={true} />
             </>
         );
     }

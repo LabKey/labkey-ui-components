@@ -20,7 +20,7 @@ import { hasAllPermissions, SVGIcon, User } from '../../..';
 
 import { FieldEditorOverlay, FieldEditorOverlayProps } from './FieldEditorOverlay';
 
-interface Props {
+export interface PageDetailHeaderProps {
     description?: ReactNode;
     fieldTriggerProps?: FieldEditorOverlayProps;
     iconAltText?: string;
@@ -33,7 +33,7 @@ interface Props {
     user?: User;
 }
 
-export class PageDetailHeader extends PureComponent<Props> {
+export class PageDetailHeader extends PureComponent<PageDetailHeaderProps> {
     static defaultProps = {
         leftColumns: 6,
     };

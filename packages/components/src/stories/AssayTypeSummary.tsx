@@ -18,7 +18,6 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs } from '@storybook/addon-knobs';
 
 import { AssayTypeSummary, Location, User } from '..';
-import './stories.scss';
 
 storiesOf('AssayTypeSummary', module)
     .addDecorator(withKnobs)

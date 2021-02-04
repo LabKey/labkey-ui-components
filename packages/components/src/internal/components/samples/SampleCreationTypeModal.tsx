@@ -1,76 +1,13 @@
-import React, {FC, memo} from "react";
+import React from "react";
 import {Button, FormControl, Modal} from "react-bootstrap";
-import classNames from 'classnames';
-import {SVGIcon} from "../base/SVGIcon";
 import {MAX_EDITABLE_GRID_ROWS} from "../../../index";
+import {
+    CREATION_TYPE_OPTIONS,
+    CreationType,
+    CreationTypeModel,
+    SampleCreationTypeOption
+} from "./SampleCreationTypeOption";
 
-export enum CreationType {
-    Derivatives = "Derivatives",
-    PooledSamples = "Pooled Samples",
-    Aliquots = "Aliquots"
-}
-
-interface CreationTypeModel {
-    type: CreationType,
-    description: string,
-    requiresMultipleParents: boolean,
-    iconSrc?: string,
-    iconUrl?: string
-}
-
-const creationTypes = [
-    {
-        type: CreationType.Derivatives,
-        description: "Create multiple output samples per parent.",
-        requiresMultipleParents: false,
-        iconSrc: 'derivatives'
-    },
-    {
-        type: CreationType.PooledSamples,
-        description: "Put multiple samples into pooled outputs.",
-        requiresMultipleParents: true,
-        iconSrc: "pooled"
-    },
-    {
-        type: CreationType.Aliquots,
-        description: "Create aliquot copies from each parent sample.",
-        requiresMultipleParents: false,
-        iconSrc: "aliquots"
-    }
-]
-
-interface OptionProps {
-    option: CreationTypeModel
-    isSelected: boolean
-    onChoose: (evt) => void
-    showIcon: boolean
-}
-
-export const SampleCreationTypeOption: FC<OptionProps> = memo(props => {
-    const { option, isSelected, onChoose, showIcon } = props;
-
-    return (
-        <div className={classNames({'creation-type-selected': isSelected})}>
-            {showIcon &&
-            <div className="creation-type-icon">
-                {option.iconUrl && <img src={option.iconUrl} alt={option.type}/>}
-                {option.iconSrc && <SVGIcon iconDir="_images" iconSrc={option.iconSrc}/>}
-            </div>
-            }
-            <label className="creation-type-choice">
-                <input
-                    checked={isSelected}
-                    type="radio"
-                    name="creationType"
-                    value={option.type}
-                    onChange={onChoose}/> {option.type}
-                <div className="creation-type-choice-description">
-                    {option.description}
-                </div>
-            </label>
-        </div>
-    )
-});
 
 interface Props {
     show: boolean;
@@ -155,7 +92,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     renderOptions() {
         const { showIcons } = this.props;
         let options = [];
-        creationTypes.forEach((option, i) => {
+        CREATION_TYPE_OPTIONS.forEach((option, i) => {
             if (this.shouldRenderOption(option)) {
                 options.push(
                     <SampleCreationTypeOption

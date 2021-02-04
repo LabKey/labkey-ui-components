@@ -278,6 +278,7 @@ import {
 import { SampleEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
+import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -610,6 +611,7 @@ export {
     SampleEmptyAlert,
     SampleSetSummary,
     SampleSetDeleteModal,
+    SampleCreationTypeModal,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

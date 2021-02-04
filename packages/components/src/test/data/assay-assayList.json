@@ -1,0 +1,248 @@
+{
+  "schemaName" : [ "assay" ],
+  "queryName" : "AssayList",
+  "metaData" : {
+    "importTemplates" : [ {
+      "label" : "Download Template",
+      "url" : "/labkey/SMNavigationTest%20Project/query-exportExcelTemplate.view?schemaName=assay&query.queryName=AssayList&headerType=DisplayFieldKey"
+    } ],
+    "root" : "rows",
+    "totalProperty" : "rowCount",
+    "description" : "Contains all of the assay definitions visible in this folder",
+    "id" : "RowId",
+    "fields" : [ {
+      "fieldKey" : [ "RowId" ],
+      "description" : "Contains the unique id for this protocol",
+      "friendlyType" : "Integer",
+      "type" : "int",
+      "jsonType" : "int",
+      "sqlType" : "serial",
+      "defaultValue" : null,
+      "scale" : 10,
+      "align" : "right",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : true,
+      "hidden" : true,
+      "keyField" : true,
+      "mvEnabled" : false,
+      "nullable" : false,
+      "readOnly" : true,
+      "userEditable" : false,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : false,
+      "shownInUpdateView" : false,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 10,
+      "shortCaption" : "Row Id",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Row Id"
+    }, {
+      "fieldKey" : [ "Name" ],
+      "description" : "Contains a short name for this protocol",
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "varchar",
+      "defaultValue" : null,
+      "scale" : 200,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "text",
+      "cols" : 40,
+      "shortCaption" : "Name",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Name"
+    }, {
+      "fieldKey" : [ "Description" ],
+      "description" : "Contains a description for this protocol",
+      "friendlyType" : "Text (String)",
+      "type" : "string",
+      "jsonType" : "string",
+      "sqlType" : "text",
+      "defaultValue" : null,
+      "scale" : 2147483647,
+      "align" : "left",
+      "sortable" : true,
+      "width" : "",
+      "autoIncrement" : false,
+      "hidden" : false,
+      "keyField" : false,
+      "mvEnabled" : false,
+      "nullable" : true,
+      "readOnly" : false,
+      "userEditable" : true,
+      "calculated" : false,
+      "versionField" : false,
+      "selectable" : true,
+      "shownInInsertView" : true,
+      "shownInUpdateView" : true,
+      "shownInDetailsView" : true,
+      "dimension" : false,
+      "measure" : false,
+      "recommendedVariable" : false,
+      "defaultScale" : "LINEAR",
+      "phi" : "NotPHI",
+      "excludeFromShifting" : false,
+      "conceptURI" : null,
+      "inputType" : "textarea",
+      "cols" : 60,
+      "rows" : 15,
+      "shortCaption" : "Description",
+      "facetingBehaviorType" : "AUTOMATIC",
+      "caption" : "Description"
+    } ],
+    "title" : "AssayList",
+    "importMessage" : null
+  },
+  "rows" : [ {
+    "data" : {
+      "RowId" : {
+        "value" : 9014
+      },
+      "Description" : {
+        "value" : null
+      },
+      "Name" : {
+        "url" : "/labkey/SMNavigationTest%20Project/assay-assayBegin.view?rowId=9014",
+        "value" : "SharedAssay"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 9319
+      },
+      "Description" : {
+        "value" : null
+      },
+      "Name" : {
+        "url" : "/labkey/SMNavigationTest%20Project/assay-assayBegin.view?rowId=9319",
+        "value" : "SEC"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 9322
+      },
+      "Description" : {
+        "value" : "This is a file-based assay found in the test/miniassay module"
+      },
+      "Name" : {
+        "url" : "/labkey/SMNavigationTest%20Project/assay-assayBegin.view?rowId=9322",
+        "value" : "FileBasedExample"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 9325
+      },
+      "Description" : {
+        "value" : null
+      },
+      "Name" : {
+        "url" : "/labkey/SMNavigationTest%20Project/assay-assayBegin.view?rowId=9325",
+        "value" : "run_sample_assay"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 9328
+      },
+      "Description" : {
+        "value" : null
+      },
+      "Name" : {
+        "url" : "/labkey/SMNavigationTest%20Project/assay-assayBegin.view?rowId=9328",
+        "value" : "results_sample_assay"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 9331
+      },
+      "Description" : {
+        "value" : null
+      },
+      "Name" : {
+        "url" : "/labkey/SMNavigationTest%20Project/assay-assayBegin.view?rowId=9331",
+        "value" : "LuminexExample"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 9334
+      },
+      "Description" : {
+        "value" : null
+      },
+      "Name" : {
+        "url" : "/labkey/SMNavigationTest%20Project/assay-assayBegin.view?rowId=9334",
+        "value" : "Titer"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 9337
+      },
+      "Description" : {
+        "value" : null
+      },
+      "Name" : {
+        "url" : "/labkey/SMNavigationTest%20Project/assay-assayBegin.view?rowId=9337",
+        "value" : "Amino Acids"
+      }
+    }
+  }, {
+    "data" : {
+      "RowId" : {
+        "value" : 9340
+      },
+      "Description" : {
+        "value" : null
+      },
+      "Name" : {
+        "url" : "/labkey/SMNavigationTest%20Project/assay-assayBegin.view?rowId=9340",
+        "value" : "batch_sample_assay"
+      }
+    }
+  } ],
+  "rowCount" : 9
+}

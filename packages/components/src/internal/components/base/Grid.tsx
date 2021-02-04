@@ -70,7 +70,7 @@ export class GridColumn implements ColumnProps {
 
 const defaultCell = (d, row, col: GridColumn) => {
     let display = null;
-    if (d) {
+    if (d != undefined) {
         if (typeof d === 'string' || typeof d === 'number') {
             display = d;
         } else if (typeof d === 'boolean') {

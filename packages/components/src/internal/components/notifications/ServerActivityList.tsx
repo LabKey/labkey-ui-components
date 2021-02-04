@@ -2,18 +2,17 @@ import React, { ReactNode } from 'react';
 import classNames from 'classnames';
 
 import { ServerActivity, ServerActivityData } from './model';
-import { formatDateTime, getDateTimeFormat, parseDate } from '../../util/Date';
-import { resolveErrorMessage } from "../../..";
+import { formatDateTime, parseDate } from '../../util/Date';
+import { capitalizeFirstChar, resolveErrorMessage } from "../../..";
 
 interface Props {
     serverActivity: ServerActivity;
     onViewAll: () => any;
-    onShowErrorDetail: (notification: ServerActivityData) => any;
     maxRows: number;
     viewAllText: string;
     noActivityMsg: string;
-    viewErrorDetailsText: string;
     onRead: (id: number) => void;
+    actionLinkLabel: string
 }
 
 export class ServerActivityList extends React.PureComponent<Props> {
@@ -21,18 +20,14 @@ export class ServerActivityList extends React.PureComponent<Props> {
         maxRows: 8,
         viewAllText: 'View all activity',
         noActivityMsg: 'No notifications available.',
-        viewErrorDetailsText: 'View error details',
+        actionLinkLabel: 'View details'
     };
 
     markRead = (notificationId: number): void => {
         this.props.onRead(notificationId);
     };
 
-    showErrorDetails = (notificationItem: ServerActivityData): void => {
-        this.props.onShowErrorDetail(notificationItem);
-    };
-
-    renderNotificationContent = (content: string, isError?: boolean, isInProgress?: boolean) => {
+    renderNotificationContent = (content: string, isHtml?: boolean, isError?: boolean, isInProgress?: boolean) => {
         const newlineIndex = content.toLowerCase().indexOf("\n");
         const brIndex = content.toLowerCase().indexOf("<br>");
         let subject : string = undefined, details : string = undefined;
@@ -48,18 +43,31 @@ export class ServerActivityList extends React.PureComponent<Props> {
 
             const detailsDisplay = isError ? resolveErrorMessage(details) : details;
             return (<>
-                <span className={'server-notifications-item-subject'}>{subject}</span>
-                {detailsDisplay && <span className={'server-notifications-item-details'}>{detailsDisplay}</span>}
+                {this.renderContent(subject, 'server-notifications-item-subject', isHtml)}
+                {detailsDisplay &&
+                    <>
+                        <br/>
+                        {this.renderContent(detailsDisplay, 'server-notifications-item-details', isHtml)}
+                    </>
+                }
             </>);
         }
         else if (isInProgress) {
-            return <span className={'server-notifications-item-subject'}>{`A background import is processing: ${content}`}</span>
+            return this.renderContent(`A background import is processing: ${content}`, 'server-notifications-item-subject', isHtml);
         }
 
-        return <span className={'server-notifications-item-subject'} dangerouslySetInnerHTML={{ __html: content }} />;
+        return this.renderContent(content, 'server-notifications-item-subject', isHtml);
+    }
+
+    renderContent = (content: string, clsName: string, isHtml: boolean) => {
+        if (isHtml)
+            return <span className={clsName} dangerouslySetInnerHTML={{ __html: content }} />;
+
+        return <span className={clsName}>{content}</span>;
     }
 
     renderData(activity: ServerActivityData, key: number): ReactNode {
+        const { actionLinkLabel } = this.props;
         const isUnread = activity.isUnread() && !activity.inProgress;
         return (
             <li key={key} className={isUnread ? 'is-unread' : undefined} onClick={isUnread ? () => this.markRead(activity.RowId) : undefined}>
@@ -74,12 +82,12 @@ export class ServerActivityList extends React.PureComponent<Props> {
                         'is-unread server-notifications-item': isUnread,
                     })}
                 >
-                    {this.renderNotificationContent(activity.HtmlContent, activity.hasError, activity.inProgress)}
+                    {this.renderNotificationContent(activity.Content, activity.isHTML(), activity.hasError, activity.inProgress)}
                 </span>
                 <br />
-                {activity.hasError ? (
-                    <span className="server-notifications-link" onClick={() => this.showErrorDetails(activity)}>
-                        {this.props.viewErrorDetailsText}
+                {activity.ActionLinkUrl ? (
+                    <span className="server-notifications-link">
+                        <a href={activity.ActionLinkUrl}>{capitalizeFirstChar(activity.ActionLinkText ? activity.ActionLinkText : actionLinkLabel)}</a>
                     </span>
                 ) : (
                     <span className="server-notification-data" title={activity.CreatedBy}>

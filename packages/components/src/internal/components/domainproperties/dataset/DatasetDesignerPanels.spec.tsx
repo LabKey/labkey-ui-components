@@ -23,7 +23,7 @@ import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/const
 import { Alert } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
+import { initUnitTestMocks, waitForLifecycle } from '../../../testHelpers';
 
 import { DatasetDesignerPanels } from './DatasetDesignerPanels';
 
@@ -65,7 +65,7 @@ describe('Dataset Designer', () => {
         designerPanels.unmount();
     });
 
-    test('Test for alert/message', () => {
+    test('Test for alert/message', async () => {
         const wrapped = mount(
             <DatasetDesignerPanels
                 initModel={newDatasetModel}
@@ -91,5 +91,6 @@ describe('Dataset Designer', () => {
             'Please correct errors in the properties panel before saving.'
         );
         wrapped.unmount();
+        await waitForLifecycle(wrapped);
     });
 });

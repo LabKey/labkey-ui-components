@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
 import { markNotificationsAsRead } from './actions';
-import { ServerActivityData, ServerNotificationsConfig } from './model';
+import { ServerNotificationsConfig } from './model';
 import { ServerActivityList } from './ServerActivityList';
 import { LoadingSpinner } from '../../../index';
 
@@ -67,15 +67,6 @@ export class ServerNotifications extends React.Component<Props, State> {
         this.setState(state => ({ show: !state.show }));
     };
 
-    onShowErrorDetail = (notificationItem: ServerActivityData): void => {
-        const { onShowErrorDetail } = this.props;
-
-        if (onShowErrorDetail)
-            onShowErrorDetail(notificationItem);
-
-        this.setState(state => ({ show: false }));
-    };
-
     render(): ReactNode {
         const { serverActivity, maxRows, onViewAll } = this.props;
         const { show } = this.state;
@@ -83,7 +74,7 @@ export class ServerNotifications extends React.Component<Props, State> {
         const numUnread = this.getNumUnread();
         const title = (
             <h3 className="server-notifications-header">
-                <div className="navbar-icon-connector" />
+                <div className={"navbar-icon-connector" + (numUnread > 0 ? '' : ' notification-all-read')} />
                 Notifications
                 {numUnread > 0 && (
                     <div className="pull-right server-notifications-link" onClick={this.markAllRead}>
@@ -104,21 +95,20 @@ export class ServerNotifications extends React.Component<Props, State> {
                     maxRows={maxRows}
                     serverActivity={serverActivity}
                     onViewAll={onViewAll}
-                    onShowErrorDetail={this.onShowErrorDetail}
                     onRead={this.onRead}
                 />
             );
         }
 
         const icon = (
-            <span className="fa-stack navbar-icon" data-count={numUnread || undefined}>
-                <i className="fa fa-circle fa-stack-1x" />
+            <span>
                 <i className={
                         'fa ' +
                         (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') +
-                        ' fa-stack-1x server-notifications-icon'
+                        ' server-notifications-icon'
                     }
                 />
+                {this.hasAnyUnread() && <span className="badge">{numUnread}</span>}
             </span>
         );
         return (

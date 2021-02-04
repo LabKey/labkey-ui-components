@@ -39,7 +39,6 @@ describe('<NavigationBar/>', () => {
         markAllNotificationsRead: markAllNotificationsRead,
         serverActivity: new ServerNotificationModel(),
         onViewAll:jest.fn(),
-        onShowErrorDetail:jest.fn()
     };
 
     test('default props', () => {

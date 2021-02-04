@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.19.0
+*Released*: 3 February 2021
+* Update storybook to v6
+* Package updates for test dependencies
+
 ### version 1.18.0
 *Released*: 1 February 2021
 * Addition of AssayDesignDeleteModal, AssaysHeatmap and AssayTypeSummary

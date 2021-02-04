@@ -80,12 +80,16 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
         };
     }
 
-    componentDidMount() {
-        fetchCategories().then(data => {
-            this.setState(() => ({
-                availableCategories: data.toArray(),
-            }));
-        });
+    componentDidMount(): void {
+        fetchCategories()
+            .then(data => {
+                this.setState({
+                    availableCategories: data.toArray(),
+                });
+            })
+            .catch(error => {
+                console.error('Failed to retrieve available categories.', error);
+            });
     }
 
     getHelpTipElement = (field: string): ReactNode => {

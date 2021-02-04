@@ -93,36 +93,36 @@ import {
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 
 interface IDomainFormInput {
-    domain: DomainDesign;
-    onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => any;
-    onToggle?: (collapsed: boolean, callback?: () => any) => any;
-    helpTopic?: string;
-    helpNoun?: string;
-    showHeader?: boolean;
-    initCollapsed?: boolean;
+    allowImportExport?: boolean;
+    appDomainHeaderRenderer?: HeaderRenderer;
+    appPropertiesOnly?: boolean; // Flag to indicate if LKS specific types should be shown (false) or not (true)
     collapsible?: boolean;
+    containerTop?: number; // This sets the top of the sticky header, default is 0
     controlledCollapse?: boolean;
-    validate?: boolean;
-    isNew?: boolean;
-    panelStatus?: DomainPanelStatus;
+    domain: DomainDesign;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    domainIndex?: number;
+    fieldsAdditionalRenderer?: () => any;
     headerPrefix?: string; // used as a string to remove from the heading when using the domain.name
     headerTitle?: string;
-    allowImportExport?: boolean;
-    todoIconHelpMsg?: string;
-    showInferFromFile?: boolean;
-    useTheme?: boolean;
+    helpNoun?: string;
+    helpTopic?: string;
     index?: number; // Used in AssayDesignerPanels for distinguishing FileAttachmentForms
-    appDomainHeaderRenderer?: HeaderRenderer;
+    initCollapsed?: boolean;
+    isNew?: boolean;
     maxPhiLevel?: string; // Just for testing, only affects display
-    containerTop?: number; // This sets the top of the sticky header, default is 0
     modelDomains?: List<DomainDesign>; // Set of domains that encompass the full protocol, that may impact validation or alerts
-    appPropertiesOnly?: boolean; // Flag to indicate if LKS specific types should be shown (false) or not (true)
-    showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
-    domainIndex?: number;
-    successBsStyle?: string;
+    onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => any;
+    onToggle?: (collapsed: boolean, callback?: () => any) => any;
+    panelStatus?: DomainPanelStatus;
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
-    domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    fieldsAdditionalRenderer?: () => any;
+    showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
+    showHeader?: boolean;
+    showInferFromFile?: boolean;
+    successBsStyle?: string;
+    todoIconHelpMsg?: string;
+    useTheme?: boolean;
+    validate?: boolean;
 }
 
 interface IDomainFormState {

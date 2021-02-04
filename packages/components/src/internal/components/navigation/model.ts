@@ -165,7 +165,6 @@ export class ProductMenuModel extends Record({
         return new Promise((resolve, reject) => {
             return Ajax.request({
                 url: buildURL('product', 'menuSections.api'),
-                method: 'GET',
                 params: Object.assign({
                     currentProductId: this.currentProductId,
                     userMenuProductId: this.userMenuProductId,

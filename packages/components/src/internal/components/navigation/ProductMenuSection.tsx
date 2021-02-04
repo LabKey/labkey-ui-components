@@ -14,43 +14,43 @@
  * limitations under the License.
  */
 import React, { Component, ReactNode } from 'react';
-import { Record } from 'immutable';
+import { List, Record } from 'immutable';
+import classNames from 'classnames';
 
 import { AppURL, naturalSort, createProductUrlFromParts } from '../../..';
 
-import { MenuSectionModel } from './model';
-import classNames from "classnames";
+import { MenuItemModel, MenuSectionModel } from './model';
 
 function getHref(url: AppURL | string): string {
     return typeof url === 'string' ? url : url.toHref();
 }
 
 export class MenuSectionConfig extends Record({
+    activeJobIconCls: 'fa-spinner fa-pulse',
     emptyText: undefined,
-    iconURL: undefined,
-    iconCls: undefined,
-    maxItemsPerColumn: 12,
-    maxColumns: 1,
-    seeAllURL: undefined,
     emptyURL: undefined,
     emptyURLText: 'Get started...',
     headerURL: undefined,
     headerText: undefined,
+    iconCls: undefined,
+    iconURL: undefined,
+    maxColumns: 1,
+    maxItemsPerColumn: 12,
+    seeAllURL: undefined,
     showActiveJobIcon: true,
-    activeJobIconCls: 'fa-spinner fa-pulse'
 }) {
+    activeJobIconCls?: string;
     emptyText?: string;
-    iconURL?: string;
-    iconCls?: string;
-    maxItemsPerColumn: number;
-    maxColumns: number;
-    seeAllURL?: AppURL | string;
     emptyURL?: AppURL | string;
     emptyURLText: string;
     headerURL: AppURL | string;
     headerText?: string;
+    iconCls?: string;
+    iconURL?: string;
+    maxColumns: number;
+    maxItemsPerColumn: number;
+    seeAllURL?: AppURL | string;
     showActiveJobIcon?: boolean;
-    activeJobIconCls?: string;
 }
 
 interface MenuSectionProps {
@@ -64,54 +64,52 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
         maxColumns: 1,
     };
 
-    renderEmpty = (): ReactNode => {
-        const { config } = this.props;
-        return (
-            <>
-                {config.emptyText && (
-                    <li key="empty" className="empty-section">
-                        {config.emptyText}
-                    </li>
-                )}
-                {config.emptyURL && (
-                    <li key="emptyUrl" className="empty-section-link">
-                        <a href={getHref(config.emptyURL)}>{config.emptyURLText}</a>
-                    </li>
-                )}
-            </>
-        );
-    };
+    renderMenuItemsList = (items: List<MenuItemModel>, columnNumber = 1, totalColumns = 1): ReactNode => {
+        const { config, section } = this.props;
+        const { activeJobIconCls, showActiveJobIcon } = config;
 
-    renderMenuItemsList = (items, columnNumber = 1, totalColumns = 1, withOverflow = false, config?: MenuSectionConfig): ReactNode => {
-        const { section } = this.props;
-        const activeJobCls = config?.activeJobIconCls;
-        const showActiveJobIcon = config?.showActiveJobIcon;
         return (
             <ul className={'col-' + totalColumns} key={section.key + 'col-' + columnNumber}>
-                {items.isEmpty()
-                    ? this.renderEmpty()
-                    : items
-                          .sortBy(item => item.label, naturalSort)
-                          .map(item => {
-                              const labelDisplay = (item.hasActiveJob && showActiveJobIcon) ? (
-                                      <>
-                                          <i className={classNames('fa', activeJobCls)}/>
-                                          <span className={'spacer-left product-menu-item'}>{item.label}</span>
-                                      </>
-                                  ) : item.label;
+                {items.isEmpty() ? (
+                    <>
+                        {config.emptyText && (
+                            <li key="empty" className="empty-section">
+                                {config.emptyText}
+                            </li>
+                        )}
+                        {config.emptyURL && (
+                            <li key="emptyUrl" className="empty-section-link">
+                                <a href={getHref(config.emptyURL)}>{config.emptyURLText}</a>
+                            </li>
+                        )}
+                    </>
+                ) : (
+                    items
+                        .sortBy(item => item.label, naturalSort)
+                        .map(item => {
+                            const labelDisplay =
+                                item.hasActiveJob && showActiveJobIcon ? (
+                                    <>
+                                        <i className={classNames('fa', activeJobIconCls)} />
+                                        <span className="spacer-left product-menu-item">{item.label}</span>
+                                    </>
+                                ) : (
+                                    item.label
+                                );
 
-                              if (item.url) {
-                                  const url = item.url instanceof AppURL ? item.url.toHref() : item.url;
-                                  return (
-                                      <li key={item.label}>
-                                          <a href={url} target={item.key === 'docs' ? '_blank' : '_self'}>
-                                              {labelDisplay}
-                                          </a>
-                                      </li>
-                                  );
-                              }
-                              return <li key={item.label}>{labelDisplay}</li>;
-                          })}
+                            if (item.url) {
+                                const url = item.url instanceof AppURL ? item.url.toHref() : item.url;
+                                return (
+                                    <li key={item.label}>
+                                        <a href={url} target={item.key === 'docs' ? '_blank' : '_self'}>
+                                            {labelDisplay}
+                                        </a>
+                                    </li>
+                                );
+                            }
+                            return <li key={item.label}>{labelDisplay}</li>;
+                        })
+                )}
             </ul>
         );
     };
@@ -136,7 +134,7 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
         } else if (config.iconCls) {
             icon = <span className={(config.iconCls || '') + ' menu-section-icon'} />;
         }
-        const headerText = config.headerText ? config.headerText : section.label;
+        const headerText = config.headerText ?? section.label;
         const label = icon ? (
             <>
                 {icon}&nbsp;{headerText}
@@ -144,7 +142,7 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
         ) : (
             headerText
         );
-        let headerURL = config.headerURL;
+        let { headerURL } = config;
         if (headerURL === undefined) {
             if (section.url) {
                 headerURL = createProductUrlFromParts(
@@ -155,14 +153,6 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
                 );
             }
         }
-        const header = (
-            <>
-                <span className="menu-section-header">
-                    {headerURL ? <a href={getHref(headerURL)}>{label}</a> : <>{label}</>}
-                </span>
-                <hr />
-            </>
-        );
 
         const allItems = section.items;
         const haveOverflow =
@@ -172,26 +162,30 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
         let endIndex = Math.min(config.maxItemsPerColumn, allItems.size);
         const numColumns = Math.min(config.maxColumns, Math.ceil(allItems.size / config.maxItemsPerColumn));
         const columns = [
-            this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, haveOverflow, config),
+            this.renderMenuItemsList(allItems.slice(startIndex, endIndex).toList(), columnNum, numColumns),
         ];
         while (endIndex < allItems.size && columnNum < config.maxColumns) {
             startIndex = endIndex;
             endIndex = Math.min(endIndex + config.maxItemsPerColumn, allItems.size);
             columnNum++;
-            columns.push(this.renderMenuItemsList(allItems.slice(startIndex, endIndex), columnNum, numColumns, false, config));
+            columns.push(
+                this.renderMenuItemsList(allItems.slice(startIndex, endIndex).toList(), columnNum, numColumns)
+            );
         }
         if (haveOverflow) {
-            const seeAllUrl = config.seeAllURL || AppURL.create(section.key);
             columns.push(
                 <span className="overflow-link" key="overflow">
-                    <a href={getHref(seeAllUrl)}>See all {section.totalCount}</a>
+                    <a href={getHref(config.seeAllURL ?? AppURL.create(section.key))}>See all {section.totalCount}</a>
                 </span>
             );
         }
 
         return (
             <>
-                {header}
+                <span className="menu-section-header">
+                    {headerURL ? <a href={getHref(headerURL)}>{label}</a> : <>{label}</>}
+                </span>
+                <hr />
                 {columns}
             </>
         );

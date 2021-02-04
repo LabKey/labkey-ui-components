@@ -13,54 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ChangeEvent, FC, FormEvent, memo, useCallback, useState } from 'react';
 
 interface Props {
-    onSearch: (value: string) => any;
+    onSearch: (value: string) => void;
     placeholder?: string;
 }
 
-interface State {
-    value?: string;
-}
+export const SearchBox: FC<Props> = memo(({ onSearch, placeholder }) => {
+    const [searchValue, setSearchValue] = useState('');
 
-export class SearchBox extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
+    const onChange = useCallback(
+        (evt: ChangeEvent<HTMLInputElement>) => {
+            setSearchValue(evt.target.value);
+        },
+        [setSearchValue]
+    );
 
-        this.state = {
-            value: '',
-        };
-    }
+    const onSubmit = useCallback(
+        (evt: FormEvent<HTMLFormElement>) => {
+            evt.preventDefault();
+            onSearch(searchValue);
 
-    onSearch = (evt: any) => {
-        evt.preventDefault();
-        this.props.onSearch(this.state.value);
+            // reset the input value after it is has submitted
+            setSearchValue('');
+        },
+        [onSearch]
+    );
 
-        // reset the input value after it is has submitted
-        this.setState(() => ({ value: '' }));
-    };
-
-    handleChange = (evt: any) => {
-        const value = evt.target.value;
-        this.setState(() => ({ value }));
-    };
-
-    render() {
-        return (
-            <form className="navbar__search-form" onSubmit={this.onSearch}>
-                <div className="form-group">
-                    <i className="fa fa-search navbar__search-icon" />
-                    <input
-                        type="text"
-                        placeholder={this.props.placeholder || 'Enter Search Terms'}
-                        className="navbar__search-input"
-                        onChange={this.handleChange}
-                        value={this.state.value}
-                        size={34}
-                    />
-                </div>
-            </form>
-        );
-    }
-}
+    return (
+        <form className="navbar__search-form" onSubmit={onSubmit}>
+            <div className="form-group">
+                <i className="fa fa-search navbar__search-icon" />
+                <input
+                    className="navbar__search-input"
+                    onChange={onChange}
+                    placeholder={placeholder ?? 'Enter Search Terms'}
+                    size={34}
+                    type="text"
+                    value={searchValue}
+                />
+            </div>
+        </form>
+    );
+});

@@ -102,8 +102,7 @@ exports[`ProductMenu render loading 1`] = `
 `;
 
 exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
-<ProductMenu
-  maxColumns={5}
+<Memo()
   model={
     Immutable.Record {
       "isError": false,
@@ -358,18 +357,18 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                           <ProductMenuSection
                             config={
                               Immutable.Record {
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                                 "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": undefined,
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
                                 "emptyURL": undefined,
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "iconCls": undefined,
+                                "iconURL": undefined,
+                                "maxColumns": 1,
+                                "maxItemsPerColumn": 12,
+                                "seeAllURL": undefined,
                                 "showActiveJobIcon": true,
-                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             maxColumns={1}
@@ -469,18 +468,18 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                           <ProductMenuSection
                             config={
                               Immutable.Record {
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                                 "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": undefined,
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
                                 "emptyURL": undefined,
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "iconCls": undefined,
+                                "iconURL": undefined,
+                                "maxColumns": 1,
+                                "maxItemsPerColumn": 12,
+                                "seeAllURL": undefined,
                                 "showActiveJobIcon": true,
-                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             maxColumns={1}
@@ -594,18 +593,18 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                           <ProductMenuSection
                             config={
                               Immutable.Record {
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                                 "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": undefined,
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
                                 "emptyURL": undefined,
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "iconCls": undefined,
+                                "iconURL": undefined,
+                                "maxColumns": 1,
+                                "maxItemsPerColumn": 12,
+                                "seeAllURL": undefined,
                                 "showActiveJobIcon": true,
-                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             maxColumns={1}
@@ -660,12 +659,11 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
       </Uncontrolled(Dropdown)>
     </ForwardRef>
   </DropdownButton>
-</ProductMenu>
+</Memo()>
 `;
 
 exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
-<ProductMenu
-  maxColumns={5}
+<Memo()
   model={
     Immutable.Record {
       "isError": false,
@@ -806,34 +804,34 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
     Immutable.List [
       Immutable.Map {
         "samples": Immutable.Record {
+          "activeJobIconCls": "fa-spinner fa-pulse",
           "emptyText": undefined,
-          "iconURL": undefined,
-          "iconCls": "test-icon-cls",
-          "maxItemsPerColumn": 12,
-          "maxColumns": 1,
-          "seeAllURL": undefined,
           "emptyURL": undefined,
           "emptyURLText": "Get started...",
           "headerURL": undefined,
           "headerText": undefined,
+          "iconCls": "test-icon-cls",
+          "iconURL": undefined,
+          "maxColumns": 1,
+          "maxItemsPerColumn": 12,
+          "seeAllURL": undefined,
           "showActiveJobIcon": false,
-          "activeJobIconCls": "fa-spinner fa-pulse",
         },
       },
       Immutable.Map {
         "assays": Immutable.Record {
+          "activeJobIconCls": "fa-spinner fa-pulse",
           "emptyText": undefined,
-          "iconURL": undefined,
-          "iconCls": "test-icon-cls",
-          "maxItemsPerColumn": 12,
-          "maxColumns": 1,
-          "seeAllURL": undefined,
           "emptyURL": undefined,
           "emptyURLText": "Get started...",
           "headerURL": undefined,
           "headerText": undefined,
+          "iconCls": "test-icon-cls",
+          "iconURL": undefined,
+          "maxColumns": 1,
+          "maxItemsPerColumn": 12,
+          "seeAllURL": undefined,
           "showActiveJobIcon": true,
-          "activeJobIconCls": "fa-spinner fa-pulse",
         },
       },
     ]
@@ -956,18 +954,18 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                           <ProductMenuSection
                             config={
                               Immutable.Record {
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                                 "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": "test-icon-cls",
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
                                 "emptyURL": undefined,
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "iconCls": "test-icon-cls",
+                                "iconURL": undefined,
+                                "maxColumns": 1,
+                                "maxItemsPerColumn": 12,
+                                "seeAllURL": undefined,
                                 "showActiveJobIcon": false,
-                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             key="samples"
@@ -1065,18 +1063,18 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                           <ProductMenuSection
                             config={
                               Immutable.Record {
+                                "activeJobIconCls": "fa-spinner fa-pulse",
                                 "emptyText": undefined,
-                                "iconURL": undefined,
-                                "iconCls": "test-icon-cls",
-                                "maxItemsPerColumn": 12,
-                                "maxColumns": 1,
-                                "seeAllURL": undefined,
                                 "emptyURL": undefined,
                                 "emptyURLText": "Get started...",
                                 "headerURL": undefined,
                                 "headerText": undefined,
+                                "iconCls": "test-icon-cls",
+                                "iconURL": undefined,
+                                "maxColumns": 1,
+                                "maxItemsPerColumn": 12,
+                                "seeAllURL": undefined,
                                 "showActiveJobIcon": true,
-                                "activeJobIconCls": "fa-spinner fa-pulse",
                               }
                             }
                             key="assays"
@@ -1199,5 +1197,5 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
       </Uncontrolled(Dropdown)>
     </ForwardRef>
   </DropdownButton>
-</ProductMenu>
+</Memo()>
 `;

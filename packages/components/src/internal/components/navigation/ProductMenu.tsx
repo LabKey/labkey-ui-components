@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
 
@@ -28,101 +28,73 @@ interface ProductMenuProps {
     maxColumns?: number;
 }
 
-export class ProductMenu extends React.Component<ProductMenuProps, any> {
-    static defaultProps = {
-        maxColumns: 5,
-    };
+export const ProductMenu: FC<ProductMenuProps> = memo(props => {
+    const { model, sectionConfigs } = props;
+    const [menuOpen, setMenuOpen] = useState(false);
 
-    constructor(props: ProductMenuProps) {
-        super(props);
+    const getSectionModel = useCallback(
+        (key: string): MenuSectionModel => model.sections.find(section => section.key === key),
+        [model]
+    );
 
-        this.toggleMenu = this.toggleMenu.bind(this);
+    const toggleMenu = useCallback(() => {
+        setMenuOpen(!menuOpen);
+    }, [menuOpen, setMenuOpen]);
 
-        this.state = {
-            menuOpen: false,
-        };
-    }
+    let containerCls = 'product-menu-content ';
+    let menuSectionCls = 'menu-section col-' + model.sections.size;
+    let content: ReactNode = (
+        <div className={menuSectionCls + ' menu-loading'}>
+            <LoadingSpinner />
+        </div>
+    );
 
-    toggleMenu() {
-        this.setState({
-            menuOpen: !this.state.menuOpen,
-        });
-    }
+    if (model?.isLoaded) {
+        if (model.isError) {
+            containerCls += ' error';
+            content = <span>{model.message}</span>;
+        } else if (sectionConfigs) {
+            menuSectionCls = 'menu-section col-' + sectionConfigs.size;
 
-    getSectionModel(key: string): MenuSectionModel {
-        return this.props.model.sections.find(section => section.key === key);
-    }
-
-    render() {
-        const { model, sectionConfigs } = this.props;
-
-        let containerCls = 'product-menu-content ';
-        let menuSectionCls = 'menu-section col-' + model.sections.size;
-        let inside = (
-            <div className={menuSectionCls + ' menu-loading'}>
-                <LoadingSpinner />
-            </div>
-        );
-        if (model && model.isLoaded) {
-            if (model.isError) {
-                containerCls += ' error';
-                inside = <span>{model.message}</span>;
-            } else if (sectionConfigs) {
-                menuSectionCls = 'menu-section col-' + sectionConfigs.size;
-
-                inside = (
-                    <>
-                        {sectionConfigs.map((sectionConfig, ind) => {
-                            return (
-                                <div key={ind} className={menuSectionCls}>
-                                    {sectionConfig.entrySeq().map(([key, menuConfig]) => {
-                                        return (
-                                            <ProductMenuSection
-                                                key={key}
-                                                section={this.getSectionModel(key)}
-                                                config={menuConfig}
-                                                currentProductId={model.currentProductId}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            );
-                        })}
-                    </>
-                );
-            } else {
-                inside = (
-                    <>
-                        {model.sections.map(section => {
-                            return (
-                                <div key={section.key} className={menuSectionCls}>
-                                    <ProductMenuSection
-                                        section={section}
-                                        config={new MenuSectionConfig()}
-                                        currentProductId={model.currentProductId}
-                                    />
-                                </div>
-                            );
-                        })}
-                    </>
-                );
-            }
-        }
-        return (
-            <DropdownButton
-                id="product-menu"
-                title="Menu"
-                className="product-menu-button"
-                open={this.state.menuOpen}
-                onToggle={this.toggleMenu}
-            >
-                <div className={containerCls} onClick={this.toggleMenu}>
-                    <div>
-                        <div className="navbar-connector" />
-                        {inside}
-                    </div>
+            content = sectionConfigs.map((sectionConfig, ind) => (
+                <div key={ind} className={menuSectionCls}>
+                    {sectionConfig.entrySeq().map(([key, menuConfig]) => (
+                        <ProductMenuSection
+                            key={key}
+                            section={getSectionModel(key)}
+                            config={menuConfig}
+                            currentProductId={model.currentProductId}
+                        />
+                    ))}
                 </div>
-            </DropdownButton>
-        );
+            ));
+        } else {
+            content = model.sections.map(section => (
+                <div key={section.key} className={menuSectionCls}>
+                    <ProductMenuSection
+                        section={section}
+                        config={new MenuSectionConfig()}
+                        currentProductId={model.currentProductId}
+                    />
+                </div>
+            ));
+        }
     }
-}
+
+    return (
+        <DropdownButton
+            className="product-menu-button"
+            id="product-menu"
+            onToggle={toggleMenu}
+            open={menuOpen}
+            title="Menu"
+        >
+            <div className={containerCls} onClick={toggleMenu}>
+                <div>
+                    <div className="navbar-connector" />
+                    {content}
+                </div>
+            </div>
+        </DropdownButton>
+    );
+});

@@ -6,3 +6,41 @@
 .sample-insert--link {
   padding-top: 5px;
 }
+
+.creation-type-modal-label {
+    font-weight: normal;
+}
+
+.creation-type-choice {
+    margin-left: 8px;
+    font-weight: normal;
+}
+
+.creation-type-choice-description {
+    margin-top: 8px;
+    color: $light-gray;
+}
+
+.creation-type-selected {
+    background: $blue-bkgrd-selected
+}
+
+.creation-per-parent-select {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    width: 100px;
+}
+
+.creation-type-icon {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    img {
+        display: block;
+        margin: 11%;
+        height: 80%;
+        width: 80%;
+    }
+}

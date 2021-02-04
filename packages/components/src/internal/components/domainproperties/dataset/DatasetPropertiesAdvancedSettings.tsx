@@ -155,12 +155,16 @@ export class AdvancedSettings extends React.PureComponent<AdvancedSettingsProps,
         } as AdvancedSettingsState;
     }
 
-    componentDidMount() {
-        fetchCohorts().then(data => {
-            this.setState(() => ({
-                availableCohorts: data.toArray(),
-            }));
-        });
+    componentDidMount(): void {
+        fetchCohorts()
+            .then(data => {
+                this.setState({
+                    availableCohorts: data.toArray(),
+                });
+            })
+            .catch(error => {
+                console.error('Failed to retrieve available cohorts.', error);
+            });
     }
 
     getInitialState = () => {

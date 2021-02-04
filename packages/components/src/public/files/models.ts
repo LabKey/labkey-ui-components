@@ -19,4 +19,5 @@ export interface FileGridPreviewProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
     initialData?: InferDomainResponse;
     skipPreviewGrid?: boolean;
+    errorStyle?: string;
 }

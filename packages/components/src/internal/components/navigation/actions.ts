@@ -1,6 +1,8 @@
 import { Ajax, Utils, ActionURL } from '@labkey/api';
 
-import { buildURL } from '../../..';
+import { resolveErrorMessage } from '../../util/messaging';
+import { buildURL } from '../../url/AppURL';
+import { ProductModel } from './model';
 
 export function signOut(navigateUrl?: string) {
     const startUrl = buildURL('project', 'start', undefined, { returnUrl: false });
@@ -23,4 +25,20 @@ export function signOut(navigateUrl?: string) {
 
 export function signIn() {
     window.location.href = buildURL('login', 'login');
+}
+
+export function getRegisteredProducts(): Promise<ProductModel[]> {
+    return new Promise((resolve, reject) => {
+        Ajax.request({
+            url: ActionURL.buildURL('product', 'getRegisteredProducts.api'),
+            method: 'POST',
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response.map(data => new ProductModel(data)));
+            }),
+            failure: Utils.getCallbackWrapper(response => {
+                console.error(response);
+                reject(resolveErrorMessage(response));
+            }),
+        });
+    });
 }

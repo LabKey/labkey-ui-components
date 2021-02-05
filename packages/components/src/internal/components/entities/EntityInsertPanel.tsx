@@ -197,7 +197,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
     };
 
     static getQueryParameters(query: any) {
-        const { parent, selectionKey, target } = query;
+        const { parent, selectionKey, target, creationType, numPerParent } = query;
         let parents;
         if (parent) {
             parents = parent.split(';');
@@ -207,6 +207,8 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             parents,
             selectionKey,
             target,
+            creationType,
+            numPerParent
         };
     }
 
@@ -217,6 +219,8 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                   parents: undefined,
                   selectionKey: undefined,
                   target: undefined,
+                  creationType: undefined,
+                  numPerParent: undefined
               };
         const allowParents = this.allowParents();
 
@@ -244,6 +248,8 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             entityCount: 0,
             entityDataType,
             auditBehavior,
+            creationType: queryParams.creationType,
+            numPerParent: queryParams.numPerParent
         });
 
         let parentSchemaQueries = Map<string, EntityDataType>();

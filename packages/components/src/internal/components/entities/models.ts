@@ -31,6 +31,7 @@ import {
 } from '../../..';
 import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
+import {CreationType} from "../samples/SampleCreationTypeOption";
 
 export interface EntityInputProps {
     role: string;
@@ -227,6 +228,8 @@ export class EntityIdCreationModel extends Record({
     entityCount: 0,
     entityDataType: undefined,
     auditBehavior: undefined,
+    creationType: CreationType.Independents,
+    numPerParent: 1,
 }) {
     errors: any[];
     initialEntityType: any;
@@ -241,6 +244,8 @@ export class EntityIdCreationModel extends Record({
     entityCount: number; // how many rows are in the grid
     entityDataType: EntityDataType; // target entity data type
     auditBehavior: AuditBehaviorTypes;
+    creationType: CreationType;
+    numPerParent: number;
 
     static revertParentInputSchema(inputColumn: QueryColumn): SchemaQuery {
         if (inputColumn.isExpInput()) {
@@ -492,7 +497,7 @@ export class EntityIdCreationModel extends Record({
 
     getGridValues(queryInfo: QueryInfo): Map<any, any> {
         let data = List<Map<string, any>>();
-
+        let parentCols = [];
         for (let i = 0; i < this.entityCount; i++) {
             let values = Map<string, any>();
 
@@ -512,11 +517,25 @@ export class EntityIdCreationModel extends Record({
                     }, undefined);
                     if (selected && selected.value) {
                         values = values.set(colName, selected.value);
+                        parentCols.push(colName);
                     }
                 }
             });
-
-            data = data.push(values);
+            if (this.creationType == CreationType.Derivatives || this.creationType == CreationType.Aliquots) {
+                parentCols.forEach(parentCol => {
+                    const parents : Array<any> = values.get(parentCol);
+                    parents.forEach((parent) => {
+                        let singleParentValues = Map<string, any>(values);
+                        singleParentValues = singleParentValues.set(parentCol, List<any>([parent]));
+                        for (let c = 0; c < this.numPerParent; c++) {
+                            data = data.push(singleParentValues);
+                        }
+                    });
+                })
+            }
+            else {
+                data = data.push(values);
+            }
         }
 
         return data.toOrderedMap();

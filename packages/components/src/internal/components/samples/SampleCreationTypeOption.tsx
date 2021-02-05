@@ -3,6 +3,7 @@ import classNames from "classnames";
 import {SVGIcon, Theme} from "../base/SVGIcon";
 
 export enum CreationType {
+    Independents = "Independent Samples",
     Derivatives = "Derivatives",
     PooledSamples = "Pooled Samples",
     Aliquots = "Aliquots"

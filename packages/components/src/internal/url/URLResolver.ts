@@ -309,6 +309,7 @@ const ASSAY_MAPPERS = [
 const DATA_CLASS_MAPPERS = [
     new ActionMapper('experiment', 'showDataClass', (row, column) => {
         let identifier: string;
+        console.log('handle experiment-showDataClass', row, column);
 
         // TODO: Deal with junction lookup
         if (row.has('data')) {
@@ -538,71 +539,66 @@ export class URLResolver {
      * Returns a Promise resolving a valid selectRowsResult with URLs replaced with those mapped by this
      * URLResolver.
      * @param json - selectRowsResult
-     * @returns {Promise<T>}
      */
-    resolveSelectRows(json): Promise<any> {
-        // TODO: Do not return a Promise. This method doesn't actually do anything async, so it does not need to be a
-        //  promise.
-        return new Promise(resolve => {
-            let resolved = fromJS(JSON.parse(JSON.stringify(json)));
+    resolveSelectRows(json): any {
+        let resolved = fromJS(JSON.parse(JSON.stringify(json)));
 
-            // If no url mappers defined then this is a noop. Using URLs as they are.
-            if (URLService.getUrlMappers()?.size > 0) {
-                if (resolved.get('rows').count()) {
-                    const schema = resolved.get('schemaName').toJS().join('.');
-                    const query = resolved.get('queryName');
-                    const fields = resolved.getIn(['metaData', 'fields']).reduce((fields, column) => {
-                        return fields.set(column.get('fieldKey'), column);
-                    }, Map());
+        // If no url mappers defined then this is a noop. Using URLs as they are.
+        if (URLService.getUrlMappers()?.size > 0) {
+            if (resolved.get('rows').count()) {
+                const schema = resolved.get('schemaName').toJS().join('.');
+                const query = resolved.get('queryName');
+                const fields = resolved.getIn(['metaData', 'fields']).reduce((fs, column) => {
+                    return fs.set(column.get('fieldKey'), column);
+                }, Map());
 
-                    const rows = resolved.get('rows').map(row => {
-                        return row.map((cell, fieldKey) => {
-                            // single-value cells
-                            if (Map.isMap(cell) && cell.has('url')) {
-                                return cell.set(
-                                    'url',
-                                    this.mapURL({
-                                        url: cell.get('url'),
-                                        row: cell,
-                                        column: fields.get(fieldKey),
-                                        schema,
-                                        query,
-                                    })
-                                );
-                            }
+                const rows = resolved.get('rows').map(row => {
+                    return row.map((cell, fieldKey) => {
+                        // single-value cells
+                        if (Map.isMap(cell) && cell.has('url')) {
+                            return cell.set(
+                                'url',
+                                this.mapURL({
+                                    url: cell.get('url'),
+                                    row: cell,
+                                    column: fields.get(fieldKey),
+                                    schema,
+                                    query,
+                                })
+                            );
+                        }
 
-                            // multi-value cells
-                            if (List.isList(cell) && cell.size > 0) {
-                                return cell
-                                    .map(innerCell => {
-                                        if (Map.isMap(innerCell) && innerCell.has('url')) {
-                                            return innerCell.set(
-                                                'url',
-                                                this.mapURL({
-                                                    url: innerCell.get('url'),
-                                                    row: innerCell,
-                                                    column: fields.get(fieldKey),
-                                                    schema,
-                                                    query,
-                                                })
-                                            );
-                                        }
+                        // multi-value cells
+                        if (List.isList(cell) && cell.size > 0) {
+                            return cell
+                                .map(innerCell => {
+                                    if (Map.isMap(innerCell) && innerCell.has('url')) {
+                                        return innerCell.set(
+                                            'url',
+                                            this.mapURL({
+                                                url: innerCell.get('url'),
+                                                row: innerCell,
+                                                column: fields.get(fieldKey),
+                                                schema,
+                                                query,
+                                            })
+                                        );
+                                    }
 
-                                        return innerCell;
-                                    })
-                                    .toList();
-                            }
+                                    return innerCell;
+                                })
+                                .toList();
+                        }
 
-                            return cell;
-                        });
+                        return cell;
                     });
+                });
 
-                    resolved = resolved.set('rows', rows);
-                }
+                resolved = resolved.set('rows', rows);
             }
+        }
 
-            resolve(resolved.toJS());
-        });
+        return resolved.toJS();
     }
 
     // ToDo: this is rather fragile and data specific. this should be reworked with the mappers and rest of the resolvers to provide for more thorough coverage of our incoming URLs

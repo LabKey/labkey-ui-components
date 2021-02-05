@@ -32,11 +32,7 @@ class TestButtons extends PureComponent<RequiresModelAndActions> {
 beforeAll(() => {
     initUnitTests();
     QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
-
-    // Return so tests don't start till after the promise resolves, so we can guarantee DATA is initialized in tests.
-    return makeTestData(mixturesQuery).then(data => {
-        DATA = data;
-    });
+    DATA = makeTestData(mixturesQuery);
 });
 
 const CHART_MENU_SELECTOR = '.chart-menu';

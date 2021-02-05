@@ -48,14 +48,13 @@ const getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions =
 beforeAll(() => {
     initUnitTests();
     queryInfo = makeQueryInfo(mixturesQueryInfo);
-    return makeTestData(mixturesQuery).then(mockData => {
-        model = new QueryGridModel({
-            queryInfo,
-            messages: fromJS(mockData.messages),
-            data: fromJS(mockData.rows),
-            dataIds: fromJS(mockData.orderedRows),
-            totalRows: mockData.rowCount,
-        });
+    const mockData = makeTestData(mixturesQuery);
+    model = new QueryGridModel({
+        queryInfo,
+        messages: fromJS(mockData.messages),
+        data: fromJS(mockData.rows),
+        dataIds: fromJS(mockData.orderedRows),
+        totalRows: mockData.rowCount,
     });
 });
 

@@ -10,13 +10,13 @@ import {
     initLineageMocks,
     initPipelineStatusDetailsMocks,
     initQueryGridMocks,
-    initUserPropsMocks
+    initUserPropsMocks,
 } from '../stories/mock';
 import { initQueryGridState, QueryInfo, ServerContextProvider } from '..';
 
 import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
 
-import { applyQueryMetadata, handle132Response } from './query/api';
+import { applyQueryMetadata, handleSelectRowsResponse } from './query/api';
 import { bindColumnRenderers } from './renderers';
 import { URL_MAPPERS, URLService } from './url/URLResolver';
 
@@ -49,7 +49,11 @@ export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map
  * Use this method in beforeAll() for your jest tests and you'll have full access
  * to all of the same mock API responses we use in storybook.
  */
-export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?: Map<string, any>, includePipeline?: boolean): void {
+export function initUnitTestMocks(
+    metadata?: Map<string, any>,
+    columnRenderers?: Map<string, any>,
+    includePipeline?: boolean
+): void {
     window['__react-beautiful-dnd-disable-dev-warnings'] = true;
     initUnitTests(metadata, columnRenderers);
     mock.setup();
@@ -57,8 +61,9 @@ export function initUnitTestMocks(metadata?: Map<string, any>, columnRenderers?:
     initDomainPropertiesMocks();
     initLineageMocks();
     initUserPropsMocks();
-    if (includePipeline)
+    if (includePipeline) {
         initPipelineStatusDetailsMocks();
+    }
     mock.use(proxy);
 }
 
@@ -89,12 +94,12 @@ export const makeQueryInfo = (getQueryDetailsResponse): QueryInfo => {
  * looks like: { messages: any, rows: any, orderedRows: string[], rowCount: number }
  * @param getQueryResponse: getQuery Response object (e.g. imported from test/data/mixtures-getQuery.json)
  */
-export const makeTestData = async (getQueryResponse): Promise<RowsResponse> => {
+export const makeTestData = (getQueryResponse): RowsResponse => {
     // Hack: need to stringify and parse the query response object because Query.Response modifies the object in place,
     // which causes errors if you try to use the same response object twice.
     const response = new Query.Response(JSON.parse(JSON.stringify(getQueryResponse)));
 
-    const { key, messages, models, orderedModels, rowCount } = await handle132Response(response);
+    const { key, messages, models, orderedModels, rowCount } = handleSelectRowsResponse(response);
 
     return {
         messages: messages.toJS(),

@@ -73,7 +73,7 @@ export class ServerNotifications extends React.Component<Props, State> {
 
         const numUnread = this.getNumUnread();
         const title = (
-            <h3 className="server-notifications-header">
+            <h3 className="navbar-menu-header">
                 <div className={"navbar-icon-connector" + (numUnread > 0 ? '' : ' notification-all-read')} />
                 Notifications
                 {numUnread > 0 && (
@@ -105,7 +105,7 @@ export class ServerNotifications extends React.Component<Props, State> {
                 <i className={
                         'fa ' +
                         (this.hasAnyInProgress() ? 'fa-spinner fa-pulse' : 'fa-bell') +
-                        ' server-notifications-icon'
+                        ' navbar-header-icon'
                     }
                 />
                 {this.hasAnyUnread() && <span className="badge">{numUnread}</span>}

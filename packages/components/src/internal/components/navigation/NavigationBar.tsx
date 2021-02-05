@@ -25,6 +25,7 @@ import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 import { ServerNotifications } from "../notifications/ServerNotifications";
 import { ServerNotificationsConfig } from '../notifications/model';
+import { ProductNavigation } from "./ProductNavigation";
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -68,6 +69,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
         ) : null;
 
         const notifications = notificationsConfig && user && !user.isGuest ? <ServerNotifications {...notificationsConfig} /> : null;
+        const productNav = user && !user.isGuest ? <ProductNavigation /> : null;
 
         return (
             <nav className="navbar navbar-container test-loc-nav-header">
@@ -86,6 +88,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
                         </div>
                         <div className="navbar-right col-sm-7 col-xs-5">
                             <div className="navbar-item pull-right">{userMenu}</div>
+                            <div className="navbar-item pull-right">{productNav}</div>
                             <div className="navbar-item pull-right navbar-item-notification">{notifications}</div>
                             <div className="navbar-item pull-right hidden-xs">{searchBox}</div>
                             <div className="navbar-item pull-right visible-xs">

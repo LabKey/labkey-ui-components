@@ -5,10 +5,6 @@
     }
 }
 
-.server-notifications-icon {
-    color: $white;
-}
-
 .server-notifications-listing-container {
     max-height: 500px;
     overflow-y: scroll;
@@ -75,19 +71,6 @@
     white-space: nowrap;
 }
 
-.server-notifications-header {
-    padding: 8px 14px;
-    margin: 0;
-    font-size: 14px;
-    background-color: $gray-lighter;
-    border-bottom: 1px solid $gray-light;
-    border-radius: 5px 5px 0 0;
-
-    .navbar-icon-connector {
-        border-color: transparent transparent $gray-lighter transparent;
-    }
-}
-
 .server-notifications-footer {
     margin: 15px 0 5px 15px;
     width: 350px;
@@ -117,16 +100,6 @@
 
 .job-status-log-entry-error {
     color: $brand-danger;
-}
-
-.navbar-icon-button-right.server-notifications-button {
-    margin-top: 0;
-
-    .server-notifications-icon {
-        line-height: 1em;
-        vertical-align: -15%;
-        font-size: 1.5em;
-    }
 }
 
 .btn.server-notifications-button {

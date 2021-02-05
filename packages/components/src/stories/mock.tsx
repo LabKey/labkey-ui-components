@@ -107,6 +107,9 @@ import serverNotifications from '../test/data/notification-getUserNotificationsF
 import pipelineJobQueryDetails from '../test/data/pipelineJob-getQueryDetails.json';
 import pipelineJobQuery from '../test/data/pipelineJob-getQuery.json';
 import pipelineStatusDetails from '../test/data/pipelineStatusDetails.json';
+import getModulesInfo from '../test/data/admin-getModules.json';
+import getRegisteredProductsInfo from '../test/data/product-getRegisteredProducts.json';
+import getProjectContainersInfo from '../test/data/project-getProjectContainers.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -356,6 +359,12 @@ export function initMocks() {
     mock.get(/.*browseData.*/, delay(jsonResponse(browseData), 1000));
 
     mock.get(/.*getUserNotification.*/, jsonResponse(serverNotifications));
+
+    mock.post(/.*getModules.*/, jsonResponse(getModulesInfo));
+
+    mock.post(/.*getRegisteredProducts.*/, jsonResponse(getRegisteredProductsInfo));
+
+    mock.get(/.*getContainers.*/, jsonResponse(getProjectContainersInfo));
 
     mock.use(proxy);
 }

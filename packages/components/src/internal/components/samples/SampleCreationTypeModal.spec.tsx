@@ -1,13 +1,16 @@
 import React from 'react';
-import {mount} from "enzyme";
-import {CreationType, SampleCreationTypeModal, SampleCreationTypeOption} from "./SampleCreationTypeModal";
+import { mount } from "enzyme";
+import { SampleCreationTypeModal } from "./SampleCreationTypeModal";
+import { ALIQUOT_CREATION, DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION } from "../../../index";
+import {CreationType, SampleCreationTypeOption} from "./SampleCreationTypeOption";
+
 
 describe("<SampleCreationTypeModal/>", () => {
     test("single parent, no aliquots", () => {
         const wrapper = mount(
             <SampleCreationTypeModal
                 show={true}
-                allowAliquots={false}
+                options={[DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION]}
                 parentCount={1}
                 showIcons={false}
                 onCancel={jest.fn()}
@@ -27,7 +30,7 @@ describe("<SampleCreationTypeModal/>", () => {
         const wrapper = mount(
             <SampleCreationTypeModal
                 show={true}
-                allowAliquots={true}
+                options={[DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION, ALIQUOT_CREATION]}
                 parentCount={1}
                 showIcons={false}
                 onCancel={jest.fn()}
@@ -50,7 +53,7 @@ describe("<SampleCreationTypeModal/>", () => {
         const wrapper = mount(
             <SampleCreationTypeModal
                 show={true}
-                allowAliquots={true}
+                options={[DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION, ALIQUOT_CREATION]}
                 parentCount={4}
                 showIcons={false}
                 onCancel={jest.fn()}
@@ -71,7 +74,7 @@ describe("<SampleCreationTypeModal/>", () => {
         const wrapper = mount(
             <SampleCreationTypeModal
                 show={true}
-                allowAliquots={true}
+                options={[DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION, ALIQUOT_CREATION]}
                 parentCount={4}
                 showIcons={false}
                 onCancel={jest.fn()}
@@ -93,7 +96,7 @@ describe("<SampleCreationTypeModal/>", () => {
         const wrapper = mount(
             <SampleCreationTypeModal
                 show={true}
-                allowAliquots={true}
+                options={[DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION, ALIQUOT_CREATION]}
                 parentCount={4}
                 showIcons={false}
                 onCancel={jest.fn()}

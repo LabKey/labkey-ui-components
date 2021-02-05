@@ -2,7 +2,6 @@ import React from "react";
 import {Button, FormControl, Modal} from "react-bootstrap";
 import {MAX_EDITABLE_GRID_ROWS} from "../../../index";
 import {
-    CREATION_TYPE_OPTIONS,
     CreationType,
     CreationTypeModel,
     SampleCreationTypeOption
@@ -11,7 +10,7 @@ import {
 
 interface Props {
     show: boolean;
-    allowAliquots: boolean; // temporary.  We'll remove this when we actually support aliquots
+    options: Array<CreationTypeModel>,
     parentCount: number;
     showIcons: boolean;
     onCancel: () => void;
@@ -25,10 +24,6 @@ interface State {
 }
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
-
-    static defaultProps = {
-        allowAliquots: false
-    }
 
     state: Readonly<State> = {
         creationType: CreationType.Derivatives,
@@ -75,26 +70,32 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         )
     }
 
-    shouldDisplayOptions() : boolean {
-        return this.props.parentCount > 1 || this.props.allowAliquots;
-    }
-
     onConfirm = () => {
         this.props.onSubmit(this.state.creationType, this.state.numPerParent);
     }
 
-    shouldRenderOption(option: CreationTypeModel) : boolean {
-        if (option.requiresMultipleParents && this.props.parentCount <= 1)
-            return false;
-        return option.type != CreationType.Aliquots || this.props.allowAliquots;
+    shouldDisplayOptions() : boolean {
+        return this.getOptionsToDisplay().length > 1;
     }
 
-    renderOptions() {
-        const { showIcons } = this.props;
-        let options = [];
-        CREATION_TYPE_OPTIONS.forEach((option, i) => {
+    shouldRenderOption(option: CreationTypeModel) : boolean {
+        return !option.requiresMultipleParents || this.props.parentCount > 1;
+    }
+
+    getOptionsToDisplay() : Array<CreationTypeModel> {
+        return this.props.options.filter(option => this.shouldRenderOption(option));
+    }
+
+    renderOptions() : Array<React.ReactNode> {
+        const { showIcons, options } = this.props;
+        const displayOptions = this.getOptionsToDisplay();
+        if (displayOptions.length < 2)
+            return null;
+
+        let optionSet = [];
+        options.forEach((option, i) => {
             if (this.shouldRenderOption(option)) {
-                options.push(
+                optionSet.push(
                     <SampleCreationTypeOption
                         key={i}
                         option={option}
@@ -105,7 +106,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 )
             }
         });
-        return options;
+        return optionSet;
     }
 
     render() : React.ReactNode {
@@ -122,11 +123,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
                 </Modal.Header>
 
                 <Modal.Body>
-                    {this.shouldDisplayOptions() &&
-                    <div>
-                        {this.renderOptions()}
-                    </div>
-                    }
+                    {this.renderOptions()}
                     {this.renderNumPerParent()}
                 </Modal.Body>
 

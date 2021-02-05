@@ -16,26 +16,28 @@ export interface CreationTypeModel {
     iconUrl?: string
 }
 
-export const CREATION_TYPE_OPTIONS = [
-    {
-        type: CreationType.Derivatives,
-        description: "Create multiple output samples per parent.",
-        requiresMultipleParents: false,
-        iconSrc: 'derivatives'
-    },
-    {
-        type: CreationType.PooledSamples,
-        description: "Put multiple samples into pooled outputs.",
-        requiresMultipleParents: true,
-        iconSrc: "pooled"
-    },
-    {
-        type: CreationType.Aliquots,
-        description: "Create aliquot copies from each parent sample.",
-        requiresMultipleParents: false,
-        iconSrc: "aliquots"
-    }
-]
+export const DERIVATIVE_CREATION = {
+    type: CreationType.Derivatives,
+    description: "Create multiple output samples per parent.",
+    requiresMultipleParents: false,
+    iconSrc: 'derivatives'
+};
+
+export const POOLED_SAMPLE_CREATION = {
+    type: CreationType.PooledSamples,
+    description: "Put multiple samples into pooled outputs.",
+    requiresMultipleParents: true,
+    iconSrc: "pooled"
+};
+
+export const ALIQUOT_CREATION = {
+    type: CreationType.Aliquots,
+    description: "Create aliquot copies from each parent sample.",
+    requiresMultipleParents: false,
+    iconSrc: "aliquots"
+};
+
+
 
 interface OptionProps {
     option: CreationTypeModel

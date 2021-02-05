@@ -279,6 +279,7 @@ import { SampleEmptyAlert } from './internal/components/samples/SampleEmptyAlert
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
+import { DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION, ALIQUOT_CREATION } from "./internal/components/samples/SampleCreationTypeOption";
 import {
     AssayContextConsumer,
     assayPage,
@@ -612,6 +613,9 @@ export {
     SampleSetSummary,
     SampleSetDeleteModal,
     SampleCreationTypeModal,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION,
+    ALIQUOT_CREATION,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

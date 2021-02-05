@@ -38,7 +38,7 @@ export const SearchBox: FC<Props> = memo(({ onSearch, placeholder }) => {
             // reset the input value after it is has submitted
             setSearchValue('');
         },
-        [onSearch]
+        [onSearch, searchValue]
     );
 
     return (

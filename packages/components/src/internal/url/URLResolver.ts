@@ -18,6 +18,7 @@ import { ActionURL, Experiment, Filter } from '@labkey/api';
 
 import { AppURL, createProductUrl } from '../..';
 import { LineageLinkMetadata } from '../components/lineage/types';
+
 import { AppRouteResolver } from './AppURLResolver';
 
 const ADD_TABLE_ROUTE = 'application/routing/add-table-route';
@@ -290,8 +291,7 @@ const ASSAY_MAPPERS = [
                 if (filters.length > 0) {
                     for (let i = 0; i < filters.length; i++) {
                         if (filters[i].getColumnName().toLowerCase() === 'run/rowid') {
-                            if (Object.keys(params).length > 2)
-                                console.warn("Params mapping skipped for: " + url);
+                            if (Object.keys(params).length > 2) console.warn('Params mapping skipped for: ' + url);
 
                             const runId = filters[i].getValue();
                             return AppURL.create('rd', 'assayrun', runId);
@@ -422,7 +422,7 @@ const DETAILS_QUERY_ROW_MAPPER = new ActionMapper('query', 'detailsQueryRow', ro
 const EXECUTE_QUERY_MAPPER = new ActionMapper('query', 'executeQuery', () => false);
 
 const USER_DETAILS_MAPPERS = [
-    new ActionMapper('user', 'details', (row, column, schema, query) => {
+    new ActionMapper('user', 'details', row => {
         const url = row.get('url');
         if (url) {
             const params = ActionURL.getParameters(url);
@@ -430,7 +430,7 @@ const USER_DETAILS_MAPPERS = [
         }
     }),
 
-    new ActionMapper('user', 'attachmentDownload', () => false)
+    new ActionMapper('user', 'attachmentDownload', () => false),
 ];
 
 const DOWNLOAD_FILE_LINK_MAPPER = new ActionMapper('core', 'downloadFileLink', () => false);
@@ -450,14 +450,14 @@ const LOOKUP_MAPPER = new LookupMapper('q', {
     issues: () => false, // 33680: Prevent remapping issues lookup
 });
 
-const PIPELINE_MAPPER = new ActionMapper('pipeline-status', 'details', (row) => {
-        const url = row.get('url');
-        if (url) {
-            const params = ActionURL.getParameters(url);
-            return AppURL.create('pipeline', params.rowId);
-        }
-        return false;
-    })
+const PIPELINE_MAPPER = new ActionMapper('pipeline-status', 'details', row => {
+    const url = row.get('url');
+    if (url) {
+        const params = ActionURL.getParameters(url);
+        return AppURL.create('pipeline', params.rowId);
+    }
+    return false;
+});
 
 export const URL_MAPPERS = {
     ASSAY_MAPPERS,
@@ -470,7 +470,7 @@ export const URL_MAPPERS = {
     DOWNLOAD_FILE_LINK_MAPPER,
     AUDIT_DETAILS_MAPPER,
     LOOKUP_MAPPER,
-    PIPELINE_MAPPER
+    PIPELINE_MAPPER,
 };
 
 export class URLResolver {
@@ -548,7 +548,6 @@ export class URLResolver {
 
             // If no url mappers defined then this is a noop. Using URLs as they are.
             if (URLService.getUrlMappers()?.size > 0) {
-
                 if (resolved.get('rows').count()) {
                     const schema = resolved.get('schemaName').toJS().join('.');
                     const query = resolved.get('queryName');
@@ -576,8 +575,7 @@ export class URLResolver {
                             if (List.isList(cell) && cell.size > 0) {
                                 return cell
                                     .map(innerCell => {
-                                        if (Map.isMap(innerCell) && innerCell.has('url'))
-                                        {
+                                        if (Map.isMap(innerCell) && innerCell.has('url')) {
                                             return innerCell.set(
                                                 'url',
                                                 this.mapURL({

@@ -24,7 +24,7 @@ import { ServerNotificationsConfig } from '../notifications/model';
 
 import { ProductMenu } from './ProductMenu';
 import { SearchBox } from './SearchBox';
-import { UserMenu } from './UserMenu';
+import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 
@@ -37,18 +37,22 @@ interface NavigationBarProps {
     projectName?: string;
     searchPlaceholder?: string;
     showSearchBox?: boolean;
-    showSwitchToLabKey?: boolean;
-    signOutUrl?: string;
     user?: User;
 }
 
-export const NavigationBar: FC<NavigationBarProps> = memo(props => {
+type Props = NavigationBarProps & UserMenuProps;
+
+export const NavigationBar: FC<Props> = memo(props => {
     const {
         brand,
+        extraDevItems,
+        extraUserItems,
         menuSectionConfigs,
         model,
         notificationsConfig,
         onSearch,
+        onSignIn,
+        onSignOut,
         projectName,
         searchPlaceholder,
         showSearchBox,
@@ -85,7 +89,11 @@ export const NavigationBar: FC<NavigationBarProps> = memo(props => {
                         <div className="navbar-item pull-right">
                             {!!user && (
                                 <UserMenu
+                                    extraDevItems={extraDevItems}
+                                    extraUserItems={extraUserItems}
                                     model={model}
+                                    onSignIn={onSignIn}
+                                    onSignOut={onSignOut}
                                     showSwitchToLabKey={showSwitchToLabKey}
                                     signOutUrl={signOutUrl}
                                     user={user}

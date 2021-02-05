@@ -56,6 +56,8 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
             window.setTimeout(() => store.dispatch({ type: SECURITY_LOGOUT }), 1000);
         }
     }
+
+    // TODO: Make "WebSocket" available from @labkey/api
     LABKEY.WebSocket.addServerEventListener(CloseEventCode.NORMAL_CLOSURE, _logOutCallback);
     LABKEY.WebSocket.addServerEventListener(CloseEventCode.UNSUPPORTED_DATA, _logOutCallback);
 
@@ -97,7 +99,7 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
             LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
                 window.setTimeout(() => store.dispatch({ type: SET_RESET_QUERY_GRID_STATE }), 1000);
             });
-        })
+        });
     }
 }
 

@@ -16,6 +16,7 @@
 import React from 'react';
 import { List } from 'immutable';
 import renderer from 'react-test-renderer';
+import { mount } from 'enzyme';
 
 import { User } from '../../..';
 
@@ -54,8 +55,8 @@ describe('UserMenu', () => {
         const model = new ProductMenuModel({
             productIds: ['testProduct'],
         });
-        const tree = renderer.create(<UserMenu model={model} user={new User()} showSwitchToLabKey={true} />).toJSON();
-        expect(tree).toBe(null);
+        const tree = mount(<UserMenu model={model} user={new User()} showSwitchToLabKey />);
+        expect(tree).toEqual({});
     });
 
     test('user not logged in', () => {
@@ -70,7 +71,7 @@ describe('UserMenu', () => {
             productIds,
             sections: sections.asImmutable(),
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} />).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -86,7 +87,7 @@ describe('UserMenu', () => {
             productIds,
             sections: sections.asImmutable(),
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} />).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -102,7 +103,7 @@ describe('UserMenu', () => {
             productIds,
             sections: sections.asImmutable(),
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={true} />).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -119,9 +120,9 @@ describe('UserMenu', () => {
             sections: sections.asImmutable(),
         });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
-        const tree = renderer
-            .create(<UserMenu model={model} user={user} showSwitchToLabKey={true} extraUserItems={extraUserItems} />)
-            .toJSON();
+        const tree = renderer.create(
+            <UserMenu model={model} user={user} showSwitchToLabKey extraUserItems={extraUserItems} />
+        );
         expect(tree).toMatchSnapshot();
     });
 
@@ -137,7 +138,7 @@ describe('UserMenu', () => {
             productIds,
             sections: sections.asImmutable(),
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={false} />).toJSON();
+        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={false} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -155,17 +156,15 @@ describe('UserMenu', () => {
         });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
         const extraDevItems = [<div key="e1">Extra Dev One</div>, <div key="e2">Extra Dev Two</div>];
-        const tree = renderer
-            .create(
-                <UserMenu
-                    model={model}
-                    user={user}
-                    showSwitchToLabKey={true}
-                    extraUserItems={extraUserItems}
-                    extraDevItems={extraDevItems}
-                />
-            )
-            .toJSON();
+        const tree = renderer.create(
+            <UserMenu
+                extraDevItems={extraDevItems}
+                extraUserItems={extraUserItems}
+                model={model}
+                showSwitchToLabKey
+                user={user}
+            />
+        );
         expect(tree).toMatchSnapshot();
     });
 });

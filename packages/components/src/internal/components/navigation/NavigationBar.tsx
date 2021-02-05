@@ -26,6 +26,7 @@ import { ProductMenuModel } from './model';
 import { ServerNotifications } from "../notifications/ServerNotifications";
 import { ServerNotificationsConfig } from '../notifications/model';
 import { ProductNavigation } from "./ProductNavigation";
+import { hasPremiumModule } from "../../app/utils";
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -69,7 +70,7 @@ export class NavigationBar extends React.Component<NavigationBarProps, any> {
         ) : null;
 
         const notifications = notificationsConfig && user && !user.isGuest ? <ServerNotifications {...notificationsConfig} /> : null;
-        const productNav = user && !user.isGuest ? <ProductNavigation /> : null;
+        const productNav = hasPremiumModule() ? <ProductNavigation /> : null;
 
         return (
             <nav className="navbar navbar-container test-loc-nav-header">

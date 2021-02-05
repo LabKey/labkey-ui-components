@@ -51,6 +51,10 @@ const vegetableGarden = [
     'Kale',
 ];
 
+LABKEY.moduleContext.samplemanagement = {
+    hasPremiumModule: true,
+};
+
 function makeMenuItems(nounPlural: string, options, menuItemLimit, hasActiveJob?: boolean): List<MenuItemModel> {
     const items = List<MenuItemModel>().asMutable();
     for (let i = 0; i < menuItemLimit; i++) {
@@ -295,6 +299,7 @@ storiesOf('NavigationBar', module)
             serverActivity: new ServerNotificationModel(serverActivity),
             onViewAll: () => {},
         };
+
         return (
             <NavigationBar
                 menuSectionConfigs={boolean('show 3 columns?', true) ? threeColConfigs : twoColConfigs}

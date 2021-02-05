@@ -117,6 +117,10 @@ export function isSampleManagerEnabled(): boolean {
     return getServerContext().moduleContext?.samplemanagement !== undefined;
 }
 
+export function hasPremiumModule(): boolean {
+    return getServerContext().moduleContext?.samplemanagement?.hasPremiumModule ?? false;
+}
+
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 

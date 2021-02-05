@@ -44,7 +44,7 @@ describe("<SampleCreationTypeOption/>", () => {
         );
         const img = wrapper.find("img");
         expect(img).toHaveLength(1);
-        expect(img.prop("src")).toBe("/labkey/_images/derivatives.svg");
+        expect(img.prop("src")).toBe("/labkey/_images/derivatives_gray.svg");
         const icon = wrapper.find("SVGIcon");
         expect(icon).toHaveLength(1);
         expect(icon.prop("iconSrc")).toBe(derivativeOption.iconSrc);
@@ -79,7 +79,7 @@ describe("<SampleCreationTypeOption/>", () => {
         expect(input.prop("checked")).toBe(true);
         expect(input.prop("value")).toBe(derivativeOption.type)
         expect(wrapper.find(".creation-type-choice-description").text()).toBe(derivativeOption.description);
-        expect(wrapper.find("label").text().indexOf(derivativeOption.type)).toBe(1);
+        expect(wrapper.find(".creation-type-choice").text().indexOf(derivativeOption.type)).toBe(1);
         wrapper.unmount();
     });
 

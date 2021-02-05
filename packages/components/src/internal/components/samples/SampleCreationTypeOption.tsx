@@ -1,6 +1,6 @@
 import React, {FC, memo} from "react";
 import classNames from "classnames";
-import {SVGIcon} from "../base/SVGIcon";
+import {SVGIcon, Theme} from "../base/SVGIcon";
 
 export enum CreationType {
     Derivatives = "Derivatives",
@@ -49,14 +49,14 @@ export const SampleCreationTypeOption: FC<OptionProps> = memo(props => {
     const { option, isSelected, onChoose, showIcon } = props;
 
     return (
-        <div className={classNames({'creation-type-selected': isSelected})}>
+        <div className={classNames('creation-type', {'selected': isSelected})}>
             {showIcon &&
             <div className="creation-type-icon">
                 {option.iconUrl && <img src={option.iconUrl} alt={option.type}/>}
-                {option.iconSrc && <SVGIcon iconDir="_images" iconSrc={option.iconSrc}/>}
+                {option.iconSrc && <SVGIcon iconDir="_images" iconSrc={option.iconSrc} theme={isSelected ? Theme.DEFAULT : Theme.GRAY}/>}
             </div>
             }
-            <label className="creation-type-choice">
+            <div className={classNames("creation-type-choice", {'selected': isSelected})}>
                 <input
                     checked={isSelected}
                     type="radio"
@@ -66,7 +66,7 @@ export const SampleCreationTypeOption: FC<OptionProps> = memo(props => {
                 <div className="creation-type-choice-description">
                     {option.description}
                 </div>
-            </label>
+            </div>
         </div>
     )
 });

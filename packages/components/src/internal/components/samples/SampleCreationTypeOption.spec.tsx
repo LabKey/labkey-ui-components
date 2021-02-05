@@ -74,6 +74,9 @@ describe("<SampleCreationTypeOption/>", () => {
                 showIcon={true}
             />
         );
+        const img = wrapper.find("img");
+        expect(img).toHaveLength(1);
+        expect(img.prop("src")).toBe("/labkey/_images/derivatives.svg");
         const input = wrapper.find("input");
         expect(input).toHaveLength(1);
         expect(input.prop("checked")).toBe(true);

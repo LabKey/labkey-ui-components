@@ -25,7 +25,7 @@ import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 import { ServerNotifications } from "../notifications/ServerNotifications";
 import { ServerNotificationsConfig } from '../notifications/model';
-import { ProductNavigation } from "./ProductNavigation";
+import { ProductNavigation } from "../productnavigation/ProductNavigation";
 import { hasPremiumModule } from "../../app/utils";
 
 interface NavigationBarProps {

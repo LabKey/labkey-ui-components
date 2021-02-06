@@ -6,7 +6,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { ProductNavigationMenu } from '../internal/components/navigation/ProductNavigationMenu';
+import { ProductNavigationMenu } from '../internal/components/productnavigation/ProductNavigationMenu';
 
 export default {
     title: 'Components/ProductNavigationMenu',

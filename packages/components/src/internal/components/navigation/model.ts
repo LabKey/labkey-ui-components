@@ -18,7 +18,6 @@ import { ActionURL, Ajax, Utils, QueryKey } from '@labkey/api';
 
 // These imports cannot be shortened or tests will start failing.
 import { buildURL, createProductUrl, createProductUrlFromParts, AppURL } from '../../url/AppURL';
-import { immerable } from "immer";
 
 export class MenuSectionModel extends Record({
     label: undefined,
@@ -222,20 +221,5 @@ export class ProductMenuModel extends Record({
         return this.merge({
             needsReload: true
         }) as ProductMenuModel;
-    }
-}
-
-export class ProductModel {
-    [immerable] = true;
-
-    moduleName: string;
-    sectionNames: string[];
-    documentationUrl: string;
-    productId: string;
-    productName: string;
-    documentationLabel: string;
-
-    constructor(values?: Partial<ProductModel>) {
-        Object.assign(this, values);
     }
 }

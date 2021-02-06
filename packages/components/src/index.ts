@@ -331,7 +331,7 @@ import { EntityTypeDeleteConfirmModal } from './internal/components/entities/Ent
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
-import { ProductNavigationMenu } from './internal/components/navigation/ProductNavigationMenu';
+import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { ITab, SubNav } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';

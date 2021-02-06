@@ -1,16 +1,17 @@
 import React, { FC, memo } from 'react';
 
-interface ProductNavigationMenuItemProps {
+interface ProductAppMenuItemProps {
     iconUrl: string;
     title: string;
     subtitle: string;
+    onClick: () => void;
 }
 
-export const ProductNavigationMenuItem: FC<ProductNavigationMenuItemProps> = memo(props => {
-    const { iconUrl, title, subtitle } = props;
+export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
+    const { iconUrl, title, subtitle, onClick } = props;
 
     return (
-        <li>
+        <li onClick={onClick}>
             <div className="product-icon">
                 <img src={iconUrl} height="40px" width="40px" />
             </div>

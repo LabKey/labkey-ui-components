@@ -4,6 +4,11 @@
     .product-navigation-header {
         color: $brand-primary; // TODO should this match with the notification menu in SM?
         text-transform: uppercase; // TODO keep this?
+
+        .back-icon {
+            float: left;
+            padding-right: 10px;
+        }
     }
 
     .product-navigation-listing {

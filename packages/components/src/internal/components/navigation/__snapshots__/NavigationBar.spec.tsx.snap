@@ -27,6 +27,9 @@ exports[`<NavigationBar/> default props 1`] = `
           className="navbar-item pull-right"
         />
         <div
+          className="navbar-item pull-right"
+        />
+        <div
           className="navbar-item pull-right navbar-item-notification"
         />
         <div
@@ -64,6 +67,9 @@ exports[`<NavigationBar/> with search box 1`] = `
       <div
         className="navbar-right col-sm-7 col-xs-5"
       >
+        <div
+          className="navbar-item pull-right"
+        />
         <div
           className="navbar-item pull-right"
         />

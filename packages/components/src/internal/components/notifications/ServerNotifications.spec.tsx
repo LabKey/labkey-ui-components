@@ -37,7 +37,7 @@ describe('<ServerNotificaitons/>', () => {
             />
         );
         expect(wrapper.find(LoadingSpinner)).toHaveLength(1);
-        const title = wrapper.find('.server-notifications-header');
+        const title = wrapper.find('.navbar-menu-header');
         expect(title.text()).toBe('Notifications');
         expect(wrapper.find(ServerActivityList)).toHaveLength(0);
         wrapper.unmount();
@@ -91,7 +91,7 @@ describe('<ServerNotificaitons/>', () => {
         );
 
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
-        const title = wrapper.find('.server-notifications-header');
+        const title = wrapper.find('.navbar-menu-header');
         expect(title.text()).toBe('Notifications');
         expect(wrapper.find('.badge')).toHaveLength(0);
         wrapper.unmount();
@@ -118,7 +118,7 @@ describe('<ServerNotificaitons/>', () => {
         );
 
         expect(wrapper.find(ServerActivityList)).toHaveLength(1);
-        const title = wrapper.find('.server-notifications-header');
+        const title = wrapper.find('.navbar-menu-header');
         expect(title.text()).toContain('Mark all as read');
         expect(wrapper.find('.badge')).toHaveLength(1);
         wrapper.unmount();

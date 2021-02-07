@@ -154,6 +154,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
           "itemLimit": 2,
           "key": "samples",
           "productId": undefined,
+          "sectionKey": undefined,
         },
         Immutable.Record {
           "label": "Assays",
@@ -209,6 +210,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
           "itemLimit": undefined,
           "key": "assays",
           "productId": undefined,
+          "sectionKey": undefined,
         },
         Immutable.Record {
           "label": "Your Items",
@@ -228,6 +230,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
           "itemLimit": undefined,
           "key": "user",
           "productId": undefined,
+          "sectionKey": undefined,
         },
       ],
       "message": undefined,
@@ -418,6 +421,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                 "itemLimit": 2,
                                 "key": "samples",
                                 "productId": undefined,
+                                "sectionKey": undefined,
                               }
                             }
                           >
@@ -538,6 +542,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                 "itemLimit": undefined,
                                 "key": "assays",
                                 "productId": undefined,
+                                "sectionKey": undefined,
                               }
                             }
                           >
@@ -627,6 +632,7 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                                 "itemLimit": undefined,
                                 "key": "user",
                                 "productId": undefined,
+                                "sectionKey": undefined,
                               }
                             }
                           >
@@ -715,6 +721,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
           "itemLimit": 2,
           "key": "samples",
           "productId": undefined,
+          "sectionKey": undefined,
         },
         Immutable.Record {
           "label": "Assays",
@@ -770,6 +777,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
           "itemLimit": undefined,
           "key": "assays",
           "productId": undefined,
+          "sectionKey": undefined,
         },
         Immutable.Record {
           "label": "Your Items",
@@ -789,6 +797,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
           "itemLimit": undefined,
           "key": "user",
           "productId": undefined,
+          "sectionKey": undefined,
         },
       ],
       "message": undefined,
@@ -1016,6 +1025,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                 "itemLimit": 2,
                                 "key": "samples",
                                 "productId": undefined,
+                                "sectionKey": undefined,
                               }
                             }
                           >
@@ -1134,6 +1144,7 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                                 "itemLimit": undefined,
                                 "key": "assays",
                                 "productId": undefined,
+                                "sectionKey": undefined,
                               }
                             }
                           >

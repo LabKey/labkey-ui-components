@@ -27,6 +27,7 @@ export class MenuSectionModel extends Record({
     itemLimit: undefined,
     key: undefined,
     productId: undefined,
+    sectionKey: undefined,
 }) {
     label: string;
     url: string;
@@ -35,13 +36,14 @@ export class MenuSectionModel extends Record({
     itemLimit: number;
     key: string;
     productId: string;
+    sectionKey: string;
 
     static create(rawData: any, currentProductId?: string): MenuSectionModel {
         if (rawData) {
             let items;
 
             if (rawData.items) {
-                items = rawData.items.map(i => MenuItemModel.create(i, rawData.key, currentProductId));
+                items = rawData.items.map(i => MenuItemModel.create(i, rawData.sectionKey, currentProductId));
             }
 
             return new MenuSectionModel(
@@ -84,7 +86,7 @@ export class MenuItemModel extends Record({
                 const subParts = parts[0]
                     .split('/')
                     .filter(val => val !== '')
-                    .map(val => QueryKey.decodePart(val));
+                    .map(QueryKey.decodePart);
 
                 const decodedPart = subParts.join('/');
                 const decodedKey = rawData.key.replace(parts[0], decodedPart);
@@ -146,9 +148,7 @@ export class ProductMenuModel extends Record({
     init(): void {
         if (!this.isLoaded && !this.isLoading) {
             this.getMenuSections()
-                .then(sections => {
-                    return this.setLoadedSections(sections.asImmutable());
-                })
+                .then(this.setLoadedSections)
                 .catch(reason => {
                     console.error('Problem retrieving product menu data.', reason);
                     return this.setError(
@@ -206,19 +206,16 @@ export class ProductMenuModel extends Record({
     }
 
     getSection(key: string): MenuSectionModel {
-        if (this.sections.size > 0) {
-            return this.sections.filter(section => section.key.toLowerCase() === key.toLowerCase()).first();
-        }
+        return this.sections.find(section => section.key.toLowerCase() === key.toLowerCase());
     }
 
     hasSectionItems(key: string): boolean {
-        const section = this.getSection(key);
-        return this.isLoaded && section && section.totalCount > 0;
+        return this.isLoaded && this.getSection(key)?.totalCount > 0;
     }
 
     setNeedsReload(): ProductMenuModel {
         return this.merge({
-            needsReload: true
+            needsReload: true,
         }) as ProductMenuModel;
     }
 }

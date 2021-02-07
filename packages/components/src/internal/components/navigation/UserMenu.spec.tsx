@@ -28,8 +28,7 @@ beforeAll(() => {
 });
 
 describe('UserMenu', () => {
-    const sections = List<MenuSectionModel>().asMutable();
-    sections.push(
+    const sections = List([
         MenuSectionModel.create({
             key: 'user',
             label: 'Your Items',
@@ -48,8 +47,9 @@ describe('UserMenu', () => {
                     requiresLogin: false,
                 },
             ],
-        })
-    );
+            sectionKey: 'user',
+        }),
+    ]);
 
     test('not initialized', () => {
         const model = new ProductMenuModel({
@@ -69,7 +69,7 @@ describe('UserMenu', () => {
             isLoaded: true,
             isLoading: false,
             productIds,
-            sections: sections.asImmutable(),
+            sections,
         });
         const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey />);
         expect(tree).toMatchSnapshot();
@@ -85,7 +85,7 @@ describe('UserMenu', () => {
             isLoaded: true,
             isLoading: false,
             productIds,
-            sections: sections.asImmutable(),
+            sections,
         });
         const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey />);
         expect(tree).toMatchSnapshot();
@@ -101,7 +101,7 @@ describe('UserMenu', () => {
             isLoaded: true,
             isLoading: false,
             productIds,
-            sections: sections.asImmutable(),
+            sections,
         });
         const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey />);
         expect(tree).toMatchSnapshot();
@@ -117,7 +117,7 @@ describe('UserMenu', () => {
             isLoaded: true,
             isLoading: false,
             productIds,
-            sections: sections.asImmutable(),
+            sections,
         });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
         const tree = renderer.create(
@@ -136,7 +136,7 @@ describe('UserMenu', () => {
             isLoaded: true,
             isLoading: false,
             productIds,
-            sections: sections.asImmutable(),
+            sections,
         });
         const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={false} />);
         expect(tree).toMatchSnapshot();
@@ -152,7 +152,7 @@ describe('UserMenu', () => {
             isLoaded: true,
             isLoading: false,
             productIds,
-            sections: sections.asImmutable(),
+            sections,
         });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
         const extraDevItems = [<div key="e1">Extra Dev One</div>, <div key="e2">Extra Dev Two</div>];

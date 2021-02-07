@@ -309,7 +309,6 @@ const ASSAY_MAPPERS = [
 const DATA_CLASS_MAPPERS = [
     new ActionMapper('experiment', 'showDataClass', (row, column) => {
         let identifier: string;
-        console.log('handle experiment-showDataClass', row, column);
 
         // TODO: Deal with junction lookup
         if (row.has('data')) {

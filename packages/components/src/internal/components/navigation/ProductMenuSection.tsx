@@ -98,10 +98,9 @@ export class ProductMenuSection extends Component<MenuSectionProps> {
                                 );
 
                             if (item.url) {
-                                const url = item.url instanceof AppURL ? item.url.toHref() : item.url;
                                 return (
                                     <li key={item.label}>
-                                        <a href={url} target={item.key === 'docs' ? '_blank' : '_self'}>
+                                        <a href={item.getUrlString()} target={item.key === 'docs' ? '_blank' : '_self'}>
                                             {labelDisplay}
                                         </a>
                                     </li>

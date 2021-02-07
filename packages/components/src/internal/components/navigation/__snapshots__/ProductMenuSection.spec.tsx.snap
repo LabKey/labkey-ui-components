@@ -29,6 +29,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
       "itemLimit": 2,
       "key": "samples",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -86,6 +87,7 @@ exports[`ProductMenuSection render empty section with empty text and create link
       "itemLimit": undefined,
       "key": "samples",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -193,6 +195,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
       "itemLimit": 2,
       "key": "samples",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -280,6 +283,7 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
       "itemLimit": 2,
       "key": "samples",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -358,6 +362,7 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
       "itemLimit": undefined,
       "key": "assays",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -494,6 +499,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
       "itemLimit": undefined,
       "key": "assays",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >

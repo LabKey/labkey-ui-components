@@ -49,7 +49,12 @@ export enum CloseEventCode {
     TLS_HANDSHAKE = 1015,
 }
 
-export function initWebSocketListeners(store, notificationListeners?: string[], menuReloadListeners?: string[], resetQueryGridListeners?: string[]): void {
+export function initWebSocketListeners(
+    store,
+    notificationListeners?: string[],
+    menuReloadListeners?: string[],
+    resetQueryGridListeners?: string[]
+): void {
     // register websocket listener for the case where a user logs out in another tab
     function _logOutCallback(evt) {
         if (evt.wasClean && evt.reason === 'org.labkey.api.security.AuthNotify#SessionLogOut') {

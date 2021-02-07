@@ -85,7 +85,7 @@ describe('URL Resolvers', () => {
                         schemaName: 'exp',
                         queryName: 'results',
                     },
-                }
+                },
             ],
         },
         rows: [
@@ -131,7 +131,7 @@ describe('URL Resolvers', () => {
                     displayValue: 'An Assay Run - 2',
                     url: '/labkey/biologics/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253',
                     value: 584,
-                }
+                },
             },
         ],
     });

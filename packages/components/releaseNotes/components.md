@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+
+### version XXX
+*Released*: XXX
+* Add isSampleAliquotEnabled experimental flag
+* Add "Aliquot Options" to domain row
+
 ### version 1.19.0
 *Released*: 3 February 2021
 * Update storybook to v6

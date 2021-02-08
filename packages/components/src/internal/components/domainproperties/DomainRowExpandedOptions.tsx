@@ -30,6 +30,7 @@ import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndVa
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { OntologyLookupOptions } from './OntologyLookupOptions';
+import { MaterialPropertyFieldOptions } from "./MaterialPropertyFieldOptions";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;
@@ -219,6 +220,20 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             onChange={onChange}
                         />
                     </Col>
+                    {
+                        domainFormDisplayOptions.includeMaterialPropertyType &&
+                        <Col xs={12} lg={10}>
+                            <MaterialPropertyFieldOptions
+                                index={index}
+                                domainIndex={domainIndex}
+                                label="Aliquot Options"
+                                value={field.materialPropertyType}
+                                onChange={onChange}
+                                disabled={domainFormDisplayOptions.disableMaterialPropertyType}
+                                lockType={field.lockType}
+                            />
+                        </Col>
+                    }
                     {!isFieldFullyLocked(field.lockType) && (
                         <Col xs={12}>
                             <ConditionalFormattingAndValidation

@@ -36,6 +36,9 @@ export const URL_ENCODING_TOPIC = 'urlEncoding';
 export const SEARCH_SYNTAX_TOPIC = 'luceneSearch';
 export const DATA_IMPORT_TOPIC = 'dataImport';
 
+export const SAMPLE_ALIQUOT_TOPIC = 'aliquot';
+
+
 export function getHelpLink(topic: string): string {
     return getServerContext().helpLinkPrefix + topic;
 }

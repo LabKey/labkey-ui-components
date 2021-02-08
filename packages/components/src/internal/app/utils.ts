@@ -117,6 +117,10 @@ export function isSampleManagerEnabled(): boolean {
     return getServerContext().moduleContext?.samplemanagement !== undefined;
 }
 
+export function isSampleAliquotEnabled(): boolean {
+    return getServerContext().experimental['sampleAliquot'] === true; //TODO, fix api-js type
+}
+
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 

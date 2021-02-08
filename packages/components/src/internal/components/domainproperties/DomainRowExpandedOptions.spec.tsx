@@ -24,6 +24,7 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
+import {MaterialPropertyFieldOptions} from "./MaterialPropertyFieldOptions";
 
 const DEFAULT_PROPS = {
     index: 1,
@@ -43,7 +44,7 @@ describe('DomainExpandedOptions', () => {
         expect(row.find(LookupFieldOptions)).toHaveLength(expected.lookup || 0);
         expect(row.find(SampleFieldOptions)).toHaveLength(expected.sample || 0);
         expect(row.find(OntologyLookupOptions)).toHaveLength(expected.ontologyLookup || 0);
-
+        expect(row.find(MaterialPropertyFieldOptions)).toHaveLength(expected.aliquot || 0);
         expect(row.find(NameAndLinkingOptions)).toHaveLength(1);
         expect(row.find(ConditionalFormattingAndValidation)).toHaveLength(expectCondFormAndVal ? 1 : 0);
     }
@@ -178,6 +179,18 @@ describe('DomainExpandedOptions', () => {
 
         const row = mount(<DomainRowExpandedOptions {...DEFAULT_PROPS} field={field} />);
         validateRender(row, { text: 1 }, false);
+        row.unmount();
+    });
+
+    test('Include MaterialPropertyType', () => {
+        const field = DomainField.create({
+            rangeURI: BOOLEAN_TYPE.rangeURI,
+        });
+
+        const displayOption = {...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, ...{includeMaterialPropertyType: true}};
+        const props = {...DEFAULT_PROPS, ...{domainFormDisplayOptions: displayOption}};
+        const row = mount(<DomainRowExpandedOptions {...props} field={field}/>);
+        validateRender(row, { boolean: 1 , aliquot: 1});
         row.unmount();
     });
 });

@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 1.20.0
+*Released*: 8 February 2021
+* Refactor navigation components to functional components.
+* Add support for `sectionKey` in menu items.
+* Make resolving URLs implementation non-async. Promises were not needed. This affected `makeTestData` in the same way.
+* Rename `handle132Response` to `handleSelectRowsResponse` as a part of moving to non-async.
+
 ### version 1.19.0
 *Released*: 3 February 2021
 * Update storybook to v6

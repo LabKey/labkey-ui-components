@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { DropdownButton, MenuItem } from 'react-bootstrap';
 import { List } from 'immutable';
 
 import { QueryGridModel, Tip } from '../../..';
 import { setMaxRows } from '../../actions';
+import { blurActiveElement } from '../../util/utils';
 
 const DEFAULT_SIZE_OPTIONS = List.of(20, 40, 100, 250, 400);
 
@@ -34,15 +35,15 @@ interface Props {
 /**
  * Displays a dropdown button with the different supported page size options. The default, from getStateQueryGridModel, is 20.
  */
-export class PageSizeSelector extends React.PureComponent<Props, any> {
+export class PageSizeSelector extends PureComponent<Props> {
     static defaultProps = {
         options: DEFAULT_SIZE_OPTIONS,
     };
 
-    onClick(selectedVal: number) {
+    onClick = (selectedVal: number): void => {
         setMaxRows(this.props.model, selectedVal);
-        (document.activeElement as HTMLElement).blur(); // Issue 39418
-    }
+        blurActiveElement(); // Issue 39418
+    };
 
     render() {
         const { model, options } = this.props;

@@ -19,6 +19,8 @@ import { mount, shallow } from 'enzyme';
 
 import { fromJS } from 'immutable';
 
+import { Query } from '@labkey/api';
+
 import { QueryGridModel, QueryInfo } from '../../..';
 
 import { initUnitTests, makeQueryInfo, makeTestData } from '../../testHelpers';
@@ -27,11 +29,10 @@ import mixturesQuery from '../../../test/data/mixtures-getQuery.json';
 
 import { Action, ActionOption, ActionValue, Value } from './actions/Action';
 import { OmniBox, OmniBoxState } from './OmniBox';
-import { Query } from '@labkey/api';
 
 let queryInfo: QueryInfo;
 let model: QueryGridModel;
-const getColumns = (all?) => all ? model.getAllColumns() : model.getDisplayColumns();
+const getColumns = (all?) => (all ? model.getAllColumns() : model.getDisplayColumns());
 const getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions => {
     return {
         column,
@@ -48,14 +49,13 @@ const getSelectDistinctOptions = (column: string): Query.SelectDistinctOptions =
 beforeAll(() => {
     initUnitTests();
     queryInfo = makeQueryInfo(mixturesQueryInfo);
-    return makeTestData(mixturesQuery).then(mockData => {
-        model = new QueryGridModel({
-            queryInfo,
-            messages: fromJS(mockData.messages),
-            data: fromJS(mockData.rows),
-            dataIds: fromJS(mockData.orderedRows),
-            totalRows: mockData.rowCount,
-        });
+    const mockData = makeTestData(mixturesQuery);
+    model = new QueryGridModel({
+        queryInfo,
+        messages: fromJS(mockData.messages),
+        data: fromJS(mockData.rows),
+        dataIds: fromJS(mockData.orderedRows),
+        totalRows: mockData.rowCount,
     });
 });
 
@@ -111,14 +111,23 @@ describe('OmniBox component', () => {
     const actions = [new HelloWorldAction()];
 
     test('requires only an action', () => {
-        const component = shallow<OmniBox>(<OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} />);
+        const component = shallow<OmniBox>(
+            <OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} />
+        );
 
         expect(component.find('.OmniBox').length).toBe(1);
     });
 
     test('respects openAfterFocus', () => {
         // True
-        const openComponent = mount<OmniBox>(<OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} openAfterFocus={true} />);
+        const openComponent = mount<OmniBox>(
+            <OmniBox
+                getColumns={getColumns}
+                getSelectDistinctOptions={getSelectDistinctOptions}
+                actions={actions}
+                openAfterFocus={true}
+            />
+        );
         const openControlElement = openComponent.find('.OmniBox-control');
 
         expect(openControlElement.length).toEqual(1);
@@ -130,7 +139,14 @@ describe('OmniBox component', () => {
         expect(openState.options.length).toBe(1);
         // False
 
-        const closedComponent = mount<OmniBox>(<OmniBox getColumns={getColumns} getSelectDistinctOptions={getSelectDistinctOptions} actions={actions} openAfterFocus={false} />);
+        const closedComponent = mount<OmniBox>(
+            <OmniBox
+                getColumns={getColumns}
+                getSelectDistinctOptions={getSelectDistinctOptions}
+                actions={actions}
+                openAfterFocus={false}
+            />
+        );
         const closedControlElement = closedComponent.find('.OmniBox-control');
 
         expect(closedControlElement.length).toEqual(1);

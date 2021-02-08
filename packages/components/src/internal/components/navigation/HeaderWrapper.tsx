@@ -13,28 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { Component } from 'react';
 import $ from 'jquery';
 
 interface Props {
     headerHeight: number;
 }
 
-export class HeaderWrapper extends React.Component<Props, any> {
+export class HeaderWrapper extends Component<Props> {
     private headerWrapper: React.RefObject<HTMLDivElement>;
     private lastScrollY: number;
 
     constructor(props: Props) {
         super(props);
 
-        this.onDocScroll = this.onDocScroll.bind(this);
-
         this.lastScrollY = 0;
         this.headerWrapper = React.createRef();
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         window.addEventListener('scroll', this.onDocScroll);
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener('scroll', this.onDocScroll);
     }
 
     componentDidUpdate() {
@@ -43,7 +45,7 @@ export class HeaderWrapper extends React.Component<Props, any> {
         });
     }
 
-    onDocScroll() {
+    onDocScroll = (): void => {
         const { headerHeight } = this.props;
         const scrollY = window.scrollY;
 
@@ -66,7 +68,7 @@ export class HeaderWrapper extends React.Component<Props, any> {
 
             this.lastScrollY = scrollY;
         });
-    }
+    };
 
     render() {
         return (

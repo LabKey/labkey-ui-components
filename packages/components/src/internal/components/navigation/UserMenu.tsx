@@ -17,7 +17,7 @@
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
 
-import { User, devToolsActive, toggleDevTools, buildURL, AppURL } from '../../..';
+import { User, devToolsActive, toggleDevTools, buildURL } from '../../..';
 
 import { ProductMenuModel } from './model';
 import { signOut, signIn } from './actions';
@@ -50,9 +50,9 @@ export const UserMenu: FC<UserMenuProps> = props => {
         return menuSection?.items
             .filter(item => !item.requiresLogin || (item.requiresLogin && user?.isSignedIn))
             .map(item => {
-                const href = item.url instanceof AppURL ? item.url.toHref() : item.url;
+                const target = item.key === 'docs' ? '_blank' : '_self';
                 return (
-                    <MenuItem key={item.key} href={href} target={item.key === 'docs' ? '_blank' : '_self'}>
+                    <MenuItem key={item.key} href={item.getUrlString()} target={target}>
                         {item.label}
                     </MenuItem>
                 );

@@ -43,6 +43,7 @@ import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/As
 import { IGridLoader, IGridResponse, QueryGridModel } from './internal/QueryGridModel';
 import {
     applyDevTools,
+    blurActiveElement,
     capitalizeFirstChar,
     caseInsensitive,
     debounce,
@@ -795,6 +796,7 @@ export {
     getDisambiguatedSelectInputOptions,
     formatDate,
     formatDateTime,
+    blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
     resolveKey,

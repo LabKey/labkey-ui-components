@@ -21,6 +21,7 @@ import { LoadingSpinner } from '../../..';
 
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
+import { blurActiveElement } from '../../util/utils';
 
 interface ProductMenuProps {
     model: ProductMenuModel;
@@ -39,6 +40,7 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
 
     const toggleMenu = useCallback(() => {
         setMenuOpen(!menuOpen);
+        blurActiveElement();
     }, [menuOpen, setMenuOpen]);
 
     let containerCls = 'product-menu-content ';

@@ -19,9 +19,10 @@ import { DropdownButton } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../../..';
 
+import { blurActiveElement } from '../../util/utils';
+
 import { MenuSectionModel, ProductMenuModel } from './model';
 import { MenuSectionConfig, ProductMenuSection } from './ProductMenuSection';
-import { blurActiveElement } from '../../util/utils';
 
 interface ProductMenuProps {
     model: ProductMenuModel;

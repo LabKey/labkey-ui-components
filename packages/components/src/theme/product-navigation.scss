@@ -8,6 +8,7 @@
         .back-icon {
             float: left;
             padding-right: 10px;
+            cursor: pointer;
         }
     }
 
@@ -39,13 +40,14 @@
                 padding-left: 60px;
             }
 
-            .product-nav-icon {
+            .nav-icon {
                 float: right;
+                color: $gray-light;
                 font-size: 18px;
                 padding: 8px 15px 0 10px;
             }
 
-            &:hover, &:hover .product-subtitle {
+            &:hover, &:hover .product-subtitle, &:hover .nav-icon {
                 background-color: $brand-primary;
                 color: $white;
             }
@@ -53,6 +55,26 @@
 
         & > li:first-child {
             border-top: none;
+        }
+
+        .project-item {
+            width: 100%;
+            padding: 8px 10px 8px 15px;
+            font-size: 14px;
+            color: $gray-dark;
+            cursor: pointer;
+
+            .nav-icon {
+                float: right;
+                color: $gray-light;
+                font-size: 14px;
+                padding: 4px 5px 0;
+            }
+
+            &:hover, &:hover .nav-icon {
+                background-color: $brand-primary;
+                color: $white;
+            }
         }
     }
 

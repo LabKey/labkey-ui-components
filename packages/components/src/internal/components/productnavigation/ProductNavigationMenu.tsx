@@ -137,7 +137,9 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
             <ul className="product-navigation-listing">
                 {selectedProductId === undefined && <ProductAppsDrawer {...props} onClick={onSelection} />}
                 {selectedProductId === LKS_PRODUCT_ID && <ProductLKSDrawer />}
-                {showProjectsDrawer && <ProductProjectsDrawer product={selectedProduct} projects={productProjects} />}
+                {showProjectsDrawer && (
+                    <ProductProjectsDrawer product={selectedProduct} projects={productProjects} onClick={onSelection} />
+                )}
                 {showSectionsDrawer && <ProductSectionsDrawer product={selectedProduct} project={selectedProject} />}
             </ul>
             {selectedProductId === undefined && (

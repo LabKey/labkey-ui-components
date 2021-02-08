@@ -15,7 +15,7 @@ export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
             <div className="product-icon">
                 <img src={iconUrl} height="40px" width="40px" />
             </div>
-            <div className="product-nav-icon">
+            <div className="nav-icon">
                 <i className="fa fa-chevron-right" />
             </div>
             <div className="product-title">

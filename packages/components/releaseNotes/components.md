@@ -1,6 +1,18 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.0.0
+*Released*: ? February 2021
+* Fix issue in URLResolver causing next to be called twice
+* Add useRouteLeave hook
+* withRouteLeave now uses the useRouteLeave hook
+* BACKWARDS INCOMPATIBLE - RouteLeaveProps renamed RouteLeaveInjectedProps
+* Add WrappedRouteLeaveProps - you can now customize the message shown when users attempt to navigate away from a dirty page
+* Improved typing for withRouteLeave
+* BACKWARDS INCOMPATIBLE - confirmLeaveWhenDirty no longer requires location or event as a prop
+* confirmLeaveWhenDirty no longer breaks the back button
+* confirmLeaveWhenDirty is now deprecated (use useRouteLeave or withRouteLeave instead)
+
 ### version 1.21.1
 Public API update
 *Released*:

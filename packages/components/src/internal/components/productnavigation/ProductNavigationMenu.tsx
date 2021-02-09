@@ -116,7 +116,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
     }
 
     if (!products || !projects) {
-        return <LoadingSpinner />;
+        return <LoadingSpinner wrapperClassName="loading-item" />;
     }
 
     const selectedProduct = getSelectedProduct(products, selectedProductId);

@@ -161,7 +161,7 @@ export class ProductMenuModel extends Record({
     /**
      * Retrieve the product menu sections for this productId
      */
-    getMenuSections(): Promise<List<MenuSectionModel>> {
+    getMenuSections(itemLimit?: number): Promise<List<MenuSectionModel>> {
         return new Promise((resolve, reject) => {
             return Ajax.request({
                 url: buildURL('product', 'menuSections.api'),
@@ -169,6 +169,7 @@ export class ProductMenuModel extends Record({
                     currentProductId: this.currentProductId,
                     userMenuProductId: this.userMenuProductId,
                     productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
+                    itemLimit,
                 }),
                 success: Utils.getCallbackWrapper(response => {
                     let sections = List<MenuSectionModel>();

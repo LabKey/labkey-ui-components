@@ -1,5 +1,6 @@
-import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
+import { ActionURL, getServerContext } from "@labkey/api";
 
 import { Container } from '../base/models/Container';
 import { ProductModel, ProductSectionModel } from './model';
@@ -10,7 +11,7 @@ import { FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from "../../app
 
 // special case so that we request the LKFM section with the LKSM product
 const PRODUCT_ID_MAP = {
-    [SAMPLE_MANAGER_PRODUCT_ID]: List.of(SAMPLE_MANAGER_PRODUCT_ID, FREEZER_MANAGER_PRODUCT_ID),
+    [SAMPLE_MANAGER_PRODUCT_ID.toLowerCase()]: List.of(SAMPLE_MANAGER_PRODUCT_ID, FREEZER_MANAGER_PRODUCT_ID),
 };
 
 interface ProductAppsDrawerProps {
@@ -21,30 +22,32 @@ interface ProductAppsDrawerProps {
 export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     const { product, project } = props;
     const [sections, setSections] = useState<ProductSectionModel[]>();
+    const isSameContainer = useMemo(() => getServerContext().container.id === project.id, [project]);
 
     useEffect(() => {
         const model = new ProductMenuModel({
             currentProductId: product.productId,
             userMenuProductId: product.productId,
-            productIds: PRODUCT_ID_MAP[product.productId] ?? List.of(product.productId),
+            productIds: PRODUCT_ID_MAP[product.productId.toLowerCase()] ?? List.of(product.productId),
         });
 
-        model.getMenuSections()
+        model.getMenuSections(0)
             .then(modelSections => {
                 const menuSections = [
                     new ProductSectionModel({
+                        key: 'home',
                         label: 'Dashboard',
-                        url: createProductUrl(product.productId, undefined, '', project.path),
+                        url: getProductSectionUrl(product.productId, 'home', project.path, isSameContainer),
                     })
                 ];
 
-                modelSections.filter(modelSection => modelSection.key !== 'user')
+                modelSections.filter(modelSection => modelSection.sectionKey !== 'user')
                     .forEach(modelSection => {
                         menuSections.push(
                             new ProductSectionModel({
-                                key: modelSection.key,
+                                key: modelSection.sectionKey,
                                 label: modelSection.label,
-                                url: createProductUrl(modelSection.productId, undefined, AppURL.create(modelSection.key), project.path)
+                                url: getProductSectionUrl(modelSection.productId, modelSection.sectionKey, project.path, isSameContainer),
                             })
                         );
                     });
@@ -68,7 +71,7 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
     }, []);
 
     if (!sections) {
-        return <LoadingSpinner />;
+        return <LoadingSpinner wrapperClassName="loading-item" />;
     }
 
     return (
@@ -83,3 +86,15 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
         </>
     );
 });
+
+function getProductSectionUrl(productId: string, sectionKey: string, containerPath: string, isSameContainer: boolean): string {
+    // if the selected project is the current container and the section is for the same product we are already in, then keep the urls as route changes
+    let url;
+    if (isSameContainer && productId.toLowerCase() === ActionURL.getController().toLowerCase()) {
+        url = AppURL.create(sectionKey).toHref();
+    } else {
+        url = createProductUrl(productId, undefined, AppURL.create(sectionKey), containerPath);
+    }
+
+    return url;
+}

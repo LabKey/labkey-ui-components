@@ -110,7 +110,8 @@ import pipelineStatusDetails from '../test/data/pipelineStatusDetails.json';
 import getModulesInfo from '../test/data/admin-getModules.json';
 import getRegisteredProductsInfo from '../test/data/product-getRegisteredProducts.json';
 import getProjectContainersInfo from '../test/data/project-getProjectContainers.json';
-import getMenuSectionsInfo from '../test/data/product-getMenuSections.json';
+import getLKSMMenuSectionsInfo from '../test/data/product-getMenuSections-lksm.json';
+import getLKBMenuSectionsInfo from '../test/data/product-getMenuSections-lkb.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -365,7 +366,16 @@ export function initMocks() {
 
     mock.post(/.*getRegisteredProducts.*/, jsonResponse(getRegisteredProductsInfo));
 
-    mock.get(/.*menuSections.*/, jsonResponse(getMenuSectionsInfo)); // TODO conditionalize on productId
+    mock.get(/.*menuSections.*/, (req, res) => {
+        const queryParams = req.url().query;
+
+        let responseBody = getLKSMMenuSectionsInfo;
+        if (queryParams.currentProductId === 'Biologics') {
+            responseBody = getLKBMenuSectionsInfo;
+        }
+
+        return jsonResponse(responseBody, res);
+    });
 
     mock.get(/.*getContainers.*/, jsonResponse(getProjectContainersInfo));
 

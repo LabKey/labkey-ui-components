@@ -6,19 +6,16 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { ProductNavigationMenu } from '../internal/components/productnavigation/ProductNavigationMenu';
+import { ProductNavigationMenu } from '..';
 
 export default {
     title: 'Components/ProductNavigationMenu',
     component: ProductNavigationMenu,
+    argTypes: {},
 } as Meta;
 
 export const ProductNavigationMenuStory: Story = props => {
-    return (
-        <ProductNavigationMenu
-            {...props}
-        />
-    );
+    return <ProductNavigationMenu {...(props as any)} />;
 };
 
 ProductNavigationMenuStory.storyName = 'ProductNavigationMenu';

@@ -110,6 +110,7 @@ import pipelineStatusDetails from '../test/data/pipelineStatusDetails.json';
 import getModulesInfo from '../test/data/admin-getModules.json';
 import getRegisteredProductsInfo from '../test/data/product-getRegisteredProducts.json';
 import getProjectContainersInfo from '../test/data/project-getProjectContainers.json';
+import getMenuSectionsInfo from '../test/data/product-getMenuSections.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -363,6 +364,8 @@ export function initMocks() {
     mock.post(/.*getModules.*/, jsonResponse(getModulesInfo));
 
     mock.post(/.*getRegisteredProducts.*/, jsonResponse(getRegisteredProductsInfo));
+
+    mock.get(/.*menuSections.*/, jsonResponse(getMenuSectionsInfo)); // TODO conditionalize on productId
 
     mock.get(/.*getContainers.*/, jsonResponse(getProjectContainersInfo));
 

@@ -49,15 +49,8 @@ export namespace URLService {
         const nextRoute = nextRouteState.location.pathname;
         const table = getRouteTable(store.getState());
 
-        if (table.has(nextRoute)) {
-            if (table.get(nextRoute) === true) {
-                next();
-            } else {
-                replace({
-                    pathname: table.get(nextRoute),
-                    query,
-                });
-            }
+        if (table.has(nextRoute) && table.get(nextRoute) !== true) {
+            replace({ pathname: table.get(nextRoute), query });
         } else {
             let found = false;
             resolvers.forEach(resolver => {

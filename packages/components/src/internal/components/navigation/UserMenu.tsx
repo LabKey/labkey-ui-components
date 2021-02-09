@@ -14,88 +14,101 @@
  * limitations under the License.
  */
 
-import React from 'react';
+import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
 
-import { User, devToolsActive, toggleDevTools, buildURL, AppURL } from '../../..';
+import { User, devToolsActive, toggleDevTools, buildURL } from '../../..';
 
 import { ProductMenuModel } from './model';
 import { signOut, signIn } from './actions';
 
-interface UserMenuProps {
+export interface UserMenuProps {
+    extraDevItems?: ReactNode;
+    extraUserItems?: ReactNode;
     model: ProductMenuModel;
-    user: User;
-    showSwitchToLabKey: boolean;
-    extraDevItems?: any;
-    extraUserItems?: any;
+    onSignIn?: () => void;
+    onSignOut?: (signOutUrl: string) => void;
+    showSwitchToLabKey?: boolean;
     signOutUrl?: string;
+    user?: User;
 }
 
-export class UserMenu extends React.Component<UserMenuProps, any> {
-    render() {
-        const { extraDevItems, extraUserItems, model, user, showSwitchToLabKey, signOutUrl } = this.props;
-        const menuSection = model.getSection('user');
+export const UserMenu: FC<UserMenuProps> = props => {
+    const { extraDevItems, extraUserItems, model, onSignIn, onSignOut, user, showSwitchToLabKey, signOutUrl } = props;
+    const menuSection = useMemo(() => model.getSection('user'), [model]);
 
-        if (menuSection) {
-            const beginUrl = buildURL('project', 'begin', undefined, { returnUrl: false });
-            const switchToLabKeyItem = (
-                <MenuItem key="projectBegin" href={beginUrl}>
-                    Switch to LabKey
-                </MenuItem>
-            );
+    const switchToLabKeyItem = useMemo(() => {
+        const beginUrl = buildURL('project', 'begin', undefined, { returnUrl: false });
+        return (
+            <MenuItem key="projectBegin" href={beginUrl}>
+                Switch to LabKey
+            </MenuItem>
+        );
+    }, []);
 
-            const menuItems = [];
-            menuSection.items.forEach(item => {
-                if ((item.requiresLogin && user.isSignedIn) || !item.requiresLogin) {
-                    const href = item.url instanceof AppURL ? item.url.toHref() : item.url;
-                    menuItems.push(
-                        <MenuItem key={item.key} href={href} target={item.key === 'docs' ? '_blank' : '_self'}>
-                            {item.label}
-                        </MenuItem>
-                    );
-                }
+    const menuItems = useMemo(() => {
+        return menuSection?.items
+            .filter(item => !item.requiresLogin || (item.requiresLogin && user?.isSignedIn))
+            .map(item => {
+                const target = item.key === 'docs' ? '_blank' : '_self';
+                return (
+                    <MenuItem key={item.key} href={item.getUrlString()} target={target}>
+                        {item.label}
+                    </MenuItem>
+                );
             });
+    }, [menuSection?.items, user?.isSignedIn]);
 
-            return (
-                <Dropdown id="user-menu-dropdown">
-                    <Dropdown.Toggle useAnchor={true}>
-                        {user.avatar ? (
-                            <Image src={user.avatar} alt="User Avatar" rounded={true} height={32} width={32} />
-                        ) : (
-                            <span className="navbar-item">
-                                <span className="user-name">
-                                    <span className="fas fa-user-circle" /> {user.displayName}{' '}
-                                </span>
-                            </span>
-                        )}
-                    </Dropdown.Toggle>
+    const handleSignOut = useCallback(() => {
+        onSignOut(signOutUrl);
+    }, [onSignOut, signOutUrl]);
 
-                    <Dropdown.Menu pullRight className="pull-right">
-                        <div className="navbar-connector" />
-                        {menuItems}
-                        {showSwitchToLabKey && switchToLabKeyItem}
-                        {extraUserItems}
-                        {LABKEY.devMode ? (
-                            <>
-                                <MenuItem divider />
-                                <MenuItem header>Dev Tools</MenuItem>
-                                <MenuItem onClick={toggleDevTools}>
-                                    {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
-                                </MenuItem>
-                                {!showSwitchToLabKey && switchToLabKeyItem}
-                                {extraDevItems}
-                            </>
-                        ) : null}
-                        <MenuItem divider />
-                        {user.isSignedIn ? (
-                            <MenuItem onClick={() => signOut(signOutUrl)}>Sign Out</MenuItem>
-                        ) : (
-                            <MenuItem onClick={signIn}>Sign In</MenuItem>
-                        )}
-                    </Dropdown.Menu>
-                </Dropdown>
-            );
-        }
+    if (!menuSection || !user) {
         return null;
     }
-}
+
+    return (
+        <Dropdown id="user-menu-dropdown">
+            <Dropdown.Toggle useAnchor>
+                {user.avatar ? (
+                    <Image src={user.avatar} alt="User Avatar" rounded height={32} width={32} />
+                ) : (
+                    <span className="navbar-item">
+                        <span className="user-name">
+                            <span className="fas fa-user-circle" /> {user.displayName}{' '}
+                        </span>
+                    </span>
+                )}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu className="pull-right" pullRight>
+                <div className="navbar-connector" />
+                {menuItems}
+                {showSwitchToLabKey && switchToLabKeyItem}
+                {extraUserItems}
+                {LABKEY.devMode && (
+                    <>
+                        <MenuItem divider />
+                        <MenuItem header>Dev Tools</MenuItem>
+                        <MenuItem onClick={toggleDevTools}>
+                            {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
+                        </MenuItem>
+                        {!showSwitchToLabKey && switchToLabKeyItem}
+                        {extraDevItems}
+                    </>
+                )}
+                <MenuItem divider />
+                {user.isSignedIn ? (
+                    <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+                ) : (
+                    <MenuItem onClick={onSignIn}>Sign In</MenuItem>
+                )}
+            </Dropdown.Menu>
+        </Dropdown>
+    );
+};
+
+UserMenu.defaultProps = {
+    onSignIn: signIn,
+    onSignOut: signOut,
+};

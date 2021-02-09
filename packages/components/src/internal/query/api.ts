@@ -372,20 +372,18 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     sql: userConfig.sql,
                     saveInSession: userConfig.saveInSession === true,
                     success: json => {
-                        handle132Response(json).then(r => {
-                            schemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
-                            key = resolveSchemaQuery(schemaQuery);
-                            result = r;
-                            hasResults = true;
+                        result = handleSelectRowsResponse(json);
+                        schemaQuery = SchemaQuery.create(userConfig.schemaName, json.queryName);
+                        key = resolveSchemaQuery(schemaQuery);
+                        hasResults = true;
 
-                            getQueryDetails(schemaQuery)
-                                .then(d => {
-                                    hasDetails = true;
-                                    details = d;
-                                    doResolve();
-                                })
-                                .catch(error => reject(error));
-                        });
+                        getQueryDetails(schemaQuery)
+                            .then(d => {
+                                hasDetails = true;
+                                details = d;
+                                doResolve();
+                            })
+                            .catch(error => reject(error));
                     },
                     failure: (data, request) => {
                         console.error('There was a problem retrieving the data', data);
@@ -406,11 +404,9 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
                     // put on this another parameter!
                     columns: userConfig.columns ? userConfig.columns : '*',
                     success: json => {
-                        handle132Response(json).then(r => {
-                            result = r;
-                            hasResults = true;
-                            doResolve();
-                        });
+                        result = handleSelectRowsResponse(json);
+                        hasResults = true;
+                        doResolve();
                     },
                     failure: (data, request) => {
                         console.error('There was a problem retrieving the data', data);
@@ -438,90 +434,85 @@ export function selectRows(userConfig, caller?): Promise<ISelectRowsResult> {
     });
 }
 
-export function handle132Response(json): Promise<any> {
-    // TODO: Don't make this a promise. The only async thing this method does is call urlResolver.resolveSelectRows,
-    //  which is a promise, but also does not need to be, nor should be.
-    return new Promise(resolve => {
-        const urlResolver = new URLResolver();
-        urlResolver.resolveSelectRows(json).then(resolved => {
-            let count = 0,
-                hasRows = false,
-                models = {}, // TODO: Switch to Map
-                orderedModels = {},
-                qsKey = 'queries',
-                rowCount = json.rowCount || 0;
+export function handleSelectRowsResponse(json): any {
+    const resolved = new URLResolver().resolveSelectRows(json);
 
-            const metadataKey = resolved.metaData.id,
-                modelKey = resolveKeyFromJson(resolved);
+    let count = 0,
+        hasRows = false,
+        models = {}, // TODO: Switch to Map
+        orderedModels = {},
+        qsKey = 'queries',
+        rowCount = json.rowCount || 0;
 
-            // ensure id -- unfortunately, with normalizr 3.x there doesn't seem to be a way to generate the id
-            // without attaching directly to the object
-            resolved.rows.forEach((row: any) => {
-                if (metadataKey) {
-                    if (row[metadataKey] !== undefined) {
-                        row._id_ = row[metadataKey].value;
-                        return;
-                    } else {
-                        console.error('Missing entry', metadataKey, row, resolved.schemaKey, resolved.queryName);
-                    }
-                }
-                row._id_ = count++;
-            });
+    const metadataKey = resolved.metaData.id,
+        modelKey = resolveKeyFromJson(resolved);
 
-            const modelSchema = new schema.Entity(
-                modelKey,
-                {},
-                {
-                    idAttribute: '_id_',
-                }
-            );
-
-            const querySchema = new schema.Entity(
-                qsKey,
-                {},
-                {
-                    idAttribute: queryJson => resolveKeyFromJson(queryJson),
-                }
-            );
-
-            querySchema.define({
-                rows: new schema.Array(modelSchema),
-            });
-
-            const instance = normalize(resolved, querySchema);
-
-            Object.keys(instance.entities).forEach(key => {
-                if (key !== qsKey) {
-                    rowCount = instance.entities[qsKey][key].rowCount;
-                    const rows = instance.entities[key];
-                    // cleanup generated ids
-                    Object.keys(rows).forEach(rowKey => {
-                        delete rows[rowKey]['_id_'];
-                    });
-                    models[key] = rows;
-                    orderedModels[key] = fromJS(instance.entities[qsKey][key].rows)
-                        .map(r => r.toString())
-                        .toList();
-                    hasRows = true;
-                }
-            });
-
-            if (!hasRows) {
-                models[modelKey] = {};
-                orderedModels[modelKey] = List();
+    // ensure id -- unfortunately, with normalizr 3.x there doesn't seem to be a way to generate the id
+    // without attaching directly to the object
+    resolved.rows.forEach((row: any) => {
+        if (metadataKey) {
+            if (row[metadataKey] !== undefined) {
+                row._id_ = row[metadataKey].value;
+                return;
+            } else {
+                console.error('Missing entry', metadataKey, row, resolved.schemaKey, resolved.queryName);
             }
-
-            const messages = resolved.messages ? fromJS(resolved.messages) : List<Map<string, string>>();
-
-            resolve({
-                key: modelKey,
-                messages,
-                models,
-                orderedModels,
-                rowCount,
-            });
-        });
+        }
+        row._id_ = count++;
     });
+
+    const modelSchema = new schema.Entity(
+        modelKey,
+        {},
+        {
+            idAttribute: '_id_',
+        }
+    );
+
+    const querySchema = new schema.Entity(
+        qsKey,
+        {},
+        {
+            idAttribute: queryJson => resolveKeyFromJson(queryJson),
+        }
+    );
+
+    querySchema.define({
+        rows: new schema.Array(modelSchema),
+    });
+
+    const instance = normalize(resolved, querySchema);
+
+    Object.keys(instance.entities).forEach(key => {
+        if (key !== qsKey) {
+            rowCount = instance.entities[qsKey][key].rowCount;
+            const rows = instance.entities[key];
+            // cleanup generated ids
+            Object.keys(rows).forEach(rowKey => {
+                delete rows[rowKey]['_id_'];
+            });
+            models[key] = rows;
+            orderedModels[key] = fromJS(instance.entities[qsKey][key].rows)
+                .map(r => r.toString())
+                .toList();
+            hasRows = true;
+        }
+    });
+
+    if (!hasRows) {
+        models[modelKey] = {};
+        orderedModels[modelKey] = List();
+    }
+
+    const messages = resolved.messages ? fromJS(resolved.messages) : List<Map<string, string>>();
+
+    return {
+        key: modelKey,
+        messages,
+        models,
+        orderedModels,
+        rowCount,
+    };
 }
 
 export function searchRows(selectRowsConfig, token: any, exactColumn?: string): Promise<ISelectRowsResult> {

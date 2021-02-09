@@ -29,9 +29,9 @@ describe('ProductMenu render', () => {
             label: 'Sample Set 1',
         },
         {
+            hasActiveJob: true,
             id: 2,
             label: 'Sample Set 2',
-            hasActiveJob: true
         },
         {
             id: 3,
@@ -45,9 +45,9 @@ describe('ProductMenu render', () => {
 
     const assayItems = List<MenuSectionModel>([
         {
+            hasActiveJob: true,
             id: 11,
             label: 'Assay 1',
-            hasActiveJob: true
         },
         {
             id: 12,
@@ -160,7 +160,7 @@ describe('ProductMenu render', () => {
                 url: undefined,
                 items: sampleSetItems,
                 itemLimit: 2,
-                key: 'samples'
+                key: 'samples',
             })
         );
         sections.push(
@@ -184,7 +184,7 @@ describe('ProductMenu render', () => {
             'samples',
             new MenuSectionConfig({
                 iconCls: 'test-icon-cls',
-                showActiveJobIcon: false
+                showActiveJobIcon: false,
             })
         );
         sectionConfigs = sectionConfigs.push(samplesSectionConfigs);

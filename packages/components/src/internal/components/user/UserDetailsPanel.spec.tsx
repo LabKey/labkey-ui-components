@@ -26,7 +26,7 @@ describe('<UserDetailsPanel/>', () => {
 
         await sleep();
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     test('with principal no buttons because of self', async () => {
@@ -41,7 +41,7 @@ describe('<UserDetailsPanel/>', () => {
 
         await sleep();
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     test('with principal and buttons', async () => {
@@ -56,7 +56,7 @@ describe('<UserDetailsPanel/>', () => {
 
         await sleep();
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     test('with principal and buttons not allowDelete or allowResetPassword', async () => {
@@ -73,6 +73,6 @@ describe('<UserDetailsPanel/>', () => {
 
         await sleep();
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 });

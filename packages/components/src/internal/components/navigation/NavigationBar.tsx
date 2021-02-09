@@ -13,94 +13,111 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
 
 import { User } from '../../..';
-
+import { ServerNotifications } from '../notifications/ServerNotifications';
+import { ServerNotificationsConfig } from '../notifications/model';
 import { ProductMenu } from './ProductMenu';
 import { SearchBox } from './SearchBox';
-import { UserMenu } from './UserMenu';
+import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
-import { ServerNotifications } from "../notifications/ServerNotifications";
-import { ServerNotificationsConfig } from '../notifications/model';
-import { ProductNavigation } from "../productnavigation/ProductNavigation";
-import { hasPremiumModule } from "../../app/utils";
+import { ProductNavigation } from '../productnavigation/ProductNavigation';
+import { hasPremiumModule } from '../../app/utils';
 
 interface NavigationBarProps {
     brand?: ReactNode;
-    projectName?: string;
     menuSectionConfigs?: List<Map<string, MenuSectionConfig>>;
     model: ProductMenuModel;
-    showSearchBox: boolean;
-    onSearch?: (form: any) => any;
-    searchPlaceholder?: string;
-    user?: User;
-    showSwitchToLabKey: boolean;
-    signOutUrl?: string;
     notificationsConfig?: ServerNotificationsConfig;
+    onSearch?: (form: any) => void;
+    projectName?: string;
+    searchPlaceholder?: string;
+    showSearchBox?: boolean;
+    user?: User;
 }
 
-export class NavigationBar extends React.Component<NavigationBarProps, any> {
-    static defaultProps: {
-        showSearchBox: false;
-        showSwitchToLabKey: true;
-        notificationsConfig: undefined;
-    };
+type Props = NavigationBarProps & UserMenuProps;
 
-    render(): ReactNode {
-        const {
-            brand,
-            menuSectionConfigs,
-            model,
-            projectName,
-            showSearchBox,
-            onSearch,
-            searchPlaceholder,
-            user,
-            notificationsConfig,
-            showSwitchToLabKey,
-            signOutUrl,
-        } = this.props;
-        const productMenu = model ? <ProductMenu model={model} sectionConfigs={menuSectionConfigs} /> : null;
-        const searchBox = showSearchBox ? <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} /> : null;
-        const userMenu = user ? (
-            <UserMenu model={model} user={user} showSwitchToLabKey={showSwitchToLabKey} signOutUrl={signOutUrl} />
-        ) : null;
+export const NavigationBar: FC<Props> = memo(props => {
+    const {
+        brand,
+        extraDevItems,
+        extraUserItems,
+        menuSectionConfigs,
+        model,
+        notificationsConfig,
+        onSearch,
+        onSignIn,
+        onSignOut,
+        projectName,
+        searchPlaceholder,
+        showSearchBox,
+        showSwitchToLabKey,
+        signOutUrl,
+        user,
+    } = props;
 
-        const notifications = notificationsConfig && user && !user.isGuest ? <ServerNotifications {...notificationsConfig} /> : null;
-        const productNav = hasPremiumModule() ? <ProductNavigation /> : null;
+    const onSearchIconClick = useCallback(() => {
+        onSearch('');
+    }, [onSearch]);
 
-        return (
-            <nav className="navbar navbar-container test-loc-nav-header">
-                <div className="container">
-                    <div className="row">
-                        <div className="navbar-left col-sm-5 col-xs-7">
-                            <span className="navbar-item pull-left">{brand}</span>
-                            <span className="navbar-item-padded">{productMenu}</span>
-                            {projectName && (
-                                <span className="navbar-item hidden-sm hidden-xs">
-                                    <span className="project-name">
-                                        <i className="fa fa-folder-open-o" /> {projectName}{' '}
-                                    </span>
+    const notifications =
+        !!notificationsConfig && user && !user.isGuest ? <ServerNotifications {...notificationsConfig} /> : null;
+    const productNav = hasPremiumModule() ? <ProductNavigation /> : null;
+
+    return (
+        <nav className="navbar navbar-container test-loc-nav-header">
+            <div className="container">
+                <div className="row">
+                    <div className="navbar-left col-sm-5 col-xs-7">
+                        <span className="navbar-item pull-left">{brand}</span>
+                        <span className="navbar-item-padded">
+                            {!!model && <ProductMenu model={model} sectionConfigs={menuSectionConfigs} />}
+                        </span>
+                        {projectName && (
+                            <span className="navbar-item hidden-sm hidden-xs">
+                                <span className="project-name">
+                                    <i className="fa fa-folder-open-o" /> {projectName}{' '}
                                 </span>
+                            </span>
+                        )}
+                    </div>
+                    <div className="navbar-right col-sm-7 col-xs-5">
+                        <div className="navbar-item pull-right">
+                            {!!user && (
+                                <UserMenu
+                                    extraDevItems={extraDevItems}
+                                    extraUserItems={extraUserItems}
+                                    model={model}
+                                    onSignIn={onSignIn}
+                                    onSignOut={onSignOut}
+                                    showSwitchToLabKey={showSwitchToLabKey}
+                                    signOutUrl={signOutUrl}
+                                    user={user}
+                                />
                             )}
                         </div>
-                        <div className="navbar-right col-sm-7 col-xs-5">
-                            <div className="navbar-item pull-right">{userMenu}</div>
-                            <div className="navbar-item pull-right">{productNav}</div>
-                            <div className="navbar-item pull-right navbar-item-notification">{notifications}</div>
-                            <div className="navbar-item pull-right hidden-xs">{searchBox}</div>
-                            <div className="navbar-item pull-right visible-xs">
-                                {showSearchBox && (
-                                    <i className="fa fa-search navbar__xs-search-icon" onClick={() => onSearch('')} />
-                                )}
-                            </div>
+                        <div className="navbar-item pull-right">{productNav}</div>
+                        <div className="navbar-item pull-right navbar-item-notification">{notifications}</div>
+                        <div className="navbar-item pull-right hidden-xs">
+                            {showSearchBox && <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} />}
+                        </div>
+                        <div className="navbar-item pull-right visible-xs">
+                            {showSearchBox && (
+                                <i className="fa fa-search navbar__xs-search-icon" onClick={onSearchIconClick} />
+                            )}
                         </div>
                     </div>
                 </div>
-            </nav>
-        );
-    }
-}
+            </div>
+        </nav>
+    );
+});
+
+NavigationBar.defaultProps = {
+    showSearchBox: false,
+    showSwitchToLabKey: true,
+};

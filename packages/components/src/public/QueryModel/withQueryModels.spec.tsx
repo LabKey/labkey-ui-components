@@ -38,13 +38,12 @@ const AMINO_ACIDS_SCHEMA_QUERY = SchemaQuery.create('assay.General.Amino Acids',
 let AMINO_ACIDS_QUERY_INFO: QueryInfo;
 let AMINO_ACIDS_DATA: RowsResponse;
 
-beforeAll(async () => {
+beforeAll(() => {
     initUnitTests();
     MIXTURES_QUERY_INFO = makeQueryInfo(mixturesQueryInfo);
     AMINO_ACIDS_QUERY_INFO = makeQueryInfo(aminoAcidsQueryInfo);
-    AMINO_ACIDS_DATA = await makeTestData(aminoAcidsQuery);
-    // Return so tests don't start till after the promise resolves, so we can guarantee MIXTURES_DATA is initialized in tests.
-    return (MIXTURES_DATA = await makeTestData(mixturesQuery));
+    AMINO_ACIDS_DATA = makeTestData(aminoAcidsQuery);
+    MIXTURES_DATA = makeTestData(mixturesQuery);
 });
 
 describe('withQueryModels', () => {

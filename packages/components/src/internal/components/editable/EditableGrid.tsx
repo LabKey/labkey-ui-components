@@ -21,6 +21,7 @@ import $ from 'jquery';
 
 import {
     addRows,
+    addRowsPerParent,
     beginDrag,
     clearSelection,
     copyEvent,
@@ -46,6 +47,7 @@ import {
     BulkAddUpdateForm,
     QueryColumn,
     QueryGridModel,
+    SampleCreationType,
 } from '../../..';
 
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive } from '../../util/utils';
@@ -707,18 +709,47 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
 
         const numItems = data.get('numItems');
         let updatedData = data.delete('numItems');
+        let totalItems = 0;
+        const creationType = data.get('creationType');
+        updatedData = data.delete('creationType');
+        const splitSampleParents = (creationType == SampleCreationType.Derivatives || creationType === SampleCreationType.Aliquots);
+
+        let sampleParents: Record<string, Array<string>> = {};
+        if (splitSampleParents && bulkAddProps.creationTypeOptions?.length > 0)
+        {
+            data.keySeq().forEach((key, index) => {
+                if (key.indexOf("MaterialInputs/") === 0)
+                {
+                    if (data.get(key))
+                    {
+                        let parents = data.get(key);
+                        if (parents.length > 0)
+                        {
+                            sampleParents[key] = typeof parents[0] === 'string' ? parents[0].split(",") : parents;
+                            totalItems += numItems * sampleParents[key].length;
+                        }
+                    }
+                }
+            });
+        }
+        if (totalItems === 0)
+            totalItems = numItems;
 
         if (numItems) {
             if (bulkAddProps.columnFilter) {
                 updatedData = this.restoreBulkInsertData(model, updatedData);
             }
-
-            return new Promise(resolve => {
+            if (splitSampleParents && totalItems > 0) {
+                addRowsPerParent(model, numItems, sampleParents, updatedData);
+            }
+            else {
                 addRows(model, numItems, updatedData);
-                this.onRowCountChange();
+            }
+            this.onRowCountChange();
+            return new Promise(resolve => {
                 resolve({
                     success: true,
-                    message: 'Added ' + numItems + ' ' + (numItems > 1 ? nounPlural : nounSingular),
+                    message: 'Added ' + totalItems + ' ' + (totalItems > 1 ? nounPlural : nounSingular),
                 });
             });
         }
@@ -755,6 +786,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                     schemaQuery={model.queryInfo.schemaQuery}
                     title={this.props.bulkAddProps && this.props.bulkAddProps.title}
                     header={this.renderBulkCreationHeader()}
+                    creationTypeOptions={this.props.bulkAddProps ? this.props.bulkAddProps.creationTypeOptions : null}
                 />
             )
         );

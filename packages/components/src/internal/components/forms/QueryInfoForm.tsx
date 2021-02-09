@@ -21,9 +21,20 @@ import { Input } from 'formsy-react-components';
 import { Utils } from '@labkey/api';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import { formatDateTime, LoadingSpinner, QueryColumn, QueryInfo, SchemaQuery, selectRows, Tip } from '../../..';
+import {
+    formatDateTime,
+    LabelHelpTip,
+    LoadingSpinner,
+    QueryColumn,
+    QueryInfo,
+    SampleCreationType,
+    SchemaQuery,
+    selectRows,
+    Tip
+} from '../../..';
 
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
+import { SampleCreationTypeModel } from "../samples/SampleCreationTypeOption";
 
 addValidationRule('isPositiveLt', (vs, v, smax) => {
     if (v === '' || v === undefined || isNaN(v)) {
@@ -79,6 +90,7 @@ export interface QueryInfoFormProps {
     singularNoun?: string;
     pluralNoun?: string;
     showErrorsAtBottom?: boolean;
+    creationTypeOptions?: Array<SampleCreationTypeModel>;
 }
 
 interface State {
@@ -91,6 +103,7 @@ interface State {
     errorMsg: string;
     count: number;
     fieldEnabledCount: number;
+    creationTypeSelected: SampleCreationType
 }
 
 export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State> {
@@ -108,6 +121,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         maxCount: MAX_EDITABLE_GRID_ROWS,
         allowFieldDisable: false,
         useDatePicker: true,
+        creationTypeOptions: [],
     };
 
     constructor(props: QueryInfoFormProps) {
@@ -123,6 +137,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
             errorMsg: undefined,
             count: undefined,
             submitForEdit: false,
+            creationTypeSelected: undefined
         };
     }
 
@@ -208,7 +223,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
             errorMsg: undefined,
             isSubmitting: true,
         });
-        const updatedRow = this.getUpdatedFields(row, ['numItems']);
+        const updatedRow = this.getUpdatedFields(row, ['numItems', 'creationType']);
         const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
         submitFn(updatedRow).then(
@@ -284,6 +299,14 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
     onFieldsEnabledChange = (fieldEnabledCount: number): void => {
         this.setState(() => ({ fieldEnabledCount }));
     };
+
+    onChooseCreationType = (evt, value) => {
+        // const { value } = evt.target;
+        this.setState(() => ({
+            creationTypeSelected: value
+        }));
+    };
+
 
     renderButtons = (): ReactNode => {
         const {
@@ -365,17 +388,82 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         );
     };
 
+    getQuantityHeader() : ReactNode {
+        const { creationTypeOptions } = this.props;
+        const { includeCountField, maxCount } = this.props;
+        const { count, creationTypeSelected } = this.state;
+        let text = this.props.countText;
+
+        let options = [];
+
+        creationTypeOptions.forEach(option => {
+            const selected = creationTypeSelected === option.type;
+            if (selected && option.minParentsPerSample === 1)
+                text = option.type + ' per parent';
+            // let label = (
+            //     <>
+            //         {option.type}
+            //         {option.description && (
+            //             <LabelHelpTip>
+            //                 {option.description}
+            //             </LabelHelpTip>
+            //         )}
+            //     </>
+            // )
+            // TODO this doesn't actually work.  Probably need an own component wrapped by withFormsy
+            options.push((
+                <div>
+                    <Input
+                        key={option.type}
+                        checked={selected}
+                        labelClassName={"text-left"}
+                        className={""}
+                        type="radio"
+                        name="creationType"
+                        value={option.type}
+                        onChange={this.onChooseCreationType}
+                        label={option.type}
+                    />
+                    {option.description && (
+                        <LabelHelpTip>
+                            {option.description}
+                        </LabelHelpTip>
+                    )}
+                </div>
+            ));
+        })
+        return (
+            <>
+                {options}
+                {(options.length > 0 || includeCountField) && (
+                    <Input
+                        id="numItems"
+                        label={text}
+                        labelClassName="control-label text-left"
+                        name="numItems"
+                        max={maxCount}
+                        min={1}
+                        onChange={this.onCountChange}
+                        required={true}
+                        step="1"
+                        style={{ width: '125px' }}
+                        type="number"
+                        validations={`isPositiveLt:${maxCount}`}
+                        value={count ? count.toString() : 1}
+                    />
+                )}
+            </>
+        );
+    }
+
     render() {
         const {
-            includeCountField,
             asModal,
-            countText,
             footer,
             header,
             isLoading,
             checkRequiredFields,
             showLabelAsterisk,
-            maxCount,
             renderFileInputs,
             queryInfo,
             fieldValues,
@@ -393,7 +481,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
             return null;
         }
         let content;
-
+        const quantityHeader = this.getQuantityHeader();
         if (isLoading) {
             content = <LoadingSpinner />;
         } else {
@@ -408,24 +496,8 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
                         onChange={this.handleChange}
                         onInvalid={this.disableSubmitButton}
                     >
-                        {includeCountField && (
-                            <Input
-                                id="numItems"
-                                label={countText}
-                                labelClassName="control-label text-left"
-                                name="numItems"
-                                max={maxCount}
-                                min={1}
-                                onChange={this.onCountChange}
-                                required={true}
-                                step="1"
-                                style={{ width: '125px' }}
-                                type="number"
-                                validations={`isPositiveLt:${maxCount}`}
-                                value={count ? count.toString() : 1}
-                            />
-                        )}
-                        {(header || includeCountField) && <hr />}
+                        {quantityHeader}
+                        {(header ?? quantityHeader) && <hr />}
                         <QueryFormInputs
                             renderFileInputs={renderFileInputs}
                             allowFieldDisable={allowFieldDisable}

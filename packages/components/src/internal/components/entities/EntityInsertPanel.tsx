@@ -81,6 +81,7 @@ import {
 } from './models';
 
 import { getEntityTypeData } from './actions';
+import {SampleCreationTypeModel} from "../samples/SampleCreationTypeOption";
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -115,6 +116,7 @@ interface OwnProps {
     nounPlural: string;
     entityDataType: EntityDataType;
     parentDataTypes?: List<EntityDataType>;
+    creationTypeOptions?: Array<SampleCreationTypeModel>;
     importHelpLinkNode: ReactNode;
     auditBehavior?: AuditBehaviorTypes;
     importOnly?: boolean;
@@ -594,14 +596,6 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
 
         return (
             <>
-                {isGrid && (
-                    <div className="entity-insert--header">
-                        <p>
-                            Generate unique {this.props.nounPlural} individually or in bulk using the bulk insert
-                            option.
-                        </p>
-                    </div>
-                )}
                 {insertModel.isInit && (
                     <SelectInput
                         formsy={false}
@@ -747,7 +741,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
         if (insertModel && insertModel.isInit) {
             const noun = insertModel.entityCount == 1 ? this.capNounSingular : this.capNounPlural;
-
+            // TODO Finish Creating text below is wrong when landing on this page with derivative samples
             return (
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">
@@ -818,7 +812,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel } = this.state;
-        const { entityDataType } = this.props;
+        const { entityDataType, creationTypeOptions } = this.props;
 
         const columnFilter = colInfo => {
             return insertColumnFilter(colInfo) && colInfo['fieldKey'] !== entityDataType.uniqueFieldKey;
@@ -829,6 +823,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             header: 'Add a batch of ' + this.props.nounPlural + ' that will share the properties set below.',
             columnFilter,
             fieldValues: this.getBulkAddFormValues(),
+            creationTypeOptions,
         };
         const bulkUpdateProps = {
             columnFilter,

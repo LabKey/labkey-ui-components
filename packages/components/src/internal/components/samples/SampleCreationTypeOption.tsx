@@ -2,46 +2,49 @@ import React, {FC, memo} from "react";
 import classNames from "classnames";
 import {SVGIcon, Theme} from "../base/SVGIcon";
 
-export enum CreationType {
-    Independents = "Independent Samples",
+export enum SampleCreationType {
+    Independents = "New Samples",
     Derivatives = "Derivatives",
     PooledSamples = "Pooled Samples",
     Aliquots = "Aliquots"
 }
 
-export interface CreationTypeModel {
-    type: CreationType,
-    description: string,
-    requiresMultipleParents: boolean,
+export interface SampleCreationTypeModel {
+    type: SampleCreationType,
+    description?: string,
+    minParentsPerSample: number,
     iconSrc?: string,
     iconUrl?: string
 }
 
-export const DERIVATIVE_CREATION = {
-    type: CreationType.Derivatives,
+export const INDEPENDENT_SAMPLE_CREATION : SampleCreationTypeModel = {
+    type: SampleCreationType.Independents,
+    minParentsPerSample: 0,
+}
+
+export const DERIVATIVE_CREATION : SampleCreationTypeModel = {
+    type: SampleCreationType.Derivatives,
     description: "Create multiple output samples per parent.",
-    requiresMultipleParents: false,
+    minParentsPerSample: 1,
     iconSrc: 'derivatives'
 };
 
-export const POOLED_SAMPLE_CREATION = {
-    type: CreationType.PooledSamples,
+export const POOLED_SAMPLE_CREATION : SampleCreationTypeModel = {
+    type: SampleCreationType.PooledSamples,
     description: "Put multiple samples into pooled outputs.",
-    requiresMultipleParents: true,
+    minParentsPerSample: 2,
     iconSrc: "pooled"
 };
 
-export const ALIQUOT_CREATION = {
-    type: CreationType.Aliquots,
+export const ALIQUOT_CREATION : SampleCreationTypeModel = {
+    type: SampleCreationType.Aliquots,
     description: "Create aliquot copies from each parent sample.",
-    requiresMultipleParents: false,
+    minParentsPerSample: 1,
     iconSrc: "aliquots"
 };
 
-
-
 interface OptionProps {
-    option: CreationTypeModel
+    option: SampleCreationTypeModel
     isSelected: boolean
     onChoose: (evt) => void
     showIcon: boolean

@@ -2,31 +2,31 @@ import React from "react";
 import {Button, FormControl, Modal} from "react-bootstrap";
 import {MAX_EDITABLE_GRID_ROWS} from "../../../index";
 import {
-    CreationType,
-    CreationTypeModel,
+    SampleCreationType,
+    SampleCreationTypeModel,
     SampleCreationTypeOption
 } from "./SampleCreationTypeOption";
 
 
 interface Props {
     show: boolean;
-    options: Array<CreationTypeModel>,
+    options: Array<SampleCreationTypeModel>,
     parentCount: number;
     showIcons: boolean;
     onCancel: () => void;
-    onSubmit: (creationType: CreationType, numPerParent?: number) => void;
+    onSubmit: (creationType: SampleCreationType, numPerParent?: number) => void;
 }
 
 interface State {
     numPerParent: number;
-    creationType: CreationType;
+    creationType: SampleCreationType;
     submitting: boolean;
 }
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
     state: Readonly<State> = {
-        creationType: CreationType.Derivatives,
+        creationType: SampleCreationType.Derivatives,
         numPerParent: 1,
         submitting: false,
     };
@@ -44,7 +44,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         const { parentCount } = this.props;
         const { creationType, numPerParent } = this.state;
 
-        if (creationType == CreationType.PooledSamples)
+        if (creationType == SampleCreationType.PooledSamples)
             return null;
 
         return (
@@ -78,11 +78,11 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         return this.getOptionsToDisplay().length > 1;
     }
 
-    shouldRenderOption(option: CreationTypeModel) : boolean {
-        return !option.requiresMultipleParents || this.props.parentCount > 1;
+    shouldRenderOption(option: SampleCreationTypeModel) : boolean {
+        return this.props.parentCount >= option.minParentsPerSample;
     }
 
-    getOptionsToDisplay() : Array<CreationTypeModel> {
+    getOptionsToDisplay() : Array<SampleCreationTypeModel> {
         return this.props.options.filter(option => this.shouldRenderOption(option));
     }
 
@@ -114,7 +114,7 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
         const { submitting, creationType, numPerParent } = this.state;
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
-        const canSubmit = !submitting && (creationType == CreationType.PooledSamples || numPerParent > 0);
+        const canSubmit = !submitting && (creationType == SampleCreationType.PooledSamples || numPerParent > 0);
         const title = "Create Samples from Selected " + parentNoun;
         return (
             <Modal show={show} onHide={this.onCancel}>

@@ -31,7 +31,7 @@ import {
 } from '../../..';
 import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
-import {CreationType} from "../samples/SampleCreationTypeOption";
+import {SampleCreationType} from "../samples/SampleCreationTypeOption";
 
 export interface EntityInputProps {
     role: string;
@@ -228,7 +228,7 @@ export class EntityIdCreationModel extends Record({
     entityCount: 0,
     entityDataType: undefined,
     auditBehavior: undefined,
-    creationType: CreationType.Independents,
+    creationType: SampleCreationType.Independents,
     numPerParent: 1,
 }) {
     errors: any[];
@@ -244,7 +244,7 @@ export class EntityIdCreationModel extends Record({
     entityCount: number; // how many rows are in the grid
     entityDataType: EntityDataType; // target entity data type
     auditBehavior: AuditBehaviorTypes;
-    creationType: CreationType;
+    creationType: SampleCreationType;
     numPerParent: number;
 
     static revertParentInputSchema(inputColumn: QueryColumn): SchemaQuery {
@@ -521,7 +521,7 @@ export class EntityIdCreationModel extends Record({
                     }
                 }
             });
-            if (this.creationType == CreationType.Derivatives || this.creationType == CreationType.Aliquots) {
+            if (this.creationType == SampleCreationType.Derivatives || this.creationType == SampleCreationType.Aliquots) {
                 parentCols.forEach(parentCol => {
                     const parents : Array<any> = values.get(parentCol);
                     parents.forEach((parent) => {

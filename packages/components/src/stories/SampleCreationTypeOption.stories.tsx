@@ -1,5 +1,5 @@
 import {Meta, Story} from '@storybook/react/types-6-0';
-import {CreationType, SampleCreationTypeOption} from "../internal/components/samples/SampleCreationTypeOption";
+import {SampleCreationType, SampleCreationTypeOption} from "../internal/components/samples/SampleCreationTypeOption";
 import React from "react";
 
 export default {
@@ -8,7 +8,7 @@ export default {
 } as Meta;
 
 const option = {
-    type: CreationType.Derivatives,
+    type: SampleCreationType.Derivatives,
     description:"Create multiple output samples per parent.",
     requiresMultipleParents: false,
     iconUrl: 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png'

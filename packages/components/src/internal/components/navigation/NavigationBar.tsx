@@ -100,8 +100,8 @@ export const NavigationBar: FC<Props> = memo(props => {
                                 />
                             )}
                         </div>
-                        <div className="navbar-item pull-right">{productNav}</div>
                         <div className="navbar-item pull-right navbar-item-notification">{notifications}</div>
+                        <div className="navbar-item pull-right">{productNav}</div>
                         <div className="navbar-item pull-right hidden-xs">
                             {showSearchBox && <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} />}
                         </div>

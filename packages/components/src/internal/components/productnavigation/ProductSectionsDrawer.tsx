@@ -41,13 +41,13 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                     })
                 ];
 
-                modelSections.filter(modelSection => modelSection.sectionKey !== 'user')
+                modelSections.filter(modelSection => modelSection.key !== 'user')
                     .forEach(modelSection => {
                         menuSections.push(
                             new ProductSectionModel({
-                                key: modelSection.sectionKey,
+                                key: modelSection.key,
                                 label: modelSection.label,
-                                url: getProductSectionUrl(modelSection.productId, modelSection.sectionKey, project.path, isSameContainer),
+                                url: getProductSectionUrl(modelSection.productId, modelSection.key, project.path, isSameContainer),
                             })
                         );
                     });
@@ -87,13 +87,13 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
     );
 });
 
-function getProductSectionUrl(productId: string, sectionKey: string, containerPath: string, isSameContainer: boolean): string {
+function getProductSectionUrl(productId: string, key: string, containerPath: string, isSameContainer: boolean): string {
     // if the selected project is the current container and the section is for the same product we are already in, then keep the urls as route changes
     let url;
     if (isSameContainer && productId.toLowerCase() === ActionURL.getController().toLowerCase()) {
-        url = AppURL.create(sectionKey).toHref();
+        url = AppURL.create(key).toHref();
     } else {
-        url = createProductUrl(productId, undefined, AppURL.create(sectionKey), containerPath);
+        url = createProductUrl(productId, undefined, AppURL.create(key), containerPath);
     }
 
     return url;

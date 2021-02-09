@@ -379,7 +379,13 @@ import {
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
 } from './public/QueryModel/utils';
-import { confirmLeaveWhenDirty, withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
+import {
+    confirmLeaveWhenDirty,
+    InjectedRouteLeaveProps,
+    useRouteLeave,
+    withRouteLeave,
+    WrappedRouteLeaveProps,
+} from './internal/util/RouteLeave';
 import * as App from './internal/app';
 import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
@@ -716,7 +722,6 @@ export {
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
-    confirmLeaveWhenDirty,
     UserMenu, // Removed once Biologics home page no longer uses directly
     // notification related items
     NO_UPDATES_MESSAGE,
@@ -844,8 +849,11 @@ export {
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,
+    confirmLeaveWhenDirty,
+    InjectedRouteLeaveProps,
+    useRouteLeave,
     withRouteLeave,
-    RouteLeaveProps,
+    WrappedRouteLeaveProps,
     SchemaListing,
     SchemaListingPage,
     QueriesListing,

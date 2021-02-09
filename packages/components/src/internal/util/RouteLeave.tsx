@@ -5,23 +5,14 @@ export const CONFIRM_MESSAGE = 'You have unsaved changes that will be lost. Are 
 
 /**
  * @deprecated: use useRouteLeave or withRouteLeave instead
- * This function can be used as the callback for react-router's setRouteLeaveHook.  It should be preferred
- * over a callback that simply returns the confirm message because with react-router v3.x, the URL route
- * will have already been changed by the time this confirm is shown and will not be reset if the user does not confirm.
- * If the user tries to click on the initial link again after canceling, nothing will happen because the URL
- * in the browser will not change. (Issue 39633).
- * See also https://stackoverflow.com/questions/32841757/detecting-user-leaving-page-with-react-router
- *
- * TODO: Seems like there are some additional tools in newer versions of react-router:
- *  https://stackoverflow.com/questions/62792342/in-react-router-v6-how-to-check-form-is-dirty-before-leaving-page-route
+ * This function can be used as the callback for react-router's setRouteLeaveHook. See notes in useRouteLeave re: Issue
+ * 42101 in order to understand the caveats that come with using this function.
  */
 export function confirmLeaveWhenDirty(): boolean {
     const result = confirm(CONFIRM_MESSAGE);
 
     if (!result) {
-        // Issue 42101: the browser changes the URL before onRouteLeave is called, so if the user cancels
-        // we need to go back to the URL we were just at.
-        window.history.forward();
+        window.history.back();
     }
 
     return result;
@@ -70,10 +61,17 @@ export const useRouteLeave = (
     const onRouteLeave = useCallback(() => {
         if (isDirty.current === true) {
             const result = confirm(confirmMessage);
+
             if (!result) {
                 // Issue 42101: the browser changes the URL before onRouteLeave is called, so if the user cancels
-                // we need to go back to the URL we were just at.
-                router.goForward();
+                // we need to go back to the URL we were just at. However we cannot at the time determine if the
+                // user clicked a link or hit the back button. If the user clicks a link the browser adds to history
+                // and the appropriate action is to go back. If the user hits the back button, the appropriate
+                // action is to go forward. Unfortunately since we have no way of knowing what the user just did we
+                // have to choose between breaking all links, or breaking the back button. We chose to break the back
+                // button. The solution appears to be either convert all anchor tags to Link components, or to upgrade
+                // React Router to 4 or beyond.
+                router.goBack();
                 return false;
             }
         }

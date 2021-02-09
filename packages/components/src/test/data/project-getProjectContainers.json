@@ -20,6 +20,28 @@
     },
     "parentPath" : "/",
     "type" : "project",
+    "title" : "home",
+    "folderType" : "Collaboration",
+    "parentId" : "3BCE26D4-1622-1035-AF26-843B99F37724",
+    "path" : "/home",
+    "startUrl" : "/labkey/home/project-begin.view?",
+    "isWorkbook" : false,
+    "children" : [ ],
+    "sortOrder" : 0,
+    "hasRestrictedActiveModule" : false,
+    "name" : "home",
+    "isContainerTab" : false,
+    "iconHref" : "/labkey/_icons/icon_folder2.png",
+    "id" : "3BCE26D9-1622-1035-AF26-843B99F37724",
+    "activeModules" : [ "Wiki", "simpletest", "Issues", "Search", "FileContent", "Experiment", "Query", "Pipeline", "linkedschematest", "Internal", "Demo", "API", "Announcements", "Core" ]
+  }, {
+    "formats" : {
+      "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+      "numberFormat" : null,
+      "dateFormat" : "yyyy-MM-dd"
+    },
+    "parentPath" : "/",
+    "type" : "project",
     "title" : "Example Project",
     "folderType" : "Collaboration",
     "parentId" : "7aacb1a7-040d-1037-88ec-f467162bb89c",

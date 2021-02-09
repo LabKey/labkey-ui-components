@@ -1,5 +1,5 @@
 .product-navigation-container {
-    width: 400px;
+    width: 400px; // TODO set width of 270px for ProductLKSDrawer and ProductSectionsDrawer
 
     .product-navigation-header {
         color: $brand-primary; // TODO should this match with the notification menu in SM?
@@ -18,7 +18,7 @@
         border-radius: 0 0 5px 5px;
 
         & > li {
-            color: $gray-dark;
+            color: $text-color;
             border-top: 1px solid $gray-lighter;
             padding: 15px 0;
             cursor: pointer;
@@ -61,7 +61,7 @@
             width: 100%;
             padding: 8px 10px 8px 15px;
             font-size: 14px;
-            color: $gray-dark;
+            color: $text-color;
             cursor: pointer;
 
             .nav-icon {
@@ -74,6 +74,36 @@
             &:hover, &:hover .nav-icon {
                 background-color: $brand-primary;
                 color: $white;
+            }
+        }
+
+        .container-item {
+            display: block;
+            margin: 0 15px;
+            padding: 15px 0 5px 0;
+            font-size: 18px;
+            color: $brand-primary;
+            border-bottom: solid 3px $gray-border;
+
+            .container-icon {
+                padding-right: 5px;
+            }
+
+            &:hover {
+                color: $link-hover-color;
+            }
+        }
+
+        .container-tabs {
+            padding: 15px;
+
+            .empty {
+                color: $gray-light;
+            }
+
+            .how-to {
+                display: block;
+                padding-top: 8px;
             }
         }
 

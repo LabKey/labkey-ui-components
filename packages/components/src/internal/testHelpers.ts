@@ -32,12 +32,14 @@ export function initMockServerContext(context: Partial<LabKey>): void {
 export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void => {
     initMockServerContext({
         container: {
+            id: "testContainerEntityId",
+            title: 'Test Container',
+            path: 'testContainer',
             formats: {
                 dateFormat: 'yyyy-MM-dd',
                 dateTimeFormat: 'yyyy-MM-dd HH:mm',
                 numberFormat: null,
             },
-            path: 'testContainer',
             activeModules: ['Core', 'Query'],
         },
         contextPath: 'labkey',

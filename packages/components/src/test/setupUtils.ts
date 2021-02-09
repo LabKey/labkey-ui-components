@@ -30,6 +30,7 @@ export function notificationInit() {
         },
     };
     LABKEY.container = {
+        title: 'Test Container',
         path: "testContainer",
         formats: {
             dateTimeFormat: 'yyyy-MM-dd HH:mm',

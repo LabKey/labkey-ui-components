@@ -30,11 +30,15 @@ export function createProductUrlFromParts(
 export function createProductUrl(
     urlProductId: string,
     currentProductId: string,
-    appUrl: string | AppURL
+    appUrl: string | AppURL,
+    containerPath?: string
 ): string | AppURL {
     if (urlProductId && (!currentProductId || urlProductId.toLowerCase() !== currentProductId.toLowerCase())) {
         const href = appUrl instanceof AppURL ? appUrl.toHref() : appUrl;
-        return buildURL(urlProductId.toLowerCase(), 'app.view', undefined, { returnUrl: false }) + href;
+        return buildURL(urlProductId.toLowerCase(), 'app.view', undefined, {
+            returnUrl: false,
+            container: containerPath, // if undefined, buildURL will use current container from server context
+        }) + href;
     } else {
         return appUrl;
     }

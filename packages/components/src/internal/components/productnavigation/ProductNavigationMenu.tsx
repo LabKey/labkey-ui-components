@@ -15,7 +15,7 @@ import { ProductNavigationHeader } from "./ProductNavigationHeader";
 
 export const LKS_PRODUCT_ID = 'LabKeyServer';
 
-interface ProductNavigationMenuProps {}
+export interface ProductNavigationMenuProps {}
 
 interface State {
     error: string;

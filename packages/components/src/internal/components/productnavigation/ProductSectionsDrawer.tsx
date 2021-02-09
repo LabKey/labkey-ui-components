@@ -14,6 +14,9 @@ const PRODUCT_ID_MAP = {
     [SAMPLE_MANAGER_PRODUCT_ID.toLowerCase()]: List.of(SAMPLE_MANAGER_PRODUCT_ID, FREEZER_MANAGER_PRODUCT_ID),
 };
 
+// special case list of section keys to skip for this menu
+const SECTION_KEYS_TO_SKIP = ['user', 'biologicsWorkflow'];
+
 interface ProductAppsDrawerProps {
     product: ProductModel;
     project: Container;
@@ -41,7 +44,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                     })
                 ];
 
-                modelSections.filter(modelSection => modelSection.key !== 'user')
+                modelSections.filter(modelSection => SECTION_KEYS_TO_SKIP.indexOf(modelSection.key) === -1)
                     .forEach(modelSection => {
                         menuSections.push(
                             new ProductSectionModel({

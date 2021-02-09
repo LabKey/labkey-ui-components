@@ -93,7 +93,7 @@
   "key" : "samples",
   "label" : "Sample Types",
   "items" : [ ],
-  "productId" : null,
+  "productId" : "Biologics",
   "totalCount" : 0,
   "itemLimit" : 0,
   "sectionKey" : "samples"
@@ -102,7 +102,7 @@
   "key" : "assays",
   "label" : "Assays",
   "items" : [ ],
-  "productId" : null,
+  "productId" : "Biologics",
   "totalCount" : 1,
   "itemLimit" : 0,
   "sectionKey" : "assays"

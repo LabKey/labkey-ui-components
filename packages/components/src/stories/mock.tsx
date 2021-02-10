@@ -112,6 +112,7 @@ import getRegisteredProductsInfo from '../test/data/product-getRegisteredProduct
 import getProjectContainersInfo from '../test/data/project-getProjectContainers.json';
 import getLKSMMenuSectionsInfo from '../test/data/product-getMenuSections-lksm.json';
 import getLKBMenuSectionsInfo from '../test/data/product-getMenuSections-lkb.json';
+import getFolderTabsInfo from '../test/data/admin-getFolderTabs.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -365,6 +366,8 @@ export function initMocks() {
     mock.post(/.*getModules.*/, jsonResponse(getModulesInfo));
 
     mock.post(/.*getRegisteredProducts.*/, jsonResponse(getRegisteredProductsInfo));
+
+    mock.post(/.*getFolderTabs.*/, jsonResponse(getFolderTabsInfo));
 
     mock.get(/.*menuSections.*/, (req, res) => {
         const queryParams = req.url().query;

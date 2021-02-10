@@ -3,7 +3,7 @@ import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
 import { Container, LoadingSpinner, AppURL, createProductUrl, ProductMenuModel } from '../../..';
-import { FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app';
+import { FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
 
 import { ProductModel, ProductSectionModel } from './model';
 

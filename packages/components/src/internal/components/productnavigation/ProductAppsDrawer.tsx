@@ -10,13 +10,12 @@ import { ProductModel } from './model';
 
 interface ProductAppsDrawerProps {
     products: ProductModel[];
-    projects: Container[];
     productProjectMap: {[key: string]: Container[]};
     onClick: (productId: string, project?: Container) => void;
 }
 
 export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { products, projects, productProjectMap, onClick } = props;
+    const { products, productProjectMap, onClick } = props;
 
     return (
         <>

@@ -33,7 +33,8 @@ type GetSetIsDirty = [() => boolean, (dirty: boolean) => void];
 
 /**
  * The useRouteLeave hook is useful if you want to display a confirmation dialog when the user tries to navigate away
- * from a "dirty" form or page. The router and routes props come from the WithRouterProps interface, confirmMessage
+ * from a "dirty" form or page. This hook ties into both the React Router RouteLeave event, and the browser beforeunload
+ * event. This allows us to prevent navigation via back button, link clicking, or browser window/tab closing.
  * @param router: InjectedRouter from WithRouterProps
  * @param routes: PlainRoute[] from withRouterProps
  * @param confirmMessage: The confirm message you want to display to the user, this message is only displayed when

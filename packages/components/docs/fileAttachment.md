@@ -5,7 +5,7 @@ via file selection or drag & drop.
 Users can then utilize our WebDAV API to upload or retrieve existing uploads -
 example [here](./webdav.md).
 
-## [FileAttachmentForm](../src/public/files/FileAttachmentForm.ts#L71)
+## [FileAttachmentForm](../src/public/files/FileAttachmentForm.tsx#L71)
 ```js
 
 //imports

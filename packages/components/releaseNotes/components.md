@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.0.0
-*Released*: ? February 2021
+*Released*: 10 February 2021
 * Fix issue in URLResolver causing next to be called twice
 * Add useRouteLeave hook
 * withRouteLeave now uses the useRouteLeave hook

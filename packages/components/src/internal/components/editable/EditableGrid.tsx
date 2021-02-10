@@ -144,6 +144,12 @@ export interface EditableColumnMetadata {
     filteredLookupKeys?: List<any>;
 }
 
+export interface BulkAddData {
+    pivotData?: Record<string, Array<string>>,
+    totalItems?: number,
+    validationMsg?: ReactNode,
+}
+
 export interface EditableGridProps {
     allowAdd?: boolean;
     allowBulkAdd?: boolean;
@@ -151,6 +157,7 @@ export interface EditableGridProps {
     allowBulkUpdate?: boolean;
     allowFieldDisable?: boolean;
     bordered?: boolean;
+    onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData
     bulkAddProps?: Partial<QueryInfoFormProps>;
     bulkUpdateProps?: Partial<QueryInfoFormProps>;
     condensed?: boolean;
@@ -696,66 +703,62 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         }
     }
 
-    restoreBulkInsertData(model: QueryGridModel, data: Map<string, any>): Map<string, any> {
+    static restoreBulkInsertData(model: QueryGridModel, data: Map<string, any>): Map<string, any> {
         const allInsertCols = OrderedMap<string, any>().asMutable();
         model.getInsertColumns().forEach(col => allInsertCols.set(col.name, undefined));
         return allInsertCols.merge(data).asImmutable();
     }
 
     bulkAdd = (data: OrderedMap<string, any>): Promise<any> => {
-        const { addControlProps, bulkAddProps } = this.props;
+        const { addControlProps, bulkAddProps, onBulkAdd  } = this.props;
         const { nounSingular, nounPlural } = addControlProps;
         const model = this.getModel(this.props);
 
         const numItems = data.get('numItems');
-        let updatedData = data.delete('numItems');
-        let totalItems = 0;
-        const creationType = data.get('creationType');
-        updatedData = data.delete('creationType');
-        const splitSampleParents = creationType && creationType !== SampleCreationType.PooledSamples;
 
-        let sampleParents: Record<string, Array<string>> = {};
-        if (splitSampleParents && bulkAddProps.creationTypeOptions?.length > 0)
-        {
-            data.keySeq().forEach((key, index) => {
-                if (key.indexOf("MaterialInputs/") === 0)
-                {
-                    if (data.get(key))
-                    {
-                        let parents = data.get(key);
-                        if (parents.length > 0)
-                        {
-                            sampleParents[key] = typeof parents[0] === 'string' ? parents[0].split(",") : parents;
-                            totalItems += numItems * sampleParents[key].length;
-                        }
-                    }
-                }
-            });
-        }
-        if (totalItems === 0)
-            totalItems = numItems;
-
-        if (numItems) {
-            if (bulkAddProps.columnFilter) {
-                updatedData = this.restoreBulkInsertData(model, updatedData);
-            }
-            if (splitSampleParents && totalItems > 0) {
-                addRowsPerParent(model, numItems, sampleParents, updatedData);
-            }
-            else {
-                addRows(model, numItems, updatedData);
-            }
-            this.onRowCountChange();
-            return new Promise(resolve => {
-                resolve({
-                    success: true,
-                    message: 'Added ' + totalItems + ' ' + (totalItems > 1 ? nounPlural : nounSingular),
+        if (!numItems) {
+            return new Promise((resolve, reject) => {
+                reject({
+                    exception: 'Quantity unknown.  No ' + nounPlural + ' added.',
                 });
             });
         }
-        return new Promise((resolve, reject) => {
-            reject({
-                exception: 'Quantity unknown.  No ' + nounPlural + ' added.',
+
+        let pivotData: Record<string, Array<string>> = {};
+        let totalItems = 0;
+        if (onBulkAdd) {
+            const bulkAddData  = onBulkAdd(data);
+            if (bulkAddData.validationMsg) {
+                return new Promise((resolve, reject) => {
+                    reject({
+                        exception: bulkAddData.validationMsg,
+                    });
+                });
+            }
+            totalItems = bulkAddData.totalItems;
+            pivotData = bulkAddData.pivotData;
+        }
+
+        let updatedData = data.delete('numItems');
+        updatedData = data.delete('creationType');
+
+        if (totalItems === 0)
+            totalItems = numItems;
+
+        if (bulkAddProps.columnFilter) {
+            updatedData = EditableGrid.restoreBulkInsertData(model, updatedData);
+        }
+        if (Object.keys(pivotData).length > 0) {
+            addRowsPerParent(model, numItems, pivotData, updatedData);
+        }
+        else {
+            addRows(model, numItems, updatedData);
+        }
+        this.onRowCountChange();
+        return new Promise(resolve => {
+            resolve({
+                success: true,
+                message: 'Added ' + totalItems + ' ' + (totalItems > 1 ? nounPlural : nounSingular),
             });
         });
     };

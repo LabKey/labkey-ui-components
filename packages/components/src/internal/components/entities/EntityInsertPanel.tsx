@@ -83,6 +83,7 @@ import {
 
 import { getEntityTypeData } from './actions';
 import {SampleCreationTypeModel} from "../samples/SampleCreationTypeOption";
+import { BulkAddData } from "../editable/EditableGrid";
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -92,7 +93,7 @@ class EntityGridLoader implements IGridLoader {
     }
 
     fetch(gridModel: QueryGridModel): Promise<IGridResponse> {
-        const data = this.model.getGridValues(gridModel.queryInfo);
+        const data = this.model.getGridValues(gridModel.queryInfo, true);
 
         return Promise.resolve({
             data,
@@ -118,6 +119,7 @@ interface OwnProps {
     entityDataType: EntityDataType;
     parentDataTypes?: List<EntityDataType>;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
+    onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData
     creationTypeOptions?: Array<SampleCreationTypeModel>;
     importHelpLinkNode: ReactNode;
     auditBehavior?: AuditBehaviorTypes;
@@ -795,7 +797,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
         if (!queryGridModel || !queryGridModel.queryInfo) return null;
 
         // format/process parent column and values, for now, only parents are populated
-        const allRows = insertModel.getGridValues(queryGridModel.queryInfo);
+        const allRows = insertModel.getGridValues(queryGridModel.queryInfo, false);
 
         if (allRows.size > 0) {
             let valueMap = Map<string, any>();
@@ -822,7 +824,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel } = this.state;
-        const { entityDataType, creationTypeOptions } = this.props;
+        const { entityDataType, creationTypeOptions, onBulkAdd } = this.props;
 
         const columnFilter = colInfo => {
             return insertColumnFilter(colInfo) && colInfo['fieldKey'] !== entityDataType.uniqueFieldKey;
@@ -890,6 +892,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                             striped={true}
                             bulkAddText="Bulk Insert"
                             bulkAddProps={bulkAddProps}
+                            onBulkAdd={onBulkAdd}
                             bulkUpdateProps={bulkUpdateProps}
                             bulkRemoveText={'Remove ' + this.capNounPlural}
                             columnMetadata={columnMetadata}

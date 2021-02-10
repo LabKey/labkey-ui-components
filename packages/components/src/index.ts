@@ -196,6 +196,7 @@ import {
     SamplesResolver,
 } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
+import { BulkAddData } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
@@ -514,6 +515,7 @@ export {
     EditableColumnMetadata,
     EditorModel,
     cancelEvent,
+    BulkAddData,
     // url and location related items
     AppURL,
     Location,

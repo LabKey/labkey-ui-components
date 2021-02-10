@@ -1,19 +1,16 @@
 import React, { FC, memo, PureComponent, ReactNode, useCallback, useState } from 'react';
 import { Security } from '@labkey/api';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
-import { Alert } from '../base/Alert';
-import { Container } from '../base/models/Container';
-import { naturalSortByProperty } from '../../../public/sort';
+import { LoadingSpinner, Alert, Container, naturalSortByProperty } from '../../..';
+import { LKS_PRODUCT_ID } from '../../app/constants';
+
 import { getRegisteredProducts } from './actions';
 import { ProductModel } from './model';
 import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductProjectsDrawer } from './ProductProjectsDrawer';
 import { ProductSectionsDrawer } from './ProductSectionsDrawer';
 import { ProductLKSDrawer } from './ProductLKSDrawer';
-import { ProductNavigationHeader } from "./ProductNavigationHeader";
-
-export const LKS_PRODUCT_ID = 'LabKeyServer';
+import { ProductNavigationHeader } from './ProductNavigationHeader';
 
 export interface ProductNavigationMenuProps {}
 

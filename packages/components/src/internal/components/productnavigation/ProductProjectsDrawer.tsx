@@ -1,6 +1,7 @@
 import React, { FC, memo } from 'react';
 
-import { Container } from '../base/models/Container';
+import { Container } from '../../..';
+
 import { ProductModel } from './model';
 
 interface ProductAppsDrawerProps {

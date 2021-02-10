@@ -1,5 +1,6 @@
 import { immerable } from 'immer';
-import { AppURL } from "../../url/AppURL";
+
+import { AppURL } from '../../..';
 
 export class ProductModel {
     [immerable] = true;

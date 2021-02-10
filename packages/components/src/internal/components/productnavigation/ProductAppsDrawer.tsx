@@ -2,10 +2,11 @@ import React, { FC, memo } from 'react';
 import { getServerContext, Utils } from '@labkey/api';
 import { ICON_URL } from "../../../stories/mock"; // TODO fix me
 
+import { Container } from '../../..';
+import { LKS_PRODUCT_ID } from '../../app/constants';
+
 import { ProductAppMenuItem } from './ProductAppMenuItem';
-import { Container } from '../base/models/Container';
 import { ProductModel } from './model';
-import { LKS_PRODUCT_ID } from './ProductNavigationMenu';
 
 interface ProductAppsDrawerProps {
     products: ProductModel[];

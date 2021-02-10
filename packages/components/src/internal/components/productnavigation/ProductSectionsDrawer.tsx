@@ -1,13 +1,11 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { List } from 'immutable';
-import { ActionURL, getServerContext } from "@labkey/api";
+import { ActionURL, getServerContext } from '@labkey/api';
 
-import { Container } from '../base/models/Container';
+import { Container, LoadingSpinner, AppURL, createProductUrl, ProductMenuModel } from '../../..';
+import { FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app';
+
 import { ProductModel, ProductSectionModel } from './model';
-import { ProductMenuModel } from "../navigation/model";
-import { LoadingSpinner } from "../base/LoadingSpinner";
-import { AppURL, createProductUrl } from "../../url/AppURL";
-import { FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from "../../app/constants";
 
 // special case so that we request the LKFM section with the LKSM product
 const PRODUCT_ID_MAP = {

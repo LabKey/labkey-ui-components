@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 
-import { LKS_PRODUCT_ID } from "./ProductNavigationMenu";
+import { LKS_PRODUCT_ID } from '../../app/constants';
 
 interface ProductNavigationHeaderProps {
     title: string;

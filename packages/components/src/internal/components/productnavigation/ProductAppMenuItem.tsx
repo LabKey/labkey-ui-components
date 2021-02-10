@@ -13,17 +13,13 @@ export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
     return (
         <li onClick={onClick}>
             <div className="product-icon">
-                <img src={iconUrl} height="40px" width="40px" />
+                <img src={iconUrl} alt="Product icon" height="40px" width="40px" />
             </div>
             <div className="nav-icon">
                 <i className="fa fa-chevron-right" />
             </div>
-            <div className="product-title">
-                {title}
-            </div>
-            <div className="product-subtitle">
-                {subtitle}
-            </div>
+            <div className="product-title">{title}</div>
+            <div className="product-subtitle">{subtitle}</div>
         </li>
     );
 });

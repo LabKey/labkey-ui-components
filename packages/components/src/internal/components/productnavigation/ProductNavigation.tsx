@@ -1,7 +1,7 @@
 import React, { FC, memo, useState } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
-import { ProductNavigationMenu } from "./ProductNavigationMenu";
+import { ProductNavigationMenu } from './ProductNavigationMenu';
 
 interface ProductNavigationProps {}
 

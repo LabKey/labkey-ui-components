@@ -4,6 +4,7 @@
  */
 import { AppURL } from '../..';
 
+export const LKS_PRODUCT_ID = 'LabKeyServer';
 export const BIOLOGICS_PRODUCT_ID = 'biologics';
 export const SAMPLE_MANAGER_PRODUCT_ID = 'sampleManager';
 export const FREEZER_MANAGER_PRODUCT_ID = 'freezerManager';

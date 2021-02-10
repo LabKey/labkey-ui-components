@@ -521,7 +521,7 @@ export class EntityIdCreationModel extends Record({
                     }
                 }
             });
-            if (this.creationType == SampleCreationType.Derivatives || this.creationType == SampleCreationType.Aliquots) {
+            if (this.creationType && this.creationType != SampleCreationType.PooledSamples) {
                 parentCols.forEach(parentCol => {
                     const parents : Array<any> = values.get(parentCol);
                     parents.forEach((parent) => {

@@ -3,7 +3,7 @@ import classNames from "classnames";
 import {SVGIcon, Theme} from "../base/SVGIcon";
 
 export enum SampleCreationType {
-    Independents = "New Samples",
+    Independents = "New samples",
     Derivatives = "Derivatives",
     PooledSamples = "Pooled Samples",
     Aliquots = "Aliquots"
@@ -12,9 +12,12 @@ export enum SampleCreationType {
 export interface SampleCreationTypeModel {
     type: SampleCreationType,
     description?: string,
+    disabledDescription?: string,
     minParentsPerSample: number,
     iconSrc?: string,
-    iconUrl?: string
+    iconUrl?: string,
+    disabled?: boolean,
+    selected?: boolean,
 }
 
 export const INDEPENDENT_SAMPLE_CREATION : SampleCreationTypeModel = {
@@ -22,9 +25,17 @@ export const INDEPENDENT_SAMPLE_CREATION : SampleCreationTypeModel = {
     minParentsPerSample: 0,
 }
 
+export const CHILD_SAMPLE_CREATION : SampleCreationTypeModel = {
+    type: SampleCreationType.Independents,
+    description: "Create multiple output samples per parent.",
+    minParentsPerSample: 1,
+    iconSrc: 'derivatives'
+};
+
 export const DERIVATIVE_CREATION : SampleCreationTypeModel = {
     type: SampleCreationType.Derivatives,
     description: "Create multiple output samples per parent.",
+    disabledDescription: "Only one parent sample type is allowed when creating derivative samples.",
     minParentsPerSample: 1,
     iconSrc: 'derivatives'
 };

@@ -68,8 +68,10 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
                     text = option.type + ' per parent';
                 options.push({
                     value: option.type,
-                    description: option.description,
-                    label: option.type
+                    description: option.disabled && option.disabledDescription ? option.disabledDescription : option.description,
+                    label: option.type,
+                    disabled: option.disabled,
+                    selected: option.selected,
                 });
             });
         }

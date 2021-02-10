@@ -75,6 +75,7 @@ import {
     EntityDataType,
     EntityIdCreationModel,
     EntityInsertPanelTabs,
+    EntityParentType,
     EntityTypeOption,
     IEntityTypeOption,
     IParentOption,
@@ -116,6 +117,7 @@ interface OwnProps {
     nounPlural: string;
     entityDataType: EntityDataType;
     parentDataTypes?: List<EntityDataType>;
+    onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
     creationTypeOptions?: Array<SampleCreationTypeModel>;
     importHelpLinkNode: ReactNode;
     auditBehavior?: AuditBehaviorTypes;
@@ -442,13 +444,18 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                     };
                 },
                 () => {
+                    if (this.props.onParentChange) {
+                        this.props.onParentChange(updatedModel.entityParents);
+                    }
                     if (column && existingParent) {
                         if (existingParent.query !== undefined) {
                             changeColumn(queryGridModel, existingParent.createColumnName(), column);
                         } else {
                             const columnMap = OrderedMap<string, QueryColumn>();
                             let fieldKey;
-                            if (existingParent.index === 1) fieldKey = entityDataType.uniqueFieldKey;
+                            if (existingParent.index === 1)  {
+                                fieldKey = entityDataType.uniqueFieldKey;
+                            }
                             else {
                                 const definedParents = updatedModel
                                     .getParentEntities(combineParentTypes, queryName)
@@ -484,6 +491,9 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                 };
             },
             () => {
+                if (this.props.onParentChange) {
+                    this.props.onParentChange(updatedModel.entityParents);
+                }
                 removeColumn(this.getQueryGridModel(), parentColumnName);
             }
         );

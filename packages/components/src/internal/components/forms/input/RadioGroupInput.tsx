@@ -8,6 +8,8 @@ export interface RadioGroupOption {
     value: string
     label: ReactNode
     description?: ReactNode
+    disabled?: boolean
+    selected?: boolean
 }
 
 interface Props {
@@ -29,7 +31,18 @@ interface State {
 }
 
 class RadioGroupInputImpl extends PureComponent<Props, State> {
-    state: Readonly<State> = { selectedValue: undefined }
+
+    constructor(props: Props) {
+        super(props);
+
+        const selected = props.options.find((option) => option.selected)
+        this.state = {
+            selectedValue: selected?.value
+        }
+        if (selected?.value && props.formsy && Utils.isFunction(props.setValue)) {
+            this.props.setValue(selected.value);
+        }
+    }
 
     onValueChange = (evt) => {
         const { value } = evt.target;
@@ -55,12 +68,13 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
                 inputs.push((
                     <div key={option.value}>
                         <input
-                            checked={selected}
+                            checked={selected && !option.disabled}
                             className={""}
                             type="radio"
                             name="creationType"
                             value={option.value}
                             onChange={this.onValueChange}
+                            disabled={option.disabled}
                         /> {option.label}
                         {option.description && (
                             <LabelHelpTip key={option.value + "_help"}>

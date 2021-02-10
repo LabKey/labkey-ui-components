@@ -1,6 +1,6 @@
 import React from "react";
-import {Button, FormControl, Modal} from "react-bootstrap";
-import {MAX_EDITABLE_GRID_ROWS} from "../../../index";
+import { Button, FormControl, Modal } from "react-bootstrap";
+import { MAX_EDITABLE_GRID_ROWS } from "../../../index";
 import {
     SampleCreationType,
     SampleCreationTypeModel,
@@ -25,11 +25,16 @@ interface State {
 
 export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
-    state: Readonly<State> = {
-        creationType: SampleCreationType.Derivatives,
-        numPerParent: 1,
-        submitting: false,
-    };
+    constructor(props: Props) {
+        super(props);
+
+        props.options.find(option => option.selected);
+        this.state = {
+            creationType: props.options.find(option => option.selected)?.type || props.options[0].type,
+            numPerParent: 1,
+            submitting: false,
+        }
+    }
 
     onCancel = () => {
         this.props.onCancel();

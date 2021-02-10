@@ -712,7 +712,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         let totalItems = 0;
         const creationType = data.get('creationType');
         updatedData = data.delete('creationType');
-        const splitSampleParents = (creationType == SampleCreationType.Derivatives || creationType === SampleCreationType.Aliquots);
+        const splitSampleParents = creationType && creationType !== SampleCreationType.PooledSamples;
 
         let sampleParents: Record<string, Array<string>> = {};
         if (splitSampleParents && bulkAddProps.creationTypeOptions?.length > 0)
@@ -786,7 +786,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                     schemaQuery={model.queryInfo.schemaQuery}
                     title={this.props.bulkAddProps && this.props.bulkAddProps.title}
                     header={this.renderBulkCreationHeader()}
-                    creationTypeOptions={this.props.bulkAddProps ? this.props.bulkAddProps.creationTypeOptions : null}
+                    creationTypeOptions={this.props.bulkAddProps?.creationTypeOptions}
                 />
             )
         );

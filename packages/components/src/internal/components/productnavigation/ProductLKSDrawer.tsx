@@ -3,7 +3,7 @@ import { getServerContext } from '@labkey/api';
 
 import { getHelpLink, LoadingSpinner, Alert, Container, buildURL } from '../../..';
 
-import { ContainerTabModel } from './model';
+import { ContainerTabModel } from './models';
 import { getContainerTabs } from './actions';
 
 interface ProductLKSDrawerProps {

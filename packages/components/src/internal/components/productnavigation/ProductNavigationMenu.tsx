@@ -5,7 +5,7 @@ import { LoadingSpinner, Alert, Container, naturalSortByProperty } from '../../.
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
 import { getRegisteredProducts } from './actions';
-import { ProductModel } from './model';
+import { ProductModel } from './models';
 import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductProjectsDrawer } from './ProductProjectsDrawer';
 import { ProductSectionsDrawer } from './ProductSectionsDrawer';

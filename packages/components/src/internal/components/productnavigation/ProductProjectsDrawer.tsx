@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 
 import { Container } from '../../..';
 
-import { ProductModel } from './model';
+import { ProductModel } from './models';
 
 interface ProductAppsDrawerProps {
     product: ProductModel;

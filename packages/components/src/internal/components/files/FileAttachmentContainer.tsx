@@ -20,11 +20,11 @@ import { Utils } from '@labkey/api';
 
 import { Map, Set } from 'immutable';
 
+import { FileSizeLimitProps } from '../../..';
+
 import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
 import { ALL_FILES_LIMIT_KEY } from './models';
-import { FileSizeLimitProps } from "../../..";
-
 
 interface FileAttachmentContainerProps {
     acceptedFormats?: string; // comma separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -333,7 +333,11 @@ export class FileAttachmentContainer extends React.Component<
 
         return (
             <>
-                <div className={classNames('file-upload--container', hideFileUpload ? 'hidden' : 'block', {'file-upload--container--compact': compact})}>
+                <div
+                    className={classNames('file-upload--container', hideFileUpload ? 'hidden' : 'block', {
+                        'file-upload--container--compact': compact,
+                    })}
+                >
                     <label
                         className={classNames({
                             'file-upload--label': !compact,

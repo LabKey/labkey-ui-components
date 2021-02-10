@@ -2,7 +2,7 @@ import React from 'react';
 import { List, Map } from 'immutable';
 
 import { Alert, Grid, GridColumn, InferDomainResponse } from '../../..';
-import {FileGridPreviewProps} from "../../../public/files/models";
+import { FileGridPreviewProps } from '../../../public/files/models';
 
 type Props = FileGridPreviewProps & {
     data: List<Map<string, any>>;
@@ -14,7 +14,7 @@ export class FilePreviewGrid extends React.Component<Props, any> {
     static defaultProps = {
         header: 'File preview:',
         msg: '',
-        errorStyle: 'warning'
+        errorStyle: 'warning',
     };
 
     render() {

@@ -4,7 +4,7 @@
  */
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 
-import {FileSizeLimitProps, QueryColumn} from '../../..';
+import { FileSizeLimitProps, QueryColumn } from '../../..';
 
 import { ALL_FILES_LIMIT_KEY } from './models';
 

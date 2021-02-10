@@ -1,4 +1,5 @@
 import { fromJS, List, Record } from 'immutable';
+
 import { QueryColumn } from '../index';
 
 export class InferDomainResponse extends Record({
@@ -18,7 +19,7 @@ export class InferDomainResponse extends Record({
             }
 
             if (rawModel.fields) {
-                fields = List(rawModel.fields.map(field => QueryColumn.create(field)));
+                fields = List(rawModel.fields.map(QueryColumn.create));
             }
         }
 

@@ -3,6 +3,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Add SampleCreationTypeModal for choosing aliquots, derivatives, or pooled samples
+* Add RadioGroupInput component for use in (and out of) Formsy forms
+* Separate QueryInfoQuantity component from QueryInfoForm for display of quantity header
 
 ### version 1.19.0
 *Released*: 3 February 2021

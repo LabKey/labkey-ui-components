@@ -31,7 +31,7 @@ import {
 } from '../../..';
 import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
-import {SampleCreationType} from "../samples/SampleCreationTypeOption";
+import { SampleCreationType } from "../samples/SampleCreationTypeOption";
 
 export interface EntityInputProps {
     role: string;
@@ -228,7 +228,7 @@ export class EntityIdCreationModel extends Record({
     entityCount: 0,
     entityDataType: undefined,
     auditBehavior: undefined,
-    creationType: SampleCreationType.Independents,
+    creationType: undefined,
     numPerParent: 1,
 }) {
     errors: any[];

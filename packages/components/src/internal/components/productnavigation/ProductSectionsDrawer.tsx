@@ -3,17 +3,9 @@ import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
 import { Container, LoadingSpinner, AppURL, createProductUrl, ProductMenuModel, Alert } from '../../..';
-import { FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
 
-import { ProductModel, ProductSectionModel } from './model';
-
-// special case so that we request the LKFM section with the LKSM product
-const PRODUCT_ID_MAP = {
-    [SAMPLE_MANAGER_PRODUCT_ID.toLowerCase()]: List.of(SAMPLE_MANAGER_PRODUCT_ID, FREEZER_MANAGER_PRODUCT_ID),
-};
-
-// special case list of section keys to skip for this menu
-const SECTION_KEYS_TO_SKIP = ['user', 'biologicsWorkflow'];
+import { ProductModel, ProductSectionModel } from './models';
+import { PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP } from './constants';
 
 interface ProductAppsDrawerProps {
     product: ProductModel;
@@ -30,7 +22,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         const model = new ProductMenuModel({
             currentProductId: product.productId,
             userMenuProductId: product.productId,
-            productIds: PRODUCT_ID_MAP[product.productId.toLowerCase()] ?? List.of(product.productId),
+            productIds: PRODUCT_ID_SECTION_QUERY_MAP[product.productId.toLowerCase()] ?? List.of(product.productId),
         });
 
         model.getMenuSections(0)

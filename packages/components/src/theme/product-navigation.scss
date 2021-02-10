@@ -51,6 +51,13 @@
                 background-color: $brand-primary;
                 color: $white;
             }
+
+            .product-icon .icon-primary, &:hover .product-icon .icon-alt {
+                display: inline;
+            }
+            .product-icon .icon-alt, &:hover .product-icon .icon-primary {
+                display: none;
+            }
         }
 
         & > li:first-child {

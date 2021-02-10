@@ -1,12 +1,15 @@
 import React, { FC, memo } from 'react';
 import { getServerContext, Utils } from '@labkey/api';
-import { ICON_URL } from "../../../stories/mock"; // TODO fix me
 
-import { Container } from '../../..';
+import { Container, imageURL } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
 import { ProductAppMenuItem } from './ProductAppMenuItem';
-import { ProductModel } from './model';
+import { ProductModel } from './models';
+import { PRODUCT_ID_IMG_SRC_MAP } from './constants';
+
+const DEFAULT_ICON_URL = imageURL('_images', 'mobile-logo-seattle.svg');
+const DEFAULT_ICON_ALT_URL = imageURL('_images', 'mobile-logo-overcast.svg');
 
 interface ProductAppsDrawerProps {
     products: ProductModel[];
@@ -21,7 +24,8 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         <>
             <ProductAppMenuItem
                 key={LKS_PRODUCT_ID}
-                iconUrl={ICON_URL}
+                iconUrl={DEFAULT_ICON_URL}
+                iconUrlAlt={DEFAULT_ICON_ALT_URL}
                 title="LabKey Server"
                 subtitle={getServerContext().project.name}
                 onClick={() => onClick(LKS_PRODUCT_ID)}
@@ -30,7 +34,8 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                 return (
                     <ProductAppMenuItem
                         key={product.productId}
-                        iconUrl={ICON_URL}
+                        iconUrl={PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()]?.iconUrl ?? DEFAULT_ICON_URL}
+                        iconUrlAlt={PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()]?.iconUrlAlt ?? DEFAULT_ICON_URL}
                         title={product.productName}
                         subtitle={getProductSubtitle(productProjectMap[product.productId])}
                         onClick={() => onClick(product.productId)}

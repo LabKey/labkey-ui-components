@@ -57,7 +57,7 @@
             border-top: none;
         }
 
-        .project-item {
+        .clickable-item {
             width: 100%;
             padding: 8px 10px 8px 15px;
             font-size: 14px;
@@ -95,15 +95,16 @@
         }
 
         .container-tabs {
-            padding: 15px;
+            padding: 7px 0;
 
             .empty {
                 color: $gray-light;
+                padding: 8px 10px 8px 15px;
             }
 
             .how-to {
                 display: block;
-                padding-top: 8px;
+                padding: 8px 0;
             }
         }
 

@@ -1,8 +1,12 @@
-import React, { FC, memo, useMemo } from 'react';
+import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from "@labkey/api";
+
 import { getHelpLink } from "../../util/helpLinks";
 import { Container } from "../base/models/Container";
 import { buildURL } from '../../url/AppURL';
+import { ContainerTabModel } from "./model";
+import { getContainerTabs } from "./actions";
+import { LoadingSpinner } from "../../..";
 
 interface ProductLKSDrawerProps {
     /**
@@ -13,11 +17,39 @@ interface ProductLKSDrawerProps {
 }
 
 export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
-    const { projects } = props;
-    const { project, container, homeContainer } = getServerContext();
+    const [error, setError] = useState<string>();
+    const [tabs, setTabs] = useState<ContainerTabModel[]>();
+
+    useEffect(() => {
+        getContainerTabs().then(setTabs).catch(setError);
+    }, []);
+
+    return <ProductLKSDrawerImpl {...props} error={error} tabs={tabs} />;
+});
+
+interface ProductLKSDrawerImplProps extends ProductLKSDrawerProps {
+    error: string;
+    tabs: ContainerTabModel[];
+}
+
+export const ProductLKSDrawerImpl: FC<ProductLKSDrawerImplProps> = memo(props => {
+    const { projects, error, tabs } = props;
+    const { project, container, homeContainer, user } = getServerContext();
     const showHome = useMemo(() => isProjectAvailable(projects, undefined, 'home'), [projects]);
     const showProject = useMemo(() => isProjectAvailable(projects, project.id) && project.name !== homeContainer && container.path !== '/home', [projects, project]);
     const showContainer = useMemo(() => project.id !== container.id, [projects, project]);
+
+    const navigate = useCallback((tab: ContainerTabModel) => {
+        window.location.href = tab.href;
+    }, []);
+
+    // TODO error
+
+    if (!tabs) {
+        return <LoadingSpinner wrapperClassName="loading-item" />;
+    }
+
+    const visibleTabs = tabs.filter(tab => !tab.disabled);
 
     return (
         <>
@@ -40,12 +72,25 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
                 </a>
             )}
             <div className="container-tabs">
-                <div className="empty">
-                    No tabs have been added to this folder.
-                    <a className="how-to" href={getHelpLink('tabs')} target="_blank" rel="noopener noreferrer">
-                        How to use tabs in LabKey
-                    </a>
-                </div>
+                {visibleTabs.length > 1 && (
+                    visibleTabs.map(tab => {
+                        return (
+                            <div key={tab.id} className="clickable-item" onClick={() => navigate(tab)}>
+                                {tab.text}
+                            </div>
+                        )
+                    })
+                )}
+                {visibleTabs.length <= 1 && (
+                    <div className="empty">
+                        No tabs have been added to this folder.
+                        {user.isAdmin && (
+                            <a className="how-to" href={getHelpLink('tabs')} target="_blank" rel="noopener noreferrer">
+                                How to use tabs in LabKey
+                            </a>
+                        )}
+                    </div>
+                )}
             </div>
         </>
     );

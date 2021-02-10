@@ -27,3 +27,16 @@ export class ProductSectionModel {
         Object.assign(this, values);
     }
 }
+
+export class ContainerTabModel {
+    [immerable] = true;
+
+    id: string;
+    text: string;
+    href: string;
+    disabled: boolean;
+
+    constructor(values?: Partial<ProductSectionModel>) {
+        Object.assign(this, values);
+    }
+}

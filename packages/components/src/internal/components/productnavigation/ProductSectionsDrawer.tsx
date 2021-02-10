@@ -56,6 +56,9 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                     });
 
                 setSections(menuSections);
+            })
+            .catch(error => {
+                // TODO catch error
             });
     }, [product]);
 
@@ -69,8 +72,8 @@ interface ProductSectionsDrawerImplProps {
 const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
     const { sections } = props;
 
-    const navigate = useCallback((section) => {
-        window.location.href = section.url;
+    const navigate = useCallback((section: ProductSectionModel) => {
+        window.location.href = section.url.toString();
     }, []);
 
     if (!sections) {
@@ -81,7 +84,7 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
         <>
             {sections.map(section => {
                 return (
-                    <div key={section.key} className="project-item" onClick={() => navigate(section)}>
+                    <div key={section.key} className="clickable-item" onClick={() => navigate(section)}>
                         {section.label}
                     </div>
                 );

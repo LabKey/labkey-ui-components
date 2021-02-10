@@ -35,7 +35,7 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        const selected = props.options.find((option) => option.selected)
+        const selected = props.options?.find((option) => option.selected)
         this.state = {
             selectedValue: selected?.value
         }

@@ -27,11 +27,10 @@ import {
     QueryGridModel,
     QueryInfo,
     SCHEMAS,
-    SchemaQuery,
+    SchemaQuery, SampleCreationType,
 } from '../../..';
 import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
-import { SampleCreationType } from "../samples/SampleCreationTypeOption";
 
 export interface EntityInputProps {
     role: string;

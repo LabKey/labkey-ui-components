@@ -1,6 +1,7 @@
 import {Meta, Story} from '@storybook/react/types-6-0';
-import {SampleCreationType, SampleCreationTypeOption} from "../internal/components/samples/SampleCreationTypeOption";
+import {SampleCreationTypeOption} from "../internal/components/samples/SampleCreationTypeOption";
 import React from "react";
+import { SampleCreationType } from "../internal/components/samples/models";
 
 export default {
     title: "Components/SampleCreationType",

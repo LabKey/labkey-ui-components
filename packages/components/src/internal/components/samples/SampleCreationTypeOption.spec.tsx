@@ -1,6 +1,7 @@
-import {DERIVATIVE_CREATION, SampleCreationType, SampleCreationTypeOption} from "./SampleCreationTypeOption";
+import {SampleCreationTypeOption} from "./SampleCreationTypeOption";
 import {mount} from "enzyme";
 import React from "react";
+import { DERIVATIVE_CREATION, SampleCreationType } from "./models";
 
 describe("<SampleCreationTypeOption/>", () => {
 

@@ -18,19 +18,19 @@ import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 
 import {
+    ALIQUOT_CREATION,
+    DERIVATIVE_CREATION,
+    getQueryGridModel,
     getStateQueryGridModel,
     gridInit,
-    getQueryGridModel,
+    INDEPENDENT_SAMPLE_CREATION,
     LoadingSpinner,
-    QueryGridModel,
-    SchemaQuery,
-    DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
-    ALIQUOT_CREATION
+    QueryGridModel,
+    SchemaQuery
 } from '..';
 import { QueryInfoForm } from '../internal/components/forms/QueryInfoForm';
 import * as constants from '../test/data/constants';
-import { INDEPENDENT_SAMPLE_CREATION } from "../internal/components/samples/SampleCreationTypeOption";
 
 function formSubmit(data: any): Promise<any> {
     console.log(data);

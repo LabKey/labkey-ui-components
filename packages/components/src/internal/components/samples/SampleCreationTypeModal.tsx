@@ -2,10 +2,9 @@ import React from "react";
 import { Button, FormControl, Modal } from "react-bootstrap";
 import { MAX_EDITABLE_GRID_ROWS } from "../../../index";
 import {
-    SampleCreationType,
-    SampleCreationTypeModel,
     SampleCreationTypeOption
 } from "./SampleCreationTypeOption";
+import { SampleCreationType, SampleCreationTypeModel } from "./models";
 
 
 interface Props {

@@ -54,12 +54,13 @@ import {
     Location,
     Progress,
     QueryColumn,
-    QueryGridModel,
     queryGridInvalidate,
+    QueryGridModel,
     QueryInfo,
     RemoveEntityButton,
     removeQueryGridModel,
     resolveErrorMessage,
+    SampleCreationTypeModel,
     SchemaQuery,
     SelectInput,
     withFormSteps,
@@ -82,7 +83,6 @@ import {
 } from './models';
 
 import { getEntityTypeData } from './actions';
-import {SampleCreationTypeModel} from "../samples/SampleCreationTypeOption";
 import { BulkAddData } from "../editable/EditableGrid";
 
 class EntityGridLoader implements IGridLoader {

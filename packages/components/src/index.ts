@@ -282,15 +282,6 @@ import { SampleSetSummary } from './internal/components/samples/SampleSetSummary
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import {
-    SampleCreationType,
-    SampleCreationTypeModel,
-    CHILD_SAMPLE_CREATION,
-    INDEPENDENT_SAMPLE_CREATION,
-    DERIVATIVE_CREATION,
-    POOLED_SAMPLE_CREATION,
-    ALIQUOT_CREATION
-} from "./internal/components/samples/SampleCreationTypeOption";
-import {
     AssayContextConsumer,
     assayPage,
     InjectedAssayModel,
@@ -455,6 +446,12 @@ import { QueryDetailPage } from './internal/components/listing/pages/QueryDetail
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
+import {
+    ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION, INDEPENDENT_SAMPLE_CREATION,
+    POOLED_SAMPLE_CREATION, SampleCreationType, SampleCreationTypeModel
+} from "./internal/components/samples/models";
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();

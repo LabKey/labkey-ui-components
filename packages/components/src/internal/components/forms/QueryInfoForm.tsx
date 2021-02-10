@@ -25,13 +25,13 @@ import {
     LoadingSpinner,
     QueryColumn,
     QueryInfo,
+    SampleCreationTypeModel,
     SchemaQuery,
     selectRows,
     Tip
 } from '../../..';
 
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
-import { SampleCreationTypeModel } from "../samples/SampleCreationTypeOption";
 import { QueryInfoQuantity } from "./QueryInfoQuantity";
 
 export interface QueryInfoFormProps {

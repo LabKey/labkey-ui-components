@@ -2,7 +2,8 @@ import React from 'react';
 import { mount } from "enzyme";
 import { SampleCreationTypeModal } from "./SampleCreationTypeModal";
 import { ALIQUOT_CREATION, DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION } from "../../../index";
-import {SampleCreationType, SampleCreationTypeOption} from "./SampleCreationTypeOption";
+import {SampleCreationTypeOption} from "./SampleCreationTypeOption";
+import { SampleCreationType } from "./models";
 
 
 describe("<SampleCreationTypeModal/>", () => {

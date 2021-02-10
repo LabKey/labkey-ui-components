@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react";
 import { Input } from 'formsy-react-components';
-import { SampleCreationType, SampleCreationTypeModel } from "../samples/SampleCreationTypeOption";
 import { RadioGroupInput } from "./input/RadioGroupInput";
 import { addValidationRule } from 'formsy-react';
+import { SampleCreationType, SampleCreationTypeModel } from "../samples/models";
 
 interface Props {
     creationTypeOptions: Array<SampleCreationTypeModel>

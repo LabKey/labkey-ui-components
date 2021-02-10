@@ -230,16 +230,19 @@
   }
 }
 
-.navbar-item.navbar-item-notification {
-  .navbar-icon-button-right ~ ul.dropdown-menu {
-    padding: 0;
-  }
+.navbar-item.navbar-item-notification, .navbar-item.navbar-item-product-navigation {
+    .navbar-icon-button-right ~ ul.dropdown-menu {
+        padding: 0;
+    }
 
-  .navbar-icon-connector.notification-all-read {
-    right: 2px;
-  }
+    .dropdown-menu-right {
+        right: -19px !important;
+    }
+
+    .navbar-icon-connector.has-unread {
+        right: 28px;
+    }
 }
-
 
 .sub-nav {
   border-radius: 0;

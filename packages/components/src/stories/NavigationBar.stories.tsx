@@ -294,7 +294,7 @@ storiesOf('NavigationBar', module)
         const notificationConfig = {
             maxRows: 8,
             markAllNotificationsRead,
-            serverActivity: new ServerNotificationModel(serverActivity),
+            serverActivity: new ServerNotificationModel(serverActivity).mutate({ isLoaded: true }),
             onViewAll: () => {},
         };
 

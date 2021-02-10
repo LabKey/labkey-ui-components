@@ -74,7 +74,7 @@ export class ServerNotifications extends React.Component<Props, State> {
         const numUnread = this.getNumUnread();
         const title = (
             <h3 className="navbar-menu-header">
-                <div className={"navbar-icon-connector" + (numUnread > 0 ? '' : ' notification-all-read')} />
+                <div className={"navbar-icon-connector" + (numUnread > 0 ? ' has-unread' : '')} />
                 Notifications
                 {numUnread > 0 && (
                     <div className="pull-right server-notifications-link" onClick={this.markAllRead}>

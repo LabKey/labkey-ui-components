@@ -38,6 +38,8 @@ import { QueryModel, GridPanel } from '@labkey/components';
 * [QueryModel API](./QueryModel.md) - how to use `QueryModel`, `withQueryModels`, `GridPanel`, and `DetailsPanel`, to
 fetch and render data from LabKey server.
 * [Sorting Utilities](./sort.md) - utilities to sort data the way users expect it to be sorted.
+* [File Attachment Form](./fileAttachment.md) - nice user-friendly UI to select or drag & drop files to be uploaded to the server.
+* [Webdav API](./webdav.md) - an API to upload files to the designated file server.
 
 ## Related Documentation
 

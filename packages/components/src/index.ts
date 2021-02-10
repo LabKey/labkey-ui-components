@@ -23,7 +23,8 @@ import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './p
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
-import { inferDomainFromFile, InferDomainResponse } from './internal/InferDomainResponse';
+import { InferDomainResponse } from './public/InferDomainResponse';
+import { inferDomainFromFile, getServerFilePreview } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -749,6 +750,7 @@ export {
     IDomainField,
     DomainDetails,
     inferDomainFromFile,
+    getServerFilePreview,
     InferDomainResponse,
     IFieldChange,
     IBannerMessage,

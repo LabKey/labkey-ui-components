@@ -4,7 +4,7 @@ import { Map, Set, List } from 'immutable';
 
 import { IFile } from './models';
 import { FilesListing } from './FilesListing';
-import {FileAttachmentForm} from "../../..";
+import { FileAttachmentForm } from "../../..";
 
 interface Props {
     addFileText?: string;

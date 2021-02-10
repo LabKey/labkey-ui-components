@@ -1,4 +1,4 @@
-import {InferDomainResponse} from "../..";
+import { InferDomainResponse } from "../../";
 
 export interface FileSizeLimitProps {
     maxSize?: {

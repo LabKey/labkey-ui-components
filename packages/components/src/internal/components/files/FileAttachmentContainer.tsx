@@ -23,7 +23,7 @@ import { Map, Set } from 'immutable';
 import { fileMatchesAcceptedFormat, fileSizeLimitCompare } from './actions';
 import { FileAttachmentEntry } from './FileAttachmentEntry';
 import { ALL_FILES_LIMIT_KEY } from './models';
-import {FileSizeLimitProps} from "../../..";
+import { FileSizeLimitProps } from "../../..";
 
 
 interface FileAttachmentContainerProps {

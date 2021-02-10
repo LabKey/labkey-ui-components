@@ -2,8 +2,9 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 1.19.x
+Public API update
 *Released*:
-* Move FileAttachmentForm and WebDav components to public
+* Move FileAttachmentForm, WebDav, InferDomainResponse components to public
 * Move FileSizeLimitProps and FileGridPreviewProps to public
 
 ### version 1.19.0

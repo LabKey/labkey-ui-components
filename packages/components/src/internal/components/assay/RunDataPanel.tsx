@@ -36,8 +36,9 @@ import {
     QueryGridModel,
 } from '../../..';
 
+import { getServerFilePreview } from './utils';
 import { AssayUploadTabs } from '../../AssayDefinitionModel';
-import { getServerFilePreview, InferDomainResponse } from '../../InferDomainResponse';
+import { InferDomainResponse } from '../../../public/InferDomainResponse';
 
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 

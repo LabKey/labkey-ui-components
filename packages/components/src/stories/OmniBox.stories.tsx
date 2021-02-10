@@ -41,35 +41,34 @@ class OmniBoxRenderer extends PureComponent<Props, State> {
 
     componentDidMount(): void {
         // Need to load data here so we run makeQueryInfo after initQueryGridState has been called.
-        makeTestData(mixturesQuery).then(mockData => {
-            const queryInfo = makeQueryInfo(mixturesQueryInfo);
-            const model = new QueryGridModel({
-                queryInfo,
-                schema: queryInfo.schemaQuery.schemaName,
-                query: queryInfo.schemaQuery.queryName,
-                view: queryInfo.schemaQuery.viewName,
-                messages: fromJS(mockData.messages),
-                data: fromJS(mockData.rows),
-                dataIds: fromJS(mockData.orderedRows),
-                totalRows: mockData.rowCount,
-            });
-            const actions = this.props.actions.map(action => {
-                switch (action) {
-                    case 'search':
-                        return new SearchAction('q');
-                    case 'sort':
-                        return new SortAction('s', this.getColumns);
-                    case 'filter':
-                        return new FilterAction('f', this.getColumns);
-                    case 'view':
-                        return new ViewAction('v', this.getColumns, this.getQueryInfo);
-                }
-            });
+        const mockData = makeTestData(mixturesQuery);
+        const queryInfo = makeQueryInfo(mixturesQueryInfo);
+        const model = new QueryGridModel({
+            queryInfo,
+            schema: queryInfo.schemaQuery.schemaName,
+            query: queryInfo.schemaQuery.queryName,
+            view: queryInfo.schemaQuery.viewName,
+            messages: fromJS(mockData.messages),
+            data: fromJS(mockData.rows),
+            dataIds: fromJS(mockData.orderedRows),
+            totalRows: mockData.rowCount,
+        });
+        const actions = this.props.actions.map(action => {
+            switch (action) {
+                case 'search':
+                    return new SearchAction('q');
+                case 'sort':
+                    return new SortAction('s', this.getColumns);
+                case 'filter':
+                    return new FilterAction('f', this.getColumns);
+                case 'view':
+                    return new ViewAction('v', this.getColumns, this.getQueryInfo);
+            }
+        });
 
-            this.setState({
-                model,
-                actions,
-            });
+        this.setState({
+            model,
+            actions,
         });
     }
 

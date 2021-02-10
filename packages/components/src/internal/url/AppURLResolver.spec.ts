@@ -85,7 +85,7 @@ describe('URL Resolvers', () => {
                         schemaName: 'exp',
                         queryName: 'results',
                     },
-                }
+                },
             ],
         },
         rows: [
@@ -131,7 +131,7 @@ describe('URL Resolvers', () => {
                     displayValue: 'An Assay Run - 2',
                     url: '/labkey/biologics/assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253',
                     value: 584,
-                }
+                },
             },
         ],
     });
@@ -146,40 +146,39 @@ describe('URL Resolvers', () => {
         // avoid false positives by defining number of assertions in a test
         expect.assertions(9);
 
-        return resolver.resolveSelectRows(selectRowsResult).then(result => {
-            const newResult = fromJS(result);
+        const result = resolver.resolveSelectRows(selectRowsResult);
+        const newResult = fromJS(result);
 
-            // validate ActionMapper('experiment', 'showDataClass') -- no lookup
-            expect(newResult.getIn(['rows', 0, 'NonLookupExpShowDataClass', 'url'])).toBe(
-                '#/rd/dataclass/NoLookupDataClass'
-            );
+        // validate ActionMapper('experiment', 'showDataClass') -- no lookup
+        expect(newResult.getIn(['rows', 0, 'NonLookupExpShowDataClass', 'url'])).toBe(
+            '#/rd/dataclass/NoLookupDataClass'
+        );
 
-            // validate ActionMapper('experiment', 'showDataClass') -- with lookup
-            expect(newResult.getIn(['rows', 0, 'LookupExpShowDataClass', 'url'])).toBe('#/rd/dataclass/BeepBoop');
+        // validate ActionMapper('experiment', 'showDataClass') -- with lookup
+        expect(newResult.getIn(['rows', 0, 'LookupExpShowDataClass', 'url'])).toBe('#/rd/dataclass/BeepBoop');
 
-            // validate ActionMapper('experiment', 'showData') -- no lookup
-            expect(newResult.getIn(['rows', 0, 'NonLookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
+        // validate ActionMapper('experiment', 'showData') -- no lookup
+        expect(newResult.getIn(['rows', 0, 'NonLookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
 
-            // validate ActionMapper('experiment', 'showData') -- with lookup
-            expect(newResult.getIn(['rows', 0, 'LookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
+        // validate ActionMapper('experiment', 'showData') -- with lookup
+        expect(newResult.getIn(['rows', 0, 'LookupExpShowData', 'url'])).toBe('#/rd/expdata/124');
 
-            // validate LookupMapper('/q/')
-            expect(newResult.getIn(['rows', 0, 'LookupColumn', 'url'])).toBe('#/q/BoomSchema/PowQuery/101');
+        // validate LookupMapper('/q/')
+        expect(newResult.getIn(['rows', 0, 'LookupColumn', 'url'])).toBe('#/q/BoomSchema/PowQuery/101');
 
-            // validate LookupMapper('exp-dataclasses')
-            expect(newResult.getIn(['rows', 0, 'DataClassLookupColumn', 'url'])).toBe('#/rd/dataclass/MyDataClass');
+        // validate LookupMapper('exp-dataclasses')
+        expect(newResult.getIn(['rows', 0, 'DataClassLookupColumn', 'url'])).toBe('#/rd/dataclass/MyDataClass');
 
-            // validate LookupMapper('issues')
-            expect(newResult.getIn(['rows', 0, 'LookupIssues', 'url'])).toBe(
-                '/labkey/biologics/issues-details.view?issueId=523'
-            );
+        // validate LookupMapper('issues')
+        expect(newResult.getIn(['rows', 0, 'LookupIssues', 'url'])).toBe(
+            '/labkey/biologics/issues-details.view?issueId=523'
+        );
 
-            // validate LookupMapper('exp-runs')
-            expect(newResult.getIn(['rows', 0, 'LookupExpRun', 'url'])).toBe('#/rd/assayrun/584');
+        // validate LookupMapper('exp-runs')
+        expect(newResult.getIn(['rows', 0, 'LookupExpRun', 'url'])).toBe('#/rd/assayrun/584');
 
-            // validate ActionMapper('assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253')
-            expect(newResult.getIn(['rows', 0, 'LookupExpRun2', 'url'])).toBe('#/rd/assayrun/253');
-        });
+        // validate ActionMapper('assay-assayResults.view?rowId=94&Data.Run%2FRowId~eq=253')
+        expect(newResult.getIn(['rows', 0, 'LookupExpRun2', 'url'])).toBe('#/rd/assayrun/253');
     });
 });
 

@@ -5,6 +5,8 @@
 import { List } from 'immutable';
 import { Security } from '@labkey/api';
 
+import { ServerActivity } from '../components/notifications/model';
+
 import {
     MENU_INVALIDATE,
     MENU_LOADING_END,
@@ -21,14 +23,6 @@ import {
     SERVER_NOTIFICATIONS_INVALIDATE,
     RESET_QUERY_GRID_STATE,
 } from './constants';
-import { ServerActivity } from "../components/notifications/model";
-
-function successUserPermissions(response) {
-    return {
-        type: USER_PERMISSIONS_SUCCESS,
-        response,
-    };
-}
 
 function fetchUserPermissions() {
     return new Promise((resolve, reject) => {
@@ -45,13 +39,14 @@ function fetchUserPermissions() {
 
 export function getUserPermissions() {
     return dispatch => {
-        dispatch({
-            type: USER_PERMISSIONS_REQUEST,
-        });
+        dispatch({ type: USER_PERMISSIONS_REQUEST });
 
         return fetchUserPermissions()
             .then(response => {
-                dispatch(successUserPermissions(response));
+                dispatch({
+                    type: USER_PERMISSIONS_SUCCESS,
+                    response,
+                });
             })
             .catch(error => {
                 console.error(error);
@@ -59,24 +54,11 @@ export function getUserPermissions() {
     };
 }
 
-export function updateUserDisplayName(displayName: string) {
-    return {
-        type: UPDATE_USER_DISPLAY_NAME,
-        displayName,
-    };
-}
+export const updateUserDisplayName = (displayName: string) => ({ type: UPDATE_USER_DISPLAY_NAME, displayName });
 
-export function setReloadRequired() {
-    return {
-        type: SET_RELOAD_REQUIRED,
-    };
-}
+export const setReloadRequired = () => ({ type: SET_RELOAD_REQUIRED });
 
-export function doResetQueryGridState() {
-    return {
-        type: RESET_QUERY_GRID_STATE
-    };
-}
+export const doResetQueryGridState = () => ({ type: RESET_QUERY_GRID_STATE });
 
 export function menuInit(currentProductId: string, userMenuProductId: string, productIds?: List<string>) {
     return (dispatch, getState) => {
@@ -109,26 +91,18 @@ export function menuInit(currentProductId: string, userMenuProductId: string, pr
     };
 }
 
-export function menuInvalidate() {
-    return (dispatch, getState) => {
-        dispatch({ type: MENU_INVALIDATE });
-    };
-}
+export const menuInvalidate = () => ({ type: MENU_INVALIDATE });
 
 // an alternative to menuInvalidate, which doesn't erase current menu during reload
-export function menuReload() {
-    return (dispatch, getState) => {
-        dispatch({ type: MENU_RELOAD });
-    };
-}
+export const menuReload = () => ({ type: MENU_RELOAD });
 
 export function serverNotificationInit(serverActivitiesLoaderFn: (maxRows?: number) => Promise<ServerActivity>) {
     return (dispatch, getState) => {
-        let serverNotificationModel = getState().serverNotifications;
+        const serverNotificationModel = getState().serverNotifications;
         if (serverNotificationModel && !serverNotificationModel.isLoaded && !serverNotificationModel.isLoading) {
             dispatch({
                 type: SERVER_NOTIFICATIONS_LOADING_START,
-                serverActivitiesLoaderFn
+                serverActivitiesLoaderFn,
             });
             serverActivitiesLoaderFn()
                 .then(serverActivity => {
@@ -148,8 +122,4 @@ export function serverNotificationInit(serverActivitiesLoaderFn: (maxRows?: numb
     };
 }
 
-export function serverNotificationInvalidate() {
-    return (dispatch, getState) => {
-        dispatch({ type: SERVER_NOTIFICATIONS_INVALIDATE });
-    };
-}
+export const serverNotificationInvalidate = () => ({ type: SERVER_NOTIFICATIONS_INVALIDATE });

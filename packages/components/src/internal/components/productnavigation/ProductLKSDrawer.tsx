@@ -44,7 +44,9 @@ export const ProductLKSDrawerImpl: FC<ProductLKSDrawerImplProps> = memo(props =>
         window.location.href = tab.href;
     }, []);
 
-    // TODO error
+    if (error) {
+        return <Alert className="error-item">{error}</Alert>;
+    }
 
     if (!tabs) {
         return <LoadingSpinner wrapperClassName="loading-item" />;

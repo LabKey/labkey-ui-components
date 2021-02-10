@@ -181,6 +181,7 @@ export class ProductMenuModel extends Record({
                     resolve(sections);
                 }),
                 failure: Utils.getCallbackWrapper(response => {
+                    console.error(response);
                     reject(response);
                 }),
             });

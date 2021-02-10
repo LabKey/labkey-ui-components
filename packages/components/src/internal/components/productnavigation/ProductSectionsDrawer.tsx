@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
-import { Container, LoadingSpinner, AppURL, createProductUrl, ProductMenuModel } from '../../..';
+import { Container, LoadingSpinner, AppURL, createProductUrl, ProductMenuModel, Alert } from '../../..';
 import { FREEZER_MANAGER_PRODUCT_ID, SAMPLE_MANAGER_PRODUCT_ID } from '../../app/constants';
 
 import { ProductModel, ProductSectionModel } from './model';
@@ -22,6 +22,7 @@ interface ProductAppsDrawerProps {
 
 export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     const { product, project } = props;
+    const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
     const isSameContainer = useMemo(() => getServerContext().container.id === project.id, [project]);
 
@@ -56,23 +57,28 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                 setSections(menuSections);
             })
             .catch(error => {
-                // TODO catch error
+                setError('Error: unable to load product sections.');
             });
     }, [product]);
 
-    return <ProductSectionsDrawerImpl sections={sections} />;
+    return <ProductSectionsDrawerImpl error={error} sections={sections} />;
 });
 
 interface ProductSectionsDrawerImplProps {
+    error: string;
     sections: ProductSectionModel[];
 }
 
 const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
-    const { sections } = props;
+    const { sections, error } = props;
 
     const navigate = useCallback((section: ProductSectionModel) => {
         window.location.href = section.url.toString();
     }, []);
+
+    if (error) {
+        return <Alert className="error-item">{error}</Alert>;
+    }
 
     if (!sections) {
         return <LoadingSpinner wrapperClassName="loading-item" />;

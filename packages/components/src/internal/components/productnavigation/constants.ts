@@ -23,3 +23,10 @@ export const PRODUCT_ID_IMG_SRC_MAP = {
         iconUrlAlt: imageURL('biologics/images', 'lk-bio-logo-badge.svg'),
     },
 };
+
+export const LK_DOC_DEFAULT = 'https://www.labkey.org/Documentation/project-begin.view?';
+export const LK_DOC_FOLDER_TABS = 'https://www.labkey.org/Documentation/wiki-page.view?name=tabs';
+export const PRODUCT_DOC_MAP = {
+    [SAMPLE_MANAGER_PRODUCT_ID.toLowerCase()]: 'https://www.labkey.org/SampleManagerHelp/wiki-page.view?name=smHome',
+    [BIOLOGICS_PRODUCT_ID.toLowerCase()]: 'https://www.labkey.org/Documentation/wiki-page.view?name=biologics',
+};

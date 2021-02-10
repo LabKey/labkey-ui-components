@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { getServerContext, Utils } from '@labkey/api';
+import { getServerContext } from '@labkey/api';
 
 import { Container, imageURL } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
@@ -51,5 +51,9 @@ function getProductSubtitle(projects: Container[]): string {
         return projects[0].title;
     }
 
-    return Utils.pluralBasic(projects.length, 'Project');
+    if (projects.length === 0) {
+        return 'No Projects';
+    }
+
+    return projects.length + ' Projects';
 }

@@ -115,6 +115,24 @@
             }
         }
 
+        .product-empty {
+            padding: 15px;
+
+            .alert-info {
+                margin-bottom: 0;
+            }
+
+            .start-project {
+                display: block;
+                padding-top: 15px;
+            }
+
+            .learn-more {
+                display: block;
+                padding-top: 8px;
+            }
+        }
+
         .loading-item, .error-item {
             margin: 8px 10px 8px 15px;
         }

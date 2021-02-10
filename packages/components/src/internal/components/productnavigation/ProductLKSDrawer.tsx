@@ -1,10 +1,11 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
-import { getHelpLink, LoadingSpinner, Alert, Container, buildURL } from '../../..';
+import { LoadingSpinner, Alert, Container, buildURL } from '../../..';
 
 import { ContainerTabModel } from './models';
 import { getContainerTabs } from './actions';
+import { LK_DOC_FOLDER_TABS } from "./constants";
 
 interface ProductLKSDrawerProps {
     /**
@@ -87,7 +88,7 @@ export const ProductLKSDrawerImpl: FC<ProductLKSDrawerImplProps> = memo(props =>
                     <div className="empty">
                         No tabs have been added to this folder.
                         {user.isAdmin && (
-                            <a className="how-to" href={getHelpLink('tabs')} target="_blank" rel="noopener noreferrer">
+                            <a className="how-to" href={LK_DOC_FOLDER_TABS} target="_blank" rel="noopener noreferrer">
                                 How to use tabs in LabKey
                             </a>
                         )}

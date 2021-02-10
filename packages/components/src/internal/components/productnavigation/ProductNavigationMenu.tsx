@@ -84,7 +84,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
     const selectedProduct = getSelectedProduct(products, selectedProductId);
     const productProjects = selectedProduct ? productProjectMap[selectedProduct.productId] : undefined;
     const showSectionsDrawer = selectedProject !== undefined;
-    const showProjectsDrawer = !selectedProject && productProjects?.length > 0;
+    const showProjectsDrawer = !selectedProject && selectedProduct !== undefined;
 
     return (
         <div className="product-navigation-container">

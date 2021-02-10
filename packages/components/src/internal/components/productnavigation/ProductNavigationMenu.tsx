@@ -1,4 +1,4 @@
-import React, { FC, memo, PureComponent, ReactNode, useCallback, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Security } from '@labkey/api';
 
 import { LoadingSpinner, Alert, Container, naturalSortByProperty } from '../../..';
@@ -14,77 +14,42 @@ import { ProductNavigationHeader } from './ProductNavigationHeader';
 
 export interface ProductNavigationMenuProps {}
 
-interface State {
-    error: string;
-    /**
-     * the array of products that have been registered for this LK server
-     */
-    products: ProductModel[];
-    /**
-     * the array of projects which the current user has access to on the LK server
-     */
-    projects: Container[];
-}
+export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
+    const [error, setError] = useState<string>();
+    const [products, setProducts] = useState<ProductModel[]>(); //the array of products that have been registered for this LK server
+    const [projects, setProjects] = useState<Container[]>(); //the array of products that have been registered for this LK server
 
-export class ProductNavigationMenu extends PureComponent<ProductNavigationMenuProps> {
-    state: Readonly<State> = {
-        error: undefined,
-        products: undefined,
-        projects: undefined,
-    };
+    useEffect(() => {
+        getRegisteredProducts().then(setProducts).catch(setError);
 
-    componentDidMount(): void {
-        this.initProducts();
-        this.initProjects();
-    }
-
-    initProducts(): void {
-        getRegisteredProducts()
-            .then(products => {
-                this.setState(() => ({ products }));
-            })
-            .catch(error => {
-                this.setState(() => ({
-                    error, // TODO verify error message from the server
-                    products: [],
-                }));
-            });
-    }
-
-    initProjects(): void {
         Security.getContainers({
             containerPath: '/', // use root container to get the projects
             includeSubfolders: false,
             includeEffectivePermissions: false,
             success: data => {
-                this.setState(() => ({ projects: data.children.map(data => new Container(data)) }));
+                setProjects(data.children.map(child => new Container(child)));
             },
             failure: errorInfo => {
                 console.error(errorInfo);
-                this.setState(() => ({
-                    error: 'Error: unable to get project information.', // TODO verify error message from the server
-                    projects: [],
-                }));
+                setError('Error: unable to get project information.');
             },
         });
-    }
+    }, []);
 
-    render(): ReactNode {
-        const { products, projects } = this.state;
+    return (
+        <ProductNavigationMenuImpl
+            error={error}
+            projects={projects}
+            products={products?.sort(naturalSortByProperty('productName'))}
+            productProjectMap={getProductProjectsMap(products, projects)}
+        />
+    );
+});
 
-        return (
-            <ProductNavigationMenuImpl
-                {...this.state}
-                products={products?.sort(naturalSortByProperty('productName'))}
-                productProjectMap={getProductProjectsMap(products, projects)}
-            />
-        );
-    }
-}
-
-// TODO after the LKS item click, API call to get the container tab info
-
-interface ProductNavigationMenuImplProps extends State {
+interface ProductNavigationMenuImplProps {
+    error: string;
+    products: ProductModel[];
+    projects: Container[];
     productProjectMap: { [key: string]: Container[] };
 }
 

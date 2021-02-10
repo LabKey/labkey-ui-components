@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "1.21.0-deriveOrPool.6",
+  "version": "1.21.0-deriveOrPool.7",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

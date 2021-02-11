@@ -2,13 +2,16 @@
     width: 400px; // TODO set width of 270px for ProductLKSDrawer and ProductSectionsDrawer
 
     .product-navigation-header {
-        color: $brand-primary; // TODO should this match with the notification menu in SM?
-        text-transform: uppercase; // TODO keep this?
+        text-transform: uppercase;
 
         .back-icon {
             float: left;
             padding-right: 10px;
             cursor: pointer;
+
+            .fa {
+                font-size: 14px;
+            }
         }
     }
 
@@ -48,7 +51,6 @@
             }
 
             &:hover, &:hover .product-subtitle, &:hover .nav-icon {
-                background-color: $brand-primary;
                 color: $white;
             }
 
@@ -79,7 +81,6 @@
             }
 
             &:hover, &:hover .nav-icon {
-                background-color: $brand-primary;
                 color: $white;
             }
         }
@@ -89,7 +90,6 @@
             margin: 0 15px;
             padding: 15px 0 5px 0;
             font-size: 18px;
-            color: $brand-primary;
             border-bottom: solid 3px $gray-border;
 
             .container-icon {

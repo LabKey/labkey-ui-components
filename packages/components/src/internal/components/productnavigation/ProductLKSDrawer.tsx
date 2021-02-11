@@ -5,7 +5,8 @@ import { LoadingSpinner, Alert, Container, buildURL } from '../../..';
 
 import { ContainerTabModel } from './models';
 import { getContainerTabs } from './actions';
-import { LK_DOC_FOLDER_TABS } from "./constants";
+import { LK_DOC_FOLDER_TABS } from './constants';
+import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductLKSDrawerProps {
     /**
@@ -58,19 +59,19 @@ export const ProductLKSDrawerImpl: FC<ProductLKSDrawerImplProps> = memo(props =>
     return (
         <>
             {showHome && (
-                <a className="container-item" href={getProjectBeginUrl(homeContainer)}>
+                <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(homeContainer)}>
                     <i className="fa fa-home container-icon" />
                     LabKey Home
                 </a>
             )}
             {showProject && (
-                <a className="container-item" href={getProjectBeginUrl(project.path)}>
+                <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(project.path)}>
                     <i className="fa fa-folder-open-o container-icon" />
                     {project.name}
                 </a>
             )}
             {showContainer && (
-                <a className="container-item" href={getProjectBeginUrl(container.path)}>
+                <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(container.path)}>
                     <i className="fa fa-folder-o container-icon" />
                     {container.title}
                 </a>
@@ -79,9 +80,9 @@ export const ProductLKSDrawerImpl: FC<ProductLKSDrawerImplProps> = memo(props =>
                 {visibleTabs.length > 1 &&
                     visibleTabs.map(tab => {
                         return (
-                            <div key={tab.id} className="clickable-item" onClick={() => navigate(tab)}>
+                            <ProductClickableItem key={tab.id} onClick={() => navigate(tab)}>
                                 {tab.text}
-                            </div>
+                            </ProductClickableItem>
                         );
                     })}
                 {visibleTabs.length <= 1 && (

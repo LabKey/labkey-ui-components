@@ -3,9 +3,7 @@ import { DropdownButton } from 'react-bootstrap';
 
 import { ProductNavigationMenu } from './ProductNavigationMenu';
 
-interface ProductNavigationProps {}
-
-export const ProductNavigation: FC<ProductNavigationProps> = memo(props => {
+export const ProductNavigation: FC = memo(() => {
     const [show, setShow] = useState<boolean>(false);
 
     return (

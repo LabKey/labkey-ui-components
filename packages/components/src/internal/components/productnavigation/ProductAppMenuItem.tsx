@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 
 interface ProductAppMenuItemProps {
     iconUrl: string;
@@ -10,9 +10,11 @@ interface ProductAppMenuItemProps {
 
 export const ProductAppMenuItem: FC<ProductAppMenuItemProps> = memo(props => {
     const { iconUrl, iconUrlAlt, title, subtitle, onClick } = props;
+    const [hovered, setHovered] = useState<boolean>(false);
+    const toggleHover = useCallback(() => setHovered(!hovered), [hovered, setHovered]);
 
     return (
-        <li onClick={onClick}>
+        <li className={hovered ? 'labkey-page-nav' : ''} onClick={onClick} onMouseEnter={toggleHover} onMouseLeave={toggleHover}>
             <div className="product-icon">
                 <img src={iconUrl} alt="Product icon" className="icon-primary" height="40px" width="40px" />
                 <img src={iconUrlAlt ?? iconUrl} alt="Alt Product icon" className="icon-alt" height="40px" width="40px" />

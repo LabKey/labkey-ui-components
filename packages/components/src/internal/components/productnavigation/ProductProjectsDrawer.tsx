@@ -1,10 +1,11 @@
 import React, { FC, memo } from 'react';
+import { getServerContext } from '@labkey/api';
 
 import { Container, Alert, buildURL } from '../../..';
 
 import { ProductModel } from './models';
-import { LK_DOC_DEFAULT, PRODUCT_DOC_MAP } from "./constants";
-import { getServerContext } from "@labkey/api";
+import { LK_DOC_DEFAULT, PRODUCT_DOC_MAP } from './constants';
+import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductAppsDrawerProps {
     product: ProductModel;
@@ -20,17 +21,17 @@ export const ProductProjectsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         <>
             {projects.map(project => {
                 return (
-                    <div key={project.id} className="clickable-item" onClick={() => onClick(product.productId, project)}>
+                    <ProductClickableItem key={project.id} onClick={() => onClick(product.productId, project)}>
                         {project.title}
                         <i className="fa fa-chevron-right nav-icon" />
-                    </div>
+                    </ProductClickableItem>
                 );
             })}
             {projects.length === 0 && (
                 <div className="product-empty">
                     <Alert bsStyle="info">No available {product.productName} projects on this server.</Alert>
                     {user.isRootAdmin && (
-                        <a className="start-project" href={buildURL('admin', 'createFolder')}>
+                        <a className="start-project" href={buildURL('admin', 'createFolder', { folderType: product.productName }, { container: '/' })}>
                             Start a {product.productName} project
                         </a>
                     )}

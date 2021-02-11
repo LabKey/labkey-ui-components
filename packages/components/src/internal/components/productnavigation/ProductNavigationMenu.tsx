@@ -12,9 +12,7 @@ import { ProductSectionsDrawer } from './ProductSectionsDrawer';
 import { ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductNavigationHeader } from './ProductNavigationHeader';
 
-export interface ProductNavigationMenuProps {}
-
-export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
+export const ProductNavigationMenu: FC = memo(() => {
     const [error, setError] = useState<string>();
     const [products, setProducts] = useState<ProductModel[]>(); //the array of products that have been registered for this LK server
     const [projects, setProjects] = useState<Container[]>(); //the array of products that have been registered for this LK server
@@ -88,7 +86,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
 
     return (
         <div className="product-navigation-container">
-            <h3 className="product-navigation-header navbar-menu-header">
+            <h3 className="product-navigation-header navbar-menu-header lk-text-theme-dark">
                 <div className="navbar-icon-connector" />
                 <ProductNavigationHeader
                     title={selectedProject?.title || selectedProduct?.productName}

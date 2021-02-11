@@ -18,16 +18,18 @@ import { Button } from 'react-bootstrap';
 import { List, Map } from 'immutable';
 import classNames from 'classnames';
 
-import { FileSizeLimitProps, FileGridPreviewProps } from './models';
-import { FileAttachmentContainer } from "../../internal/components/files/FileAttachmentContainer";
+import { FileAttachmentContainer } from '../../internal/components/files/FileAttachmentContainer';
 import {
-    convertRowDataIntoPreviewData, fileMatchesAcceptedFormat,
+    convertRowDataIntoPreviewData,
+    fileMatchesAcceptedFormat,
     fileSizeLimitCompare,
-    getFileExtension
-} from "../../internal/components/files/actions";
-import { FilePreviewGrid } from "../../internal/components/files/FilePreviewGrid";
-import { SimpleResponse } from "../../internal/components/files/models";
-import { FormSection, Progress, LoadingSpinner, InferDomainResponse, inferDomainFromFile } from "../..";
+    getFileExtension,
+} from '../../internal/components/files/actions';
+import { FilePreviewGrid } from '../../internal/components/files/FilePreviewGrid';
+import { SimpleResponse } from '../../internal/components/files/models';
+import { FormSection, Progress, LoadingSpinner, InferDomainResponse, inferDomainFromFile } from '../..';
+
+import { FileSizeLimitProps, FileGridPreviewProps } from './models';
 
 interface FileAttachmentFormProps {
     acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
@@ -221,7 +223,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
                 className={classNames('file-form-submit-btn', { 'file-form-submit-btn--compact': compact })}
                 onClick={this.handleSubmit}
                 bsStyle="success"
-                disabled={this.state.attachedFiles.size == 0}
+                disabled={this.state.attachedFiles.size === 0}
                 title={submitText}
             >
                 {submitText}

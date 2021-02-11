@@ -7,22 +7,16 @@ example [here](./webdav.md).
 
 ## [FileAttachmentForm](../src/public/files/FileAttachmentForm.tsx#L71)
 ```tsx
-
-//imports
 import React, { FC, memo, useCallback } from 'react';
 import { Panel } from 'react-bootstrap';
 import { FileAttachmentForm } from '@labkey/components';
 import { Map } from 'immutable';
-import { Draft, produce } from "immer";
+import { Draft, produce } from 'immer';
 
-//model
 export class MyAttachmentModel {
-    /**
-     * @hidden
-     */
     [immerable] = true;
 
-    readonly filesToUpload?: Map<string, File>; //to upload files to the server
+    readonly filesToUpload?: Map<string, File>; // to upload files to the server
 
     constructor(values?: Partial<MyAttachmentModel>) {
         Object.assign(this, values);
@@ -33,16 +27,14 @@ export class MyAttachmentModel {
     }
 }
 
-//props
 interface Props {
     model: MyAttachmentModel;
     onInputChange: (model: MyAttachmentModel) => void;
 }
 
-//Functional component which would be rendered as part of the parent component
+// Functional component which would be rendered as part of the parent component
 export const MyAttachmentPanel: FC<Props> = memo((props) => {
-
-    const {model, onInputChange} = props;
+    const { model, onInputChange } = props;
 
     const onFileChange = useCallback((files: Map<string, File>) => {
         const updatedModel = produce(model, (draft: Draft<MyAttachmentModel>) => {
@@ -54,11 +46,12 @@ export const MyAttachmentPanel: FC<Props> = memo((props) => {
 
     return (
         <FileAttachmentForm
+            acceptedFormats=".pdf, .PDF, .jpg, .JPG"
             allowDirectories={false}
             allowMultiple={true}
             showLabel={false}
-            acceptedFormats={".pdf, .PDF, .jpg, .JPG"}
             onFileChange={onFileChange}
         />
     );
 })
+```

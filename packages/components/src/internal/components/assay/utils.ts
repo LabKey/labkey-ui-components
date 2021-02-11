@@ -1,6 +1,7 @@
-import {Ajax, Utils} from "@labkey/api";
-import {buildURL} from "../../url/AppURL";
-import {InferDomainResponse} from "../../../public/InferDomainResponse";
+import { Ajax, Utils } from '@labkey/api';
+
+import { buildURL } from '../../url/AppURL';
+import { InferDomainResponse } from '../../../public/InferDomainResponse';
 
 export function inferDomainFromFile(file: File, numLinesToInclude: number): Promise<InferDomainResponse> {
     return new Promise((resolve, reject) => {

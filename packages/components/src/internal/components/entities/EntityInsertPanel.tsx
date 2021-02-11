@@ -836,6 +836,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             columnFilter,
             fieldValues: this.getBulkAddFormValues(),
             creationTypeOptions,
+            countText: "New " + this.props.nounPlural,
         };
         const bulkUpdateProps = {
             columnFilter,

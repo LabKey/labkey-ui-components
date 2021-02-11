@@ -765,6 +765,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
 
     renderBulkAdd = (): ReactNode => {
         const { showBulkAdd } = this.state;
+        const { bulkAddProps } = this.props;
         const model = this.getModel(this.props);
         const maxToAdd =
             this.props.maxTotalRows && this.props.maxTotalRows - model.data.size < MAX_EDITABLE_GRID_ROWS
@@ -783,13 +784,14 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                     onHide={this.toggleBulkAdd}
                     onCancel={this.toggleBulkAdd}
                     onSuccess={this.toggleBulkAdd}
-                    fieldValues={this.props.bulkAddProps ? this.props.bulkAddProps.fieldValues : null}
-                    columnFilter={this.props.bulkAddProps ? this.props.bulkAddProps.columnFilter : null}
                     queryInfo={model.queryInfo}
                     schemaQuery={model.queryInfo.schemaQuery}
-                    title={this.props.bulkAddProps && this.props.bulkAddProps.title}
                     header={this.renderBulkCreationHeader()}
-                    creationTypeOptions={this.props.bulkAddProps?.creationTypeOptions}
+                    fieldValues={bulkAddProps?.fieldValues}
+                    columnFilter={bulkAddProps?.columnFilter}
+                    title={bulkAddProps?.title}
+                    countText={bulkAddProps?.countText}
+                    creationTypeOptions={bulkAddProps?.creationTypeOptions}
                 />
             )
         );

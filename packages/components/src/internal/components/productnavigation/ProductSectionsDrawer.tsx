@@ -6,6 +6,7 @@ import { Container, LoadingSpinner, AppURL, createProductUrl, ProductMenuModel, 
 
 import { ProductModel, ProductSectionModel } from './models';
 import { PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP } from './constants';
+import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductAppsDrawerProps {
     product: ProductModel;
@@ -80,9 +81,9 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
         <>
             {sections.map(section => {
                 return (
-                    <div key={section.key} className="clickable-item" onClick={() => navigate(section)}>
+                    <ProductClickableItem key={section.key} onClick={() => navigate(section)}>
                         {section.label}
-                    </div>
+                    </ProductClickableItem>
                 );
             })}
         </>

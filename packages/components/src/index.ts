@@ -452,6 +452,7 @@ import { QueryDetailPage } from './internal/components/listing/pages/QueryDetail
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
+import { createMockWithRouterProps } from './test/mockUtils';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -955,4 +956,5 @@ export {
     mountWithServerContext,
     sleep,
     waitForLifecycle,
+    createMockWithRouterProps,
 };

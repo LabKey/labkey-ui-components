@@ -704,7 +704,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         }
     }
 
-    static restoreBulkInsertData(model: QueryGridModel, data: Map<string, any>): Map<string, any> {
+    restoreBulkInsertData(model: QueryGridModel, data: Map<string, any>): Map<string, any> {
         const allInsertCols = OrderedMap<string, any>().asMutable();
         model.getInsertColumns().forEach(col => allInsertCols.set(col.name, undefined));
         return allInsertCols.merge(data).asImmutable();
@@ -749,7 +749,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             totalItems = numItems;
 
         if (bulkAddProps.columnFilter) {
-            updatedData = EditableGrid.restoreBulkInsertData(model, updatedData);
+            updatedData = this.restoreBulkInsertData(model, updatedData);
         }
         if (pivotKey && pivotValues?.length > 0) {
             addRowsPerPivotValue(model, numItems, pivotKey, pivotValues, updatedData);

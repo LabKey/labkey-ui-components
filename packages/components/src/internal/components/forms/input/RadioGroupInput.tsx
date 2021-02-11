@@ -62,28 +62,43 @@ class RadioGroupInputImpl extends PureComponent<Props, State> {
         let inputs = [];
 
         if (options) {
-            options.forEach(option => {
-                const selected = selectedValue === option.value;
-
-                inputs.push((
-                    <div key={option.value}>
+            if (options.length === 1) {
+                inputs.push(
+                    <div key={options[0].value}>
                         <input
-                            checked={selected && !option.disabled}
-                            className={""}
+                            hidden={true}
+                            checked={true}
                             type="radio"
                             name="creationType"
-                            value={option.value}
+                            value={options[0].value}
                             onChange={this.onValueChange}
-                            disabled={option.disabled}
-                        /> {option.label}
-                        {option.description && (
-                            <LabelHelpTip key={option.value + "_help"}>
-                                {option.description}
-                            </LabelHelpTip>
-                        )}
+                        />
                     </div>
-                ));
-            })
+                );
+            } else {
+                options.forEach(option => {
+                    const selected = selectedValue === option.value;
+
+                    inputs.push((
+                        <div key={option.value}>
+                            <input
+                                checked={selected && !option.disabled}
+                                className={""}
+                                type="radio"
+                                name="creationType"
+                                value={option.value}
+                                onChange={this.onValueChange}
+                                disabled={option.disabled}
+                            /> {option.label}
+                            {option.description && (
+                                <LabelHelpTip key={option.value + "_help"}>
+                                    {option.description}
+                                </LabelHelpTip>
+                            )}
+                        </div>
+                    ));
+                });
+            }
         }
         return inputs;
     }

@@ -72,8 +72,12 @@ export const useRouteLeave = (
                 // "best" way to detect this is by keeping track of the history length when we first render. If the user
                 // clicked a link this will increase. This is method is unfortunately not perfect, but it prevents us
                 // from showing the cancel dialog for every entry in the user's history until they either reach the
-                // beginning of history, or hit leave page. You can still end up in a bad state if you alternate between
-                // using the back button, hitting cancel, clicking a link, hitting cancel.
+                // beginning of history, or hit leave page.
+                //
+                // You can still end up in a bad state in two known scenarios:
+                // - if you alternate between using the back button, hitting cancel, clicking a link, hitting cancel
+                // - If your browser history is at maximum length, this appears to be 50 in Chrome
+                //
                 // To avoid this entire situation we need to either commit to using Link components everywhere, which
                 // don't cause the URL to change before onRouteLeave is called, or we need to upgrade to a newer version
                 // of React Router.

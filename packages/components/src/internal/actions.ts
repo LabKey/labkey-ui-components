@@ -2465,20 +2465,23 @@ export function addRowsPerParent(model: QueryGridModel, numPerParent: number, pa
     let dataIds = model.dataIds;
     let totalItems = 0;
     if (numPerParent > 0) {
-        Object.keys(parentMap).forEach(parentType => {
-            const parents = parentMap[parentType];
-            parents.forEach((parent) => {
-                rowData = rowData.set(parentType, parent);
-                editorModel = updateEditorData(model, rowData.toList(), numPerParent, dataIds.size);
-                totalItems += numPerParent;
-                for (let i = 0; i < numPerParent; i++) {
-                    // ensure we don't step on another ID
-                    const id = GRID_EDIT_INDEX + ID_COUNTER++;
+        let multiParentType = Object.keys(parentMap).find((parentType) => parentMap[parentType].length > 1);
+        // no parent types with more than one value, so nothing special to do
+        if (!multiParentType) {
+            return addRows(model, numPerParent, rowData);
+        }
+        const parents = parentMap[multiParentType];
+        parents.forEach((parent) => {
+            rowData = rowData.set(multiParentType, parent);
+            editorModel = updateEditorData(model, rowData.toList(), numPerParent, dataIds.size);
+            totalItems += numPerParent;
+            for (let i = 0; i < numPerParent; i++) {
+                // ensure we don't step on another ID
+                const id = GRID_EDIT_INDEX + ID_COUNTER++;
 
-                    data = data.set(id, rowData || EMPTY_ROW);
-                    dataIds = dataIds.push(id);
-                }
-            });
+                data = data.set(id, rowData || EMPTY_ROW);
+                dataIds = dataIds.push(id);
+            }
         });
     }
 

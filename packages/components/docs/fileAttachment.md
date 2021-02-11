@@ -6,7 +6,7 @@ Users can then utilize our WebDAV API to upload or retrieve existing uploads -
 example [here](./webdav.md).
 
 ## [FileAttachmentForm](../src/public/files/FileAttachmentForm.tsx#L71)
-```js
+```tsx
 
 //imports
 import React, { FC, memo, useCallback } from 'react';
@@ -34,8 +34,7 @@ export class MyAttachmentModel {
 }
 
 //props
-interface Props
-{
+interface Props {
     model: MyAttachmentModel;
     onInputChange: (model: MyAttachmentModel) => void;
 }
@@ -54,18 +53,12 @@ export const MyAttachmentPanel: FC<Props> = memo((props) => {
     }, [model, onInputChange]);
 
     return (
-        <>
-            <Panel
-                <Panel.Body>
-                    <FileAttachmentForm
-                        allowDirectories={false}
-                        allowMultiple={true}
-                        showLabel={false}
-                        acceptedFormats={".pdf, .PDF, .jpg, .JPG"}
-                        onFileChange={onFileChange}
-                    />
-                </Panel.Body>
-            </Panel>
-        </>
+        <FileAttachmentForm
+            allowDirectories={false}
+            allowMultiple={true}
+            showLabel={false}
+            acceptedFormats={".pdf, .PDF, .jpg, .JPG"}
+            onFileChange={onFileChange}
+        />
     );
 })

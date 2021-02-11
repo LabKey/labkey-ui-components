@@ -7,13 +7,13 @@ Additionally, FileAttachmentForm component allows users to select files to be up
 selection or drag & drop - example to render FileAttachmentForm component [here](./fileAttachment.md).
 
 ## [WebDav](../src/public/files/WebDav.ts#L69)
-```js
+```ts
 
 //imports
 import { getWebDavFiles, WebDavFile, uploadWebDavFile } from '@labkey/components';
 
 //constants
-ATTACHMENTS_DIR = "MyUploads"
+const ATTACHMENTS_DIR = "MyUploads"
 
 //model
 export class AttachmentModel {

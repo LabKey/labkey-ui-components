@@ -21,7 +21,7 @@ import $ from 'jquery';
 
 import {
     addRows,
-    addRowsPerParent,
+    addRowsPerPivotValue,
     beginDrag,
     clearSelection,
     copyEvent,
@@ -145,7 +145,8 @@ export interface EditableColumnMetadata {
 }
 
 export interface BulkAddData {
-    pivotData?: Record<string, Array<string>>,
+    pivotKey?: string,
+    pivotValues?: Array<string>
     totalItems?: number,
     validationMsg?: ReactNode,
 }
@@ -724,7 +725,8 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             });
         }
 
-        let pivotData: Record<string, Array<string>> = {};
+        let pivotKey = undefined;
+        let pivotValues = []
         let totalItems = 0;
         if (onBulkAdd) {
             const bulkAddData  = onBulkAdd(data);
@@ -736,7 +738,8 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                 });
             }
             totalItems = bulkAddData.totalItems;
-            pivotData = bulkAddData.pivotData;
+            pivotKey = bulkAddData.pivotKey;
+            pivotValues = bulkAddData.pivotValues;
         }
 
         let updatedData = data.delete('numItems');
@@ -748,8 +751,8 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         if (bulkAddProps.columnFilter) {
             updatedData = EditableGrid.restoreBulkInsertData(model, updatedData);
         }
-        if (Object.keys(pivotData).length > 0) {
-            addRowsPerParent(model, numItems, pivotData, updatedData);
+        if (pivotKey && pivotValues?.length > 0) {
+            addRowsPerPivotValue(model, numItems, pivotKey, pivotValues, updatedData);
         }
         else {
             addRows(model, numItems, updatedData);

@@ -2459,20 +2459,14 @@ function beginPaste(model: EditorModel, numRows: number): EditorModel {
     });
 }
 
-export function addRowsPerParent(model: QueryGridModel, numPerParent: number, parentMap: Record<string, Array<string>>, rowData: Map<string, any>): EditorModel {
+export function addRowsPerPivotValue(model: QueryGridModel, numPerParent: number, pivotKey: string, pivotValues: Array<string>, rowData: Map<string, any>): EditorModel {
     let editorModel = getEditorModel(model.getId());
     let data = model.data;
     let dataIds = model.dataIds;
     let totalItems = 0;
     if (numPerParent > 0) {
-        let multiParentType = Object.keys(parentMap).find((parentType) => parentMap[parentType].length > 1);
-        // no parent types with more than one value, so nothing special to do
-        if (!multiParentType) {
-            return addRows(model, numPerParent, rowData);
-        }
-        const parents = parentMap[multiParentType];
-        parents.forEach((parent) => {
-            rowData = rowData.set(multiParentType, parent);
+        pivotValues.forEach((value) => {
+            rowData = rowData.set(pivotKey, value);
             editorModel = updateEditorData(model, rowData.toList(), numPerParent, dataIds.size);
             totalItems += numPerParent;
             for (let i = 0; i < numPerParent; i++) {

@@ -4,6 +4,21 @@ import { RadioGroupInput, RadioGroupOption } from "./RadioGroupInput";
 
 describe("<RadioGroupInput>", () => {
 
+    function validateOptionDisplay(wrapper: ReactWrapper, option: RadioGroupOption, selected: boolean, hidden?: boolean) {
+        if (hidden) {
+            expect(wrapper.text()).toBe("");
+        } else {
+            expect(wrapper.text()).toContain(option.label)
+        }
+        const input = wrapper.find("input");
+        expect(input.prop("value")).toBe(option.value);
+        expect(input.prop("checked")).toBe(selected);
+        if (option.disabled) {
+            expect(input.prop("disabled")).toBe(true);
+        }
+        expect(wrapper.find({id: "tooltip"})).toHaveLength(!hidden && option.description ? 1 : 0);
+    }
+
     test("no options", () => {
         const wrapper = mount((
             <RadioGroupInput formsy={false} options={undefined} name={"testRadio"}/>
@@ -11,11 +26,20 @@ describe("<RadioGroupInput>", () => {
         expect(wrapper.find("input")).toHaveLength(0);
     });
 
-    function validateOptionDisplay(wrapper: ReactWrapper, option: RadioGroupOption) {
-        expect(wrapper.text()).toContain(option.label)
-        expect(wrapper.find("input").prop("value")).toBe(option.value);
-        expect(wrapper.find({id: "tooltip"})).toHaveLength(option.description ? 1 : 0);
-    }
+    test("one option", () => {
+        const option = {
+            value: "only",
+            label: "only me",
+            description: "It's only me here",
+        };
+        const wrapper = mount((
+            <RadioGroupInput formsy={false} options={[option]} name={"testRadio"}/>
+        ));
+        const divs = wrapper.find("div");
+        expect(divs).toHaveLength(1);
+        validateOptionDisplay(divs.at(0), option, true,true)
+        wrapper.unmount();
+    })
 
     test("with options", () => {
         const options = [
@@ -27,11 +51,13 @@ describe("<RadioGroupInput>", () => {
             {
                 value: "two",
                 label: "two label",
-                description: <span className="two-description">Two description</span>
+                description: <span className="two-description">Two description</span>,
+                selected: true
             },
             {
                 value: "three",
                 label: "three label",
+                disabled: true,
             }
         ];
 
@@ -41,11 +67,11 @@ describe("<RadioGroupInput>", () => {
                 options={options}
                 name={"testRadio"}/>
         ));
-        expect(wrapper.find("input")).toHaveLength(3);
         let divs = wrapper.find("div");
-        validateOptionDisplay(divs.at(0), options[0]);
-        validateOptionDisplay(divs.at(1), options[1]);
-        validateOptionDisplay(divs.at(2), options[2]);
+        expect(divs).toHaveLength(3);
+        validateOptionDisplay(divs.at(0), options[0], false, false);
+        validateOptionDisplay(divs.at(1), options[1], true, false);
+        validateOptionDisplay(divs.at(2), options[2], false, false);
         wrapper.unmount();
     });
 });

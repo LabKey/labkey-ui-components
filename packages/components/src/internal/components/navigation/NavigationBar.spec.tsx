@@ -15,16 +15,18 @@
  */
 import React from 'react';
 import renderer from 'react-test-renderer';
-
-import { NavigationBar } from './NavigationBar';
 import { mount } from 'enzyme';
+import { List } from 'immutable';
+
 import { TEST_USER_GUEST, TEST_USER_READER } from '../../../test/data/users';
 import { ServerNotifications } from '../notifications/ServerNotifications';
-import { MenuSectionModel, ProductMenuModel } from './model';
-import { List } from 'immutable';
+
 import { markAllNotificationsRead } from '../../../test/data/notificationData';
-import {ServerNotificationModel} from "../notifications/model";
-import {ServerActivityList} from "../notifications/ServerActivityList";
+import { ServerNotificationModel } from '../notifications/model';
+
+import { MenuSectionModel, ProductMenuModel } from './model';
+
+import { NavigationBar } from './NavigationBar';
 
 describe('<NavigationBar/>', () => {
     const productMenuModel = new ProductMenuModel({
@@ -36,22 +38,22 @@ describe('<NavigationBar/>', () => {
 
     const notificationsConfig = {
         maxRows: 1,
-        markAllNotificationsRead: markAllNotificationsRead,
+        markAllNotificationsRead,
         serverActivity: new ServerNotificationModel(),
-        onViewAll:jest.fn(),
+        onViewAll: jest.fn(),
     };
 
     test('default props', () => {
         const component = <NavigationBar model={null} />;
 
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
     test('with search box', () => {
         const component = <NavigationBar model={null} showSearchBox={true} />;
 
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 

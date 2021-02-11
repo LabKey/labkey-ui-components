@@ -7,6 +7,8 @@ import { handleActions } from 'redux-actions';
 
 import { ServerNotificationModel, ProductMenuModel } from '../..';
 
+import { resetQueryGridState } from '../global';
+
 import { AppModel, LogoutReason } from './models';
 import {
     SECURITY_LOGOUT,
@@ -29,7 +31,6 @@ import {
     SET_RESET_QUERY_GRID_STATE,
     RESET_QUERY_GRID_STATE,
 } from './constants';
-import { resetQueryGridState } from "../global";
 
 export type AppReducerState = AppModel;
 
@@ -38,9 +39,8 @@ export const AppReducers = handleActions<AppReducerState, any>(
         [SET_RELOAD_REQUIRED]: (state: AppReducerState) => state.set('reloadRequired', true),
 
         [UPDATE_USER_DISPLAY_NAME]: (state: AppReducerState, action: any) => {
-            const { displayName } = action;
             return state.merge({
-                user: state.user.set('displayName', displayName),
+                user: state.user.set('displayName', action.displayName),
             });
         },
 
@@ -55,40 +55,39 @@ export const AppReducers = handleActions<AppReducerState, any>(
             });
         },
 
-        [SECURITY_LOGOUT]: (state: AppReducerState, action: any) => {
+        [SECURITY_LOGOUT]: (state: AppReducerState) => {
             return state.merge({
                 reloadRequired: true,
                 logoutReason: LogoutReason.SERVER_LOGOUT,
             });
         },
 
-        [SECURITY_SESSION_TIMEOUT]: (state: AppReducerState, action: any) => {
+        [SECURITY_SESSION_TIMEOUT]: (state: AppReducerState) => {
             return state.merge({
                 reloadRequired: true,
                 logoutReason: LogoutReason.SESSION_EXPIRED,
             });
         },
 
-        [SECURITY_SERVER_UNAVAILABLE]: (state: AppReducerState, action: any) => {
+        [SECURITY_SERVER_UNAVAILABLE]: (state: AppReducerState) => {
             return state.merge({
                 reloadRequired: true,
                 logoutReason: LogoutReason.SERVER_UNAVAILABLE,
             });
         },
 
-        [SET_RESET_QUERY_GRID_STATE]: (state: AppReducerState, action: any) => {
+        [SET_RESET_QUERY_GRID_STATE]: (state: AppReducerState) => {
             return state.merge({
-                needsInvalidateQueryGrid: true
+                needsInvalidateQueryGrid: true,
             });
         },
 
-        [RESET_QUERY_GRID_STATE]: (state: AppReducerState, action: any) => {
+        [RESET_QUERY_GRID_STATE]: (state: AppReducerState) => {
             resetQueryGridState();
             return state.merge({
-                needsInvalidateQueryGrid: false
+                needsInvalidateQueryGrid: false,
             });
         },
-
     },
     new AppModel()
 );
@@ -110,13 +109,9 @@ export type ProductMenuState = ProductMenuModel;
 
 export const ProductMenuReducers = handleActions<ProductMenuState, any>(
     {
-        [MENU_INVALIDATE]: (state: ProductMenuState, action: any) => {
-            return new ProductMenuModel();
-        },
+        [MENU_INVALIDATE]: () => new ProductMenuModel(),
 
-        [MENU_RELOAD]: (state: ProductMenuState, action: any) => {
-            return state.setNeedsReload();
-        },
+        [MENU_RELOAD]: (state: ProductMenuState) => state.setNeedsReload(),
 
         [MENU_LOADING_START]: (state: ProductMenuState, action: any) => {
             const { currentProductId, userMenuProductId, productIds } = action;
@@ -130,13 +125,11 @@ export const ProductMenuReducers = handleActions<ProductMenuState, any>(
         },
 
         [MENU_LOADING_ERROR]: (state: ProductMenuState, action: any) => {
-            const { message } = action;
-            return state.setError(message);
+            return state.setError(action.message);
         },
 
         [MENU_LOADING_END]: (state: ProductMenuState, action: any) => {
-            const { sections } = action;
-            return state.setLoadedSections(sections);
+            return state.setLoadedSections(action.sections);
         },
     },
     new ProductMenuModel()
@@ -146,22 +139,18 @@ export type ServerNotificationState = ServerNotificationModel;
 
 export const ServerNotificationReducers = handleActions<ServerNotificationState, any>(
     {
-        [SERVER_NOTIFICATIONS_INVALIDATE]: (state: ServerNotificationState, action: any) => {
-            return new ServerNotificationModel();
-        },
+        [SERVER_NOTIFICATIONS_INVALIDATE]: () => new ServerNotificationModel(),
 
-        [SERVER_NOTIFICATIONS_LOADING_START]: (state: ServerNotificationState, action: any) => {
+        [SERVER_NOTIFICATIONS_LOADING_START]: (state: ServerNotificationState) => {
             return state.setLoadingStart();
         },
 
         [SERVER_NOTIFICATIONS_LOADING_END]: (state: ServerNotificationState, action: any) => {
-            const { serverActivity } = action;
-            return state.setLoadingComplete(serverActivity);
+            return state.setLoadingComplete(action.serverActivity);
         },
 
         [SERVER_NOTIFICATIONS_LOADING_ERROR]: (state: ServerNotificationState, action: any) => {
-            const { message } = action;
-            return state.setError(message);
+            return state.setError(action.message);
         },
     },
     new ServerNotificationModel()

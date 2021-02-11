@@ -44,6 +44,7 @@ import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/As
 import { IGridLoader, IGridResponse, QueryGridModel } from './internal/QueryGridModel';
 import {
     applyDevTools,
+    blurActiveElement,
     capitalizeFirstChar,
     caseInsensitive,
     debounce,
@@ -337,6 +338,7 @@ import { MenuSectionConfig } from './internal/components/navigation/ProductMenuS
 import { ITab, SubNav } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
+import { UserMenu } from './internal/components/navigation/UserMenu';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
 
 import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
@@ -715,6 +717,7 @@ export {
     Breadcrumb,
     BreadcrumbCreate,
     confirmLeaveWhenDirty,
+    UserMenu, // Removed once Biologics home page no longer uses directly
     // notification related items
     NO_UPDATES_MESSAGE,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT,
@@ -796,6 +799,7 @@ export {
     getDisambiguatedSelectInputOptions,
     formatDate,
     formatDateTime,
+    blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
     resolveKey,

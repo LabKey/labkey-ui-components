@@ -9,9 +9,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * BACKWARDS INCOMPATIBLE - RouteLeaveProps renamed RouteLeaveInjectedProps
 * Add WrappedRouteLeaveProps - you can now customize the message shown when users attempt to navigate away from a dirty page
 * Improved typing for withRouteLeave
-* BACKWARDS INCOMPATIBLE - confirmLeaveWhenDirty no longer requires location or event as a prop
-* confirmLeaveWhenDirty no longer breaks the back button
-* confirmLeaveWhenDirty is now deprecated (use useRouteLeave or withRouteLeave instead)
+* BACKWARDS INCOMPATIBLE - remove confirmLeaveWhenDirty
 
 ### version 1.21.1
 Public API update

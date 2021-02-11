@@ -380,7 +380,6 @@ import {
     flattenValuesFromRow,
 } from './public/QueryModel/utils';
 import {
-    confirmLeaveWhenDirty,
     InjectedRouteLeaveProps,
     useRouteLeave,
     withRouteLeave,
@@ -850,7 +849,6 @@ export {
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,
-    confirmLeaveWhenDirty,
     InjectedRouteLeaveProps,
     useRouteLeave,
     withRouteLeave,

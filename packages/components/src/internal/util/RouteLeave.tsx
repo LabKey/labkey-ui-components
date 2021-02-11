@@ -3,21 +3,6 @@ import { InjectedRouter, withRouter, WithRouterProps, PlainRoute } from 'react-r
 
 export const CONFIRM_MESSAGE = 'You have unsaved changes that will be lost. Are you sure you want to continue?';
 
-/**
- * @deprecated: use useRouteLeave or withRouteLeave instead
- * This function can be used as the callback for react-router's setRouteLeaveHook. See notes in useRouteLeave re: Issue
- * 42101 in order to understand the caveats that come with using this function.
- */
-export function confirmLeaveWhenDirty(): boolean {
-    const result = confirm(CONFIRM_MESSAGE);
-
-    if (!result) {
-        window.history.back();
-    }
-
-    return result;
-}
-
 export interface InjectedRouteLeaveProps {
     // getIsDirty is a function that returns a boolean because we use a ref in order to prevent this component from
     // re-rendering child components every time the dirty bit changes.

@@ -10,6 +10,7 @@ export interface SampleCreationTypeModel
 {
     type: SampleCreationType,
     description?: string,
+    quantityLabel?: string,
     disabledDescription?: string,
     minParentsPerSample: number,
     iconSrc?: string,
@@ -21,13 +22,15 @@ export interface SampleCreationTypeModel
 export const INDEPENDENT_SAMPLE_CREATION: SampleCreationTypeModel = {
     type: SampleCreationType.Independents,
     minParentsPerSample: 0,
+    quantityLabel: "New samples"
 };
 
 export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
     type: SampleCreationType.Independents,
     description: "Create multiple output samples per parent.",
     minParentsPerSample: 1,
-    iconSrc: 'derivatives'
+    iconSrc: 'derivatives',
+    quantityLabel: "New samples per parent",
 };
 
 export const DERIVATIVE_CREATION: SampleCreationTypeModel = {
@@ -35,19 +38,22 @@ export const DERIVATIVE_CREATION: SampleCreationTypeModel = {
     description: "Create multiple output samples per parent.",
     disabledDescription: "Only one parent sample type is allowed when creating derivative samples.",
     minParentsPerSample: 1,
-    iconSrc: 'derivatives'
+    iconSrc: 'derivatives',
+    quantityLabel: "Derivatives per parent",
 };
 
 export const POOLED_SAMPLE_CREATION: SampleCreationTypeModel = {
     type: SampleCreationType.PooledSamples,
     description: "Put multiple samples into pooled outputs.",
     minParentsPerSample: 2,
-    iconSrc: "pooled"
+    iconSrc: "pooled",
+    quantityLabel: "New samples per parent"
 };
 
 export const ALIQUOT_CREATION: SampleCreationTypeModel = {
     type: SampleCreationType.Aliquots,
     description: "Create aliquot copies from each parent sample.",
     minParentsPerSample: 1,
-    iconSrc: "aliquots"
+    iconSrc: "aliquots",
+    quantityLabel: "Aliquots per parent",
 };

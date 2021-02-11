@@ -9,7 +9,6 @@ interface Props {
     includeCountField: boolean;
     maxCount: number;
     countText: string;
-    defaultCreationType?: SampleCreationType
     onCountChange?: (count: number) => void
 }
 
@@ -35,9 +34,10 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        const selectedOption = props.creationTypeOptions.find(option => (option.selected));
         this.state = {
             count: undefined,
-            selectedCreationType: props.defaultCreationType
+            selectedCreationType: selectedOption?.type
         }
     }
 
@@ -64,8 +64,8 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
         {
             creationTypeOptions.forEach(option => {
                 const selected = selectedCreationType === option.type;
-                if (selected && option.minParentsPerSample === 1)
-                    text = option.type + ' per parent';
+                if (selected)
+                    text = option.quantityLabel;
                 options.push({
                     value: option.type,
                     description: option.disabled && option.disabledDescription ? option.disabledDescription : option.description,

@@ -46,7 +46,7 @@ export const MyAttachmentPanel: FC<Props> = memo((props) => {
 
     return (
         <FileAttachmentForm
-            acceptedFormats=".pdf, .PDF, .jpg, .JPG"
+            acceptedFormats=".pdf, .jpg"
             allowDirectories={false}
             allowMultiple={true}
             showLabel={false}

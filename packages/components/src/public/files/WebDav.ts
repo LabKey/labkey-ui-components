@@ -2,7 +2,7 @@ import { Map, Record } from 'immutable';
 
 import { ActionURL, Ajax, Utils } from '@labkey/api';
 
-import { DEFAULT_FILE, IFile } from './models';
+import { DEFAULT_FILE, IFile } from '../..';
 
 export class WebDavFile extends Record(DEFAULT_FILE) implements IFile {
     canDelete: boolean;

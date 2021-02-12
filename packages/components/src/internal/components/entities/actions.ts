@@ -196,7 +196,7 @@ function getChosenParentData(
                         parent => parent.value !== undefined && parentSchemaNames.contains(parent.schema)
                     );
                     const numPerParent = model.numPerParent ?? 1;
-                    const validEntityCount = parentRep ? (model.creationType === SampleCreationType.PooledSamples ? 1 : parentRep.value.size * numPerParent ) : 0;
+                    const validEntityCount = parentRep ? (model.creationType === SampleCreationType.PooledSamples ? numPerParent : parentRep.value.size * numPerParent ) : 0;
 
                     if (validEntityCount >= 1) {
                         resolve({

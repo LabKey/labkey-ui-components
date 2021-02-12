@@ -449,7 +449,7 @@ import { PipelineStatusDetailPage } from './internal/components/pipeline/Pipelin
 import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
-    DERIVATIVE_CREATION, INDEPENDENT_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION, SampleCreationType, SampleCreationTypeModel
 } from "./internal/components/samples/models";
 
@@ -624,7 +624,6 @@ export {
     SampleCreationTypeModel,
     SampleSetDeleteModal,
     SampleCreationTypeModal,
-    INDEPENDENT_SAMPLE_CREATION,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,

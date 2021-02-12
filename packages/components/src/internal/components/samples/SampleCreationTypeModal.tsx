@@ -45,17 +45,15 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     };
 
     renderNumPerParent() : React.ReactNode {
-        const { parentCount } = this.props;
+        const { parentCount, options } = this.props;
         const { creationType, numPerParent } = this.state;
 
-        if (creationType == SampleCreationType.PooledSamples)
-            return null;
-
+        const selectedOption = options.find(option => option.type === creationType);
         return (
             <>
                 {this.shouldDisplayOptions() && <hr/>}
                 <div>
-                    <label className="creation-type-modal-label">{creationType} per parent</label>
+                    <label className="creation-type-modal-label">{selectedOption.quantityLabel}</label>
                     <label className="creation-type-modal-label">
                         <FormControl
                             className="creation-per-parent-select"
@@ -115,10 +113,10 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
 
     render() : React.ReactNode {
         const { show, parentCount } = this.props;
-        const { submitting, creationType, numPerParent } = this.state;
+        const { submitting, numPerParent } = this.state;
 
         const parentNoun = parentCount > 1 ? 'Parents' : 'Parent';
-        const canSubmit = !submitting && (creationType == SampleCreationType.PooledSamples || numPerParent > 0);
+        const canSubmit = !submitting && (numPerParent > 0);
         const title = "Create Samples from Selected " + parentNoun;
         return (
             <Modal show={show} onHide={this.onCancel}>

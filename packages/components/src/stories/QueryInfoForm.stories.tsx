@@ -19,11 +19,11 @@ import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 
 import {
     ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
     getQueryGridModel,
     getStateQueryGridModel,
     gridInit,
-    INDEPENDENT_SAMPLE_CREATION,
     LoadingSpinner,
     POOLED_SAMPLE_CREATION,
     QueryGridModel,
@@ -339,7 +339,7 @@ storiesOf('QueryInfoForm', module)
                 queryInfo={model.queryInfo}
                 onSubmit={formSubmit}
                 schemaQuery={schemaQuery}
-                creationTypeOptions={[INDEPENDENT_SAMPLE_CREATION, DERIVATIVE_CREATION, ALIQUOT_CREATION, POOLED_SAMPLE_CREATION]}
+                creationTypeOptions={[CHILD_SAMPLE_CREATION, DERIVATIVE_CREATION, ALIQUOT_CREATION, POOLED_SAMPLE_CREATION]}
             />
         );
     })

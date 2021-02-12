@@ -533,7 +533,9 @@ export class EntityIdCreationModel extends Record({
                 })
             }
             else {
-                data = data.push(values);
+                for (let c = 0; c < this.numPerParent; c++) {
+                    data = data.push(values);
+                }
             }
         }
 

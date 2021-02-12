@@ -19,12 +19,6 @@ export interface SampleCreationTypeModel
     selected?: boolean,
 }
 
-export const INDEPENDENT_SAMPLE_CREATION: SampleCreationTypeModel = {
-    type: SampleCreationType.Independents,
-    minParentsPerSample: 0,
-    quantityLabel: "New samples"
-};
-
 export const CHILD_SAMPLE_CREATION: SampleCreationTypeModel = {
     type: SampleCreationType.Independents,
     description: "Create multiple output samples per parent.",
@@ -47,7 +41,7 @@ export const POOLED_SAMPLE_CREATION: SampleCreationTypeModel = {
     description: "Put multiple samples into pooled outputs.",
     minParentsPerSample: 2,
     iconSrc: "pooled",
-    quantityLabel: "New samples per parent"
+    quantityLabel: "New samples per parent group"
 };
 
 export const ALIQUOT_CREATION: SampleCreationTypeModel = {

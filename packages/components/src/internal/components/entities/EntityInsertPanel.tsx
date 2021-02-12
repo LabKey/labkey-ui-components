@@ -255,7 +255,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             entityDataType,
             auditBehavior,
             creationType: queryParams.creationType,
-            numPerParent: queryParams.numPerParent
+            numPerParent: queryParams.numPerParent || 1
         });
 
         let parentSchemaQueries = Map<string, EntityDataType>();
@@ -753,7 +753,6 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
         const editorModel = queryModel ? getEditorModel(queryModel.getId()) : undefined;
         if (insertModel && insertModel.isInit) {
             const noun = insertModel.entityCount == 1 ? this.capNounSingular : this.capNounPlural;
-            // TODO Finish Creating text below is wrong when landing on this page with derivative samples
             return (
                 <div className="form-group no-margin-bottom">
                     <div className="pull-left">

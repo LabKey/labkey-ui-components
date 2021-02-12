@@ -497,9 +497,9 @@ export class EntityIdCreationModel extends Record({
     getGridValues(queryInfo: QueryInfo, separateParents?: boolean): Map<any, any> {
         let data = List<Map<string, any>>();
         let parentCols = [];
-        for (let i = 0; i < this.entityCount; i++) {
-            let values = Map<string, any>();
+        let values = Map<string, any>();
 
+        if (this.entityCount > 0) {
             queryInfo.getInsertColumns().forEach(col => {
                 const colName = col.name;
 
@@ -522,7 +522,7 @@ export class EntityIdCreationModel extends Record({
             });
             if (separateParents && this.creationType && this.creationType != SampleCreationType.PooledSamples) {
                 parentCols.forEach(parentCol => {
-                    const parents : Array<any> = values.get(parentCol);
+                    const parents: Array<any> = values.get(parentCol);
                     parents.forEach((parent) => {
                         let singleParentValues = Map<string, any>(values);
                         singleParentValues = singleParentValues.set(parentCol, List<any>([parent]));

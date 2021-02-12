@@ -1,5 +1,5 @@
 import React from 'react';
-import { mount } from "enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import { SampleCreationTypeModal } from "./SampleCreationTypeModal";
 import { ALIQUOT_CREATION, DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION } from "../../../index";
 import {SampleCreationTypeOption} from "./SampleCreationTypeOption";
@@ -7,6 +7,18 @@ import { SampleCreationType } from "./models";
 
 
 describe("<SampleCreationTypeModal/>", () => {
+
+    function validateOption(wrapper: ReactWrapper, selected: boolean, type: SampleCreationType) {
+        expect(wrapper.prop("isSelected")).toBe(selected);
+        expect((wrapper.prop('option') as any).type).toBe(type);
+    }
+
+    function validateLabel(wrapper, label: string) {
+        const labels = wrapper.find(".creation-type-modal-label");
+        expect(labels).toHaveLength(2);
+        expect(labels.at(0).text()).toBe(label);
+    }
+
     test("single parent, no aliquots", () => {
         const wrapper = mount(
             <SampleCreationTypeModal
@@ -19,11 +31,9 @@ describe("<SampleCreationTypeModal/>", () => {
             />
         );
         expect(wrapper.find("ModalTitle").text()).toBe("Create Samples from Selected Parent");
-        const options = wrapper.find(SampleCreationTypeOption)
+        const options = wrapper.find(SampleCreationTypeOption);
         expect(options).toHaveLength(0);
-        const labels = wrapper.find(".creation-type-modal-label");
-        expect(labels).toHaveLength(2);
-        expect(labels.get(0).props.children[0]).toBe(SampleCreationType.Derivatives);
+        validateLabel(wrapper, DERIVATIVE_CREATION.quantityLabel);
         wrapper.unmount();
     });
 
@@ -41,12 +51,9 @@ describe("<SampleCreationTypeModal/>", () => {
         expect(wrapper.find("ModalTitle").text()).toBe("Create Samples from Selected Parent");
         const options = wrapper.find(SampleCreationTypeOption)
         expect(options).toHaveLength(2);
-        expect(options.get(0).props.isSelected).toBe(true);
-        expect(options.get(0).props.option.type).toBe(SampleCreationType.Derivatives);
-        expect(options.get(1).props.option.type).toBe(SampleCreationType.Aliquots);
-        const labels = wrapper.find(".creation-type-modal-label");
-        expect(labels).toHaveLength(2);
-        expect(labels.get(0).props.children[0]).toBe(SampleCreationType.Derivatives);
+        validateOption(options.at(0), true, SampleCreationType.Derivatives);
+        validateOption(options.at(1), false, SampleCreationType.Aliquots);
+        validateLabel(wrapper, DERIVATIVE_CREATION.quantityLabel);
         wrapper.unmount();
     });
 
@@ -64,10 +71,9 @@ describe("<SampleCreationTypeModal/>", () => {
         expect(wrapper.find("ModalTitle").text()).toBe("Create Samples from Selected Parents");
         const options = wrapper.find(SampleCreationTypeOption)
         expect(options).toHaveLength(3);
-        expect(options.get(0).props.isSelected).toBe(true);
-        expect(options.get(0).props.option.type).toBe(SampleCreationType.Derivatives);
-        expect(options.get(1).props.option.type).toBe(SampleCreationType.PooledSamples);
-        expect(options.get(2).props.option.type).toBe(SampleCreationType.Aliquots);
+        validateOption(options.at(0), true, SampleCreationType.Derivatives);
+        validateOption(options.at(1), false, SampleCreationType.PooledSamples);
+        validateOption(options.at(2), false, SampleCreationType.Aliquots);
         wrapper.unmount();
     });
 
@@ -87,9 +93,7 @@ describe("<SampleCreationTypeModal/>", () => {
         wrapper.setState({
             creationType: SampleCreationType.Aliquots
         });
-        const labels = wrapper.find(".creation-type-modal-label");
-        expect(labels).toHaveLength(2);
-        expect(labels.get(0).props.children[0]).toBe(SampleCreationType.Aliquots);
+        validateLabel(wrapper, ALIQUOT_CREATION.quantityLabel);
         wrapper.unmount();
     });
 
@@ -109,8 +113,7 @@ describe("<SampleCreationTypeModal/>", () => {
         wrapper.setState({
             creationType: SampleCreationType.PooledSamples
         });
-        const labels = wrapper.find(".creation-type-modal-label");
-        expect(labels).toHaveLength(0);
+        validateLabel(wrapper, POOLED_SAMPLE_CREATION.quantityLabel);
         wrapper.unmount();
     });
 })

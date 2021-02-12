@@ -65,11 +65,10 @@ describe("<QueryInfoQuantity>", () => {
         const wrapper = mount(
             <Formsy>
                 <QueryInfoQuantity
-                    creationTypeOptions={[DERIVATIVE_CREATION, POOLED_SAMPLE_CREATION]}
+                    creationTypeOptions={[{...DERIVATIVE_CREATION, selected: true}, POOLED_SAMPLE_CREATION]}
                     includeCountField={true}
                     maxCount={5}
                     countText={"Quantity"}
-                    defaultCreationType={DERIVATIVE_CREATION.type}
                 />
             </Formsy>
         );

@@ -34,7 +34,7 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        const selectedOption = props.creationTypeOptions.find(option => (option.selected));
+        const selectedOption = props.creationTypeOptions?.find(option => (option.selected));
         this.state = {
             count: undefined,
             selectedCreationType: selectedOption?.type

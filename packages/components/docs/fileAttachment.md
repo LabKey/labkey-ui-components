@@ -8,7 +8,6 @@ example [here](./webdav.md).
 ## [FileAttachmentForm](../src/public/files/FileAttachmentForm.tsx#L71)
 ```tsx
 import React, { FC, memo, useCallback } from 'react';
-import { Panel } from 'react-bootstrap';
 import { FileAttachmentForm } from '@labkey/components';
 import { Map } from 'immutable';
 import { Draft, produce } from 'immer';

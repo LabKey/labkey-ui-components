@@ -379,7 +379,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
         );
     }
 
-    render(): any {
+    render() {
         const {
             acceptedFormats,
             allowDirectories,

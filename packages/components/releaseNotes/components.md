@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 1.21.x
+### version 1.21.1
 Public API update
 *Released*:
 * Move FileAttachmentForm, WebDav, InferDomainResponse components to public

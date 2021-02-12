@@ -21,7 +21,7 @@ export const ProductProjectsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         <>
             {projects.map(project => {
                 return (
-                    <ProductClickableItem key={project.id} onClick={() => onClick(product.productId, project)}>
+                    <ProductClickableItem key={project.id} id={project.id} onClick={() => onClick(product.productId, project)}>
                         {project.title}
                         <i className="fa fa-chevron-right nav-icon" />
                     </ProductClickableItem>

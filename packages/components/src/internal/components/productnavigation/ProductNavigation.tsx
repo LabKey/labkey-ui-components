@@ -10,13 +10,13 @@ export const ProductNavigation: FC = memo(() => {
         <DropdownButton
             id="product-navigation-button"
             className="navbar-icon-button-right"
-            noCaret={true}
             title={<i className="fa fa-th-large navbar-header-icon" />}
-            open={show}
             onToggle={() => setShow(!show)}
+            open={show}
+            noCaret={true}
             pullRight={true}
         >
-            <ProductNavigationMenu />
+            {show && <ProductNavigationMenu />}
         </DropdownButton>
     );
 });

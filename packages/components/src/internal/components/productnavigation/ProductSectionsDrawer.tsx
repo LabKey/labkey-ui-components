@@ -81,7 +81,7 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
         <>
             {sections.map(section => {
                 return (
-                    <ProductClickableItem key={section.key} onClick={() => navigate(section)}>
+                    <ProductClickableItem key={section.key} id={section.key} onClick={() => navigate(section)}>
                         {section.label}
                     </ProductClickableItem>
                 );

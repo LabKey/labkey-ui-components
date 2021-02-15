@@ -1,10 +1,9 @@
 import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
-import { LoadingSpinner, Alert, Container, buildURL } from '../../..';
+import { Container, buildURL } from '../../..';
 
 import { ContainerTabModel } from './models';
-import { getContainerTabs } from './actions';
 import { LK_DOC_FOLDER_TABS } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
 
@@ -14,50 +13,37 @@ interface ProductLKSDrawerProps {
      * options to show below.
      */
     projects: Container[];
-}
-
-export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
-    const [error, setError] = useState<string>();
-    const [tabs, setTabs] = useState<ContainerTabModel[]>();
-
-    useEffect(() => {
-        getContainerTabs().then(setTabs).catch(setError);
-    }, []);
-
-    return <ProductLKSDrawerImpl {...props} error={error} tabs={tabs} />;
-});
-
-interface ProductLKSDrawerImplProps extends ProductLKSDrawerProps {
-    error: string;
     tabs: ContainerTabModel[];
 }
 
-export const ProductLKSDrawerImpl: FC<ProductLKSDrawerImplProps> = memo(props => {
-    const { projects, error, tabs } = props;
+export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
+    const { projects, tabs } = props;
     const { project, container, homeContainer, user } = getServerContext();
     const showHome = useMemo(() => isProjectAvailable(projects, undefined, 'home'), [projects]);
     const showProject = useMemo(
-        () => isProjectAvailable(projects, project.id) && project.name !== homeContainer && container.path !== '/home',
+        () =>
+            project !== undefined &&
+            isProjectAvailable(projects, project.id) &&
+            project.name !== homeContainer &&
+            container.path !== '/home',
         [projects, project]
     );
-    const showContainer = useMemo(() => project.id !== container.id, [projects, project]);
+    const showContainer = useMemo(() => project !== undefined && project.id !== container.id, [projects, project]);
+
+    const [transition, setTransition] = useState<boolean>(false);
+    useEffect(() => {
+        // use setTimeout so that the "left" property will change and trigger the transition
+        setTimeout(() => setTransition(true), 10);
+    }, []);
 
     const navigate = useCallback((tab: ContainerTabModel) => {
         window.location.href = tab.href;
     }, []);
 
-    if (error) {
-        return <Alert className="error-item">{error}</Alert>;
-    }
-
-    if (!tabs) {
-        return <LoadingSpinner wrapperClassName="loading-item" />;
-    }
-
     const visibleTabs = tabs.filter(tab => !tab.disabled);
 
     return (
-        <>
+        <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {showHome && (
                 <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(homeContainer)}>
                     <i className="fa fa-home container-icon" />
@@ -96,7 +82,7 @@ export const ProductLKSDrawerImpl: FC<ProductLKSDrawerImplProps> = memo(props =>
                     </div>
                 )}
             </div>
-        </>
+        </div>
     );
 });
 

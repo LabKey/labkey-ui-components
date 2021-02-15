@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useEffect, useState } from 'react';
 import { getServerContext } from '@labkey/api';
 
 import { Container, Alert, buildURL } from '../../..';
@@ -17,8 +17,14 @@ export const ProductProjectsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     const { product, projects, onClick } = props;
     const { user } = getServerContext();
 
+    const [transition, setTransition] = useState<boolean>(false);
+    useEffect(() => {
+        // use setTimeout so that the "left" property will change and trigger the transition
+        setTimeout(() => setTransition(true), 10);
+    }, []);
+
     return (
-        <>
+        <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {projects.map(project => {
                 return (
                     <ProductClickableItem key={project.id} id={project.id} onClick={() => onClick(product.productId, project)}>
@@ -40,6 +46,6 @@ export const ProductProjectsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                     </a>
                 </div>
             )}
-        </>
+        </div>
     );
 });

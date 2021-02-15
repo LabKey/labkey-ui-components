@@ -4,8 +4,8 @@ import { Security } from '@labkey/api';
 import { LoadingSpinner, Alert, Container, naturalSortByProperty } from '../../..';
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
-import { getRegisteredProducts } from './actions';
-import { ProductModel } from './models';
+import { getRegisteredProducts, getContainerTabs } from './actions';
+import { ContainerTabModel, ProductModel } from './models';
 import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductProjectsDrawer } from './ProductProjectsDrawer';
 import { ProductSectionsDrawer } from './ProductSectionsDrawer';
@@ -16,6 +16,7 @@ export const ProductNavigationMenu: FC = memo(() => {
     const [error, setError] = useState<string>();
     const [products, setProducts] = useState<ProductModel[]>(); //the array of products that have been registered for this LK server
     const [projects, setProjects] = useState<Container[]>(); //the array of products that have been registered for this LK server
+    const [tabs, setTabs] = useState<ContainerTabModel[]>(); //the array of container tabs for the current LK container
 
     useEffect(() => {
         getRegisteredProducts().then(setProducts).catch(setError);
@@ -32,12 +33,15 @@ export const ProductNavigationMenu: FC = memo(() => {
                 setError('Error: unable to get project information.');
             },
         });
+
+        getContainerTabs().then(setTabs).catch(setError);
     }, []);
 
     return (
         <ProductNavigationMenuImpl
             error={error}
             projects={projects}
+            tabs={tabs}
             products={products?.sort(naturalSortByProperty('productName'))}
             productProjectMap={getProductProjectsMap(products, projects)}
         />
@@ -49,10 +53,11 @@ interface ProductNavigationMenuImplProps {
     products: ProductModel[];
     projects: Container[];
     productProjectMap: { [key: string]: Container[] };
+    tabs: ContainerTabModel[];
 }
 
 const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props => {
-    const { error, products, projects, productProjectMap } = props;
+    const { error, products, projects, productProjectMap, tabs } = props;
     const [selectedProductId, setSelectedProductId] = useState<string>();
     const [selectedProject, setSelectedProject] = useState<Container>();
 
@@ -75,7 +80,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
         return <Alert>{error}</Alert>;
     }
 
-    if (!products || !projects) {
+    if (!products || !projects || !tabs) {
         return <LoadingSpinner wrapperClassName="loading-item" />;
     }
 
@@ -96,7 +101,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
             </h3>
             <ul className="product-navigation-listing">
                 {selectedProductId === undefined && <ProductAppsDrawer {...props} onClick={onSelection} />}
-                {selectedProductId === LKS_PRODUCT_ID && <ProductLKSDrawer projects={projects} />}
+                {selectedProductId === LKS_PRODUCT_ID && <ProductLKSDrawer projects={projects} tabs={tabs} />}
                 {showProjectsDrawer && (
                     <ProductProjectsDrawer product={selectedProduct} projects={productProjects} onClick={onSelection} />
                 )}

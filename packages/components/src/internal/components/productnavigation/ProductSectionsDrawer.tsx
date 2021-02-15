@@ -17,7 +17,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     const { product, project } = props;
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
-    const isSameContainer = useMemo(() => getServerContext().container.id === project.id, [project]);
+    const isSameContainer = useMemo(() => getServerContext().container.id === project?.id, [project]);
 
     useEffect(() => {
         const model = new ProductMenuModel({
@@ -65,6 +65,12 @@ interface ProductSectionsDrawerImplProps {
 const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
     const { sections, error } = props;
 
+    const [transition, setTransition] = useState<boolean>(false);
+    useEffect(() => {
+        // use setTimeout so that the "left" property will change and trigger the transition
+        setTimeout(() => setTransition(true), 10);
+    }, []);
+
     const navigate = useCallback((section: ProductSectionModel) => {
         window.location.href = section.url.toString();
     }, []);
@@ -78,7 +84,7 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
     }
 
     return (
-        <>
+        <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {sections.map(section => {
                 return (
                     <ProductClickableItem key={section.key} id={section.key} onClick={() => navigate(section)}>
@@ -86,7 +92,7 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
                     </ProductClickableItem>
                 );
             })}
-        </>
+        </div>
     );
 });
 

@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
-import { Container, LoadingSpinner, AppURL, createProductUrl, ProductMenuModel, Alert } from '../../..';
+import { Container, AppURL, createProductUrl, ProductMenuModel, Alert } from '../../..';
 
 import { ProductModel, ProductSectionModel } from './models';
 import { PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP } from './constants';
@@ -79,13 +79,9 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
         return <Alert className="error-item">{error}</Alert>;
     }
 
-    if (!sections) {
-        return <LoadingSpinner wrapperClassName="loading-item" />;
-    }
-
     return (
         <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
-            {sections.map(section => {
+            {sections?.map(section => {
                 return (
                     <ProductClickableItem key={section.key} id={section.key} onClick={() => navigate(section)}>
                         {section.label}

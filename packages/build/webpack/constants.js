@@ -174,37 +174,16 @@ module.exports = {
                         babelrc: false,
                         cacheDirectory: true,
                         presets: [
-                            [
-                                "@babel/preset-env",
-                                {
-                                    // support async/await
-                                    "targets": {
-                                        "node": "10"
-                                    }
-                                }
-                            ],
-                            "@babel/preset-react"
+                            "@babel/preset-env",
+                            "@babel/preset-react",
+                            "@babel/preset-typescript",
                         ],
                         plugins: [
+                            "const-enum",
+                            "@babel/proposal-class-properties",
+                            "@babel/proposal-object-rest-spread",
                             "react-hot-loader/babel"
                         ]
-                    }
-                },{
-                    loader: 'ts-loader',
-                    options: {
-                        // override default "compilerOptions" declared in tsconfig.json
-                        compilerOptions: {
-                            "baseUrl": ".",
-                            "paths": {
-                                "immutable": [labkeyUIComponentsPath + "/node_modules/immutable"],
-                                "@labkey/components": [labkeyUIComponentsPath],
-                                "@labkey/freezermanager": [freezerManagerPath],
-                                "@labkey/workflow": [workflowPath]
-                            }
-                        },
-                        onlyCompileBundledFiles: true
-                        // this flag and the test regex will make sure that test files do not get bundled
-                        // see: https://github.com/TypeStrong/ts-loader/issues/267
                     }
                 }]
             }

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "staging",
+    "onlyCompileBundledFiles": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "esModuleInterop": true,

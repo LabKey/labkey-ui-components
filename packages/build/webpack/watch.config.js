@@ -5,6 +5,7 @@
  */
 const lkModule = process.env.LK_MODULE;
 const webpack = require('webpack');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const constants = require('./constants');
 const path = require('path');
 
@@ -86,8 +87,26 @@ module.exports = {
         rules: constants.loaders.TYPESCRIPT_LOADERS_DEV.concat(constants.loaders.STYLE_LOADERS_DEV)
     },
 
-    plugins: [
+    optimization: {
         // do not emit compiled assets that include errors
-        new webpack.NoEmitOnErrorsPlugin()
+        noEmitOnErrors: true,
+    },
+
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(), // enable HMR globally
+        // This Plugin type checks our TS code, @babel/preset-typescript does not type check, it only transforms
+        new ForkTsCheckerWebpackPlugin({
+            configOverwrite: {
+                compilerOptions: {
+                    "baseUrl": ".",
+                    "paths": {
+                        "immutable": [constants.labkeyUIComponentsPath + "/node_modules/immutable"],
+                        "@labkey/components": [constants.labkeyUIComponentsPath],
+                        "@labkey/freezermanager": [constants.freezerManagerPath],
+                        "@labkey/workflow": [constants.workflowPath]
+                    }
+                }
+            }
+        })
     ]
 };

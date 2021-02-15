@@ -27,7 +27,7 @@ export type NotificationCreatable = string | NotificationItemProps | Notificatio
  * @param creatable
  * @param notify - Function that handles display of the notification. Default is global.addNotification as used in SampleManagement
  */
-export function createNotification(creatable: NotificationCreatable) {
+export function createNotification(creatable: NotificationCreatable): void {
     let item: NotificationItemModel;
     if (Utils.isString(creatable)) {
         item = NotificationItemModel.create({
@@ -88,7 +88,7 @@ export function getRunningPipelineJobStatuses(filters?: Filter.IFilter[]): Promi
         selectRows({
             schemaName: 'pipeline',
             queryName: 'job',
-            filterArray: [...filters, statusFilter],
+            filterArray: [statusFilter].concat(filters ?? []),
             sort: 'Created',
         })
             .then(response => {

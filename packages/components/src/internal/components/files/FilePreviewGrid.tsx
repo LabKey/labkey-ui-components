@@ -2,17 +2,7 @@ import React from 'react';
 import { List, Map } from 'immutable';
 
 import { Alert, Grid, GridColumn, InferDomainResponse } from '../../..';
-
-export interface FileGridPreviewProps {
-    previewCount: number;
-    header?: string;
-    infoMsg?: any;
-    onPreviewLoad?: (response: InferDomainResponse, fileData?: File) => any;
-    acceptedFormats?: string; // comma-separated list of allowed extensions i.e. '.png, .jpg, .jpeg'
-    initialData?: InferDomainResponse;
-    skipPreviewGrid?: boolean;
-    errorStyle?: string;
-}
+import { FileGridPreviewProps } from '../../../public/files/models';
 
 type Props = FileGridPreviewProps & {
     data: List<Map<string, any>>;
@@ -24,7 +14,7 @@ export class FilePreviewGrid extends React.Component<Props, any> {
     static defaultProps = {
         header: 'File preview:',
         msg: '',
-        errorStyle: 'warning'
+        errorStyle: 'warning',
     };
 
     render() {

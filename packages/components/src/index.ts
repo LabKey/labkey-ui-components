@@ -23,7 +23,8 @@ import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './p
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
-import { inferDomainFromFile, InferDomainResponse } from './internal/InferDomainResponse';
+import { InferDomainResponse } from './public/InferDomainResponse';
+import { inferDomainFromFile, getServerFilePreview } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -43,6 +44,7 @@ import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/As
 import { IGridLoader, IGridResponse, QueryGridModel } from './internal/QueryGridModel';
 import {
     applyDevTools,
+    blurActiveElement,
     capitalizeFirstChar,
     caseInsensitive,
     debounce,
@@ -86,12 +88,13 @@ import { Tip } from './internal/components/base/Tip';
 import { Grid, GridColumn, GridProps } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
-import { FileAttachmentForm } from './internal/components/files/FileAttachmentForm';
-import { DEFAULT_FILE, FileAttachmentFormModel, IFile, FileSizeLimitProps } from './internal/components/files/models';
+import { FileAttachmentForm } from './public/files/FileAttachmentForm';
+import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './internal/components/files/models';
+import { FileSizeLimitProps } from './public/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
-import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './internal/components/files/WebDav';
+import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
 import {
@@ -182,7 +185,7 @@ import {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
 } from './internal/constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
@@ -335,6 +338,7 @@ import { MenuSectionConfig } from './internal/components/navigation/ProductMenuS
 import { ITab, SubNav } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
+import { UserMenu } from './internal/components/navigation/UserMenu';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
 
 import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
@@ -714,6 +718,7 @@ export {
     Breadcrumb,
     BreadcrumbCreate,
     confirmLeaveWhenDirty,
+    UserMenu, // Removed once Biologics home page no longer uses directly
     // notification related items
     NO_UPDATES_MESSAGE,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT,
@@ -749,6 +754,7 @@ export {
     IDomainField,
     DomainDetails,
     inferDomainFromFile,
+    getServerFilePreview,
     InferDomainResponse,
     IFieldChange,
     DomainOnChange,
@@ -795,6 +801,7 @@ export {
     getDisambiguatedSelectInputOptions,
     formatDate,
     formatDateTime,
+    blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
     resolveKey,

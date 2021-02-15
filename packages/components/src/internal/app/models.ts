@@ -9,6 +9,12 @@ import { Container, User } from '../..';
 
 const user = new User(getServerContext().user);
 
+export enum LogoutReason {
+    SERVER_LOGOUT,
+    SESSION_EXPIRED,
+    SERVER_UNAVAILABLE,
+}
+
 export class AppModel extends Record({
     container: new Container(getServerContext().container),
     contextPath: ActionURL.getContextPath(),
@@ -71,11 +77,4 @@ export class AppModel extends Record({
     shouldInvalidateQueryGrid(): boolean {
         return this.needsInvalidateQueryGrid;
     }
-
-}
-
-export enum LogoutReason {
-    SERVER_LOGOUT,
-    SESSION_EXPIRED,
-    SERVER_UNAVAILABLE,
 }

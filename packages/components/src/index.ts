@@ -379,7 +379,12 @@ import {
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
 } from './public/QueryModel/utils';
-import { confirmLeaveWhenDirty, withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
+import {
+    InjectedRouteLeaveProps,
+    useRouteLeave,
+    withRouteLeave,
+    WrappedRouteLeaveProps,
+} from './internal/util/RouteLeave';
 import * as App from './internal/app';
 import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
@@ -446,6 +451,7 @@ import { QueryDetailPage } from './internal/components/listing/pages/QueryDetail
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
+import { createMockWithRouterProps } from './test/mockUtils';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -716,7 +722,6 @@ export {
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
-    confirmLeaveWhenDirty,
     UserMenu, // Removed once Biologics home page no longer uses directly
     // notification related items
     NO_UPDATES_MESSAGE,
@@ -844,8 +849,10 @@ export {
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,
+    InjectedRouteLeaveProps,
+    useRouteLeave,
     withRouteLeave,
-    RouteLeaveProps,
+    WrappedRouteLeaveProps,
     SchemaListing,
     SchemaListingPage,
     QueriesListing,
@@ -947,4 +954,5 @@ export {
     mountWithServerContext,
     sleep,
     waitForLifecycle,
+    createMockWithRouterProps,
 };

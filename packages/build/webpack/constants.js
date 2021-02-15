@@ -92,7 +92,7 @@ module.exports = {
                         }
                     }]
             },
-
+            // TODO: convert "loader" to "use" and query strings to options objects
             { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
             { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
             { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
@@ -126,7 +126,7 @@ module.exports = {
                         }
                     }]
             },
-
+            // TODO: convert "loader" to "use" and query strings to options objects
             { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
             { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
             { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
@@ -137,7 +137,7 @@ module.exports = {
         TYPESCRIPT_LOADERS: [
             {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
-                loaders: [{
+                use: [{
                     loader: 'babel-loader',
                     options: {
                         babelrc: false,
@@ -168,7 +168,7 @@ module.exports = {
         TYPESCRIPT_LOADERS_DEV: [
             {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
-                loaders: [{
+                use: [{
                     loader: 'babel-loader',
                     options: {
                         babelrc: false,

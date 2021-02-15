@@ -100,6 +100,7 @@ module.exports = {
                 configOverwrite: {
                     compilerOptions: {
                         "baseUrl": ".",
+                        "noEmit": true,
                         "paths": {
                             "immutable": [constants.labkeyUIComponentsPath + "/node_modules/immutable"],
                             "@labkey/components": [constants.labkeyUIComponentsPath],

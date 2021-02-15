@@ -9,7 +9,9 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": true,
-    "target": "es6",
+    "allowJs": true,
+    "isolatedModules": true,
+    "target": "esnext",
     "lib": ["es2015", "es2017", "dom"],
     "types": ["jest"]
   },

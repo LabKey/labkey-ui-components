@@ -55,7 +55,6 @@ export const NavigationBar: FC<Props> = memo(props => {
         projectName,
         searchPlaceholder,
         showSearchBox,
-        showSwitchToLabKey,
         signOutUrl,
         user,
     } = props;
@@ -94,7 +93,6 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     model={model}
                                     onSignIn={onSignIn}
                                     onSignOut={onSignOut}
-                                    showSwitchToLabKey={showSwitchToLabKey}
                                     signOutUrl={signOutUrl}
                                     user={user}
                                 />
@@ -119,5 +117,4 @@ export const NavigationBar: FC<Props> = memo(props => {
 
 NavigationBar.defaultProps = {
     showSearchBox: false,
-    showSwitchToLabKey: true,
 };

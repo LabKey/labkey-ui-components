@@ -10,7 +10,8 @@ export const enum OntologyPickerTabs {
 }
 
 interface OntologyTabsProps {
-    model: OntologyModel;
+    root: PathModel;
+    setSelectedConcept: (conceptCode: string) => void;
 }
 
 export const OntologyTabs: FC<OntologyTabsProps> = props => {

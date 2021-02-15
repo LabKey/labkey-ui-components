@@ -1,6 +1,7 @@
 import React, {FC, memo, ReactNode, SyntheticEvent, useCallback} from "react";
 import {Col, Nav, NavItem, Panel, Row, Tab, TabContainer} from "react-bootstrap";
 import {ConceptModel} from "./models";
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 export interface ConceptInformationTabsProps {
     concept?: ConceptModel;

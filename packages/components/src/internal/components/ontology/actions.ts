@@ -16,23 +16,31 @@ const mockResponse = {
 };
 
 class Ontology {
-    static getOntology = (params: OntologyOptions) => {
-        //TODO make an actual request to server
-        return params.success(mockResponse);
-    };
+    static getOntology(ontologyId: string): Promise<OntologyModel> {
+        return new Promise<OntologyModel>((resolve, reject) => {
+            const { container } = getServerContext();
+            const form = {
+                abbreviation: ontologyId,
+            };
+
+            Ajax.request({
+                url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_ONTOLOGY_ACTION, container?.path, form),
+                method: 'GET',
+                success: Utils.getCallbackWrapper(response => {
+                    resolve(new OntologyModel(response));
+                }),
+                failure: Utils.getCallbackWrapper(
+                    response => {
+                        reject(response);
+                    },
+                    null,
+                    false
+                ),
+            });
+        });
+    }
 }
 
-export function getOntologyDetails(ontologyId: number): Promise<OntologyModel> {
-    return new Promise<OntologyModel>((resolve, reject) => {
-        Ontology.getOntology({
-            ontologyId,
-            success: (rawOntology: { [key: string]: any }): void => {
-                console.log(rawOntology);
-                resolve(new OntologyModel(rawOntology));
-            },
-            failure: error => {
-                reject(error);
-            },
-        });
-    });
+export function getOntologyDetails(ontologyId: string): Promise<OntologyModel> {
+    return Ontology.getOntology(ontologyId);
 }

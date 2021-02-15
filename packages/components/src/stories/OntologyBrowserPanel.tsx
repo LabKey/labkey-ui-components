@@ -2,16 +2,33 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {number, text, withKnobs} from '@storybook/addon-knobs';
 import { OntologyBrowserPanel } from '..';
-import {OntologyModel} from "../internal/components/ontology/models";
+import { OntologyModel, PathModel } from "../internal/components/ontology/models";
+import { OntologyBrowserPanelImpl } from '../internal/components/ontology/OntologyBrowserPanel';
 
+const mockRoot = new PathModel({
+    path: '/NCIT/',
+    code: 'NCIT',
+    label: 'Ontologies',
+    hasChildren: true,
+    children: [],
+});
+
+const setSelectedMock = (conceptCode: string): void => {
+    console.log(conceptCode);
+};
+
+//TODO use the Storybook 6 format
 storiesOf('OntologyBrowserPanel', module)
     .addDecorator(withKnobs)
     .add('with knobs', () => {
-        const baseOntologyModel = {
-            name: text('Name', 'Banana pancakes', "OntologyModel"),
-            conceptCount: number("count", 600, {},"OntologyModel"),
-            ontologyId: number("Id", 3, {}, "OntologyModel")
-        } as OntologyModel;
+        const baseOntologyModel = new OntologyModel({
+            name: text('Name', mockRoot.label, 'OntologyModel'),
+            conceptCount: number('count', mockRoot.children.length, {}, 'OntologyModel'),
+            abbreviation: text('Abbreviation', mockRoot.code, 'OntologyModel'),
+            description: text('description', 'Some long description', 'OntologyModel'),
+            rowId: number('RowId', 42, {}, 'OntologyModel'),
+            path: text('Path', mockRoot.path, 'OntologyModel'),
+        });
 
-        return ( <OntologyBrowserPanel ontologyId={ 7 } /> );
+        return ( <OntologyBrowserPanelImpl ontology={ baseOntologyModel} setSelectedConcept={setSelectedMock}  /> );
     });

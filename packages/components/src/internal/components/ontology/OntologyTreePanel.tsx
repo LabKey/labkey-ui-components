@@ -28,46 +28,12 @@ class OntologyTreeNode implements TreeNode {
     }
 }
 
-const testData = new OntologyTreeNode({
-    name: 'Breakfast',
-    children: [
-        new OntologyTreeNode({ name: 'crepes' }),
-        new OntologyTreeNode({
-            name: 'pancakes',
-            children: [
-                new OntologyTreeNode({ name: 'swedish' }),
-                new OntologyTreeNode({ name: 'Buttermilk' })
-            ],
-        }),
-        new OntologyTreeNode({ name: 'waffles' }),
-    ],
-    expanded: true,
-    toggled: true,
-    active: false,
-    loading: false,
-});
+type PathNode = OntologyPath & TreeNode;
 
-// function useTreeData(data, subscribe) {
-//     const [treeData, setTreeData] = useState(data);
-//
-//     useEffect(() => {
-//         function handleDataChange(node, expansion, callback): void {
-//             if (node) {
-//                 node.toggled = expansion;
-//                 node.expanded = expansion;
-//                 setTreeData({ ...node });
-//             }
-//         }
-//
-//         subscribe(handleDataChange);
-//
-//         return () => {
-//             subscribe(null);
-//         };
-//     });
-//
-//     return treeData;
-// }
+interface OntologyTreeProps {
+    root?: PathModel;
+    onNodeSelection?: (conceptCode: string) => void;
+}
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
     // const { model, treeData, onNodeToggle } = props;

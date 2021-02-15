@@ -2463,12 +2463,10 @@ export function addRowsPerPivotValue(model: QueryGridModel, numPerParent: number
     let editorModel = getEditorModel(model.getId());
     let data = model.data;
     let dataIds = model.dataIds;
-    let totalItems = 0;
     if (numPerParent > 0) {
         pivotValues.forEach((value) => {
             rowData = rowData.set(pivotKey, value);
             editorModel = updateEditorData(model, rowData.toList(), numPerParent, dataIds.size);
-            totalItems += numPerParent;
             for (let i = 0; i < numPerParent; i++) {
                 // ensure we don't step on another ID
                 const id = GRID_EDIT_INDEX + ID_COUNTER++;

@@ -59,6 +59,7 @@ describe("<QueryInfoQuantity>", () => {
         expect(inputs).toHaveLength(2);
         expect(wrapper.find(".control-label")).toHaveLength(1);
         expect(wrapper.find(".control-label").text()).toBe("Quantity *");
+        wrapper.unmount();
     });
 
     test("multiple options, default selection", () => {
@@ -77,5 +78,6 @@ describe("<QueryInfoQuantity>", () => {
         expect(inputs).toHaveLength(2);
         expect(wrapper.find(".control-label")).toHaveLength(1);
         expect(wrapper.find(".control-label").text()).toBe("Derivatives per parent *");
+        wrapper.unmount();
     });
 });

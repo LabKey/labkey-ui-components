@@ -37,17 +37,16 @@ import { getQueryGridModel } from '../../global';
 
 import { headerSelectionCell } from '../../renderers';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
-import { MAX_EDITABLE_GRID_ROWS, GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from '../../constants';
+import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX, MAX_EDITABLE_GRID_ROWS } from '../../constants';
 import {
+    Alert,
+    BulkAddUpdateForm,
+    DeleteIcon,
     Grid,
     GridColumn,
-    DeleteIcon,
-    Alert,
     LoadingSpinner,
-    BulkAddUpdateForm,
     QueryColumn,
     QueryGridModel,
-    SampleCreationType,
 } from '../../..';
 
 import { blurActiveElement, capitalizeFirstChar, caseInsensitive } from '../../util/utils';
@@ -725,11 +724,10 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             });
         }
 
-        let pivotKey = undefined;
-        let pivotValues = []
+        let bulkAddData = undefined;
         let totalItems = 0;
         if (onBulkAdd) {
-            const bulkAddData  = onBulkAdd(data);
+            bulkAddData  = onBulkAdd(data);
             if (bulkAddData.validationMsg) {
                 return new Promise((resolve, reject) => {
                     reject({
@@ -738,8 +736,6 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
                 });
             }
             totalItems = bulkAddData.totalItems;
-            pivotKey = bulkAddData.pivotKey;
-            pivotValues = bulkAddData.pivotValues;
         }
 
         let updatedData = data.delete('numItems');
@@ -751,8 +747,8 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         if (bulkAddProps.columnFilter) {
             updatedData = this.restoreBulkInsertData(model, updatedData);
         }
-        if (pivotKey && pivotValues?.length > 0) {
-            addRowsPerPivotValue(model, numItems, pivotKey, pivotValues, updatedData);
+        if (bulkAddData?.pivotKey && bulkAddData?.pivotValues?.length > 0) {
+            addRowsPerPivotValue(model, numItems, bulkAddData?.pivotKey, bulkAddData?.pivotValues, updatedData);
         }
         else {
             addRows(model, numItems, updatedData);

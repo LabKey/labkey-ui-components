@@ -43,10 +43,7 @@ export class QueryInfoQuantity extends PureComponent<Props, State> {
 
     onCountChange = (field, value): void => {
         this.setState(() => ({ count: value }));
-
-        if (this.props.onCountChange) {
-            this.props.onCountChange(value);
-        }
+        this.props.onCountChange?.(value);
     };
 
     onOptionChange = (value)  => {

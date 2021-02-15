@@ -446,9 +446,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                     };
                 },
                 () => {
-                    if (this.props.onParentChange) {
-                        this.props.onParentChange(updatedModel.entityParents);
-                    }
+                    this.props.onParentChange?.(updatedModel.entityParents);
                     if (column && existingParent) {
                         if (existingParent.query !== undefined) {
                             changeColumn(queryGridModel, existingParent.createColumnName(), column);
@@ -493,9 +491,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                 };
             },
             () => {
-                if (this.props.onParentChange) {
-                    this.props.onParentChange(updatedModel.entityParents);
-                }
+                this.props.onParentChange?.(updatedModel.entityParents);
                 removeColumn(this.getQueryGridModel(), parentColumnName);
             }
         );

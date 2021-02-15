@@ -27,7 +27,6 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        props.options.find(option => option.selected);
         this.state = {
             creationType: props.options.find(option => option.selected)?.type || props.options[0].type,
             numPerParent: 1,
@@ -95,18 +94,16 @@ export class SampleCreationTypeModal extends React.PureComponent<Props, State> {
             return null;
 
         let optionSet = [];
-        options.forEach((option, i) => {
-            if (this.shouldRenderOption(option)) {
-                optionSet.push(
-                    <SampleCreationTypeOption
-                        key={i}
-                        option={option}
-                        isSelected={this.state.creationType === option.type}
-                        onChoose={this.onChange}
-                        showIcon={showIcons}
-                    />
-                )
-            }
+        displayOptions.forEach((option, i) => {
+            optionSet.push(
+                <SampleCreationTypeOption
+                    key={i}
+                    option={option}
+                    isSelected={this.state.creationType === option.type}
+                    onChoose={this.onChange}
+                    showIcon={showIcons}
+                />
+            )
         });
         return optionSet;
     }

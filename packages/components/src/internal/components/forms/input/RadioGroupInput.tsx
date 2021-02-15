@@ -111,10 +111,6 @@ export class RadioGroupInput extends React.Component<Props> {
         formsy: true,
     };
 
-    constructor(props: Props) {
-        super(props);
-    }
-
     render() {
         if (this.props.formsy) {
             return (

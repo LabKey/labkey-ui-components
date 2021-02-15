@@ -10,7 +10,6 @@ interface OptionProps {
     showIcon: boolean
 }
 
-// exported only for testing and storybook
 export const SampleCreationTypeOption: FC<OptionProps> = memo(props => {
     const { option, isSelected, onChoose, showIcon } = props;
 

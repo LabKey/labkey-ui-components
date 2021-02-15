@@ -24,6 +24,7 @@ describe("<RadioGroupInput>", () => {
             <RadioGroupInput formsy={false} options={undefined} name={"testRadio"}/>
         ));
         expect(wrapper.find("input")).toHaveLength(0);
+        wrapper.unmount();
     });
 
     test("one option", () => {

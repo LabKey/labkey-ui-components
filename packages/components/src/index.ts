@@ -23,7 +23,8 @@ import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './p
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
-import { inferDomainFromFile, InferDomainResponse } from './internal/InferDomainResponse';
+import { InferDomainResponse } from './public/InferDomainResponse';
+import { inferDomainFromFile, getServerFilePreview } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -87,12 +88,13 @@ import { Tip } from './internal/components/base/Tip';
 import { Grid, GridColumn, GridProps } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
-import { FileAttachmentForm } from './internal/components/files/FileAttachmentForm';
-import { DEFAULT_FILE, FileAttachmentFormModel, IFile, FileSizeLimitProps } from './internal/components/files/models';
+import { FileAttachmentForm } from './public/files/FileAttachmentForm';
+import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './internal/components/files/models';
+import { FileSizeLimitProps } from './public/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
-import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './internal/components/files/WebDav';
+import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
 import {
@@ -753,6 +755,7 @@ export {
     IDomainField,
     DomainDetails,
     inferDomainFromFile,
+    getServerFilePreview,
     InferDomainResponse,
     IFieldChange,
     IBannerMessage,

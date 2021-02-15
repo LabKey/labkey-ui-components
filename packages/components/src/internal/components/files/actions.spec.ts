@@ -6,7 +6,7 @@ import {
     fileSizeLimitCompare,
     getFileExtension,
 } from './actions';
-import { FileSizeLimitProps } from './models';
+import {FileSizeLimitProps} from "../../../public/files/models";
 
 const DATA = fromJS([
     ['str', 'int', 'int-excelupload', 'double', 'date'],

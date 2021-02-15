@@ -6,6 +6,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Item 8335: Add LabKey product navigation icon and menu to NavigationBar.tsx
     - also make the ProductNavigationMenu.tsx component available for use in LKS header.jsp
 
+### version 1.21.1
+Public API update
+*Released*:
+* Move FileAttachmentForm, WebDav, InferDomainResponse components to public
+* Move FileSizeLimitProps and FileGridPreviewProps to public
+
 ### version 1.20.0
 *Released*: 8 February 2021
 * Refactor navigation components to functional components.

@@ -37,9 +37,11 @@ import {
 } from '../../..';
 
 import { AssayUploadTabs } from '../../AssayDefinitionModel';
-import { getServerFilePreview, InferDomainResponse } from '../../InferDomainResponse';
+import { InferDomainResponse } from '../../../public/InferDomainResponse';
 
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
+
+import { getServerFilePreview } from './utils';
 
 import { getRunPropertiesFileName, getRunPropertiesRow } from './actions';
 import { AssayWizardModel } from './AssayWizardModel';
@@ -324,7 +326,7 @@ export class RunDataPanel extends React.Component<Props, State> {
                                                 placement: 'top',
                                                 nounPlural: 'rows',
                                                 nounSingular: 'row',
-                                                invalidCountMsg: maxEditableGridRowMsg
+                                                invalidCountMsg: maxEditableGridRowMsg,
                                             }}
                                             initialEmptyRowCount={0}
                                             emptyGridMsg="Start by adding the quantity of assay data rows you want to create."

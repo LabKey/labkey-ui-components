@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {List, Map} from 'immutable';
-import {DomainField} from "../../..";
+import { List, Map } from 'immutable';
+
+import { DomainField } from '../../..';
 
 export interface FileAttachmentFormModel {
     addAttachedFile?: (any) => any;
@@ -72,17 +73,6 @@ export const DEFAULT_FILE: IFile = {
     options: undefined,
     propertiesRowId: undefined,
 };
-
-export interface FileSizeLimitProps {
-    maxSize?: {
-        value: number;
-        displayValue: string;
-    };
-    maxPreviewSize?: {
-        value: number;
-        displayValue: string;
-    };
-}
 
 export interface SimpleResponse {
     success: boolean;

@@ -96,14 +96,16 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(), // enable HMR globally
         // This Plugin type checks our TS code, @babel/preset-typescript does not type check, it only transforms
         new ForkTsCheckerWebpackPlugin({
-            configOverwrite: {
-                compilerOptions: {
-                    "baseUrl": ".",
-                    "paths": {
-                        "immutable": [constants.labkeyUIComponentsPath + "/node_modules/immutable"],
-                        "@labkey/components": [constants.labkeyUIComponentsPath],
-                        "@labkey/freezermanager": [constants.freezerManagerPath],
-                        "@labkey/workflow": [constants.workflowPath]
+            typescript: {
+                configOverwrite: {
+                    compilerOptions: {
+                        "baseUrl": ".",
+                        "paths": {
+                            "immutable": [constants.labkeyUIComponentsPath + "/node_modules/immutable"],
+                            "@labkey/components": [constants.labkeyUIComponentsPath],
+                            "@labkey/freezermanager": [constants.freezerManagerPath],
+                            "@labkey/workflow": [constants.workflowPath]
+                        }
                     }
                 }
             }

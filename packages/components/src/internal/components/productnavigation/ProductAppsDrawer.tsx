@@ -27,7 +27,7 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                 iconUrl={DEFAULT_ICON_URL}
                 iconUrlAlt={DEFAULT_ICON_ALT_URL}
                 title="LabKey Server"
-                subtitle={getServerContext().project.name}
+                subtitle={getServerContext().project?.name ?? 'Root'}
                 onClick={() => onClick(LKS_PRODUCT_ID)}
             />
             {products.map(product => {

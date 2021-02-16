@@ -12,7 +12,11 @@ import { ProductSectionsDrawer } from './ProductSectionsDrawer';
 import { ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductNavigationHeader } from './ProductNavigationHeader';
 
-export const ProductNavigationMenu: FC = memo(() => {
+interface ProductNavigationMenuProps {
+    closeMenu?: () => void;
+}
+
+export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [products, setProducts] = useState<ProductModel[]>(); //the array of products that have been registered for this LK server
     const [projects, setProjects] = useState<Container[]>(); //the array of products that have been registered for this LK server
@@ -39,6 +43,7 @@ export const ProductNavigationMenu: FC = memo(() => {
 
     return (
         <ProductNavigationMenuImpl
+            {...props}
             error={error}
             projects={projects}
             tabs={tabs}
@@ -48,7 +53,7 @@ export const ProductNavigationMenu: FC = memo(() => {
     );
 });
 
-interface ProductNavigationMenuImplProps {
+interface ProductNavigationMenuImplProps extends ProductNavigationMenuProps {
     error: string;
     products: ProductModel[];
     projects: Container[];
@@ -57,7 +62,7 @@ interface ProductNavigationMenuImplProps {
 }
 
 const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props => {
-    const { error, products, projects, productProjectMap, tabs } = props;
+    const { error, products, projects, productProjectMap, tabs, closeMenu } = props;
     const [selectedProductId, setSelectedProductId] = useState<string>();
     const [selectedProject, setSelectedProject] = useState<Container>();
 
@@ -105,7 +110,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
                 {showProjectsDrawer && (
                     <ProductProjectsDrawer product={selectedProduct} projects={productProjects} onClick={onSelection} />
                 )}
-                {showSectionsDrawer && <ProductSectionsDrawer product={selectedProduct} project={selectedProject} />}
+                {showSectionsDrawer && <ProductSectionsDrawer product={selectedProduct} project={selectedProject} closeMenu={closeMenu} />}
             </ul>
             {selectedProductId === undefined && (
                 <div className="product-navigation-footer">

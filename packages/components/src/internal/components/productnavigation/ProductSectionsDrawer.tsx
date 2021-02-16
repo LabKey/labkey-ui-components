@@ -11,10 +11,11 @@ import { ProductClickableItem } from './ProductClickableItem';
 interface ProductAppsDrawerProps {
     product: ProductModel;
     project: Container;
+    closeMenu?: () => void;
 }
 
 export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
-    const { product, project } = props;
+    const { product, project, closeMenu } = props;
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
     const isSameContainer = useMemo(() => getServerContext().container.id === project?.id, [project]);
@@ -54,16 +55,17 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
             });
     }, [product]);
 
-    return <ProductSectionsDrawerImpl error={error} sections={sections} />;
+    return <ProductSectionsDrawerImpl error={error} sections={sections} closeMenu={closeMenu} />;
 });
 
 interface ProductSectionsDrawerImplProps {
     error: string;
     sections: ProductSectionModel[];
+    closeMenu?: () => void;
 }
 
 const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
-    const { sections, error } = props;
+    const { sections, error, closeMenu } = props;
 
     const [transition, setTransition] = useState<boolean>(false);
     useEffect(() => {
@@ -73,6 +75,7 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
 
     const navigate = useCallback((section: ProductSectionModel) => {
         window.location.href = section.url.toString();
+        closeMenu?.();
     }, []);
 
     if (error) {

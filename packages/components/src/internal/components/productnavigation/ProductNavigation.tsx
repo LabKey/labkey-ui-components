@@ -1,10 +1,11 @@
-import React, { FC, memo, useState } from 'react';
+import React, { FC, memo, useCallback, useState } from 'react';
 import { DropdownButton } from 'react-bootstrap';
 
 import { ProductNavigationMenu } from './ProductNavigationMenu';
 
 export const ProductNavigation: FC = memo(() => {
     const [show, setShow] = useState<boolean>(false);
+    const closeMenu = useCallback(() => setShow(false), [setShow]);
 
     return (
         <DropdownButton
@@ -16,7 +17,7 @@ export const ProductNavigation: FC = memo(() => {
             noCaret={true}
             pullRight={true}
         >
-            {show && <ProductNavigationMenu />}
+            {show && <ProductNavigationMenu closeMenu={closeMenu} />}
         </DropdownButton>
     );
 });

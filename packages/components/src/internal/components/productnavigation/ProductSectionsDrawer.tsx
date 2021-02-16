@@ -29,7 +29,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
 
         model.getMenuSections(0)
             .then(modelSections => {
-                const menuSections = [
+                let menuSections = [
                     new ProductSectionModel({
                         key: 'home',
                         label: 'Dashboard',
@@ -47,6 +47,14 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                             })
                         );
                     });
+
+                // special case to sort LKSM storage before workflow to match the mega menu display
+                menuSections = menuSections.sort((a, b) => {
+                    if (a.key === 'freezers' && b.key === 'workflow') {
+                        return -1;
+                    }
+                    return 0;
+                });
 
                 setSections(menuSections);
             })

@@ -115,6 +115,7 @@ export function removeFalseyObjKeys(obj) {
     return Object.entries(obj).reduce((a,[k,v]) => (v ? (a[k]=v, a) : a), {});
 }
 
+// columnOrder determines the left-to-right ordering of columns within the domain summary view
 export function reorderSummaryColumns(a: SummaryGrid, b: SummaryGrid): number {
     const columnOrder = [
         // Collapsed field options

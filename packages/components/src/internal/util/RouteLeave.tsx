@@ -1,96 +1,120 @@
-import React from 'react';
-import { Location } from 'history';
-import { WithRouterProps } from 'react-router';
+import React, { ComponentType, FC, useCallback, useEffect, useMemo, useRef } from 'react';
+import { InjectedRouter, withRouter, WithRouterProps, PlainRoute } from 'react-router';
 
-import { AppURL } from '../..';
+export const CONFIRM_MESSAGE = 'You have unsaved changes that will be lost. Are you sure you want to continue?';
 
-import { BeforeUnload } from './BeforeUnload';
-
-export const ON_LEAVE_DIRTY_STATE_MESSAGE =
-    'You have unsaved changes that will be lost. Are you sure you want to continue?';
-
-/**
- * This function can be used as the callback for react-router's setRouteLeaveHook.  It should be preferred
- * over a callback that simply returns the confirm message because with react-router v3.x, the URL route
- * will have already been changed by the time this confirm is shown and will not be reset if the user does not confirm.
- * If the user tries to click on the initial link again after canceling, nothing will happen because the URL
- * in the browser will not change. (Issue 39633).
- * See also https://stackoverflow.com/questions/32841757/detecting-user-leaving-page-with-react-router
- *
- * TODO: Seems like there are some additional tools in newer versions of react-router:
- *  https://stackoverflow.com/questions/62792342/in-react-router-v6-how-to-check-form-is-dirty-before-leaving-page-route
- *
- * @param currentLocation the location of the current page
- * @param event object triggering leave transition
- */
-export function confirmLeaveWhenDirty(currentLocation: Location, event?: any): boolean {
-    const result = confirm(ON_LEAVE_DIRTY_STATE_MESSAGE);
-
-    // navigation canceled, pushing the previous path
-    if (!result && currentLocation) {
-        const appURL = AppURL.create(...currentLocation.pathname.substring(1).split('/').map(decodeURIComponent));
-
-        // Issue 41419: handle different cases for route leave PUSH vs POP events
-        if (event?.action !== 'POP') {
-            window.history.replaceState(null, null, appURL.toHref() + currentLocation.search);
-        } else {
-            window.history.back();
-        }
-    }
-
-    return result;
+export interface InjectedRouteLeaveProps {
+    // getIsDirty is a function that returns a boolean because we use a ref in order to prevent this component from
+    // re-rendering child components every time the dirty bit changes.
+    getIsDirty: () => boolean;
+    setIsDirty: (isDirty: boolean) => void;
 }
 
-interface RouteLeaveInjectedProps {
-    setDirty: (dirty: boolean) => void;
-    isDirty: () => boolean;
+export interface WrappedRouteLeaveProps {
+    confirmMessage?: string;
 }
 
-export type RouteLeaveProps = RouteLeaveInjectedProps & WithRouterProps;
+type GetSetIsDirty = [() => boolean, (dirty: boolean) => void];
 
 /**
- * A HOC to be used for any app React page that needs to check for a dirty state on route navigation / change.
- * Note that this also makes use of the BeforeUnload HOC for the browser page navigation / reload case.
+ * The useRouteLeave hook is useful if you want to display a confirmation dialog when the user tries to navigate away
+ * from a "dirty" form or page. This hook ties into both the React Router RouteLeave event, and the browser beforeunload
+ * event. This allows us to prevent navigation via back button, link clicking, or browser window/tab closing.
+ * @param router: InjectedRouter from WithRouterProps
+ * @param routes: PlainRoute[] from withRouterProps
+ * @param confirmMessage: The confirm message you want to display to the user, this message is only displayed when
+ * navigating away from the page, not when closing the tab or browser window. Browsers do not let you customize the
+ * message displayed when the browser/tab is closed.
  */
-export const withRouteLeave = (Component: React.ComponentType) => {
-    return class RouteLeaveHOCImpl extends React.Component<RouteLeaveProps> {
-        componentDidMount(): void {
-            // attach the hook to the current route, which will be the last index of the routes prop
-            this.props.router.setRouteLeaveHook(this.props.routes[this.props.routes.length - 1], this.onRouteLeave);
+export const useRouteLeave = (
+    router: InjectedRouter,
+    routes: PlainRoute[],
+    confirmMessage = CONFIRM_MESSAGE
+): GetSetIsDirty => {
+    const initialHistoryLength = useMemo(() => history.length, []);
+    const isDirty = useRef<boolean>(false);
+
+    const setIsDirty = useCallback(
+        (dirty: boolean) => {
+            isDirty.current = dirty;
+        },
+        [isDirty]
+    );
+
+    const getIsDirty = useCallback((): boolean => {
+        return isDirty.current;
+    }, [isDirty]);
+
+    const onRouteLeave = useCallback(() => {
+        if (isDirty.current === true) {
+            const result = confirm(confirmMessage);
+
+            if (!result) {
+                // Issue 42101: the browser changes the URL before onRouteLeave is called, so if the user cancels
+                // we need to go back to the URL we were just at. Unfortunately going back to the URL we were just at
+                // depends on what the user did, and detecting that is spotty at best. If the user clicked a link we
+                // need to go back in history, if the user hit the back button we need to go forward in history. The
+                // "best" way to detect this is by keeping track of the history length when we first render. If the user
+                // clicked a link this will increase. This is method is unfortunately not perfect, but it prevents us
+                // from showing the cancel dialog for every entry in the user's history until they either reach the
+                // beginning of history, or hit leave page.
+                //
+                // You can still end up in a bad state in two known scenarios:
+                // - if you alternate between using the back button, hitting cancel, clicking a link, hitting cancel
+                // - If your browser history is at maximum length, this appears to be 50 in Chrome
+                //
+                // To avoid this entire situation we need to either commit to using Link components everywhere, which
+                // don't cause the URL to change before onRouteLeave is called, or we need to upgrade to a newer version
+                // of React Router.
+                if (history.length > initialHistoryLength) {
+                    // The user clicked a link
+                    router.goBack();
+                } else {
+                    // The user hit the back button
+                    router.goForward();
+                }
+                return false;
+            }
         }
 
-        _dirty = false;
+        return true;
+    }, [isDirty, confirmMessage, initialHistoryLength]);
 
-        onBeforeUnload = (event): boolean | string => {
-            if (this._dirty) {
-                event.returnValue = ON_LEAVE_DIRTY_STATE_MESSAGE;
-                return ON_LEAVE_DIRTY_STATE_MESSAGE;
+    const beforeUnload = useCallback(
+        event => {
+            if (isDirty.current === true) {
+                event.returnValue = true;
             }
-            return true;
-        };
+        },
+        [isDirty]
+    );
 
-        onRouteLeave = (event): boolean => {
-            if (this._dirty) {
-                event.returnValue = true; // this is for the page reload case
-                return confirmLeaveWhenDirty(this.props.location, event);
-            }
-            return true;
-        };
+    useEffect(() => {
+        const currentRoute = routes[routes.length - 1];
+        // setRouteLeaveHook returns a cleanup function.
+        return router.setRouteLeaveHook(currentRoute, onRouteLeave);
+    }, [onRouteLeave]);
 
-        setDirty = (dirty: boolean): void => {
-            this._dirty = dirty;
-        };
+    useEffect(() => {
+        window.addEventListener('beforeunload', beforeUnload);
 
-        isDirty = (): boolean => {
-            return this._dirty;
+        return () => {
+            window.removeEventListener('beforeunload', beforeUnload);
         };
+    }, [beforeUnload]);
 
-        render() {
-            return (
-                <BeforeUnload beforeunload={this.onBeforeUnload}>
-                    <Component setDirty={this.setDirty} isDirty={this.isDirty} {...this.props} />
-                </BeforeUnload>
-            );
-        }
-    };
+    return [getIsDirty, setIsDirty];
 };
+
+export function withRouteLeave<T>(
+    Component: ComponentType<T & InjectedRouteLeaveProps>
+): ComponentType<T & WrappedRouteLeaveProps> {
+    const wrapped: FC<T & WrappedRouteLeaveProps & WithRouterProps> = props => {
+        const { router, routes, confirmMessage, ...rest } = props;
+        const [getIsDirty, setIsDirty] = useRouteLeave(router, routes, confirmMessage);
+
+        return <Component getIsDirty={getIsDirty} setIsDirty={setIsDirty} {...(rest as T)} />;
+    };
+
+    return withRouter(wrapped) as FC<T & WrappedRouteLeaveProps>;
+}

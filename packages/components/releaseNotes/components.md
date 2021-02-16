@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Field Editor Summary View
+
 ### version 1.21.1
 Public API update
 *Released*:

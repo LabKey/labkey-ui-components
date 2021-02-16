@@ -81,6 +81,8 @@
 
 .server-notifications-link {
     color: $brand-primary;
+    text-transform: none;
+
     &:hover {
         cursor: pointer;
     }

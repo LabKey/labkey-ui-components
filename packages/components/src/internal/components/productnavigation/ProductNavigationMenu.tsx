@@ -96,7 +96,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
 
     return (
         <div className="product-navigation-container">
-            <h3 className="product-navigation-header navbar-menu-header lk-text-theme-dark">
+            <h3 className="product-navigation-header navbar-menu-header">
                 <div className="navbar-icon-connector" />
                 <ProductNavigationHeader
                     title={selectedProject?.title || selectedProduct?.productName}

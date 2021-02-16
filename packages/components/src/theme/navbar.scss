@@ -418,6 +418,9 @@
     padding: 8px 14px;
     margin: 0;
     font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $text-color;
     background-color: $gray-shadow;
     border-bottom: 1px solid $gray-border;
     border-radius: 5px 5px 0 0;

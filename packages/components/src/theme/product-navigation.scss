@@ -1,5 +1,8 @@
 .product-navigation-container {
-    width: 400px;
+    width: 270px;
+    &.wider {
+        width: 400px;
+    }
 
     .labkey-page-nav {
         min-height: unset;

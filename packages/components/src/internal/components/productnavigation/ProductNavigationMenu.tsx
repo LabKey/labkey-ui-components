@@ -91,11 +91,13 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
 
     const selectedProduct = getSelectedProduct(products, selectedProductId);
     const productProjects = selectedProduct ? productProjectMap[selectedProduct.productId] : undefined;
+    const showProductDrawer = selectedProductId === undefined;
+    const showLKSDrawer = selectedProductId === LKS_PRODUCT_ID;
     const showSectionsDrawer = selectedProject !== undefined;
     const showProjectsDrawer = !selectedProject && selectedProduct !== undefined;
 
     return (
-        <div className="product-navigation-container">
+        <div className={'product-navigation-container' + (showProductDrawer || (showProjectsDrawer && productProjects.length === 0) ? ' wider' : '')}>
             <h3 className="product-navigation-header navbar-menu-header">
                 <div className="navbar-icon-connector" />
                 <ProductNavigationHeader
@@ -105,8 +107,8 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
                 />
             </h3>
             <ul className="product-navigation-listing">
-                {selectedProductId === undefined && <ProductAppsDrawer {...props} onClick={onSelection} />}
-                {selectedProductId === LKS_PRODUCT_ID && <ProductLKSDrawer projects={projects} tabs={tabs} />}
+                {showProductDrawer && <ProductAppsDrawer {...props} onClick={onSelection} />}
+                {showLKSDrawer && <ProductLKSDrawer projects={projects} tabs={tabs} />}
                 {showProjectsDrawer && (
                     <ProductProjectsDrawer product={selectedProduct} projects={productProjects} onClick={onSelection} />
                 )}

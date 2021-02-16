@@ -1167,11 +1167,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         );
     }
 
-    scrollFunction = (i: number) : void => {
+    scrollFunction = (i: number): void => {
         this.setState({summaryViewMode: false}, () => {
             this.refsArray[i].scrollIntoView();
         });
-    }
+    };
 
     renderDetailedFieldView = () => {
         const {
@@ -1279,8 +1279,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         <StickyContainer>
                             {summaryViewMode ? (
                                 <DomainPropertiesGrid
-                                    initGridData={domain.getGridData(this.scrollFunction)}
-                                    gridColumns={domain.getGridColumns(this.onFieldsChange, this.scrollFunction)}
+                                    initGridData={domain.getGridData()}
+                                    gridColumns={domain.getGridColumns(this.onFieldsChange, this.scrollFunction, domain.domainKindName)}
                                     search={search}
                                     selectAll={selectAll}
                                     toggleSelectAll={this.toggleSelectAll}

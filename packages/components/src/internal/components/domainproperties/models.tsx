@@ -21,9 +21,11 @@ import React from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 
-import {caseInsensitive, createFormInputId, GridColumn, SCHEMAS, valueIsEmpty} from '../../..';
+import { caseInsensitive, createFormInputId, GridColumn, SCHEMAS, valueIsEmpty } from '../../..';
 
-import {GRID_NAME_INDEX, GRID_SELECTION_INDEX} from '../../constants';
+import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
+
+import { camelCaseToTitleCase } from '../../util/utils';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -60,6 +62,7 @@ import {
     TEXT_TYPE,
     USERS_TYPE,
 } from './PropDescType';
+import {removeFalseyObjKeys, reorderSummaryColumns} from "./propertiesUtil";
 
 export interface IFieldChange {
     id: string;
@@ -301,39 +304,47 @@ export class DomainDesign
         return mapping;
     }
 
-    getGridData(scrollFunction): List<any> {
+    getGridData(): List<any> {
         return this.fields.map((field, i) => {
-            const name = <a onClick={() => scrollFunction(i)} style={{cursor: 'pointer'}}> {field.name} </a>;
-            const nameObjTemp = Map();
-            nameObjTemp.set('custom', name);
+            const fieldSerial = DomainField.serialize(field);
 
-            let fieldSerial = DomainField.serialize(field);
+            // Add field properties stripped by the serialize
             fieldSerial['fieldIndex'] = i;
             fieldSerial['selected'] = field.selected;
             fieldSerial['visible'] = field.visible;
 
+            return Map(
+                Object.keys(fieldSerial).map(key => {
+                    const rawVal = fieldSerial[key];
+                    const valueType = typeof rawVal;
+                    let value = valueIsEmpty(rawVal) ? '' : rawVal;
 
-            return Map(Object.keys(fieldSerial).map(key => {
-                const rawVal = fieldSerial[key];
-                let value = valueIsEmpty(rawVal) ? "" : rawVal;
-                const valueType = typeof value;
-                if (key !== 'visible' && key !== 'selected' && rawVal === false) {
-                    value = 'false';
-                }
+                    // Make bools render as strings sortable within their column
+                    if (key !== 'visible' && key !== 'selected' && valueType === 'boolean') {
+                        value = rawVal ? 'true' : 'false';
+                    }
 
-                if (key === "conditionalFormats" && value !== "") {
-                    // console.log("\nkey", key);
-                    // console.log("value", value);
-                    // console.log("valueType", valueType);
-                    value = JSON.stringify(value);
-                }
+                    // Handle conditional format rendering
+                    if (key === 'conditionalFormats' && value !== '') {
+                        value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
+                    }
 
-                return([key, value]);
-            }))
+                    // Handle property validator rendering
+                    if (key === 'propertyValidators' && value !== '') {
+                        value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
+                    }
+
+                    return [key, value];
+                })
+            );
         }) as List<Map<string, any>>;
     }
 
-    getGridColumns(onFieldsChange: DomainOnChange, scrollFunction: (i: number) => void): List<GridColumn | SummaryGrid> {
+    getGridColumns(
+        onFieldsChange: DomainOnChange,
+        scrollFunction: (i: number) => void,
+        domainKindName: string
+    ): List<GridColumn | SummaryGrid> {
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,
             title: GRID_SELECTION_INDEX,
@@ -342,7 +353,7 @@ export class DomainDesign
                 const domainIndex = row.get('domainIndex');
                 const fieldIndex = row.get('fieldIndex');
                 const selected = row.get('selected');
-                const formInputId = createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, fieldIndex);
+                const formInputId = createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, fieldIndex === "" ? 0 : fieldIndex);
 
                 const changes = List.of({ id: formInputId, value: !selected });
                 return (
@@ -363,29 +374,36 @@ export class DomainDesign
         const nameCol = new GridColumn({
             index: GRID_NAME_INDEX,
             title: GRID_NAME_INDEX,
+            raw: {index: 'name', caption: 'Name', sortable: true},
             cell: (data: any, row: any) => {
                 const text = row.get('name');
                 const fieldIndex = row.get('fieldIndex');
 
                 return (
                     <>
-                        <a onClick={() => scrollFunction(fieldIndex)} style={{cursor: 'pointer'}}> {text} </a>
+                        <a onClick={() => scrollFunction(fieldIndex)} style={{ cursor: 'pointer' }}>
+                            {text}
+                        </a>
                     </>
                 );
             },
         });
 
         const specialCols = List([selectionCol, nameCol]);
-
         const firstField = this.fields.get(0);
-        const what = DomainField.serialize(firstField);
-        // console.log("what", what);
+        const columns = DomainField.serialize(firstField);
+        delete columns.name;
+        if (domainKindName !== 'List') {
+            delete columns.isPrimaryKey;
+        }
 
-        const newList = List(Object.keys(what).map(key => {
-            // console.log("key", key);
-            return { index: key, caption: key, sortable: true }
-        }));
-        return specialCols.concat(newList) as List<GridColumn | SummaryGrid>;
+        const unsortedColumns = List(
+            Object.keys(columns).map(key => {
+                return { index: key, caption: camelCaseToTitleCase(key), sortable: true };
+            })
+        );
+        const sortedColumns = unsortedColumns.sort(reorderSummaryColumns);
+        return specialCols.concat(sortedColumns) as List<GridColumn | SummaryGrid>;
     }
 }
 
@@ -646,7 +664,6 @@ export class DomainField
         mvEnabled: false,
         name: undefined,
         PHI: undefined,
-        primaryKey: undefined,
         propertyId: undefined,
         propertyURI: undefined,
         propertyValidators: List<PropertyValidator>(),
@@ -698,7 +715,6 @@ export class DomainField
     mvEnabled?: boolean;
     name: string;
     PHI?: string;
-    primaryKey?: boolean;
     propertyId?: number;
     propertyURI: string;
     propertyValidators: List<PropertyValidator>;

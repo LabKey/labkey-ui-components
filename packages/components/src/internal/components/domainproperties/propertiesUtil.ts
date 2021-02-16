@@ -17,7 +17,7 @@
 import { List } from 'immutable';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
-import { DomainDesign, DomainField } from './models';
+import {DomainDesign, DomainField, SummaryGrid} from './models';
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {
@@ -109,4 +109,58 @@ export function compareStringsAlphabetically(a: string, b: string, direction): n
         return isAsc ? 1 : -1;
     }
     return 0;
+}
+
+export function removeFalseyObjKeys(obj) {
+    return Object.entries(obj).reduce((a,[k,v]) => (v ? (a[k]=v, a) : a), {});
+}
+
+export function reorderSummaryColumns(a: SummaryGrid, b: SummaryGrid): number {
+    const columnOrder = [
+        // Collapsed field options
+        'name',
+        'rangeURI',
+        'required',
+        'isPrimaryKey',
+        'wrappedColumnName', // Appears in 'details' text
+        'lockType',
+        'scale',
+        // Lookup options
+        'lookupContainer',
+        'lookupSchema',
+        'lookupQuery',
+        // Integer options
+        'format',
+        'defaultScale',
+        // Ontology options
+        'sourceOntology',
+        'conceptImportColumn',
+        'conceptLabelColumn',
+        'conceptURI',
+        // Expanded field options
+        'description',
+        'label',
+        'importAliases',
+        'url',
+        'conditionalFormats',
+        "propertyValidators",
+        // Advanced Settings
+        'hidden',
+        'shownInUpdateView',
+        'shownInInsertView',
+        'shownInDetailsView',
+        'defaultValueType',
+        "defaultValue",
+        'defaultDisplayValue',
+        'phi',
+        'excludeFromShifting', // Appears for datetime fields
+        'measure',
+        'dimension',
+        'recommendedVariable',
+        'mvEnabled',
+        // Misc
+        'propertyId',
+        'propertyURI',
+    ];
+    return (columnOrder.indexOf(a.index) > columnOrder.indexOf(b.index)) ? 1 : -1;
 }

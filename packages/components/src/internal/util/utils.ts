@@ -92,6 +92,12 @@ function toLowerReducer(s: Set<string>, v: string): Set<string> {
     return s;
 }
 
+export function camelCaseToTitleCase(text: string) {
+    const camelEdges = /([A-Z](?=[A-Z][a-z])|[^A-Z](?=[A-Z])|[a-zA-Z](?=[^a-zA-Z]))/g;
+    const saferText = text.replace(camelEdges,'$1 ');
+    return saferText.charAt(0).toUpperCase() + saferText.slice(1);
+}
+
 export function not(predicate: (...args: any[]) => boolean): (...args: any[]) => boolean {
     return function () {
         return !predicate.apply(this, arguments);

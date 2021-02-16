@@ -7,7 +7,7 @@ import { Checkbox } from 'react-bootstrap';
 import { Grid, GridColumn } from '../../..';
 import { headerCell } from '../../renderers';
 
-import {GRID_NAME_INDEX, GRID_SELECTION_INDEX} from '../../constants';
+import { GRID_SELECTION_INDEX } from '../../constants';
 
 import { compareStringsAlphabetically } from './propertiesUtil';
 
@@ -76,9 +76,6 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const { gridData } = this.state;
         const { initGridData } = this.props;
 
-        console.log("initGridData", initGridData.toJS());
-        console.log("gridData", gridData.toJS());
-
         const updatedGridData = gridData.reduce((updatedGridData, row) => {
             const newRowIndex = initGridData.findIndex(newRow => newRow.get('name') === row.get('name'));
             return (newRowIndex !== -1)
@@ -86,7 +83,6 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
                 : updatedGridData;
         }, List());
 
-        console.log("updatedGridData", updatedGridData.toJS());
         const visibleGridData = this.getVisibleGridData(updatedGridData);
 
         this.setState({ gridData: updatedGridData, visibleGridData });
@@ -97,7 +93,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const { initGridData } = this.props;
 
         const updatedGridData = gridData.map(row => {
-            const nextRowIndex = initGridData.findIndex(nextRow => nextRow.get('name') === row.get('name'));
+            const nextRowIndex = initGridData.findIndex(nextRow => nextRow.get('fieldIndex') === row.get('fieldIndex'));
             return row.set('visible', initGridData.get(nextRowIndex).get('visible'));
         }) as List<any>;
         const visibleGridData = this.getVisibleGridData(updatedGridData);
@@ -113,7 +109,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
             const row = gridData.get(i);
             const rowSelection = row.get('selected');
 
-            const newRowIndex = initGridData.findIndex(newRow => newRow.get('name') === row.get('name'));
+            const newRowIndex = initGridData.findIndex(newRow => newRow.get('fieldIndex') === row.get('fieldIndex'));
             const newRow = initGridData.get(newRowIndex);
             const newRowSelection = newRow.get('selected');
 
@@ -146,19 +142,12 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
             return <Checkbox className="domain-summary-selectAll" checked={selectAll} onChange={toggleSelectAll} />;
         }
 
-        if (column.index === GRID_NAME_INDEX) {
-            return "Name";
-        }
-
         return headerCell(this.sortColumn, column, index, false, true, columnCount);
     };
 
     render() {
         const { gridColumns } = this.props;
-        const { visibleGridData, gridData } = this.state;
-
-        // console.log('initGridData', this.props.initGridData.toJS());
-        // console.log('gridColumns', this.props.gridColumns.toJS())
+        const { visibleGridData } = this.state;
 
         return (
             <>

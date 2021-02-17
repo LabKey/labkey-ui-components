@@ -18,7 +18,6 @@ import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
 import { fromJS, Map } from 'immutable';
 
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
 import { ENTITY_FORM_IDS } from '../entities/constants';
 import { DomainDetails, DomainPanelStatus } from '../models';
 
@@ -32,65 +31,45 @@ const BASE_PROPS = {
     controlledCollapse: false,
     initCollapsed: false,
     collapsed: false,
+    updateModel: jest.fn,
+    onAddParentAlias: jest.fn,
+    onRemoveParentAlias: jest.fn,
+    onParentAliasChange: jest.fn,
+    parentOptions: [],
 };
 
-beforeAll(() => {
-    initUnitTestMocks();
-});
-
 describe('<SampleTypePropertiesPanel/>', () => {
-    test('default props', async () => {
+    test('default props', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 model={SampleTypeModel.create()}
-                updateModel={jest.fn}
-                onAddParentAlias={jest.fn}
-                onRemoveParentAlias={jest.fn}
-                onParentAliasChange={jest.fn}
-                parentOptions={[]}
             />
         );
-
-        await sleep();
 
         expect(tree).toMatchSnapshot();
     });
 
-    test('appPropertiesOnly', async () => {
+    test('appPropertiesOnly', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 appPropertiesOnly={true}
                 model={SampleTypeModel.create()}
-                updateModel={jest.fn}
-                onAddParentAlias={jest.fn}
-                onRemoveParentAlias={jest.fn}
-                onParentAliasChange={jest.fn}
-                parentOptions={[]}
             />
         );
-
-        await sleep();
 
         expect(tree).toMatchSnapshot();
     });
 
-    test('nameExpressionInfoUrl', async () => {
+    test('nameExpressionInfoUrl', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 model={SampleTypeModel.create()}
-                updateModel={jest.fn}
                 nameExpressionInfoUrl="#anything"
-                onAddParentAlias={jest.fn}
-                onRemoveParentAlias={jest.fn}
-                onParentAliasChange={jest.fn}
-                parentOptions={[]}
             />
         );
-
-        await sleep();
 
         expect(tree).toMatchSnapshot();
     });
@@ -113,11 +92,6 @@ describe('<SampleTypePropertiesPanel/>', () => {
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 model={SampleTypeModel.create(data)}
-                updateModel={jest.fn}
-                onAddParentAlias={jest.fn}
-                onRemoveParentAlias={jest.fn}
-                onParentAliasChange={jest.fn}
-                parentOptions={[]}
             />
         );
 
@@ -137,15 +111,11 @@ describe('<SampleTypePropertiesPanel/>', () => {
         wrapper.unmount();
     });
 
-    test('include dataclass and use custom labels', async () => {
+    test('include dataclass and use custom labels', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 model={SampleTypeModel.create()}
-                updateModel={jest.fn}
-                onAddParentAlias={jest.fn}
-                onRemoveParentAlias={jest.fn}
-                onParentAliasChange={jest.fn}
                 parentOptions={[{ schema: 'exp.data' }]}
                 includeDataClasses={true}
                 useSeparateDataClassesAliasMenu={true}
@@ -157,32 +127,23 @@ describe('<SampleTypePropertiesPanel/>', () => {
             />
         );
 
-        await sleep();
-
         expect(tree).toMatchSnapshot();
     });
 
-    test('includeMetricUnitProperty', async () => {
+    test('includeMetricUnitProperty', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 appPropertiesOnly={true}
                 metricUnitProps={{ includeMetricUnitProperty: true }}
                 model={SampleTypeModel.create()}
-                updateModel={jest.fn}
-                onAddParentAlias={jest.fn}
-                onRemoveParentAlias={jest.fn}
-                onParentAliasChange={jest.fn}
-                parentOptions={[]}
             />
         );
-
-        await sleep();
 
         expect(tree).toMatchSnapshot();
     });
 
-    test('metricUnitOptions', async () => {
+    test('metricUnitOptions', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
@@ -200,15 +161,8 @@ describe('<SampleTypePropertiesPanel/>', () => {
                     ],
                 }}
                 model={SampleTypeModel.create()}
-                updateModel={jest.fn}
-                onAddParentAlias={jest.fn}
-                onRemoveParentAlias={jest.fn}
-                onParentAliasChange={jest.fn}
-                parentOptions={[]}
             />
         );
-
-        await sleep();
 
         expect(tree).toMatchSnapshot();
     });

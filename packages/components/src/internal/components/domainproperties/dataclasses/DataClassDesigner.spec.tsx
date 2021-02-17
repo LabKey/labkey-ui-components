@@ -16,6 +16,7 @@ import { DataClassDesigner } from './DataClassDesigner';
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
+    testMode: true
 };
 
 beforeAll(() => {

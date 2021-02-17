@@ -276,7 +276,6 @@ exports[`DomainRow Sample Field 1`] = `
                     "mvEnabled": false,
                     "name": "sampleField",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
                     "propertyValidators": Immutable.List [],
@@ -464,7 +463,6 @@ exports[`DomainRow Sample Field 1`] = `
                                     "mvEnabled": false,
                                     "name": "sampleField",
                                     "PHI": undefined,
-                                    "primaryKey": undefined,
                                     "propertyId": 1,
                                     "propertyURI": "test",
                                     "propertyValidators": Immutable.List [],
@@ -808,7 +806,7 @@ exports[`DomainRow Sample Field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={false}
+                                            disabled={true}
                                             id="domainpropertiesrow-type-1-0"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -816,7 +814,7 @@ exports[`DomainRow Sample Field 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={false}
+                                              disabled={true}
                                               id="domainpropertiesrow-type-1-0"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}
@@ -1050,7 +1048,6 @@ exports[`DomainRow Sample Field 1`] = `
                                       "mvEnabled": false,
                                       "name": "sampleField",
                                       "PHI": undefined,
-                                      "primaryKey": undefined,
                                       "propertyId": 1,
                                       "propertyURI": "test",
                                       "propertyValidators": Immutable.List [],
@@ -1413,7 +1410,6 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "sampleField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -1891,7 +1887,6 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "sampleField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -2451,7 +2446,6 @@ exports[`DomainRow client side warning on field 1`] = `
                     "mvEnabled": false,
                     "name": "#ColumnAwesome",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": "test",
                     "propertyValidators": Immutable.List [],
@@ -2651,7 +2645,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                     "mvEnabled": false,
                                     "name": "#ColumnAwesome",
                                     "PHI": undefined,
-                                    "primaryKey": undefined,
                                     "propertyId": undefined,
                                     "propertyURI": "test",
                                     "propertyValidators": Immutable.List [],
@@ -3414,7 +3407,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                       "mvEnabled": false,
                                       "name": "#ColumnAwesome",
                                       "PHI": undefined,
-                                      "primaryKey": undefined,
                                       "propertyId": undefined,
                                       "propertyURI": "test",
                                       "propertyValidators": Immutable.List [],
@@ -3533,7 +3525,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "#ColumnAwesome",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": undefined,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -4011,7 +4002,6 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "#ColumnAwesome",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": undefined,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -4571,7 +4561,6 @@ exports[`DomainRow date time field 1`] = `
                     "mvEnabled": false,
                     "name": "dateTimeField",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
                     "propertyValidators": Immutable.List [],
@@ -4759,7 +4748,6 @@ exports[`DomainRow date time field 1`] = `
                                     "mvEnabled": false,
                                     "name": "dateTimeField",
                                     "PHI": undefined,
-                                    "primaryKey": undefined,
                                     "propertyId": 1,
                                     "propertyURI": "test",
                                     "propertyValidators": Immutable.List [],
@@ -5103,7 +5091,7 @@ exports[`DomainRow date time field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={false}
+                                            disabled={true}
                                             id="domainpropertiesrow-type-1-0"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -5111,7 +5099,7 @@ exports[`DomainRow date time field 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={false}
+                                              disabled={true}
                                               id="domainpropertiesrow-type-1-0"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}
@@ -5325,7 +5313,6 @@ exports[`DomainRow date time field 1`] = `
                                       "mvEnabled": false,
                                       "name": "dateTimeField",
                                       "PHI": undefined,
-                                      "primaryKey": undefined,
                                       "propertyId": 1,
                                       "propertyURI": "test",
                                       "propertyValidators": Immutable.List [],
@@ -5665,7 +5652,6 @@ exports[`DomainRow date time field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "dateTimeField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -6143,7 +6129,6 @@ exports[`DomainRow date time field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "dateTimeField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -6843,7 +6828,6 @@ exports[`DomainRow decimal field 1`] = `
                     "mvEnabled": false,
                     "name": "decimalField",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
                     "propertyValidators": Immutable.List [],
@@ -7031,7 +7015,6 @@ exports[`DomainRow decimal field 1`] = `
                                     "mvEnabled": false,
                                     "name": "decimalField",
                                     "PHI": undefined,
-                                    "primaryKey": undefined,
                                     "propertyId": 1,
                                     "propertyURI": "test",
                                     "propertyValidators": Immutable.List [],
@@ -7375,7 +7358,7 @@ exports[`DomainRow decimal field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={false}
+                                            disabled={true}
                                             id="domainpropertiesrow-type-1-2"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -7383,7 +7366,7 @@ exports[`DomainRow decimal field 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={false}
+                                              disabled={true}
                                               id="domainpropertiesrow-type-1-2"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}
@@ -7597,7 +7580,6 @@ exports[`DomainRow decimal field 1`] = `
                                       "mvEnabled": false,
                                       "name": "decimalField",
                                       "PHI": undefined,
-                                      "primaryKey": undefined,
                                       "propertyId": 1,
                                       "propertyURI": "test",
                                       "propertyValidators": Immutable.List [],
@@ -7972,7 +7954,6 @@ exports[`DomainRow decimal field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "decimalField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -8450,7 +8431,6 @@ exports[`DomainRow decimal field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "decimalField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -9150,7 +9130,6 @@ exports[`DomainRow participant id field 1`] = `
                     "mvEnabled": false,
                     "name": "participantField",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
                     "propertyValidators": Immutable.List [],
@@ -9338,7 +9317,6 @@ exports[`DomainRow participant id field 1`] = `
                                     "mvEnabled": false,
                                     "name": "participantField",
                                     "PHI": undefined,
-                                    "primaryKey": undefined,
                                     "propertyId": 1,
                                     "propertyURI": "test",
                                     "propertyValidators": Immutable.List [],
@@ -9682,7 +9660,7 @@ exports[`DomainRow participant id field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={false}
+                                            disabled={true}
                                             id="domainpropertiesrow-type-1-0"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -9690,7 +9668,7 @@ exports[`DomainRow participant id field 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={false}
+                                              disabled={true}
                                               id="domainpropertiesrow-type-1-0"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}
@@ -9934,7 +9912,6 @@ exports[`DomainRow participant id field 1`] = `
                                       "mvEnabled": false,
                                       "name": "participantField",
                                       "PHI": undefined,
-                                      "primaryKey": undefined,
                                       "propertyId": 1,
                                       "propertyURI": "test",
                                       "propertyValidators": Immutable.List [],
@@ -10053,7 +10030,6 @@ exports[`DomainRow participant id field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "participantField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -10531,7 +10507,6 @@ exports[`DomainRow participant id field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "participantField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -11231,7 +11206,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "mvEnabled": false,
                     "name": "modified",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": "test",
                     "propertyValidators": Immutable.List [],
@@ -11431,7 +11405,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     "mvEnabled": false,
                                     "name": "modified",
                                     "PHI": undefined,
-                                    "primaryKey": undefined,
                                     "propertyId": undefined,
                                     "propertyURI": "test",
                                     "propertyValidators": Immutable.List [],
@@ -12083,7 +12056,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       "mvEnabled": false,
                                       "name": "modified",
                                       "PHI": undefined,
-                                      "primaryKey": undefined,
                                       "propertyId": undefined,
                                       "propertyURI": "test",
                                       "propertyValidators": Immutable.List [],
@@ -12202,7 +12174,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "modified",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": undefined,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -12680,7 +12651,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "modified",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": undefined,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -13240,7 +13210,6 @@ exports[`DomainRow string field test 1`] = `
                     "mvEnabled": false,
                     "name": "stringField",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": 1,
                     "propertyURI": "test",
                     "propertyValidators": Immutable.List [],
@@ -13428,7 +13397,6 @@ exports[`DomainRow string field test 1`] = `
                                     "mvEnabled": false,
                                     "name": "stringField",
                                     "PHI": undefined,
-                                    "primaryKey": undefined,
                                     "propertyId": 1,
                                     "propertyURI": "test",
                                     "propertyValidators": Immutable.List [],
@@ -13772,7 +13740,7 @@ exports[`DomainRow string field test 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={false}
+                                            disabled={true}
                                             id="domainpropertiesrow-type-1-1"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -13780,7 +13748,7 @@ exports[`DomainRow string field test 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={false}
+                                              disabled={true}
                                               id="domainpropertiesrow-type-1-1"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}
@@ -14024,7 +13992,6 @@ exports[`DomainRow string field test 1`] = `
                                       "mvEnabled": false,
                                       "name": "stringField",
                                       "PHI": undefined,
-                                      "primaryKey": undefined,
                                       "propertyId": 1,
                                       "propertyURI": "test",
                                       "propertyValidators": Immutable.List [],
@@ -14453,7 +14420,6 @@ exports[`DomainRow string field test 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "stringField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -14931,7 +14897,6 @@ exports[`DomainRow string field test 1`] = `
                                                 "mvEnabled": false,
                                                 "name": "stringField",
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": 1,
                                                 "propertyURI": "test",
                                                 "propertyValidators": Immutable.List [],
@@ -15631,7 +15596,6 @@ exports[`DomainRow with empty domain form 1`] = `
                     "mvEnabled": false,
                     "name": undefined,
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -15819,7 +15783,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "mvEnabled": false,
                                     "name": undefined,
                                     "PHI": undefined,
-                                    "primaryKey": undefined,
                                     "propertyId": undefined,
                                     "propertyURI": undefined,
                                     "propertyValidators": Immutable.List [],
@@ -16464,7 +16427,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                       "mvEnabled": false,
                                       "name": undefined,
                                       "PHI": undefined,
-                                      "primaryKey": undefined,
                                       "propertyId": undefined,
                                       "propertyURI": undefined,
                                       "propertyValidators": Immutable.List [],
@@ -16893,7 +16855,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "mvEnabled": false,
                                                 "name": undefined,
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": undefined,
                                                 "propertyURI": undefined,
                                                 "propertyValidators": Immutable.List [],
@@ -17371,7 +17332,6 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "mvEnabled": false,
                                                 "name": undefined,
                                                 "PHI": undefined,
-                                                "primaryKey": undefined,
                                                 "propertyId": undefined,
                                                 "propertyURI": undefined,
                                                 "propertyValidators": Immutable.List [],

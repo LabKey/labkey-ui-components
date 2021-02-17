@@ -334,6 +334,9 @@ export class DomainDesign
                         value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
                     }
 
+                    if (key === 'fieldIndex' && value === "") {
+                        value = 0;
+                    }
                     return [key, value];
                 })
             );
@@ -353,7 +356,7 @@ export class DomainDesign
                 const domainIndex = row.get('domainIndex');
                 const fieldIndex = row.get('fieldIndex');
                 const selected = row.get('selected');
-                const formInputId = createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, fieldIndex === "" ? 0 : fieldIndex);
+                const formInputId = createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, fieldIndex);
 
                 const changes = List.of({ id: formInputId, value: !selected });
                 return (

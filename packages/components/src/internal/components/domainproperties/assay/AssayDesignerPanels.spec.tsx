@@ -66,6 +66,7 @@ function setAssayName(wrapper: any, value: string) {
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
+    testMode: true
 };
 
 beforeAll(() => {

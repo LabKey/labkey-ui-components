@@ -14,6 +14,7 @@ import { initUnitTestMocks, sleep } from '../../../testHelpers';
 import { ListPropertiesPanel } from './ListPropertiesPanel';
 import { ListModel } from './models';
 import { ListDesignerPanels } from './ListDesignerPanels';
+import {ToggleWithInputField} from "../../forms/input/ToggleWithInputField";
 
 const emptyNewModel = ListModel.create(null, DEFAULT_LIST_SETTINGS);
 const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
@@ -21,6 +22,7 @@ const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
+    testMode: true
 };
 
 beforeAll(() => {
@@ -42,6 +44,18 @@ describe('ListDesignerPanel', () => {
         expect(listDesignerPanels).toMatchSnapshot();
         listDesignerPanels.unmount();
     });
+
+    // test('is ToggleWithInputField broken', async () => {
+    //     const listDesignerPanels = mount(
+    //         <ToggleWithInputField
+    //             active={true}
+    //             id={'test'}
+    //             onClick={() => {}}
+    //         />);
+    //     await sleep();
+    //
+    //     listDesignerPanels.unmount();
+    // });
 
     test('visible properties', async () => {
         const listDesignerPanels = mount(<ListDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);

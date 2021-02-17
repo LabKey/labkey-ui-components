@@ -27,6 +27,7 @@ interface Props {
     containerTop?: number; // This sets the top of the sticky header, default is 0
     successBsStyle?: string;
     saveBtnText?: string;
+    testMode?: boolean;
 }
 
 interface State {
@@ -244,6 +245,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             submitting,
             onTogglePanel,
             saveBtnText,
+            testMode
         } = this.props;
         const { model, file, importError } = this.state;
 
@@ -304,6 +306,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
                     successBsStyle={successBsStyle}
                     appDomainHeaderRenderer={model.isNew() && model.domain.fields.size > 0 && this.headerRenderer}
                     allowImportExport={true}
+                    testMode={testMode}
                 />
                 <Progress
                     modal={true}

@@ -973,7 +973,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "mvEnabled": false,
             "name": "testfield",
             "PHI": undefined,
-            "primaryKey": undefined,
             "propertyId": undefined,
             "propertyURI": undefined,
             "propertyValidators": Immutable.List [],
@@ -1050,6 +1049,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
   }
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
+  testMode={true}
 >
   <SampleTypeDesignerImpl
     appPropertiesOnly={true}
@@ -1122,7 +1122,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "mvEnabled": false,
               "name": "testfield",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -1206,6 +1205,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
     setSubmitting={[Function]}
     showParentLabelPrefix={true}
     submitting={false}
+    testMode={true}
     useSeparateDataClassesAliasMenu={false}
     useTheme={false}
     visitedPanels={Immutable.List []}
@@ -1248,7 +1248,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "mvEnabled": false,
                 "name": "testfield",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -1381,7 +1380,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "mvEnabled": false,
                   "name": "testfield",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -1529,7 +1527,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "mvEnabled": false,
                     "name": "testfield",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -1683,7 +1680,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "mvEnabled": false,
                       "name": "testfield",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -2029,7 +2025,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             "mvEnabled": false,
                                             "name": "testfield",
                                             "PHI": undefined,
-                                            "primaryKey": undefined,
                                             "propertyId": undefined,
                                             "propertyURI": undefined,
                                             "propertyValidators": Immutable.List [],
@@ -2734,7 +2729,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "mvEnabled": false,
                 "name": "testfield",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -2814,6 +2808,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         onToggle={[Function]}
         panelStatus="TODO"
         showInferFromFile={true}
+        testMode={true}
         useTheme={false}
         validate={false}
       >
@@ -2858,7 +2853,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "mvEnabled": false,
                     "name": "testfield",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -2953,6 +2947,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
+            testMode={true}
             useTheme={false}
             validate={false}
           >
@@ -3801,7 +3796,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "testfield",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -3991,7 +3985,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "testfield",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -4603,7 +4596,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "testfield",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -5034,7 +5026,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "testfield",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -5512,7 +5503,6 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "testfield",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],

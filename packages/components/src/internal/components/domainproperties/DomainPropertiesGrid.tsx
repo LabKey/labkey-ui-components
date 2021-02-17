@@ -77,7 +77,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const { initGridData } = this.props;
 
         const updatedGridData = gridData.reduce((updatedGridData, row) => {
-            const newRowIndex = initGridData.findIndex(newRow => newRow.get('name') === row.get('name'));
+            const newRowIndex = initGridData.findIndex(newRow => newRow.get('fieldIndex') === row.get('fieldIndex'));
             return (newRowIndex !== -1)
                 ? updatedGridData.set(updatedGridData.size, row.set('fieldIndex', newRowIndex))
                 : updatedGridData;

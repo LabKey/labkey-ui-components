@@ -1087,7 +1087,6 @@ exports[`DataClassDesigner initModel 1`] = `
             "mvEnabled": false,
             "name": "TextFIeld",
             "PHI": "NotPHI",
-            "primaryKey": undefined,
             "propertyId": 518195,
             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
             "propertyValidators": Array [
@@ -1181,7 +1180,6 @@ exports[`DataClassDesigner initModel 1`] = `
             "mvEnabled": false,
             "name": "IntField",
             "PHI": "NotPHI",
-            "primaryKey": undefined,
             "propertyId": 521044,
             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
             "propertyValidators": Array [],
@@ -1264,7 +1262,6 @@ exports[`DataClassDesigner initModel 1`] = `
             "mvEnabled": false,
             "name": "DateField",
             "PHI": "NotPHI",
-            "primaryKey": undefined,
             "propertyId": 521045,
             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
             "propertyValidators": Array [],
@@ -1345,6 +1342,7 @@ exports[`DataClassDesigner initModel 1`] = `
   }
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
+  testMode={true}
 >
   <DataClassDesignerImpl
     currentPanelIndex={0}
@@ -1391,7 +1389,6 @@ exports[`DataClassDesigner initModel 1`] = `
               "mvEnabled": false,
               "name": "TextFIeld",
               "PHI": "NotPHI",
-              "primaryKey": undefined,
               "propertyId": 518195,
               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
               "propertyValidators": Array [
@@ -1485,7 +1482,6 @@ exports[`DataClassDesigner initModel 1`] = `
               "mvEnabled": false,
               "name": "IntField",
               "PHI": "NotPHI",
-              "primaryKey": undefined,
               "propertyId": 521044,
               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
               "propertyValidators": Array [],
@@ -1568,7 +1564,6 @@ exports[`DataClassDesigner initModel 1`] = `
               "mvEnabled": false,
               "name": "DateField",
               "PHI": "NotPHI",
-              "primaryKey": undefined,
               "propertyId": 521045,
               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
               "propertyValidators": Array [],
@@ -1655,6 +1650,7 @@ exports[`DataClassDesigner initModel 1`] = `
     onTogglePanel={[Function]}
     setSubmitting={[Function]}
     submitting={false}
+    testMode={true}
     visitedPanels={Immutable.List []}
   >
     <BaseDomainDesigner
@@ -1698,7 +1694,6 @@ exports[`DataClassDesigner initModel 1`] = `
                 "mvEnabled": false,
                 "name": "TextFIeld",
                 "PHI": "NotPHI",
-                "primaryKey": undefined,
                 "propertyId": 518195,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                 "propertyValidators": Array [
@@ -1792,7 +1787,6 @@ exports[`DataClassDesigner initModel 1`] = `
                 "mvEnabled": false,
                 "name": "IntField",
                 "PHI": "NotPHI",
-                "primaryKey": undefined,
                 "propertyId": 521044,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                 "propertyValidators": Array [],
@@ -1875,7 +1869,6 @@ exports[`DataClassDesigner initModel 1`] = `
                 "mvEnabled": false,
                 "name": "DateField",
                 "PHI": "NotPHI",
-                "primaryKey": undefined,
                 "propertyId": 521045,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                 "propertyValidators": Array [],
@@ -2000,7 +1993,6 @@ exports[`DataClassDesigner initModel 1`] = `
                   "mvEnabled": false,
                   "name": "TextFIeld",
                   "PHI": "NotPHI",
-                  "primaryKey": undefined,
                   "propertyId": 518195,
                   "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                   "propertyValidators": Array [
@@ -2094,7 +2086,6 @@ exports[`DataClassDesigner initModel 1`] = `
                   "mvEnabled": false,
                   "name": "IntField",
                   "PHI": "NotPHI",
-                  "primaryKey": undefined,
                   "propertyId": 521044,
                   "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                   "propertyValidators": Array [],
@@ -2177,7 +2168,6 @@ exports[`DataClassDesigner initModel 1`] = `
                   "mvEnabled": false,
                   "name": "DateField",
                   "PHI": "NotPHI",
-                  "primaryKey": undefined,
                   "propertyId": 521045,
                   "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                   "propertyValidators": Array [],
@@ -2310,7 +2300,6 @@ exports[`DataClassDesigner initModel 1`] = `
                     "mvEnabled": false,
                     "name": "TextFIeld",
                     "PHI": "NotPHI",
-                    "primaryKey": undefined,
                     "propertyId": 518195,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                     "propertyValidators": Array [
@@ -2404,7 +2393,6 @@ exports[`DataClassDesigner initModel 1`] = `
                     "mvEnabled": false,
                     "name": "IntField",
                     "PHI": "NotPHI",
-                    "primaryKey": undefined,
                     "propertyId": 521044,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                     "propertyValidators": Array [],
@@ -2487,7 +2475,6 @@ exports[`DataClassDesigner initModel 1`] = `
                     "mvEnabled": false,
                     "name": "DateField",
                     "PHI": "NotPHI",
-                    "primaryKey": undefined,
                     "propertyId": 521045,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                     "propertyValidators": Array [],
@@ -2624,7 +2611,6 @@ exports[`DataClassDesigner initModel 1`] = `
                       "mvEnabled": false,
                       "name": "TextFIeld",
                       "PHI": "NotPHI",
-                      "primaryKey": undefined,
                       "propertyId": 518195,
                       "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                       "propertyValidators": Array [
@@ -2718,7 +2704,6 @@ exports[`DataClassDesigner initModel 1`] = `
                       "mvEnabled": false,
                       "name": "IntField",
                       "PHI": "NotPHI",
-                      "primaryKey": undefined,
                       "propertyId": 521044,
                       "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                       "propertyValidators": Array [],
@@ -2801,7 +2786,6 @@ exports[`DataClassDesigner initModel 1`] = `
                       "mvEnabled": false,
                       "name": "DateField",
                       "PHI": "NotPHI",
-                      "primaryKey": undefined,
                       "propertyId": 521045,
                       "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                       "propertyValidators": Array [],
@@ -4121,7 +4105,6 @@ exports[`DataClassDesigner initModel 1`] = `
                 "mvEnabled": false,
                 "name": "TextFIeld",
                 "PHI": "NotPHI",
-                "primaryKey": undefined,
                 "propertyId": 518195,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                 "propertyValidators": Array [
@@ -4215,7 +4198,6 @@ exports[`DataClassDesigner initModel 1`] = `
                 "mvEnabled": false,
                 "name": "IntField",
                 "PHI": "NotPHI",
-                "primaryKey": undefined,
                 "propertyId": 521044,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                 "propertyValidators": Array [],
@@ -4298,7 +4280,6 @@ exports[`DataClassDesigner initModel 1`] = `
                 "mvEnabled": false,
                 "name": "DateField",
                 "PHI": "NotPHI",
-                "primaryKey": undefined,
                 "propertyId": 521045,
                 "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                 "propertyValidators": Array [],
@@ -4378,6 +4359,7 @@ exports[`DataClassDesigner initModel 1`] = `
         onToggle={[Function]}
         panelStatus="COMPLETE"
         showInferFromFile={true}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -4424,7 +4406,6 @@ exports[`DataClassDesigner initModel 1`] = `
                     "mvEnabled": false,
                     "name": "TextFIeld",
                     "PHI": "NotPHI",
-                    "primaryKey": undefined,
                     "propertyId": 518195,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                     "propertyValidators": Array [
@@ -4518,7 +4499,6 @@ exports[`DataClassDesigner initModel 1`] = `
                     "mvEnabled": false,
                     "name": "IntField",
                     "PHI": "NotPHI",
-                    "primaryKey": undefined,
                     "propertyId": 521044,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                     "propertyValidators": Array [],
@@ -4601,7 +4581,6 @@ exports[`DataClassDesigner initModel 1`] = `
                     "mvEnabled": false,
                     "name": "DateField",
                     "PHI": "NotPHI",
-                    "primaryKey": undefined,
                     "propertyId": 521045,
                     "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                     "propertyValidators": Array [],
@@ -4696,6 +4675,7 @@ exports[`DataClassDesigner initModel 1`] = `
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -5494,7 +5474,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "TextFIeld",
                                                             "PHI": "NotPHI",
-                                                            "primaryKey": undefined,
                                                             "propertyId": 518195,
                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                                                             "propertyValidators": Array [
@@ -5701,7 +5680,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "TextFIeld",
                                                                             "PHI": "NotPHI",
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": 518195,
                                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                                                                             "propertyValidators": Array [
@@ -6057,7 +6035,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   <FormControl
                                                                                     bsClass="form-control"
                                                                                     componentClass="select"
-                                                                                    disabled={false}
+                                                                                    disabled={true}
                                                                                     id="domainpropertiesrow-type-0-0"
                                                                                     name="domainpropertiesrow-type"
                                                                                     onChange={[Function]}
@@ -6065,7 +6043,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   >
                                                                                     <select
                                                                                       className="form-control"
-                                                                                      disabled={false}
+                                                                                      disabled={true}
                                                                                       id="domainpropertiesrow-type-0-0"
                                                                                       name="domainpropertiesrow-type"
                                                                                       onChange={[Function]}
@@ -6304,7 +6282,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "TextFIeld",
                                                                               "PHI": "NotPHI",
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": 518195,
                                                                               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                                                                               "propertyValidators": Array [
@@ -6746,7 +6723,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "TextFIeld",
                                                                                         "PHI": "NotPHI",
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": 518195,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                                                                                         "propertyValidators": Array [
@@ -7235,7 +7211,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "TextFIeld",
                                                                                         "PHI": "NotPHI",
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": 518195,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#Field1",
                                                                                         "propertyValidators": Array [
@@ -7832,7 +7807,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "IntField",
                                                             "PHI": "NotPHI",
-                                                            "primaryKey": undefined,
                                                             "propertyId": 521044,
                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                                                             "propertyValidators": Array [],
@@ -8028,7 +8002,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "IntField",
                                                                             "PHI": "NotPHI",
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": 521044,
                                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                                                                             "propertyValidators": Array [],
@@ -8373,7 +8346,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   <FormControl
                                                                                     bsClass="form-control"
                                                                                     componentClass="select"
-                                                                                    disabled={false}
+                                                                                    disabled={true}
                                                                                     id="domainpropertiesrow-type-0-1"
                                                                                     name="domainpropertiesrow-type"
                                                                                     onChange={[Function]}
@@ -8381,7 +8354,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   >
                                                                                     <select
                                                                                       className="form-control"
-                                                                                      disabled={false}
+                                                                                      disabled={true}
                                                                                       id="domainpropertiesrow-type-0-1"
                                                                                       name="domainpropertiesrow-type"
                                                                                       onChange={[Function]}
@@ -8614,7 +8587,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "IntField",
                                                                               "PHI": "NotPHI",
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": 521044,
                                                                               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                                                                               "propertyValidators": Array [],
@@ -8995,7 +8967,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "IntField",
                                                                                         "PHI": "NotPHI",
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": 521044,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                                                                                         "propertyValidators": Array [],
@@ -9473,7 +9444,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "IntField",
                                                                                         "PHI": "NotPHI",
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": 521044,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#IntField",
                                                                                         "propertyValidators": Array [],
@@ -10059,7 +10029,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "DateField",
                                                             "PHI": "NotPHI",
-                                                            "primaryKey": undefined,
                                                             "propertyId": 521045,
                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                                                             "propertyValidators": Array [],
@@ -10255,7 +10224,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "DateField",
                                                                             "PHI": "NotPHI",
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": 521045,
                                                                             "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                                                                             "propertyValidators": Array [],
@@ -10600,7 +10568,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   <FormControl
                                                                                     bsClass="form-control"
                                                                                     componentClass="select"
-                                                                                    disabled={false}
+                                                                                    disabled={true}
                                                                                     id="domainpropertiesrow-type-0-2"
                                                                                     name="domainpropertiesrow-type"
                                                                                     onChange={[Function]}
@@ -10608,7 +10576,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   >
                                                                                     <select
                                                                                       className="form-control"
-                                                                                      disabled={false}
+                                                                                      disabled={true}
                                                                                       id="domainpropertiesrow-type-0-2"
                                                                                       name="domainpropertiesrow-type"
                                                                                       onChange={[Function]}
@@ -10823,7 +10791,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "DateField",
                                                                               "PHI": "NotPHI",
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": 521045,
                                                                               "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                                                                               "propertyValidators": Array [],
@@ -11166,7 +11133,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "DateField",
                                                                                         "PHI": "NotPHI",
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": 521045,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                                                                                         "propertyValidators": Array [],
@@ -11644,7 +11610,6 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "DateField",
                                                                                         "PHI": "NotPHI",
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": 521045,
                                                                                         "propertyURI": "urn:lsid:labkey.com:DataClass.Folder-5398:test1#DateField",
                                                                                         "propertyValidators": Array [],

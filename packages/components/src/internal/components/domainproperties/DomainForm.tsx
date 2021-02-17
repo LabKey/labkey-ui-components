@@ -123,6 +123,7 @@ interface IDomainFormInput {
     todoIconHelpMsg?: string;
     useTheme?: boolean;
     validate?: boolean;
+    testMode?: boolean;
 }
 
 interface IDomainFormState {
@@ -171,6 +172,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         domainIndex: 0,
         successBsStyle: 'success',
         domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, // add configurations options to DomainForm through this object
+        testMode: false,
     };
 
     constructor(props: IDomainFormInput) {
@@ -607,6 +609,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
+        console.log("onFieldsChange", changes.toJS(), index);
         const { domain } = this.props;
         const { visibleFieldsCount } = this.state;
         this.onDomainChange(handleDomainUpdates(domain, changes));
@@ -1101,7 +1104,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     renderToolbar() {
-        const { domain, domainIndex, allowImportExport, domainFormDisplayOptions } = this.props;
+        const { domain, domainIndex, allowImportExport, domainFormDisplayOptions, testMode } = this.props;
         const { visibleSelection, summaryViewMode } = this.state;
         const { fields } = domain;
         const disableExport = fields.size < 1 || fields.filter((field: DomainField) => field.visible).size < 1;
@@ -1153,14 +1156,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             onChange={this.onSearch}
                         />
 
-                        <ToggleWithInputField
-                            active={summaryViewMode}
-                            id={'domain-toggle-summary-' + domainIndex}
-                            onClick={this.onToggleSummaryView}
-                            on="Summary mode"
-                            off="Detail mode"
-                            style={{ height: '34px', marginLeft: '10px' }}
-                        />
+                        {!testMode &&
+                            <ToggleWithInputField
+                                active={summaryViewMode}
+                                id={'domain-toggle-summary-' + domainIndex}
+                                onClick={this.onToggleSummaryView}
+                                on="Summary mode"
+                                off="Detail mode"
+                                style={{height: '34px', marginLeft: '10px'}}
+                            />
+                        }
                     </div>
                 </Col>
             </Row>

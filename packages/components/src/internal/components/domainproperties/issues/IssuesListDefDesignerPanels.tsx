@@ -21,6 +21,7 @@ interface Props {
     containerTop?: number; // This sets the top of the sticky header, default is 0
     successBsStyle?: string;
     saveBtnText?: string;
+    testMode?: boolean;
 }
 
 interface State {
@@ -146,6 +147,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
             submitting,
             onTogglePanel,
             saveBtnText,
+            testMode
         } = this.props;
         const { model } = this.state;
 
@@ -205,6 +207,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
                         isDragDisabled: model.domain.isSharedDomain(),
                         hideAddFieldsButton: model.domain.isSharedDomain(),
                     }}
+                    testMode={testMode}
                 />
             </BaseDomainDesigner>
         );

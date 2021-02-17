@@ -5,12 +5,12 @@ import { AppURL } from '../../..';
 export class ProductModel {
     [immerable] = true;
 
-    moduleName: string;
-    sectionNames: string[];
-    documentationUrl: string;
-    productId: string;
-    productName: string;
-    documentationLabel: string;
+    readonly moduleName: string;
+    readonly sectionNames: string[];
+    readonly documentationUrl: string;
+    readonly productId: string;
+    readonly productName: string;
+    readonly documentationLabel: string;
 
     constructor(values?: Partial<ProductModel>) {
         Object.assign(this, values);
@@ -20,9 +20,9 @@ export class ProductModel {
 export class ProductSectionModel {
     [immerable] = true;
 
-    key: string;
-    label: string;
-    url: string | AppURL;
+    readonly key: string;
+    readonly label: string;
+    readonly url: string | AppURL;
 
     constructor(values?: Partial<ProductSectionModel>) {
         Object.assign(this, values);
@@ -32,10 +32,10 @@ export class ProductSectionModel {
 export class ContainerTabModel {
     [immerable] = true;
 
-    id: string;
-    text: string;
-    href: string;
-    disabled: boolean;
+    readonly id: string;
+    readonly text: string;
+    readonly href: string;
+    readonly disabled: boolean;
 
     constructor(values?: Partial<ProductSectionModel>) {
         Object.assign(this, values);

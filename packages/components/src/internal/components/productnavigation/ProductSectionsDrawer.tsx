@@ -75,10 +75,10 @@ interface ProductSectionsDrawerImplProps {
 const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
     const { sections, error, closeMenu } = props;
 
-    const [transition, setTransition] = useState<boolean>(false);
+    const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
         // use setTimeout so that the "left" property will change and trigger the transition
-        setTimeout(() => setTransition(true), 10);
+        setTimeout(() => setTransition(false), 10);
     }, []);
 
     const navigate = useCallback((section: ProductSectionModel) => {

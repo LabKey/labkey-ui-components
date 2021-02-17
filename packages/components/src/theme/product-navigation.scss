@@ -27,11 +27,11 @@
 
         .menu-transition-left {
             transition: left .1s ease;
-            left: 400px;
+            left: 0;
             position: relative;
 
             &.transition {
-                left: 0;
+                left: 400px;
             }
         }
 
@@ -148,7 +148,7 @@
             }
         }
 
-        .loading-item, .error-item {
+        .error-item {
             margin: 8px 10px 8px 15px;
         }
     }
@@ -158,4 +158,9 @@
         margin-top: 15px;
         padding: 5px 10px 10px 10px;
     }
+}
+
+.product-navigation-loading-item {
+    padding: 10px;
+    line-height: 40px;
 }

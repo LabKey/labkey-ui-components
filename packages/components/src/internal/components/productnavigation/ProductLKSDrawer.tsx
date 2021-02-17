@@ -30,10 +30,10 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     );
     const showContainer = useMemo(() => project !== undefined && project.id !== container.id, [projects, project]);
 
-    const [transition, setTransition] = useState<boolean>(false);
+    const [transition, setTransition] = useState<boolean>(true);
     useEffect(() => {
         // use setTimeout so that the "left" property will change and trigger the transition
-        setTimeout(() => setTransition(true), 10);
+        setTimeout(() => setTransition(false), 10);
     }, []);
 
     const navigate = useCallback((tab: ContainerTabModel) => {

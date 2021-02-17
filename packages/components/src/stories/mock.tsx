@@ -365,7 +365,7 @@ export function initMocks() {
 
     mock.post(/.*getModules.*/, jsonResponse(getModulesInfo));
 
-    mock.post(/.*getRegisteredProducts.*/, jsonResponse(getRegisteredProductsInfo));
+    mock.post(/.*getRegisteredProducts.*/, delay(jsonResponse(getRegisteredProductsInfo), 1000));
 
     mock.post(/.*getFolderTabs.*/, jsonResponse(getFolderTabsInfo));
 

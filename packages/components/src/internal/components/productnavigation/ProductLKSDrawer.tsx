@@ -26,7 +26,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
             isProjectAvailable(projects, project.id) &&
             project.name !== homeContainer &&
             container.path !== '/home',
-        [projects, project]
+        [projects, project, container, homeContainer]
     );
     const showContainer = useMemo(() => project !== undefined && project.id !== container.id, [projects, project]);
 

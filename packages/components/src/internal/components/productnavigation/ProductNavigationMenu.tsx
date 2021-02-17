@@ -19,7 +19,7 @@ interface ProductNavigationMenuProps {
 export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [products, setProducts] = useState<ProductModel[]>(); //the array of products that have been registered for this LK server
-    const [projects, setProjects] = useState<Container[]>(); //the array of products that have been registered for this LK server
+    const [projects, setProjects] = useState<Container[]>(); //the array of projects which the current user has access to on the LK server
     const [tabs, setTabs] = useState<ContainerTabModel[]>(); //the array of container tabs for the current LK container
 
     useEffect(() => {
@@ -34,7 +34,7 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
             },
             failure: errorInfo => {
                 console.error(errorInfo);
-                setError('Error: unable to get project information.');
+                setError('Error: unable to get LabKey folder information.');
             },
         });
 
@@ -86,7 +86,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
     }
 
     if (!products || !projects || !tabs) {
-        return <LoadingSpinner wrapperClassName="loading-item" />;
+        return <LoadingSpinner wrapperClassName="product-navigation-loading-item" />;
     }
 
     const selectedProduct = getSelectedProduct(products, selectedProductId);

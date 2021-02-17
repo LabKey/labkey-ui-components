@@ -3,6 +3,7 @@ import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
 import { Container, AppURL, createProductUrl, ProductMenuModel, Alert } from '../../..';
+import { FREEZERS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 import { ProductModel, ProductSectionModel } from './models';
 import { PRODUCT_ID_SECTION_QUERY_MAP, SECTION_KEYS_TO_SKIP } from './constants';
@@ -29,6 +30,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
 
         model.getMenuSections(0)
             .then(modelSections => {
+                // TODO split this into a function for jest testing
                 let menuSections = [
                     new ProductSectionModel({
                         key: 'home',
@@ -50,7 +52,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
 
                 // special case to sort LKSM storage before workflow to match the mega menu display
                 menuSections = menuSections.sort((a, b) => {
-                    if (a.key === 'freezers' && b.key === 'workflow') {
+                    if (a.key === FREEZERS_KEY && b.key === WORKFLOW_KEY) {
                         return -1;
                     }
                     return 0;

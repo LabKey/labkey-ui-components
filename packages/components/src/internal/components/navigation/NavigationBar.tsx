@@ -15,8 +15,11 @@
  */
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
+import { getServerContext } from '@labkey/api';
 
 import { User } from '../../..';
+import { hasPremiumModule } from '../../app/utils';
+
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
 import { ProductMenu } from './ProductMenu';
@@ -25,7 +28,6 @@ import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
 import { ProductNavigation } from '../productnavigation/ProductNavigation';
-import { hasPremiumModule } from '../../app/utils';
 
 interface NavigationBarProps {
     brand?: ReactNode;
@@ -65,7 +67,7 @@ export const NavigationBar: FC<Props> = memo(props => {
 
     const notifications =
         !!notificationsConfig && user && !user.isGuest ? <ServerNotifications {...notificationsConfig} /> : null;
-    const productNav = hasPremiumModule() ? <ProductNavigation /> : null;
+    const productNav = hasPremiumModule() || getServerContext().devMode ? <ProductNavigation /> : null;
 
     return (
         <nav className="navbar navbar-container test-loc-nav-header">

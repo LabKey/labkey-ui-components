@@ -5,7 +5,7 @@ import { ProductNavigationMenu } from './ProductNavigationMenu';
 
 export const ProductNavigation: FC = memo(() => {
     const [show, setShow] = useState<boolean>(false);
-    const closeMenu = useCallback(() => setShow(false), [setShow]);
+    const onCloseMenu = useCallback(() => setShow(false), [setShow]);
 
     return (
         <DropdownButton
@@ -17,7 +17,7 @@ export const ProductNavigation: FC = memo(() => {
             noCaret={true}
             pullRight={true}
         >
-            {show && <ProductNavigationMenu closeMenu={closeMenu} />}
+            {show && <ProductNavigationMenu onCloseMenu={onCloseMenu} />}
         </DropdownButton>
     );
 });

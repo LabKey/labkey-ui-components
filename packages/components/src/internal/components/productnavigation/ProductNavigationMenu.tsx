@@ -13,7 +13,7 @@ import { ProductLKSDrawer } from './ProductLKSDrawer';
 import { ProductNavigationHeader } from './ProductNavigationHeader';
 
 interface ProductNavigationMenuProps {
-    closeMenu?: () => void;
+    onCloseMenu?: () => void;
 }
 
 export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
@@ -62,7 +62,7 @@ interface ProductNavigationMenuImplProps extends ProductNavigationMenuProps {
 }
 
 const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props => {
-    const { error, products, projects, productProjectMap, tabs, closeMenu } = props;
+    const { error, products, projects, productProjectMap, tabs, onCloseMenu } = props;
     const [selectedProductId, setSelectedProductId] = useState<string>();
     const [selectedProject, setSelectedProject] = useState<Container>();
 
@@ -112,7 +112,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
                 {showProjectsDrawer && (
                     <ProductProjectsDrawer product={selectedProduct} projects={productProjects} onClick={onSelection} />
                 )}
-                {showSectionsDrawer && <ProductSectionsDrawer product={selectedProduct} project={selectedProject} closeMenu={closeMenu} />}
+                {showSectionsDrawer && <ProductSectionsDrawer product={selectedProduct} project={selectedProject} onCloseMenu={onCloseMenu} />}
             </ul>
             {selectedProductId === undefined && (
                 <div className="product-navigation-footer">

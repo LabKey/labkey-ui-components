@@ -2,7 +2,7 @@
  * Copyright (c) 2017-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React, { Component, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { getUsersWithPermissions } from '../actions';
 
@@ -15,7 +15,7 @@ interface UserSelectInputProps extends SelectInputProps {
     useEmail?: boolean;
 }
 
-export class UserSelectInput extends Component<UserSelectInputProps> {
+export class UserSelectInput extends PureComponent<UserSelectInputProps> {
     static defaultProps = {
         cache: false,
         notifyList: false,

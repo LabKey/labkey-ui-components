@@ -76,7 +76,7 @@ interface OwnProps extends SelectInputProps {
     selectedRows?: ISelectRowsResult;
 }
 
-export class LookupSelectInput extends React.Component<OwnProps, StateProps> {
+export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps> {
     _id: string;
 
     constructor(props: OwnProps) {

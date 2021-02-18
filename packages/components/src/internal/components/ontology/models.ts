@@ -1,8 +1,12 @@
-export interface ConceptModel {
-    name: string;
+export class ConceptModel {
+    label: string;
     code: string;
     paths: string[];
     description: string;
+
+    constructor(values: { [key: string]: any }) {
+        Object.assign(this, values);
+    }
 }
 
 // export interface PathModel {

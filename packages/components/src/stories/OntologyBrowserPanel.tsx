@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {number, text, withKnobs} from '@storybook/addon-knobs';
 import { OntologyBrowserPanel } from '..';
-import { OntologyModel, PathModel } from "../internal/components/ontology/models";
+import { ConceptModel, OntologyModel, PathModel } from "../internal/components/ontology/models";
 import { OntologyBrowserPanelImpl } from '../internal/components/ontology/OntologyBrowserPanel';
 
 const mockRoot = new PathModel({
@@ -15,6 +15,11 @@ const mockRoot = new PathModel({
 
 const setSelectedMock = (conceptCode: string): void => {
     console.log(conceptCode);
+};
+
+
+const loadConceptsMock = (concepts: ConceptModel[]): void => {
+    console.log(concepts);
 };
 
 //TODO use the Storybook 6 format
@@ -30,5 +35,5 @@ storiesOf('OntologyBrowserPanel', module)
             path: text('Path', mockRoot.path, 'OntologyModel'),
         });
 
-        return ( <OntologyBrowserPanelImpl ontology={ baseOntologyModel} setSelectedConcept={setSelectedMock}  /> );
+        return ( <OntologyBrowserPanelImpl ontology={ baseOntologyModel} setSelectedConcept={setSelectedMock} loadConcepts={loadConceptsMock}  /> );
     });

@@ -5,7 +5,7 @@
 
 }
 .ontology-browser-panel-right-panel {
-
+    box-sizing: border-box;
 }
 
 .ontology-browser-title-name {
@@ -13,6 +13,18 @@
     font-weight: bold;
 }
 .ontology-browser-title-count {
+}
+
+.ontology-browser-body-panel {
+    padding-bottom: 0;
+}
+
+.ontology-browser-panel-tree-pane {
+    box-sizing: border-box;
+    //height: 357px;
+    //width: 371px;
+    border: 1px solid #979797;
+    //border-radius: 1px;
 }
 
 

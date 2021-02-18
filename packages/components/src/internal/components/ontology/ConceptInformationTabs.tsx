@@ -42,7 +42,7 @@ export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(prop
                                 <NavItem eventKey={ConceptInfoTabs.PATH_INFO_TAB}>Path Information</NavItem>
                             </Nav>
                         </Col>
-                        <Col>
+                        <Col className="left-spacing">
                             <Tab.Content animation>
                                 <Tab.Pane
                                     className="ontology-concept-overview-container"

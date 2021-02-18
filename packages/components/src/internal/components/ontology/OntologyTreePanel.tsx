@@ -33,6 +33,7 @@ type PathNode = OntologyPath & TreeNode;
 interface OntologyTreeProps {
     root?: PathModel;
     onNodeSelection?: (conceptCode: string) => void;
+    loadConcepts?: (concepts: ConceptModel[]) => void;
 }
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {

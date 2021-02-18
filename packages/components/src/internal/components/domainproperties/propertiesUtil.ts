@@ -17,7 +17,8 @@
 import { List } from 'immutable';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
-import {DomainDesign, DomainField, SummaryGrid} from './models';
+import {DomainDesign, DomainField, DomainPropertiesGridColumn} from './models';
+import {hasActiveModule} from "./actions";
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {
@@ -116,16 +117,14 @@ export function removeFalseyObjKeys(obj) {
 }
 
 // columnOrder determines the left-to-right ordering of columns within the domain summary view
-export function reorderSummaryColumns(a: SummaryGrid, b: SummaryGrid): number {
+export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPropertiesGridColumn): number {
     const columnOrder = [
         // Collapsed field options
         'name',
         'rangeURI',
         'required',
         'isPrimaryKey',
-        'wrappedColumnName', // Appears in 'details' text
         'lockType',
-        'scale',
         // Lookup options
         'lookupContainer',
         'lookupSchema',
@@ -139,6 +138,7 @@ export function reorderSummaryColumns(a: SummaryGrid, b: SummaryGrid): number {
         'conceptLabelColumn',
         'conceptURI',
         // Expanded field options
+        'scale',
         'description',
         'label',
         'importAliases',
@@ -164,4 +164,24 @@ export function reorderSummaryColumns(a: SummaryGrid, b: SummaryGrid): number {
         'propertyURI',
     ];
     return (columnOrder.indexOf(a.index) > columnOrder.indexOf(b.index)) ? 1 : -1;
+}
+
+export function removeUnusedProperties(obj) {
+    // only applicable in the QueryMetadata field editor case
+    delete obj.wrappedColumnName;
+    // Not surfaced in UI, and so removed from summary view
+    delete obj.propertyId;
+    delete obj.propertyURI;
+
+    return obj;
+}
+
+export function removeUnusedOntologyProperties(obj) {
+    if (!hasActiveModule('Ontology')) {
+        delete obj.sourceOntology;
+        delete obj.conceptImportColumn;
+        delete obj.conceptLabelColumn;
+        delete obj.conceptURI;
+    }
+    return obj;
 }

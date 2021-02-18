@@ -546,7 +546,7 @@ Array [
             className="col-xs-8"
           >
             <div
-              className="pull-right"
+              className="pull-right domain-field-toolbar-right-aligned"
             >
               <input
                 className="domain-search-input form-control"

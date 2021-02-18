@@ -62,7 +62,12 @@ import {
     TEXT_TYPE,
     USERS_TYPE,
 } from './PropDescType';
-import {removeFalseyObjKeys, reorderSummaryColumns} from "./propertiesUtil";
+import {
+    removeUnusedProperties,
+    removeFalseyObjKeys,
+    removeUnusedOntologyProperties,
+    reorderSummaryColumns
+} from "./propertiesUtil";
 
 export interface IFieldChange {
     id: string;
@@ -91,7 +96,7 @@ export interface FieldDetails {
     ontologyLookupIndices: number[];
 }
 
-export interface SummaryGrid {
+export interface DomainPropertiesGridColumn {
     index: string;
     caption: string;
     sortable: boolean;
@@ -306,10 +311,12 @@ export class DomainDesign
 
     getGridData(): List<any> {
         return this.fields.map((field, i) => {
-            const fieldSerial = DomainField.serialize(field);
+            let fieldSerial = DomainField.serialize(field);
+            fieldSerial = removeUnusedProperties(fieldSerial);
+            fieldSerial = removeUnusedOntologyProperties(fieldSerial);
 
-            // Add field properties stripped by the serialize
             fieldSerial['fieldIndex'] = i;
+            // Add back subset of field properties stripped by the serialize
             fieldSerial['selected'] = field.selected;
             fieldSerial['visible'] = field.visible;
 
@@ -324,13 +331,8 @@ export class DomainDesign
                         value = rawVal ? 'true' : 'false';
                     }
 
-                    // Handle conditional format rendering
-                    if (key === 'conditionalFormats' && value !== '') {
-                        value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
-                    }
-
-                    // Handle property validator rendering
-                    if (key === 'propertyValidators' && value !== '') {
+                    // Handle property validator and conditional format rendering
+                    if ((key === 'propertyValidators' || key === 'conditionalFormats') && value !== '') {
                         value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
                     }
 
@@ -347,7 +349,7 @@ export class DomainDesign
         onFieldsChange: DomainOnChange,
         scrollFunction: (i: number) => void,
         domainKindName: string
-    ): List<GridColumn | SummaryGrid> {
+    ): List<GridColumn | DomainPropertiesGridColumn> {
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,
             title: GRID_SELECTION_INDEX,
@@ -394,8 +396,12 @@ export class DomainDesign
 
         const specialCols = List([selectionCol, nameCol]);
         const firstField = this.fields.get(0);
-        const columns = DomainField.serialize(firstField);
+        let columns = DomainField.serialize(firstField);
+
         delete columns.name;
+        columns = removeUnusedProperties(columns);
+        columns = removeUnusedOntologyProperties(columns);
+
         if (domainKindName !== 'List') {
             delete columns.isPrimaryKey;
         }
@@ -406,7 +412,7 @@ export class DomainDesign
             })
         );
         const sortedColumns = unsortedColumns.sort(reorderSummaryColumns);
-        return specialCols.concat(sortedColumns) as List<GridColumn | SummaryGrid>;
+        return specialCols.concat(sortedColumns) as List<GridColumn | DomainPropertiesGridColumn>;
     }
 }
 

@@ -10871,7 +10871,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                         className="col-xs-8"
                                       >
                                         <div
-                                          className="pull-right"
+                                          className="pull-right domain-field-toolbar-right-aligned"
                                         >
                                           <FormControl
                                             bsClass="form-control"
@@ -31990,7 +31990,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                         className="col-xs-8"
                                       >
                                         <div
-                                          className="pull-right"
+                                          className="pull-right domain-field-toolbar-right-aligned"
                                         >
                                           <FormControl
                                             bsClass="form-control"
@@ -47039,7 +47039,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                         className="col-xs-8"
                                       >
                                         <div
-                                          className="pull-right"
+                                          className="pull-right domain-field-toolbar-right-aligned"
                                         >
                                           <FormControl
                                             bsClass="form-control"

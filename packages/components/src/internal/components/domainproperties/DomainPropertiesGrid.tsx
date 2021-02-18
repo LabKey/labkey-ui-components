@@ -4,26 +4,32 @@ import { List } from 'immutable';
 
 import { Checkbox } from 'react-bootstrap';
 
-import { Grid, GridColumn } from '../../..';
+import {DomainDesign, Grid, GridColumn, IFieldChange} from '../../..';
 import { headerCell } from '../../renderers';
 
 import { GRID_SELECTION_INDEX } from '../../constants';
 
 import { compareStringsAlphabetically } from './propertiesUtil';
 
-import { SummaryGrid } from './models';
+import { DomainPropertiesGridColumn } from './models';
 
 interface DomainPropertiesGridProps {
     initGridData: List<any>;
-    gridColumns: List<GridColumn | SummaryGrid>;
+    gridColumns: List<GridColumn | DomainPropertiesGridColumn>;
+    domain: DomainDesign;
+    actions: {
+        toggleSelectAll: () => void;
+        scrollFunction: (i: number) => void;
+        onFieldsChange: (changes: List<IFieldChange>, index: number, expand: boolean) => void;
+    };
     search: string;
     selectAll: boolean;
-    toggleSelectAll: () => void;
-    scrollFunction: (i: number) => void;
+    appPropertiesOnly?: boolean;
 }
 
 interface DomainPropertiesGridState {
     gridData: List<any>;
+    gridColumns?: List<GridColumn | DomainPropertiesGridColumn>;
     visibleGridData: List<any>;
     search: string;
 }
@@ -31,8 +37,12 @@ interface DomainPropertiesGridState {
 export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGridProps, DomainPropertiesGridState> {
     constructor(props: DomainPropertiesGridProps) {
         super(props);
+        const { domain, actions } = this.props;
+        const { onFieldsChange, scrollFunction } = actions;
 
         this.state = {
+            // gridData: domain.getGridData(),
+            // gridColumns: domain.getGridColumns(onFieldsChange, scrollFunction, domain.domainKindName),
             gridData: this.props.initGridData,
             visibleGridData: this.getVisibleGridData(this.props.initGridData),
             search: this.props.search,
@@ -137,9 +147,9 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
     };
 
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
-        const { selectAll, toggleSelectAll } = this.props;
+        const { selectAll, actions } = this.props;
         if (column.index === GRID_SELECTION_INDEX) {
-            return <Checkbox className="domain-summary-selectAll" checked={selectAll} onChange={toggleSelectAll} />;
+            return <Checkbox className="domain-summary-selectAll" checked={selectAll} onChange={actions.toggleSelectAll} />;
         }
 
         return headerCell(this.sortColumn, column, index, false, true, columnCount);
@@ -149,10 +159,6 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const { gridColumns } = this.props;
         const { visibleGridData } = this.state;
 
-        return (
-            <>
-                <Grid data={visibleGridData} columns={gridColumns} headerCell={this.headerCell} condensed={true} calcWidths={true} />
-            </>
-        );
+        return <Grid data={visibleGridData} columns={gridColumns} headerCell={this.headerCell} condensed={true} calcWidths={true} className="domain-summary-container" />;
     }
 }

@@ -322,6 +322,7 @@ export interface GridProps {
     loadingText?: React.ReactNode;
     messages?: List<Map<string, string>>;
     responsive?: boolean;
+    className?: string;
 
     /**
      * If a rowKey is specified the <Grid> will use it as a lookup key into each row. The associated value
@@ -373,6 +374,7 @@ export class Grid extends React.PureComponent<GridProps> {
             tableRef,
             transpose,
             highlightRowIndexes,
+            className
         } = this.props;
 
         const gridData = processData(data);
@@ -407,6 +409,7 @@ export class Grid extends React.PureComponent<GridProps> {
 
         const wrapperClasses = classNames({
             'table-responsive': responsive,
+            [className]: className
         });
 
         return (

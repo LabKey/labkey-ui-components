@@ -609,7 +609,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     onFieldsChange = (changes: List<IFieldChange>, index: number, expand: boolean) => {
-        console.log("onFieldsChange", changes.toJS(), index);
         const { domain } = this.props;
         const { visibleFieldsCount } = this.state;
         this.onDomainChange(handleDomainUpdates(domain, changes));
@@ -1141,7 +1140,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     )}
                 </Col>
                 <Col xs={8}>
-                    <div className="pull-right">
+                    <div className="pull-right domain-field-toolbar-right-aligned">
                         {!valueIsEmpty(this.state.search) && (
                             <span className="domain-search-text">
                                 Showing {fields.filter(f => f.visible).size} of {fields.size} field
@@ -1163,7 +1162,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 onClick={this.onToggleSummaryView}
                                 on="Summary mode"
                                 off="Detail mode"
-                                style={{height: '34px', marginLeft: '10px'}}
+                                containerClassName="domain-toolbar-toggle-summary"
+                                style={{height: '100%', marginLeft: '10px'}} // Inline style necessary for <ReactBootstrapToggle/>
                             />
                         }
                     </div>
@@ -1200,59 +1200,61 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         } = this.state;
 
         return (
-            <>
-                <Sticky topOffset={containerTop ? -1 * containerTop : 0}>
-                    {({ style, isSticky }) => (
-                        <div style={this.stickyStyle(style, isSticky)}>{this.renderRowHeaders()}</div>
-                    )}
-                </Sticky>
-                <Droppable droppableId="domain-form-droppable">
-                    {provided => (
-                        <div ref={provided.innerRef} {...provided.droppableProps}>
-                            <Form>
-                                {domain.fields.map((field, i) => {
-                                    // Need to preserve index so don't filter, instead just use empty div
-                                    if (!field.visible) return <div key={'domain-row-key-' + i} />;
+            <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
+                <StickyContainer>
+                    <Sticky topOffset={containerTop ? -1 * containerTop : 0}>
+                        {({ style, isSticky }) => (
+                            <div style={this.stickyStyle(style, isSticky)}>{this.renderRowHeaders()}</div>
+                        )}
+                    </Sticky>
+                    <Droppable droppableId="domain-form-droppable">
+                        {provided => (
+                            <div ref={provided.innerRef} {...provided.droppableProps}>
+                                <Form>
+                                    {domain.fields.map((field, i) => {
+                                        // Need to preserve index so don't filter, instead just use empty div
+                                        if (!field.visible) return <div key={'domain-row-key-' + i} />;
 
-                                    return (
-                                        <DomainRow
-                                            ref={ref => {this.refsArray[i] = ref;}}
-                                            domainId={domain.domainId}
-                                            helpNoun={helpNoun}
-                                            key={'domain-row-key-' + i}
-                                            field={field}
-                                            fieldError={this.getFieldError(domain, i)}
-                                            getDomainFields={this.getDomainFields}
-                                            fieldDetailsInfo={fieldDetails.detailsInfo}
-                                            domainIndex={domainIndex}
-                                            index={i}
-                                            expanded={expandedRowIndex === i}
-                                            expandTransition={expandTransition}
-                                            onChange={this.onFieldsChange}
-                                            onExpand={this.onFieldExpandToggle}
-                                            onDelete={this.onDeleteField}
-                                            maxPhiLevel={maxPhiLevel}
-                                            dragging={dragId === i}
-                                            availableTypes={availableTypes}
-                                            showDefaultValueSettings={domain.showDefaultValueSettings}
-                                            defaultDefaultValueType={domain.defaultDefaultValueType}
-                                            defaultValueOptions={domain.defaultValueOptions}
-                                            appPropertiesOnly={appPropertiesOnly}
-                                            showFilePropertyType={showFilePropertyType}
-                                            successBsStyle={successBsStyle}
-                                            isDragDisabled={
-                                                !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
-                                            }
-                                            domainFormDisplayOptions={domainFormDisplayOptions}
-                                        />
-                                    );
-                                })}
-                                {provided.placeholder}
-                            </Form>
-                        </div>
-                    )}
-                </Droppable>
-            </>
+                                        return (
+                                            <DomainRow
+                                                ref={ref => {this.refsArray[i] = ref;}}
+                                                domainId={domain.domainId}
+                                                helpNoun={helpNoun}
+                                                key={'domain-row-key-' + i}
+                                                field={field}
+                                                fieldError={this.getFieldError(domain, i)}
+                                                getDomainFields={this.getDomainFields}
+                                                fieldDetailsInfo={fieldDetails.detailsInfo}
+                                                domainIndex={domainIndex}
+                                                index={i}
+                                                expanded={expandedRowIndex === i}
+                                                expandTransition={expandTransition}
+                                                onChange={this.onFieldsChange}
+                                                onExpand={this.onFieldExpandToggle}
+                                                onDelete={this.onDeleteField}
+                                                maxPhiLevel={maxPhiLevel}
+                                                dragging={dragId === i}
+                                                availableTypes={availableTypes}
+                                                showDefaultValueSettings={domain.showDefaultValueSettings}
+                                                defaultDefaultValueType={domain.defaultDefaultValueType}
+                                                defaultValueOptions={domain.defaultValueOptions}
+                                                appPropertiesOnly={appPropertiesOnly}
+                                                showFilePropertyType={showFilePropertyType}
+                                                successBsStyle={successBsStyle}
+                                                isDragDisabled={
+                                                    !valueIsEmpty(search) || domainFormDisplayOptions.isDragDisabled
+                                                }
+                                                domainFormDisplayOptions={domainFormDisplayOptions}
+                                            />
+                                        );
+                                    })}
+                                    {provided.placeholder}
+                                </Form>
+                            </div>
+                        )}
+                    </Droppable>
+                </StickyContainer>
+            </DragDropContext>
         );
     };
 
@@ -1270,36 +1272,33 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderForm() {
-        const { domain, appDomainHeaderRenderer, allowImportExport } = this.props;
+        const { domain, appDomainHeaderRenderer, allowImportExport, appPropertiesOnly } = this.props;
         const { summaryViewMode, search, selectAll } = this.state;
         const hasFields = domain.fields.size > 0;
+        const actions = {toggleSelectAll: this.toggleSelectAll, scrollFunction: this.scrollFunction, onFieldsChange: this.onFieldsChange};
 
         return (
             <>
                 {(hasFields || !(this.shouldShowInferFromFile() || allowImportExport)) && this.renderToolbar()}
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && this.renderAppDomainHeader()}
-                {hasFields ? (
-                    <DragDropContext onDragEnd={this.onDragEnd} onBeforeDragStart={this.onBeforeDragStart}>
-                        <StickyContainer>
-                            {summaryViewMode ? (
-                                <DomainPropertiesGrid
-                                    initGridData={domain.getGridData()}
-                                    gridColumns={domain.getGridColumns(this.onFieldsChange, this.scrollFunction, domain.domainKindName)}
-                                    search={search}
-                                    selectAll={selectAll}
-                                    toggleSelectAll={this.toggleSelectAll}
-                                    scrollFunction={this.scrollFunction}
-                                />
-                            ) : (
-                                this.renderDetailedFieldView()
-                            )}
-                        </StickyContainer>
-                    </DragDropContext>
-                ) : (
-                    this.renderEmptyDomain()
-                )}
-                {summaryViewMode ? null : this.renderAddFieldOption()}
+
+                {hasFields ?
+                    summaryViewMode ?
+                        <DomainPropertiesGrid
+                            initGridData={domain.getGridData()}
+                            gridColumns={domain.getGridColumns(this.onFieldsChange, this.scrollFunction, domain.domainKindName)}
+                            domain={domain}
+                            search={search}
+                            selectAll={selectAll}
+                            actions={actions}
+                            appPropertiesOnly={appPropertiesOnly}
+                        />
+                        : this.renderDetailedFieldView()
+                    : this.renderEmptyDomain()
+                }
+
+                {this.renderAddFieldOption()}
             </>
         );
     }

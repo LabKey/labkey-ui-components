@@ -23,7 +23,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {DeleteIcon, DomainOnChange, DragDropHandle, FieldExpansionToggle, LabelHelpTip} from '../../..';
+import {DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip} from '../../..';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -45,6 +45,7 @@ import {
 import {
     DomainField,
     DomainFieldError,
+    DomainOnChange,
     IDomainFormDisplayOptions,
     IFieldChange,
     resolveAvailableTypes,

@@ -16,26 +16,23 @@
 import React, { ReactNode } from 'react';
 import { List, OrderedMap } from 'immutable';
 import { Alert, Button, Modal } from 'react-bootstrap';
-import Formsy, { addValidationRule } from 'formsy-react';
-import { Input } from 'formsy-react-components';
+import Formsy from 'formsy-react';
 import { Utils } from '@labkey/api';
 
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
-import { formatDateTime, LoadingSpinner, QueryColumn, QueryInfo, SchemaQuery, selectRows, Tip } from '../../..';
+import {
+    formatDateTime,
+    LoadingSpinner,
+    QueryColumn,
+    QueryInfo,
+    SampleCreationTypeModel,
+    SchemaQuery,
+    selectRows,
+    Tip
+} from '../../..';
 
 import { getFieldEnabledFieldName, QueryFormInputs } from './QueryFormInputs';
-
-addValidationRule('isPositiveLt', (vs, v, smax) => {
-    if (v === '' || v === undefined || isNaN(v)) {
-        return true;
-    }
-
-    const max = parseInt(smax);
-    const i = parseInt(v);
-
-    if (!isNaN(i) && i >= 1 && i <= max) return true;
-    return max == 1 ? 'Only 1 allowed' : `Value must be between 1 and ${max}.`;
-});
+import { QueryInfoQuantity } from "./QueryInfoQuantity";
 
 export interface QueryInfoFormProps {
     asModal?: boolean;
@@ -79,6 +76,7 @@ export interface QueryInfoFormProps {
     singularNoun?: string;
     pluralNoun?: string;
     showErrorsAtBottom?: boolean;
+    creationTypeOptions?: Array<SampleCreationTypeModel>;
 }
 
 interface State {
@@ -108,6 +106,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         maxCount: MAX_EDITABLE_GRID_ROWS,
         allowFieldDisable: false,
         useDatePicker: true,
+        creationTypeOptions: [],
     };
 
     constructor(props: QueryInfoFormProps) {
@@ -208,7 +207,7 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
             errorMsg: undefined,
             isSubmitting: true,
         });
-        const updatedRow = this.getUpdatedFields(row, ['numItems']);
+        const updatedRow = this.getUpdatedFields(row, ['numItems', 'creationType']);
         const submitFn = submitForEdit ? onSubmitForEdit : onSubmit;
 
         submitFn(updatedRow).then(
@@ -277,8 +276,8 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
         this.setState(() => ({ show: false }));
     };
 
-    onCountChange = (field, value): void => {
-        this.setState(() => ({ count: value }));
+    onCountChange = (count: number): void => {
+        this.setState(() => ({ count }));
     };
 
     onFieldsEnabledChange = (fieldEnabledCount: number): void => {
@@ -367,15 +366,12 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
 
     render() {
         const {
-            includeCountField,
             asModal,
-            countText,
             footer,
             header,
             isLoading,
             checkRequiredFields,
             showLabelAsterisk,
-            maxCount,
             renderFileInputs,
             queryInfo,
             fieldValues,
@@ -386,14 +382,17 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
             columnFilter,
             showErrorsAtBottom,
             useDatePicker,
+            creationTypeOptions,
+            includeCountField,
+            maxCount,
+            countText
         } = this.props;
-        const { count } = this.state;
 
         if (!queryInfo || queryInfo.isLoading) {
             return null;
         }
         let content;
-
+        const showQuantityHeader = includeCountField || creationTypeOptions.length > 0;
         if (isLoading) {
             content = <LoadingSpinner />;
         } else {
@@ -408,24 +407,14 @@ export class QueryInfoForm extends React.PureComponent<QueryInfoFormProps, State
                         onChange={this.handleChange}
                         onInvalid={this.disableSubmitButton}
                     >
-                        {includeCountField && (
-                            <Input
-                                id="numItems"
-                                label={countText}
-                                labelClassName="control-label text-left"
-                                name="numItems"
-                                max={maxCount}
-                                min={1}
-                                onChange={this.onCountChange}
-                                required={true}
-                                step="1"
-                                style={{ width: '125px' }}
-                                type="number"
-                                validations={`isPositiveLt:${maxCount}`}
-                                value={count ? count.toString() : 1}
-                            />
-                        )}
-                        {(header || includeCountField) && <hr />}
+                        <QueryInfoQuantity
+                            creationTypeOptions={creationTypeOptions}
+                            includeCountField={includeCountField}
+                            maxCount={maxCount}
+                            countText={countText}
+                            onCountChange={this.onCountChange}
+                        />
+                        {(header || showQuantityHeader) && <hr />}
                         <QueryFormInputs
                             renderFileInputs={renderFileInputs}
                             allowFieldDisable={allowFieldDisable}

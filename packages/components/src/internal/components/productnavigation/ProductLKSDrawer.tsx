@@ -53,7 +53,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
             {showProject && (
                 <a className="container-item lk-text-theme-dark" href={getProjectBeginUrl(project.path)}>
                     <i className="fa fa-folder-open-o container-icon" />
-                    {project.name}
+                    {project.title}
                 </a>
             )}
             {showContainer && (

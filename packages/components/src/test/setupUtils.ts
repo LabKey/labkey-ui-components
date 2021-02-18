@@ -48,5 +48,6 @@ export function notificationInit() {
         path: '/TestProjectName',
         rootId: '7aacb1a7-040d-1037-88ec-f467162bb89c',
         name: 'Test Project Name',
+        title: 'Test Project Title',
     };
 }

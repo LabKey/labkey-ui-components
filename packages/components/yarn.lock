@@ -1364,10 +1364,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.1.7-fb-lksProductNav.2":
-  version "1.1.7-fb-lksProductNav.2"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.7-fb-lksProductNav.2.tgz#5e1b4f2d0e4191848ba804a7f178d4c2b536e642"
-  integrity sha1-XhtPLQ5BkYSLqASn8XjUwrU25kI=
+"@labkey/api@1.1.7-fb-lksProductNav.3":
+  version "1.1.7-fb-lksProductNav.3"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.7-fb-lksProductNav.3.tgz#980a8c7313199f211252eb9f8c294de9193e6eda"
+  integrity sha1-mAqMcxMZnyESUuufjClN6Rk+bto=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"

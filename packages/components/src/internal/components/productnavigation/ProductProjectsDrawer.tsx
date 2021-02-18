@@ -4,7 +4,7 @@ import { getServerContext } from '@labkey/api';
 import { Container, Alert, buildURL } from '../../..';
 
 import { ProductModel } from './models';
-import { LK_DOC_DEFAULT, PRODUCT_DOC_MAP } from './constants';
+import { PRODUCT_SERVICES_URL, PRODUCT_SERVICES_URL_MAP } from './constants';
 import { ProductClickableItem } from './ProductClickableItem';
 
 interface ProductAppsDrawerProps {
@@ -41,7 +41,7 @@ export const ProductProjectsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                             Start a {product.productName} project
                         </a>
                     )}
-                    <a className="learn-more" href={PRODUCT_DOC_MAP[product.productId.toLowerCase()] ?? LK_DOC_DEFAULT} target="_blank" rel="noopener noreferrer">
+                    <a className="learn-more" href={PRODUCT_SERVICES_URL_MAP[product.productId.toLowerCase()] ?? PRODUCT_SERVICES_URL} target="_blank" rel="noopener noreferrer">
                         Learn more about {product.productName}
                     </a>
                 </div>

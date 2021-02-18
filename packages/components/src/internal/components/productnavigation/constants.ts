@@ -24,9 +24,9 @@ export const PRODUCT_ID_IMG_SRC_MAP = {
     },
 };
 
-export const LK_DOC_DEFAULT = getHelpLink('');
 export const LK_DOC_FOLDER_TABS = getHelpLink('tabs');
-export const PRODUCT_DOC_MAP = {
-    [SAMPLE_MANAGER_PRODUCT_ID.toLowerCase()]: 'https://www.labkey.org/SampleManagerHelp/wiki-page.view?name=smHome',
-    [BIOLOGICS_PRODUCT_ID.toLowerCase()]: getHelpLink('biologics'),
+export const PRODUCT_SERVICES_URL = 'https://www.labkey.com/products-services/';
+export const PRODUCT_SERVICES_URL_MAP = {
+    [SAMPLE_MANAGER_PRODUCT_ID.toLowerCase()]: 'https://www.labkey.com/products-services/sample-management-software/',
+    [BIOLOGICS_PRODUCT_ID.toLowerCase()]: 'https://www.labkey.com/products-services/labkey-biologics/',
 };

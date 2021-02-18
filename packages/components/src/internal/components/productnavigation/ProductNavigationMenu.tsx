@@ -5,6 +5,7 @@ import { LoadingSpinner, Alert, Container, naturalSortByProperty } from '../../.
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
 import { getRegisteredProducts, getContainerTabs } from './actions';
+import { PRODUCT_SERVICES_URL } from "./constants";
 import { ContainerTabModel, ProductModel } from './models';
 import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductProjectsDrawer } from './ProductProjectsDrawer';
@@ -116,7 +117,7 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
             </ul>
             {selectedProductId === undefined && (
                 <div className="product-navigation-footer">
-                    <a href="https://www.labkey.com/products-services/" target="_blank" rel="noopener noreferrer">
+                    <a href={PRODUCT_SERVICES_URL} target="_blank" rel="noopener noreferrer">
                         More LabKey Solutions
                     </a>
                 </div>

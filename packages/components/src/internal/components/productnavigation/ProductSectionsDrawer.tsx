@@ -17,9 +17,10 @@ interface ProductAppsDrawerProps {
 
 export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     const { product, project, onCloseMenu } = props;
+    const { container } = getServerContext();
     const [error, setError] = useState<string>();
     const [sections, setSections] = useState<ProductSectionModel[]>();
-    const isSameContainer = useMemo(() => getServerContext().container.id === project?.id, [project]);
+    const isSameContainer = useMemo(() => container.id === project?.id, [container, project]);
 
     useEffect(() => {
         const model = new ProductMenuModel({

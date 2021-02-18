@@ -5,7 +5,7 @@ import { LoadingSpinner, Alert, Container, naturalSortByProperty } from '../../.
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
 import { getRegisteredProducts, getContainerTabs } from './actions';
-import { PRODUCT_SERVICES_URL } from "./constants";
+import { PRODUCT_SERVICES_URL } from './constants';
 import { ContainerTabModel, ProductModel } from './models';
 import { ProductAppsDrawer } from './ProductAppsDrawer';
 import { ProductProjectsDrawer } from './ProductProjectsDrawer';
@@ -58,7 +58,7 @@ interface ProductNavigationMenuImplProps extends ProductNavigationMenuProps {
     error: string;
     products: ProductModel[];
     projects: Container[];
-    productProjectMap: { [key: string]: Container[] };
+    productProjectMap: Record<string, Container[]>;
     tabs: ContainerTabModel[];
 }
 
@@ -130,7 +130,7 @@ function getSelectedProduct(products: ProductModel[], productId: string): Produc
     return products?.find(product => product.productId === productId);
 }
 
-function getProductProjectsMap(products?: ProductModel[], projects?: Container[]): { [key: string]: Container[] } {
+function getProductProjectsMap(products?: ProductModel[], projects?: Container[]): Record<string, Container[]> {
     const map = {};
 
     if (products && projects) {

@@ -13,7 +13,7 @@ const DEFAULT_ICON_ALT_URL = imageURL('_images', 'mobile-logo-overcast.svg');
 
 interface ProductAppsDrawerProps {
     products: ProductModel[];
-    productProjectMap: {[key: string]: Container[]};
+    productProjectMap: Record<string, Container[]>;
     onClick: (productId: string, project?: Container) => void;
 }
 

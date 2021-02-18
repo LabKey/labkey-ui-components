@@ -2,6 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { useMemo } from 'react';
 import { List, Map } from 'immutable';
 import { getServerContext, PermissionTypes } from '@labkey/api';
 
@@ -125,7 +126,8 @@ export function isSampleManagerEnabled(): boolean {
 }
 
 export function hasPremiumModule(): boolean {
-    return getServerContext().moduleContext?.samplemanagement?.hasPremiumModule ?? false;
+    const { moduleContext } = getServerContext();
+    return useMemo(() => moduleContext?.samplemanagement?.hasPremiumModule ?? false, [moduleContext]);
 }
 
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {

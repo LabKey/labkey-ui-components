@@ -8,15 +8,16 @@ interface ProductClickableItemProps {
 export const ProductClickableItem: FC<ProductClickableItemProps> = memo(props => {
     const { id, onClick, children } = props;
     const [hovered, setHovered] = useState<boolean>(false);
-    const toggleHover = useCallback((hover) => setHovered(hover), [setHovered]);
+    const onEnter = useCallback(() => setHovered(true), [setHovered]);
+    const onLeave = useCallback(() => setHovered(false), [setHovered]);
 
     return (
         <div
             key={id}
             className={'clickable-item' + (hovered ? ' labkey-page-nav' : '')}
             onClick={onClick}
-            onMouseEnter={() => toggleHover(true)}
-            onMouseLeave={() => toggleHover(false)}
+            onMouseEnter={onEnter}
+            onMouseLeave={onLeave}
         >
             {children}
         </div>

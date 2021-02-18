@@ -1,8 +1,9 @@
 .product-navigation-container {
-    width: 270px;
+    width: 300px;
     &.wider {
         width: 400px;
     }
+    word-break: break-all;
 
     .labkey-page-nav {
         min-height: unset;
@@ -11,12 +12,15 @@
     .product-navigation-header {
         .back-icon {
             float: left;
-            padding-right: 10px;
             cursor: pointer;
 
             .fa {
                 font-size: 14px;
             }
+        }
+
+        .header-title {
+            padding-left: 20px;
         }
     }
 
@@ -89,6 +93,7 @@
             cursor: pointer;
 
             .nav-icon {
+                display: inline-block;
                 float: right;
                 color: $gray-light;
                 font-size: 14px;

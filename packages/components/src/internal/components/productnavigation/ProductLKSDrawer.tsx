@@ -86,17 +86,19 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
     );
 });
 
+// exported for jest testing
 /**
  * Does a project exist in an array of project containres by either the name or id?
  * @param projects
  * @param id
  * @param name
  */
-function isProjectAvailable(projects: Container[], id?: string, name?: string): boolean {
-    return projects.find(project => (id ? project.id === id : project.name === name)) !== undefined;
+export function isProjectAvailable(projects: Container[], id?: string, name?: string): boolean {
+    return projects?.find(project => (id ? project.id === id : project.name === name)) !== undefined;
 }
 
-function getProjectBeginUrl(container: string): string {
+// exported for jest testing
+export function getProjectBeginUrl(container: string): string {
     return buildURL('project', 'begin', undefined, {
         returnUrl: false,
         container,

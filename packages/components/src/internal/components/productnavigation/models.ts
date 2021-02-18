@@ -37,7 +37,7 @@ export class ContainerTabModel {
     readonly href: string;
     readonly disabled: boolean;
 
-    constructor(values?: Partial<ProductSectionModel>) {
+    constructor(values?: Partial<ContainerTabModel>) {
         Object.assign(this, values);
     }
 }

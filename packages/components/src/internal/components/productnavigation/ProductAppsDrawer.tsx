@@ -8,8 +8,8 @@ import { ProductAppMenuItem } from './ProductAppMenuItem';
 import { ProductModel } from './models';
 import { PRODUCT_ID_IMG_SRC_MAP } from './constants';
 
-const DEFAULT_ICON_URL = imageURL('_images', 'mobile-logo-seattle.svg');
-const DEFAULT_ICON_ALT_URL = imageURL('_images', 'mobile-logo-overcast.svg');
+export const DEFAULT_ICON_URL = imageURL('_images', 'mobile-logo-seattle.svg');
+export const DEFAULT_ICON_ALT_URL = imageURL('_images', 'mobile-logo-overcast.svg');
 
 interface ProductAppsDrawerProps {
     products: ProductModel[];
@@ -46,12 +46,13 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
     );
 });
 
-function getProductSubtitle(projects: Container[]): string {
-    if (projects.length === 1) {
+// exported for jest testing
+export function getProductSubtitle(projects: Container[]): string {
+    if (projects?.length === 1) {
         return projects[0].title;
     }
 
-    if (projects.length === 0) {
+    if (!projects || projects.length === 0) {
         return 'No Projects';
     }
 

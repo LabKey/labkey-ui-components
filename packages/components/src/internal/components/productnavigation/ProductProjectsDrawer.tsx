@@ -27,8 +27,14 @@ export const ProductProjectsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
         <div className={'menu-transition-left' + (transition ? ' transition' : '')}>
             {projects.map(project => {
                 return (
-                    <ProductClickableItem key={project.id} id={project.id} onClick={() => onClick(product.productId, project)}>
-                        <div className="nav-icon"><i className="fa fa-chevron-right" /></div>
+                    <ProductClickableItem
+                        key={project.id}
+                        id={project.id}
+                        onClick={() => onClick(product.productId, project)}
+                    >
+                        <div className="nav-icon">
+                            <i className="fa fa-chevron-right" />
+                        </div>
                         <div>{project.title}</div>
                     </ProductClickableItem>
                 );
@@ -37,11 +43,24 @@ export const ProductProjectsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                 <div className="product-empty">
                     <Alert bsStyle="info">No available {product.productName} projects on this server.</Alert>
                     {user.isRootAdmin && (
-                        <a className="start-project" href={buildURL('admin', 'createFolder', { folderType: product.productName }, { container: '/' })}>
+                        <a
+                            className="start-project"
+                            href={buildURL(
+                                'admin',
+                                'createFolder',
+                                { folderType: product.productName },
+                                { container: '/' }
+                            )}
+                        >
                             Start a {product.productName} project
                         </a>
                     )}
-                    <a className="learn-more" href={PRODUCT_SERVICES_URL_MAP[product.productId.toLowerCase()] ?? PRODUCT_SERVICES_URL} target="_blank" rel="noopener noreferrer">
+                    <a
+                        className="learn-more"
+                        href={PRODUCT_SERVICES_URL_MAP[product.productId.toLowerCase()] ?? PRODUCT_SERVICES_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
                         Learn more about {product.productName}
                     </a>
                 </div>

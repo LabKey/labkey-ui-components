@@ -1,29 +1,27 @@
-import React, {FC, memo, ReactNode, SyntheticEvent, useCallback} from "react";
+import React, { FC, memo, ReactNode, SyntheticEvent, useCallback, useEffect, useState } from "react";
 import {Col, Nav, NavItem, Panel, Row, Tab, TabContainer} from "react-bootstrap";
 import {ConceptModel} from "./models";
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
-export interface ConceptInformationTabsProps {
+interface ConceptInformationTabsProps {
     concept?: ConceptModel;
-    activeTab?: ConceptInfoTabs;
-    onTabChange?: (string) => void;
-    onPathChange?: () => void;
 }
 
-export const enum ConceptInfoTabs {
+const enum ConceptInfoTabs {
     CONCEPT_OVERVIEW_TAB = 'overview',
     PATH_INFO_TAB = 'pathinfo',
 }
 
 export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(props => {
-    const { concept, activeTab, onTabChange, onPathChange } = props;
+    const { concept } = props;
+    const [activeTab, setActiveTab] = useState<ConceptInfoTabs>(ConceptInfoTabs.CONCEPT_OVERVIEW_TAB);
 
     const onSelectionChange = useCallback(
         (event: SyntheticEvent<TabContainer, Event>) => {
             const tab: ConceptInfoTabs = event as any; // Crummy cast to make TS happy
-            onTabChange(tab);
+            setActiveTab(tab);
         },
-        [onTabChange]
+        [setActiveTab]
     );
 
     return (
@@ -48,7 +46,7 @@ export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(prop
                                     className="ontology-concept-overview-container"
                                     eventKey={ConceptInfoTabs.CONCEPT_OVERVIEW_TAB}
                                 >
-                                    <ConceptOverviewPanel {...concept} />
+                                    <ConceptOverviewPanel concept={concept} />
                                 </Tab.Pane>
                                 <Tab.Pane
                                     className="ontology-concept-pathinfo-container"
@@ -66,8 +64,14 @@ export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(prop
 });
 
 // Read-only element displaying the concept's details
-const ConceptOverviewPanel: FC<ConceptModel> = memo(props => {
-    const { name, description } = props;
+const ConceptOverviewPanel: FC<{ concept: ConceptModel }> = memo(props => {
+    const { concept } = props;
+
+    if (!concept) {
+        return <LoadingSpinner />;
+    }
+
+    const { label, description } = concept;
 
     const renderDescription = (): ReactNode => {
         if (!description) return undefined;
@@ -79,12 +83,11 @@ const ConceptOverviewPanel: FC<ConceptModel> = memo(props => {
             </div>
         );
     };
-    const descriptionBlock = renderDescription();
 
     return (
         <>
-            {name && <div className="ontology-concept-overview-title margin-bottom">{name}</div>}
-            {descriptionBlock}
+            {label && <div className="ontology-concept-overview-title margin-bottom">{label}</div>}
+            {renderDescription}
         </>
     );
 });

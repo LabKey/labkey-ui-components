@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Col, Nav, NavItem, Row, Tab } from 'react-bootstrap';
 
 import { OntologyTreePanel } from './OntologyTreePanel';
-import { OntologyModel } from './models';
+import { ConceptModel, OntologyModel, PathModel } from './models';
 
-export const enum OntologyPickerTabs {
+const enum OntologyPickerTabs {
     ONTOLOGY_TREE_TAB = 'ontologytree',
     ONTOLOGY_SEARCH_TAB = 'search',
 }
@@ -16,8 +16,7 @@ interface OntologyTabsProps {
 }
 
 export const OntologyTabs: FC<OntologyTabsProps> = props => {
-    const { model } = props;
-    const treeModel = { title: model.name };
+    const [root] = useState(props.root); // Using state as the tree control uses the original object to maintain expansion, loading, etc.
 
     return (
         <div>
@@ -26,7 +25,6 @@ export const OntologyTabs: FC<OntologyTabsProps> = props => {
                     <Col sm={12}>
                         <Nav bsStyle="tabs">
                             <NavItem eventKey={OntologyPickerTabs.ONTOLOGY_TREE_TAB}>Concepts</NavItem>
-                            {/*<NavItem eventKey={OntologyPickerTabs.ONTOLOGY_SEARCH_TAB}>Search</NavItem>*/}
                         </Nav>
                     </Col>
                     <Col sm={12}>
@@ -35,15 +33,8 @@ export const OntologyTabs: FC<OntologyTabsProps> = props => {
                                 className="ontology-browser-panel-tree-pane"
                                 eventKey={OntologyPickerTabs.ONTOLOGY_TREE_TAB}
                             >
-                                <OntologyTreePanel model={treeModel} />
-                                {/*<OntologyTreePanel model={waffle} treeData={treeData} onNodeToggle={onToggle} />*/}
+                                <OntologyTreePanel root={root} onNodeSelection={props.setSelectedConcept} loadConcepts={props.loadConcepts} />
                             </Tab.Pane>
-                            {/*<Tab.Pane*/}
-                            {/*    className="margin-bottom margin-top"*/}
-                            {/*    eventKey={OntologyPickerTabs.ONTOLOGY_SEARCH_TAB}*/}
-                            {/*>*/}
-                            {/*    <div>We are searching here.</div>*/}
-                            {/*</Tab.Pane>*/}
                         </Tab.Content>
                     </Col>
                 </Row>

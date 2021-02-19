@@ -41,19 +41,14 @@ export class OntologyModel {
     constructor(values?: Partial<OntologyModel>) {
         Object.assign(this, values);
     }
-}
 
-export interface ConceptModel {
-    name: string;
-    code: string;
-    paths: string[];
-    description: string;
-}
-
-export interface PathModel {
-    label: string;
-    fullpath: string;
-    pathIdx: number;
-    conceptCode: string;
-    children?: PathModel[];
+    getPathModel = (): PathModel => {
+        return new PathModel({
+            path: this.path,
+            code: this.abbreviation,
+            label: this.name,
+            hasChildren: !!this.children,
+            children: this.children,
+        });
+    };
 }

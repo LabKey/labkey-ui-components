@@ -1,31 +1,70 @@
-import React, { FC, useCallback, useEffect, useState, } from 'react';
-import { TreeNode, TreePanel } from './TreePanel';
-import { ConceptModel } from './models';
+import React, { FC, useCallback } from 'react';
 
-export class OntologyBrowserModel {
-    title: string;
-}
+import { TreeNode } from 'react-treebeard';
 
-export interface OntologyTreeProps {
-    model: OntologyBrowserModel;
-}
+import { naturalSortByProperty } from '../../../public/sort';
 
-class OntologyTreeNode implements TreeNode {
-    toggled: boolean = false;
-    expanded: boolean = false;
-    loading: boolean = false;
-    active: boolean = false;
+import { FileTree } from '../files/FileTree';
+
+import { ConceptModel, PathModel } from './models';
+import { fetchOntologyPathsAndConcepts } from './actions';
+
+// class OntologyTreeNode implements TreeNode {
+//     toggled: boolean = false;
+//     expanded: boolean = false;
+//     loading: boolean = false;
+//     active: boolean = false;
+//     name: string;
+//     children: [TreeNode];
+//     data?: ConceptModel;
+//
+//     constructor(values?: {[key:string]: any}) {
+//         this.active = false;
+//         this.loading = false;
+//         this.expanded = false;
+//         this.children = undefined;
+//         Object.assign(this, values);
+//     }
+// }
+
+// const testData = new OntologyTreeNode({
+//     id: 'Breakfast',
+//     name: 'Breakfast',
+//     children: [
+//         new OntologyTreeNode({
+//             id: 'crepes',
+//             name: 'crepes',
+//         }),
+//         new OntologyTreeNode({
+//             id: 'pancakes',
+//             name: 'pancakes',
+//             children: [
+//                 new OntologyTreeNode({ id: 'swedish', name: 'swedish' }),
+//                 new OntologyTreeNode({ id: 'buttermilk', name: 'buttermilk' })
+//             ],
+//         }),
+//         new OntologyTreeNode({ id: 'waffles', name: 'waffles' }),
+//     ],
+//     expanded: true,
+//     toggled: true,
+//     active: false,
+//     loading: false,
+// });
+
+// class OntologyBrowserModel {
+//     title: string;
+//     data?: OntologyTreeNode = testData; //TODO for now.
+// }
+
+// interface OntologyTreeProps {
+//     model: OntologyBrowserModel;
+// }
+
+export class OntologyPath {
+    id: string;
     name: string;
-    children: [TreeNode];
-    data?: ConceptModel;
-
-    constructor(values?: {[key:string]: any}) {
-        this.active = false;
-        this.loading = false;
-        this.expanded = false;
-        this.children = undefined;
-        Object.assign(this, values);
-    }
+    children: undefined | PathNode[];
+    conceptCode?: string;
 }
 
 type PathNode = OntologyPath & TreeNode;
@@ -38,43 +77,40 @@ interface OntologyTreeProps {
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
     // const { model, treeData, onNodeToggle } = props;
-    const { model, } = props;
-    const [toggleHandler, setToggleHandler] = useState();
-    const [treeData, setTreeData] = useState(testData);
-    // const treeData = useTreeData(testData, setToggleHandler);
-
-    // const onToggle = useCallback((node:any, expanded: boolean, callback?: () => any):void => {
-    //         node.toggled = expanded;
-    //         node.expanded = expanded;
-    //         setTreeData(node);
-    //     },
-    //     [setTreeData]
-    // );
-    //
-    const nodeClickHandler = useCallback(
-        (node:any, expanded:boolean, callback?:() => any): void => {
-            node.toggled = expanded;
-            setTreeData({ ...treeData });
-
-            if (callback) {
-                callback();
-            }
+    const { root, onNodeSelection, loadConcepts } = props;
+    const loadData = useCallback(
+        async (ontologyPath: string = root.path): Promise<PathNode[]> => {
+            const [ontPath, concepts] = await fetchOntologyPathsAndConcepts(ontologyPath);
+            loadConcepts(concepts);
+            return ontPath?.children?.sort(naturalSortByProperty<PathModel>('label')).map(
+                (child: PathModel): PathNode => {
+                    return {
+                        id: child.path,
+                        name: child.label, // TODO this should really be calculated from concept...
+                        children: child.hasChildren ? [] : undefined,
+                        conceptCode: child.code,
+                    };
+                }
+            );
         },
-        [treeData, setTreeData]
+        [loadConcepts, root]
     );
 
-    // useEffect(() => {
-    // }, [treeData, setTreeData]);
+    const onSelect = (a: string, b: string, c: boolean, d: boolean, node: PathNode): boolean => {
+        console.log([a, b, c, d, node]);
+        onNodeSelection(node?.conceptCode);
+        return true;
+    };
 
     return (
         <div className="ontology-browser-tree-container padding-right">
-            <TreePanel data={treeData} onToggle={nodeClickHandler} />
-            {/*<Treebeard*/}
-            {/*    data={treeData}*/}
-            {/*    onToggle={toggleHandler}*/}
-            {/*    // decorators={{ ...decorators, Header: this.headerDecorator }}*/}
-            {/*    style={customStyle}*/}
-            {/*/>*/}
+            <FileTree
+                loadData={loadData}
+                onFileSelect={onSelect}
+                allowMultiSelect={false}
+                showNodeIcon={false}
+                defaultRootName={root.label}
+            />
         </div>
     );
 };

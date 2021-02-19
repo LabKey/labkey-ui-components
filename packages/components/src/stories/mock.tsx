@@ -105,6 +105,7 @@ import serverNotifications from '../test/data/notification-getUserNotificationsF
 import pipelineJobQueryDetails from '../test/data/pipelineJob-getQueryDetails.json';
 import pipelineJobQuery from '../test/data/pipelineJob-getQuery.json';
 import pipelineStatusDetails from '../test/data/pipelineStatusDetails.json';
+import getontologychildpaths from '../test/data/ontologies-getChildPaths.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -212,6 +213,7 @@ const QUERY_RESPONSES = fromJS({
     },
     ontology: {
         ontologies: ontologiesQuery,
+        getchildpaths: getontologychildpaths,
     },
     pipeline: {
         job: pipelineJobQuery,
@@ -264,6 +266,7 @@ export function initMocks() {
     initUserPropsMocks();
     initDomainPropertiesMocks();
     initPipelineStatusDetailsMocks();
+    initOnotologyMocks();
 
     mock.post(/.*\/query\/?.*\/executeSql.*/, (req, res) => {
         const body = decodeURIComponent(req.body());
@@ -647,4 +650,8 @@ export function initPipelineStatusDetailsMocks(): void {
 
         return jsonResponse(responseBody.length > 0 ? responseBody[0] : {success: false}, res);
     });
+}
+
+export function initOnotologyMocks(): void {
+    mock.get(/.*\/ontology\/?.*\/getChildPaths.*/, jsonResponse(getontologychildpaths));
 }

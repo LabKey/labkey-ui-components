@@ -116,7 +116,7 @@ import {
     NotificationItemProps,
     Persistence,
     ServerNotificationModel,
-    ServerActivityData
+    ServerActivityData,
 } from './internal/components/notifications/model';
 import { RequiresPermission } from './internal/components/base/Permissions';
 import { PaginationButtons, PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
@@ -722,6 +722,7 @@ export {
     Notification,
     NotificationCreatable,
     ServerNotificationModel,
+    ServerActivityData,
     Persistence,
     MessageFunction,
     createNotification,
@@ -937,6 +938,7 @@ export {
     mountWithServerContext,
     sleep,
     waitForLifecycle,
+    // Ontology
     OntologyBrowserPanel,
-    OntologyTabs,  //TODO remove
+    OntologyTabs, // TODO remove, using here to simplify development but likely will never be used as individual component
 };

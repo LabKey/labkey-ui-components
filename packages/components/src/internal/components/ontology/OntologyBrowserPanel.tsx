@@ -1,15 +1,15 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { OntologyTabs } from './OntologyTabs';
-import { ConceptInformationTabs, ConceptInfoTabs } from './ConceptInformationTabs';
+import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { getOntologyDetails } from './actions';
 import { ConceptModel, OntologyModel, } from './models';
 
-export interface OntologyBrowserProps {
-    ontologyId?: number;
+interface OntologyBrowserProps {
+    ontologyId?: string;
 }
 
 // class ConceptCache {
@@ -106,32 +106,21 @@ export const OntologyBrowserPanelImpl: FC<ImplProps> = memo(props => {
     return (
         <>
             <div className="panel panel-default ontology-browser-container">
-                <Row>
-                    <Col xs={3} className="ontology-browser-left-panel">
-                        <OntologyHeader title={ontology.name} count={ontology.conceptCount} />
-                        <OntologyTabs model={ontology} />
-                    </Col>
-                    <Col xs={9} className="ontology-browser-panel-right-panel">
-                        <ConceptInformationTabs
-                            concept={selectedConcept}
-                            activeTab={conceptTab}
-                            onTabChange={setActiveTab}
-                        />
-                    </Col>
-                </Row>
+                <div className="ontology-browser-title">
+                    <div className="panel-heading">{ontology.name}</div>
+                </div>
+                <div className="panel-body ontology-browser-body-panel">
+                    <div className="ontology-browser-title-count">{ontology.conceptCount} total concepts </div>
+                    <Row>
+                        <Col xs={3} className="ontology-browser-left-panel no-padding">
+                            <OntologyTabs root={root} {...rest} />
+                        </Col>
+                        <Col xs={9} className="ontology-browser-panel-right-panel">
+                            <ConceptInformationTabs concept={selectedConcept} />
+                        </Col>
+                    </Row>
+                </div>
             </div>
         </>
     );
-};
-
-const OntologyHeader: FC<{ title: string; count: number }> = props => {
-    const { title, count } = props;
-    return (
-        <>
-            <div className="ontology-browser-title">
-                <div className="ontology-browser-title-name">{title}</div>
-                <div className="ontology-browser-title-count">{count} total concepts </div>
-            </div>
-        </>
-    );
-};
+});

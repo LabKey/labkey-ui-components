@@ -2,7 +2,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useState } from 'reac
 import { List } from 'immutable';
 import { ActionURL, getServerContext } from '@labkey/api';
 
-import { Container, AppURL, createProductUrl, ProductMenuModel, Alert } from '../../..';
+import { Container, AppURL, createProductUrl, ProductMenuModel, Alert, MenuSectionModel } from '../../..';
 import { FREEZERS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
 import { ProductModel, ProductSectionModel } from './models';
@@ -31,35 +31,7 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
 
         model.getMenuSections(0)
             .then(modelSections => {
-                // TODO split this into a function for jest testing
-                let menuSections = [
-                    new ProductSectionModel({
-                        key: 'home',
-                        label: 'Dashboard',
-                        url: getProductSectionUrl(product.productId, 'home', project.path, isSameContainer),
-                    })
-                ];
-
-                modelSections.filter(modelSection => SECTION_KEYS_TO_SKIP.indexOf(modelSection.key) === -1)
-                    .forEach(modelSection => {
-                        menuSections.push(
-                            new ProductSectionModel({
-                                key: modelSection.key,
-                                label: modelSection.label,
-                                url: getProductSectionUrl(modelSection.productId, modelSection.key, project.path, isSameContainer),
-                            })
-                        );
-                    });
-
-                // special case to sort LKSM storage before workflow to match the mega menu display
-                menuSections = menuSections.sort((a, b) => {
-                    if (a.key === FREEZERS_KEY && b.key === WORKFLOW_KEY) {
-                        return -1;
-                    }
-                    return 0;
-                });
-
-                setSections(menuSections);
+                setSections(parseProductMenuSectionResponse(modelSections, product, project, isSameContainer));
             })
             .catch(error => {
                 setError('Error: unable to load product sections.');
@@ -75,7 +47,8 @@ interface ProductSectionsDrawerImplProps {
     onCloseMenu?: () => void;
 }
 
-const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
+// exported for jest testing
+export const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props => {
     const { sections, error, onCloseMenu } = props;
 
     const [transition, setTransition] = useState<boolean>(true);
@@ -106,14 +79,53 @@ const ProductSectionsDrawerImpl: FC<ProductSectionsDrawerImplProps> = memo(props
     );
 });
 
-function getProductSectionUrl(productId: string, key: string, containerPath: string, isSameContainer: boolean): string {
+// function below are exported for jest testing
+
+export function getProductSectionUrl(
+    productId: string,
+    key: string,
+    containerPath: string,
+    isSameContainer: boolean
+): string {
     // if the selected project is the current container and the section is for the same product we are already in, then keep the urls as route changes
-    let url;
     if (isSameContainer && productId.toLowerCase() === ActionURL.getController().toLowerCase()) {
-        url = AppURL.create(key).toHref();
-    } else {
-        url = createProductUrl(productId, undefined, AppURL.create(key), containerPath);
+        return AppURL.create(key).toHref();
     }
 
-    return url;
+    return createProductUrl(productId, undefined, AppURL.create(key), containerPath).toString();
+}
+
+export function parseProductMenuSectionResponse(
+    modelSections: List<MenuSectionModel>,
+    product: ProductModel,
+    project: Container,
+    isSameContainer: boolean
+): ProductSectionModel[] {
+    const menuSections = [
+        new ProductSectionModel({
+            key: 'home',
+            label: 'Dashboard',
+            url: getProductSectionUrl(product.productId, 'home', project.path, isSameContainer),
+        }),
+    ];
+
+    modelSections
+        .filter(modelSection => SECTION_KEYS_TO_SKIP.indexOf(modelSection.key) === -1)
+        .forEach(modelSection => {
+            menuSections.push(
+                new ProductSectionModel({
+                    key: modelSection.key,
+                    label: modelSection.label,
+                    url: getProductSectionUrl(modelSection.productId, modelSection.key, project.path, isSameContainer),
+                })
+            );
+        });
+
+    // special case to sort LKSM storage before workflow to match the mega menu display
+    return menuSections.sort((a, b) => {
+        if (a.key === FREEZERS_KEY && b.key === WORKFLOW_KEY) {
+            return -1;
+        }
+        return 0;
+    });
 }

@@ -19,9 +19,20 @@ interface ProductNavigationMenuProps {
 
 export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props => {
     const [error, setError] = useState<string>();
-    const [products, setProducts] = useState<ProductModel[]>(); //the array of products that have been registered for this LK server
-    const [projects, setProjects] = useState<Container[]>(); //the array of projects which the current user has access to on the LK server
-    const [tabs, setTabs] = useState<ContainerTabModel[]>(); //the array of container tabs for the current LK container
+    const [products, setProducts] = useState<ProductModel[]>(); // the array of products that have been registered for this LK server
+    const [projects, setProjects] = useState<Container[]>(); // the array of projects which the current user has access to on the LK server
+    const [tabs, setTabs] = useState<ContainerTabModel[]>(); // the array of container tabs for the current LK container
+    const [selectedProductId, setSelectedProductId] = useState<string>();
+    const [selectedProject, setSelectedProject] = useState<Container>();
+    const productProjectMap = getProductProjectsMap(products, projects);
+
+    const onSelection = useCallback(
+        (productId: string, project?: Container) => {
+            setSelectedProject(getSelectedProject(productId, productProjectMap, project));
+            setSelectedProductId(productId);
+        },
+        [setSelectedProductId, setSelectedProject, productProjectMap]
+    );
 
     useEffect(() => {
         getRegisteredProducts().then(setProducts).catch(setError);
@@ -44,12 +55,15 @@ export const ProductNavigationMenu: FC<ProductNavigationMenuProps> = memo(props 
 
     return (
         <ProductNavigationMenuImpl
-            {...props}
             error={error}
             projects={projects}
             tabs={tabs}
             products={products?.sort(naturalSortByProperty('productName'))}
-            productProjectMap={getProductProjectsMap(products, projects)}
+            productProjectMap={productProjectMap}
+            onCloseMenu={props.onCloseMenu}
+            selectedProductId={selectedProductId}
+            selectedProject={selectedProject}
+            onSelection={onSelection}
         />
     );
 });
@@ -60,27 +74,24 @@ interface ProductNavigationMenuImplProps extends ProductNavigationMenuProps {
     projects: Container[];
     productProjectMap: Record<string, Container[]>;
     tabs: ContainerTabModel[];
+    selectedProductId: string;
+    selectedProject: Container;
+    onSelection: (productId: string, project?: Container) => void;
 }
 
-const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props => {
-    const { error, products, projects, productProjectMap, tabs, onCloseMenu } = props;
-    const [selectedProductId, setSelectedProductId] = useState<string>();
-    const [selectedProject, setSelectedProject] = useState<Container>();
-
-    const onSelection = useCallback(
-        (productId: string, project?: Container) => {
-            if (project) {
-                setSelectedProject(project);
-            } else if (productId !== undefined && productProjectMap[productId]?.length === 1) {
-                setSelectedProject(productProjectMap[productId][0]);
-            } else {
-                setSelectedProject(undefined);
-            }
-
-            setSelectedProductId(productId);
-        },
-        [setSelectedProductId, setSelectedProject, productProjectMap]
-    );
+// exported for jest testing
+export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props => {
+    const {
+        error,
+        products,
+        projects,
+        productProjectMap,
+        tabs,
+        onCloseMenu,
+        selectedProject,
+        selectedProductId,
+        onSelection,
+    } = props;
 
     if (error) {
         return <Alert>{error}</Alert>;
@@ -98,13 +109,20 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
     const showProjectsDrawer = !selectedProject && selectedProduct !== undefined;
 
     return (
-        <div className={'product-navigation-container' + (showProductDrawer || (showProjectsDrawer && productProjects.length === 0) ? ' wider' : '')}>
+        <div
+            className={
+                'product-navigation-container' +
+                (showProductDrawer || (showProjectsDrawer && productProjects.length === 0) ? ' wider' : '')
+            }
+        >
             <h3 className="product-navigation-header navbar-menu-header">
                 <div className="navbar-icon-connector" />
                 <ProductNavigationHeader
                     title={selectedProject?.title || selectedProduct?.productName}
                     productId={selectedProductId}
-                    onClick={() => onSelection(selectedProject && productProjects?.length > 1 ? selectedProductId : undefined)}
+                    onClick={() =>
+                        onSelection(selectedProject && productProjects?.length > 1 ? selectedProductId : undefined)
+                    }
                 />
             </h3>
             <ul className="product-navigation-listing">
@@ -113,7 +131,13 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
                 {showProjectsDrawer && (
                     <ProductProjectsDrawer product={selectedProduct} projects={productProjects} onClick={onSelection} />
                 )}
-                {showSectionsDrawer && <ProductSectionsDrawer product={selectedProduct} project={selectedProject} onCloseMenu={onCloseMenu} />}
+                {showSectionsDrawer && (
+                    <ProductSectionsDrawer
+                        product={selectedProduct}
+                        project={selectedProject}
+                        onCloseMenu={onCloseMenu}
+                    />
+                )}
             </ul>
             {selectedProductId === undefined && (
                 <div className="product-navigation-footer">
@@ -126,11 +150,26 @@ const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = memo(props
     );
 });
 
-function getSelectedProduct(products: ProductModel[], productId: string): ProductModel {
+// below function are exported for test testing
+
+export function getSelectedProject(
+    productId: string,
+    productProjectMap: Record<string, Container[]>,
+    project?: Container
+): Container {
+    if (project) {
+        return project;
+    } else if (productId !== undefined && productProjectMap[productId]?.length === 1) {
+        return productProjectMap[productId][0];
+    }
+    return undefined;
+}
+
+export function getSelectedProduct(products: ProductModel[], productId: string): ProductModel {
     return products?.find(product => product.productId === productId);
 }
 
-function getProductProjectsMap(products?: ProductModel[], projects?: Container[]): Record<string, Container[]> {
+export function getProductProjectsMap(products?: ProductModel[], projects?: Container[]): Record<string, Container[]> {
     const map = {};
 
     if (products && projects) {

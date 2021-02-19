@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD February 2021
+### version 2.2.0
+*Released*: 19 February 2021
 * Item 8335: Add LabKey product navigation icon and menu to NavigationBar.tsx
     - make the ProductNavigationMenu.tsx component available for use in LKS header.jsp
     - app/utils.ts addition of hasPremiumModule() helper function

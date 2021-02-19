@@ -13,6 +13,7 @@ const DEFAULT_PROPS = {
 describe('ProductNavigationHeader', () => {
     function validate(wrapper: ReactWrapper, hasBack = false) {
         expect(wrapper.find('.back-icon')).toHaveLength(hasBack ? 1 : 0);
+        expect(wrapper.find('.header-padding')).toHaveLength(hasBack ? 1 : 0);
         if (hasBack) {
             expect(wrapper.find('.fa-chevron-left')).toHaveLength(1);
         }

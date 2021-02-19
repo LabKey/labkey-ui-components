@@ -18,7 +18,7 @@ export const ProductNavigationHeader: FC<ProductNavigationHeaderProps> = memo(pr
                     <i className="fa fa-chevron-left" />
                 </div>
             )}
-            <div className="header-title">
+            <div className={'header-title' + (productId ? ' header-padding' : '')}>
                 {title ? title : productId === LKS_PRODUCT_ID ? 'LabKey Server' : 'Applications'}
             </div>
         </>

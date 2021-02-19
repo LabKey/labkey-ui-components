@@ -15,12 +15,15 @@
  */
 import React, { FC, memo, ReactNode, useCallback } from 'react';
 import { List, Map } from 'immutable';
+import { getServerContext } from '@labkey/api';
 
 import { User } from '../../..';
+import { hasPremiumModule } from '../../app/utils';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
-
 import { ServerNotificationsConfig } from '../notifications/model';
+
+import { ProductNavigation } from '../productnavigation/ProductNavigation';
 
 import { ProductMenu } from './ProductMenu';
 import { SearchBox } from './SearchBox';
@@ -56,7 +59,6 @@ export const NavigationBar: FC<Props> = memo(props => {
         projectName,
         searchPlaceholder,
         showSearchBox,
-        showSwitchToLabKey,
         signOutUrl,
         user,
     } = props;
@@ -67,6 +69,7 @@ export const NavigationBar: FC<Props> = memo(props => {
 
     const notifications =
         !!notificationsConfig && user && !user.isGuest ? <ServerNotifications {...notificationsConfig} /> : null;
+    const productNav = hasPremiumModule() || getServerContext().devMode ? <ProductNavigation /> : null;
 
     return (
         <nav className="navbar navbar-container test-loc-nav-header">
@@ -94,13 +97,13 @@ export const NavigationBar: FC<Props> = memo(props => {
                                     model={model}
                                     onSignIn={onSignIn}
                                     onSignOut={onSignOut}
-                                    showSwitchToLabKey={showSwitchToLabKey}
                                     signOutUrl={signOutUrl}
                                     user={user}
                                 />
                             )}
                         </div>
                         <div className="navbar-item pull-right navbar-item-notification">{notifications}</div>
+                        <div className="navbar-item pull-right navbar-item-product-navigation">{productNav}</div>
                         <div className="navbar-item pull-right hidden-xs">
                             {showSearchBox && <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} />}
                         </div>
@@ -118,5 +121,4 @@ export const NavigationBar: FC<Props> = memo(props => {
 
 NavigationBar.defaultProps = {
     showSearchBox: false,
-    showSwitchToLabKey: true,
 };

@@ -1,0 +1,17 @@
+[ {
+  "moduleName" : "Biologics",
+  "sectionNames" : [ "Registry", "NonMediaSampleTypes", "Media", "Experiments", "Workflow" ],
+  "documentationUrl" : "https://www.labkey.org/Documentation/wiki-page.view?name=biologics",
+  "productId" : "Biologics",
+  "productName" : "Biologics",
+  "documentationLabel" : "Documentation",
+  "devMenuItems" : [ ]
+}, {
+  "moduleName" : "SampleManagement",
+  "productName" : "Sample Manager",
+  "sectionNames" : [ "Sample Types", "Assays", "Source Types", "Workflow" ],
+  "documentationUrl" : "https://www.labkey.org/SampleManagerHelp/project-begin.view?",
+  "documentationLabel" : "Help",
+  "productId" : "SampleManager",
+  "devMenuItems" : [ ]
+} ]

@@ -198,13 +198,13 @@ import {
     SamplesResolver,
 } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
-import { BulkAddData } from './internal/components/editable/EditableGrid';
+import { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 import { EditableGridModal } from './internal/components/editable/EditableGridModal';
-import { EditableColumnMetadata } from './internal/components/editable/EditableGrid';
+
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
@@ -336,6 +336,7 @@ import { EntityTypeDeleteConfirmModal } from './internal/components/entities/Ent
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
+import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { ITab, SubNav } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
@@ -457,8 +458,10 @@ import {
     ALIQUOT_CREATION,
     CHILD_SAMPLE_CREATION,
     DERIVATIVE_CREATION,
-    POOLED_SAMPLE_CREATION, SampleCreationType, SampleCreationTypeModel
-} from "./internal/components/samples/models";
+    POOLED_SAMPLE_CREATION,
+    SampleCreationType,
+    SampleCreationTypeModel,
+} from './internal/components/samples/models';
 import { createMockWithRouterProps } from './test/mockUtils';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
@@ -735,6 +738,7 @@ export {
     HeaderWrapper,
     ITab,
     NavigationBar,
+    ProductNavigationMenu,
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,

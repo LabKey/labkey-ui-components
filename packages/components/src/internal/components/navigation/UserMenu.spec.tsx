@@ -55,7 +55,7 @@ describe('UserMenu', () => {
         const model = new ProductMenuModel({
             productIds: ['testProduct'],
         });
-        const tree = mount(<UserMenu model={model} user={new User()} showSwitchToLabKey />);
+        const tree = mount(<UserMenu model={model} user={new User()} />);
         expect(tree).toEqual({});
     });
 
@@ -71,7 +71,7 @@ describe('UserMenu', () => {
             productIds,
             sections,
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey />);
+        const tree = renderer.create(<UserMenu model={model} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -87,7 +87,7 @@ describe('UserMenu', () => {
             productIds,
             sections,
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey />);
+        const tree = renderer.create(<UserMenu model={model} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -103,7 +103,7 @@ describe('UserMenu', () => {
             productIds,
             sections,
         });
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey />);
+        const tree = renderer.create(<UserMenu model={model} user={user} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -120,25 +120,7 @@ describe('UserMenu', () => {
             sections,
         });
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
-        const tree = renderer.create(
-            <UserMenu model={model} user={user} showSwitchToLabKey extraUserItems={extraUserItems} />
-        );
-        expect(tree).toMatchSnapshot();
-    });
-
-    test('user logged in, without switch to labkey', () => {
-        const productIds = ['switchToLabkey'];
-        const user = new User({
-            isSignedIn: true,
-        });
-
-        const model = new ProductMenuModel({
-            isLoaded: true,
-            isLoading: false,
-            productIds,
-            sections,
-        });
-        const tree = renderer.create(<UserMenu model={model} user={user} showSwitchToLabKey={false} />);
+        const tree = renderer.create(<UserMenu model={model} user={user} extraUserItems={extraUserItems} />);
         expect(tree).toMatchSnapshot();
     });
 
@@ -157,13 +139,7 @@ describe('UserMenu', () => {
         const extraUserItems = [<div key="e1">Extra One</div>, <div key="e2">Extra Two</div>];
         const extraDevItems = [<div key="e1">Extra Dev One</div>, <div key="e2">Extra Dev Two</div>];
         const tree = renderer.create(
-            <UserMenu
-                extraDevItems={extraDevItems}
-                extraUserItems={extraUserItems}
-                model={model}
-                showSwitchToLabKey
-                user={user}
-            />
+            <UserMenu extraDevItems={extraDevItems} extraUserItems={extraUserItems} model={model} user={user} />
         );
         expect(tree).toMatchSnapshot();
     });

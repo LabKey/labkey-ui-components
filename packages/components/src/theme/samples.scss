@@ -6,3 +6,47 @@
 .sample-insert--link {
   padding-top: 5px;
 }
+
+.creation-type-modal-label {
+    font-weight: normal;
+}
+
+.creation-type-choice {
+    margin-left: 8px;
+    font-weight: normal;
+    color: $gray;
+    display: inline-block;
+
+    &.selected {
+        color: $gray-base;
+    }
+}
+
+.creation-type-choice-description {
+    margin-top: 8px;
+}
+
+.creation-type {
+    padding: 8px;
+    &.selected {
+        background: $blue-bkgrd-selected
+    }
+}
+
+.creation-per-parent-select {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    width: 100px;
+}
+
+.creation-type-icon {
+    display: inline-block;
+    height: 50px;
+    width: 50px;
+    padding-top: 5px;
+    img {
+        display: block;
+    }
+}

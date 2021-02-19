@@ -22,7 +22,8 @@ import { ISubItem, SubMenuItem } from './SubMenuItem';
 export interface MenuOption {
     disabled?: boolean;
     disabledMsg?: string;
-    href: string;
+    href?: string;
+    onClick?: () => void;
     name: string;
     key: string;
 }
@@ -67,6 +68,7 @@ export class SubMenu extends React.Component<SubMenuProps, any> {
                     disabledMsg: option.disabledMsg,
                     text: option.name,
                     href: option.href,
+                    onClick: option.onClick,
                 });
             }
         });

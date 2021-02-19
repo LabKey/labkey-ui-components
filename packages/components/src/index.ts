@@ -198,6 +198,7 @@ import {
     SamplesResolver,
 } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
+import { BulkAddData } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
@@ -281,6 +282,7 @@ import {
 import { SampleEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
+import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -452,6 +454,12 @@ import { QueryDetailPage } from './internal/components/listing/pages/QueryDetail
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
 import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
+import {
+    ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION, SampleCreationType, SampleCreationTypeModel
+} from "./internal/components/samples/models";
 import { createMockWithRouterProps } from './test/mockUtils';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
@@ -513,6 +521,7 @@ export {
     EditableColumnMetadata,
     EditorModel,
     cancelEvent,
+    BulkAddData,
     // url and location related items
     AppURL,
     Location,
@@ -620,7 +629,14 @@ export {
     DataClassDataType,
     SampleEmptyAlert,
     SampleSetSummary,
+    SampleCreationType,
+    SampleCreationTypeModel,
     SampleSetDeleteModal,
+    SampleCreationTypeModal,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION,
+    ALIQUOT_CREATION,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,

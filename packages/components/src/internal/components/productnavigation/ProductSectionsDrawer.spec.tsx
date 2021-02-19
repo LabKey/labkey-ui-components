@@ -2,12 +2,16 @@ import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { Alert, Container, MenuSectionModel } from "../../..";
-import { FREEZERS_KEY, WORKFLOW_KEY } from "../../app/constants";
+import { Alert, Container, MenuSectionModel } from '../../..';
+import { FREEZERS_KEY, WORKFLOW_KEY } from '../../app/constants';
 
-import { getProductSectionUrl, parseProductMenuSectionResponse, ProductSectionsDrawerImpl } from './ProductSectionsDrawer';
-import { ProductClickableItem } from "./ProductClickableItem";
-import { ProductModel, ProductSectionModel } from "./models";
+import {
+    getProductSectionUrl,
+    parseProductMenuSectionResponse,
+    ProductSectionsDrawerImpl,
+} from './ProductSectionsDrawer';
+import { ProductClickableItem } from './ProductClickableItem';
+import { ProductModel, ProductSectionModel } from './models';
 
 const DEFAULT_PROPS = {
     error: undefined,
@@ -31,7 +35,7 @@ describe('ProductSectionsDrawer', () => {
     }
 
     test('error', () => {
-        const wrapper = mount(<ProductSectionsDrawerImpl {...DEFAULT_PROPS} error={'Test error'} />);
+        const wrapper = mount(<ProductSectionsDrawerImpl {...DEFAULT_PROPS} error="Test error" />);
         validate(wrapper, 0, true);
         expect(wrapper.find(Alert).text()).toBe('Test error');
         wrapper.unmount();
@@ -49,14 +53,11 @@ describe('ProductSectionsDrawer', () => {
     });
 
     test('getProductSectionUrl', () => {
-        expect(getProductSectionUrl('id', 'key', '/test', false))
-            .toBe('/labkey/id/test/app.view#/key');
-        expect(getProductSectionUrl('id', 'key', '/test', true))
-            .toBe('/labkey/id/test/app.view#/key');
+        expect(getProductSectionUrl('id', 'key', '/test', false)).toBe('/labkey/id/test/app.view#/key');
+        expect(getProductSectionUrl('id', 'key', '/test', true)).toBe('/labkey/id/test/app.view#/key');
 
         // note ActionURL.getController() is '' for this jest test
-        expect(getProductSectionUrl('', 'key', '/test', true))
-            .toBe('#/key');
+        expect(getProductSectionUrl('', 'key', '/test', true)).toBe('#/key');
     });
 
     test('parseProductMenuSectionResponse, no modelSections', () => {

@@ -29,7 +29,8 @@ export const ProductSectionsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
             productIds: PRODUCT_ID_SECTION_QUERY_MAP[product.productId.toLowerCase()] ?? List.of(product.productId),
         });
 
-        model.getMenuSections(0)
+        model
+            .getMenuSections(0)
             .then(modelSections => {
                 setSections(parseProductMenuSectionResponse(modelSections, product, project, isSameContainer));
             })

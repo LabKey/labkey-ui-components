@@ -3,7 +3,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { ServerNotificationModel } from './model';
 
 import {
     DONE_AND_READ,
@@ -11,8 +10,10 @@ import {
     IN_PROGRESS,
     markAllNotificationsRead,
     UNREAD_WITH_ERROR,
-    UNREAD_WITH_ERROR2
+    UNREAD_WITH_ERROR2,
 } from '../../../test/data/notificationData';
+
+import { ServerNotificationModel } from './model';
 
 import { ServerNotifications } from './ServerNotifications';
 import { ServerActivityList } from './ServerActivityList';
@@ -31,7 +32,7 @@ describe('<ServerNotificaitons/>', () => {
     test('loading', () => {
         const wrapper = mount(
             <ServerNotifications
-                serverActivity={new ServerNotificationModel({'isLoading': true})}
+                serverActivity={new ServerNotificationModel({ isLoading: true })}
                 markAllNotificationsRead={markAllNotificationsRead}
                 onViewAll={jest.fn()}
             />
@@ -54,7 +55,7 @@ describe('<ServerNotificaitons/>', () => {
             isLoaded: true,
             isLoading: false,
             isError: true,
-            errorMessage: errorText
+            errorMessage: errorText,
         });
         const wrapper = mount(
             <ServerNotifications

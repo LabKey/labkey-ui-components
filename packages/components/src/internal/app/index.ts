@@ -21,7 +21,7 @@ import {
     menuReload,
     serverNotificationInit,
     serverNotificationInvalidate,
-    doResetQueryGridState
+    doResetQueryGridState,
 } from './actions';
 import {
     SECURITY_LOGOUT,

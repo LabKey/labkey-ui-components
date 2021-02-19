@@ -31,16 +31,27 @@ export function notificationInit() {
     };
     LABKEY.container = {
         title: 'Test Container',
-        path: "testContainer",
+        path: 'testContainer',
         formats: {
             dateTimeFormat: 'yyyy-MM-dd HH:mm',
             numberFormat: null,
-            dateFormat: 'yyyy-MM-dd'
+            dateFormat: 'yyyy-MM-dd',
         },
-        id: "testContainerEntityId",
+        id: 'testContainerEntityId',
         activeModules: [
-            "Wiki", "Issues", "Search", "FileContent", "Assay", "Experiment", "Query",
-            "Pipeline", "Internal", "API", "Announcements", "Core", "Ontology"
+            'Wiki',
+            'Issues',
+            'Search',
+            'FileContent',
+            'Assay',
+            'Experiment',
+            'Query',
+            'Pipeline',
+            'Internal',
+            'API',
+            'Announcements',
+            'Core',
+            'Ontology',
         ],
     };
     LABKEY.project = {

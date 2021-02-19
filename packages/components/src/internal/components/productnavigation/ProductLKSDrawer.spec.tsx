@@ -1,12 +1,12 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Container } from "../../..";
-import { TEST_USER_FOLDER_ADMIN, TEST_USER_EDITOR } from "../../../test/data/users";
+import { Container } from '../../..';
+import { TEST_USER_FOLDER_ADMIN, TEST_USER_EDITOR } from '../../../test/data/users';
 
 import { isProjectAvailable, getProjectBeginUrl, ProductLKSDrawer } from './ProductLKSDrawer';
-import { ProductClickableItem } from "./ProductClickableItem";
-import { ContainerTabModel } from "./models";
+import { ProductClickableItem } from './ProductClickableItem';
+import { ContainerTabModel } from './models';
 
 const DEFAULT_PROPS = {
     projects: [],
@@ -60,7 +60,9 @@ describe('ProductLKSDrawer', () => {
     });
 
     test('visibleTabs', () => {
-        const wrapper = mount(<ProductLKSDrawer {...DEFAULT_PROPS} tabs={[VISIBLE_TAB_1, VISIBLE_TAB_2, DISABLED_TAB]} />);
+        const wrapper = mount(
+            <ProductLKSDrawer {...DEFAULT_PROPS} tabs={[VISIBLE_TAB_1, VISIBLE_TAB_2, DISABLED_TAB]} />
+        );
         validate(wrapper, 0, 2);
         expect(wrapper.find(ProductClickableItem).at(0).prop('id')).toBe('tab1');
         expect(wrapper.find(ProductClickableItem).at(1).prop('id')).toBe('tab2');

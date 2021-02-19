@@ -22,12 +22,14 @@ import { hasPremiumModule } from '../../app/utils';
 
 import { ServerNotifications } from '../notifications/ServerNotifications';
 import { ServerNotificationsConfig } from '../notifications/model';
+
+import { ProductNavigation } from '../productnavigation/ProductNavigation';
+
 import { ProductMenu } from './ProductMenu';
 import { SearchBox } from './SearchBox';
 import { UserMenu, UserMenuProps } from './UserMenu';
 import { MenuSectionConfig } from './ProductMenuSection';
 import { ProductMenuModel } from './model';
-import { ProductNavigation } from '../productnavigation/ProductNavigation';
 
 interface NavigationBarProps {
     brand?: ReactNode;

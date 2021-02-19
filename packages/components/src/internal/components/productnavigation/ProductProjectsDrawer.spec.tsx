@@ -1,11 +1,11 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, Container } from "../../..";
+import { Alert, Container } from '../../..';
 
-import { ProductModel } from "./models";
+import { ProductModel } from './models';
 import { ProductProjectsDrawer } from './ProductProjectsDrawer';
-import { ProductClickableItem } from "./ProductClickableItem";
+import { ProductClickableItem } from './ProductClickableItem';
 
 const DEFAULT_PROPS = {
     product: new ProductModel({ productId: 'a', productName: 'A' }),
@@ -47,7 +47,9 @@ describe('ProductProjectsDrawer', () => {
         validate(wrapper, 0, true);
         expect(wrapper.find(Alert).text()).toBe('No available A projects on this server.');
         expect(wrapper.find('.start-project')).toHaveLength(1);
-        expect(wrapper.find('.start-project').prop('href')).toBe('/labkey/admin/createFolder.view?folderType=A&returnUrl=%2F');
+        expect(wrapper.find('.start-project').prop('href')).toBe(
+            '/labkey/admin/createFolder.view?folderType=A&returnUrl=%2F'
+        );
         expect(wrapper.find('.start-project').text()).toBe('Start a A project');
         expect(wrapper.find('.learn-more').text()).toBe('Learn more about A');
         wrapper.unmount();

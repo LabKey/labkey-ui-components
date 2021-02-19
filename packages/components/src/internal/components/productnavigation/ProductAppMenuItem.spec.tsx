@@ -28,7 +28,7 @@ describe('ProductAppMenuItem', () => {
     });
 
     test('iconUrlAlt', () => {
-        const wrapper = mount(<ProductAppMenuItem {...DEFAULT_PROPS} iconUrlAlt={'icon-url-alt-test'} />);
+        const wrapper = mount(<ProductAppMenuItem {...DEFAULT_PROPS} iconUrlAlt="icon-url-alt-test" />);
         validate(wrapper);
         expect(wrapper.find('img').first().prop('src')).toBe('icon-url-test');
         expect(wrapper.find('img').last().prop('src')).toBe('icon-url-alt-test');

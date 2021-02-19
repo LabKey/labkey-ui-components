@@ -35,7 +35,9 @@ export const ProductAppsDrawer: FC<ProductAppsDrawerProps> = memo(props => {
                     <ProductAppMenuItem
                         key={product.productId}
                         iconUrl={PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()]?.iconUrl ?? DEFAULT_ICON_URL}
-                        iconUrlAlt={PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()]?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL}
+                        iconUrlAlt={
+                            PRODUCT_ID_IMG_SRC_MAP[product.productId.toLowerCase()]?.iconUrlAlt ?? DEFAULT_ICON_ALT_URL
+                        }
                         title={product.productName}
                         subtitle={getProductSubtitle(productProjectMap[product.productId])}
                         onClick={() => onClick(product.productId)}

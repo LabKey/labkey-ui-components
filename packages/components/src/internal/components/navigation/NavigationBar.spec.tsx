@@ -24,15 +24,14 @@ import { ServerNotifications } from '../notifications/ServerNotifications';
 import { markAllNotificationsRead } from '../../../test/data/notificationData';
 import { ServerNotificationModel } from '../notifications/model';
 
+import { ProductNavigation } from '../productnavigation/ProductNavigation';
+
 import { MenuSectionModel, ProductMenuModel } from './model';
 
 import { NavigationBar } from './NavigationBar';
-import { UserMenu } from "./UserMenu";
-import { ProductMenu } from "./ProductMenu";
-import { SearchBox } from "./SearchBox";
-import { ProductNavigation } from "../productnavigation/ProductNavigation";
-import moment from "moment";
-
+import { UserMenu } from './UserMenu';
+import { ProductMenu } from './ProductMenu';
+import { SearchBox } from './SearchBox';
 
 beforeEach(() => {
     LABKEY.devMode = false;
@@ -102,18 +101,14 @@ describe('<NavigationBar/>', () => {
 
     test('show ProductNavigation for devMode', () => {
         LABKEY.devMode = true;
-        const component = mount(
-            <NavigationBar model={null} />
-        );
+        const component = mount(<NavigationBar model={null} />);
         validate(component, { ProductNavigation: 1 });
         component.unmount();
     });
 
     test('show ProductNavigation for hasPremiumModule', () => {
         LABKEY.moduleContext = { samplemanagement: { hasPremiumModule: true } };
-        const component = mount(
-            <NavigationBar model={null} />
-        );
+        const component = mount(<NavigationBar model={null} />);
         validate(component, { ProductNavigation: 1 });
         component.unmount();
     });

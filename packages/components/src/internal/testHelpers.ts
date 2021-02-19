@@ -32,7 +32,7 @@ export function initMockServerContext(context: Partial<LabKey>): void {
 export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void => {
     initMockServerContext({
         container: {
-            id: "testContainerEntityId",
+            id: 'testContainerEntityId',
             title: 'Test Container',
             path: 'testContainer',
             formats: {

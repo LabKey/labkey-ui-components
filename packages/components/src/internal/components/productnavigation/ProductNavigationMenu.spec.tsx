@@ -1,16 +1,21 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, Container, LoadingSpinner } from "../../..";
-import { LKS_PRODUCT_ID } from "../../app/constants";
+import { Alert, Container, LoadingSpinner } from '../../..';
+import { LKS_PRODUCT_ID } from '../../app/constants';
 
-import { getSelectedProject, getSelectedProduct, getProductProjectsMap, ProductNavigationMenuImpl } from './ProductNavigationMenu';
-import { ProductNavigationHeader } from "./ProductNavigationHeader";
-import { ProductAppsDrawer } from "./ProductAppsDrawer";
-import { ProductSectionsDrawer } from "./ProductSectionsDrawer";
-import { ProductProjectsDrawer } from "./ProductProjectsDrawer";
-import { ProductLKSDrawer } from "./ProductLKSDrawer";
-import { ProductModel } from "./models";
+import {
+    getSelectedProject,
+    getSelectedProduct,
+    getProductProjectsMap,
+    ProductNavigationMenuImpl,
+} from './ProductNavigationMenu';
+import { ProductNavigationHeader } from './ProductNavigationHeader';
+import { ProductAppsDrawer } from './ProductAppsDrawer';
+import { ProductSectionsDrawer } from './ProductSectionsDrawer';
+import { ProductProjectsDrawer } from './ProductProjectsDrawer';
+import { ProductLKSDrawer } from './ProductLKSDrawer';
+import { ProductModel } from './models';
 
 const TEST_PRODUCTS = [
     new ProductModel({ productId: 'a', productName: 'A', moduleName: 'modA' }),
@@ -51,7 +56,7 @@ describe('ProductNavigationMenu', () => {
     }
 
     test('error', () => {
-        const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} error={'Test error'} />);
+        const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} error="Test error" />);
         validate(wrapper, false);
         expect(wrapper.find(Alert).text()).toBe('Test error');
         wrapper.unmount();
@@ -75,11 +80,7 @@ describe('ProductNavigationMenu', () => {
     });
 
     test('ProductNavigationHeader props', () => {
-        const wrapper = mount(
-            <ProductNavigationMenuImpl
-                {...DEFAULT_PROPS}
-                selectedProductId={'a'}
-            />);
+        const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="a" />);
         validate(wrapper, true, true, { ProductProjectsDrawer: 1 });
         expect(wrapper.find(ProductNavigationHeader).prop('title')).toBe('A');
         expect(wrapper.find(ProductNavigationHeader).prop('productId')).toBe('a');
@@ -87,21 +88,13 @@ describe('ProductNavigationMenu', () => {
     });
 
     test('showProductDrawer', () => {
-        const wrapper = mount(
-            <ProductNavigationMenuImpl
-                {...DEFAULT_PROPS}
-                selectedProductId={undefined}
-            />);
+        const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={undefined} />);
         validate(wrapper, true, true, { ProductAppsDrawer: 1 });
         wrapper.unmount();
     });
 
     test('showLKSDrawer', () => {
-        const wrapper = mount(
-            <ProductNavigationMenuImpl
-                {...DEFAULT_PROPS}
-                selectedProductId={LKS_PRODUCT_ID}
-            />);
+        const wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={LKS_PRODUCT_ID} />);
         validate(wrapper, true, false, { ProductLKSDrawer: 1 });
         wrapper.unmount();
     });
@@ -110,9 +103,10 @@ describe('ProductNavigationMenu', () => {
         const wrapper = mount(
             <ProductNavigationMenuImpl
                 {...DEFAULT_PROPS}
-                selectedProductId={'b'}
+                selectedProductId="b"
                 selectedProject={TEST_PRODUCT_PROJECT_MAP['b'][0]}
-            />);
+            />
+        );
         validate(wrapper, true, false, { ProductSectionsDrawer: 1 });
         expect(wrapper.find(ProductNavigationHeader).prop('title')).toBe('P1');
         wrapper.unmount();
@@ -120,11 +114,8 @@ describe('ProductNavigationMenu', () => {
 
     test('product with multiple projects, none selected', () => {
         const wrapper = mount(
-            <ProductNavigationMenuImpl
-                {...DEFAULT_PROPS}
-                selectedProductId={'c'}
-                selectedProject={undefined}
-            />);
+            <ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="c" selectedProject={undefined} />
+        );
         validate(wrapper, true, false, { ProductProjectsDrawer: 1 });
         expect(wrapper.find(ProductNavigationHeader).prop('title')).toBe('C');
         wrapper.unmount();
@@ -134,9 +125,10 @@ describe('ProductNavigationMenu', () => {
         const wrapper = mount(
             <ProductNavigationMenuImpl
                 {...DEFAULT_PROPS}
-                selectedProductId={'c'}
+                selectedProductId="c"
                 selectedProject={TEST_PRODUCT_PROJECT_MAP['c'][1]}
-            />);
+            />
+        );
         validate(wrapper, true, false, { ProductSectionsDrawer: 1 });
         expect(wrapper.find(ProductNavigationHeader).prop('title')).toBe('P3');
         wrapper.unmount();
@@ -148,7 +140,7 @@ describe('ProductNavigationMenu', () => {
         expect(wrapper.find('.product-navigation-footer').text()).toBe('More LabKey Solutions');
         wrapper.unmount();
 
-        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId={'a'} />);
+        wrapper = mount(<ProductNavigationMenuImpl {...DEFAULT_PROPS} selectedProductId="a" />);
         expect(wrapper.find('.product-navigation-footer')).toHaveLength(0);
         wrapper.unmount();
     });

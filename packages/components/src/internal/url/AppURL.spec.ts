@@ -173,7 +173,8 @@ describe('createProductUrl', () => {
     });
 
     test('containerPath', () => {
-        expect(createProductUrl('urlProduct', undefined, '#/destination?rowId=123', '/test/container/path'))
-            .toBe('/labkey/urlproduct/test/container/path/app.view#/destination?rowId=123');
+        expect(createProductUrl('urlProduct', undefined, '#/destination?rowId=123', '/test/container/path')).toBe(
+            '/labkey/urlproduct/test/container/path/app.view#/destination?rowId=123'
+        );
     });
 });

@@ -1,8 +1,9 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { LKS_PRODUCT_ID } from '../../app/constants';
+
 import { ProductNavigationHeader } from './ProductNavigationHeader';
-import { LKS_PRODUCT_ID } from "../../app/constants";
 
 const DEFAULT_PROPS = {
     productId: undefined,
@@ -28,7 +29,7 @@ describe('ProductNavigationHeader', () => {
     });
 
     test('title', () => {
-        const wrapper = mount(<ProductNavigationHeader {...DEFAULT_PROPS} title={'Test title'} />);
+        const wrapper = mount(<ProductNavigationHeader {...DEFAULT_PROPS} title="Test title" />);
         validate(wrapper);
         expect(wrapper.find('.header-title').text()).toBe('Test title');
         wrapper.unmount();
@@ -42,7 +43,7 @@ describe('ProductNavigationHeader', () => {
     });
 
     test('productId other', () => {
-        const wrapper = mount(<ProductNavigationHeader {...DEFAULT_PROPS} productId={'other'} />);
+        const wrapper = mount(<ProductNavigationHeader {...DEFAULT_PROPS} productId="other" />);
         validate(wrapper, true);
         expect(wrapper.find('.header-title').text()).toBe('Applications');
         wrapper.unmount();

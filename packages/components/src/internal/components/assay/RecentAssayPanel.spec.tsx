@@ -21,8 +21,13 @@ describe('<RecentAssayPanel/>', () => {
     });
 
     test('author all assays', () => {
+        // Arrange
+        const assayFilter = def => def.type?.toLowerCase() === 'general';
+
+        // Act
         const wrapper = mount(
             <RecentAssayPanelImpl
+                assayFilter={assayFilter}
                 assayDefinition={undefined}
                 assayModel={assayModel}
                 assayProtocol={undefined}
@@ -31,6 +36,7 @@ describe('<RecentAssayPanel/>', () => {
             />
         );
 
+        // Assert
         // Ensure all assay items appear in drop down
         const assayMenuItems = wrapper.find('MenuItem a');
         expect(assayMenuItems.length).toEqual(generalAssays.length + 1);
@@ -43,6 +49,7 @@ describe('<RecentAssayPanel/>', () => {
     });
 
     test('reader all assays', () => {
+        // Act
         const wrapper = mount(
             <RecentAssayPanelImpl
                 assayDefinition={undefined}
@@ -53,9 +60,10 @@ describe('<RecentAssayPanel/>', () => {
             />
         );
 
+        // Assert
         // Ensure all assay items appear in drop down
         const assayMenuItems = wrapper.find('MenuItem a');
-        expect(assayMenuItems.length).toEqual(generalAssays.length + 1);
+        expect(assayMenuItems.length).toEqual(assayModel.definitions.length + 1);
 
         // select an assay
         assayMenuItems.at(1).simulate('click');
@@ -65,6 +73,7 @@ describe('<RecentAssayPanel/>', () => {
     });
 
     test('empty assays', () => {
+        // Act
         const wrapper = mount(
             <RecentAssayPanelImpl
                 assayDefinition={undefined}
@@ -75,6 +84,7 @@ describe('<RecentAssayPanel/>', () => {
             />
         );
 
+        // Assert
         // Dropdown does not appear
         expect(wrapper.find('MenuItem').exists()).toEqual(false);
 

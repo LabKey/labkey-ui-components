@@ -4,6 +4,7 @@ import { Filter } from '@labkey/api';
 
 import {
     AppURL,
+    AssayDefinitionModel,
     GridPanelWithModel,
     isLoading,
     LoadingSpinner,
@@ -21,20 +22,19 @@ import { InjectedAssayModel, withAssayModels } from './withAssayModels';
 const ALL_ASSAYS_LABEL = 'All Assays';
 
 interface Props {
+    // TODO: Add assayFilter in SM
+    assayFilter?: (assayDefinition: AssayDefinitionModel) => boolean;
     user: User;
 }
 
 // Exported for jest testing
 export const RecentAssayPanelImpl: FC<Props & InjectedAssayModel> = props => {
-    const { assayModel, user } = props;
+    const { assayFilter, assayModel, user } = props;
     const [selectedAssayId, setSelectedAssayId] = useState<number>(undefined);
 
     const assayItems = useMemo(() => {
-        // TODO: Make filter a prop
-        return assayModel.definitions
-            .filter(def => def.type?.toLowerCase() === 'general')
-            .sort(naturalSortByProperty('name'));
-    }, [assayModel.definitions]);
+        return assayModel.definitions.filter(assayFilter).sort(naturalSortByProperty('name'));
+    }, [assayFilter, assayModel.definitions]);
 
     const selectedItem = useMemo(() => {
         return assayItems.find(item => item.id === selectedAssayId);
@@ -72,7 +72,6 @@ export const RecentAssayPanelImpl: FC<Props & InjectedAssayModel> = props => {
         };
     }, [selectedItem]);
 
-    // TODO: Port any styling from SM
     return (
         <Section title="Recent Assay Data" titleSize="medium">
             {!isLoaded && <LoadingSpinner />}
@@ -80,7 +79,7 @@ export const RecentAssayPanelImpl: FC<Props & InjectedAssayModel> = props => {
             {isLoaded && hasItems && (
                 <>
                     <DropdownButton
-                        className="sm-dashboard-button-spacer"
+                        className="button-right-spacing"
                         id="recent-assays-dropdown"
                         title={selectedItem ? selectedItem.name : ALL_ASSAYS_LABEL}
                     >
@@ -121,6 +120,10 @@ export const RecentAssayPanelImpl: FC<Props & InjectedAssayModel> = props => {
             )}
         </Section>
     );
+};
+
+RecentAssayPanelImpl.defaultProps = {
+    assayFilter: () => true,
 };
 
 export const RecentAssayPanel = withAssayModels(RecentAssayPanelImpl);

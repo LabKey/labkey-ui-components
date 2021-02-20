@@ -321,6 +321,8 @@ import {
     GENERAL_ASSAY_PROVIDER_NAME,
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
+import { BarChartViewer } from './internal/components/chart/BarChartViewer';
+import { CHART_GROUPS } from './internal/components/chart/configs';
 import { processChartData } from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
 import { invalidateLineageResults, getImmediateChildLineageFilterValue } from './internal/components/lineage/actions';
@@ -713,6 +715,8 @@ export {
     monthSort,
     // report / chart related items
     BaseBarChart,
+    BarChartViewer,
+    CHART_GROUPS,
     processChartData,
     DataViewInfoTypes,
     IDataViewInfo,

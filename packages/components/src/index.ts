@@ -295,9 +295,11 @@ import { AssayDesignDeleteConfirmModal } from './internal/components/assay/Assay
 import { AssayDesignDeleteModal } from './internal/components/assay/AssayDesignDeleteModal';
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
+import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import { AssaysHeatMap } from './internal/components/assay/AssaysHeatMap';
 import { AssaySubNavMenu } from './internal/components/assay/AssaySubNavMenu';
 import { AssayTypeSummary } from './internal/components/assay/AssayTypeSummary';
+import { RecentAssayPanel } from './internal/components/assay/RecentAssayPanel';
 import { AssayPicker, AssayPickerTabs, AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
@@ -666,6 +668,7 @@ export {
     AssayUploadResultModel,
     AssayDesignDeleteModal,
     AssayDesignDeleteConfirmModal,
+    AssayDesignEmptyAlert,
     AssayResultDeleteModal,
     AssayRunDeleteModal,
     AssaysHeatMap,
@@ -677,6 +680,7 @@ export {
     AssayPickerTabs,
     AssayPickerSelectionModel,
     assayPage,
+    RecentAssayPanel,
     withAssayModels,
     withAssayModelsFromLocation,
     InjectedAssayModel,

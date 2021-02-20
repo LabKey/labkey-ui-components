@@ -5,7 +5,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * @labkey/components package bundle optimizations
     - webpack.config.js: add back in new IgnorePlugin(/^\.\/locale$/, /moment$/)
-    - webpack.config.js: remove "enzyme" realted objects from bundle via "externals"
     - split initUnitTestMocks() into a separate testHelperMocks.tsx file so it isn't referenced via ./src/index.ts
 
 ### version 2.2.0

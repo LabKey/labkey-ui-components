@@ -91,5 +91,5 @@ module.exports = {
         new IgnorePlugin(/^\.\/locale$/, /moment$/),
         // new BundleAnalyzerPlugin()
     ],
-    externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery', 'enzyme']
+    externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery']
 };

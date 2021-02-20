@@ -1,6 +1,6 @@
 import { Ajax, Utils, ActionURL } from '@labkey/api';
 
-import { buildURL } from '../../..';
+import { buildURL } from '../../url/AppURL';
 
 export function signOut(navigateUrl?: string): void {
     const startUrl = buildURL('project', 'start', undefined, { returnUrl: false });

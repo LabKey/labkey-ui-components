@@ -17,7 +17,18 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, number, text, withKnobs } from '@storybook/addon-knobs';
 
-import { getStateQueryGridModel, gridInit, getQueryGridModel, LoadingSpinner, QueryGridModel, SchemaQuery } from '..';
+import {
+    ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    getQueryGridModel,
+    getStateQueryGridModel,
+    gridInit,
+    LoadingSpinner,
+    POOLED_SAMPLE_CREATION,
+    QueryGridModel,
+    SchemaQuery
+} from '..';
 import { QueryInfoForm } from '../internal/components/forms/QueryInfoForm';
 import * as constants from '../test/data/constants';
 
@@ -299,4 +310,37 @@ storiesOf('QueryInfoForm', module)
                 schemaQuery={schemaQuery}
             />
         );
-    });
+    })
+    .add("sample creation types", () => {
+        const modelId = 'customizableForm';
+        const schemaQuery = new SchemaQuery({
+            schemaName: 'exp.data',
+            queryName: 'mixtures',
+        });
+        const model = getStateQueryGridModel(modelId, schemaQuery, {
+            editable: true,
+            loader: {
+                fetch: () => {
+                    return new Promise(resolve => {
+                        resolve({
+                            data: constants.GRID_DATA,
+                            dataIds: constants.GRID_DATA.keySeq().toList(),
+                        });
+                    });
+                },
+            },
+        });
+        gridInit(model, true);
+        return (
+            <QueryInfoForm
+                checkRequiredFields={false}
+                includeCountField={boolean('Include count field?', true)}
+                maxCount={number('Max count', 100)}
+                queryInfo={model.queryInfo}
+                onSubmit={formSubmit}
+                schemaQuery={schemaQuery}
+                creationTypeOptions={[CHILD_SAMPLE_CREATION, DERIVATIVE_CREATION, ALIQUOT_CREATION, POOLED_SAMPLE_CREATION]}
+            />
+        );
+    })
+;

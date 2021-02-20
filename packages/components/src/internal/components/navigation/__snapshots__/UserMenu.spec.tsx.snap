@@ -67,20 +67,6 @@ exports[`UserMenu user logged in dev mode 1`] = `
       </a>
     </li>
     <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="/labkey/project/begin.view"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-      >
-        Switch to LabKey
-      </a>
-    </li>
-    <li
       className="divider"
       role="separator"
     />
@@ -192,20 +178,6 @@ exports[`UserMenu user logged in extra dev mode items 1`] = `
         target="_blank"
       >
         Documentation
-      </a>
-    </li>
-    <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="/labkey/project/begin.view"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-      >
-        Switch to LabKey
       </a>
     </li>
     <div
@@ -340,20 +312,6 @@ exports[`UserMenu user logged in extra items 1`] = `
         Documentation
       </a>
     </li>
-    <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="/labkey/project/begin.view"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-      >
-        Switch to LabKey
-      </a>
-    </li>
     <div
       onKeyDown={[Function]}
       onSelect={[Function]}
@@ -481,148 +439,6 @@ exports[`UserMenu user logged in, but not in dev mode 1`] = `
       </a>
     </li>
     <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="/labkey/project/begin.view"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-      >
-        Switch to LabKey
-      </a>
-    </li>
-    <li
-      className="divider"
-      onKeyDown={[Function]}
-      role="separator"
-    />
-    <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="#"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-      >
-        Sign Out
-      </a>
-    </li>
-  </ul>
-</div>
-`;
-
-exports[`UserMenu user logged in, without switch to labkey 1`] = `
-<div
-  className="dropdown btn-group"
->
-  <a
-    aria-expanded={false}
-    aria-haspopup={true}
-    className="dropdown-toggle"
-    href="#"
-    id="user-menu-dropdown"
-    onClick={[Function]}
-    onKeyDown={[Function]}
-    role="button"
-  >
-    <img
-      alt="User Avatar"
-      className="img-rounded"
-      height={32}
-      src="/labkey/_images/defaultavatar.png"
-      width={32}
-    />
-     
-    <span
-      className="caret"
-    />
-  </a>
-  <ul
-    aria-labelledby="user-menu-dropdown"
-    className="pull-right dropdown-menu"
-    role="menu"
-  >
-    <div
-      className="navbar-connector"
-      onKeyDown={[Function]}
-      onSelect={[Function]}
-    />
-    <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="profile/link/here"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-        target="_self"
-      >
-        Profile
-      </a>
-    </li>
-    <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="http://show/me/the/docs"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-        target="_blank"
-      >
-        Documentation
-      </a>
-    </li>
-    <li
-      className="divider"
-      role="separator"
-    />
-    <li
-      className="dropdown-header"
-      role="heading"
-    >
-      Dev Tools
-    </li>
-    <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="#"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-      >
-        Enable
-         Redux Tools
-      </a>
-    </li>
-    <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="/labkey/project/begin.view"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-      >
-        Switch to LabKey
-      </a>
-    </li>
-    <li
       className="divider"
       onKeyDown={[Function]}
       role="separator"
@@ -694,20 +510,6 @@ exports[`UserMenu user not logged in 1`] = `
         target="_blank"
       >
         Documentation
-      </a>
-    </li>
-    <li
-      className=""
-      role="presentation"
-    >
-      <a
-        href="/labkey/project/begin.view"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        role="menuitem"
-        tabIndex="-1"
-      >
-        Switch to LabKey
       </a>
     </li>
     <li

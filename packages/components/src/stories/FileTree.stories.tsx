@@ -9,8 +9,6 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import { FileTree } from '..';
 import { fetchFileTestTree } from '../internal/components/files/FileTreeTest';
 
-import './FileTree.scss';
-
 export default {
     title: 'Components/FileTree',
     component: FileTree,

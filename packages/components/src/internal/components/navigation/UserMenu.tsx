@@ -17,7 +17,7 @@
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 import { Dropdown, Image, MenuItem } from 'react-bootstrap';
 
-import { User, devToolsActive, toggleDevTools, buildURL } from '../../..';
+import { User, devToolsActive, toggleDevTools } from '../../..';
 
 import { ProductMenuModel } from './model';
 import { signOut, signIn } from './actions';
@@ -28,23 +28,13 @@ export interface UserMenuProps {
     model: ProductMenuModel;
     onSignIn?: () => void;
     onSignOut?: (signOutUrl: string) => void;
-    showSwitchToLabKey?: boolean;
     signOutUrl?: string;
     user?: User;
 }
 
 export const UserMenu: FC<UserMenuProps> = props => {
-    const { extraDevItems, extraUserItems, model, onSignIn, onSignOut, user, showSwitchToLabKey, signOutUrl } = props;
+    const { extraDevItems, extraUserItems, model, onSignIn, onSignOut, user, signOutUrl } = props;
     const menuSection = useMemo(() => model.getSection('user'), [model]);
-
-    const switchToLabKeyItem = useMemo(() => {
-        const beginUrl = buildURL('project', 'begin', undefined, { returnUrl: false });
-        return (
-            <MenuItem key="projectBegin" href={beginUrl}>
-                Switch to LabKey
-            </MenuItem>
-        );
-    }, []);
 
     const menuItems = useMemo(() => {
         return menuSection?.items
@@ -84,7 +74,6 @@ export const UserMenu: FC<UserMenuProps> = props => {
             <Dropdown.Menu className="pull-right" pullRight>
                 <div className="navbar-connector" />
                 {menuItems}
-                {showSwitchToLabKey && switchToLabKeyItem}
                 {extraUserItems}
                 {LABKEY.devMode && (
                     <>
@@ -93,7 +82,6 @@ export const UserMenu: FC<UserMenuProps> = props => {
                         <MenuItem onClick={toggleDevTools}>
                             {devToolsActive() ? 'Disable' : 'Enable'} Redux Tools
                         </MenuItem>
-                        {!showSwitchToLabKey && switchToLabKeyItem}
                         {extraDevItems}
                     </>
                 )}

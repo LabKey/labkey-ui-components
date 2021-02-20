@@ -107,6 +107,12 @@ import serverNotifications from '../test/data/notification-getUserNotificationsF
 import pipelineJobQueryDetails from '../test/data/pipelineJob-getQueryDetails.json';
 import pipelineJobQuery from '../test/data/pipelineJob-getQuery.json';
 import pipelineStatusDetails from '../test/data/pipelineStatusDetails.json';
+import getModulesInfo from '../test/data/admin-getModules.json';
+import getRegisteredProductsInfo from '../test/data/product-getRegisteredProducts.json';
+import getProjectContainersInfo from '../test/data/project-getProjectContainers.json';
+import getLKSMMenuSectionsInfo from '../test/data/product-getMenuSections-lksm.json';
+import getLKBMenuSectionsInfo from '../test/data/product-getMenuSections-lkb.json';
+import getFolderTabsInfo from '../test/data/admin-getFolderTabs.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -356,6 +362,25 @@ export function initMocks() {
     mock.get(/.*browseData.*/, delay(jsonResponse(browseData), 1000));
 
     mock.get(/.*getUserNotification.*/, jsonResponse(serverNotifications));
+
+    mock.post(/.*getModules.*/, jsonResponse(getModulesInfo));
+
+    mock.post(/.*getRegisteredProducts.*/, delay(jsonResponse(getRegisteredProductsInfo), 1000));
+
+    mock.post(/.*getFolderTabs.*/, jsonResponse(getFolderTabsInfo));
+
+    mock.get(/.*menuSections.*/, (req, res) => {
+        const queryParams = req.url().query;
+
+        let responseBody = getLKSMMenuSectionsInfo;
+        if (queryParams.currentProductId === 'Biologics') {
+            responseBody = getLKBMenuSectionsInfo;
+        }
+
+        return jsonResponse(responseBody, res);
+    });
+
+    mock.get(/.*getContainers.*/, jsonResponse(getProjectContainersInfo));
 
     mock.use(proxy);
 }

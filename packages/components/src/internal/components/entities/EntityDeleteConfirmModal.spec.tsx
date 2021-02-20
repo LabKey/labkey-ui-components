@@ -17,7 +17,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import mock, { proxy } from 'xhr-mock';
 
-import { ConfirmModal } from '../../..';
+import { ConfirmModal, initNotificationsState } from '../../..';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
@@ -25,6 +25,8 @@ import { SampleTypeDataType } from './constants';
 import { sleep } from '../../testHelpers';
 
 beforeAll(() => {
+    initNotificationsState();
+
     mock.setup();
     mock.post(/.*\/experiment\/?.*\/getMaterialDeleteConfirmationData.*/, (req, res) => {
         return res.status(200)

@@ -1,5 +1,6 @@
-import {initUnitTestMocks, sleep} from "../../testHelpers";
 import React from "react";
+import {sleep} from "../../testHelpers";
+import {initUnitTestMocks} from '../../testHelperMocks';
 import {PipelineStatusDetailPage} from "./PipelineStatusDetailPage";
 import {initNotificationsState} from "../../..";
 import renderer from "react-test-renderer";

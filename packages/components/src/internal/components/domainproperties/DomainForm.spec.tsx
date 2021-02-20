@@ -20,7 +20,8 @@ import { FileAttachmentForm } from '../../..';
 
 import { ActionButton } from '../buttons/ActionButton';
 
-import { initUnitTestMocks, sleep } from '../../testHelpers';
+import { sleep } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { DomainDesign } from './models';
 import DomainForm, { DomainFormImpl } from './DomainForm';

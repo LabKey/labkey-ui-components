@@ -8,7 +8,7 @@ import DomainForm from '../DomainForm';
 import { Alert } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { initUnitTestMocks } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { IssuesListDefPropertiesPanel } from './IssuesListDefPropertiesPanel';
 import { IssuesListDefDesignerPanels } from './IssuesListDefDesignerPanels';

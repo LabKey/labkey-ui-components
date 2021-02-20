@@ -5,6 +5,8 @@
  */
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const IgnorePlugin = require('webpack').IgnorePlugin;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: './src/index.ts',
@@ -85,7 +87,9 @@ module.exports = {
                     to: 'assets/scss/theme'
                 }
             ]
-        })
+        }),
+        new IgnorePlugin(/^\.\/locale$/, /moment$/),
+        // new BundleAnalyzerPlugin()
     ],
-    externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery']
+    externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery', 'enzyme']
 };

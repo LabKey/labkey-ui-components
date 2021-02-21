@@ -2459,6 +2459,33 @@ function beginPaste(model: EditorModel, numRows: number): EditorModel {
     });
 }
 
+export function addRowsPerPivotValue(model: QueryGridModel, numPerParent: number, pivotKey: string, pivotValues: Array<string>, rowData: Map<string, any>): EditorModel {
+    let editorModel = getEditorModel(model.getId());
+    let data = model.data;
+    let dataIds = model.dataIds;
+    if (numPerParent > 0) {
+        pivotValues.forEach((value) => {
+            rowData = rowData.set(pivotKey, value);
+            editorModel = updateEditorData(model, rowData.toList(), numPerParent, dataIds.size);
+            for (let i = 0; i < numPerParent; i++) {
+                // ensure we don't step on another ID
+                const id = GRID_EDIT_INDEX + ID_COUNTER++;
+
+                data = data.set(id, rowData || EMPTY_ROW);
+                dataIds = dataIds.push(id);
+            }
+        });
+    }
+
+    updateQueryGridModel(model, {
+        data,
+        dataIds,
+        isError: false,
+        message: undefined,
+    });
+    return editorModel;
+}
+
 export function addRows(model: QueryGridModel, count?: number, rowData?: Map<string, any>): EditorModel {
     let editorModel = getEditorModel(model.getId());
     if (count > 0) {

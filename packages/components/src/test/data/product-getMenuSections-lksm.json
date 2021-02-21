@@ -1,0 +1,145 @@
+[ {
+  "url" : "/labkey/Sample%20Manager/experiment-listDataClass.view?",
+  "key" : "sources",
+  "label" : "Source Types",
+  "productId" : "SampleManager",
+  "items" : [ ],
+  "totalCount" : 3,
+  "itemLimit" : 0,
+  "sectionKey" : "sources"
+}, {
+  "url" : "/labkey/Sample%20Manager/experiment-listSampleTypes.view?",
+  "key" : "samples",
+  "label" : "Sample Types",
+  "productId" : "SampleManager",
+  "items" : [ ],
+  "totalCount" : 10,
+  "itemLimit" : 0,
+  "sectionKey" : "samples"
+}, {
+  "url" : "/labkey/Sample%20Manager/assay-begin.view?",
+  "key" : "assays",
+  "label" : "Assays",
+  "productId" : "SampleManager",
+  "items" : [ ],
+  "totalCount" : 12,
+  "itemLimit" : 0,
+  "sectionKey" : "assays"
+}, {
+  "url" : "/labkey/Sample%20Manager/experiment-listDataClass.view?",
+  "key" : "workflow",
+  "label" : "Workflow",
+  "productId" : "SampleManager",
+  "items" : [ {
+    "key" : "?viewAs=grid&tab=mine&mine.sort=DueDate&active.sort=DueDate",
+    "id" : null,
+    "label" : "My Queue",
+    "url" : null,
+    "productId" : "SampleManager",
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  }, {
+    "key" : "?viewAs=heatmap&mine.sort=DueDate&active.sort=DueDate",
+    "id" : null,
+    "label" : "Workflow Heatmap",
+    "url" : null,
+    "productId" : "SampleManager",
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  }, {
+    "key" : "?viewAs=grid&tab=all&mine.sort=DueDate&active.sort=DueDate",
+    "id" : null,
+    "label" : "Workflow List",
+    "url" : null,
+    "productId" : "SampleManager",
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  } ],
+  "totalCount" : 3,
+  "itemLimit" : 3,
+  "sectionKey" : "workflow"
+}, {
+  "key" : "freezers",
+  "label" : "Storage",
+  "url" : null,
+  "productId" : "freezerManager",
+  "items" : [ ],
+  "totalCount" : 14,
+  "itemLimit" : 0,
+  "sectionKey" : "freezers"
+}, {
+  "url" : null,
+  "key" : "user",
+  "label" : "Your Items",
+  "productId" : "SampleManager",
+  "items" : [ {
+    "key" : "administration",
+    "id" : 6,
+    "label" : "Administration",
+    "url" : "#/admin/users",
+    "productId" : "SampleManager",
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  }, {
+    "key" : "pipeline",
+    "id" : 5,
+    "label" : "Background Imports",
+    "url" : "#/pipeline",
+    "productId" : "SampleManager",
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  }, {
+    "key" : "dashboard",
+    "id" : 1,
+    "label" : "Dashboard",
+    "url" : "#/home",
+    "productId" : "SampleManager",
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  }, {
+    "key" : "docs",
+    "id" : 0,
+    "label" : "Help",
+    "url" : "https://www.labkey.org/SampleManagerHelp/project-begin.view?",
+    "productId" : null,
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  }, {
+    "key" : "profile",
+    "id" : 2,
+    "label" : "Profile",
+    "url" : "#/account/profile",
+    "productId" : "SampleManager",
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  }, {
+    "key" : "settings",
+    "id" : 3,
+    "label" : "Settings",
+    "url" : "#/account/settings",
+    "productId" : "SampleManager",
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  }, {
+    "key" : "storageActivity",
+    "id" : 4,
+    "label" : "Storage Activity",
+    "url" : "#/items/activity",
+    "productId" : "freezerManager",
+    "orderNum" : -1,
+    "hasActiveJob" : false,
+    "requiresLogin" : false
+  } ],
+  "totalCount" : 7,
+  "itemLimit" : null,
+  "sectionKey" : "user"
+} ]

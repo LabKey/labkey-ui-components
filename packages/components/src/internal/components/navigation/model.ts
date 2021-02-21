@@ -120,7 +120,7 @@ export class MenuItemModel extends Record({
     }
 
     getUrlString(): string {
-        return typeof this.url === 'string' ? this.url : this.url.toHref();
+        return typeof this.url === 'string' ? this.url : this.url?.toHref();
     }
 }
 
@@ -161,7 +161,7 @@ export class ProductMenuModel extends Record({
     /**
      * Retrieve the product menu sections for this productId
      */
-    getMenuSections(): Promise<List<MenuSectionModel>> {
+    getMenuSections(itemLimit?: number): Promise<List<MenuSectionModel>> {
         return new Promise((resolve, reject) => {
             return Ajax.request({
                 url: buildURL('product', 'menuSections.api'),
@@ -169,6 +169,7 @@ export class ProductMenuModel extends Record({
                     currentProductId: this.currentProductId,
                     userMenuProductId: this.userMenuProductId,
                     productIds: List.isList(this.productIds) ? this.productIds.toArray().join(',') : this.productIds,
+                    itemLimit,
                 }),
                 success: Utils.getCallbackWrapper(response => {
                     let sections = List<MenuSectionModel>();
@@ -180,6 +181,7 @@ export class ProductMenuModel extends Record({
                     resolve(sections);
                 }),
                 failure: Utils.getCallbackWrapper(response => {
+                    console.error(response);
                     reject(response);
                 }),
             });

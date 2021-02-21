@@ -1,6 +1,21 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.2.0
+*Released*: 19 February 2021
+* Item 8335: Add LabKey product navigation icon and menu to NavigationBar.tsx
+    - make the ProductNavigationMenu.tsx component available for use in LKS header.jsp
+    - app/utils.ts addition of hasPremiumModule() helper function
+    - remove UserMenu "Switch to LabKey" option
+    - consolidate styles for Product Navigation menu and Notifications menu (ex. update header text display to match)
+    - add optional containerPath param to createProductUrl() function
+
+### version 2.1.0
+*Released*: 18 February 2021
+* Add SampleCreationTypeModal for choosing aliquots, derivatives, or pooled samples
+* Add RadioGroupInput component for use in (and out of) Formsy forms
+* Separate QueryInfoQuantity component from QueryInfoForm for display of quantity header
+
 ### version 2.0.0
 *Released*: 15 February 2021
 * Fix issue in URLResolver causing next to be called twice

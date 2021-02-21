@@ -171,4 +171,10 @@ describe('createProductUrl', () => {
         url = createProductUrl('urlProduct', 'currentProduct', '#/destination?rowId=123');
         expect(url.toString()).toEqual('/labkey/urlproduct/app.view#/destination?rowId=123');
     });
+
+    test('containerPath', () => {
+        expect(createProductUrl('urlProduct', undefined, '#/destination?rowId=123', '/test/container/path')).toBe(
+            '/labkey/urlproduct/test/container/path/app.view#/destination?rowId=123'
+        );
+    });
 });

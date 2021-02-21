@@ -1,3 +1,6 @@
+import React, { FC } from "react";
+import { mount } from "enzyme";
+
 import { User } from '../..';
 
 import {
@@ -12,6 +15,7 @@ import {
 
 import {
     getMenuSectionConfigs,
+    hasPremiumModule,
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
     userCanDesignLocations,
@@ -190,5 +194,35 @@ describe('utils', () => {
             samplemanagement: {},
         };
         expect(isFreezerManagementEnabled()).toBeTruthy();
+    });
+
+    test('hasPremiumModule', () => {
+        const Component: FC = () => {
+            return <div>{hasPremiumModule() ? 'true' : 'false'}</div>;
+        };
+
+        let wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('false');
+        wrapper.unmount();
+
+        LABKEY.moduleContext = {};
+        wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('false');
+        wrapper.unmount();
+
+        LABKEY.moduleContext = { samplemanagement: {} };
+        wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('false');
+        wrapper.unmount();
+
+        LABKEY.moduleContext = { samplemanagement: { hasPremiumModule: false } };
+        wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('false');
+        wrapper.unmount();
+
+        LABKEY.moduleContext = { samplemanagement: { hasPremiumModule: true } };
+        wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('true');
+        wrapper.unmount();
     });
 });

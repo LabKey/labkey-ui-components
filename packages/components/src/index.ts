@@ -321,8 +321,6 @@ import {
     GENERAL_ASSAY_PROVIDER_NAME,
 } from './internal/components/assay/actions';
 import { BaseBarChart } from './internal/components/chart/BaseBarChart';
-import { BarChartViewer } from './internal/components/chart/BarChartViewer';
-import { CHART_GROUPS } from './internal/components/chart/configs';
 import { processChartData } from './internal/components/chart/utils';
 import { ReportItemModal, ReportList, ReportListItem } from './internal/components/report-list/ReportList';
 import { invalidateLineageResults, getImmediateChildLineageFilterValue } from './internal/components/lineage/actions';
@@ -392,6 +390,8 @@ import {
     WrappedRouteLeaveProps,
 } from './internal/util/RouteLeave';
 import * as App from './internal/app';
+import { BarChartViewer } from './internal/components/chart/BarChartViewer';
+import { CHART_GROUPS } from './internal/components/chart/configs';
 import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';

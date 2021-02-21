@@ -80,6 +80,6 @@ export class BaseBarChart extends React.Component<Props, State> {
     }
 
     render() {
-        return <div id={this.state.plotId} className="dashboard-bar-chart"></div>;
+        return <div className="base-bar-chart" id={this.state.plotId} />;
     }
 }

@@ -5,7 +5,6 @@ import { PermissionTypes } from '@labkey/api';
 
 import {
     Alert,
-    App,
     AppURL,
     AssayDesignEmptyAlert,
     getActionErrorMessage,
@@ -19,7 +18,7 @@ import {
     User,
 } from '../../..';
 
-import { ASSAYS_KEY, SAMPLES_KEY } from '../../app';
+import { ASSAYS_KEY, getDateFormat, SAMPLES_KEY } from '../../app';
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
 import { ChartConfig, ChartSelector } from './types';
@@ -95,7 +94,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
             let url = getAppURL(row);
 
             if (chart.filter !== undefined) {
-                const dt = moment().add(chart.filter, 'days').format(App.getDateFormat().toUpperCase());
+                const dt = moment().add(chart.filter, 'days').format(getDateFormat().toUpperCase());
                 url = url.addParam('query.Created~dategte', dt);
             }
 
@@ -184,7 +183,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
 
         return (
             <Section
-                panelClassName={isLoading || !hasData ? 'dashboard-charts-empty' : undefined}
+                panelClassName={isLoading || !hasData ? 'bar-chart-viewer-empty' : undefined}
                 title="Dashboard Insights"
                 titleSize="medium"
             >

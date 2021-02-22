@@ -22,7 +22,6 @@ import { InjectedAssayModel, withAssayModels } from './withAssayModels';
 const ALL_ASSAYS_LABEL = 'All Assays';
 
 interface Props {
-    // TODO: Add assayFilter in SM
     assayFilter?: (assayDefinition: AssayDefinitionModel) => boolean;
     user: User;
 }

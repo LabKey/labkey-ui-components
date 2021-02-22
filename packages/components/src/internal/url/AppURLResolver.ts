@@ -41,7 +41,7 @@ export class AssayResolver implements AppRouteResolver {
 
     fetch(parts: any[]): Promise<AppURL | boolean> {
         const assayRowIdIndex = 1;
-        const assayRowId: number = parseInt(parts[assayRowIdIndex]);
+        const assayRowId: number = parseInt(parts[assayRowIdIndex], 10);
 
         if (isNaN(assayRowId)) {
             return Promise.resolve(true);
@@ -88,7 +88,7 @@ export class AssayRunResolver implements AppRouteResolver {
     fetch(parts: any[]): Promise<AppURL | boolean> {
         // ["rd", "assayrun", "543", ...]
         const assayRunIdIndex = 2;
-        const assayRunId: number = parseInt(parts[assayRunIdIndex]);
+        const assayRunId: number = parseInt(parts[assayRunIdIndex], 10);
 
         if (isNaN(assayRunId)) {
             return Promise.resolve(true);
@@ -149,7 +149,7 @@ export class ListResolver implements AppRouteResolver {
     fetch(parts: any[]): Promise<AppURL | boolean> {
         // ["q", "lists", "44", ...]
         const listIdIndex = 2;
-        const listIdNum: number = parseInt(parts[listIdIndex]);
+        const listIdNum: number = parseInt(parts[listIdIndex], 10);
 
         if (isNaN(listIdNum)) {
             // skip it
@@ -214,7 +214,7 @@ export class SamplesResolver implements AppRouteResolver {
     fetch(parts: any[]): Promise<AppURL | boolean> {
         // ["rd", "samples", "118", ...]
         const sampleRowIdIndex = 2;
-        const sampleRowId: number = parseInt(parts[sampleRowIdIndex]);
+        const sampleRowId: number = parseInt(parts[sampleRowIdIndex], 10);
 
         if (isNaN(sampleRowId)) {
             // skip it

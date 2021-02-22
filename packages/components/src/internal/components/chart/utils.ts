@@ -2,24 +2,35 @@ import { fromJS } from 'immutable';
 
 import { ISelectRowsResult, naturalSort } from '../../..';
 
+import { ChartData } from './types';
+
 interface ChartDataProps {
-    data: any[];
-    barFillColors: { [key: string]: string };
+    barFillColors: Record<string, string>;
+    data: ChartData[];
 }
 
-export function processChartData(
-    response: ISelectRowsResult,
-    countPath: string[] = ['count', 'value'],
-    namePath: string[] = ['Name', 'value'],
-    colorPath?: string[]
-): ChartDataProps {
+interface ProcessChartOptions {
+    colorPath?: string[];
+    countPath?: string[];
+    idPath?: string[];
+    namePath?: string[];
+}
+
+export function processChartData(response: ISelectRowsResult, options?: ProcessChartOptions): ChartDataProps {
+    const countPath = options?.countPath ?? ['count', 'value'];
+    const colorPath = options?.colorPath;
+    const idPath = options?.idPath ?? ['RowId', 'value'];
+    const namePath = options?.namePath ?? ['Name', 'value'];
+    console.log(countPath, colorPath, idPath, namePath);
+
     const rows = fromJS(response.models[response.key]);
 
     const data = rows
         .filter(row => row.getIn(countPath) > 0)
         .map(row => ({
-            label: row.getIn(namePath),
             count: row.getIn(countPath),
+            id: row.getIn(idPath),
+            label: row.getIn(namePath),
         }))
         .sortBy(row => row.label, naturalSort)
         .toArray();
@@ -27,12 +38,12 @@ export function processChartData(
     let barFillColors;
     if (colorPath) {
         barFillColors = {};
-        rows.map(row => {
+        rows.forEach(row => {
             barFillColors[row.getIn(namePath)] = row.getIn(colorPath);
         });
     }
 
-    return { data, barFillColors } as ChartDataProps;
+    return { barFillColors, data };
 }
 
 interface BarChartPlotConfigProps {
@@ -43,11 +54,11 @@ interface BarChartPlotConfigProps {
     defaultFillColor?: string;
     defaultBorderColor?: string;
     data: any[];
-    barFillColors?: { [key: string]: any };
+    barFillColors?: Record<string, any>;
     onClick?: (evt: any, row: any) => void;
 }
 
-export function getBarChartPlotConfig(props: BarChartPlotConfigProps): { [key: string]: any } {
+export function getBarChartPlotConfig(props: BarChartPlotConfigProps): Record<string, any> {
     const {
         renderTo,
         title,

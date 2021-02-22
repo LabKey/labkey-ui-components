@@ -63,7 +63,7 @@ export const CHART_GROUPS: ChartConfig[] = [
             CHART_SELECTORS.Today,
         ],
         fetchItemCount: fetchItemCount(SCHEMAS.ASSAY_TABLES.ASSAY_LIST, [Filter.create('Type', 'General')]),
-        // TODO: This seems sketchy .. just use redirect
+        // TODO: Use redirect AppURL.create('assays', row.id, 'overview')
         getAppURL: row => AppURL.create(ASSAYS_KEY, 'general', row.label, 'overview'),
         key: ASSAYS_KEY,
         label: 'Assay Run Count by Assay',

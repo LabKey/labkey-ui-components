@@ -1,85 +1,81 @@
-import * as React from 'react';
-import $ from 'jquery';
+import React, { Component } from 'react';
 
 import { debounce, generateId } from '../../..';
 
+import { ChartData } from './types';
 import { getBarChartPlotConfig } from './utils';
 
 interface Props {
-    title: string;
-    data: any[];
-    onClick: (evt: any, row: any) => any;
+    barFillColors?: Record<string, string>;
     chartHeight: number;
-    defaultFillColor?: string;
+    data: ChartData[];
     defaultBorderColor?: string;
-    barFillColors?: { [key: string]: string };
+    defaultFillColor?: string;
+    onClick: (evt: any, row: any) => void;
+    title: string;
 }
 
-interface State {
-    plotId: string;
-}
-
-export class BaseBarChart extends React.Component<Props, State> {
+export class BaseBarChart extends Component<Props> {
     static defaultProps = {
         chartHeight: 350,
         defaultFillColor: '#236fa0',
         defaultBorderColor: '#236fa0',
     };
 
+    plotId: string;
+
     constructor(props: Props) {
         super(props);
 
-        this.state = {
-            plotId: generateId('base-barchart-'),
-        };
+        this.plotId = generateId('base-barchart-');
 
-        this.handleResize = debounce(this.handleResize.bind(this), 75);
+        this.handleResize = debounce(this.handleResize, 75);
     }
 
     componentDidMount(): void {
-        $(window).on('resize', this.handleResize);
-
-        this.renderPlot(this.props);
+        window.addEventListener('resize', this.handleResize);
+        this.renderPlot();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>): void {
-        this.renderPlot(nextProps);
+    componentDidUpdate(): void {
+        this.renderPlot();
     }
 
-    componentWillUnmount() {
-        $(window).off('resize', this.handleResize);
+    componentWillUnmount(): void {
+        window.removeEventListener('resize', this.handleResize);
     }
 
-    getPlotElement() {
-        return $('#' + this.state.plotId);
-    }
+    getPlotElement = (): HTMLElement => {
+        return document.getElementById(this.plotId);
+    };
 
-    handleResize(e) {
-        this.renderPlot(this.props);
-    }
+    handleResize = (): void => {
+        this.renderPlot();
+    };
 
-    getPlotConfig(props: Props): Record<string, any> {
-        const { title, data, onClick, chartHeight, defaultFillColor, defaultBorderColor, barFillColors } = props;
+    getPlotConfig = (): Record<string, any> => {
+        const { title, data, onClick, chartHeight, defaultFillColor, defaultBorderColor, barFillColors } = this.props;
+
         return getBarChartPlotConfig({
-            renderTo: this.state.plotId,
+            renderTo: this.plotId,
             title,
             height: chartHeight,
-            width: this.getPlotElement().width() + 50,
+            width: this.getPlotElement().getBoundingClientRect().width + 50,
             defaultFillColor,
             defaultBorderColor,
             onClick,
             data,
             barFillColors,
         });
-    }
+    };
 
-    renderPlot(props: Props) {
-        this.getPlotElement().html('');
-        const plot = new LABKEY.vis.BarPlot(this.getPlotConfig(props));
+    renderPlot = (): void => {
+        this.getPlotElement().innerHTML = '';
+        const plot = new LABKEY.vis.BarPlot(this.getPlotConfig());
         plot.render();
-    }
+    };
 
     render() {
-        return <div className="base-bar-chart" id={this.state.plotId} />;
+        return <div className="base-bar-chart" id={this.plotId} />;
     }
 }

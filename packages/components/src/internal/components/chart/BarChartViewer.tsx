@@ -21,7 +21,7 @@ import {
 import { ASSAYS_KEY, getDateFormat, SAMPLES_KEY } from '../../app';
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
-import { ChartConfig, ChartSelector } from './types';
+import { ChartConfig, ChartData, ChartSelector } from './types';
 
 interface Props {
     chartConfigs: ChartConfig[];
@@ -84,7 +84,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
         return this.getSelectedChartGroup().charts;
     };
 
-    onBarClick = (evt: any, row: Record<string, any>): void => {
+    onBarClick = (evt: any, row: ChartData): void => {
         const { getAppURL } = this.getSelectedChartGroup();
 
         if (getAppURL) {
@@ -165,18 +165,18 @@ export class BarChartViewer extends PureComponent<Props, State> {
                 );
             }
         } else {
-            const countVar = currentChartOptions.name;
-            const subLabel = currentChartOptions.label;
-            const colorPath = selectedGroup.colorPath;
-            const chartData = processChartData(response, [countVar, 'value'], ['Name', 'value'], colorPath);
+            const { barFillColors, data } = processChartData(response, {
+                colorPath: selectedGroup.colorPath,
+                countPath: [currentChartOptions.name, 'value'],
+            });
 
             body = (
                 <BaseBarChart
-                    title={`${selectedGroup.label} (${subLabel})`}
-                    data={chartData.data}
-                    onClick={this.onBarClick}
+                    barFillColors={barFillColors}
+                    data={data}
                     defaultBorderColor="#555"
-                    barFillColors={chartData.barFillColors}
+                    onClick={this.onBarClick}
+                    title={`${selectedGroup.label} (${currentChartOptions.label})`}
                 />
             );
         }

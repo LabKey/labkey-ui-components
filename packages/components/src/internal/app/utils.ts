@@ -125,10 +125,13 @@ export function isSampleManagerEnabled(): boolean {
     return getServerContext().moduleContext?.samplemanagement !== undefined;
 }
 
+export function isBiologicsEnabled(): boolean {
+    return getServerContext().moduleContext?.biologics !== undefined;
+}
+
 export function hasPremiumModule(): boolean {
     const { moduleContext } = getServerContext();
     return useMemo(() => moduleContext?.samplemanagement?.hasPremiumModule ?? false, [moduleContext]);
-}
 
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();

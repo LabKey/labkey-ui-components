@@ -1,6 +1,58 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.2.0
+*Released*: 19 February 2021
+* Item 8335: Add LabKey product navigation icon and menu to NavigationBar.tsx
+    - make the ProductNavigationMenu.tsx component available for use in LKS header.jsp
+    - app/utils.ts addition of hasPremiumModule() helper function
+    - remove UserMenu "Switch to LabKey" option
+    - consolidate styles for Product Navigation menu and Notifications menu (ex. update header text display to match)
+    - add optional containerPath param to createProductUrl() function
+
+### version 2.1.0
+*Released*: 18 February 2021
+* Add SampleCreationTypeModal for choosing aliquots, derivatives, or pooled samples
+* Add RadioGroupInput component for use in (and out of) Formsy forms
+* Separate QueryInfoQuantity component from QueryInfoForm for display of quantity header
+
+### version 2.0.0
+*Released*: 15 February 2021
+* Fix issue in URLResolver causing next to be called twice
+* Add useRouteLeave hook
+* withRouteLeave now uses the useRouteLeave hook
+* BACKWARDS INCOMPATIBLE - RouteLeaveProps renamed RouteLeaveInjectedProps
+* Add WrappedRouteLeaveProps - you can now customize the message shown when users attempt to navigate away from a dirty page
+* Improved typing for withRouteLeave
+* BACKWARDS INCOMPATIBLE - remove confirmLeaveWhenDirty
+
+### version 1.21.1
+Public API update
+*Released*:
+* Move FileAttachmentForm, WebDav, InferDomainResponse components to public
+* Move FileSizeLimitProps and FileGridPreviewProps to public
+
+### version 1.20.0
+*Released*: 8 February 2021
+* Refactor navigation components to functional components.
+* Add support for `sectionKey` in menu items.
+* Make resolving URLs implementation non-async. Promises were not needed. This affected `makeTestData` in the same way.
+* Rename `handle132Response` to `handleSelectRowsResponse` as a part of moving to non-async.
+
+### version 1.19.0
+*Released*: 3 February 2021
+* Update storybook to v6
+* Package updates for test dependencies
+
+### version 1.18.0
+*Released*: 1 February 2021
+* Addition of AssayDesignDeleteModal, AssaysHeatmap and AssayTypeSummary
+* Updates for app version of AssayPicker
+
+### version 1.17.2
+*Released*: 29 January 2021
+* Fix default grid cell rendered so it displays values that are 0.
+
 ### version 1.17.1
 *Released*: 27 January 2021
 * Issue 42342: Formatting issues with notifications drawer
@@ -9,7 +61,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 1.17.0
 *Released*: 26 January 2021
-* wire up query grid reset on appModel 
+* wire up query grid reset on appModel
     - add needsInvalidateQueryGrid field to AppModel
     - add methods for invalidate grids in AppReducers
     - register resetQueryGridListeners in initWebSocketListeners
@@ -18,7 +70,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * move spinner to be before menu labels for ProductMenuSection
 * show ActionLinkUrl for success and error notifications
 * use bootstrap badge for notification count display
- 
+
 ### version 1.16.2
 *Released*: 26 January 2021
 * Issue 42216: Fix for logout event notification issue with different user sessions (i.e. different browsers)

@@ -31,7 +31,7 @@ describe('ProductMenuSection render', () => {
         {
             id: 2,
             label: 'Sample Set 2',
-            hasActiveJob: true
+            hasActiveJob: true,
         },
         {
             id: 3,
@@ -91,24 +91,20 @@ describe('ProductMenuSection render', () => {
     });
 
     test('empty section with empty text and create link', () => {
+        const config = new MenuSectionConfig({
+            emptyText: 'Test empty text',
+            emptyURL: AppURL.create('sample', 'new'),
+            emptyURLText: 'Test empty link',
+            iconURL: '/testProduct/images/samples.svg',
+        });
         const section = MenuSectionModel.create({
             label: 'Sample Sets',
             items: List<MenuSectionModel>(),
             key: 'samples',
         });
+
         const menuSection = mount(
-            <ProductMenuSection
-                currentProductId="testProduct"
-                section={section}
-                config={
-                    new MenuSectionConfig({
-                        emptyText: 'Test empty text',
-                        iconURL: '/testProduct/images/samples.svg',
-                        emptyURL: AppURL.create('sample', 'new'),
-                        emptyURLText: 'Test empty link',
-                    })
-                }
-            />
+            <ProductMenuSection config={config} currentProductId="testProduct" section={section} />
         );
 
         expect(menuSection.find('li.empty-section').length).toBe(1);
@@ -233,7 +229,7 @@ describe('ProductMenuSection render', () => {
                 section={section}
                 config={
                     new MenuSectionConfig({
-                        showActiveJobIcon: false
+                        showActiveJobIcon: false,
                     })
                 }
             />
@@ -256,7 +252,7 @@ describe('ProductMenuSection render', () => {
                 section={section}
                 config={
                     new MenuSectionConfig({
-                        activeJobIconCls: 'job-running-icon'
+                        activeJobIconCls: 'job-running-icon',
                     })
                 }
             />
@@ -265,6 +261,4 @@ describe('ProductMenuSection render', () => {
         expect(menuSection.find('i.fa-spinner').length).toBe(0);
         expect(menuSection.find('i.job-running-icon').length).toBe(0);
     });
-
-
 });

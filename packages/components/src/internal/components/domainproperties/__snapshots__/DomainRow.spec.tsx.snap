@@ -350,14 +350,12 @@ exports[`DomainRow Sample Field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-0"
                   index={0}
-                  isDragDisabled={false}
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
                     draggableId="domainpropertiesrow-domaindrag-1-0"
                     index={0}
                     isClone={false}
-                    isDragDisabled={false}
                     isEnabled={true}
                     shouldRespectForcePress={false}
                   >
@@ -366,7 +364,6 @@ exports[`DomainRow Sample Field 1`] = `
                       draggableId="domainpropertiesrow-domaindrag-1-0"
                       index={0}
                       isClone={false}
-                      isDragDisabled={false}
                       isEnabled={true}
                       shouldRespectForcePress={false}
                     >
@@ -376,7 +373,6 @@ exports[`DomainRow Sample Field 1`] = `
                         dropAnimationFinished={[Function]}
                         index={0}
                         isClone={false}
-                        isDragDisabled={false}
                         isEnabled={true}
                         mapped={
                           Object {
@@ -2541,14 +2537,12 @@ exports[`DomainRow client side warning on field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
-                  isDragDisabled={false}
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
                     draggableId="domainpropertiesrow-domaindrag-1-1"
                     index={1}
                     isClone={false}
-                    isDragDisabled={false}
                     isEnabled={true}
                     shouldRespectForcePress={false}
                   >
@@ -2557,7 +2551,6 @@ exports[`DomainRow client side warning on field 1`] = `
                       draggableId="domainpropertiesrow-domaindrag-1-1"
                       index={1}
                       isClone={false}
-                      isDragDisabled={false}
                       isEnabled={true}
                       shouldRespectForcePress={false}
                     >
@@ -2567,7 +2560,6 @@ exports[`DomainRow client side warning on field 1`] = `
                         dropAnimationFinished={[Function]}
                         index={1}
                         isClone={false}
-                        isDragDisabled={false}
                         isEnabled={true}
                         mapped={
                           Object {
@@ -4653,14 +4645,12 @@ exports[`DomainRow date time field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-0"
                   index={0}
-                  isDragDisabled={false}
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
                     draggableId="domainpropertiesrow-domaindrag-1-0"
                     index={0}
                     isClone={false}
-                    isDragDisabled={false}
                     isEnabled={true}
                     shouldRespectForcePress={false}
                   >
@@ -4669,7 +4659,6 @@ exports[`DomainRow date time field 1`] = `
                       draggableId="domainpropertiesrow-domaindrag-1-0"
                       index={0}
                       isClone={false}
-                      isDragDisabled={false}
                       isEnabled={true}
                       shouldRespectForcePress={false}
                     >
@@ -4679,7 +4668,6 @@ exports[`DomainRow date time field 1`] = `
                         dropAnimationFinished={[Function]}
                         index={0}
                         isClone={false}
-                        isDragDisabled={false}
                         isEnabled={true}
                         mapped={
                           Object {
@@ -6929,14 +6917,12 @@ exports[`DomainRow decimal field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-2"
                   index={2}
-                  isDragDisabled={false}
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
                     draggableId="domainpropertiesrow-domaindrag-1-2"
                     index={2}
                     isClone={false}
-                    isDragDisabled={false}
                     isEnabled={true}
                     shouldRespectForcePress={false}
                   >
@@ -6945,7 +6931,6 @@ exports[`DomainRow decimal field 1`] = `
                       draggableId="domainpropertiesrow-domaindrag-1-2"
                       index={2}
                       isClone={false}
-                      isDragDisabled={false}
                       isEnabled={true}
                       shouldRespectForcePress={false}
                     >
@@ -6955,7 +6940,6 @@ exports[`DomainRow decimal field 1`] = `
                         dropAnimationFinished={[Function]}
                         index={2}
                         isClone={false}
-                        isDragDisabled={false}
                         isEnabled={true}
                         mapped={
                           Object {
@@ -9240,14 +9224,12 @@ exports[`DomainRow participant id field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-0"
                   index={0}
-                  isDragDisabled={false}
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
                     draggableId="domainpropertiesrow-domaindrag-1-0"
                     index={0}
                     isClone={false}
-                    isDragDisabled={false}
                     isEnabled={true}
                     shouldRespectForcePress={false}
                   >
@@ -9256,7 +9238,6 @@ exports[`DomainRow participant id field 1`] = `
                       draggableId="domainpropertiesrow-domaindrag-1-0"
                       index={0}
                       isClone={false}
-                      isDragDisabled={false}
                       isEnabled={true}
                       shouldRespectForcePress={false}
                     >
@@ -9266,7 +9247,6 @@ exports[`DomainRow participant id field 1`] = `
                         dropAnimationFinished={[Function]}
                         index={0}
                         isClone={false}
-                        isDragDisabled={false}
                         isEnabled={true}
                         mapped={
                           Object {
@@ -11337,14 +11317,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
-                  isDragDisabled={false}
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
                     draggableId="domainpropertiesrow-domaindrag-1-1"
                     index={1}
                     isClone={false}
-                    isDragDisabled={false}
                     isEnabled={true}
                     shouldRespectForcePress={false}
                   >
@@ -11353,7 +11331,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       draggableId="domainpropertiesrow-domaindrag-1-1"
                       index={1}
                       isClone={false}
-                      isDragDisabled={false}
                       isEnabled={true}
                       shouldRespectForcePress={false}
                     >
@@ -11363,7 +11340,6 @@ exports[`DomainRow server side error on reserved field 1`] = `
                         dropAnimationFinished={[Function]}
                         index={1}
                         isClone={false}
-                        isDragDisabled={false}
                         isEnabled={true}
                         mapped={
                           Object {
@@ -13338,14 +13314,12 @@ exports[`DomainRow string field test 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
-                  isDragDisabled={false}
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
                     draggableId="domainpropertiesrow-domaindrag-1-1"
                     index={1}
                     isClone={false}
-                    isDragDisabled={false}
                     isEnabled={true}
                     shouldRespectForcePress={false}
                   >
@@ -13354,7 +13328,6 @@ exports[`DomainRow string field test 1`] = `
                       draggableId="domainpropertiesrow-domaindrag-1-1"
                       index={1}
                       isClone={false}
-                      isDragDisabled={false}
                       isEnabled={true}
                       shouldRespectForcePress={false}
                     >
@@ -13364,7 +13337,6 @@ exports[`DomainRow string field test 1`] = `
                         dropAnimationFinished={[Function]}
                         index={1}
                         isClone={false}
-                        isDragDisabled={false}
                         isEnabled={true}
                         mapped={
                           Object {
@@ -15733,14 +15705,12 @@ exports[`DomainRow with empty domain form 1`] = `
                 <PublicDraggable
                   draggableId="domainpropertiesrow-domaindrag-1-1"
                   index={1}
-                  isDragDisabled={false}
                 >
                   <PrivateDraggable
                     canDragInteractiveElements={false}
                     draggableId="domainpropertiesrow-domaindrag-1-1"
                     index={1}
                     isClone={false}
-                    isDragDisabled={false}
                     isEnabled={true}
                     shouldRespectForcePress={false}
                   >
@@ -15749,7 +15719,6 @@ exports[`DomainRow with empty domain form 1`] = `
                       draggableId="domainpropertiesrow-domaindrag-1-1"
                       index={1}
                       isClone={false}
-                      isDragDisabled={false}
                       isEnabled={true}
                       shouldRespectForcePress={false}
                     >
@@ -15759,7 +15728,6 @@ exports[`DomainRow with empty domain form 1`] = `
                         dropAnimationFinished={[Function]}
                         index={1}
                         isClone={false}
-                        isDragDisabled={false}
                         isEnabled={true}
                         mapped={
                           Object {

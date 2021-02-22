@@ -1,0 +1,280 @@
+[ {
+  "url" : "/labkey/Biologics%20Example/biologics-app.view?#/registry",
+  "key" : "registry",
+  "label" : "Registry",
+  "items" : [ {
+    "key" : "MoleculeSet",
+    "id" : 146,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=146",
+    "label" : "Molecule Sets",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 0
+  }, {
+    "key" : "Molecule",
+    "id" : 149,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=149",
+    "label" : "Molecules",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 1
+  }, {
+    "key" : "MolecularSpecies",
+    "id" : 150,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=150",
+    "label" : "Molecular Species",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 2
+  }, {
+    "key" : "ProtSequence",
+    "id" : 147,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=147",
+    "label" : "Protein Sequences",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 3
+  }, {
+    "key" : "NucSequence",
+    "id" : 148,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=148",
+    "label" : "Nucleotide Sequences",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 4
+  }, {
+    "key" : "ExpressionSystem",
+    "id" : 154,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=154",
+    "label" : "Expression Systems",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 5
+  }, {
+    "key" : "Construct",
+    "id" : 152,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=152",
+    "label" : "Constructs",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 6
+  }, {
+    "key" : "Vector",
+    "id" : 151,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=151",
+    "label" : "Vectors",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 7
+  }, {
+    "key" : "CellLine",
+    "id" : 153,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=153",
+    "label" : "Cell Lines",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 8
+  } ],
+  "productId" : "Biologics",
+  "totalCount" : 9,
+  "itemLimit" : 9,
+  "sectionKey" : "registry"
+}, {
+  "url" : "/labkey/Biologics%20Example/experiment-listSampleTypes.view?",
+  "key" : "samples",
+  "label" : "Sample Types",
+  "items" : [ ],
+  "productId" : "Biologics",
+  "totalCount" : 0,
+  "itemLimit" : 0,
+  "sectionKey" : "samples"
+}, {
+  "url" : "/labkey/Biologics%20Example/assay-begin.view?",
+  "key" : "assays",
+  "label" : "Assays",
+  "items" : [ ],
+  "productId" : "Biologics",
+  "totalCount" : 1,
+  "itemLimit" : 0,
+  "sectionKey" : "assays"
+}, {
+  "url" : "/labkey/Biologics%20Example/biologics-app.view?#/experiments",
+  "key" : "experiments",
+  "label" : "Experiments",
+  "items" : [ ],
+  "productId" : "Biologics",
+  "totalCount" : 0,
+  "itemLimit" : 0,
+  "sectionKey" : "experiments"
+}, {
+  "key" : "biologicsWorkflow",
+  "url" : null,
+  "label" : "Workflow",
+  "items" : [ {
+    "key" : "assayrequests?query.Status~neq=closed",
+    "id" : null,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/issues-list.view?issueDefName=assayrequests",
+    "label" : "Assay Requests",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 0
+  }, {
+    "key" : "samplerequests?query.Status~neq=closed",
+    "id" : null,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/issues-list.view?issueDefName=samplerequests",
+    "label" : "Sample Requests",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 1
+  }, {
+    "key" : "workrequests?query.Status~neq=closed",
+    "id" : null,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/issues-list.view?issueDefName=workrequests",
+    "label" : "Work Requests",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 2
+  } ],
+  "productId" : "Biologics",
+  "totalCount" : 3,
+  "itemLimit" : null,
+  "sectionKey" : "workflow"
+}, {
+  "url" : "/labkey/Biologics%20Example/experiment-listDataClass.view?",
+  "key" : "workflow",
+  "label" : "Workflow",
+  "items" : [ {
+    "key" : "?viewAs=grid&tab=mine&mine.sort=DueDate&active.sort=DueDate",
+    "id" : null,
+    "hasActiveJob" : false,
+    "url" : null,
+    "label" : "My Queue",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : -1
+  }, {
+    "key" : "?viewAs=heatmap&mine.sort=DueDate&active.sort=DueDate",
+    "id" : null,
+    "hasActiveJob" : false,
+    "url" : null,
+    "label" : "Workflow Heatmap",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : -1
+  }, {
+    "key" : "?viewAs=grid&tab=all&mine.sort=DueDate&active.sort=DueDate",
+    "id" : null,
+    "hasActiveJob" : false,
+    "url" : null,
+    "label" : "Workflow List",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : -1
+  } ],
+  "productId" : "Biologics",
+  "totalCount" : 3,
+  "itemLimit" : 3,
+  "sectionKey" : "workflow"
+}, {
+  "key" : "media",
+  "url" : null,
+  "label" : "Media",
+  "items" : [ {
+    "key" : "Ingredients",
+    "id" : 155,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=155",
+    "label" : "Ingredients",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 0
+  }, {
+    "key" : "RawMaterials",
+    "id" : 165,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showSampleType.view?rowId=165",
+    "label" : "Raw Materials",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 1
+  }, {
+    "key" : "Mixtures",
+    "id" : 156,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showDataClass.view?rowId=156",
+    "label" : "Mixtures",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 2
+  }, {
+    "key" : "Batches",
+    "id" : 164,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/experiment-showSampleType.view?rowId=164",
+    "label" : "Batches",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 3
+  } ],
+  "productId" : "Biologics",
+  "totalCount" : 4,
+  "itemLimit" : null,
+  "sectionKey" : "media"
+}, {
+  "url" : "/labkey/Biologics%20Example/biologics-app.view?#/notebooks",
+  "key" : "notebooks",
+  "label" : "Notebooks",
+  "items" : [ {
+    "key" : null,
+    "id" : null,
+    "hasActiveJob" : false,
+    "url" : "/labkey/Biologics%20Example/biologics-app.view?#/notebooks",
+    "label" : "Notebooks",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 0
+  }, {
+    "key" : "templates",
+    "id" : null,
+    "hasActiveJob" : false,
+    "url" : null,
+    "label" : "Templates",
+    "requiresLogin" : false,
+    "productId" : "Biologics",
+    "orderNum" : 1
+  } ],
+  "productId" : "Biologics",
+  "totalCount" : 2,
+  "itemLimit" : null,
+  "sectionKey" : "notebooks"
+}, {
+  "url" : null,
+  "key" : "user",
+  "label" : "Your Items",
+  "items" : [ {
+    "key" : "docs",
+    "id" : 0,
+    "hasActiveJob" : false,
+    "url" : "https://www.labkey.org/Documentation/wiki-page.view?name=biologics",
+    "label" : "Documentation",
+    "requiresLogin" : false,
+    "productId" : null,
+    "orderNum" : -1
+  } ],
+  "productId" : "Biologics",
+  "totalCount" : 1,
+  "itemLimit" : null,
+  "sectionKey" : "user"
+} ]

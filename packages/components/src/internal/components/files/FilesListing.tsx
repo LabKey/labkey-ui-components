@@ -5,7 +5,7 @@ import { List, Set } from 'immutable';
 
 import { IFile } from './models';
 
-interface Props {
+export interface FilesListingProps {
     canDelete?: boolean;
     files: List<IFile>;
     getFilePropertiesEditTrigger?: (file: IFile) => ReactNode;
@@ -21,8 +21,8 @@ interface State {
     confirmDeletionSet: Set<string>;
 }
 
-export class FilesListing extends PureComponent<Props, State> {
-    constructor(props: Props) {
+export class FilesListing extends PureComponent<FilesListingProps, State> {
+    constructor(props: FilesListingProps) {
         super(props);
         this.state = { confirmDeletionSet: Set<string>() };
     }

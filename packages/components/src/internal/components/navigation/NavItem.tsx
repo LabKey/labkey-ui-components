@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import React, { FC, memo, useEffect, useRef, useState } from 'react';
-import { Link, withRouter, WithRouterProps } from 'react-router';
+import { withRouter, WithRouterProps } from 'react-router';
 
 import { AppURL } from '../../..';
 
@@ -24,6 +24,7 @@ interface NavItemProps {
 }
 
 const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, location, onActive, to }) => {
+    const href = to instanceof AppURL ? to.toHref() : to;
     const itemRef = useRef<HTMLLIElement>();
     const [active, setActive] = useState<boolean>(false);
 
@@ -42,7 +43,7 @@ const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, locati
 
     return (
         <li className={active ? 'active' : null} ref={itemRef}>
-            <Link to={to.toString()}>{children}</Link>
+            <a href={href}>{children}</a>
         </li>
     );
 });
@@ -51,15 +52,17 @@ const NavItemImpl: FC<NavItemProps & WithRouterProps> = memo(({ children, locati
 export default withRouter<NavItemProps>(NavItemImpl);
 
 export const ParentNavItem: FC<NavItemProps> = memo(({ children, to }) => {
+    const href = to instanceof AppURL ? to.toHref() : to;
+
     return (
         <div className="parent-nav">
             <ul className="nav navbar-nav">
                 <li>
-                    <Link to={to.toString()}>
+                    <a href={href}>
                         <i className="fa fa-chevron-left" />
                         &nbsp;
                         {children}
-                    </Link>
+                    </a>
                 </li>
             </ul>
         </div>

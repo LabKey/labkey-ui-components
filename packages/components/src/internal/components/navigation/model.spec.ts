@@ -33,6 +33,7 @@ describe('ProductMenuModel', () => {
                 label: 'B',
             },
         ],
+        sectionKey: testSectionKey,
     });
 
     const emptySectionKey = 'empty';
@@ -41,6 +42,7 @@ describe('ProductMenuModel', () => {
         label: 'No Items',
         totalCount: 0,
         items: [],
+        sectionKey: emptySectionKey,
     });
 
     test('hasSectionItems not loaded', () => {

@@ -90,36 +90,36 @@ import {
 } from './propertiesUtil';
 
 interface IDomainFormInput {
-    domain: DomainDesign;
-    onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => any;
-    onToggle?: (collapsed: boolean, callback?: () => any) => any;
-    helpTopic?: string;
-    helpNoun?: string;
-    showHeader?: boolean;
-    initCollapsed?: boolean;
+    allowImportExport?: boolean;
+    appDomainHeaderRenderer?: HeaderRenderer;
+    appPropertiesOnly?: boolean; // Flag to indicate if LKS specific types should be shown (false) or not (true)
     collapsible?: boolean;
+    containerTop?: number; // This sets the top of the sticky header, default is 0
     controlledCollapse?: boolean;
-    validate?: boolean;
-    isNew?: boolean;
-    panelStatus?: DomainPanelStatus;
+    domain: DomainDesign;
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
+    domainIndex?: number;
+    fieldsAdditionalRenderer?: () => any;
     headerPrefix?: string; // used as a string to remove from the heading when using the domain.name
     headerTitle?: string;
-    allowImportExport?: boolean;
-    todoIconHelpMsg?: string;
-    showInferFromFile?: boolean;
-    useTheme?: boolean;
+    helpNoun?: string;
+    helpTopic?: string;
     index?: number; // Used in AssayDesignerPanels for distinguishing FileAttachmentForms
-    appDomainHeaderRenderer?: HeaderRenderer;
+    initCollapsed?: boolean;
+    isNew?: boolean;
     maxPhiLevel?: string; // Just for testing, only affects display
-    containerTop?: number; // This sets the top of the sticky header, default is 0
     modelDomains?: List<DomainDesign>; // Set of domains that encompass the full protocol, that may impact validation or alerts
-    appPropertiesOnly?: boolean; // Flag to indicate if LKS specific types should be shown (false) or not (true)
-    showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
-    domainIndex?: number;
-    successBsStyle?: string;
+    onChange: (newDomain: DomainDesign, dirty: boolean, rowIndexChange?: DomainFieldIndexChange[]) => any;
+    onToggle?: (collapsed: boolean, callback?: () => any) => any;
+    panelStatus?: DomainPanelStatus;
     setFileImportData?: (file: File, shouldImportData: boolean) => any; // having this prop set is also an indicator that you want to show the file preview grid with the import data option
-    domainFormDisplayOptions?: IDomainFormDisplayOptions;
-    fieldsAdditionalRenderer?: () => any;
+    showFilePropertyType?: boolean; // Flag to indicate if the File property type should be allowed
+    showHeader?: boolean;
+    showInferFromFile?: boolean;
+    successBsStyle?: string;
+    todoIconHelpMsg?: string;
+    useTheme?: boolean;
+    validate?: boolean;
 }
 
 interface IDomainFormState {
@@ -370,7 +370,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     // we skip any rowIndexChange which has a newIndex as those are just reorder changes
                     if (rowIndexChanges[i]?.newIndex !== undefined) {
                         return;
-                    // skip any ontology lookup fields if they were removed
+                        // skip any ontology lookup fields if they were removed
                     } else if (currentIndex === index) {
                         continue;
                     } else if (i + 1 < rowIndexChanges.length && rowIndexChanges[i + 1].originalIndex < index) {
@@ -475,9 +475,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const fields = domain.fields;
         let filteredFields = fields.filter((field: DomainField) => field.visible);
         // Respect selection, if any selection exists
-        filteredFields = visibleSelection.size > 0
-            ? filteredFields.filter((field: DomainField) => field.selected)
-            : filteredFields;
+        filteredFields =
+            visibleSelection.size > 0 ? filteredFields.filter((field: DomainField) => field.selected) : filteredFields;
 
         const fieldData = filteredFields.map(field => DomainField.serialize(field, false)).toArray();
         const fieldsJson = JSON.stringify(fieldData, null, 4);
@@ -503,7 +502,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             return (
                 <ConfirmModal
                     title="Cannot Delete Required Fields"
-                    msg={<div> <p> None of the selected fields can be deleted. </p> </div>}
+                    msg={
+                        <div>
+                            {' '}
+                            <p> None of the selected fields can be deleted. </p>{' '}
+                        </div>
+                    }
                     onCancel={this.onConfirmBulkCancel}
                     cancelButtonText="Close"
                 />
@@ -517,7 +521,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                     <div>
                         <p> {howManyDeleted} will be deleted. </p>
                         <p> {undeletableWarning} </p>
-                        <p> Are you sure you want to delete {thisFieldPlural}? All of the related field data will also be deleted. </p>
+                        <p>
+                            {' '}
+                            Are you sure you want to delete {thisFieldPlural}? All of the related field data will also
+                            be deleted.{' '}
+                        </p>
                     </div>
                 }
                 onConfirm={this.onBulkDeleteConfirm}
@@ -1221,11 +1229,10 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                         appPropertiesOnly={appPropertiesOnly}
                                                         showFilePropertyType={showFilePropertyType}
                                                         successBsStyle={successBsStyle}
-                                                        domainFormDisplayOptions={{
-                                                            ...domainFormDisplayOptions,
-                                                            isDragDisabled:
-                                                                filtered || domainFormDisplayOptions.isDragDisabled,
-                                                        }}
+                                                        isDragDisabled={
+                                                            filtered || domainFormDisplayOptions.isDragDisabled
+                                                        }
+                                                        domainFormDisplayOptions={domainFormDisplayOptions}
                                                     />
                                                 );
                                             })}

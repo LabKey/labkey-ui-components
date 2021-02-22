@@ -23,7 +23,8 @@ import { getSchemaQuery, resolveKey, resolveSchemaQuery, SchemaQuery } from './p
 import { insertColumnFilter, QueryColumn, QueryLookup } from './public/QueryColumn';
 import { QuerySort } from './public/QuerySort';
 import { LastActionStatus, MessageLevel } from './internal/LastActionStatus';
-import { inferDomainFromFile, InferDomainResponse } from './internal/InferDomainResponse';
+import { InferDomainResponse } from './public/InferDomainResponse';
+import { inferDomainFromFile, getServerFilePreview } from './internal/components/assay/utils';
 import { ViewInfo } from './internal/ViewInfo';
 import { QueryInfo, QueryInfoStatus } from './public/QueryInfo';
 import { SchemaDetails } from './internal/SchemaDetails';
@@ -43,6 +44,7 @@ import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/As
 import { IGridLoader, IGridResponse, QueryGridModel } from './internal/QueryGridModel';
 import {
     applyDevTools,
+    blurActiveElement,
     capitalizeFirstChar,
     caseInsensitive,
     debounce,
@@ -86,12 +88,13 @@ import { Tip } from './internal/components/base/Tip';
 import { Grid, GridColumn, GridProps } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
-import { FileAttachmentForm } from './internal/components/files/FileAttachmentForm';
-import { DEFAULT_FILE, FileAttachmentFormModel, IFile, FileSizeLimitProps } from './internal/components/files/models';
+import { FileAttachmentForm } from './public/files/FileAttachmentForm';
+import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './internal/components/files/models';
+import { FileSizeLimitProps } from './public/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
 import { FileAttachmentEntry } from './internal/components/files/FileAttachmentEntry';
-import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './internal/components/files/WebDav';
+import { getWebDavFiles, uploadWebDavFile, WebDavFile } from './public/files/WebDav';
 import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
 import {
@@ -182,7 +185,7 @@ import {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
-    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR
+    SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
 } from './internal/constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
@@ -195,12 +198,13 @@ import {
     SamplesResolver,
 } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
+import { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
 import { EditableGridLoaderFromSelection } from './internal/components/editable/EditableGridLoaderFromSelection';
 import { EditableGridModal } from './internal/components/editable/EditableGridModal';
-import { EditableColumnMetadata } from './internal/components/editable/EditableGrid';
+
 import { CollapsiblePanel } from './internal/components/CollapsiblePanel';
 import { ErrorBoundary } from './internal/components/error/ErrorBoundary';
 import { AliasRenderer } from './internal/renderers/AliasRenderer';
@@ -278,6 +282,7 @@ import {
 import { SampleEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
+import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
 import {
     AssayContextConsumer,
     assayPage,
@@ -287,13 +292,13 @@ import {
     WithAssayModelProps,
 } from './internal/components/assay/withAssayModels';
 import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
+import { AssayDesignDeleteModal } from './internal/components/assay/AssayDesignDeleteModal';
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
-import {
-    AssayPicker,
-    AssayPickerTabs,
-    AssayPickerSelectionModel
-} from './internal/components/assay/AssayPicker';
+import { AssaysHeatMap } from './internal/components/assay/AssaysHeatMap';
+import { AssaySubNavMenu } from './internal/components/assay/AssaySubNavMenu';
+import { AssayTypeSummary } from './internal/components/assay/AssayTypeSummary';
+import { AssayPicker, AssayPickerTabs, AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
@@ -331,10 +336,12 @@ import { EntityTypeDeleteConfirmModal } from './internal/components/entities/Ent
 import { SampleTypeLineageCounts } from './internal/components/lineage/SampleTypeLineageCounts';
 import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
+import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
 import { ITab, SubNav } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
+import { UserMenu } from './internal/components/navigation/UserMenu';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
 
 import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
@@ -375,7 +382,12 @@ import {
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
 } from './public/QueryModel/utils';
-import { confirmLeaveWhenDirty, withRouteLeave, RouteLeaveProps } from './internal/util/RouteLeave';
+import {
+    InjectedRouteLeaveProps,
+    useRouteLeave,
+    withRouteLeave,
+    WrappedRouteLeaveProps,
+} from './internal/util/RouteLeave';
 import * as App from './internal/app';
 import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
@@ -441,7 +453,16 @@ import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUti
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
 import { QueryListingPage } from './internal/components/listing/pages/QueryListingPage';
 import { PipelineJobsPage } from './internal/components/pipeline/PipelineJobsPage';
-import { PipelineStatusDetailPage }  from './internal/components/pipeline/PipelineStatusDetailPage';
+import { PipelineStatusDetailPage } from './internal/components/pipeline/PipelineStatusDetailPage';
+import {
+    ALIQUOT_CREATION,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION,
+    SampleCreationType,
+    SampleCreationTypeModel,
+} from './internal/components/samples/models';
+import { createMockWithRouterProps } from './test/mockUtils';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 import { OntologyTabs } from './internal/components/ontology/OntologyTabs';  //TODO Remove
 
@@ -504,6 +525,7 @@ export {
     EditableColumnMetadata,
     EditorModel,
     cancelEvent,
+    BulkAddData,
     // url and location related items
     AppURL,
     Location,
@@ -611,7 +633,14 @@ export {
     DataClassDataType,
     SampleEmptyAlert,
     SampleSetSummary,
+    SampleCreationType,
+    SampleCreationTypeModel,
     SampleSetDeleteModal,
+    SampleCreationTypeModal,
+    CHILD_SAMPLE_CREATION,
+    DERIVATIVE_CREATION,
+    POOLED_SAMPLE_CREATION,
+    ALIQUOT_CREATION,
     // entities
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
@@ -638,9 +667,13 @@ export {
     SearchResultCardData,
     // assay
     AssayUploadResultModel,
+    AssayDesignDeleteModal,
     AssayDesignDeleteConfirmModal,
     AssayResultDeleteModal,
     AssayRunDeleteModal,
+    AssaysHeatMap,
+    AssaySubNavMenu,
+    AssayTypeSummary,
     AssayStateModel,
     AssayImportPanels,
     AssayPicker,
@@ -707,10 +740,11 @@ export {
     HeaderWrapper,
     ITab,
     NavigationBar,
+    ProductNavigationMenu,
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
-    confirmLeaveWhenDirty,
+    UserMenu, // Removed once Biologics home page no longer uses directly
     // notification related items
     NO_UPDATES_MESSAGE,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT,
@@ -746,6 +780,7 @@ export {
     IDomainField,
     DomainDetails,
     inferDomainFromFile,
+    getServerFilePreview,
     InferDomainResponse,
     IFieldChange,
     IBannerMessage,
@@ -791,6 +826,7 @@ export {
     getDisambiguatedSelectInputOptions,
     formatDate,
     formatDateTime,
+    blurActiveElement,
     caseInsensitive,
     capitalizeFirstChar,
     resolveKey,
@@ -835,8 +871,10 @@ export {
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,
+    InjectedRouteLeaveProps,
+    useRouteLeave,
     withRouteLeave,
-    RouteLeaveProps,
+    WrappedRouteLeaveProps,
     SchemaListing,
     SchemaListingPage,
     QueriesListing,
@@ -938,6 +976,7 @@ export {
     mountWithServerContext,
     sleep,
     waitForLifecycle,
+    createMockWithRouterProps,
     // Ontology
     OntologyBrowserPanel,
     OntologyTabs, // TODO remove, using here to simplify development but likely will never be used as individual component

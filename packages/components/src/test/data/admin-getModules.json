@@ -1,0 +1,158 @@
+{
+  "folderType" : "Collaboration",
+  "modules" : [ {
+    "tabName" : "API",
+    "name" : "API",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  }, {
+    "tabName" : "Assay",
+    "name" : "Assay",
+    "active" : false,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Biologics",
+    "name" : "Biologics",
+    "active" : false,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "DataIntegration",
+    "name" : "DataIntegration",
+    "active" : false,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Experiment",
+    "name" : "Experiment",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  }, {
+    "tabName" : "FileContent",
+    "name" : "FileContent",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  }, {
+    "tabName" : "Inventory",
+    "name" : "Inventory",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  }, {
+    "tabName" : "Issues",
+    "name" : "Issues",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  }, {
+    "tabName" : "LabBook",
+    "name" : "LabBook",
+    "active" : false,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "List",
+    "name" : "List",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Messages",
+    "name" : "Announcements",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  }, {
+    "tabName" : "Mothership",
+    "name" : "Mothership",
+    "active" : false,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Pipeline",
+    "name" : "Pipeline",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  }, {
+    "tabName" : "Portal",
+    "name" : "Core",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Premium",
+    "name" : "Premium",
+    "active" : false,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Query",
+    "name" : "Query",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  }, {
+    "tabName" : "SampleManagement",
+    "name" : "SampleManagement",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  }, {
+    "tabName" : "Search",
+    "name" : "Search",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Study",
+    "name" : "Study",
+    "active" : false,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Survey",
+    "name" : "Survey",
+    "active" : false,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Visualization",
+    "name" : "Visualization",
+    "active" : false,
+    "requireSitePermission" : false,
+    "required" : false,
+    "enabled" : true
+  }, {
+    "tabName" : "Wiki",
+    "name" : "Wiki",
+    "active" : true,
+    "requireSitePermission" : false,
+    "required" : true,
+    "enabled" : false
+  } ]
+}

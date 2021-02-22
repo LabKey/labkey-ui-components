@@ -1,12 +1,12 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { LoadingSpinner } from '../base/LoadingSpinner';
+import { LoadingSpinner } from '../../..';
 
 import { OntologyTabs } from './OntologyTabs';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { fetchConceptForCode, getOntologyDetails } from './actions';
-import { ConceptModel, OntologyModel, } from './models';
+import { ConceptModel, OntologyModel } from './models';
 
 interface OntologyBrowserProps {
     ontologyId?: string;
@@ -64,13 +64,13 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     );
 });
 
-interface ImplProps {
+export interface OntologyBrowserPanelImplProps {
     ontology: OntologyModel;
     selectedConcept?: ConceptModel;
     setSelectedConcept: (conceptCode: string) => void;
 }
 
-export const OntologyBrowserPanelImpl: FC<ImplProps> = memo(props => {
+export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
     const { ontology, selectedConcept, ...rest } = props;
 
     if (!ontology) {

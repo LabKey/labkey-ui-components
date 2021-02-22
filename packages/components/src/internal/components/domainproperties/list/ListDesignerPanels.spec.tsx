@@ -45,18 +45,6 @@ describe('ListDesignerPanel', () => {
         listDesignerPanels.unmount();
     });
 
-    // test('is ToggleWithInputField broken', async () => {
-    //     const listDesignerPanels = mount(
-    //         <ToggleWithInputField
-    //             active={true}
-    //             id={'test'}
-    //             onClick={() => {}}
-    //         />);
-    //     await sleep();
-    //
-    //     listDesignerPanels.unmount();
-    // });
-
     test('visible properties', async () => {
         const listDesignerPanels = mount(<ListDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />);
         await sleep();

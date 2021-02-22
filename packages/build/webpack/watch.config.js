@@ -84,7 +84,7 @@ module.exports = {
     },
 
     module: {
-        rules: constants.loaders.TYPESCRIPT_LOADERS_DEV.concat(constants.loaders.STYLE_LOADERS_DEV)
+        rules: constants.loaders.TYPESCRIPT_DEV.concat(constants.loaders.STYLE_DEV).concat(constants.loaders.FILES)
     },
 
     optimization: {

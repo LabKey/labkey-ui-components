@@ -66,7 +66,53 @@ module.exports = {
         TYPESCRIPT: [ '.jsx', '.js', '.tsx', '.ts' ]
     },
     loaders: {
-        STYLE_LOADERS: [
+        FILES: [
+            {
+                test: /\.(woff|woff2)$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 10000,
+                        mimetype: 'application/font-woff',
+                    },
+                },
+            },
+            {
+                test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 10000,
+                        mimetype: 'application/octet-stream',
+                    },
+                },
+            },
+            {
+                test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+                use: 'file-loader'
+            },
+            {
+                test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 10000,
+                        mimetype: 'image/svg+xml',
+                    },
+                },
+            },
+            {
+                test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
+                use: {
+                    loader: "url-loader",
+                    options: {
+                        limit: 10000,
+                        mimetype: 'image/png',
+                    }
+                },
+            }
+        ],
+        STYLE: [
             {
                 test: /\.css$/,
                 use: [
@@ -83,24 +129,20 @@ module.exports = {
                         options: {
                             importLoaders: 1
                         }
-                    },{
+                    },
+                    {
                         loader: 'resolve-url-loader'
-                    },{
+                    },
+                    {
                         loader: 'sass-loader',
                         options: {
                             sourceMap: true
                         }
-                    }]
+                    }
+                ]
             },
-            // TODO: convert "loader" to "use" and query strings to options objects
-            { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
-            { test: /\.png(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/png" }
         ],
-        STYLE_LOADERS_DEV: [
+        STYLE_DEV: [
             {
                 test: /\.css$/,
                 use: [
@@ -126,15 +168,8 @@ module.exports = {
                         }
                     }]
             },
-            // TODO: convert "loader" to "use" and query strings to options objects
-            { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/font-woff" },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" },
-            { test: /\.png(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/png" }
         ],
-        TYPESCRIPT_LOADERS: [
+        TYPESCRIPT: [
             {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
                 use: [{
@@ -165,7 +200,7 @@ module.exports = {
                 }]
             }
         ],
-        TYPESCRIPT_LOADERS_DEV: [
+        TYPESCRIPT_DEV: [
             {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
                 use: [{
@@ -179,10 +214,10 @@ module.exports = {
                             "@babel/preset-typescript",
                         ],
                         plugins: [
+                            "react-hot-loader/babel",
                             "const-enum",
                             "@babel/proposal-class-properties",
                             "@babel/proposal-object-rest-spread",
-                            "react-hot-loader/babel"
                         ]
                     }
                 }]

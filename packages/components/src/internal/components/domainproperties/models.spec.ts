@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { GridColumn } from '../../..';
+
+import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
+
 import {
     ATTACHMENT_TYPE,
     AUTOINT_TYPE,
@@ -50,6 +54,128 @@ import {
     SAMPLE_TYPE_CONCEPT_URI,
     DOMAIN_FIELD_FULLY_LOCKED,
 } from './constants';
+
+const gridDataConst = [
+    {
+        excludeFromShifting: 'false',
+        shownInUpdateView: 'true',
+        lockType: 'NotLocked',
+        dimension: '',
+        lookupContainer: '',
+        isPrimaryKey: 'false',
+        defaultScale: '',
+        scale: 4000,
+        hidden: 'false',
+        defaultValueType: '',
+        name: 'a',
+        lookupQuery: '',
+        URL: '',
+        rangeURI: 'http://www.w3.org/2001/XMLSchema#int',
+        defaultDisplayValue: '',
+        defaultValue: '',
+        shownInDetailsView: 'true',
+        PHI: '',
+        visible: true,
+        label: '',
+        shownInInsertView: 'true',
+        conditionalFormats: '',
+        propertyValidators: '',
+        recommendedVariable: 'false',
+        format: '',
+        mvEnabled: 'false',
+        fieldIndex: 0,
+        importAliases: '',
+        selected: '',
+        lookupSchema: '',
+        description: '',
+        measure: '',
+        required: 'false',
+    },
+];
+const selectionCol = new GridColumn({
+    index: GRID_SELECTION_INDEX,
+    title: GRID_SELECTION_INDEX,
+    width: 20,
+    cell: () => {},
+});
+const nameCol = new GridColumn({
+    index: GRID_NAME_INDEX,
+    title: GRID_NAME_INDEX,
+    raw: { index: 'name', caption: 'Name', sortable: true },
+    cell: () => {},
+});
+const gridColumnsConst = [
+    selectionCol,
+    nameCol,
+    { index: 'URL', caption: 'URL', sortable: true },
+    { index: 'PHI', caption: 'PHI', sortable: true },
+    { index: 'rangeURI', caption: 'Range URI', sortable: true },
+    { index: 'required', caption: 'Required', sortable: true },
+    { index: 'lockType', caption: 'Lock Type', sortable: true },
+    {
+        index: 'lookupContainer',
+        caption: 'Lookup Container',
+        sortable: true,
+    },
+    { index: 'lookupSchema', caption: 'Lookup Schema', sortable: true },
+    { index: 'lookupQuery', caption: 'Lookup Query', sortable: true },
+    { index: 'format', caption: 'Format', sortable: true },
+    { index: 'defaultScale', caption: 'Default Scale', sortable: true },
+    { index: 'scale', caption: 'Scale', sortable: true },
+    { index: 'description', caption: 'Description', sortable: true },
+    { index: 'label', caption: 'Label', sortable: true },
+    { index: 'importAliases', caption: 'Import Aliases', sortable: true },
+    {
+        index: 'conditionalFormats',
+        caption: 'Conditional Formats',
+        sortable: true,
+    },
+    {
+        index: 'propertyValidators',
+        caption: 'Property Validators',
+        sortable: true,
+    },
+    { index: 'hidden', caption: 'Hidden', sortable: true },
+    {
+        index: 'shownInUpdateView',
+        caption: 'Shown In Update View',
+        sortable: true,
+    },
+    {
+        index: 'shownInInsertView',
+        caption: 'Shown In Insert View',
+        sortable: true,
+    },
+    {
+        index: 'shownInDetailsView',
+        caption: 'Shown In Details View',
+        sortable: true,
+    },
+    {
+        index: 'defaultValueType',
+        caption: 'Default Value Type',
+        sortable: true,
+    },
+    { index: 'defaultValue', caption: 'Default Value', sortable: true },
+    {
+        index: 'defaultDisplayValue',
+        caption: 'Default Display Value',
+        sortable: true,
+    },
+    {
+        index: 'excludeFromShifting',
+        caption: 'Exclude From Shifting',
+        sortable: true,
+    },
+    { index: 'measure', caption: 'Measure', sortable: true },
+    { index: 'dimension', caption: 'Dimension', sortable: true },
+    {
+        index: 'recommendedVariable',
+        caption: 'Recommended Variable',
+        sortable: true,
+    },
+    { index: 'mvEnabled', caption: 'Mv Enabled', sortable: true },
+];
 
 describe('PropDescType', () => {
     test('isInteger', () => {
@@ -415,6 +541,38 @@ describe('DomainDesign', () => {
         expect(fieldDetails.ontologyLookupIndices.length).toBe(0);
         expect(fieldDetails.detailsInfo['text1']).toBe(undefined);
         expect(fieldDetails.detailsInfo['text2']).toBe(undefined);
+    });
+
+    test('getGridData', () => {
+        const gridData = DomainDesign.create({
+            fields: [{ name: 'a', rangeURI: INTEGER_TYPE.rangeURI }],
+        }).getGridData(false);
+        expect(gridData.toJS()).toStrictEqual(gridDataConst);
+    });
+
+    test('getGridColumns', () => {
+        const gridColumns = DomainDesign.create({
+            fields: [
+                { name: 'a', rangeURI: INTEGER_TYPE.rangeURI },
+                { name: 'b', rangeURI: TEXT_TYPE.rangeURI },
+            ],
+        }).getGridColumns(jest.fn(), jest.fn(), 'domainKindName', false);
+
+        expect(gridColumns.toJS().slice(2)).toStrictEqual(gridColumnsConst.slice(2));
+
+        // Testing selection column. Must be handled especially due to cell function equality matching
+        const selectionColTest = gridColumns.toJS()[0];
+        delete selectionColTest.cell;
+        const selectionColConstTest = gridColumnsConst[0] as GridColumn;
+        delete selectionColConstTest.cell;
+        expect(selectionColTest).toStrictEqual(selectionColConstTest);
+
+        // Testing name column. Must be handled especially due to cell function equality matching
+        const nameColTest = gridColumns.toJS()[1];
+        delete nameColTest.cell;
+        const nameColConstTest = gridColumnsConst[1] as GridColumn;
+        delete nameColConstTest.cell;
+        expect(nameColTest).toStrictEqual(nameColConstTest);
     });
 });
 

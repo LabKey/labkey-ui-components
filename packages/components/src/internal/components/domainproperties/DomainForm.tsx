@@ -1286,8 +1286,6 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 {hasFields ?
                     summaryViewMode ?
                         <DomainPropertiesGrid
-                            initGridData={domain.getGridData(appPropertiesOnly)}
-                            gridColumns={domain.getGridColumns(this.onFieldsChange, this.scrollFunction, domain.domainKindName, appPropertiesOnly)}
                             domain={domain}
                             search={search}
                             selectAll={selectAll}

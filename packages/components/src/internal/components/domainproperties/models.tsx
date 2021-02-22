@@ -66,7 +66,8 @@ import {
     removeUnusedProperties,
     removeFalseyObjKeys,
     removeUnusedOntologyProperties,
-    reorderSummaryColumns, removeNonAppProperties
+    reorderSummaryColumns,
+    removeNonAppProperties
 } from "./propertiesUtil";
 
 export interface IFieldChange {
@@ -408,7 +409,6 @@ export class DomainDesign
         if (appPropertiesOnly) {
             columns = removeNonAppProperties(columns);
         }
-        console.log("domainKindName", domainKindName);
         if (domainKindName !== 'List') {
             delete columns.isPrimaryKey;
         }

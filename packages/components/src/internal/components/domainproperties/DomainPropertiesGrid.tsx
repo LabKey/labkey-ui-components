@@ -14,8 +14,6 @@ import { compareStringsAlphabetically } from './propertiesUtil';
 import { DomainPropertiesGridColumn } from './models';
 
 interface DomainPropertiesGridProps {
-    initGridData: List<any>;
-    gridColumns: List<GridColumn | DomainPropertiesGridColumn>;
     domain: DomainDesign;
     actions: {
         toggleSelectAll: () => void;
@@ -37,24 +35,26 @@ interface DomainPropertiesGridState {
 export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGridProps, DomainPropertiesGridState> {
     constructor(props: DomainPropertiesGridProps) {
         super(props);
-        const { domain, actions } = this.props;
+        const { domain, actions, appPropertiesOnly } = this.props;
         const { onFieldsChange, scrollFunction } = actions;
+        const { domainKindName } = domain;
+        const gridData = domain.getGridData(appPropertiesOnly);
 
         // TODO: Maintain hash of fieldIndex : gridIndex on state in order to make delete and filter run in N rather than N^2 time.
         this.state = {
-            // gridData: domain.getGridData(),
-            // gridColumns: domain.getGridColumns(onFieldsChange, scrollFunction, domain.domainKindName),
-            gridData: this.props.initGridData,
-            visibleGridData: this.getVisibleGridData(this.props.initGridData),
+            gridData: gridData,
+            gridColumns: domain.getGridColumns(onFieldsChange, scrollFunction, domainKindName, appPropertiesOnly),
+            visibleGridData: this.getVisibleGridData(gridData),
             search: this.props.search,
         };
     }
 
     componentDidUpdate(prevProps: Readonly<DomainPropertiesGridProps>): void {
+        const { appPropertiesOnly, domain } = this.props;
         const prevSearch = prevProps.search;
         const newSearch = this.props.search;
-        const prevGridData = prevProps.initGridData;
-        const newGridData = this.props.initGridData;
+        const prevGridData = prevProps.domain.getGridData(appPropertiesOnly);
+        const newGridData = domain.getGridData(appPropertiesOnly);
 
         // When new field added
         if (prevGridData.size < newGridData.size) {
@@ -84,11 +84,12 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
     }
 
     uponRowDelete = (): void => {
+        const { appPropertiesOnly, domain } = this.props;
         const { gridData } = this.state;
-        const { initGridData } = this.props;
+        const initGridData = domain.getGridData(appPropertiesOnly);
 
         const updatedGridData = gridData.reduce((updatedGridData, row) => {
-            const newRowIndex = initGridData.findIndex(newRow => newRow.get('fieldIndex') === row.get('fieldIndex'));
+            const newRowIndex = initGridData.findIndex(newRow => newRow.get('name') === row.get('name'));
             return (newRowIndex !== -1)
                 ? updatedGridData.set(updatedGridData.size, row.set('fieldIndex', newRowIndex))
                 : updatedGridData;
@@ -100,8 +101,9 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
     };
 
     uponFilter = (): void => {
+        const { appPropertiesOnly, domain } = this.props;
         const { gridData } = this.state;
-        const { initGridData } = this.props;
+        const initGridData = domain.getGridData(appPropertiesOnly);
 
         const updatedGridData = gridData.map(row => {
             const nextRowIndex = initGridData.findIndex(nextRow => nextRow.get('fieldIndex') === row.get('fieldIndex'));
@@ -113,8 +115,9 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
     };
 
     uponRowSelection = (): void => {
+        const { appPropertiesOnly, domain } = this.props;
         const { gridData } = this.state;
-        const { initGridData } = this.props;
+        const initGridData = domain.getGridData(appPropertiesOnly);
 
         for (let i = 0; i < gridData.size; i++) {
             const row = gridData.get(i);
@@ -157,8 +160,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
     };
 
     render() {
-        const { gridColumns } = this.props;
-        const { visibleGridData } = this.state;
+        const { visibleGridData, gridColumns } = this.state;
 
         return <Grid data={visibleGridData} columns={gridColumns} headerCell={this.headerCell} condensed={true} calcWidths={true} className="domain-summary-container" />;
     }

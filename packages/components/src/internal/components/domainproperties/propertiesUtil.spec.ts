@@ -77,9 +77,9 @@ describe('domain properties utils', () => {
     });
 
     test('reorderSummaryColumns', () => {
-        // name comes before propertyURI
+        // name comes before shownInDetailsView
         const summaryGrid1 = {index: 'name', caption:'', sortable: true}
-        const summaryGrid2 = {index: 'propertyURI', caption:'', sortable: true}
+        const summaryGrid2 = {index: 'shownInDetailsView', caption:'', sortable: true}
         expect(reorderSummaryColumns(summaryGrid1, summaryGrid2)).toEqual(-1);
 
         // defaultValueType comes after format

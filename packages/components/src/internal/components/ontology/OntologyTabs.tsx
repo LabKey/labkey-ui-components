@@ -12,7 +12,6 @@ const enum OntologyPickerTabs {
 interface OntologyTabsProps {
     root: PathModel;
     setSelectedConcept: (conceptCode: string) => void;
-    loadConcepts: (concepts: ConceptModel[]) => void;
 }
 
 export const OntologyTabs: FC<OntologyTabsProps> = props => {
@@ -33,7 +32,7 @@ export const OntologyTabs: FC<OntologyTabsProps> = props => {
                                 className="ontology-browser-panel-tree-pane"
                                 eventKey={OntologyPickerTabs.ONTOLOGY_TREE_TAB}
                             >
-                                <OntologyTreePanel root={root} onNodeSelection={props.setSelectedConcept} loadConcepts={props.loadConcepts} />
+                                <OntologyTreePanel root={root} onNodeSelection={props.setSelectedConcept} />
                             </Tab.Pane>
                         </Tab.Content>
                     </Col>

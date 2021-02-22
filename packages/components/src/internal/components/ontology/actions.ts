@@ -30,24 +30,8 @@ interface OntologyOptions {
 const ONTOLOGY_CONTROLLER = 'ontology';
 const GET_CHILD_PATHS_ACTION = 'getChildPaths.api';
 const GET_ONTOLOGY_ACTION = 'getOntology.api';
+const GET_CONCEPT_ACTION = 'getConcept.api';
 const SHARED_CONTAINER = 'shared';
-//
-// interface OntologyIdForm {
-//     ontologyId: number;
-// }
-//
-// interface OntologyAbbreviationForm {
-//     abbreviation: string;
-// }
-//
-// type OntologyForm<T extends number | string> = T extends number ? OntologyIdForm : OntologyAbbreviationForm;
-//
-// function getOntologyForm<T extends number | string>(id: T): OntologyForm<T> {
-//     {
-//         'ontologyId': id,
-//         'abbriviation': id,
-//     } as OntologyForm<T>;
-// }
 
 class Ontology {
     static getOntology(ontologyId: string): Promise<OntologyModel> {
@@ -73,13 +57,37 @@ class Ontology {
             });
         });
     }
+
+    static getConcept(code: string): Promise<ConceptModel> {
+        return new Promise<ConceptModel>((resolve, reject) => {
+            const { container } = getServerContext();
+            const form = {
+                code,
+            };
+
+            Ajax.request({
+                url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CONCEPT_ACTION, container?.path, form),
+                method: 'GET',
+                success: Utils.getCallbackWrapper(response => {
+                    resolve(new ConceptModel(response.concept));
+                }),
+                failure: Utils.getCallbackWrapper(
+                    response => {
+                        reject(response);
+                    },
+                    null,
+                    false
+                ),
+            });
+        });
+    }
 }
 
 export function getOntologyDetails(ontologyId: string): Promise<OntologyModel> {
     return Ontology.getOntology(ontologyId);
 }
 
-export function getOntologyChildPathsAndConcepts(ontologyPath: string, container: string = SHARED_CONTAINER): Promise<[PathModel, ConceptModel[]]> {
+export function getOntologyChildPathsAndConcepts(ontologyPath: string, container: string = SHARED_CONTAINER): Promise<PathModel> {
     return new Promise((resolve, reject) => {
         const params = { path: ontologyPath };
         return Ajax.request({
@@ -87,11 +95,10 @@ export function getOntologyChildPathsAndConcepts(ontologyPath: string, container
             // jsonData: params,
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
-                const { parent, concepts } = response;
+                const parent = response.parent;
                 const { path, code, children } = parent;
-                const childPaths = children.map(child => new PathModel(child));
-                const conceptModels = concepts.map(concept => new ConceptModel(concept));
-                resolve([new PathModel({ path, code, children: childPaths }), conceptModels]);
+                const childPaths = children?.map(child => new PathModel(child));
+                resolve(new PathModel({ path, code, children: childPaths }));
             }),
             failure: Utils.getCallbackWrapper(
                 response => {
@@ -104,6 +111,10 @@ export function getOntologyChildPathsAndConcepts(ontologyPath: string, container
     });
 }
 
-export async function fetchOntologyPathsAndConcepts(ontologyPath?: string): Promise<[PathModel, ConceptModel[]]> {
+export async function fetchChildPaths(ontologyPath?: string): Promise<PathModel> {
     return await getOntologyChildPathsAndConcepts(ontologyPath);
+}
+
+export async function fetchConceptForCode(code: string): Promise<ConceptModel> {
+    return await Ontology.getConcept(code);
 }

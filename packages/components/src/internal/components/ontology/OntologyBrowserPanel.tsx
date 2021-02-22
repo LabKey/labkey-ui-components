@@ -5,39 +5,12 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { OntologyTabs } from './OntologyTabs';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
-import { getOntologyDetails } from './actions';
+import { fetchConceptForCode, getOntologyDetails } from './actions';
 import { ConceptModel, OntologyModel, } from './models';
 
 interface OntologyBrowserProps {
     ontologyId?: string;
 }
-
-// class ConceptCache {
-//     readonly loader: (code: string) => Promise<ConceptModel>;
-//     private cache: Map<string, ConceptModel>;
-//
-//     constructor(loader: (code: string) => Promise<ConceptModel>) {
-//         this.loader = loader;
-//         this.cache = new Map<string, ConceptModel>();
-//     }
-//
-//     async get(conceptCode: string): Promise<ConceptModel> {
-//         let concept = this.cache[conceptCode];
-//         if (concept) return concept;
-//
-//         concept = await this.loader(conceptCode);
-//         this.cache.set(conceptCode, concept);
-//         return concept;
-//     }
-// }
-
-// // TODO remove when this becomes dynamic
-// const mockConcept = {
-//     name: 'widgets',
-//     code: 'CodedWidgets',
-//     paths: undefined,
-//     description: 'I am a big long description',
-// } as ConceptModel;
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const { ontologyId } = props;
@@ -60,7 +33,11 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     );
 
     const updateSelectedConceptCode = useCallback(
-        (selectedCode: string): void => {
+        async (selectedCode: string): Promise<void> => {
+            if (!conceptCache.has(selectedCode)) {
+                const concept = await fetchConceptForCode(selectedCode);
+                cacheConcepts([concept]);
+            }
             setSelectedCode(selectedCode);
             console.log(selectedCode); //TODO remove
         },
@@ -83,7 +60,6 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
             ontology={ontology}
             selectedConcept={selectedConcept}
             setSelectedConcept={updateSelectedConceptCode}
-            loadConcepts={cacheConcepts}
         />
     );
 });
@@ -92,7 +68,6 @@ interface ImplProps {
     ontology: OntologyModel;
     selectedConcept?: ConceptModel;
     setSelectedConcept: (conceptCode: string) => void;
-    loadConcepts: (concepts: ConceptModel[]) => void;
 }
 
 export const OntologyBrowserPanelImpl: FC<ImplProps> = memo(props => {

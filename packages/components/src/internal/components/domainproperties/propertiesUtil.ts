@@ -144,7 +144,7 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         'importAliases',
         'url',
         'conditionalFormats',
-        "propertyValidators",
+        'propertyValidators',
         // Advanced Settings
         'hidden',
         'shownInUpdateView',
@@ -159,9 +159,6 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         'dimension',
         'recommendedVariable',
         'mvEnabled',
-        // Misc
-        'propertyId',
-        'propertyURI',
     ];
     return (columnOrder.indexOf(a.index) > columnOrder.indexOf(b.index)) ? 1 : -1;
 }
@@ -183,5 +180,29 @@ export function removeUnusedOntologyProperties(obj) {
         delete obj.conceptLabelColumn;
         delete obj.conceptURI;
     }
+    return obj;
+}
+
+export function removeNonAppProperties(obj) {
+    delete obj.conditionalFormats;
+
+    delete obj.hidden;
+    delete obj.shownInUpdateView;
+    delete obj.shownInInsertView;
+    delete obj.shownInDetailsView;
+    delete obj.defaultValueType;
+    delete obj.defaultValue;
+    delete obj.defaultDisplayValue;
+    delete obj.phi;
+    delete obj.excludeFromShifting;
+    delete obj.measure;
+    delete obj.dimension;
+    delete obj.recommendedVariable;
+    delete obj.mvEnabled;
+
+    delete obj.lookupContainer;
+    delete obj.lookupSchema;
+    delete obj.lookupQuery;
+
     return obj;
 }

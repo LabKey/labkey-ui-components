@@ -66,7 +66,7 @@ import {
     removeUnusedProperties,
     removeFalseyObjKeys,
     removeUnusedOntologyProperties,
-    reorderSummaryColumns
+    reorderSummaryColumns, removeNonAppProperties
 } from "./propertiesUtil";
 
 export interface IFieldChange {
@@ -309,11 +309,14 @@ export class DomainDesign
         return mapping;
     }
 
-    getGridData(): List<any> {
+    getGridData(appPropertiesOnly: boolean): List<any> {
         return this.fields.map((field, i) => {
             let fieldSerial = DomainField.serialize(field);
             fieldSerial = removeUnusedProperties(fieldSerial);
             fieldSerial = removeUnusedOntologyProperties(fieldSerial);
+            if (appPropertiesOnly) {
+                fieldSerial = removeNonAppProperties(fieldSerial);
+            }
 
             fieldSerial['fieldIndex'] = i;
             // Add back subset of field properties stripped by the serialize
@@ -348,7 +351,8 @@ export class DomainDesign
     getGridColumns(
         onFieldsChange: DomainOnChange,
         scrollFunction: (i: number) => void,
-        domainKindName: string
+        domainKindName: string,
+        appPropertiesOnly: boolean
     ): List<GridColumn | DomainPropertiesGridColumn> {
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,
@@ -401,7 +405,10 @@ export class DomainDesign
         delete columns.name;
         columns = removeUnusedProperties(columns);
         columns = removeUnusedOntologyProperties(columns);
-
+        if (appPropertiesOnly) {
+            columns = removeNonAppProperties(columns);
+        }
+        console.log("domainKindName", domainKindName);
         if (domainKindName !== 'List') {
             delete columns.isPrimaryKey;
         }

@@ -42,4 +42,5 @@ OntologyBrowserPanelStory.storyName = 'OntologyBrowserPanel';
 OntologyBrowserPanelStory.args = {
     ontology: baseOntologyModel,
     selectedConcept: undefined,
+    setSelectedConcept: (conceptCode => console.log(conceptCode))
 };

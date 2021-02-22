@@ -21,7 +21,6 @@ export function processChartData(response: ISelectRowsResult, options?: ProcessC
     const colorPath = options?.colorPath;
     const idPath = options?.idPath ?? ['RowId', 'value'];
     const namePath = options?.namePath ?? ['Name', 'value'];
-    console.log(countPath, colorPath, idPath, namePath);
 
     const rows = fromJS(response.models[response.key]);
 

@@ -1,42 +1,42 @@
-export class ConceptModel {
-    label: string;
-    code: string;
-    paths: string[];
-    description: string;
+import { immerable } from "immer";
 
-    constructor(values: { [key: string]: any }) {
+export class ConceptModel {
+    [immerable] = true;
+
+    readonly label: string;
+    readonly code: string;
+    readonly paths: string[];
+    readonly description: string;
+
+    constructor(values?: Partial<ConceptModel>) {
         Object.assign(this, values);
     }
 }
 
-// export interface PathModel {
-//     label: string;
-//     fullpath: string;
-//     pathIdx: number;
-//     conceptCode: string;
-//     children?: PathModel[];
-// }
-
 export class PathModel {
-    path: string;
-    code: string;
-    label: string;
-    hasChildren: boolean;
-    children: PathModel[];
+    [immerable] = true;
 
-    constructor(values: { [key: string]: any }) {
+    readonly path: string;
+    readonly code: string;
+    readonly label: string;
+    readonly hasChildren: boolean;
+    readonly children: PathModel[];
+
+    constructor(values?: Partial<PathModel>) {
         Object.assign(this, values);
     }
 }
 
 export class OntologyModel {
+    [immerable] = true;
+
     readonly name: string;
     readonly description: string;
     readonly rowId: number;
     readonly abbreviation: string;
     readonly path: string;
     readonly conceptCount: number;
-    children: PathModel[] = undefined;
+    readonly children: PathModel[] = undefined;
 
     constructor(values?: Partial<OntologyModel>) {
         Object.assign(this, values);

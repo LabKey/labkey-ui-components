@@ -1,31 +1,6 @@
-import * as Path from 'path';
-
 import { ActionURL, Ajax, getServerContext, Utils } from '@labkey/api';
 
 import { ConceptModel, OntologyModel, PathModel } from './models';
-
-interface OntologyOptions {
-    ontologyId: string | number;
-    success: (model: OntologyModel) => void;
-    failure: (resp: { [key: string]: any }) => any;
-}
-
-// //TODO remove
-// const mockResponse = new OntologyModel({
-//     path: '/NCIT/',
-//     name: 'My Ontology',
-//     conceptCount: 65,
-//     concepts: [],
-//     paths: [
-//         // new PathModel({
-//         //     path: '/',
-//         //     label: 'Ontologies',
-//         //     code: 'NCIT',
-//         //     hasChildren: true,
-//         //     children: [],
-//         // }),
-//     ],
-// });
 
 const ONTOLOGY_CONTROLLER = 'ontology';
 const GET_CHILD_PATHS_ACTION = 'getChildPaths.api';
@@ -37,12 +12,11 @@ class Ontology {
     static getOntology(ontologyId: string): Promise<OntologyModel> {
         return new Promise<OntologyModel>((resolve, reject) => {
             const { container } = getServerContext();
-            const form = {
-                abbreviation: ontologyId,
-            };
 
             Ajax.request({
-                url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_ONTOLOGY_ACTION, container?.path, form),
+                url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_ONTOLOGY_ACTION, container?.path, {
+                    abbreviation: ontologyId,
+                }),
                 method: 'GET',
                 success: Utils.getCallbackWrapper(response => {
                     resolve(new OntologyModel(response));
@@ -61,12 +35,11 @@ class Ontology {
     static getConcept(code: string): Promise<ConceptModel> {
         return new Promise<ConceptModel>((resolve, reject) => {
             const { container } = getServerContext();
-            const form = {
-                code,
-            };
 
             Ajax.request({
-                url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CONCEPT_ACTION, container?.path, form),
+                url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CONCEPT_ACTION, container?.path, {
+                    code,
+                }),
                 method: 'GET',
                 success: Utils.getCallbackWrapper(response => {
                     resolve(new ConceptModel(response.concept));
@@ -89,10 +62,10 @@ export function getOntologyDetails(ontologyId: string): Promise<OntologyModel> {
 
 export function getOntologyChildPathsAndConcepts(ontologyPath: string, container: string = SHARED_CONTAINER): Promise<PathModel> {
     return new Promise((resolve, reject) => {
-        const params = { path: ontologyPath };
         return Ajax.request({
-            url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CHILD_PATHS_ACTION, container, params),
-            // jsonData: params,
+            url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CHILD_PATHS_ACTION, container, {
+                path: ontologyPath
+            }),
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 const parent = response.parent;

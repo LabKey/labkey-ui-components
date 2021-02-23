@@ -9,12 +9,11 @@ import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { OntologyTreePanel } from './OntologyTreePanel';
 
 interface OntologyBrowserProps {
-    ontologyId?: string;
+    ontologyId: string;
 }
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const { ontologyId } = props;
-
     const [ontology, setOntologyModel] = useState<OntologyModel>();
     const [selectedConceptCode, setSelectedCode] = useState<string>();
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>();
@@ -47,11 +46,10 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         getOntologyDetails(ontologyId).then(details => {
             setOntologyModel(details);
         });
-    }, [setOntologyModel]);
+    }, [setOntologyModel, ontologyId]);
 
     useEffect(() => {
-        const newConcept = conceptCache.get(selectedConceptCode);
-        setSelectedConcept(newConcept);
+        setSelectedConcept(conceptCache.get(selectedConceptCode));
     }, [selectedConceptCode, conceptCache, setSelectedConcept]);
 
     return (

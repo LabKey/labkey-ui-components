@@ -16,12 +16,12 @@ export class OntologyPath {
 type PathNode = OntologyPath & TreeNode;
 
 interface OntologyTreeProps {
-    root?: PathModel;
-    onNodeSelection?: (conceptCode: string) => void;
+    root: PathModel;
+    onNodeSelection: (conceptCode: string) => void;
 }
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
-    const { root, onNodeSelection, } = props;
+    const { root, onNodeSelection } = props;
     const loadData = useCallback(
         async (ontologyPath: string = root.path): Promise<PathNode[]> => {
             const ontPath = await fetchChildPaths(ontologyPath);

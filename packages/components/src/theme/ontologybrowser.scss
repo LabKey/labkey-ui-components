@@ -29,16 +29,36 @@
 
 
 /* CONCEPT OVERVIEW */
-.ontology-concept-overview-title {
-    font-size: 40px;
-}
+.ontology-concept-overview-container {
+    padding-top: 20px;
 
-.ontology-concept-overview-description-title {
-    font-weight: bold;
-}
+    .none-selected {
+        font-size: 20px;
+        color: $gray-light;
+    }
 
-.ontology-concept-overview-description-text {
+    .title, .description-title, .description-text {
+        color: $text-color;
+    }
 
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .description-title {
+        font-weight: bold;
+        padding-top: 30px;
+    }
+
+    .code {
+        display: inline-block;
+        padding: 5px;
+        border: solid $gray-no-highlight 1px;
+        border-radius: 2px;
+        background-color: $light-gray;
+        font-size: 14px;
+    }
 }
 
 

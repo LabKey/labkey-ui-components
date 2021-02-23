@@ -6,7 +6,7 @@ import {
     OntologyBrowserPanelImpl,
     OntologyBrowserPanelImplProps,
 } from '../internal/components/ontology/OntologyBrowserPanel';
-import { OntologyModel, PathModel } from '../internal/components/ontology/models';
+import { ConceptModel, OntologyModel, PathModel } from '../internal/components/ontology/models';
 
 export default {
     title: 'Components/OntologyBrowserPanel',
@@ -24,13 +24,19 @@ const mockRoot = new PathModel({
     children: [],
 });
 
-const baseOntologyModel = new OntologyModel({
+const ontology = new OntologyModel({
     name: mockRoot.label,
     conceptCount: 160426,
     abbreviation: mockRoot.code,
     description: 'Test ontology description',
     rowId: 42,
     path: mockRoot.path,
+});
+
+const selectedConcept = new ConceptModel({
+    code: 'NCIT:ST1000003',
+    label: 'Cell or Molecular Dysfunction',
+    description: 'This is the description for the Cell or Molecular Dysfunction code.',
 });
 
 export const OntologyBrowserPanelStory: Story<OntologyBrowserPanelImplProps> = props => (
@@ -40,7 +46,7 @@ export const OntologyBrowserPanelStory: Story<OntologyBrowserPanelImplProps> = p
 OntologyBrowserPanelStory.storyName = 'OntologyBrowserPanel';
 
 OntologyBrowserPanelStory.args = {
-    ontology: baseOntologyModel,
-    selectedConcept: undefined,
+    ontology,
+    selectedConcept,
     setSelectedConcept: (conceptCode => console.log(conceptCode))
 };

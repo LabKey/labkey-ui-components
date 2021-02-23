@@ -464,7 +464,6 @@ import {
 } from './internal/components/samples/models';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
-import { OntologyTabs } from './internal/components/ontology/OntologyTabs';  //TODO Remove
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -979,5 +978,4 @@ export {
     createMockWithRouterProps,
     // Ontology
     OntologyBrowserPanel,
-    OntologyTabs, // TODO remove, using here to simplify development but likely will never be used as individual component
 };

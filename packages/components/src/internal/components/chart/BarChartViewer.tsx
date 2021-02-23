@@ -12,6 +12,7 @@ import {
     LoadingSpinner,
     RequiresPermission,
     SampleEmptyAlert,
+    SampleTypeEmptyAlert,
     Section,
     selectRows,
     Tip,
@@ -19,6 +20,7 @@ import {
 } from '../../..';
 
 import { ASSAYS_KEY, getDateFormat, SAMPLES_KEY } from '../../app';
+
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
 import { ChartConfig, ChartData, ChartSelector } from './types';
@@ -150,19 +152,15 @@ export class BarChartViewer extends PureComponent<Props, State> {
             body = <LoadingSpinner />;
         } else if (!hasSectionItems) {
             if (selectedGroup.key === SAMPLES_KEY) {
-                body = <SampleEmptyAlert className="margin-top" user={user} />;
+                body = <SampleTypeEmptyAlert user={user} />;
             } else if (selectedGroup.key === ASSAYS_KEY) {
-                body = <AssayDesignEmptyAlert className="margin-top" user={user} />;
+                body = <AssayDesignEmptyAlert user={user} />;
             }
         } else if (!hasData) {
             if (selectedGroup.key === SAMPLES_KEY) {
-                body = <SampleEmptyAlert className="margin-top" user={user} />;
+                body = <SampleEmptyAlert user={user} />;
             } else if (selectedGroup.key === ASSAYS_KEY) {
-                body = (
-                    <Alert bsStyle="warning" className="margin-top">
-                        No assay runs have been imported.
-                    </Alert>
-                );
+                body = <Alert bsStyle="warning">No assay runs have been imported.</Alert>;
             }
         } else {
             const { barFillColors, data } = processChartData(response, {
@@ -236,7 +234,7 @@ export class BarChartViewer extends PureComponent<Props, State> {
                         </div>
                     </RequiresPermission>
                 )}
-                {body}
+                <div className="margin-top">{body}</div>
             </Section>
         );
     }

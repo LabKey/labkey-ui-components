@@ -89,6 +89,6 @@ describe('<RecentAssayPanel/>', () => {
         expect(wrapper.find('MenuItem').exists()).toEqual(false);
 
         // Expect <AssayDesignEmptyAlert /> to be displayed
-        expect(wrapper.find('.assay-design-empty').exists()).toEqual(true);
+        expect(wrapper.find('.empty-alert').exists()).toEqual(true);
     });
 });

@@ -1,26 +1,21 @@
-import React, { FC, memo, useMemo } from 'react';
-import classNames from 'classnames';
+import React, { FC, memo } from 'react';
+import { PermissionTypes } from '@labkey/api';
 
-import { Alert, User, App } from '../../..';
+import { App } from '../../..';
+import { EmptyAlertWithPermissions, EmptyAlertWithPermissionsProps } from '../base/EmptyAlert';
 
-interface Props {
-    className?: string;
+interface Props extends EmptyAlertWithPermissionsProps {
     message?: string;
-    user: User;
 }
 
-export const AssayDesignEmptyAlert: FC<Props> = memo(({ className, message, user }) => {
-    const prefix = message ?? 'No assays have been created.';
-    const hasPermission = useMemo(() => user.hasDesignAssaysPermission(), [user]);
-
+export const AssayDesignEmptyAlert: FC<Props> = memo(props => {
+    const { message, ...baseProps } = props;
     return (
-        <Alert bsStyle="warning" className={classNames('assay-design-empty', className)}>
-            {hasPermission && (
-                <>
-                    {prefix} Click <a href={App.NEW_ASSAY_DESIGN_HREF.toHref()}>here</a> to get started.
-                </>
-            )}
-            {!hasPermission && prefix}
-        </Alert>
+        <EmptyAlertWithPermissions
+            {...baseProps}
+            actionURL={App.NEW_ASSAY_DESIGN_HREF}
+            message={message ?? 'No assays have been created.'}
+            permission={PermissionTypes.DesignAssay}
+        />
     );
 });

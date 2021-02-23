@@ -136,9 +136,8 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         'sourceOntology',
         'conceptImportColumn',
         'conceptLabelColumn',
-        // Sample or Ontology option
-        'conceptURI',
         // Other expanded field options
+        'conceptURI', // ParticipantId, Flag, Sample, and Ontology Lookup
         'scale',
         'description',
         'label',

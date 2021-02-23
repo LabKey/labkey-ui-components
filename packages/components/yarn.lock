@@ -1364,10 +1364,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.1.9-fb-biologics-home-page.0":
-  version "1.1.9-fb-biologics-home-page.0"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.9-fb-biologics-home-page.0.tgz#1f7f7eb06f4bc7e741c8dc17cae581c4a503f440"
-  integrity sha1-H39+sG9Lx+dByNwXyuWBxKUD9EA=
+"@labkey/api@1.1.9-fb-biologics-home-page.1":
+  version "1.1.9-fb-biologics-home-page.1"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.9-fb-biologics-home-page.1.tgz#25ff52f0fa61c7a92aacfcdfb928458bdd199762"
+  integrity sha1-Jf9S8Pphx6kqrPzfuShFi90Zl2I=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"

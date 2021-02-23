@@ -6035,7 +6035,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   <FormControl
                                                                                     bsClass="form-control"
                                                                                     componentClass="select"
-                                                                                    disabled={true}
+                                                                                    disabled={false}
                                                                                     id="domainpropertiesrow-type-0-0"
                                                                                     name="domainpropertiesrow-type"
                                                                                     onChange={[Function]}
@@ -6043,7 +6043,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   >
                                                                                     <select
                                                                                       className="form-control"
-                                                                                      disabled={true}
+                                                                                      disabled={false}
                                                                                       id="domainpropertiesrow-type-0-0"
                                                                                       name="domainpropertiesrow-type"
                                                                                       onChange={[Function]}
@@ -8346,7 +8346,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   <FormControl
                                                                                     bsClass="form-control"
                                                                                     componentClass="select"
-                                                                                    disabled={true}
+                                                                                    disabled={false}
                                                                                     id="domainpropertiesrow-type-0-1"
                                                                                     name="domainpropertiesrow-type"
                                                                                     onChange={[Function]}
@@ -8354,7 +8354,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   >
                                                                                     <select
                                                                                       className="form-control"
-                                                                                      disabled={true}
+                                                                                      disabled={false}
                                                                                       id="domainpropertiesrow-type-0-1"
                                                                                       name="domainpropertiesrow-type"
                                                                                       onChange={[Function]}
@@ -10568,7 +10568,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   <FormControl
                                                                                     bsClass="form-control"
                                                                                     componentClass="select"
-                                                                                    disabled={true}
+                                                                                    disabled={false}
                                                                                     id="domainpropertiesrow-type-0-2"
                                                                                     name="domainpropertiesrow-type"
                                                                                     onChange={[Function]}
@@ -10576,7 +10576,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   >
                                                                                     <select
                                                                                       className="form-control"
-                                                                                      disabled={true}
+                                                                                      disabled={false}
                                                                                       id="domainpropertiesrow-type-0-2"
                                                                                       name="domainpropertiesrow-type"
                                                                                       onChange={[Function]}

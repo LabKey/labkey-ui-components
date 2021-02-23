@@ -806,7 +806,7 @@ exports[`DomainRow Sample Field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={true}
+                                            disabled={false}
                                             id="domainpropertiesrow-type-1-0"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -814,7 +814,7 @@ exports[`DomainRow Sample Field 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={true}
+                                              disabled={false}
                                               id="domainpropertiesrow-type-1-0"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}
@@ -5091,7 +5091,7 @@ exports[`DomainRow date time field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={true}
+                                            disabled={false}
                                             id="domainpropertiesrow-type-1-0"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -5099,7 +5099,7 @@ exports[`DomainRow date time field 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={true}
+                                              disabled={false}
                                               id="domainpropertiesrow-type-1-0"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}
@@ -7358,7 +7358,7 @@ exports[`DomainRow decimal field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={true}
+                                            disabled={false}
                                             id="domainpropertiesrow-type-1-2"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -7366,7 +7366,7 @@ exports[`DomainRow decimal field 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={true}
+                                              disabled={false}
                                               id="domainpropertiesrow-type-1-2"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}
@@ -9660,7 +9660,7 @@ exports[`DomainRow participant id field 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={true}
+                                            disabled={false}
                                             id="domainpropertiesrow-type-1-0"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -9668,7 +9668,7 @@ exports[`DomainRow participant id field 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={true}
+                                              disabled={false}
                                               id="domainpropertiesrow-type-1-0"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}
@@ -13740,7 +13740,7 @@ exports[`DomainRow string field test 1`] = `
                                           <FormControl
                                             bsClass="form-control"
                                             componentClass="select"
-                                            disabled={true}
+                                            disabled={false}
                                             id="domainpropertiesrow-type-1-1"
                                             name="domainpropertiesrow-type"
                                             onChange={[Function]}
@@ -13748,7 +13748,7 @@ exports[`DomainRow string field test 1`] = `
                                           >
                                             <select
                                               className="form-control"
-                                              disabled={true}
+                                              disabled={false}
                                               id="domainpropertiesrow-type-1-1"
                                               name="domainpropertiesrow-type"
                                               onChange={[Function]}

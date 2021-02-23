@@ -1,36 +1,12 @@
 .ontology-browser-container {
-
+    .right-panel {
+        padding-left: 20px;
+    }
 }
-.ontology-browser-left-panel {
-
-}
-.ontology-browser-panel-right-panel {
-    box-sizing: border-box;
-}
-
-//.ontology-browser-title-name {
-//    font-size: 60px;
-//    font-weight: bold;
-//}
-.ontology-browser-title-count {
-}
-
-.ontology-browser-body-panel {
-    padding-bottom: 0;
-}
-
-.ontology-browser-panel-tree-pane {
-    box-sizing: border-box;
-    //height: 357px;
-    //width: 371px;
-    border: 1px solid #979797;
-    //border-radius: 1px;
-}
-
 
 /* CONCEPT OVERVIEW */
 .ontology-concept-overview-container {
-    padding-top: 20px;
+    padding-top: 10px;
 
     .none-selected {
         font-size: 20px;
@@ -58,6 +34,16 @@
         border-radius: 2px;
         background-color: $light-gray;
         font-size: 14px;
+    }
+}
+
+/* PATH INFORMATION */
+.ontology-concept-pathinfo-container {
+    padding-top: 10px;
+
+    .placeholder {
+        font-size: 20px;
+        color: $gray-light;
     }
 }
 

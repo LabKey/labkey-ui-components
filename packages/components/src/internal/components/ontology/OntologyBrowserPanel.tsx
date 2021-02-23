@@ -3,10 +3,10 @@ import { Col, Row } from 'react-bootstrap';
 
 import { LoadingSpinner } from '../../..';
 
-import { OntologyTabs } from './OntologyTabs';
-import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { fetchConceptForCode, getOntologyDetails } from './actions';
 import { ConceptModel, OntologyModel } from './models';
+import { ConceptInformationTabs } from './ConceptInformationTabs';
+import { OntologyTreePanel } from './OntologyTreePanel';
 
 interface OntologyBrowserProps {
     ontologyId?: string;
@@ -39,7 +39,6 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
                 cacheConcepts([concept]);
             }
             setSelectedCode(selectedCode);
-            console.log(selectedCode); //TODO remove
         },
         [setSelectedConcept, conceptCache]
     );
@@ -71,7 +70,7 @@ export interface OntologyBrowserPanelImplProps {
 }
 
 export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
-    const { ontology, selectedConcept, ...rest } = props;
+    const { ontology, selectedConcept, setSelectedConcept } = props;
 
     if (!ontology) {
         return <LoadingSpinner />;
@@ -81,16 +80,15 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
     return (
         <>
             <div className="panel panel-default ontology-browser-container">
-                <div className="ontology-browser-title">
-                    <div className="panel-heading">{ontology.name}</div>
-                </div>
-                <div className="panel-body ontology-browser-body-panel">
-                    <div className="ontology-browser-title-count">{ontology.conceptCount} total concepts </div>
+                <div className="panel-heading">Browse {ontology.name}</div>
+                <div className="panel-body">
                     <Row>
-                        <Col xs={3} className="ontology-browser-left-panel no-padding">
-                            <OntologyTabs root={root} {...rest} />
+                        <Col xs={6} className="left-panel">
+                            {/*TODO should we put any of the other ontology metadata here?*/}
+                            <p>{ontology.conceptCount} total concepts</p>
+                            <OntologyTreePanel root={root} onNodeSelection={setSelectedConcept} />
                         </Col>
-                        <Col xs={9} className="ontology-browser-panel-right-panel">
+                        <Col xs={6} className="right-panel">
                             <ConceptInformationTabs concept={selectedConcept} />
                         </Col>
                     </Row>

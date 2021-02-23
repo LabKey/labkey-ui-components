@@ -1,10 +1,7 @@
 import React, { FC, useCallback } from 'react';
-
 import { TreeNode } from 'react-treebeard';
 
-import { naturalSortByProperty } from '../../../public/sort';
-
-import { FileTree } from '../files/FileTree';
+import { naturalSortByProperty, FileTree } from '../../..';
 
 import { PathModel } from './models';
 import { fetchChildPaths } from './actions';
@@ -43,20 +40,17 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
     );
 
     const onSelect = (a: string, b: string, c: boolean, d: boolean, node: PathNode): boolean => {
-        console.log([a, b, c, d, node]);  //TODO remove
         onNodeSelection(node?.conceptCode);
         return true;
     };
 
     return (
-        <div className="ontology-browser-tree-container padding-right">
-            <FileTree
-                loadData={loadData}
-                onFileSelect={onSelect}
-                allowMultiSelect={false}
-                showNodeIcon={false}
-                defaultRootName={root.label}
-            />
-        </div>
+        <FileTree
+            loadData={loadData}
+            onFileSelect={onSelect}
+            allowMultiSelect={false}
+            showNodeIcon={false}
+            defaultRootName={root.label}
+        />
     );
 };

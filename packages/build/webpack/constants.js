@@ -209,20 +209,30 @@ module.exports = {
                         babelrc: false,
                         cacheDirectory: true,
                         presets: [
-                            [
-                                "@babel/preset-env",
-                                {
-                                    // support async/await
-                                    "targets": "last 2 versions, not dead, not IE 11, > 5%",
-                                }
-                            ],
-                            "@babel/preset-react",
-                            "@babel/preset-typescript",
+                            "@babel/preset-env",
+                            {
+                                // support async/await
+                                "targets": "last 2 versions, not dead, not IE 11, > 5%",
+                            }
                         ],
                         plugins: [
                             "react-hot-loader/babel",
                             "const-enum",
-                            "@babel/proposal-class-properties",
+
+                            // These make up @babel/preset-react
+                            "@babel/plugin-syntax-jsx",
+                            "@babel/plugin-transform-react-jsx",
+                            "@babel/plugin-transform-react-display-name",
+
+                            // These make up @babel/preset-typescript
+                            ["@babel/plugin-transform-typescript", {
+                                allExtensions: true,
+                                allowDeclareFields: true,
+                                isTSX: true,
+                                // onlyRemoveTypeImports: true,
+                            }],
+
+                            ["@babel/proposal-class-properties", { loose: true }],
                             "@babel/proposal-object-rest-spread",
                         ]
                     }

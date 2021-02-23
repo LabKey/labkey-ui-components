@@ -89,7 +89,7 @@ module.exports = {
 
     optimization: {
         // do not emit compiled assets that include errors
-        noEmitOnErrors: true,
+        emitOnErrors: false,
     },
 
     plugins: [

@@ -88,6 +88,13 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const { gridData } = this.state;
         const initGridData = domain.getGridData(appPropertiesOnly);
 
+        // Handle bug that occurs if multiple fields have the same name
+        let replaceGridData = (new Set(gridData.map(row => row.get('name')).toJS())).size !== gridData.size;
+        if (replaceGridData) {
+            this.setState({ gridData: initGridData, visibleGridData: this.getVisibleGridData(initGridData) });
+            return;
+        }
+
         const updatedGridData = gridData.reduce((updatedGridData, row) => {
             const newRowIndex = initGridData.findIndex(newRow => newRow.get('name') === row.get('name'));
             return newRowIndex !== -1

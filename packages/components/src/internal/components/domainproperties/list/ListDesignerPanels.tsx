@@ -245,7 +245,7 @@ class ListDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDom
             submitting,
             onTogglePanel,
             saveBtnText,
-            testMode
+            testMode,
         } = this.props;
         const { model, file, importError } = this.state;
 

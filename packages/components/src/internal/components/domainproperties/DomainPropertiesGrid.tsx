@@ -4,7 +4,7 @@ import { List } from 'immutable';
 
 import { Checkbox } from 'react-bootstrap';
 
-import {DomainDesign, Grid, GridColumn, IFieldChange} from '../../..';
+import { DomainDesign, Grid, GridColumn, IFieldChange } from '../../..';
 import { headerCell } from '../../renderers';
 
 import { GRID_SELECTION_INDEX } from '../../constants';
@@ -42,7 +42,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
         // TODO: Maintain hash of fieldIndex : gridIndex on state in order to make delete and filter run in N rather than N^2 time.
         this.state = {
-            gridData: gridData,
+            gridData,
             gridColumns: domain.getGridColumns(onFieldsChange, scrollFunction, domainKindName, appPropertiesOnly),
             visibleGridData: this.getVisibleGridData(gridData),
             search: this.props.search,
@@ -73,7 +73,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
     getVisibleGridData = (gridData: List<any>): List<any> => {
         return gridData.filter(row => row.get('visible')) as List<any>;
-    }
+    };
 
     uponRowAdd = (newGridData: List<any>): void => {
         const { gridData, visibleGridData } = this.state;
@@ -81,7 +81,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const updatedVisibleGridData = visibleGridData.push(newGridData.get(-1));
 
         this.setState({ gridData: updatedGridData, visibleGridData: updatedVisibleGridData });
-    }
+    };
 
     uponRowDelete = (): void => {
         const { appPropertiesOnly, domain } = this.props;
@@ -90,7 +90,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
 
         const updatedGridData = gridData.reduce((updatedGridData, row) => {
             const newRowIndex = initGridData.findIndex(newRow => newRow.get('name') === row.get('name'));
-            return (newRowIndex !== -1)
+            return newRowIndex !== -1
                 ? updatedGridData.set(updatedGridData.size, row.set('fieldIndex', newRowIndex))
                 : updatedGridData;
         }, List());
@@ -162,6 +162,14 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
     render() {
         const { visibleGridData, gridColumns } = this.state;
 
-        return <Grid data={visibleGridData} columns={gridColumns} headerCell={this.headerCell} condensed={true} calcWidths={true} />;
+        return (
+            <Grid
+                data={visibleGridData}
+                columns={gridColumns}
+                headerCell={this.headerCell}
+                condensed={true}
+                calcWidths={true}
+            />
+        );
     }
 }

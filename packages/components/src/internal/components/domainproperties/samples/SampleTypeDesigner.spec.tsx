@@ -18,7 +18,7 @@ const BASE_PROPS = {
     initModel: undefined,
     onComplete: jest.fn(),
     onCancel: jest.fn(),
-    testMode: true
+    testMode: true,
 };
 
 beforeAll(() => {

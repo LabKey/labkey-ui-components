@@ -18,6 +18,7 @@ import { Utils } from '@labkey/api';
 
 import { hasParameter, toggleParameter } from '../url/ActionURL'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular loading
 import { QueryInfo } from '../../public/QueryInfo';
+
 import { parseDate } from './Date';
 
 const emptyList = List<string>();
@@ -94,7 +95,7 @@ function toLowerReducer(s: Set<string>, v: string): Set<string> {
 
 export function camelCaseToTitleCase(text: string) {
     const camelEdges = /([A-Z](?=[A-Z][a-z])|[^A-Z](?=[A-Z])|[a-zA-Z](?=[^a-zA-Z]))/g;
-    const saferText = text.replace(camelEdges,'$1 ');
+    const saferText = text.replace(camelEdges, '$1 ');
     return saferText.charAt(0).toUpperCase() + saferText.slice(1);
 }
 

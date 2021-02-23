@@ -23,7 +23,7 @@ import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip} from '../../..';
+import { DeleteIcon, DragDropHandle, FieldExpansionToggle, LabelHelpTip } from '../../..';
 
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
@@ -114,12 +114,12 @@ export class DomainRow extends React.PureComponent<IDomainRowProps, IDomainRowSt
             isDragDisabled: props.isDragDisabled,
         };
 
-        this[`${props.index}_ref`] = React.createRef()
+        this[`${props.index}_ref`] = React.createRef();
     }
 
     // Used in DomainPropertiesGrid
     scrollIntoView = () => {
-        this[`${this.props.index}_ref`].current.scrollIntoView({ behavior: "smooth" });
+        this[`${this.props.index}_ref`].current.scrollIntoView({ behavior: 'smooth' });
     };
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<IDomainRowProps>, nextContext: any): void {

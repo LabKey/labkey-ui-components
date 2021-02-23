@@ -374,7 +374,7 @@ export class Grid extends React.PureComponent<GridProps> {
             tableRef,
             transpose,
             highlightRowIndexes,
-            className
+            className,
         } = this.props;
 
         const gridData = processData(data);
@@ -409,7 +409,7 @@ export class Grid extends React.PureComponent<GridProps> {
 
         const wrapperClasses = classNames({
             'table-responsive': responsive,
-            [className]: className
+            [className]: className,
         });
 
         return (

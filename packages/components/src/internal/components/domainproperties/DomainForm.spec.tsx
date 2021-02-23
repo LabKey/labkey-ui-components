@@ -885,11 +885,11 @@ describe('DomainForm', () => {
 
     test('with summaryViewMode', () => {
         const fields = [];
-        fields.push({ name: 'Field0'});
-        fields.push({ name: 'Field1'});
-        fields.push({ name: 'Field2'});
+        fields.push({ name: 'Field0' });
+        fields.push({ name: 'Field1' });
+        fields.push({ name: 'Field2' });
 
-        const domain = DomainDesign.create({fields,});
+        const domain = DomainDesign.create({ fields });
         const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
 
         expect(form.find('.domain-field-row').length).toEqual(4);

@@ -147,7 +147,7 @@ class IssuesDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseD
             submitting,
             onTogglePanel,
             saveBtnText,
-            testMode
+            testMode,
         } = this.props;
         const { model } = this.state;
 

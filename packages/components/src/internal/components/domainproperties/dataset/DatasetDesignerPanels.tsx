@@ -475,7 +475,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             containerTop,
             successBsStyle,
             saveBtnText,
-            testMode
+            testMode,
         } = this.props;
 
         const { model, file, keyPropertyIndex, visitDatePropertyIndex, importError } = this.state;

@@ -7,7 +7,7 @@ import {
     getVisibleFieldCount,
     getVisibleSelectedFieldIndexes,
     removeFalseyObjKeys,
-    reorderSummaryColumns
+    reorderSummaryColumns,
 } from './propertiesUtil';
 
 describe('domain properties utils', () => {
@@ -66,25 +66,33 @@ describe('domain properties utils', () => {
 
     test('removeFalseyObjKeys', () => {
         const objBefore = {
-            falsey1: false, falsey2: 0, falsey3: '', falsey4: null, falsey5: undefined, falsey6: NaN,
-            truthy1: true, truthy2: 1, truthy3: 'string'
-        }
+            falsey1: false,
+            falsey2: 0,
+            falsey3: '',
+            falsey4: null,
+            falsey5: undefined,
+            falsey6: NaN,
+            truthy1: true,
+            truthy2: 1,
+            truthy3: 'string',
+        };
         const objAfter = {
-            truthy1: true, truthy2: 1, truthy3: 'string'
-        }
+            truthy1: true,
+            truthy2: 1,
+            truthy3: 'string',
+        };
         expect(removeFalseyObjKeys(objBefore)).toStrictEqual(objAfter);
-
     });
 
     test('reorderSummaryColumns', () => {
         // name comes before shownInDetailsView
-        const summaryGrid1 = {index: 'name', caption:'', sortable: true}
-        const summaryGrid2 = {index: 'shownInDetailsView', caption:'', sortable: true}
+        const summaryGrid1 = { index: 'name', caption: '', sortable: true };
+        const summaryGrid2 = { index: 'shownInDetailsView', caption: '', sortable: true };
         expect(reorderSummaryColumns(summaryGrid1, summaryGrid2)).toEqual(-1);
 
         // defaultValueType comes after format
-        const summaryGrid3 = {index: 'defaultValueType', caption:'', sortable: true}
-        const summaryGrid4 = {index: 'format', caption:'', sortable: true}
+        const summaryGrid3 = { index: 'defaultValueType', caption: '', sortable: true };
+        const summaryGrid4 = { index: 'format', caption: '', sortable: true };
         expect(reorderSummaryColumns(summaryGrid3, summaryGrid4)).toEqual(1);
     });
 });

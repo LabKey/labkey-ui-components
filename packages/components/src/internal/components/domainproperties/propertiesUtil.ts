@@ -17,8 +17,8 @@
 import { List } from 'immutable';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
-import {DomainDesign, DomainField, DomainPropertiesGridColumn} from './models';
-import {hasActiveModule} from "./actions";
+import { DomainDesign, DomainField, DomainPropertiesGridColumn } from './models';
+import { hasActiveModule } from './actions';
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {
@@ -99,8 +99,8 @@ export function getVisibleFieldCount(domain: DomainDesign): number {
 }
 
 export function compareStringsAlphabetically(a: string, b: string, direction): number {
-    const aStr = a ? a.toUpperCase() : "";
-    const bStr = b ? b.toUpperCase() : "";
+    const aStr = a ? a.toUpperCase() : '';
+    const bStr = b ? b.toUpperCase() : '';
     const isAsc = direction === '+';
 
     if (aStr < bStr) {
@@ -113,7 +113,7 @@ export function compareStringsAlphabetically(a: string, b: string, direction): n
 }
 
 export function removeFalseyObjKeys(obj) {
-    return Object.entries(obj).reduce((a,[k,v]) => (v ? (a[k]=v, a) : a), {});
+    return Object.entries(obj).reduce((a, [k, v]) => (v ? ((a[k] = v), a) : a), {});
 }
 
 // columnOrder determines the left-to-right ordering of columns within the domain summary view
@@ -151,7 +151,7 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         'shownInInsertView',
         'shownInDetailsView',
         'defaultValueType',
-        "defaultValue",
+        'defaultValue',
         'defaultDisplayValue',
         'phi',
         'excludeFromShifting', // Appears for datetime fields
@@ -160,7 +160,7 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         'recommendedVariable',
         'mvEnabled',
     ];
-    return (columnOrder.indexOf(a.index) > columnOrder.indexOf(b.index)) ? 1 : -1;
+    return columnOrder.indexOf(a.index) > columnOrder.indexOf(b.index) ? 1 : -1;
 }
 
 export function removeUnusedProperties(obj) {

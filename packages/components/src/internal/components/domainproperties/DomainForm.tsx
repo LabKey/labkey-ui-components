@@ -20,7 +20,7 @@ import { Button, Checkbox, Col, Form, FormControl, Panel, Row } from 'react-boot
 import classNames from 'classnames';
 import { Sticky, StickyContainer } from 'react-sticky';
 
-import {AddEntityButton, ConfirmModal, InferDomainResponse, FileAttachmentForm, Alert, valueIsEmpty} from '../../..';
+import { AddEntityButton, ConfirmModal, InferDomainResponse, FileAttachmentForm, Alert, valueIsEmpty } from '../../..';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
@@ -1155,7 +1155,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             onChange={this.onSearch}
                         />
 
-                        {!testMode &&
+                        {!testMode && (
                             <ToggleWithInputField
                                 active={summaryViewMode}
                                 id={'domain-toggle-summary-' + domainIndex}
@@ -1163,9 +1163,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 on="Summary mode"
                                 off="Detail mode"
                                 containerClassName="domain-toolbar-toggle-summary"
-                                style={{height: '100%', marginLeft: '10px'}} // Inline style necessary for <ReactBootstrapToggle/>
+                                style={{ height: '100%', marginLeft: '10px' }} // Inline style necessary for <ReactBootstrapToggle/>
                             />
-                        }
+                        )}
                     </div>
                 </Col>
             </Row>
@@ -1173,7 +1173,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     scrollFunction = (i: number): void => {
-        this.setState({summaryViewMode: false}, () => {
+        this.setState({ summaryViewMode: false }, () => {
             this.refsArray[i].scrollIntoView();
         });
     };
@@ -1196,7 +1196,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             maxPhiLevel,
             dragId,
             availableTypes,
-            search
+            search,
         } = this.state;
 
         return (
@@ -1275,7 +1275,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { domain, appDomainHeaderRenderer, allowImportExport, appPropertiesOnly } = this.props;
         const { summaryViewMode, search, selectAll } = this.state;
         const hasFields = domain.fields.size > 0;
-        const actions = {toggleSelectAll: this.toggleSelectAll, scrollFunction: this.scrollFunction, onFieldsChange: this.onFieldsChange};
+        const actions = {
+            toggleSelectAll: this.toggleSelectAll,
+            scrollFunction: this.scrollFunction,
+            onFieldsChange: this.onFieldsChange,
+        };
 
         return (
             <>
@@ -1283,8 +1287,8 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 {this.renderPanelHeaderContent()}
                 {appDomainHeaderRenderer && this.renderAppDomainHeader()}
 
-                {hasFields ?
-                    summaryViewMode ?
+                {hasFields ? (
+                    summaryViewMode ? (
                         <DomainPropertiesGrid
                             domain={domain}
                             search={search}
@@ -1292,9 +1296,12 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             actions={actions}
                             appPropertiesOnly={appPropertiesOnly}
                         />
-                        : this.renderDetailedFieldView()
-                    : this.renderEmptyDomain()
-                }
+                    ) : (
+                        this.renderDetailedFieldView()
+                    )
+                ) : (
+                    this.renderEmptyDomain()
+                )}
 
                 {this.renderAddFieldOption()}
             </>

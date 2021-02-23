@@ -17,6 +17,7 @@ import { List, Map } from 'immutable';
 import { Filter } from '@labkey/api';
 
 import { AssayProtocolModel, fetchProtocol, getQueryDetails, SCHEMAS, selectRows } from '../..';
+
 import { AppURL, spliceURL } from './AppURL';
 
 export interface AppRouteResolver {

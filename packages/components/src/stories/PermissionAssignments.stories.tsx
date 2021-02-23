@@ -97,11 +97,7 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
     render() {
         const { title, showUsersOnly, showFilteredRoles } = this.props;
         const rolesToShow = showFilteredRoles
-            ? List<string>([
-                PermissionRoles.FolderAdmin,
-                PermissionRoles.Editor,
-                PermissionRoles.Reader,
-              ])
+            ? List<string>([PermissionRoles.FolderAdmin, PermissionRoles.Editor, PermissionRoles.Reader])
             : undefined;
 
         return (

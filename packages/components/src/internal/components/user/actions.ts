@@ -4,8 +4,9 @@ import { ActionURL, Ajax, PermissionRoles, PermissionTypes, Utils } from '@labke
 
 import { buildURL, caseInsensitive, hasAllPermissions, QueryGridModel, SchemaQuery, User } from '../../..';
 
-import { ChangePasswordModel } from './models';
 import { APPLICATION_SECURITY_ROLES } from '../permissions/constants';
+
+import { ChangePasswordModel } from './models';
 
 export function getUserProperties(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {

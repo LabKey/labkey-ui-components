@@ -3,6 +3,7 @@ import { Filter, Query } from '@labkey/api';
 import { AppURL, App, SCHEMAS, SchemaQuery } from '../../..';
 
 import { ASSAYS_KEY, SAMPLES_KEY } from '../../app';
+
 import { ChartConfig, ChartSelector } from './types';
 
 function fetchItemCount(schemaQuery: SchemaQuery, filters?: Filter.IFilter[]): () => Promise<number> {

@@ -142,11 +142,7 @@ describe('SecurityRole model', () => {
 
         // check that we can filter for an explicit list
         expect(SecurityRole.filter(ROLES, POLICY, List<string>()).size).toBe(0);
-        const roleArr = [
-            PermissionRoles.Editor,
-            PermissionRoles.Author,
-            PermissionRoles.Reader,
-        ];
+        const roleArr = [PermissionRoles.Editor, PermissionRoles.Author, PermissionRoles.Reader];
         expect(SecurityRole.filter(ROLES, POLICY, List<string>(roleArr)).size).toBe(3);
     });
 });

@@ -103,6 +103,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
   }
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
+  testMode={true}
 >
   <AssayDesignerPanelsImpl
     appPropertiesOnly={true}
@@ -212,6 +213,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
     onTogglePanel={[Function]}
     setSubmitting={[Function]}
     submitting={false}
+    testMode={true}
     visitedPanels={Immutable.List []}
   >
     <BaseDomainDesigner
@@ -1714,6 +1716,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -1836,6 +1839,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -2479,6 +2483,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -2601,6 +2606,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -3244,6 +3250,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={false}
         showInferFromFile={true}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -3366,6 +3373,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -4030,7 +4038,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "mvEnabled": false,
               "name": "field1",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -4113,7 +4120,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "mvEnabled": false,
               "name": "field2",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -4196,7 +4202,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "mvEnabled": false,
               "name": "field3",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -4287,6 +4292,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
   }
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
+  testMode={true}
 >
   <AssayDesignerPanelsImpl
     appPropertiesOnly={true}
@@ -4364,7 +4370,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field1",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -4447,7 +4452,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field2",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -4530,7 +4534,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field3",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -4625,6 +4628,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
     onTogglePanel={[Function]}
     setSubmitting={[Function]}
     submitting={false}
+    testMode={true}
     visitedPanels={Immutable.List []}
   >
     <BaseDomainDesigner
@@ -4686,7 +4690,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field1",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -4769,7 +4772,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field2",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -4852,7 +4854,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field3",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -5008,7 +5009,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field1",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -5091,7 +5091,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field2",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -5174,7 +5173,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field3",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -5346,7 +5344,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field1",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -5429,7 +5426,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field2",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -5512,7 +5508,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field3",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -5686,7 +5681,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "mvEnabled": false,
                         "name": "field1",
                         "PHI": undefined,
-                        "primaryKey": undefined,
                         "propertyId": undefined,
                         "propertyURI": undefined,
                         "propertyValidators": Immutable.List [],
@@ -5769,7 +5763,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "mvEnabled": false,
                         "name": "field2",
                         "PHI": undefined,
-                        "primaryKey": undefined,
                         "propertyId": undefined,
                         "propertyURI": undefined,
                         "propertyValidators": Immutable.List [],
@@ -5852,7 +5845,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "mvEnabled": false,
                         "name": "field3",
                         "PHI": undefined,
-                        "primaryKey": undefined,
                         "propertyId": undefined,
                         "propertyURI": undefined,
                         "propertyValidators": Immutable.List [],
@@ -6283,7 +6275,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -6366,7 +6357,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -6449,7 +6439,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -6772,7 +6761,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -6855,7 +6843,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -6938,7 +6925,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -7256,7 +7242,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -7339,7 +7324,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -7422,7 +7406,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -7728,7 +7711,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -7811,7 +7793,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -7894,7 +7875,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -8245,7 +8225,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field1",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -8328,7 +8307,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field2",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -8411,7 +8389,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field3",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -8488,6 +8465,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={true}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -8595,7 +8573,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field1",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -8678,7 +8655,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field2",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -8761,7 +8737,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field3",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -8840,6 +8815,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -9355,7 +9331,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field1",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -9438,7 +9413,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field2",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -9521,7 +9495,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field3",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -9656,7 +9629,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field1",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -9739,7 +9711,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field2",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -9822,7 +9793,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field3",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -9899,6 +9869,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={false}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -9942,7 +9913,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field1",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -10025,7 +9995,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field2",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -10108,7 +10077,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field3",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -10256,7 +10224,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field1",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -10339,7 +10306,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field2",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -10422,7 +10388,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field3",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -10501,6 +10466,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -10905,7 +10871,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                         className="col-xs-8"
                                       >
                                         <div
-                                          className="pull-right"
+                                          className="pull-right domain-field-toolbar-right-aligned"
                                         >
                                           <FormControl
                                             bsClass="form-control"
@@ -11375,7 +11341,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "field1",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -11566,7 +11531,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "field1",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -12178,7 +12142,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "field1",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -12609,7 +12572,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field1",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -13087,7 +13049,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field1",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -13517,7 +13478,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "field2",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -13708,7 +13668,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "field2",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -14320,7 +14279,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "field2",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -14697,7 +14655,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field2",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -15175,7 +15132,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field2",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -15605,7 +15561,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "field3",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -15796,7 +15751,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "field3",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -16408,7 +16362,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "field3",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -16750,7 +16703,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field3",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -17228,7 +17180,6 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field3",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -17727,6 +17678,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
   }
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
+  testMode={true}
 >
   <AssayDesignerPanelsImpl
     currentPanelIndex={0}
@@ -17835,6 +17787,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
     onTogglePanel={[Function]}
     setSubmitting={[Function]}
     submitting={false}
+    testMode={true}
     visitedPanels={Immutable.List []}
   >
     <BaseDomainDesigner
@@ -19609,6 +19562,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -19731,6 +19685,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -20373,6 +20328,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -20495,6 +20451,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -21137,6 +21094,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
         panelStatus="TODO"
         showFilePropertyType={false}
         showInferFromFile={true}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -21259,6 +21217,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -21951,6 +21910,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
   }
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
+  testMode={true}
 >
   <AssayDesignerPanelsImpl
     currentPanelIndex={0}
@@ -22060,6 +22020,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
     onTogglePanel={[Function]}
     setSubmitting={[Function]}
     submitting={false}
+    testMode={true}
     visitedPanels={Immutable.List []}
   >
     <BaseDomainDesigner
@@ -23834,6 +23795,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={true}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -23956,6 +23918,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -24598,6 +24561,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
         panelStatus="TODO"
         showFilePropertyType={false}
         showInferFromFile={true}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -24720,6 +24684,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             showHeader={true}
             showInferFromFile={true}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -25384,7 +25349,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "mvEnabled": false,
               "name": "field1",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -25467,7 +25431,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "mvEnabled": false,
               "name": "field2",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -25550,7 +25513,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "mvEnabled": false,
               "name": "field3",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -25641,6 +25603,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
   }
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
+  testMode={true}
 >
   <AssayDesignerPanelsImpl
     currentPanelIndex={0}
@@ -25718,7 +25681,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field1",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -25801,7 +25763,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field2",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -25884,7 +25845,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field3",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -25979,6 +25939,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
     onTogglePanel={[Function]}
     setSubmitting={[Function]}
     submitting={false}
+    testMode={true}
     visitedPanels={Immutable.List []}
   >
     <BaseDomainDesigner
@@ -26040,7 +26001,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field1",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -26123,7 +26083,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field2",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -26206,7 +26165,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field3",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -26361,7 +26319,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field1",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -26444,7 +26401,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field2",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -26527,7 +26483,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field3",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -26699,7 +26654,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field1",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -26782,7 +26736,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field2",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -26865,7 +26818,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field3",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -27039,7 +26991,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "mvEnabled": false,
                         "name": "field1",
                         "PHI": undefined,
-                        "primaryKey": undefined,
                         "propertyId": undefined,
                         "propertyURI": undefined,
                         "propertyValidators": Immutable.List [],
@@ -27122,7 +27073,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "mvEnabled": false,
                         "name": "field2",
                         "PHI": undefined,
-                        "primaryKey": undefined,
                         "propertyId": undefined,
                         "propertyURI": undefined,
                         "propertyValidators": Immutable.List [],
@@ -27205,7 +27155,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "mvEnabled": false,
                         "name": "field3",
                         "PHI": undefined,
-                        "primaryKey": undefined,
                         "propertyId": undefined,
                         "propertyURI": undefined,
                         "propertyValidators": Immutable.List [],
@@ -27636,7 +27585,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -27719,7 +27667,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -27802,7 +27749,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -28125,7 +28071,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -28208,7 +28153,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -28291,7 +28235,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -28609,7 +28552,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -28692,7 +28634,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -28775,7 +28716,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -29081,7 +29021,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -29164,7 +29103,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -29247,7 +29185,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -29576,7 +29513,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -29659,7 +29595,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -29742,7 +29677,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -30065,7 +29999,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -30148,7 +30081,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -30231,7 +30163,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -30519,7 +30450,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field1",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -30602,7 +30532,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field2",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -30685,7 +30614,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field3",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -30820,7 +30748,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field1",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -30903,7 +30830,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field2",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -30986,7 +30912,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field3",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -31063,6 +30988,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={false}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -31106,7 +31032,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field1",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -31189,7 +31114,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field2",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -31272,7 +31196,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field3",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -31420,7 +31343,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field1",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -31503,7 +31425,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field2",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -31586,7 +31507,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field3",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -31665,6 +31585,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -32069,7 +31990,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                         className="col-xs-8"
                                       >
                                         <div
-                                          className="pull-right"
+                                          className="pull-right domain-field-toolbar-right-aligned"
                                         >
                                           <FormControl
                                             bsClass="form-control"
@@ -32539,7 +32460,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "field1",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -32730,7 +32650,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "field1",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -33360,7 +33279,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "field1",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -33791,7 +33709,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field1",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -34269,7 +34186,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field1",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -34839,7 +34755,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "field2",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -35030,7 +34945,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "field2",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -35660,7 +35574,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "field2",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -36037,7 +35950,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field2",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -36515,7 +36427,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field2",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -37085,7 +36996,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "field3",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -37276,7 +37186,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "field3",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -37906,7 +37815,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "field3",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -38248,7 +38156,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field3",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -38726,7 +38633,6 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field3",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -39337,7 +39243,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "mvEnabled": false,
               "name": "field1",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -39420,7 +39325,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "mvEnabled": false,
               "name": "field2",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -39503,7 +39407,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "mvEnabled": false,
               "name": "field3",
               "PHI": undefined,
-              "primaryKey": undefined,
               "propertyId": undefined,
               "propertyURI": undefined,
               "propertyValidators": Immutable.List [],
@@ -39594,6 +39497,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
   }
   onCancel={[MockFunction]}
   onComplete={[MockFunction]}
+  testMode={true}
 >
   <AssayDesignerPanelsImpl
     currentPanelIndex={0}
@@ -39670,7 +39574,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field1",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -39753,7 +39656,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field2",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -39836,7 +39738,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field3",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -39931,6 +39832,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
     onTogglePanel={[Function]}
     setSubmitting={[Function]}
     submitting={false}
+    testMode={true}
     visitedPanels={Immutable.List []}
   >
     <BaseDomainDesigner
@@ -39992,7 +39894,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field1",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -40075,7 +39976,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field2",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -40158,7 +40058,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field3",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -40313,7 +40212,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field1",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -40396,7 +40294,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field2",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -40479,7 +40376,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field3",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -40651,7 +40547,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field1",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -40734,7 +40629,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field2",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -40817,7 +40711,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field3",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -40991,7 +40884,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "mvEnabled": false,
                         "name": "field1",
                         "PHI": undefined,
-                        "primaryKey": undefined,
                         "propertyId": undefined,
                         "propertyURI": undefined,
                         "propertyValidators": Immutable.List [],
@@ -41074,7 +40966,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "mvEnabled": false,
                         "name": "field2",
                         "PHI": undefined,
-                        "primaryKey": undefined,
                         "propertyId": undefined,
                         "propertyURI": undefined,
                         "propertyValidators": Immutable.List [],
@@ -41157,7 +41048,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "mvEnabled": false,
                         "name": "field3",
                         "PHI": undefined,
-                        "primaryKey": undefined,
                         "propertyId": undefined,
                         "propertyURI": undefined,
                         "propertyValidators": Immutable.List [],
@@ -41588,7 +41478,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -41671,7 +41560,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -41754,7 +41642,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -42077,7 +41964,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -42160,7 +42046,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -42243,7 +42128,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -42561,7 +42445,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -42644,7 +42527,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -42727,7 +42609,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -43033,7 +42914,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -43116,7 +42996,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -43199,7 +43078,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -43528,7 +43406,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -43611,7 +43488,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -43694,7 +43570,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -44017,7 +43892,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field1",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -44100,7 +43974,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field2",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -44183,7 +44056,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "mvEnabled": false,
                                                         "name": "field3",
                                                         "PHI": undefined,
-                                                        "primaryKey": undefined,
                                                         "propertyId": undefined,
                                                         "propertyURI": undefined,
                                                         "propertyValidators": Immutable.List [],
@@ -44522,7 +44394,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field1",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -44605,7 +44476,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field2",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -44688,7 +44558,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field3",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -44765,6 +44634,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={true}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -44872,7 +44742,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field1",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -44955,7 +44824,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field2",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -45038,7 +44906,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field3",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -45117,6 +44984,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -45631,7 +45499,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field1",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -45714,7 +45581,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field2",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -45797,7 +45663,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "mvEnabled": false,
                 "name": "field3",
                 "PHI": undefined,
-                "primaryKey": undefined,
                 "propertyId": undefined,
                 "propertyURI": undefined,
                 "propertyValidators": Immutable.List [],
@@ -45932,7 +45797,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field1",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -46015,7 +45879,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field2",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -46098,7 +45961,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "mvEnabled": false,
                   "name": "field3",
                   "PHI": undefined,
-                  "primaryKey": undefined,
                   "propertyId": undefined,
                   "propertyURI": undefined,
                   "propertyValidators": Immutable.List [],
@@ -46175,6 +46037,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
         panelStatus="COMPLETE"
         showFilePropertyType={false}
         showInferFromFile={false}
+        testMode={true}
         validate={false}
       >
         <LookupProvider>
@@ -46218,7 +46081,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field1",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -46301,7 +46163,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field2",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -46384,7 +46245,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "mvEnabled": false,
                     "name": "field3",
                     "PHI": undefined,
-                    "primaryKey": undefined,
                     "propertyId": undefined,
                     "propertyURI": undefined,
                     "propertyValidators": Immutable.List [],
@@ -46532,7 +46392,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field1",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -46615,7 +46474,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field2",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -46698,7 +46556,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "mvEnabled": false,
                       "name": "field3",
                       "PHI": undefined,
-                      "primaryKey": undefined,
                       "propertyId": undefined,
                       "propertyURI": undefined,
                       "propertyValidators": Immutable.List [],
@@ -46777,6 +46634,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             showHeader={true}
             showInferFromFile={false}
             successBsStyle="success"
+            testMode={true}
             validate={false}
           >
             <ForwardRef
@@ -47181,7 +47039,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                         className="col-xs-8"
                                       >
                                         <div
-                                          className="pull-right"
+                                          className="pull-right domain-field-toolbar-right-aligned"
                                         >
                                           <FormControl
                                             bsClass="form-control"
@@ -47651,7 +47509,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "field1",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -47842,7 +47699,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "field1",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -48472,7 +48328,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "field1",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -48903,7 +48758,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field1",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -49381,7 +49235,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field1",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -49951,7 +49804,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "field2",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -50142,7 +49994,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "field2",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -50772,7 +50623,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "field2",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -51149,7 +50999,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field2",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -51627,7 +51476,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field2",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -52197,7 +52045,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "mvEnabled": false,
                                                             "name": "field3",
                                                             "PHI": undefined,
-                                                            "primaryKey": undefined,
                                                             "propertyId": undefined,
                                                             "propertyURI": undefined,
                                                             "propertyValidators": Immutable.List [],
@@ -52388,7 +52235,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "mvEnabled": false,
                                                                             "name": "field3",
                                                                             "PHI": undefined,
-                                                                            "primaryKey": undefined,
                                                                             "propertyId": undefined,
                                                                             "propertyURI": undefined,
                                                                             "propertyValidators": Immutable.List [],
@@ -53018,7 +52864,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "mvEnabled": false,
                                                                               "name": "field3",
                                                                               "PHI": undefined,
-                                                                              "primaryKey": undefined,
                                                                               "propertyId": undefined,
                                                                               "propertyURI": undefined,
                                                                               "propertyValidators": Immutable.List [],
@@ -53360,7 +53205,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field3",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],
@@ -53838,7 +53682,6 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "mvEnabled": false,
                                                                                         "name": "field3",
                                                                                         "PHI": undefined,
-                                                                                        "primaryKey": undefined,
                                                                                         "propertyId": undefined,
                                                                                         "propertyURI": undefined,
                                                                                         "propertyValidators": Immutable.List [],

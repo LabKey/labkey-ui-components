@@ -26,7 +26,6 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "mvEnabled": false,
       "name": "key",
       "PHI": undefined,
-      "primaryKey": undefined,
       "propertyId": 1,
       "propertyURI": "test",
       "propertyValidators": Immutable.List [],

@@ -44,7 +44,7 @@
     "@fortawesome/free-regular-svg-icons": "5.14.0",
     "@fortawesome/free-solid-svg-icons": "5.14.0",
     "@fortawesome/react-fontawesome": "0.1.11",
-    "@labkey/api": "1.1.8",
+    "@labkey/api": "1.1.9-fb-biologics-home-page.0",
     "bootstrap": "3.4.1",
     "classnames": "2.2.6",
     "font-awesome": "4.7.0",

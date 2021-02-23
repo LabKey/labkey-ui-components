@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { List, fromJS } from 'immutable';
+import { PermissionRoles } from '@labkey/api';
 
 import policyJSON from '../../../test/data/security-getPolicy.json';
 import rolesJSON from '../../../test/data/security-getRoles.json';
@@ -142,9 +143,9 @@ describe('SecurityRole model', () => {
         // check that we can filter for an explicit list
         expect(SecurityRole.filter(ROLES, POLICY, List<string>()).size).toBe(0);
         const roleArr = [
-            'org.labkey.api.security.roles.EditorRole',
-            'org.labkey.api.security.roles.AuthorRole',
-            'org.labkey.api.security.roles.ReaderRole',
+            PermissionRoles.Editor,
+            PermissionRoles.Author,
+            PermissionRoles.Reader,
         ];
         expect(SecurityRole.filter(ROLES, POLICY, List<string>(roleArr)).size).toBe(3);
     });

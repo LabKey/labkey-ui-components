@@ -1,10 +1,11 @@
 import moment from 'moment';
 import { List, Map, OrderedMap } from 'immutable';
-import { ActionURL, Ajax, PermissionTypes, Utils } from '@labkey/api';
+import { ActionURL, Ajax, PermissionRoles, PermissionTypes, Utils } from '@labkey/api';
 
 import { buildURL, caseInsensitive, hasAllPermissions, QueryGridModel, SchemaQuery, User } from '../../..';
 
 import { ChangePasswordModel } from './models';
+import { APPLICATION_SECURITY_ROLES } from '../permissions/constants';
 
 export function getUserProperties(userId: number): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -46,6 +47,28 @@ export function getUserPermissionsDisplay(user: User): string[] {
     }
 
     return permissions;
+}
+
+export function getUserRoleDisplay(user: User): string {
+    if (user.permissionsList.contains(PermissionTypes.ApplicationAdmin)) {
+        return 'Administrator';
+    }
+
+    if (user.permissionsList.contains(PermissionTypes.Admin)) {
+        // TODO use the following when Folder Admin added:
+        // return APPLICATION_SECURITY_ROLES.get(PermissionRoles.FolderAdmin);
+        return 'Administrator';
+    }
+
+    if (user.permissionsList.contains(PermissionTypes.Update)) {
+        return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Editor);
+    }
+
+    if (user.permissionsList.contains(PermissionTypes.Read)) {
+        return APPLICATION_SECURITY_ROLES.get(PermissionRoles.Reader);
+    }
+
+    return 'Unknown Role';
 }
 
 export function getUserLastLogin(userProperties: Map<string, any>, dateFormat: string): string {

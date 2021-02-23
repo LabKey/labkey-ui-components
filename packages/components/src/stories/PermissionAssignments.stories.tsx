@@ -7,7 +7,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 import { List, Map } from 'immutable';
-import { Security } from '@labkey/api';
+import { PermissionRoles, Security } from '@labkey/api';
 
 import { PermissionAssignments, SecurityPolicy, SecurityRole, Principal } from '..';
 
@@ -98,9 +98,9 @@ class PermissionAssignmentsWrapper extends React.PureComponent<Props, State> {
         const { title, showUsersOnly, showFilteredRoles } = this.props;
         const rolesToShow = showFilteredRoles
             ? List<string>([
-                  'org.labkey.api.security.roles.FolderAdminRole',
-                  'org.labkey.api.security.roles.EditorRole',
-                  'org.labkey.api.security.roles.ReaderRole',
+                PermissionRoles.FolderAdmin,
+                PermissionRoles.Editor,
+                PermissionRoles.Reader,
               ])
             : undefined;
 

@@ -57,7 +57,7 @@ import {
     toggleDevTools,
     valueIsEmpty,
 } from './internal/util/utils';
-import { getUserProperties } from './internal/components/user/actions';
+import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
@@ -78,6 +78,7 @@ import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsPage } from './internal/components/permissions/InsufficientPermissionsPage';
 import { BasePermissionsCheckPage } from './internal/components/permissions/BasePermissionsCheckPage';
+import { APPLICATION_SECURITY_ROLES } from './internal/components/permissions/constants';
 import { NotFound } from './internal/components/base/NotFound';
 import { Page, PageProps } from './internal/components/base/Page';
 import { LoadingPage, LoadingPageProps } from './internal/components/base/LoadingPage';
@@ -601,11 +602,13 @@ export {
     // user/permissions related items
     getUsersWithPermissions,
     getUserProperties,
+    getUserRoleDisplay,
     UserDetailHeader,
     UserProfile,
     ChangePasswordModal,
     SiteUsersGridPanel,
     InsufficientPermissionsPage,
+    APPLICATION_SECURITY_ROLES,
     BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,

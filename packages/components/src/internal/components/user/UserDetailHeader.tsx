@@ -11,7 +11,7 @@ interface HeaderProps {
     renderButtons?: ReactNode;
     title: string;
     user: User;
-    userProperties: Map<string, any>;
+    userProperties?: Map<string, any>;
 }
 
 export const UserDetailHeader: FC<HeaderProps> = props => {
@@ -33,4 +33,8 @@ export const UserDetailHeader: FC<HeaderProps> = props => {
             {renderButtons && <div className={lastLogin ? 'detail__header--buttons' : ''}>{renderButtons}</div>}
         </PageDetailHeader>
     );
+};
+
+UserDetailHeader.defaultProps = {
+    userProperties: Map<string, any>(),
 };

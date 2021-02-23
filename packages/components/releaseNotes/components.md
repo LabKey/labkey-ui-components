@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD February 2021
+* Item 8359: Add initial OntologyBrowserPanel and associated files
+
 ### version 2.2.0
 *Released*: 19 February 2021
 * Item 8335: Add LabKey product navigation icon and menu to NavigationBar.tsx

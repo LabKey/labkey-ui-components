@@ -209,7 +209,13 @@ module.exports = {
                         babelrc: false,
                         cacheDirectory: true,
                         presets: [
-                            "@babel/preset-env",
+                            [
+                                "@babel/preset-env",
+                                {
+                                    // support async/await
+                                    "targets": "last 2 versions, not dead, not IE 11, > 5%",
+                                }
+                            ],
                             "@babel/preset-react",
                             "@babel/preset-typescript",
                         ],

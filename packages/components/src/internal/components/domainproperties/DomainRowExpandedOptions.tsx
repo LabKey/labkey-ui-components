@@ -221,15 +221,15 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         />
                     </Col>
                     {
-                        domainFormDisplayOptions.includeMaterialPropertyType &&
+                        domainFormDisplayOptions.includeDerivationDataScope &&
                         <Col xs={12} lg={10}>
                             <MaterialPropertyFieldOptions
                                 index={index}
                                 domainIndex={domainIndex}
                                 label="Aliquot Options"
-                                value={field.materialPropertyType}
+                                value={field.derivationDataScope}
                                 onChange={onChange}
-                                disabled={domainFormDisplayOptions.disableMaterialPropertyType}
+                                disabled={domainFormDisplayOptions.disableDerivationDataScope}
                                 lockType={field.lockType}
                             />
                         </Col>

@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 
 import { createFormInputId } from './actions';
-import {DOMAIN_FIELD_FORMAT, DOMAIN_FIELD_MATERIAL_PROPERTY_TYPE, DOMAIN_FIELD_NOT_LOCKED} from './constants';
+import { DOMAIN_FIELD_DERIVATION_DATA_SCOPE, DOMAIN_FIELD_NOT_LOCKED } from './constants';
 import { MaterialPropertyFieldOptions } from './MaterialPropertyFieldOptions';
 
 describe('MaterialPropertyFieldOptions', () => {
@@ -24,14 +24,14 @@ describe('MaterialPropertyFieldOptions', () => {
         expect(sectionLabel.length).toEqual(1);
         expect(sectionLabel.text()).toEqual(label);
 
-        const fieldName = createFormInputId(DOMAIN_FIELD_MATERIAL_PROPERTY_TYPE, 1, 1);
+        const fieldName = createFormInputId(DOMAIN_FIELD_DERIVATION_DATA_SCOPE, 1, 1);
         // Test format field initial value
         let checkbox = aliquot.find({id: fieldName, bsClass: 'checkbox'});
         expect(checkbox.length).toEqual(1);
         expect(checkbox.props().checked).toEqual(false);
 
         // Verify format value changes with props
-        aliquot.setProps({ value: "AliquotOnly" });
+        aliquot.setProps({ value: "ChildOnly" });
         checkbox = aliquot.find({id: fieldName, bsClass: 'checkbox'});
         expect(checkbox.props().checked).toEqual(true);
 

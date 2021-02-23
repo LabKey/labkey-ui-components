@@ -570,7 +570,7 @@ export class DomainField
         sourceOntology: undefined,
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
-        materialPropertyType: undefined,
+        derivationDataScope: undefined,
         selected: false,
     })
     implements IDomainField {
@@ -623,7 +623,7 @@ export class DomainField
     sourceOntology?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
-    materialPropertyType?: string;
+    derivationDataScope?: string;
     selected: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
@@ -1480,8 +1480,8 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
-    includeMaterialPropertyType?: boolean;
-    disableMaterialPropertyType?: boolean;
+    includeDerivationDataScope?: boolean;
+    disableDerivationDataScope?: boolean;
 }
 
 /**

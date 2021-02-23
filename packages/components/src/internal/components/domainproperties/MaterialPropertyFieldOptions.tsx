@@ -3,7 +3,7 @@ import {Checkbox, Col, Row} from 'react-bootstrap';
 
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
-import { DOMAIN_FIELD_MATERIAL_PROPERTY_TYPE } from './constants';
+import { DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
 import { ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 import { helpLinkNode, LabelHelpTip } from "../../..";
@@ -14,7 +14,7 @@ interface AliquotFieldProps extends ITypeDependentProps {
     disabled?: boolean;
 }
 
-const ALIQUOT_ONLY = 'AliquotOnly'; // todo, define Enum with AliquotOnly, MaterialOnly, MaterialAndAliquot
+const ALIQUOT_ONLY = 'ChildOnly'; // todo, define Enum
 
 export class MaterialPropertyFieldOptions extends React.PureComponent<AliquotFieldProps, any> {
     handleCheckboxChange = (evt) => {
@@ -42,9 +42,9 @@ export class MaterialPropertyFieldOptions extends React.PureComponent<AliquotFie
                         <Checkbox
                             checked={value?.toLocaleLowerCase() === ALIQUOT_ONLY.toLocaleLowerCase()}
                             onChange={this.handleCheckboxChange}
-                            id={createFormInputId(DOMAIN_FIELD_MATERIAL_PROPERTY_TYPE, domainIndex, index)}
+                            id={createFormInputId(DOMAIN_FIELD_DERIVATION_DATA_SCOPE, domainIndex, index)}
                             disabled={disabled || isFieldFullyLocked(lockType)}
-                            name={createFormInputName(DOMAIN_FIELD_MATERIAL_PROPERTY_TYPE)}
+                            name={createFormInputName(DOMAIN_FIELD_DERIVATION_DATA_SCOPE)}
                         >
                             Aliquot specific field
                             <LabelHelpTip title="Aliquot specific field">

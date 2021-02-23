@@ -52,7 +52,7 @@ export const DOMAIN_FIELD_DEFAULT_DISPLAY_VALUE = 'defaultDisplayValue';
 export const DOMAIN_FIELD_ONTOLOGY_SOURCE = 'sourceOntology';
 export const DOMAIN_FIELD_ONTOLOGY_LABEL_COL = 'conceptLabelColumn';
 export const DOMAIN_FIELD_ONTOLOGY_IMPORT_COL = 'conceptImportColumn';
-export const DOMAIN_FIELD_MATERIAL_PROPERTY_TYPE = 'materialPropertyType';
+export const DOMAIN_FIELD_DERIVATION_DATA_SCOPE = 'derivationDataScope';
 
 // TextFieldOptions
 export const DOMAIN_FIELD_MAX_LENGTH = 'maxLength';
@@ -183,6 +183,6 @@ export const DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS = {
     hideAddFieldsButton: false,
     disableMvEnabled: false,
     hideImportData: false,
-    includeMaterialPropertyType: false,
-    disableMaterialPropertyType: false,
+    includeDerivationDataScope: false,
+    disableDerivationDataScope: false,
 };

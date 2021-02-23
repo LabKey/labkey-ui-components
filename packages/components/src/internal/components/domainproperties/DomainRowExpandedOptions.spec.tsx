@@ -182,12 +182,12 @@ describe('DomainExpandedOptions', () => {
         row.unmount();
     });
 
-    test('Include MaterialPropertyType', () => {
+    test('Include DerivationDataScope', () => {
         const field = DomainField.create({
             rangeURI: BOOLEAN_TYPE.rangeURI,
         });
 
-        const displayOption = {...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, ...{includeMaterialPropertyType: true}};
+        const displayOption = {...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, ...{includeDerivationDataScope: true}};
         const props = {...DEFAULT_PROPS, ...{domainFormDisplayOptions: displayOption}};
         const row = mount(<DomainRowExpandedOptions {...props} field={field}/>);
         validateRender(row, { boolean: 1 , aliquot: 1});

@@ -33,17 +33,16 @@ let getColumns: () => List<QueryColumn>;
 
 beforeAll(() => {
     initUnitTests();
+    const mockData = makeTestData(mixturesQuery);
     queryInfo = makeQueryInfo(mixturesQueryInfo);
-    return makeTestData(mixturesQuery).then(mockData => {
-        const model = new QueryGridModel({
-            queryInfo,
-            messages: fromJS(mockData.messages),
-            data: fromJS(mockData.rows),
-            dataIds: fromJS(mockData.orderedRows),
-            totalRows: mockData.rowCount,
-        });
-        getColumns = (all?) => (all ? model.getAllColumns() : model.getDisplayColumns());
+    const model = new QueryGridModel({
+        queryInfo,
+        messages: fromJS(mockData.messages),
+        data: fromJS(mockData.rows),
+        dataIds: fromJS(mockData.orderedRows),
+        totalRows: mockData.rowCount,
     });
+    getColumns = (all?) => (all ? model.getAllColumns() : model.getDisplayColumns());
 });
 
 const testColumns = List([

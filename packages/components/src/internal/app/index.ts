@@ -21,7 +21,7 @@ import {
     menuReload,
     serverNotificationInit,
     serverNotificationInvalidate,
-    doResetQueryGridState
+    doResetQueryGridState,
 } from './actions';
 import {
     SECURITY_LOGOUT,
@@ -64,6 +64,7 @@ import {
     isSampleManagerEnabled,
     isFreezerManagementEnabled,
     isSampleAliquotEnabled,
+    hasPremiumModule,
     getDateFormat,
     getMenuSectionConfigs,
     CloseEventCode,
@@ -96,6 +97,7 @@ export {
     isFreezerManagementEnabled,
     isSampleManagerEnabled,
     isSampleAliquotEnabled,
+    hasPremiumModule,
     getDateFormat,
     getMenuSectionConfigs,
     getUserPermissions,

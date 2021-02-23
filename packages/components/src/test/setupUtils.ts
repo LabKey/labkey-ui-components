@@ -30,16 +30,35 @@ export function notificationInit() {
         },
     };
     LABKEY.container = {
-        path: "testContainer",
+        title: 'Test Container',
+        path: 'testContainer',
         formats: {
             dateTimeFormat: 'yyyy-MM-dd HH:mm',
             numberFormat: null,
-            dateFormat: 'yyyy-MM-dd'
+            dateFormat: 'yyyy-MM-dd',
         },
-        id: "testContainerEntityId",
+        id: 'testContainerEntityId',
         activeModules: [
-            "Wiki", "Issues", "Search", "FileContent", "Assay", "Experiment", "Query",
-            "Pipeline", "Internal", "API", "Announcements", "Core", "Ontology"
+            'Wiki',
+            'Issues',
+            'Search',
+            'FileContent',
+            'Assay',
+            'Experiment',
+            'Query',
+            'Pipeline',
+            'Internal',
+            'API',
+            'Announcements',
+            'Core',
+            'Ontology',
         ],
+    };
+    LABKEY.project = {
+        id: '2f59536d-4186-1039-be5d-ea54f212ba60',
+        path: '/TestProjectName',
+        rootId: '7aacb1a7-040d-1037-88ec-f467162bb89c',
+        name: 'Test Project Name',
+        title: 'Test Project Title',
     };
 }

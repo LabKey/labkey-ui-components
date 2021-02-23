@@ -2,8 +2,9 @@ import React, { Component, ReactNode } from 'react';
 import { Button } from 'react-bootstrap';
 import { Map, Set, List } from 'immutable';
 
+import { FileAttachmentForm } from '../../..';
+
 import { IFile } from './models';
-import { FileAttachmentForm } from './FileAttachmentForm';
 import { FilesListing } from './FilesListing';
 
 interface Props {

@@ -1,7 +1,15 @@
 import { Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
-import { buildURL, getQueryGridModel, getSelected, naturalSort, SchemaQuery, selectRows } from '../../..';
+import {
+    buildURL,
+    getQueryGridModel,
+    getSelected,
+    naturalSort,
+    SampleCreationType,
+    SchemaQuery,
+    selectRows
+} from '../../..';
 
 import {
     DisplayObject,
@@ -187,9 +195,10 @@ function getChosenParentData(
                     const parentRep = chosenParents.find(
                         parent => parent.value !== undefined && parentSchemaNames.contains(parent.schema)
                     );
-                    const validEntityCount = parentRep ? 1 : 0;
+                    const numPerParent = model.numPerParent ?? 1;
+                    const validEntityCount = parentRep ? (model.creationType === SampleCreationType.PooledSamples ? numPerParent : parentRep.value.size * numPerParent ) : 0;
 
-                    if (validEntityCount === 1) {
+                    if (validEntityCount >= 1) {
                         resolve({
                             entityCount: validEntityCount,
                             entityParents: entityParents.set(

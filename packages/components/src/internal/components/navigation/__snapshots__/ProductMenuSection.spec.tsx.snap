@@ -4,18 +4,18 @@ exports[`ProductMenuSection render empty section no text 1`] = `
 <ProductMenuSection
   config={
     Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": undefined,
-      "iconURL": "/testProduct/images/samples.svg",
-      "iconCls": undefined,
-      "maxItemsPerColumn": 12,
-      "maxColumns": 1,
-      "seeAllURL": undefined,
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
       "headerURL": undefined,
       "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "maxColumns": 1,
+      "maxItemsPerColumn": 12,
+      "seeAllURL": undefined,
       "showActiveJobIcon": true,
-      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProduct"
@@ -29,6 +29,7 @@ exports[`ProductMenuSection render empty section no text 1`] = `
       "itemLimit": 2,
       "key": "samples",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -57,12 +58,8 @@ exports[`ProductMenuSection render empty section with empty text and create link
 <ProductMenuSection
   config={
     Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": "Test empty text",
-      "iconURL": "/testProduct/images/samples.svg",
-      "iconCls": undefined,
-      "maxItemsPerColumn": 12,
-      "maxColumns": 1,
-      "seeAllURL": undefined,
       "emptyURL": Immutable.Record {
         "_baseUrl": "/sample/new",
         "_filters": undefined,
@@ -71,8 +68,12 @@ exports[`ProductMenuSection render empty section with empty text and create link
       "emptyURLText": "Test empty link",
       "headerURL": undefined,
       "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "maxColumns": 1,
+      "maxItemsPerColumn": 12,
+      "seeAllURL": undefined,
       "showActiveJobIcon": true,
-      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProduct"
@@ -86,6 +87,7 @@ exports[`ProductMenuSection render empty section with empty text and create link
       "itemLimit": undefined,
       "key": "samples",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -131,18 +133,18 @@ exports[`ProductMenuSection render one-column section 1`] = `
 <ProductMenuSection
   config={
     Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": undefined,
-      "iconURL": "/testProduct3Columns/images/samples.svg",
-      "iconCls": undefined,
-      "maxItemsPerColumn": 12,
-      "maxColumns": 1,
-      "seeAllURL": undefined,
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
       "headerURL": undefined,
       "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct3Columns/images/samples.svg",
+      "maxColumns": 1,
+      "maxItemsPerColumn": 12,
+      "seeAllURL": undefined,
       "showActiveJobIcon": true,
-      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProduct3Columns"
@@ -193,6 +195,7 @@ exports[`ProductMenuSection render one-column section 1`] = `
       "itemLimit": 2,
       "key": "samples",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -249,12 +252,8 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
 <ProductMenuSection
   config={
     Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": undefined,
-      "iconURL": "/testProduct/images/samples.svg",
-      "iconCls": undefined,
-      "maxItemsPerColumn": 12,
-      "maxColumns": 1,
-      "seeAllURL": undefined,
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
       "headerURL": Immutable.Record {
@@ -265,8 +264,12 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
         },
       },
       "headerText": "Custom Sample Sets",
+      "iconCls": undefined,
+      "iconURL": "/testProduct/images/samples.svg",
+      "maxColumns": 1,
+      "maxItemsPerColumn": 12,
+      "seeAllURL": undefined,
       "showActiveJobIcon": true,
-      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProductHeaderUrl"
@@ -280,6 +283,7 @@ exports[`ProductMenuSection render section with custom headerURL and headerText 
       "itemLimit": 2,
       "key": "samples",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -312,18 +316,18 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
 <ProductMenuSection
   config={
     Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": undefined,
-      "iconURL": "/testProductOverflowLink/images/assays.svg",
-      "iconCls": undefined,
-      "maxItemsPerColumn": 2,
-      "maxColumns": 2,
-      "seeAllURL": undefined,
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
       "headerURL": undefined,
       "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProductOverflowLink/images/assays.svg",
+      "maxColumns": 2,
+      "maxItemsPerColumn": 2,
+      "seeAllURL": undefined,
       "showActiveJobIcon": true,
-      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProductOverflowLink"
@@ -358,6 +362,7 @@ exports[`ProductMenuSection render two columns with overflow link 1`] = `
       "itemLimit": undefined,
       "key": "assays",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >
@@ -423,18 +428,18 @@ exports[`ProductMenuSection render two-column section 1`] = `
 <ProductMenuSection
   config={
     Immutable.Record {
+      "activeJobIconCls": "fa-spinner fa-pulse",
       "emptyText": undefined,
-      "iconURL": "/testProduct4Columns/images/assays.svg",
-      "iconCls": undefined,
-      "maxItemsPerColumn": 2,
-      "maxColumns": 2,
-      "seeAllURL": undefined,
       "emptyURL": undefined,
       "emptyURLText": "Get started...",
       "headerURL": undefined,
       "headerText": undefined,
+      "iconCls": undefined,
+      "iconURL": "/testProduct4Columns/images/assays.svg",
+      "maxColumns": 2,
+      "maxItemsPerColumn": 2,
+      "seeAllURL": undefined,
       "showActiveJobIcon": true,
-      "activeJobIconCls": "fa-spinner fa-pulse",
     }
   }
   currentProductId="testProduct4Columns"
@@ -494,6 +499,7 @@ exports[`ProductMenuSection render two-column section 1`] = `
       "itemLimit": undefined,
       "key": "assays",
       "productId": undefined,
+      "sectionKey": undefined,
     }
   }
 >

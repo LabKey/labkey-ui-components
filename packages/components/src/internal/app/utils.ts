@@ -2,6 +2,7 @@
  * Copyright (c) 2019 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
+import { useMemo } from 'react';
 import { List, Map } from 'immutable';
 import { getServerContext, PermissionTypes } from '@labkey/api';
 
@@ -49,13 +50,20 @@ export enum CloseEventCode {
     TLS_HANDSHAKE = 1015,
 }
 
-export function initWebSocketListeners(store, notificationListeners?: string[], menuReloadListeners?: string[], resetQueryGridListeners?: string[]): void {
+export function initWebSocketListeners(
+    store,
+    notificationListeners?: string[],
+    menuReloadListeners?: string[],
+    resetQueryGridListeners?: string[]
+): void {
     // register websocket listener for the case where a user logs out in another tab
     function _logOutCallback(evt) {
         if (evt.wasClean && evt.reason === 'org.labkey.api.security.AuthNotify#SessionLogOut') {
             window.setTimeout(() => store.dispatch({ type: SECURITY_LOGOUT }), 1000);
         }
     }
+
+    // TODO: Make "WebSocket" available from @labkey/api
     LABKEY.WebSocket.addServerEventListener(CloseEventCode.NORMAL_CLOSURE, _logOutCallback);
     LABKEY.WebSocket.addServerEventListener(CloseEventCode.UNSUPPORTED_DATA, _logOutCallback);
 
@@ -97,7 +105,7 @@ export function initWebSocketListeners(store, notificationListeners?: string[], 
             LABKEY.WebSocket.addServerEventListener(listener, function (evt) {
                 window.setTimeout(() => store.dispatch({ type: SET_RESET_QUERY_GRID_STATE }), 1000);
             });
-        })
+        });
     }
 }
 
@@ -119,6 +127,11 @@ export function isSampleManagerEnabled(): boolean {
 
 export function isSampleAliquotEnabled(): boolean {
     return getServerContext().experimental['sampleAliquot'] === true; //TODO, fix api-js type
+}
+
+export function hasPremiumModule(): boolean {
+    const { moduleContext } = getServerContext();
+    return useMemo(() => moduleContext?.samplemanagement?.hasPremiumModule ?? false, [moduleContext]);
 }
 
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {

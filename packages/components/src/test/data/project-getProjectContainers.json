@@ -1,0 +1,133 @@
+{
+  "formats" : {
+    "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+    "numberFormat" : null,
+    "dateFormat" : "yyyy-MM-dd"
+  },
+  "parentPath" : null,
+  "type" : "folder",
+  "title" : "",
+  "folderType" : "None",
+  "parentId" : null,
+  "path" : "/",
+  "startUrl" : "/labkey/project-begin.view?",
+  "isWorkbook" : false,
+  "children" : [ {
+    "formats" : {
+      "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+      "numberFormat" : null,
+      "dateFormat" : "yyyy-MM-dd"
+    },
+    "parentPath" : "/",
+    "type" : "project",
+    "title" : "home",
+    "folderType" : "Collaboration",
+    "parentId" : "3BCE26D4-1622-1035-AF26-843B99F37724",
+    "path" : "/home",
+    "startUrl" : "/labkey/home/project-begin.view?",
+    "isWorkbook" : false,
+    "children" : [ ],
+    "sortOrder" : 0,
+    "hasRestrictedActiveModule" : false,
+    "name" : "home",
+    "isContainerTab" : false,
+    "iconHref" : "/labkey/_icons/icon_folder2.png",
+    "id" : "3BCE26D9-1622-1035-AF26-843B99F37724",
+    "activeModules" : [ "Wiki", "simpletest", "Issues", "Search", "FileContent", "Experiment", "Query", "Pipeline", "linkedschematest", "Internal", "Demo", "API", "Announcements", "Core" ]
+  }, {
+    "formats" : {
+      "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+      "numberFormat" : null,
+      "dateFormat" : "yyyy-MM-dd"
+    },
+    "parentPath" : "/",
+    "type" : "project",
+    "title" : "Example Project",
+    "folderType" : "Collaboration",
+    "parentId" : "7aacb1a7-040d-1037-88ec-f467162bb89c",
+    "path" : "/Example Project",
+    "startUrl" : "/labkey/Example%20Project/project-begin.view?",
+    "isWorkbook" : false,
+    "children" : [ ],
+    "sortOrder" : 29,
+    "hasRestrictedActiveModule" : false,
+    "name" : "Example Project",
+    "isContainerTab" : false,
+    "iconHref" : "/labkey/_icons/icon_folder2.png",
+    "id" : "01b935d3-4179-1039-a799-ea54f212702c",
+    "activeModules" : [ "Wiki", "Issues", "Search", "FileContent", "Experiment", "Query", "Pipeline", "Internal", "API", "Announcements", "Core" ]
+  }, {
+    "formats" : {
+      "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+      "numberFormat" : null,
+      "dateFormat" : "yyyy-MM-dd"
+    },
+    "parentPath" : "/",
+    "type" : "project",
+    "title" : "Biologics Example",
+    "folderType" : "Biologics",
+    "parentId" : "7aacb1a7-040d-1037-88ec-f467162bb89c",
+    "path" : "/Biologics Example",
+    "startUrl" : "/labkey/Biologics%20Example/biologics-app.view?",
+    "isWorkbook" : false,
+    "children" : [ ],
+    "sortOrder" : 30,
+    "hasRestrictedActiveModule" : false,
+    "name" : "Biologics Example",
+    "isContainerTab" : false,
+    "iconHref" : "/labkey/_icons/icon_folder2.png",
+    "id" : "01b94403-4179-1039-a799-ea54f212702c",
+    "activeModules" : [ "Wiki", "Biologics", "AssayRequest", "Issues", "Search", "SampleManagement", "Recipe", "MS2", "List", "LabBook", "Inventory", "FileContent", "Assay", "Experiment", "Query", "Puppeteer", "Pipeline", "Internal", "Compliance", "CAS", "API", "Announcements", "Core" ]
+  }, {
+    "formats" : {
+      "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+      "numberFormat" : null,
+      "dateFormat" : "yyyy-MM-dd"
+    },
+    "parentPath" : "/",
+    "type" : "project",
+    "title" : "Sample Manager Example",
+    "folderType" : "Sample Manager",
+    "parentId" : "7aacb1a7-040d-1037-88ec-f467162bb89c",
+    "path" : "/Sample Manager Example",
+    "startUrl" : "/labkey/Sample%20Manager%20Example/sampleManager-app.view?",
+    "isWorkbook" : false,
+    "children" : [ ],
+    "sortOrder" : 31,
+    "hasRestrictedActiveModule" : false,
+    "name" : "Sample Manager Example",
+    "isContainerTab" : false,
+    "iconHref" : "/labkey/_icons/icon_folder2.png",
+    "id" : "2f59536d-4186-1039-be5d-ea54f212ba60",
+    "activeModules" : [ "Wiki", "Issues", "Search", "SampleManagement", "List", "Inventory", "FileContent", "Experiment", "Query", "Pipeline", "Internal", "API", "Announcements", "Core" ]
+  }, {
+    "formats" : {
+      "dateTimeFormat" : "yyyy-MM-dd HH:mm",
+      "numberFormat" : null,
+      "dateFormat" : "yyyy-MM-dd"
+    },
+    "parentPath" : "/",
+    "type" : "project",
+    "title" : "Collaboration Sample Manager",
+    "folderType" : "Collaboration",
+    "parentId" : "7aacb1a7-040d-1037-88ec-f467162bb89c",
+    "path" : "/Another Sample Manager",
+    "startUrl" : "/labkey/Another%20Sample%20Manager/project-begin.view?",
+    "isWorkbook" : false,
+    "children" : [ ],
+    "sortOrder" : 31,
+    "hasRestrictedActiveModule" : false,
+    "name" : "Another Sample Manager",
+    "isContainerTab" : false,
+    "iconHref" : "/labkey/_icons/icon_folder2.png",
+    "id" : "2f59536d-4186-1039-be5d-ea54f212ba61",
+    "activeModules" : [ "Wiki", "Issues", "Search", "SampleManagement", "List", "Inventory", "FileContent", "Experiment", "Query", "Pipeline", "Internal", "API", "Announcements", "Core" ]
+  } ],
+  "sortOrder" : 0,
+  "hasRestrictedActiveModule" : false,
+  "name" : "",
+  "isContainerTab" : false,
+  "iconHref" : "/labkey/_icons/icon_folder2.png",
+  "id" : "7aacb1a7-040d-1037-88ec-f467162bb89c",
+  "activeModules" : [ ]
+}

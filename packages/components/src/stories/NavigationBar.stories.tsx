@@ -140,6 +140,8 @@ storiesOf('NavigationBar', module)
         return <NavigationBar menuSectionConfigs={sectionConfigs} model={model} showSearchBox={false} />;
     })
     .add('With sections', () => {
+        LABKEY.moduleContext.samplemanagement = { hasPremiumModule: true };
+
         const fruitGroup = 'Fruit';
         const vegGroup = 'Vegetables';
         const userGroup = 'User';
@@ -292,9 +294,10 @@ storiesOf('NavigationBar', module)
         const notificationConfig = {
             maxRows: 8,
             markAllNotificationsRead,
-            serverActivity: new ServerNotificationModel(serverActivity),
+            serverActivity: new ServerNotificationModel(serverActivity).mutate({ isLoaded: true }),
             onViewAll: () => {},
         };
+
         return (
             <NavigationBar
                 menuSectionConfigs={boolean('show 3 columns?', true) ? threeColConfigs : twoColConfigs}

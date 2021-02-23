@@ -136,8 +136,9 @@ export function reorderSummaryColumns(a: DomainPropertiesGridColumn, b: DomainPr
         'sourceOntology',
         'conceptImportColumn',
         'conceptLabelColumn',
+        // Sample or Ontology option
         'conceptURI',
-        // Expanded field options
+        // Other expanded field options
         'scale',
         'description',
         'label',
@@ -178,7 +179,6 @@ export function removeUnusedOntologyProperties(obj) {
         delete obj.sourceOntology;
         delete obj.conceptImportColumn;
         delete obj.conceptLabelColumn;
-        delete obj.conceptURI;
     }
     return obj;
 }

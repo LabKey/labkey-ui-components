@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.4.0
+*Released*: 24 February 2021
+* Migrates `AssayDesignEmptyAlert`, `BarChartViewer`, and `RecentAssayPanel` to `@labkey/components`.
+* Migration includes chart configurations for assays and samples.
+* No longer need to export `UserMenu` as last external usage was removed.
+* Remove jQuery from `BaseBarChart` as it is no longer necessary.
+
 ### version 2.3.1
 *Released*: 24 February 2021
 * Make 'auto-scroll to field' functionality in Summary View also expand given field

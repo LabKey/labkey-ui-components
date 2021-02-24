@@ -27,7 +27,7 @@ export const SampleTypeEmptyAlert: FC<Props> = memo(props => {
         <EmptyAlertWithPermissions
             {...baseProps}
             actionURL={App.NEW_SAMPLE_TYPE_HREF}
-            message={message ?? 'No samples types have been created.'}
+            message={message ?? 'No sample types have been created.'}
             permission={PermissionTypes.DesignSampleSet}
         />
     );

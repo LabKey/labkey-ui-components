@@ -32,7 +32,7 @@ describe('SampleTypeEmptyAlert', () => {
         const wrapper = mount(<SampleTypeEmptyAlert user={App.TEST_USER_APP_ADMIN} />);
 
         // Expect default message
-        expect(wrapper.find(EMPTY_ALERT).at(0).text()).toContain('No samples types have been created');
+        expect(wrapper.find(EMPTY_ALERT).at(0).text()).toContain('No sample types have been created');
 
         // Expect link to design
         expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(App.NEW_SAMPLE_TYPE_HREF.toHref());

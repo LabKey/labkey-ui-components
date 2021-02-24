@@ -21,6 +21,7 @@ const populatedExistingModel = ListModel.create(getDomainDetailsJSON);
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
+    testMode: true,
 };
 
 beforeAll(() => {

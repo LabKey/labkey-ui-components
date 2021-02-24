@@ -54,6 +54,7 @@ interface Props {
     saveBtnText?: string;
     containerTop?: number; // This sets the top of the sticky header, default is 0
     successBsStyle?: string;
+    testMode?: boolean;
 }
 
 interface State {
@@ -474,6 +475,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
             containerTop,
             successBsStyle,
             saveBtnText,
+            testMode,
         } = this.props;
 
         const { model, file, keyPropertyIndex, visitDatePropertyIndex, importError } = this.state;
@@ -542,6 +544,7 @@ export class DatasetDesignerPanelImpl extends React.PureComponent<Props & Inject
                         hideImportData: model.definitionIsShared, // Shared (Dataspace) study does not have permission to import data. See study-importAction.validatePermission
                     }}
                     allowImportExport={true}
+                    testMode={testMode}
                 />
                 <Progress
                     modal={true}

@@ -29,6 +29,7 @@ interface Props {
     appPropertiesOnly?: boolean;
     successBsStyle?: string;
     saveBtnText?: string;
+    testMode?: boolean;
 }
 
 interface State {
@@ -160,6 +161,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
             validatePanel,
             firstState,
             helpTopic,
+            testMode,
         } = this.props;
         const { model } = this.state;
 
@@ -219,6 +221,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     allowImportExport={true}
+                    testMode={testMode}
                 />
             </BaseDomainDesigner>
         );

@@ -18,6 +18,7 @@ import { fromJS, List, Map } from 'immutable';
 import { QueryColumn, QueryInfo } from '../../index';
 
 import {
+    camelCaseToTitleCase,
     caseInsensitive,
     getCommonDataValues,
     getDisambiguatedSelectInputOptions,
@@ -95,6 +96,22 @@ describe('toLowerSafe', () => {
         ).toEqual(
             List<string>(['test ', ' test', 'test', 'test'])
         );
+    });
+});
+
+describe('camelCaseToTitleCase', () => {
+    test('function', () => {
+        const testStrings = {
+            textACRONYM: "Text ACRONYM",
+            camelCasedText: "Camel Cased Text",
+            CapsCasedText: "Caps Cased Text",
+            CapsCasedTextACRONYM: "Caps Cased Text ACRONYM",
+            ACRONYM: "ACRONYM"
+        }
+
+        for (const [key, value] of Object.entries(testStrings)) {
+            expect(camelCaseToTitleCase(key)).toEqual(value);
+        }
     });
 });
 

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import moment from 'moment';
-import { PermissionTypes } from '@labkey/api';
+import { Filter, PermissionTypes, Query } from '@labkey/api';
 
 import {
     Alert,
@@ -13,6 +13,7 @@ import {
     RequiresPermission,
     SampleEmptyAlert,
     SampleTypeEmptyAlert,
+    SchemaQuery,
     Section,
     selectRows,
     Tip,
@@ -24,6 +25,27 @@ import { ASSAYS_KEY, getDateFormat, SAMPLES_KEY } from '../../app';
 import { processChartData } from './utils';
 import { BaseBarChart } from './BaseBarChart';
 import { ChartConfig, ChartData, ChartSelector } from './types';
+
+function fetchItemCount(schemaQuery: SchemaQuery, filters?: Filter.IFilter[]): Promise<number> {
+    return new Promise(resolve => {
+        Query.selectRows({
+            filterArray: filters ?? [],
+            includeMetadata: false,
+            maxRows: 1,
+            method: 'POST',
+            queryName: schemaQuery.getQuery(),
+            requiredVersion: '17.1',
+            schemaName: schemaQuery.getSchema(),
+            success: response => {
+                resolve(response.rowCount);
+            },
+            failure: error => {
+                console.error('Failed to fetch item count for charts', error);
+                resolve(0);
+            },
+        });
+    });
+}
 
 interface Props {
     chartConfigs: ChartConfig[];
@@ -62,7 +84,8 @@ export class BarChartViewer extends PureComponent<Props, State> {
 
         if (!responses.hasOwnProperty(currentGroup)) {
             try {
-                const itemCount = await chartConfigs[currentGroup].fetchItemCount();
+                const { itemCountFilters, itemCountSQ } = chartConfigs[currentGroup];
+                const itemCount = await fetchItemCount(itemCountSQ, itemCountFilters);
 
                 const { queryName, schemaName } = this.getSelectedChartGroup();
                 const response = await selectRows({ schemaName, queryName });

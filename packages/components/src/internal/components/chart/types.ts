@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
+import { Filter } from '@labkey/api';
 
-import { AppURL } from '../../..';
+import { AppURL, SchemaQuery } from '../../..';
 
 export interface ChartData {
     count: number;
@@ -20,8 +21,9 @@ export interface ChartConfig {
     createText?: string;
     createURL?: () => AppURL;
     emptyStateMsg?: ReactNode;
-    fetchItemCount?: () => Promise<number>;
     getAppURL?: (data: ChartData) => AppURL;
+    itemCountFilters?: Filter.IFilter[];
+    itemCountSQ: SchemaQuery;
     key: string;
     label: string;
     namePath?: string[];

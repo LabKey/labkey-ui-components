@@ -6,12 +6,13 @@ import { DomainPropertiesGrid } from './DomainPropertiesGrid';
 
 import { DomainDesign } from './models';
 
-import { INTEGER_TYPE, TEXT_TYPE } from './PropDescType';
+import { INTEGER_TYPE, DATETIME_TYPE } from './PropDescType';
 
 const DOMAIN = DomainDesign.create({
     fields: [
         { name: 'a', rangeURI: INTEGER_TYPE.rangeURI },
-        { name: 'b', rangeURI: TEXT_TYPE.rangeURI },
+        { name: 'b', rangeURI: DATETIME_TYPE.rangeURI },
+        { name: 'c' }
     ],
 });
 const ACTIONS = {
@@ -40,6 +41,10 @@ describe('DomainPropertiesGrid', () => {
         expect(text).toContain('Description');
         expect(text).toContain('Conditional Formats');
         expect(text).toContain('Property Validators');
+
+        expect(text).toContain('http://www.w3.org/2001/XMLSchema#int'); // rangeURI of field 'a'
+        expect(text).toContain('http://www.w3.org/2001/XMLSchema#dateTime'); // rangeURI of field 'b'
+        expect(text).toContain('http://www.w3.org/2001/XMLSchema#string'); //rangeURI of field 'c' -- string is default
 
         // Removed column, as this information does not surface in UI
         expect(text).not.toContain('Property URI');

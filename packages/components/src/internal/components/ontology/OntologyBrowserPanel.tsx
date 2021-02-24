@@ -1,23 +1,28 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { LoadingSpinner } from '../../..';
+import { Alert, LoadingSpinner } from '../../..';
 
 import { fetchConceptForCode, getOntologyDetails } from './actions';
-import { ConceptModel, OntologyModel } from './models';
+import { ConceptModel, OntologyModel, PathModel } from './models';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { OntologyTreePanel } from './OntologyTreePanel';
+import { OntologySelectionPanel } from "./OntologySelectionPanel";
 
-interface OntologyBrowserProps {
-    ontologyId: string;
+export interface OntologyBrowserProps {
+    initOntologyId?: string;
+    asPanel?: boolean;
 }
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
-    const { ontologyId } = props;
+    const { initOntologyId, asPanel } = props;
+    const [error, setError] = useState<string>();
+    const [selectedOntologyId, setSelectedOntologyId] = useState<string>();
     const [ontology, setOntologyModel] = useState<OntologyModel>();
     const [selectedConceptCode, setSelectedCode] = useState<string>();
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>();
     const [conceptCache, setConceptCache] = useState<Map<string, ConceptModel>>(new Map<string, ConceptModel>());
+    const ontologyId = selectedOntologyId ?? initOntologyId;
 
     const cacheConcepts = useCallback(
         (concepts: ConceptModel[]): void => {
@@ -42,56 +47,92 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         [setSelectedConcept, conceptCache]
     );
 
+    const onOntologySelection = useCallback(
+        (name: string, value: string, model: PathModel) => {
+            setSelectedOntologyId(model?.path.replace(/\//g, ''));
+        },
+        [setSelectedOntologyId]
+    );
+
     useEffect(() => {
-        getOntologyDetails(ontologyId).then(details => {
-            setOntologyModel(details);
-        });
-    }, [setOntologyModel, ontologyId]);
+        if (ontologyId) {
+            getOntologyDetails(ontologyId)
+                .then(setOntologyModel)
+                .catch(reason => {
+                    setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
+                    setSelectedOntologyId(undefined);
+                });
+        } else {
+            setOntologyModel(undefined);
+        }
+    }, [setOntologyModel, selectedOntologyId, setSelectedOntologyId, setError]);
 
     useEffect(() => {
         setSelectedConcept(conceptCache.get(selectedConceptCode));
     }, [selectedConceptCode, conceptCache, setSelectedConcept]);
 
     return (
-        <OntologyBrowserPanelImpl
-            ontology={ontology}
-            selectedConcept={selectedConcept}
-            setSelectedConcept={updateSelectedConceptCode}
-        />
+        <>
+            <Alert>{error}</Alert>
+            {!ontologyId && (
+                <OntologySelectionPanel onOntologySelection={onOntologySelection} asPanel={asPanel} />
+            )}
+            {ontologyId && (
+                <OntologyBrowserPanelImpl
+                    ontology={ontology}
+                    selectedConcept={selectedConcept}
+                    setSelectedConcept={updateSelectedConceptCode}
+                    asPanel={asPanel}
+                />
+            )}
+        </>
     );
 });
 
-export interface OntologyBrowserPanelImplProps {
+OntologyBrowserPanel.defaultProps = {
+    asPanel: true,
+};
+
+interface OntologyBrowserPanelImplProps {
     ontology: OntologyModel;
     selectedConcept?: ConceptModel;
     setSelectedConcept: (conceptCode: string) => void;
+    asPanel: boolean;
 }
 
-export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
-    const { ontology, selectedConcept, setSelectedConcept } = props;
+const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
+    const { ontology, selectedConcept, setSelectedConcept, asPanel } = props;
 
     if (!ontology) {
         return <LoadingSpinner />;
     }
 
+    const { conceptCount, description } = ontology;
     const root = ontology.getPathModel();
-    return (
+
+    const body = (
         <>
-            <div className="panel panel-default ontology-browser-container">
-                <div className="panel-heading">Browse {ontology.name}</div>
-                <div className="panel-body">
-                    <Row>
-                        <Col xs={6} className="left-panel">
-                            {/*TODO should we put any of the other ontology metadata here?*/}
-                            <p>{ontology.conceptCount} total concepts</p>
-                            <OntologyTreePanel root={root} onNodeSelection={setSelectedConcept} />
-                        </Col>
-                        <Col xs={6} className="right-panel">
-                            <ConceptInformationTabs concept={selectedConcept} />
-                        </Col>
-                    </Row>
-                </div>
-            </div>
+            {description && <p>{description}</p>}
+            <Row>
+                <Col xs={6} className="left-panel">
+                    <p>{conceptCount} total concepts</p>
+                    <OntologyTreePanel root={root} onNodeSelection={setSelectedConcept} />
+                </Col>
+                <Col xs={6} className="right-panel">
+                    <ConceptInformationTabs concept={selectedConcept} />
+                </Col>
+            </Row>
         </>
+    );
+
+    if (!asPanel) {
+        return body;
+    }
+
+    return (
+        <div className="panel panel-default ontology-browser-container">
+            <div className="panel-heading">Browse {ontology.getDisplayName()}</div>
+            <div className="panel-body">{body}</div>
+        </div>
     );
 });

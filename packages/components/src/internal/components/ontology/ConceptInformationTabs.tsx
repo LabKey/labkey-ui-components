@@ -29,6 +29,7 @@ export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(prop
             <div>
                 <Tab.Container
                     id="concept-information-tabs"
+                    className="concept-information-tabs"
                     onSelect={onSelectionChange}
                     activeKey={activeTab}
                     defaultActiveKey={ConceptInfoTabs.CONCEPT_OVERVIEW_TAB}

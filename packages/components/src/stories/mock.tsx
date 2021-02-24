@@ -113,7 +113,9 @@ import getProjectContainersInfo from '../test/data/project-getProjectContainers.
 import getLKSMMenuSectionsInfo from '../test/data/product-getMenuSections-lksm.json';
 import getLKBMenuSectionsInfo from '../test/data/product-getMenuSections-lkb.json';
 import getFolderTabsInfo from '../test/data/admin-getFolderTabs.json';
-import getontologychildpaths from '../test/data/ontologies-getChildPaths.json';
+import getOntologyChildPathsInfo from '../test/data/ontologies-getChildPaths.json';
+import getOntologiesChildPathsInfo from '../test/data/ontologies-getRootChildPaths.json';
+import getOntologyInfo from '../test/data/ontologies-getOntology.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -227,7 +229,7 @@ const QUERY_RESPONSES = fromJS({
     },
     ontology: {
         ontologies: ontologiesQuery,
-        getchildpaths: getontologychildpaths,
+        getchildpaths: getOntologyChildPathsInfo,
     },
     pipeline: {
         job: pipelineJobQuery,
@@ -686,5 +688,29 @@ export function initPipelineStatusDetailsMocks(): void {
 }
 
 export function initOnotologyMocks(): void {
-    mock.get(/.*\/ontology\/?.*\/getChildPaths.*/, jsonResponse(getontologychildpaths));
+    mock.get(/.*\/ontology\/?.*\/getOntology.*/, jsonResponse(getOntologyInfo));
+
+    mock.get(/.*\/ontology\/?.*\/getChildPaths.*/, (req, res) => {
+        const queryParams = req.url().query;
+
+        if (queryParams.path === '/') {
+            return jsonResponse(getOntologiesChildPathsInfo, res);
+        }
+
+        return jsonResponse(getOntologyChildPathsInfo, res);
+    });
+
+    mock.get(/.*\/ontology\/?.*\/getConcept.*/, (req, res) => {
+        const queryParams = req.url().query;
+        return jsonResponse({
+            success : true,
+            concept : {
+                code : queryParams.code,
+                label : queryParams.code.split(':').join(' '),
+                description : 'This is the description for this concept.',
+                hasChildren : false,
+                url : null
+            }
+        }, res);
+    });
 }

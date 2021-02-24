@@ -23,6 +23,7 @@ class Ontology {
                 }),
                 failure: Utils.getCallbackWrapper(
                     response => {
+                        console.error(response);
                         reject(response);
                     },
                     null,
@@ -46,6 +47,7 @@ class Ontology {
                 }),
                 failure: Utils.getCallbackWrapper(
                     response => {
+                        console.error(response);
                         reject(response);
                     },
                     null,
@@ -64,7 +66,7 @@ export function getOntologyChildPathsAndConcepts(ontologyPath: string, container
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CHILD_PATHS_ACTION, container, {
-                path: ontologyPath
+                path: ontologyPath,
             }),
             method: 'GET',
             success: Utils.getCallbackWrapper(response => {
@@ -75,6 +77,7 @@ export function getOntologyChildPathsAndConcepts(ontologyPath: string, container
             }),
             failure: Utils.getCallbackWrapper(
                 response => {
+                    console.error(response);
                     reject(response);
                 },
                 null,
@@ -84,10 +87,10 @@ export function getOntologyChildPathsAndConcepts(ontologyPath: string, container
     });
 }
 
-export async function fetchChildPaths(ontologyPath?: string): Promise<PathModel> {
-    return await getOntologyChildPathsAndConcepts(ontologyPath);
+export function fetchChildPaths(ontologyPath?: string): Promise<PathModel> {
+    return getOntologyChildPathsAndConcepts(ontologyPath);
 }
 
-export async function fetchConceptForCode(code: string): Promise<ConceptModel> {
-    return await Ontology.getConcept(code);
+export function fetchConceptForCode(code: string): Promise<ConceptModel> {
+    return Ontology.getConcept(code);
 }

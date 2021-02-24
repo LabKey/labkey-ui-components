@@ -42,7 +42,7 @@ export class OntologyModel {
         Object.assign(this, values);
     }
 
-    getPathModel = (): PathModel => {
+    getPathModel(): PathModel {
         return new PathModel({
             path: this.path,
             code: this.abbreviation,
@@ -50,5 +50,9 @@ export class OntologyModel {
             hasChildren: !!this.children,
             children: this.children,
         });
-    };
+    }
+
+    getDisplayName(): string {
+        return this.name + (this.name !== this.abbreviation ? ' (' + this.abbreviation + ')' : '');
+    }
 }

@@ -7,7 +7,7 @@ import { fetchConceptForCode, getOntologyDetails } from './actions';
 import { ConceptModel, OntologyModel, PathModel } from './models';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { OntologyTreePanel } from './OntologyTreePanel';
-import { OntologySelectionPanel } from "./OntologySelectionPanel";
+import { OntologySelectionPanel } from './OntologySelectionPanel';
 
 export interface OntologyBrowserProps {
     initOntologyId?: string;
@@ -22,7 +22,7 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const [selectedConceptCode, setSelectedCode] = useState<string>();
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>();
     const [conceptCache, setConceptCache] = useState<Map<string, ConceptModel>>(new Map<string, ConceptModel>());
-    const ontologyId = selectedOntologyId ?? initOntologyId;
+    const ontologyId = selectedOntologyId ?? (!error ? initOntologyId : undefined);
 
     const cacheConcepts = useCallback(
         (concepts: ConceptModel[]): void => {

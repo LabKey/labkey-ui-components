@@ -1173,7 +1173,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     scrollFunction = (i: number): void => {
-        this.setState({ summaryViewMode: false }, () => {
+        this.setState({ summaryViewMode: false, expandedRowIndex: i }, () => {
             this.refsArray[i].scrollIntoView();
         });
     };

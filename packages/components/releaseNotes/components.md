@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.3.1
+*Released*: 24 February 2021
+* Make 'auto-scroll to field' functionality in Summary View also expand given field
+* Display rangeURI values in Summary View for new fields
+
 ### version 2.3.0
 *Released*: 23 February 2021
 * Field Editor Summary View

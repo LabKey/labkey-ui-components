@@ -313,6 +313,7 @@ export class DomainDesign
     getGridData(appPropertiesOnly: boolean): List<any> {
         return this.fields.map((field, i) => {
             let fieldSerial = DomainField.serialize(field);
+            const dataType = field.dataType;
             fieldSerial = removeUnusedProperties(fieldSerial);
             fieldSerial = removeUnusedOntologyProperties(fieldSerial);
             if (appPropertiesOnly) {
@@ -329,6 +330,11 @@ export class DomainDesign
                     const rawVal = fieldSerial[key];
                     const valueType = typeof rawVal;
                     let value = valueIsEmpty(rawVal) ? '' : rawVal;
+
+                    // Since rangeURI is not set on field creation, pull rangeURI value from dataType
+                    if (key === 'rangeURI' && value === '') {
+                        value = dataType.rangeURI;
+                    }
 
                     // Make bools render as strings sortable within their column
                     if (key !== 'visible' && key !== 'selected' && valueType === 'boolean') {

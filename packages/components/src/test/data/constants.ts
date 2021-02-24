@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { List, Map } from 'immutable';
+import { PermissionRoles } from '@labkey/api';
 
 import {
     AssayDefinitionModel,
@@ -178,11 +179,11 @@ export const NEW_DATASET_MODEL_WITH_DATASPACE = {
     definitionIsShared: true,
 };
 
-export const SECURITY_ROLE_APPADMIN = 'org.labkey.api.security.roles.ApplicationAdminRole';
-export const SECURITY_ROLE_FOLDERADMIN = 'org.labkey.api.security.roles.FolderAdminRole';
-export const SECURITY_ROLE_EDITOR = 'org.labkey.api.security.roles.EditorRole';
-export const SECURITY_ROLE_AUTHOR = 'org.labkey.api.security.roles.AuthorRole';
-export const SECURITY_ROLE_READER = 'org.labkey.api.security.roles.ReaderRole';
+export const SECURITY_ROLE_APPADMIN = PermissionRoles.ApplicationAdmin;
+export const SECURITY_ROLE_FOLDERADMIN = PermissionRoles.FolderAdmin;
+export const SECURITY_ROLE_EDITOR = PermissionRoles.Editor;
+export const SECURITY_ROLE_AUTHOR = PermissionRoles.Author;
+export const SECURITY_ROLE_READER = PermissionRoles.Reader;
 
 export const JEST_SITE_ADMIN_USER_ID = 1004;
 

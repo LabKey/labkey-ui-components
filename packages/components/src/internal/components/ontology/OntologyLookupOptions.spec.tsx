@@ -6,10 +6,10 @@ import { sleep } from '../../testHelpers';
 import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { OntologyLookupOptions } from './OntologyLookupOptions';
-import { DomainField } from './models';
-import { SectionHeading } from './SectionHeading';
-import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from './PropDescType';
-import { DOMAIN_FIELD_FULLY_LOCKED } from './constants';
+import { DomainField } from '../domainproperties/models';
+import { SectionHeading } from '../domainproperties/SectionHeading';
+import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
+import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
 const DEFAULT_PROPS = {
     index: 0,

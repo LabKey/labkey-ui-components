@@ -15,7 +15,7 @@ import {
     SAMPLE_TYPE,
     TEXT_TYPE,
 } from './PropDescType';
-import { OntologyLookupOptions } from './OntologyLookupOptions';
+import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 import { TextFieldOptions } from './TextFieldOptions';
 import { BooleanFieldOptions } from './BooleanFieldOptions';
 import { DateTimeFieldOptions } from './DateTimeFieldOptions';

@@ -29,7 +29,7 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
-import { OntologyLookupOptions } from './OntologyLookupOptions';
+import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;

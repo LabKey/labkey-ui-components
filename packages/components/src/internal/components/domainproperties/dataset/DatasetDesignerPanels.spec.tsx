@@ -44,6 +44,7 @@ describe('Dataset Designer', () => {
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
+                testMode={true}
             />
         );
 
@@ -58,6 +59,7 @@ describe('Dataset Designer', () => {
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
+                testMode={true}
             />
         );
 
@@ -72,6 +74,7 @@ describe('Dataset Designer', () => {
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
+                testMode={true}
             />
         );
 

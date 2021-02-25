@@ -1,6 +1,26 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.5.0
+*Released*: 24 February 2021
+* Item 8359: Add initial OntologyBrowserPanel and associated files
+
+### version 2.4.0
+*Released*: 24 February 2021
+* Migrates `AssayDesignEmptyAlert`, `BarChartViewer`, and `RecentAssayPanel` to `@labkey/components`.
+* Migration includes chart configurations for assays and samples.
+* No longer need to export `UserMenu` as last external usage was removed.
+* Remove jQuery from `BaseBarChart` as it is no longer necessary.
+
+### version 2.3.1
+*Released*: 24 February 2021
+* Make 'auto-scroll to field' functionality in Summary View also expand given field
+* Display rangeURI values in Summary View for new fields
+
+### version 2.3.0
+*Released*: 23 February 2021
+* Field Editor Summary View
+
 ### version 2.2.0
 *Released*: 19 February 2021
 * Item 8335: Add LabKey product navigation icon and menu to NavigationBar.tsx
@@ -1300,7 +1320,7 @@ select a schema for the QuerySelect to use.
     - Factor out EntityDetailsForm.tsx from SampleSetDetailsPanel.tsx
     - Factor out DomainPropertiesPanelContext.tsx and CollapsiblePanelHeader.tsx for reuse and put back into AssayPropertiesPanel.tsx and DomainForm.tsx
     - DataClassDesigner.tsx and DataClassPropertiesPanel.tsx
-    - Move AssayProtocolModel to domainproperties/assay/models.ts
+    - Move AssayProtocolModel to domainproperties/assay/models.tsx
 
 ### version 0.24.0
 *Released*: 13 February 2020

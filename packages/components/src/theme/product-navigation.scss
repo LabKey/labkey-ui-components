@@ -11,16 +11,12 @@
 
     .product-navigation-header {
         .back-icon {
-            float: left;
-            cursor: pointer;
-
-            .fa {
-                font-size: 14px;
-            }
+            font-size: 14px;
+            padding-right: 10px;
         }
 
-        .header-padding {
-            padding-left: 20px;
+        .clickable {
+            cursor: pointer;
         }
     }
 

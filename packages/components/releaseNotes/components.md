@@ -6,6 +6,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * @labkey/components package bundle optimizations
     - webpack.config.js: add back in new IgnorePlugin(/^\.\/locale$/, /moment$/)
     - split initUnitTestMocks() into a separate testHelperMocks.tsx file so it isn't referenced via ./src/index.ts
+    - add localDev.md doc info on using webpack-bundle-analyzer
 
 ### version 2.5.0
 *Released*: 24 February 2021

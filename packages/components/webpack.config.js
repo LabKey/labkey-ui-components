@@ -6,7 +6,6 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const IgnorePlugin = require('webpack').IgnorePlugin;
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
     entry: './src/index.ts',
@@ -88,8 +87,7 @@ module.exports = {
                 }
             ]
         }),
-        new IgnorePlugin(/^\.\/locale$/, /moment$/),
-        // new BundleAnalyzerPlugin()
+        new IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
     externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery']
 };

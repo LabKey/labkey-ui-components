@@ -74,7 +74,8 @@
     } ],
     "excludeFromShifting" : false,
     "URL" : null,
-    "PHI" : "NotPHI"
+    "PHI" : "NotPHI",
+    "principalConceptCode" : "NCIT:ST1000016"
   }, {
     "propertyId" : 392740,
     "propertyURI" : "urn:lsid:labkey.com:Study.Project-556:Study#FieldInteger",

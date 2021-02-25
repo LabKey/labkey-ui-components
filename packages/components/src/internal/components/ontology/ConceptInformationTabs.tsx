@@ -2,6 +2,7 @@ import React, { FC, memo, SyntheticEvent, useCallback, useState } from 'react';
 import { Col, Nav, NavItem, Row, Tab, TabContainer } from 'react-bootstrap';
 
 import { ConceptModel } from './models';
+import { ConceptOverviewPanel } from './ConceptOverviewPanel';
 
 interface ConceptInformationTabsProps {
     concept?: ConceptModel;
@@ -60,30 +61,6 @@ export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(prop
                     </Row>
                 </Tab.Container>
             </div>
-        </>
-    );
-});
-
-// Read-only element displaying the concept's details
-const ConceptOverviewPanel: FC<{ concept: ConceptModel }> = memo(props => {
-    const { concept } = props;
-
-    if (!concept) {
-        return <div className="none-selected">No concept selected</div>;
-    }
-
-    const { code, label, description } = concept;
-
-    return (
-        <>
-            {label && <div className="title margin-bottom">{label}</div>}
-            {code && <span className="code">{code}</span>}
-            {description && (
-                <div>
-                    <div className="description-title">Description</div>
-                    <p className="description-text">{description}</p>
-                </div>
-            )}
         </>
     );
 });

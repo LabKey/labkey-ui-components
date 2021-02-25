@@ -1,17 +1,18 @@
 import React, { ReactNode, FC, memo, useState, useCallback, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { DomainField, DomainFieldLabel, Tip } from '../../..';
+import { DomainField, DomainFieldLabel } from '../../..';
 
 import { helpLinkNode, ONTOLOGY_TOPIC } from '../../util/helpLinks';
 import { createFormInputName } from '../domainproperties/actions';
 import { DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT } from '../domainproperties/constants';
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
 import { OntologyBrowserModal } from './OntologyBrowserModal';
-import { ConceptModel } from "./models";
+import { ConceptOverviewModal } from './ConceptOverviewPanel';
+import { ConceptModel } from './models';
 
 interface OntologyConceptAnnotationProps {
-    id: string,
+    id: string;
     field: DomainField;
     onChange: (id: string, value: any) => void;
     successBsStyle?: string;
@@ -20,20 +21,25 @@ interface OntologyConceptAnnotationProps {
 export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = memo(props => {
     const { id, field, successBsStyle, onChange } = props;
     const { principalConceptCode, lockType } = field;
-    const [showModal, setShowModal] = useState<boolean>();
+    const [showSelectModal, setShowSelectModal] = useState<boolean>();
+    const [showConceptModal, setShowConceptModal] = useState<boolean>();
     const title = 'Select Concept'; //useMemo(() => (principalConceptCode ? 'Edit' : 'Select') + ' Concept', [principalConceptCode]);
     const isFieldLocked = useMemo(() => isFieldFullyLocked(lockType), [lockType]);
 
-    const toggleModal = useCallback(() => {
-        setShowModal(!showModal);
-    }, [showModal, setShowModal]);
+    const toggleSelectModal = useCallback(() => {
+        setShowSelectModal(!showSelectModal);
+    }, [showSelectModal, setShowSelectModal]);
+
+    const toggleConceptModal = useCallback(() => {
+        setShowConceptModal(!showConceptModal);
+    }, [showConceptModal, setShowConceptModal]);
 
     const onApply = useCallback(
         (concept: ConceptModel) => {
             onChange(id, concept?.code);
-            setShowModal(false);
+            setShowSelectModal(false);
         },
-        [onChange, id, setShowModal]
+        [onChange, id, setShowSelectModal]
     );
 
     return (
@@ -47,7 +53,7 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
                     name={createFormInputName(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT)}
                     id={id}
                     disabled={isFieldLocked}
-                    onClick={toggleModal}
+                    onClick={toggleSelectModal}
                 >
                     {title}
                 </Button>
@@ -59,21 +65,22 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
                                 <i className="fa fa-remove" />
                             </a>
                         )}
-                        <a className="domain-validator-link" onClick={() => {}}>
+                        <a className="domain-validator-link" onClick={toggleConceptModal}>
                             {principalConceptCode}
                         </a>
                     </>
                 )}
             </div>
-            {showModal && (
+            {showSelectModal && (
                 <OntologyBrowserModal
                     title={title}
                     initOntologyId={field.sourceOntology}
-                    onCancel={toggleModal}
+                    onCancel={toggleSelectModal}
                     onApply={onApply}
                     successBsStyle={successBsStyle}
                 />
             )}
+            {showConceptModal && <ConceptOverviewModal code={principalConceptCode} onClose={toggleConceptModal} />}
         </>
     );
 });

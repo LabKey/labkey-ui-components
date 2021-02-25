@@ -113,6 +113,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
       "sourceOntology": undefined,
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
+      "principalConceptCode": undefined,
       "selected": false,
     }
   }
@@ -586,6 +587,7 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
       "sourceOntology": undefined,
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
+      "principalConceptCode": undefined,
       "selected": false,
     }
   }
@@ -883,6 +885,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
       "sourceOntology": undefined,
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
+      "principalConceptCode": undefined,
       "selected": false,
     }
   }

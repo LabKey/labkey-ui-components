@@ -84,6 +84,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "sourceOntology": undefined,
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
+      "principalConceptCode": undefined,
       "selected": false,
     }
   }

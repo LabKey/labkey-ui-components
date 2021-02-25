@@ -334,6 +334,7 @@ exports[`DomainRow Sample Field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   }
                 }
@@ -521,6 +522,7 @@ exports[`DomainRow Sample Field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "principalConceptCode": undefined,
                                     "selected": false,
                                   }
                                 }
@@ -1106,6 +1108,7 @@ exports[`DomainRow Sample Field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "principalConceptCode": undefined,
                                       "selected": false,
                                     }
                                   }
@@ -1468,6 +1471,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -1945,6 +1949,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -2504,6 +2509,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   }
                 }
@@ -2703,6 +2709,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "principalConceptCode": undefined,
                                     "selected": false,
                                   }
                                 }
@@ -3465,6 +3472,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "principalConceptCode": undefined,
                                       "selected": false,
                                     }
                                   }
@@ -3583,6 +3591,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -4060,6 +4069,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -4619,6 +4629,7 @@ exports[`DomainRow date time field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   }
                 }
@@ -4806,6 +4817,7 @@ exports[`DomainRow date time field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "principalConceptCode": undefined,
                                     "selected": false,
                                   }
                                 }
@@ -5371,6 +5383,7 @@ exports[`DomainRow date time field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "principalConceptCode": undefined,
                                       "selected": false,
                                     }
                                   }
@@ -5710,6 +5723,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -6187,6 +6201,7 @@ exports[`DomainRow date time field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -6886,6 +6901,7 @@ exports[`DomainRow decimal field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   }
                 }
@@ -7073,6 +7089,7 @@ exports[`DomainRow decimal field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "principalConceptCode": undefined,
                                     "selected": false,
                                   }
                                 }
@@ -7638,6 +7655,7 @@ exports[`DomainRow decimal field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "principalConceptCode": undefined,
                                       "selected": false,
                                     }
                                   }
@@ -8012,6 +8030,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -8489,6 +8508,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -9188,6 +9208,7 @@ exports[`DomainRow participant id field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   }
                 }
@@ -9375,6 +9396,7 @@ exports[`DomainRow participant id field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "principalConceptCode": undefined,
                                     "selected": false,
                                   }
                                 }
@@ -9970,6 +9992,7 @@ exports[`DomainRow participant id field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "principalConceptCode": undefined,
                                       "selected": false,
                                     }
                                   }
@@ -10088,6 +10111,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -10565,6 +10589,7 @@ exports[`DomainRow participant id field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -11264,6 +11289,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   }
                 }
@@ -11463,6 +11489,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "principalConceptCode": undefined,
                                     "selected": false,
                                   }
                                 }
@@ -12114,6 +12141,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "principalConceptCode": undefined,
                                       "selected": false,
                                     }
                                   }
@@ -12232,6 +12260,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -12709,6 +12738,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -13268,6 +13298,7 @@ exports[`DomainRow string field test 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   }
                 }
@@ -13455,6 +13486,7 @@ exports[`DomainRow string field test 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "principalConceptCode": undefined,
                                     "selected": false,
                                   }
                                 }
@@ -14050,6 +14082,7 @@ exports[`DomainRow string field test 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "principalConceptCode": undefined,
                                       "selected": false,
                                     }
                                   }
@@ -14478,6 +14511,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -14955,6 +14989,7 @@ exports[`DomainRow string field test 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -15654,6 +15689,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   }
                 }
@@ -15841,6 +15877,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                     "sourceOntology": undefined,
                                     "conceptLabelColumn": undefined,
                                     "conceptImportColumn": undefined,
+                                    "principalConceptCode": undefined,
                                     "selected": false,
                                   }
                                 }
@@ -16485,6 +16522,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                       "sourceOntology": undefined,
                                       "conceptLabelColumn": undefined,
                                       "conceptImportColumn": undefined,
+                                      "principalConceptCode": undefined,
                                       "selected": false,
                                     }
                                   }
@@ -16913,6 +16951,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }
@@ -17390,6 +17429,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 "sourceOntology": undefined,
                                                 "conceptLabelColumn": undefined,
                                                 "conceptImportColumn": undefined,
+                                                "principalConceptCode": undefined,
                                                 "selected": false,
                                               }
                                             }

@@ -1031,6 +1031,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "sourceOntology": undefined,
             "conceptLabelColumn": undefined,
             "conceptImportColumn": undefined,
+            "principalConceptCode": undefined,
             "selected": false,
           },
         ],
@@ -1180,6 +1181,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
           ],
@@ -1306,6 +1308,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -1438,6 +1441,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
               ],
@@ -1585,6 +1589,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                 ],
@@ -1738,6 +1743,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                   ],
@@ -2083,6 +2089,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             "sourceOntology": undefined,
                                             "conceptLabelColumn": undefined,
                                             "conceptImportColumn": undefined,
+                                            "principalConceptCode": undefined,
                                             "selected": false,
                                           },
                                         ],
@@ -2787,6 +2794,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -2911,6 +2919,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                 ],
@@ -3854,6 +3863,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -4043,6 +4053,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -4654,6 +4665,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -5084,6 +5096,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -5561,6 +5574,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }

@@ -4096,6 +4096,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -4178,6 +4179,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -4260,6 +4262,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
           ],
@@ -4428,6 +4431,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4510,6 +4514,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4592,6 +4597,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -4748,6 +4754,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4830,6 +4837,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4912,6 +4920,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -5067,6 +5076,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -5149,6 +5159,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -5231,6 +5242,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                 ],
@@ -5402,6 +5414,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -5484,6 +5497,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -5566,6 +5580,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                   ],
@@ -5739,6 +5754,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "sourceOntology": undefined,
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
+                        "principalConceptCode": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -5821,6 +5837,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "sourceOntology": undefined,
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
+                        "principalConceptCode": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -5903,6 +5920,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "sourceOntology": undefined,
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
+                        "principalConceptCode": undefined,
                         "selected": false,
                       },
                     ],
@@ -6333,6 +6351,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -6415,6 +6434,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -6497,6 +6517,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -6819,6 +6840,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -6901,6 +6923,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -6983,6 +7006,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -7300,6 +7324,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -7382,6 +7407,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -7464,6 +7490,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -7769,6 +7796,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -7851,6 +7879,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -7933,6 +7962,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -8283,6 +8313,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -8365,6 +8396,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -8447,6 +8479,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
               ],
@@ -8631,6 +8664,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -8713,6 +8747,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -8795,6 +8830,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                   ],
@@ -9389,6 +9425,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -9471,6 +9508,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -9553,6 +9591,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -9687,6 +9726,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -9769,6 +9809,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -9851,6 +9892,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
               ],
@@ -9971,6 +10013,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -10053,6 +10096,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -10135,6 +10179,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                 ],
@@ -10282,6 +10327,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -10364,6 +10410,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -10446,6 +10493,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                   ],
@@ -11399,6 +11447,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -11589,6 +11638,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -12200,6 +12250,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -12630,6 +12681,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -13107,6 +13159,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -13536,6 +13589,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -13726,6 +13780,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -14337,6 +14392,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -14713,6 +14769,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -15190,6 +15247,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -15619,6 +15677,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -15809,6 +15868,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -16420,6 +16480,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -16761,6 +16822,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -17238,6 +17300,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -25407,6 +25470,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -25489,6 +25553,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -25571,6 +25636,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
           ],
@@ -25739,6 +25805,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -25821,6 +25888,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -25903,6 +25971,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -26059,6 +26128,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -26141,6 +26211,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -26223,6 +26294,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -26377,6 +26449,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -26459,6 +26532,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -26541,6 +26615,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                 ],
@@ -26712,6 +26787,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -26794,6 +26870,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -26876,6 +26953,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                   ],
@@ -27049,6 +27127,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "sourceOntology": undefined,
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
+                        "principalConceptCode": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -27131,6 +27210,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "sourceOntology": undefined,
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
+                        "principalConceptCode": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -27213,6 +27293,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "sourceOntology": undefined,
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
+                        "principalConceptCode": undefined,
                         "selected": false,
                       },
                     ],
@@ -27643,6 +27724,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -27725,6 +27807,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -27807,6 +27890,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -28129,6 +28213,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -28211,6 +28296,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -28293,6 +28379,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -28610,6 +28697,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -28692,6 +28780,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -28774,6 +28863,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -29079,6 +29169,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -29161,6 +29252,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -29243,6 +29335,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -29571,6 +29664,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -29653,6 +29747,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -29735,6 +29830,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -30057,6 +30153,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -30139,6 +30236,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -30221,6 +30319,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -30508,6 +30607,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -30590,6 +30690,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -30672,6 +30773,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -30806,6 +30908,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -30888,6 +30991,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -30970,6 +31074,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
               ],
@@ -31090,6 +31195,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -31172,6 +31278,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -31254,6 +31361,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                 ],
@@ -31401,6 +31509,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -31483,6 +31592,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -31565,6 +31675,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                   ],
@@ -32518,6 +32629,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -32708,6 +32820,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -33337,6 +33450,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -33767,6 +33881,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -34244,6 +34359,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -34813,6 +34929,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -35003,6 +35120,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -35632,6 +35750,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -36008,6 +36127,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -36485,6 +36605,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -37054,6 +37175,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -37244,6 +37366,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -37873,6 +37996,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -38214,6 +38338,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -38691,6 +38816,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -39301,6 +39427,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -39383,6 +39510,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -39465,6 +39593,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "sourceOntology": undefined,
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
+              "principalConceptCode": undefined,
               "selected": false,
             },
           ],
@@ -39632,6 +39761,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -39714,6 +39844,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -39796,6 +39927,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -39952,6 +40084,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -40034,6 +40167,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -40116,6 +40250,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -40270,6 +40405,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -40352,6 +40488,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -40434,6 +40571,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                 ],
@@ -40605,6 +40743,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -40687,6 +40826,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -40769,6 +40909,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                   ],
@@ -40942,6 +41083,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "sourceOntology": undefined,
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
+                        "principalConceptCode": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -41024,6 +41166,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "sourceOntology": undefined,
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
+                        "principalConceptCode": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -41106,6 +41249,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "sourceOntology": undefined,
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
+                        "principalConceptCode": undefined,
                         "selected": false,
                       },
                     ],
@@ -41536,6 +41680,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -41618,6 +41763,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -41700,6 +41846,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -42022,6 +42169,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -42104,6 +42252,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -42186,6 +42335,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -42503,6 +42653,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -42585,6 +42736,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -42667,6 +42819,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -42972,6 +43125,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -43054,6 +43208,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -43136,6 +43291,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -43464,6 +43620,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -43546,6 +43703,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -43628,6 +43786,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -43950,6 +44109,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -44032,6 +44192,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -44114,6 +44275,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "sourceOntology": undefined,
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
+                                                        "principalConceptCode": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -44452,6 +44614,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -44534,6 +44697,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -44616,6 +44780,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
               ],
@@ -44800,6 +44965,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -44882,6 +45048,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -44964,6 +45131,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                   ],
@@ -45557,6 +45725,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -45639,6 +45808,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -45721,6 +45891,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "sourceOntology": undefined,
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
+                "principalConceptCode": undefined,
                 "selected": false,
               },
             ],
@@ -45855,6 +46026,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -45937,6 +46109,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -46019,6 +46192,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "sourceOntology": undefined,
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
+                  "principalConceptCode": undefined,
                   "selected": false,
                 },
               ],
@@ -46139,6 +46313,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -46221,6 +46396,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -46303,6 +46479,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "sourceOntology": undefined,
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
+                    "principalConceptCode": undefined,
                     "selected": false,
                   },
                 ],
@@ -46450,6 +46627,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -46532,6 +46710,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -46614,6 +46793,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "sourceOntology": undefined,
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
+                      "principalConceptCode": undefined,
                       "selected": false,
                     },
                   ],
@@ -47567,6 +47747,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -47757,6 +47938,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -48386,6 +48568,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -48816,6 +48999,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -49293,6 +49477,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -49862,6 +50047,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -50052,6 +50238,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -50681,6 +50868,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -51057,6 +51245,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -51534,6 +51723,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -52103,6 +52293,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "sourceOntology": undefined,
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
+                                                            "principalConceptCode": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -52293,6 +52484,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "sourceOntology": undefined,
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
+                                                                            "principalConceptCode": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -52922,6 +53114,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "sourceOntology": undefined,
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
+                                                                              "principalConceptCode": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -53263,6 +53456,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -53740,6 +53934,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "sourceOntology": undefined,
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
+                                                                                        "principalConceptCode": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }

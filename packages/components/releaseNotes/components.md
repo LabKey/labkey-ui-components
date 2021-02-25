@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD February 2021
+### version 2.5.0
+*Released*: 24 February 2021
 * Item 8359: Add initial OntologyBrowserPanel and associated files
 
 ### version 2.4.0

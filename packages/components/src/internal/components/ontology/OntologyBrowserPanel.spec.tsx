@@ -1,2 +1,23 @@
 /** Tests describing the OntologyBrowser **/
-// TODO lots
+
+import { mount } from 'enzyme';
+import React from 'react';
+
+import { initUnitTestMocks } from '../../testHelpers';
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
+import { OntologyBrowserPanel } from './OntologyBrowserPanel';
+//TODO Lots todo...
+
+beforeAll(() => {
+    initUnitTestMocks();
+});
+
+describe('OntologyBrowserPanel', () => {
+    test('Ontology id not provided', () => {
+        const component = mount(<OntologyBrowserPanel />);
+
+        expect(component.find(LoadingSpinner)).toHaveLength(1);
+        component.unmount();
+    });
+});

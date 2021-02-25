@@ -19,6 +19,7 @@ const emptyNewModel = IssuesListDefModel.create(null, { issueDefName: 'Issues Li
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
+    testMode: true,
 };
 
 beforeAll(() => {

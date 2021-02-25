@@ -1,30 +1,34 @@
 import React, { FC, memo } from 'react';
-import { Link } from 'react-router';
 import { PermissionTypes } from '@labkey/api';
 
-import { Alert, hasAllPermissions, User, App } from '../../..';
+import { App } from '../../..';
+import { EmptyAlertWithPermissions, EmptyAlertWithPermissionsProps } from '../base/EmptyAlert';
 
-interface Props {
-    user: User;
+interface Props extends EmptyAlertWithPermissionsProps {
     message?: string;
-    className?: string;
 }
 
 export const SampleEmptyAlert: FC<Props> = memo(props => {
-    const { user, message, className } = props;
-    const prefix = message || 'No samples have been created.';
-
-    if (hasAllPermissions(user, [PermissionTypes.Insert])) {
-        return (
-            <Alert bsStyle="warning" className={className}>
-                {prefix} Click <Link to={App.NEW_SAMPLES_HREF.toString()}>here</Link> to create samples.
-            </Alert>
-        );
-    }
-
+    const { message, ...baseProps } = props;
     return (
-        <Alert bsStyle="warning" className={className}>
-            {prefix}
-        </Alert>
+        <EmptyAlertWithPermissions
+            {...baseProps}
+            actionURL={App.NEW_SAMPLES_HREF}
+            message={message ?? 'No samples have been created.'}
+            messageSuffix="to create samples."
+            permission={PermissionTypes.Insert}
+        />
+    );
+});
+
+export const SampleTypeEmptyAlert: FC<Props> = memo(props => {
+    const { message, ...baseProps } = props;
+    return (
+        <EmptyAlertWithPermissions
+            {...baseProps}
+            actionURL={App.NEW_SAMPLE_TYPE_HREF}
+            message={message ?? 'No sample types have been created.'}
+            permission={PermissionTypes.DesignSampleSet}
+        />
     );
 });

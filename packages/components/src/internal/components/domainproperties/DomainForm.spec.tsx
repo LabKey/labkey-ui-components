@@ -52,6 +52,7 @@ beforeAll(() => {
 
 interface Props {
     showInferFromFile?: boolean;
+    testMode?: boolean;
 }
 
 class DomainFormContainer extends React.PureComponent<Props, any> {
@@ -75,6 +76,7 @@ class DomainFormContainer extends React.PureComponent<Props, any> {
                 domain={this.state.domain}
                 showInferFromFile={this.props.showInferFromFile}
                 onChange={this.onChange}
+                testMode={this.props.testMode}
             />
         );
     }
@@ -84,7 +86,7 @@ describe('DomainForm', () => {
     test('with empty domain form', async () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
         await sleep();
 
         // Empty panel
@@ -113,7 +115,7 @@ describe('DomainForm', () => {
     test('with showHeader, helpNoun, and helpTopic', async () => {
         const domain = DomainDesign.create({});
         const form = mount(
-            <DomainForm domain={domain} helpNoun="assay" helpTopic="assays" showHeader={false} onChange={jest.fn()} />
+            <DomainForm domain={domain} helpNoun="assay" helpTopic="assays" showHeader={false} onChange={jest.fn()} testMode={true} />
         );
         await sleep();
 
@@ -130,7 +132,7 @@ describe('DomainForm', () => {
             fields: [],
             indices: [],
         });
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
         await sleep();
 
         expect(form).toMatchSnapshot();
@@ -217,7 +219,7 @@ describe('DomainForm', () => {
             fields,
             indices: [],
         });
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
         await sleep();
 
         expect(form).toMatchSnapshot();
@@ -266,7 +268,7 @@ describe('DomainForm', () => {
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_TYPE, 0, 2), value: 'ParticipantId' });
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_TYPE, 0, 3), value: 'attachment' });
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} />);
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} testMode={true} />);
         await sleep();
 
         expect(form).toMatchSnapshot();
@@ -295,7 +297,7 @@ describe('DomainForm', () => {
         domain = updateDomainField(domain, { id: createFormInputId(DOMAIN_FIELD_NAME, 0, 0), value: 'newfieldname' });
         domain = clearFieldDetails(domain);
 
-        const form = mount(<DomainForm domain={domain} key="domainForm" onChange={jest.fn()} />);
+        const form = mount(<DomainForm domain={domain} key="domainForm" onChange={jest.fn()} testMode={true} />);
         await sleep();
 
         expect(form).toMatchSnapshot();
@@ -328,7 +330,7 @@ describe('DomainForm', () => {
             }) as DomainDesign;
         };
 
-        const form = mount(<DomainForm domain={domain} onChange={changeHandler} />);
+        const form = mount(<DomainForm domain={domain} onChange={changeHandler} testMode={true} />);
         await sleep();
 
         // Add new row
@@ -389,7 +391,7 @@ describe('DomainForm', () => {
         });
 
         const form = mount(
-            <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} />
+            <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
         );
         await sleep();
 
@@ -417,7 +419,7 @@ describe('DomainForm', () => {
         });
 
         const form = mount(
-            <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} />
+            <DomainForm domain={domain} collapsible={false} initCollapsed={true} onChange={jest.fn()} testMode={true} />
         );
         await sleep();
 
@@ -435,6 +437,7 @@ describe('DomainForm', () => {
                 initCollapsed={true}
                 headerPrefix="Foo" // this text should be removed from the panel header display text
                 onChange={jest.fn()}
+                testMode={true}
             />
         );
         await sleep();
@@ -445,7 +448,7 @@ describe('DomainForm', () => {
 
     test('with showInferFromFile', async () => {
         const domain = DomainDesign.create({});
-        const form = mount(<DomainForm domain={domain} showInferFromFile={true} onChange={jest.fn()} />);
+        const form = mount(<DomainForm domain={domain} showInferFromFile={true} onChange={jest.fn()} testMode={true} />);
         await sleep();
 
         expect(form).toMatchSnapshot();
@@ -453,7 +456,7 @@ describe('DomainForm', () => {
     });
 
     test('test showInferFromFile click domain-form-manual-btn', async () => {
-        const component = <DomainFormContainer showInferFromFile={true} />;
+        const component = <DomainFormContainer showInferFromFile={true} testMode={true} />;
         const wrapper = mount(component);
         await sleep();
 
@@ -511,7 +514,7 @@ describe('DomainForm', () => {
         };
 
         const helpTopic = 'Your topic';
-        const form = mount(<DomainForm helpTopic={helpTopic} domain={domain} onChange={changeHandler} />);
+        const form = mount(<DomainForm helpTopic={helpTopic} domain={domain} onChange={changeHandler} testMode={true} />);
         await sleep();
 
         // Check help link
@@ -564,7 +567,7 @@ describe('DomainForm', () => {
             }) as DomainDesign;
         };
 
-        const form = mount(<DomainForm domain={domain} onChange={changeHandler} />);
+        const form = mount(<DomainForm domain={domain} onChange={changeHandler} testMode={true} />);
         await sleep();
 
         // Add new row
@@ -604,7 +607,7 @@ describe('DomainForm', () => {
         });
 
         const wrapper = mount(
-            <DomainForm domain={domain} onChange={jest.fn} collapsible={true} controlledCollapse={true} />
+            <DomainForm domain={domain} onChange={jest.fn} collapsible={true} controlledCollapse={true} testMode={true} />
         );
         await sleep();
 
@@ -651,7 +654,7 @@ describe('DomainForm', () => {
         );
 
         const wrapper = mount(
-            <DomainForm domain={domain} onChange={jest.fn} collapsible={true} appDomainHeaderRenderer={mockAppHeader} />
+            <DomainForm domain={domain} onChange={jest.fn} collapsible={true} appDomainHeaderRenderer={mockAppHeader} testMode={true} />
         );
         await sleep();
 
@@ -685,6 +688,7 @@ describe('DomainForm', () => {
                 domainFormDisplayOptions={{
                     hideRequired: true,
                 }}
+                testMode={true}
             />
         );
         await sleep();
@@ -703,6 +707,7 @@ describe('DomainForm', () => {
                 domainFormDisplayOptions={{
                     hideAddFieldsButton: true,
                 }}
+                testMode={true}
             />
         );
         await sleep();
@@ -718,7 +723,7 @@ describe('DomainForm', () => {
     test('using allowImportExport', () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} allowImportExport={true} />);
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} allowImportExport={true} testMode={true} />);
 
         expect(form.find('.domain-form-manual-section').length).toEqual(1);
         expect(form.find('.file-form-formats').text()).toContain('.json');
@@ -731,7 +736,7 @@ describe('DomainForm', () => {
     test('not using allowImportExport', () => {
         const domain = DomainDesign.create({});
 
-        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} allowImportExport={false} />);
+        const form = mount(<DomainForm domain={domain} onChange={jest.fn()} allowImportExport={false} testMode={true} />);
 
         expect(form.find('.domain-form-manual-section').length).toEqual(0);
         expect(form.find('.file-form-formats').length).toEqual(0);
@@ -767,6 +772,7 @@ describe('DomainForm', () => {
                     hideRequired: true,
                 }}
                 allowImportExport={true}
+                testMode={true}
             />
         );
 
@@ -806,6 +812,7 @@ describe('DomainForm', () => {
                     hideRequired: true,
                 }}
                 allowImportExport={false}
+                testMode={true}
             />
         );
 
@@ -824,7 +831,7 @@ describe('DomainForm', () => {
         fields.push({ name: 'DeletableField1' });
         fields.push({ name: 'DeletableField2' });
         const domain = DomainDesign.create({ fields });
-        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} />);
+        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
 
         expect(form.find('.modal-title').length).toEqual(0);
         form.setState({ bulkDeleteConfirmInfo: { deletableSelectedFields: [1, 2], undeletableFields: [0] } });
@@ -849,7 +856,7 @@ describe('DomainForm', () => {
         fields.push({ name: 'Field1' });
         fields.push({ name: 'Field2' });
         const domain = DomainDesign.create({ fields });
-        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} />);
+        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true}/>);
 
         const visibleSelection = new Set();
         visibleSelection.add(0).add(1);
@@ -875,5 +882,25 @@ describe('DomainForm', () => {
         expect(form.text()).toContain('Clear');
 
         form.unmount();
+    });
+
+    test('with summaryViewMode', () => {
+        const fields = [];
+        fields.push({ name: 'Field0' });
+        fields.push({ name: 'Field1' });
+        fields.push({ name: 'Field2' });
+
+        const domain = DomainDesign.create({ fields });
+        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+
+        expect(form.find('.domain-field-row').length).toEqual(4);
+        expect(form.find('.table-responsive').length).toEqual(0);
+        expect(form.find('.domain-field-toolbar').length).toEqual(2);
+
+        form.setState({ summaryViewMode: true });
+
+        expect(form.find('.domain-field-row').length).toEqual(0);
+        expect(form.find('.table-responsive').length).toEqual(1);
+        expect(form.find('.domain-field-toolbar').length).toEqual(2);
     });
 });

@@ -88,7 +88,7 @@ export const ProductLKSDrawer: FC<ProductLKSDrawerProps> = memo(props => {
 
 // exported for jest testing
 /**
- * Does a project exist in an array of project containres by either the name or id?
+ * Does a project exist in an array of project containers by either the name or id?
  * @param projects
  * @param id
  * @param name

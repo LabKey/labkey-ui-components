@@ -1,8 +1,8 @@
-import React, { FC, memo, useEffect, useMemo } from 'react';
+import React, { FC, memo, useMemo } from 'react';
 
 import { Filter } from '@labkey/api';
 
-import { Alert, Cards, caseInsensitive, naturalSort, LoadingSpinner, SCHEMAS } from '../../..';
+import { Cards, caseInsensitive, naturalSort, LoadingSpinner, SampleTypeEmptyAlert, SCHEMAS } from '../../..';
 
 import { ICardProps } from '../base/Cards';
 
@@ -56,7 +56,7 @@ interface Props {
     modelId: string;
 }
 
-const SampleSetCardsImpl: FC<Props & InjectedQueryModels> = memo(({ actions, modelId, queryModels }) => {
+const SampleSetCardsImpl: FC<Props & InjectedQueryModels> = memo(({ modelId, queryModels }) => {
     const model = queryModels[modelId];
 
     const { emptyCards, nonEmptyCards } = useMemo(
@@ -70,9 +70,7 @@ const SampleSetCardsImpl: FC<Props & InjectedQueryModels> = memo(({ actions, mod
     return (
         <>
             {model.isLoading && <LoadingSpinner />}
-            {nonEmptyCards && emptyCards && nonEmptyCards.length + emptyCards.length === 0 && (
-                <Alert bsStyle="warning">No sample types have been created.</Alert>
-            )}
+            {nonEmptyCards && emptyCards && nonEmptyCards.length + emptyCards.length === 0 && <SampleTypeEmptyAlert />}
             {nonEmptyCards && nonEmptyCards.length > 0 && (
                 <div style={{ paddingTop: '6px' }}>
                     <h4>Sample types with samples</h4>
@@ -109,5 +107,5 @@ export const SampleSetCards: FC<SampleSetCardsProps> = memo(({ excludedSampleSet
         [excludedSampleSets, modelId]
     );
 
-    return <SampleSetCardsWithQueryModels queryConfigs={queryConfigs} modelId={modelId} autoLoad={true}/>;
+    return <SampleSetCardsWithQueryModels autoLoad modelId={modelId} queryConfigs={queryConfigs} />;
 });

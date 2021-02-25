@@ -12,14 +12,12 @@ export default {
     component: OntologyBrowserPanel,
     argTypes: {
         initOntologyId: disableControls(),
+        onConceptSelect: disableControls(),
     },
 } as Meta;
 
 export const OntologyBrowserPanelStory: Story<OntologyBrowserProps> = props => (
-    <OntologyBrowserPanel
-        {...props}
-        initOntologyId={props.withOntology ? 'NCIT' : undefined}
-    />
+    <OntologyBrowserPanel {...props} initOntologyId={props.withOntology ? 'NCIT' : undefined} />
 );
 
 OntologyBrowserPanelStory.storyName = 'OntologyBrowserPanel';

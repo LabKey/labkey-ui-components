@@ -1,7 +1,7 @@
 import React, { ReactNode, FC, memo, useState, useCallback, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { createFormInputId, DomainField, DomainFieldLabel } from '../../..';
+import { DomainField, DomainFieldLabel, Tip } from '../../..';
 
 import { helpLinkNode, ONTOLOGY_TOPIC } from '../../util/helpLinks';
 import { createFormInputName } from '../domainproperties/actions';
@@ -19,9 +19,10 @@ interface OntologyConceptAnnotationProps {
 
 export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = memo(props => {
     const { id, field, successBsStyle, onChange } = props;
-    const { principalConceptCode } = field;
+    const { principalConceptCode, lockType } = field;
     const [showModal, setShowModal] = useState<boolean>();
-    const title = useMemo(() => (principalConceptCode ? 'Edit' : 'Select') + ' Concept', [principalConceptCode]);
+    const title = 'Select Concept'; //useMemo(() => (principalConceptCode ? 'Edit' : 'Select') + ' Concept', [principalConceptCode]);
+    const isFieldLocked = useMemo(() => isFieldFullyLocked(lockType), [lockType]);
 
     const toggleModal = useCallback(() => {
         setShowModal(!showModal);
@@ -45,19 +46,23 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
                     className="domain-validation-button"
                     name={createFormInputName(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT)}
                     id={id}
-                    disabled={isFieldFullyLocked(field.lockType)}
+                    disabled={isFieldLocked}
                     onClick={toggleModal}
                 >
                     {title}
                 </Button>
                 {!principalConceptCode && <span className="domain-text-label">None Set</span>}
                 {principalConceptCode && (
-                    <a
-                        className="domain-validator-link"
-                        onClick={isFieldFullyLocked(field.lockType) ? () => {} : toggleModal}
-                    >
-                        {principalConceptCode}
-                    </a>
+                    <>
+                        {!isFieldLocked && (
+                            <a className="domain-validator-link" onClick={() => onApply(undefined)}>
+                                <i className="fa fa-remove" />
+                            </a>
+                        )}
+                        <a className="domain-validator-link" onClick={() => {}}>
+                            {principalConceptCode}
+                        </a>
+                    </>
                 )}
             </div>
             {showModal && (

@@ -1,7 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import { initUnitTestMocks, registerDefaultURLMappers, sleep } from '../testHelpers';
+import { registerDefaultURLMappers, sleep } from '../testHelpers';
+import { initUnitTestMocks } from '../testHelperMocks';
 
 import { SchemaQuery } from '../..';
 

@@ -3,10 +3,11 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { OntologyBrowserPanel } from './OntologyBrowserPanel';
+
 //TODO Lots todo...
 
 beforeAll(() => {

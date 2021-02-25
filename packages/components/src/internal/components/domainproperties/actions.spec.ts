@@ -17,7 +17,7 @@ import { List } from 'immutable';
 
 import { QueryColumn } from '../../..';
 
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 
 import {
     createFormInputId,

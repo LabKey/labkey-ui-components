@@ -107,7 +107,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                     </p>
                                     <p>Choose which ontology to use to lookup concept codes and preferred names.</p>
                                     <p>
-                                        Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in
+                                        Learn more about {helpLinkNode(ONTOLOGY_TOPIC + '#lookup', 'ontology integration')} in
                                         LabKey.
                                     </p>
                                 </>
@@ -122,7 +122,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                     Choose which text field to use when looking up a code against the selected ontology.
                                 </p>
                                 <p>
-                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.
+                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC + '#lookup', 'ontology integration')} in LabKey.
                                 </p>
                             </LabelHelpTip>
                         </div>
@@ -133,7 +133,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                             <LabelHelpTip title="Experimental Feature">
                                 <p>Choose which text field to store the preferred name of the concept.</p>
                                 <p>
-                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.
+                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC + '#lookup', 'ontology integration')} in LabKey.
                                 </p>
                             </LabelHelpTip>
                         </div>

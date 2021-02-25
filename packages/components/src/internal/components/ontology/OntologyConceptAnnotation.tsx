@@ -127,6 +127,7 @@ function getOntologyConceptAnnotationHelpTipBody(): ReactNode {
             {/* TODO anything else to add?*/}
             <br />
             <br />
+            {/*TODO update link topic once annotation case is added to docs page*/}
             Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.
         </>
     );

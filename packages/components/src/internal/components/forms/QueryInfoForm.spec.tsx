@@ -25,7 +25,7 @@ import { getQueryDetails, SchemaQuery } from '../../..';
 import { TextInput } from './input/TextInput';
 import { QueryFormInputs } from './QueryFormInputs';
 import { QueryInfoForm } from './QueryInfoForm';
-import { QueryInfoQuantity } from "./QueryInfoQuantity";
+import { QueryInfoQuantity } from './QueryInfoQuantity';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -125,7 +125,7 @@ describe('QueryInfoForm', () => {
             const submitButton = formWrapper.find('.test-loc-submit-button');
             expect(submitButton.childAt(0).text()).toBe(submitText);
             expect(formWrapper.find(QueryInfoQuantity)).toHaveLength(1);
-            expect(formWrapper.find(QueryInfoQuantity).prop("countText")).toBe(countText);
+            expect(formWrapper.find(QueryInfoQuantity).prop('countText')).toBe(countText);
         });
     });
 

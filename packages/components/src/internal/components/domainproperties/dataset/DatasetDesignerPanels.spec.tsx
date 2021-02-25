@@ -23,7 +23,7 @@ import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/const
 import { Alert } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import {  waitForLifecycle } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { DatasetDesignerPanels } from './DatasetDesignerPanels';

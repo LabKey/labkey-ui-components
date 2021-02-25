@@ -19,30 +19,34 @@ import mock, { proxy } from 'xhr-mock';
 
 import { ConfirmModal, initNotificationsState } from '../../..';
 
+import { sleep } from '../../testHelpers';
+
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDeleteConfirmModalDisplay } from './EntityDeleteConfirmModalDisplay';
 import { SampleTypeDataType } from './constants';
-import { sleep } from '../../testHelpers';
 
 beforeAll(() => {
     initNotificationsState();
 
     mock.setup();
     mock.post(/.*\/experiment\/?.*\/getMaterialDeleteConfirmationData.*/, (req, res) => {
-        return res.status(200)
+        return res
+            .status(200)
             .headers({ 'Content-Type': 'application/json' })
-            .body(JSON.stringify({
-                success: true,
-                data: {
-                    canDelete: [
-                        {
-                            Name: 'D-2.3.1',
-                            RowId: 351,
-                        },
-                    ],
-                    cannotDelete: [],
-                },
-            }));
+            .body(
+                JSON.stringify({
+                    success: true,
+                    data: {
+                        canDelete: [
+                            {
+                                Name: 'D-2.3.1',
+                                RowId: 351,
+                            },
+                        ],
+                        cannotDelete: [],
+                    },
+                })
+            );
     });
     mock.use(proxy);
 });

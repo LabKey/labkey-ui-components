@@ -8,7 +8,8 @@ import {
     initQueryGridMocks,
     initUserPropsMocks,
 } from '../stories/mock';
-import { initUnitTests } from "./testHelpers";
+
+import { initUnitTests } from './testHelpers';
 
 /**
  * Use this method in beforeAll() for your jest tests and you'll have full access

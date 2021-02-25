@@ -170,7 +170,7 @@ function applyLineageIOMetadata(
 }
 
 export function processLineageResult(lineage: LineageResult, options?: LineageOptions): Promise<LineageResult> {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         return Promise.all(fetchNodeMetadata(lineage))
             .then(results => {
                 const iconURLByLsid = {};
@@ -189,6 +189,8 @@ export function processLineageResult(lineage: LineageResult, options?: LineageOp
             })
             .then(result => {
                 resolve(result);
+            }, reason => {
+                reject(reason);
             });
     });
 }

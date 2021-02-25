@@ -76,7 +76,7 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
                             </Button>
                         </td>
                         {!principalConceptCode && (
-                            <td>
+                            <td className="content">
                                 <span className="domain-text-label">None Set</span>
                             </td>
                         )}

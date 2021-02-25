@@ -30,7 +30,13 @@ export function getAuditQueries(): AuditQuery[] {
             { value: 'sampletimelineevent', label: 'Sample Timeline Events', hasDetail: true },
             { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true },
             { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true },
-            { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders }
+            { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders },
+            {value: 'listauditevent', label: 'List Events'},
+            {
+                value: 'groupauditevent',
+                label: 'Roles and Assignment Events',
+                containerFilter: Query.ContainerFilter.allFolders,
+            },
         );
     }
 

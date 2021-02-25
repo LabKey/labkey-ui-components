@@ -467,6 +467,7 @@ import {
     SampleCreationTypeModel,
 } from './internal/components/samples/models';
 import { createMockWithRouterProps } from './test/mockUtils';
+import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -985,4 +986,6 @@ export {
     sleep,
     waitForLifecycle,
     createMockWithRouterProps,
+    // Ontology
+    OntologyBrowserPanel,
 };

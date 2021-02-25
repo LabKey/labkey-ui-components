@@ -12,10 +12,11 @@ import { OntologySelectionPanel } from './OntologySelectionPanel';
 export interface OntologyBrowserProps {
     initOntologyId?: string;
     asPanel?: boolean;
+    onConceptSelect?: (concept: ConceptModel) => void;
 }
 
 export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
-    const { initOntologyId, asPanel } = props;
+    const { initOntologyId, asPanel, onConceptSelect } = props;
     const [error, setError] = useState<string>();
     const [selectedOntologyId, setSelectedOntologyId] = useState<string>();
     const [ontology, setOntologyModel] = useState<OntologyModel>();
@@ -44,7 +45,7 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
             }
             setSelectedCode(selectedCode);
         },
-        [setSelectedConcept, conceptCache]
+        [setSelectedCode, conceptCache]
     );
 
     const onOntologySelection = useCallback(
@@ -58,7 +59,7 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         if (ontologyId) {
             getOntologyDetails(ontologyId)
                 .then(setOntologyModel)
-                .catch(reason => {
+                .catch(() => {
                     setError('Error: unable to load ontology concept information for ' + ontologyId + '.');
                     setSelectedOntologyId(undefined);
                 });
@@ -68,15 +69,15 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     }, [setOntologyModel, selectedOntologyId, setSelectedOntologyId, setError]);
 
     useEffect(() => {
-        setSelectedConcept(conceptCache.get(selectedConceptCode));
-    }, [selectedConceptCode, conceptCache, setSelectedConcept]);
+        const concept = conceptCache.get(selectedConceptCode);
+        setSelectedConcept(concept);
+        onConceptSelect?.(concept);
+    }, [selectedConceptCode, conceptCache, setSelectedConcept, onConceptSelect]);
 
     return (
         <>
             <Alert>{error}</Alert>
-            {!ontologyId && (
-                <OntologySelectionPanel onOntologySelection={onOntologySelection} asPanel={asPanel} />
-            )}
+            {!ontologyId && <OntologySelectionPanel onOntologySelection={onOntologySelection} asPanel={asPanel} />}
             {ontologyId && (
                 <OntologyBrowserPanelImpl
                     ontology={ontology}
@@ -126,7 +127,7 @@ const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props =
     );
 
     if (!asPanel) {
-        return body;
+        return <div className="ontology-browser-container">{body}</div>;
     }
 
     return (

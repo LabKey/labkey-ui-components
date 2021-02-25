@@ -1,19 +1,21 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from './propertiesUtil';
-import { createFormInputId, createFormInputName } from './actions';
+import { createFormInputId, createFormInputName, hasActiveModule } from './actions';
 import {
     DOMAIN_FIELD_DESCRIPTION,
     DOMAIN_FIELD_IMPORTALIASES,
     DOMAIN_FIELD_LABEL,
+    DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT,
     DOMAIN_FIELD_URL,
 } from './constants';
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
+import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation';
 
 interface NameAndLinkingProps {
     index: number;
@@ -23,15 +25,15 @@ interface NameAndLinkingProps {
 }
 
 export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingProps, any> {
-    handleChange = (evt: any) => {
-        const { onChange } = this.props;
-
-        if (onChange) {
-            onChange(evt.target.id, evt.target.value);
-        }
+    handleChange = (evt: any): void => {
+        this.onChange(evt.target.id, evt.target.value);
     };
 
-    getImportAliasHelpText = () => {
+    onChange = (id: string, value: any): void => {
+        this.props?.onChange(id, value);
+    };
+
+    getImportAliasHelpText = (): ReactNode => {
         return (
             <>
                 Define alternate field names to be used when importing from a file.
@@ -43,7 +45,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
         );
     };
 
-    getURLHelpText = () => {
+    getURLHelpText = (): ReactNode => {
         return (
             <>
                 Use this to change the display of the field value within a data grid into a link. Multiple formats are
@@ -55,7 +57,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
         );
     };
 
-    render() {
+    render(): ReactNode {
         const { index, field, domainIndex } = this.props;
 
         return (
@@ -114,6 +116,13 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                                 onChange={this.handleChange}
                                 disabled={isFieldFullyLocked(field.lockType)}
                             />
+                            {hasActiveModule('Ontology') && (
+                                <OntologyConceptAnnotation
+                                    id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
+                                    field={field}
+                                    onChange={this.onChange}
+                                />
+                            )}
                         </Col>
                     </div>
                 </Row>

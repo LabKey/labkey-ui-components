@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8583: Ontology concept picker usages in Field Editor for field concept annotation
+
 ### version 2.5.1
 *Released*: 25 February 2021
 * @labkey/components package bundle optimizations

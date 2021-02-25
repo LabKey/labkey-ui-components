@@ -21,7 +21,7 @@ export const OntologySelectionPanel: FC<OntologySelectionPanelProps> = memo(prop
                 setOntologies(ontologies.children);
             })
             .catch(reason => {
-                setError('Error: unable to load ontology information for selection.');
+                setError('Error: unable to load ontology information for selection. ' + reason?.exception);
                 setOntologies([]);
             });
     }, [setOntologies, setError]);

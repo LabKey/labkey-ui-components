@@ -661,6 +661,7 @@ export interface IDomainField {
     sourceOntology?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
+    principalConceptCode?: string;
 }
 
 export class DomainField
@@ -713,6 +714,7 @@ export class DomainField
         sourceOntology: undefined,
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
+        principalConceptCode: undefined,
         selected: false,
     })
     implements IDomainField {
@@ -764,6 +766,7 @@ export class DomainField
     sourceOntology?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
+    principalConceptCode?: string;
     selected: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {

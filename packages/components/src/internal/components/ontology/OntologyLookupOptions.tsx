@@ -13,8 +13,9 @@ import {
     DOMAIN_FIELD_ONTOLOGY_LABEL_COL,
     DOMAIN_FIELD_ONTOLOGY_SOURCE,
 } from '../domainproperties/constants';
-import { ITypeDependentProps, OntologyModel } from '../domainproperties/models';
+import { ITypeDependentProps } from '../domainproperties/models';
 import { SectionHeading } from '../domainproperties/SectionHeading';
+import { OntologyModel } from './models';
 
 interface Props extends ITypeDependentProps {
     field: DomainField;
@@ -163,7 +164,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                 ontologies.map(ontology => {
                                     return (
                                         <option key={ontology.abbreviation} value={ontology.abbreviation}>
-                                            {ontology.getLabel()}
+                                            {ontology.getDisplayName()}
                                         </option>
                                     );
                                 })}

@@ -1668,30 +1668,6 @@ export interface DomainFieldIndexChange {
     newIndex: number;
 }
 
-export class OntologyModel {
-    [immerable] = true;
-
-    rowId: number;
-    abbreviation: string;
-    name: string;
-
-    constructor(values?: Partial<OntologyModel>) {
-        Object.assign(this, values);
-    }
-
-    static create(raw: any): OntologyModel {
-        return new OntologyModel({
-            rowId: caseInsensitive(raw, 'RowId')?.value,
-            name: caseInsensitive(raw, 'Name')?.value,
-            abbreviation: caseInsensitive(raw, 'Abbreviation')?.value,
-        });
-    }
-
-    getLabel() {
-        return this.name + ' (' + this.abbreviation + ')';
-    }
-}
-
 export interface BulkDeleteConfirmInfo {
     deletableSelectedFields: number[];
     undeletableFields: number[];

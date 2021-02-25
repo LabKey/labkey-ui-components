@@ -1,4 +1,5 @@
-import { immerable } from "immer";
+import { immerable } from 'immer';
+import { caseInsensitive } from '../../..';
 
 export class ConceptModel {
     [immerable] = true;
@@ -40,6 +41,14 @@ export class OntologyModel {
 
     constructor(values?: Partial<OntologyModel>) {
         Object.assign(this, values);
+    }
+
+    static create(raw: any): OntologyModel {
+        return new OntologyModel({
+            rowId: caseInsensitive(raw, 'RowId')?.value,
+            name: caseInsensitive(raw, 'Name')?.value,
+            abbreviation: caseInsensitive(raw, 'Abbreviation')?.value,
+        });
     }
 
     getPathModel(): PathModel {

@@ -34,7 +34,6 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
-    OntologyModel,
     QueryInfoLite,
     updateSampleField,
 } from './models';
@@ -60,6 +59,7 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
+import { OntologyModel } from '../ontology/models';
 
 let sharedCache = Map<string, Promise<any>>();
 

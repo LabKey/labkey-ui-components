@@ -42,7 +42,6 @@ import {
     DomainField,
     FieldErrors,
     isPropertyTypeAllowed,
-    OntologyModel,
 } from './models';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -685,24 +684,5 @@ describe('DomainField', () => {
         expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
             'Updated. SRC. Primary Key. Locked'
         );
-    });
-});
-
-describe('OntologyModel', () => {
-    test('create', () => {
-        expect(OntologyModel.create({}).name).toBe(undefined);
-        expect(OntologyModel.create({ name: {} }).name).toBe(undefined);
-        expect(OntologyModel.create({ Name: {} }).name).toBe(undefined);
-        expect(OntologyModel.create({ name: { value: 'test' } }).name).toBe('test');
-        expect(OntologyModel.create({ Name: { value: 'test' } }).name).toBe('test');
-    });
-
-    test('getLabel', () => {
-        expect(
-            OntologyModel.create({
-                Name: { value: 'test' },
-                Abbreviation: { value: 'T' },
-            }).getLabel()
-        ).toBe('test (T)');
     });
 });

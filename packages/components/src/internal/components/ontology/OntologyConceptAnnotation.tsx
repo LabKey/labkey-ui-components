@@ -31,13 +31,17 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
     const isFieldLocked = useMemo(() => isFieldFullyLocked(lockType), [lockType]);
 
     useEffect(() => {
-        fetchConceptForCode(principalConceptCode)
-            .then(setConcept)
-            .catch(reason => {
-                setError(
-                    'Error: unable to get concept information for ' + principalConceptCode + '. '
-                );
-            });
+        if (!principalConceptCode) {
+            setConcept(undefined);
+        } else {
+            fetchConceptForCode(principalConceptCode)
+                .then(setConcept)
+                .catch(reason => {
+                    setError(
+                        'Error: unable to get concept information for ' + principalConceptCode + '. '
+                    );
+                });
+        }
     }, [principalConceptCode, setConcept, setError]);
 
     const toggleSelectModal = useCallback(() => {

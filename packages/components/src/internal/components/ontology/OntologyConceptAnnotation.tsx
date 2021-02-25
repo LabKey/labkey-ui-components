@@ -1,4 +1,4 @@
-import React, { ReactNode, FC, memo, useState, useCallback, useMemo } from 'react';
+import React, { ReactNode, FC, memo, useState, useCallback, useMemo, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 
 import { DomainField, DomainFieldLabel } from '../../..';
@@ -7,9 +7,11 @@ import { helpLinkNode, ONTOLOGY_TOPIC } from '../../util/helpLinks';
 import { createFormInputName } from '../domainproperties/actions';
 import { DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT } from '../domainproperties/constants';
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
+
 import { OntologyBrowserModal } from './OntologyBrowserModal';
 import { ConceptOverviewModal } from './ConceptOverviewPanel';
 import { ConceptModel } from './models';
+import { fetchConceptForCode } from './actions';
 
 interface OntologyConceptAnnotationProps {
     id: string;
@@ -23,8 +25,20 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
     const { principalConceptCode, lockType } = field;
     const [showSelectModal, setShowSelectModal] = useState<boolean>();
     const [showConceptModal, setShowConceptModal] = useState<boolean>();
-    const title = 'Select Concept'; //useMemo(() => (principalConceptCode ? 'Edit' : 'Select') + ' Concept', [principalConceptCode]);
+    const [error, setError] = useState<string>();
+    const [concept, setConcept] = useState<ConceptModel>();
+    const title = 'Select Concept'; // useMemo(() => (principalConceptCode ? 'Edit' : 'Select') + ' Concept', [principalConceptCode]);
     const isFieldLocked = useMemo(() => isFieldFullyLocked(lockType), [lockType]);
+
+    useEffect(() => {
+        fetchConceptForCode(principalConceptCode)
+            .then(setConcept)
+            .catch(reason => {
+                setError(
+                    'Error: unable to get concept information for ' + principalConceptCode + '. ' + reason?.exception
+                );
+            });
+    }, [principalConceptCode, setConcept, setError]);
 
     const toggleSelectModal = useCallback(() => {
         setShowSelectModal(!showSelectModal);
@@ -47,30 +61,47 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
             <div className="domain-field-label">
                 <DomainFieldLabel label="Concept Annotation" helpTipBody={getOntologyConceptAnnotationHelpTipBody()} />
             </div>
-            <div>
-                <Button
-                    className="domain-validation-button"
-                    name={createFormInputName(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT)}
-                    id={id}
-                    disabled={isFieldLocked}
-                    onClick={toggleSelectModal}
-                >
-                    {title}
-                </Button>
-                {!principalConceptCode && <span className="domain-text-label">None Set</span>}
-                {principalConceptCode && (
-                    <>
-                        {!isFieldLocked && (
-                            <a className="domain-validator-link" onClick={() => onApply(undefined)}>
-                                <i className="fa fa-remove" />
-                            </a>
+            <table className="domain-annotation-table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <Button
+                                className="domain-validation-button"
+                                name={createFormInputName(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT)}
+                                id={id}
+                                disabled={isFieldLocked}
+                                onClick={toggleSelectModal}
+                            >
+                                {title}
+                            </Button>
+                        </td>
+                        {!principalConceptCode && (
+                            <td>
+                                <span className="domain-text-label">None Set</span>
+                            </td>
                         )}
-                        <a className="domain-validator-link" onClick={toggleConceptModal}>
-                            {principalConceptCode}
-                        </a>
-                    </>
-                )}
-            </div>
+                        {principalConceptCode && (
+                            <>
+                                {!isFieldLocked && (
+                                    <td className="content">
+                                        <a className="domain-validator-link" onClick={() => onApply(undefined)}>
+                                            <i className="fa fa-remove" />
+                                        </a>
+                                    </td>
+                                )}
+                                <td className="content">
+                                    <a
+                                        className="domain-validator-link domain-annotation-item"
+                                        onClick={toggleConceptModal}
+                                    >
+                                        {concept?.getDisplayLabel() ?? principalConceptCode}
+                                    </a>
+                                </td>
+                            </>
+                        )}
+                    </tr>
+                </tbody>
+            </table>
             {showSelectModal && (
                 <OntologyBrowserModal
                     title={title}
@@ -80,7 +111,7 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
                     successBsStyle={successBsStyle}
                 />
             )}
-            {showConceptModal && <ConceptOverviewModal code={principalConceptCode} onClose={toggleConceptModal} />}
+            {showConceptModal && <ConceptOverviewModal concept={concept} error={error} onClose={toggleConceptModal} />}
         </>
     );
 });
@@ -88,7 +119,8 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
 function getOntologyConceptAnnotationHelpTipBody(): ReactNode {
     return (
         <>
-            Select an ontology concept to attach to this field which will be used for ...TODO...
+            Select an ontology concept to use as an annotation for this field.
+            {/* TODO anything else to add?*/}
             <br />
             <br />
             Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.

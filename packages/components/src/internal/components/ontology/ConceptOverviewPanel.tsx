@@ -34,22 +34,13 @@ export const ConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(props =>
 });
 
 interface ConceptOverviewModalProps {
-    code: string;
+    concept: ConceptModel;
+    error?: string;
     onClose: () => void;
 }
 
 export const ConceptOverviewModal: FC<ConceptOverviewModalProps> = memo(props => {
-    const { onClose, code } = props;
-    const [error, setError] = useState<string>();
-    const [concept, setConcept] = useState<ConceptModel>();
-
-    useEffect(() => {
-        fetchConceptForCode(code)
-            .then(setConcept)
-            .catch(reason => {
-                setError('Error: unable to get concept information for ' + code + '. ' + reason?.exception);
-            });
-    }, [code, setConcept, setError]);
+    const { onClose, concept, error } = props;
 
     return (
         <Modal show={true} onHide={onClose}>
@@ -58,9 +49,11 @@ export const ConceptOverviewModal: FC<ConceptOverviewModalProps> = memo(props =>
             </Modal.Header>
             <Modal.Body>
                 <Alert>{error}</Alert>
-                <div className="ontology-concept-overview-container">
-                    <ConceptOverviewPanel concept={concept} />
-                </div>
+                {!error && (
+                    <div className="ontology-concept-overview-container">
+                        <ConceptOverviewPanel concept={concept} />
+                    </div>
+                )}
             </Modal.Body>
         </Modal>
     );

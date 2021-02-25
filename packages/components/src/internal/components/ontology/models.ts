@@ -12,6 +12,10 @@ export class ConceptModel {
     constructor(values?: Partial<ConceptModel>) {
         Object.assign(this, values);
     }
+
+    getDisplayLabel(): string {
+        return this.label + ' (' + this.code + ')';
+    }
 }
 
 export class PathModel {

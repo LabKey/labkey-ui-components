@@ -68,63 +68,61 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                     </Col>
                 </Row>
                 <Row>
-                    <div>
-                        <Col xs={5}>
-                            <div className="domain-field-label">Description</div>
-                            <FormControl
-                                componentClass="textarea"
-                                className="form-control textarea-noresize"
-                                rows={4}
-                                value={field.description || ''}
-                                id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, domainIndex, index)}
-                                name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
-                                onChange={this.handleChange}
-                                disabled={isFieldFullyLocked(field.lockType)}
+                    <Col xs={5}>
+                        <div className="domain-field-label">Description</div>
+                        <FormControl
+                            componentClass="textarea"
+                            className="form-control textarea-noresize"
+                            rows={4}
+                            value={field.description || ''}
+                            id={createFormInputId(DOMAIN_FIELD_DESCRIPTION, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_DESCRIPTION)}
+                            onChange={this.handleChange}
+                            disabled={isFieldFullyLocked(field.lockType)}
+                        />
+                    </Col>
+                    <Col xs={3}>
+                        <div className="domain-field-label">Label</div>
+                        <FormControl
+                            type="text"
+                            value={field.label || ''}
+                            id={createFormInputId(DOMAIN_FIELD_LABEL, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_LABEL)}
+                            onChange={this.handleChange}
+                            disabled={isFieldFullyLocked(field.lockType)}
+                        />
+                        <div className="domain-field-label">
+                            <DomainFieldLabel label="Import Aliases" helpTipBody={this.getImportAliasHelpText()} />
+                        </div>
+                        <FormControl
+                            type="text"
+                            value={field.importAliases || ''}
+                            id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
+                            onChange={this.handleChange}
+                            disabled={isFieldFullyLocked(field.lockType)}
+                        />
+                    </Col>
+                    <Col xs={4}>
+                        <div className="domain-field-label">
+                            <DomainFieldLabel label="URL" helpTipBody={this.getURLHelpText()} />
+                        </div>
+                        <FormControl
+                            type="text"
+                            value={field.URL || ''}
+                            id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}
+                            name={createFormInputName(DOMAIN_FIELD_URL)}
+                            onChange={this.handleChange}
+                            disabled={isFieldFullyLocked(field.lockType)}
+                        />
+                        {hasActiveModule('Ontology') && (
+                            <OntologyConceptAnnotation
+                                id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
+                                field={field}
+                                onChange={this.onChange}
                             />
-                        </Col>
-                        <Col xs={3}>
-                            <div className="domain-field-label">Label</div>
-                            <FormControl
-                                type="text"
-                                value={field.label || ''}
-                                id={createFormInputId(DOMAIN_FIELD_LABEL, domainIndex, index)}
-                                name={createFormInputName(DOMAIN_FIELD_LABEL)}
-                                onChange={this.handleChange}
-                                disabled={isFieldFullyLocked(field.lockType)}
-                            />
-                            <div className="domain-field-label">
-                                <DomainFieldLabel label="Import Aliases" helpTipBody={this.getImportAliasHelpText()} />
-                            </div>
-                            <FormControl
-                                type="text"
-                                value={field.importAliases || ''}
-                                id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
-                                name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
-                                onChange={this.handleChange}
-                                disabled={isFieldFullyLocked(field.lockType)}
-                            />
-                        </Col>
-                        <Col xs={4}>
-                            <div className="domain-field-label">
-                                <DomainFieldLabel label="URL" helpTipBody={this.getURLHelpText()} />
-                            </div>
-                            <FormControl
-                                type="text"
-                                value={field.URL || ''}
-                                id={createFormInputId(DOMAIN_FIELD_URL, domainIndex, index)}
-                                name={createFormInputName(DOMAIN_FIELD_URL)}
-                                onChange={this.handleChange}
-                                disabled={isFieldFullyLocked(field.lockType)}
-                            />
-                            {hasActiveModule('Ontology') && (
-                                <OntologyConceptAnnotation
-                                    id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
-                                    field={field}
-                                    onChange={this.onChange}
-                                />
-                            )}
-                        </Col>
-                    </div>
+                        )}
+                    </Col>
                 </Row>
             </div>
         );

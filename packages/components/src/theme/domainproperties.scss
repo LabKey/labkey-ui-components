@@ -597,6 +597,14 @@
   float: right;
 }
 
+.domain-annotation-table td {
+    vertical-align: top;
+
+    &.content {
+        padding-top: 5px;
+    }
+}
+
 .domain-color-preview {
   height: 25px;
   width: 25px;

@@ -35,7 +35,7 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
             .then(setConcept)
             .catch(reason => {
                 setError(
-                    'Error: unable to get concept information for ' + principalConceptCode + '. ' + reason?.exception
+                    'Error: unable to get concept information for ' + principalConceptCode + '. '
                 );
             });
     }, [principalConceptCode, setConcept, setError]);

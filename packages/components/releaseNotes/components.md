@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.5.1
+*Released*: 25 February 2021
 * @labkey/components package bundle optimizations
     - webpack.config.js: add back in new IgnorePlugin(/^\.\/locale$/, /moment$/)
     - split initUnitTestMocks() into a separate testHelperMocks.tsx file so it isn't referenced via ./src/index.ts

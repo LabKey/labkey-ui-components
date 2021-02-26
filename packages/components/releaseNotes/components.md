@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.#.#
-*Released*: ## February 2021
+### version 2.5.2
+*Released*: 26 February 2021
 * Issue 42515: Layout issue for NavBar with medium-sized screens
 * ProductMenu: prevent closing menu on non-link click
 * ProductMenu: expand link clickable area

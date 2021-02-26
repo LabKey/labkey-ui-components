@@ -68,8 +68,7 @@ export class AssayStateModel {
     }
 
     getDefinitionsByTypes(included?: string[], excluded?: string[]): AssayDefinitionModel[] {
-        if (!included && !excluded)
-            return this.definitions;
+        if (!included && !excluded) return this.definitions;
 
         const lowerIncluded = included?.join('|').toLowerCase().split('|');
         const lowerExcluded = excluded?.join('|').toLowerCase().split('|');
@@ -83,7 +82,7 @@ export class AssayStateModel {
                 include = lowerExcluded.indexOf(def.type.toLowerCase()) === -1;
             }
             return include;
-        })
+        });
     }
 
     mutate(props: Partial<AssayStateModel>): AssayStateModel {

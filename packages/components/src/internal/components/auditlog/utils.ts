@@ -6,7 +6,14 @@ import React, { ReactNode } from 'react';
 import { List } from 'immutable';
 import { Query } from '@labkey/api';
 
-import { ASSAYS_KEY, isFreezerManagementEnabled, isSampleManagerEnabled, SAMPLES_KEY, WORKFLOW_KEY, isBiologicsEnabled } from '../../app';
+import {
+    ASSAYS_KEY,
+    isFreezerManagementEnabled,
+    isSampleManagerEnabled,
+    SAMPLES_KEY,
+    WORKFLOW_KEY,
+    isBiologicsEnabled,
+} from '../../app';
 import { AppURL } from '../../..';
 
 export type AuditQuery = {
@@ -31,41 +38,39 @@ export function getAuditQueries(): AuditQuery[] {
             { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true },
             { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true },
             { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders },
-            {value: 'listauditevent', label: 'List Events'},
+            { value: 'listauditevent', label: 'List Events' },
             {
                 value: 'groupauditevent',
                 label: 'Roles and Assignment Events',
                 containerFilter: Query.ContainerFilter.allFolders,
-            },
+            }
         );
-    }
-
-    else {
+    } else {
         if (isSampleManagerEnabled()) {
             auditQueries.push(
-                {value: 'attachmentauditevent', label: 'Attachment Events'},
-                {value: 'experimentauditevent', label: 'Assay Events'},
-                {value: 'domainauditevent', label: 'Domain Events'},
-                {value: 'domainpropertyauditevent', label: 'Domain Property Events'},
-                {value: 'queryupdateauditevent', label: 'Data Update Events', hasDetail: true}
+                { value: 'attachmentauditevent', label: 'Attachment Events' },
+                { value: 'experimentauditevent', label: 'Assay Events' },
+                { value: 'domainauditevent', label: 'Domain Events' },
+                { value: 'domainpropertyauditevent', label: 'Domain Property Events' },
+                { value: 'queryupdateauditevent', label: 'Data Update Events', hasDetail: true }
             );
         }
         if (isFreezerManagementEnabled()) {
-            auditQueries.push({value: 'inventoryauditevent', label: 'Freezer Management Events', hasDetail: true});
+            auditQueries.push({ value: 'inventoryauditevent', label: 'Freezer Management Events', hasDetail: true });
         }
         if (isSampleManagerEnabled()) {
             auditQueries.push(
-                {value: 'listauditevent', label: 'List Events'},
+                { value: 'listauditevent', label: 'List Events' },
                 {
                     value: 'groupauditevent',
                     label: 'Roles and Assignment Events',
                     containerFilter: Query.ContainerFilter.allFolders,
                 },
-                {value: 'samplesetauditevent', label: 'Sample Type Events'},
-                {value: 'sampletimelineevent', label: 'Sample Timeline Events', hasDetail: true},
-                {value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true},
-                {value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true},
-                {value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders}
+                { value: 'samplesetauditevent', label: 'Sample Type Events' },
+                { value: 'sampletimelineevent', label: 'Sample Timeline Events', hasDetail: true },
+                { value: 'samplesworkflowauditevent', label: 'Sample Workflow Events', hasDetail: true },
+                { value: 'sourcesauditevent', label: 'Sources Events', hasDetail: true },
+                { value: 'userauditevent', label: 'User Events', containerFilter: Query.ContainerFilter.allFolders }
             );
         }
     }

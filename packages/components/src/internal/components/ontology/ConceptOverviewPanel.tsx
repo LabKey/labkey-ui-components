@@ -7,10 +7,39 @@ import { ConceptModel } from './models';
 import { fetchConceptForCode } from './actions';
 
 interface ConceptOverviewPanelProps {
+    code: string;
+}
+
+export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(props => {
+    const { code } = props;
+    const [error, setError] = useState<string>();
+    const [concept, setConcept] = useState<ConceptModel>();
+
+    useEffect(() => {
+        if (code) {
+            fetchConceptForCode(code)
+                .then(setConcept)
+                .catch(reason => {
+                    setError(
+                        'Error: unable to get concept information for ' + code + '. '
+                    );
+                });
+        }
+    }, [code, setConcept, setError]);
+
+    return (
+        <>
+            <Alert>{error}</Alert>
+            {concept && <ConceptOverviewPanelImpl concept={concept}/>}
+        </>
+    );
+});
+
+interface ConceptOverviewPanelImplProps {
     concept: ConceptModel;
 }
 
-export const ConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(props => {
+export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(props => {
     const { concept } = props;
 
     if (!concept) {
@@ -51,7 +80,7 @@ export const ConceptOverviewModal: FC<ConceptOverviewModalProps> = memo(props =>
                 <Alert>{error}</Alert>
                 {!error && (
                     <div className="ontology-concept-overview-container">
-                        <ConceptOverviewPanel concept={concept} />
+                        <ConceptOverviewPanelImpl concept={concept} />
                     </div>
                 )}
             </Modal.Body>

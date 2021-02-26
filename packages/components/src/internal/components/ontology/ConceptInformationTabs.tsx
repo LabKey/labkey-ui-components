@@ -2,7 +2,7 @@ import React, { FC, memo, SyntheticEvent, useCallback, useState } from 'react';
 import { Col, Nav, NavItem, Row, Tab, TabContainer } from 'react-bootstrap';
 
 import { ConceptModel } from './models';
-import { ConceptOverviewPanel } from './ConceptOverviewPanel';
+import { ConceptOverviewPanelImpl } from './ConceptOverviewPanel';
 
 interface ConceptInformationTabsProps {
     concept?: ConceptModel;
@@ -48,7 +48,7 @@ export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(prop
                                     className="ontology-concept-overview-container"
                                     eventKey={ConceptInfoTabs.CONCEPT_OVERVIEW_TAB}
                                 >
-                                    <ConceptOverviewPanel concept={concept} />
+                                    <ConceptOverviewPanelImpl concept={concept} />
                                 </Tab.Pane>
                                 <Tab.Pane
                                     className="ontology-concept-pathinfo-container"

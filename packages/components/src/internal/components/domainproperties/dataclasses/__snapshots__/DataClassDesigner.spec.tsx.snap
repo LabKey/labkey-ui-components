@@ -6725,6 +6725,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={0}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -8971,6 +8972,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={0}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -11139,6 +11141,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={0}
                                                                                     field={
                                                                                       Immutable.Record {

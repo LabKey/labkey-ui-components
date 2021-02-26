@@ -5013,6 +5013,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={true}
                                                                                     domainIndex={0}
                                                                                     field={
                                                                                       Immutable.Record {

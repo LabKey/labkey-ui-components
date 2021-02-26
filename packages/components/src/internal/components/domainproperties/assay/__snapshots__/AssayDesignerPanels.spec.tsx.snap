@@ -12598,6 +12598,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={true}
                                                                                     domainIndex={1}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -14683,6 +14684,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={true}
                                                                                     domainIndex={1}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -16733,6 +16735,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={true}
                                                                                     domainIndex={1}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -33789,6 +33792,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={1}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -36032,6 +36036,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={1}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -38240,6 +38245,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={1}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -48898,6 +48904,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={1}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -51141,6 +51148,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={1}
                                                                                     field={
                                                                                       Immutable.Record {
@@ -53349,6 +53357,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                   className="col-xs-12"
                                                                                 >
                                                                                   <NameAndLinkingOptions
+                                                                                    appPropertiesOnly={false}
                                                                                     domainIndex={1}
                                                                                     field={
                                                                                       Immutable.Record {

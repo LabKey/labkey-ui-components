@@ -2,7 +2,7 @@ import React from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import {DomainDesign, DomainDetails, IDomainField, IDomainFormDisplayOptions} from '../models';
+import { DomainDesign, DomainDetails, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import {
     IParentOption,

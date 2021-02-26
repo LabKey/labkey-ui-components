@@ -40,10 +40,8 @@ export class Detail extends PureComponent<DetailProps> {
             if (queryColumns) {
                 displayColumns = queryColumns;
             } else if (editingMode) {
-                if (getUpdateDisplayColumns)
-                    displayColumns = getUpdateDisplayColumns();
-                else
-                    displayColumns = queryModel.getUpdateDisplayColumns();
+                if (getUpdateDisplayColumns) displayColumns = getUpdateDisplayColumns();
+                else displayColumns = queryModel.getUpdateDisplayColumns();
             } else {
                 displayColumns = queryModel.getDetailsDisplayColumns();
             }

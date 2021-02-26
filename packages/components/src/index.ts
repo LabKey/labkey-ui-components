@@ -358,7 +358,7 @@ import {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';

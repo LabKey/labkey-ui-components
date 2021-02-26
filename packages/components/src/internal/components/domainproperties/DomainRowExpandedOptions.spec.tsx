@@ -24,7 +24,7 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
-import {DerivationDataScopeFieldOptions} from "./DerivationDataScopeFieldOptions";
+import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 
 const DEFAULT_PROPS = {
     index: 1,
@@ -187,10 +187,10 @@ describe('DomainExpandedOptions', () => {
             rangeURI: BOOLEAN_TYPE.rangeURI,
         });
 
-        const displayOption = {...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, ...{includeDerivationDataScope: true}};
-        const props = {...DEFAULT_PROPS, ...{domainFormDisplayOptions: displayOption}};
-        const row = mount(<DomainRowExpandedOptions {...props} field={field}/>);
-        validateRender(row, { boolean: 1 , aliquot: 1});
+        const displayOption = { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, ...{ includeDerivationDataScope: true } };
+        const props = { ...DEFAULT_PROPS, ...{ domainFormDisplayOptions: displayOption } };
+        const row = mount(<DomainRowExpandedOptions {...props} field={field} />);
+        validateRender(row, { boolean: 1, aliquot: 1 });
         row.unmount();
     });
 });

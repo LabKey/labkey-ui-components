@@ -144,10 +144,10 @@ export interface EditableColumnMetadata {
 }
 
 export interface BulkAddData {
-    pivotKey?: string,
-    pivotValues?: Array<string>
-    totalItems?: number,
-    validationMsg?: ReactNode,
+    pivotKey?: string;
+    pivotValues?: string[];
+    totalItems?: number;
+    validationMsg?: ReactNode;
 }
 
 export interface EditableGridProps {
@@ -157,7 +157,7 @@ export interface EditableGridProps {
     allowBulkUpdate?: boolean;
     allowFieldDisable?: boolean;
     bordered?: boolean;
-    onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData
+    onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData;
     bulkAddProps?: Partial<QueryInfoFormProps>;
     bulkUpdateProps?: Partial<QueryInfoFormProps>;
     condensed?: boolean;
@@ -320,8 +320,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         if (this.props.forUpdate) {
             return model.getUpdateColumns(this.props.readOnlyColumns);
         } else {
-            if (this.props.getInsertColumns)
-                return this.props.getInsertColumns();
+            if (this.props.getInsertColumns) return this.props.getInsertColumns();
             return model.getInsertColumns();
         }
     };
@@ -713,7 +712,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
     }
 
     bulkAdd = (data: OrderedMap<string, any>): Promise<any> => {
-        const { addControlProps, bulkAddProps, onBulkAdd  } = this.props;
+        const { addControlProps, bulkAddProps, onBulkAdd } = this.props;
         const { nounSingular, nounPlural } = addControlProps;
         const model = this.getModel(this.props);
 
@@ -727,10 +726,10 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             });
         }
 
-        let bulkAddData = undefined;
+        let bulkAddData;
         let totalItems = 0;
         if (onBulkAdd) {
-            bulkAddData  = onBulkAdd(data);
+            bulkAddData = onBulkAdd(data);
             if (bulkAddData.validationMsg) {
                 return new Promise((resolve, reject) => {
                     reject({
@@ -744,16 +743,14 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         let updatedData = data.delete('numItems');
         updatedData = data.delete('creationType');
 
-        if (totalItems === 0)
-            totalItems = numItems;
+        if (totalItems === 0) totalItems = numItems;
 
         if (bulkAddProps.columnFilter) {
             updatedData = this.restoreBulkInsertData(model, updatedData);
         }
         if (bulkAddData?.pivotKey && bulkAddData?.pivotValues?.length > 0) {
             addRowsPerPivotValue(model, numItems, bulkAddData?.pivotKey, bulkAddData?.pivotValues, updatedData);
-        }
-        else {
+        } else {
             addRows(model, numItems, updatedData);
         }
         this.onRowCountChange();

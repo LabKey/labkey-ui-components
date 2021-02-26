@@ -72,6 +72,8 @@ import { PlacementType } from '../editable/Controls';
 
 import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
+import { BulkAddData } from '../editable/EditableGrid';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -83,7 +85,6 @@ import {
 } from './models';
 
 import { getEntityTypeData } from './actions';
-import { BulkAddData } from "../editable/EditableGrid";
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -119,8 +120,8 @@ interface OwnProps {
     entityDataType: EntityDataType;
     parentDataTypes?: List<EntityDataType>;
     onParentChange?: (parentTypes: Map<string, List<EntityParentType>>) => void;
-    onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData
-    creationTypeOptions?: Array<SampleCreationTypeModel>;
+    onBulkAdd?: (data: OrderedMap<string, any>) => BulkAddData;
+    creationTypeOptions?: SampleCreationTypeModel[];
     importHelpLinkNode: ReactNode;
     auditBehavior?: AuditBehaviorTypes;
     importOnly?: boolean;
@@ -214,7 +215,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             selectionKey,
             target,
             creationType,
-            numPerParent
+            numPerParent,
         };
     }
 
@@ -226,7 +227,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                   selectionKey: undefined,
                   target: undefined,
                   creationType: undefined,
-                  numPerParent: undefined
+                  numPerParent: undefined,
               };
         const allowParents = this.allowParents();
 
@@ -255,7 +256,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             entityDataType,
             auditBehavior,
             creationType: queryParams.creationType,
-            numPerParent: queryParams.numPerParent || 1
+            numPerParent: queryParams.numPerParent || 1,
         });
 
         let parentSchemaQueries = Map<string, EntityDataType>();
@@ -453,10 +454,9 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                         } else {
                             const columnMap = OrderedMap<string, QueryColumn>();
                             let fieldKey;
-                            if (existingParent.index === 1)  {
+                            if (existingParent.index === 1) {
                                 fieldKey = entityDataType.uniqueFieldKey;
-                            }
-                            else {
+                            } else {
                                 const definedParents = updatedModel
                                     .getParentEntities(combineParentTypes, queryName)
                                     .filter(parent => parent.query !== undefined);
@@ -817,19 +817,26 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
         this.setState(() => ({ error: undefined }));
     };
 
-    getInsertColumns = () : List<QueryColumn> => {
+    getInsertColumns = (): List<QueryColumn> => {
         const queryGridModel = this.getQueryGridModel();
-        return queryGridModel.getInsertColumns().filter(col => {
-            return col.derivationDataScope !== 'ChildOnly'
-        }).toList();
+        return queryGridModel
+            .getInsertColumns()
+            .filter(col => {
+                return col.derivationDataScope !== 'ChildOnly';
+            })
+            .toList();
     };
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel } = this.state;
         const { entityDataType, creationTypeOptions, onBulkAdd } = this.props;
 
-        const columnFilter = (colInfo : QueryColumn) => {
-            return insertColumnFilter(colInfo) && colInfo['fieldKey'] !== entityDataType.uniqueFieldKey && colInfo.derivationDataScope != 'ChildOnly';
+        const columnFilter = (colInfo: QueryColumn) => {
+            return (
+                insertColumnFilter(colInfo) &&
+                colInfo['fieldKey'] !== entityDataType.uniqueFieldKey &&
+                colInfo.derivationDataScope != 'ChildOnly'
+            );
         };
 
         const bulkAddProps = {
@@ -838,7 +845,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             columnFilter,
             fieldValues: this.getBulkAddFormValues(),
             creationTypeOptions,
-            countText: "New " + this.props.nounPlural,
+            countText: 'New ' + this.props.nounPlural,
         };
         const bulkUpdateProps = {
             columnFilter,

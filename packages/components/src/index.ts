@@ -189,7 +189,7 @@ import {
 } from './internal/constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
-import { getHelpLink, helpLinkNode } from './internal/util/helpLinks';
+import { getHelpLink, helpLinkNode, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -843,6 +843,7 @@ export {
     resolveErrorMessage,
     getHelpLink,
     helpLinkNode,
+    SAMPLE_ALIQUOT_TOPIC,
     // devTools functions
     applyDevTools,
     devToolsActive,

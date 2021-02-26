@@ -24,7 +24,7 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
-import {MaterialPropertyFieldOptions} from "./MaterialPropertyFieldOptions";
+import {DerivationDataScopeFieldOptions} from "./DerivationDataScopeFieldOptions";
 
 const DEFAULT_PROPS = {
     index: 1,
@@ -44,7 +44,7 @@ describe('DomainExpandedOptions', () => {
         expect(row.find(LookupFieldOptions)).toHaveLength(expected.lookup || 0);
         expect(row.find(SampleFieldOptions)).toHaveLength(expected.sample || 0);
         expect(row.find(OntologyLookupOptions)).toHaveLength(expected.ontologyLookup || 0);
-        expect(row.find(MaterialPropertyFieldOptions)).toHaveLength(expected.aliquot || 0);
+        expect(row.find(DerivationDataScopeFieldOptions)).toHaveLength(expected.aliquot || 0);
         expect(row.find(NameAndLinkingOptions)).toHaveLength(1);
         expect(row.find(ConditionalFormattingAndValidation)).toHaveLength(expectCondFormAndVal ? 1 : 0);
     }

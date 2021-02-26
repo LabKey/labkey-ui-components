@@ -53,6 +53,7 @@ import {
     USERS_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
 } from './PropDescType';
+import {ReactNode} from "react";
 
 export interface IFieldChange {
     id: string;
@@ -1480,8 +1481,15 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
-    includeDerivationDataScope?: boolean;
-    disableDerivationDataScope?: boolean;
+    derivationDataScope?: IDerivationDataScope;
+}
+
+export interface IDerivationDataScope {
+    show?: boolean;
+    disable?: boolean
+    sectionTitle?: string;
+    fieldLabel?: string;
+    helpLinkNode?: ReactNode;
 }
 
 /**

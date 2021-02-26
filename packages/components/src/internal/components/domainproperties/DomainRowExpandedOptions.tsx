@@ -30,7 +30,7 @@ import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndVa
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
 import { OntologyLookupOptions } from './OntologyLookupOptions';
-import { MaterialPropertyFieldOptions } from "./MaterialPropertyFieldOptions";
+import { DerivationDataScopeFieldOptions } from "./DerivationDataScopeFieldOptions";
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;
@@ -221,15 +221,15 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                         />
                     </Col>
                     {
-                        domainFormDisplayOptions.includeDerivationDataScope &&
+                        domainFormDisplayOptions?.derivationDataScope?.show &&
                         <Col xs={12} lg={10}>
-                            <MaterialPropertyFieldOptions
+                            <DerivationDataScopeFieldOptions
                                 index={index}
                                 domainIndex={domainIndex}
-                                label="Aliquot Options"
+                                config={domainFormDisplayOptions?.derivationDataScope}
                                 value={field.derivationDataScope}
+                                label={domainFormDisplayOptions?.derivationDataScope?.sectionTitle}
                                 onChange={onChange}
-                                disabled={domainFormDisplayOptions.disableDerivationDataScope}
                                 lockType={field.lockType}
                             />
                         </Col>

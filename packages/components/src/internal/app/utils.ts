@@ -126,7 +126,7 @@ export function isSampleManagerEnabled(): boolean {
 }
 
 export function isSampleAliquotEnabled(): boolean {
-    return getServerContext().experimental['sampleAliquot'] === true; //TODO, fix api-js type
+    return getServerContext().experimental['sampleAliquot'] === true;
 }
 
 export function hasPremiumModule(): boolean {

@@ -55,16 +55,18 @@ import {
 } from './constants';
 
 const GRID_DATA = DomainDesign.create({
-    fields: [{
-        name: 'a',
-        rangeURI: INTEGER_TYPE.rangeURI,
-        sourceOntology: 'b',
-        conceptImportColumn: 'c',
-        conceptLabelColumn: 'd',
-        principalConceptCode: 'e',
-        wrappedColumnName: 'f',
-        propertyId: 123,
-    }],
+    fields: [
+        {
+            name: 'a',
+            rangeURI: INTEGER_TYPE.rangeURI,
+            sourceOntology: 'b',
+            conceptImportColumn: 'c',
+            conceptLabelColumn: 'd',
+            principalConceptCode: 'e',
+            wrappedColumnName: 'f',
+            propertyId: 123,
+        },
+    ],
 });
 const gridDataAppPropsOnlyConst = [
     {
@@ -720,12 +722,17 @@ describe('DomainField', () => {
         field = field.merge({ lockType: DOMAIN_FIELD_FULLY_LOCKED }) as DomainField;
         expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Primary Key. Locked');
 
+        field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe(
+            'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked'
+        );
+
         expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
-            'Updated. SRC. Primary Key. Locked. Additional Info'
+            'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked. Additional Info'
         );
         field = field.merge({ name: '' }) as DomainField;
         expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
-            'Updated. SRC. Primary Key. Locked'
+            'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked'
         );
     });
 });

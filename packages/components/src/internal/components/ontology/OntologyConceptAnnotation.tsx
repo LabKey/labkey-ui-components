@@ -124,7 +124,6 @@ function getOntologyConceptAnnotationHelpTipBody(): ReactNode {
     return (
         <>
             Select an ontology concept to use as an annotation for this field.
-            {/* TODO anything else to add?*/}
             <br />
             <br />
             {/*TODO update link topic once annotation case is added to docs page*/}

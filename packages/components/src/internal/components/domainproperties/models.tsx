@@ -1052,6 +1052,11 @@ export class DomainField
             period = '. ';
         }
 
+        if (this.principalConceptCode) {
+            details.push(period + 'Concept Annotation: ' + this.principalConceptCode);
+            period = '. ';
+        }
+
         if (this.wrappedColumnName) {
             details.push(period + 'Wrapped column - ' + this.wrappedColumnName);
             period = '. ';

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, PureComponent } from 'react';
 import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
@@ -21,10 +21,11 @@ interface NameAndLinkingProps {
     index: number;
     domainIndex: number;
     field: DomainField;
-    onChange: (string, any) => any;
+    onChange: (string, any) => void;
+    appPropertiesOnly?: boolean;
 }
 
-export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingProps, any> {
+export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
     handleChange = (evt: any): void => {
         this.onChange(evt.target.id, evt.target.value);
     };
@@ -58,7 +59,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
     };
 
     render(): ReactNode {
-        const { index, field, domainIndex } = this.props;
+        const { index, field, domainIndex, appPropertiesOnly } = this.props;
 
         return (
             <div>
@@ -115,7 +116,7 @@ export class NameAndLinkingOptions extends React.PureComponent<NameAndLinkingPro
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {hasActiveModule('Ontology') && (
+                        {!appPropertiesOnly && hasActiveModule('Ontology') && (
                             <OntologyConceptAnnotation
                                 id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
                                 field={field}

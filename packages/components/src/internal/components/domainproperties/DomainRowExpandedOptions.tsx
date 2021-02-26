@@ -34,9 +34,9 @@ import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;
     index: number;
-    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => any;
+    onChange: (fieldId: string, value: any, index?: number, expand?: boolean) => void;
     onMultiChange: (changes: List<IFieldChange>) => void;
-    showingModal: (boolean) => any;
+    showingModal: (boolean) => void;
     appPropertiesOnly?: boolean;
     domainIndex: number;
     successBsStyle?: string;
@@ -217,6 +217,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             domainIndex={domainIndex}
                             field={field}
                             onChange={onChange}
+                            appPropertiesOnly={appPropertiesOnly}
                         />
                     </Col>
                     {!isFieldFullyLocked(field.lockType) && (

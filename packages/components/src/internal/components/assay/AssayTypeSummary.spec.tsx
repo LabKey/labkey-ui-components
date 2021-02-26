@@ -3,7 +3,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 
 import { Location, SampleSetSummary, User, waitForLifecycle } from '../../..';
-import { initUnitTestMocks, registerDefaultURLMappers } from '../../testHelpers';
+import { registerDefaultURLMappers } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 
 beforeAll(() => {
     initUnitTestMocks();

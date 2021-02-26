@@ -2,7 +2,8 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import { SchemaQuery, getStateQueryGridModel, gridInit, getQueryGridModel } from '../../..';
-import { initUnitTestMocks, sleep } from '../../testHelpers';
+import { sleep } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { QueryGridBar } from './QueryGridBar';
 

@@ -20,7 +20,8 @@ import mock from 'xhr-mock';
 import { getStateQueryGridModel, gridInit, QueryColumn, SchemaQuery } from '../../..';
 import * as constants from '../../../test/data/constants';
 
-import { initUnitTestMocks, sleep } from '../../testHelpers';
+import { sleep } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { Cell } from './Cell';
 

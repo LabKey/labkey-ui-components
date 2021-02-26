@@ -16,8 +16,15 @@
 import { fromJS, List, Map, Record } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
 import { immerable } from 'immer';
+import React, { ReactNode } from 'react';
 
-import { caseInsensitive, SCHEMAS } from '../../..';
+import { Checkbox } from 'react-bootstrap';
+
+import { caseInsensitive, createFormInputId, GridColumn, SCHEMAS, valueIsEmpty } from '../../..';
+
+import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
+
+import { camelCaseToTitleCase } from '../../util/utils';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
@@ -26,6 +33,7 @@ import {
     DOMAIN_FIELD_MEASURE,
     DOMAIN_FIELD_NOT_LOCKED,
     DOMAIN_FIELD_PARTIALLY_LOCKED,
+    DOMAIN_FIELD_SELECTED,
     DOMAIN_FILTER_HASANYVALUE,
     INT_RANGE_URI,
     MAX_TEXT_LENGTH,
@@ -44,20 +52,30 @@ import {
     FLAG_TYPE,
     INTEGER_TYPE,
     LOOKUP_TYPE,
+    ONTOLOGY_LOOKUP_TYPE,
     PARTICIPANT_TYPE,
-    PropDescType,
     PROP_DESC_TYPES,
+    PropDescType,
     READONLY_DESC_TYPES,
     SAMPLE_TYPE,
     TEXT_TYPE,
     USERS_TYPE,
-    ONTOLOGY_LOOKUP_TYPE,
 } from './PropDescType';
-import {ReactNode} from "react";
+import {
+    removeUnusedProperties,
+    removeFalseyObjKeys,
+    removeUnusedOntologyProperties,
+    reorderSummaryColumns,
+    removeNonAppProperties
+} from "./propertiesUtil";
 
 export interface IFieldChange {
     id: string;
     value: any;
+}
+
+export interface DomainOnChange {
+    (changes: List<IFieldChange>, index?: number, expand?: boolean): any;
 }
 
 export interface IBannerMessage {
@@ -76,6 +94,12 @@ export interface ITypeDependentProps {
 export interface FieldDetails {
     detailsInfo: { [key: string]: string };
     ontologyLookupIndices: number[];
+}
+
+export interface DomainPropertiesGridColumn {
+    index: string;
+    caption: string;
+    sortable: boolean;
 }
 
 export const SAMPLE_TYPE_OPTION_VALUE = `${SAMPLE_TYPE.rangeURI}|all`;
@@ -283,6 +307,124 @@ export class DomainDesign
         });
 
         return mapping;
+    }
+
+    getGridData(appPropertiesOnly: boolean): List<any> {
+        return this.fields.map((field, i) => {
+            let fieldSerial = DomainField.serialize(field);
+            const dataType = field.dataType;
+            fieldSerial = removeUnusedProperties(fieldSerial);
+            fieldSerial = removeUnusedOntologyProperties(fieldSerial);
+            if (appPropertiesOnly) {
+                fieldSerial = removeNonAppProperties(fieldSerial);
+            }
+
+            fieldSerial['fieldIndex'] = i;
+            // Add back subset of field properties stripped by the serialize
+            fieldSerial['selected'] = field.selected;
+            fieldSerial['visible'] = field.visible;
+
+            return Map(
+                Object.keys(fieldSerial).map(key => {
+                    const rawVal = fieldSerial[key];
+                    const valueType = typeof rawVal;
+                    let value = valueIsEmpty(rawVal) ? '' : rawVal;
+
+                    // Since rangeURI is not set on field creation, pull rangeURI value from dataType
+                    if (key === 'rangeURI' && value === '') {
+                        value = dataType.rangeURI;
+                    }
+
+                    // Make bools render as strings sortable within their column
+                    if (key !== 'visible' && key !== 'selected' && valueType === 'boolean') {
+                        value = rawVal ? 'true' : 'false';
+                    }
+
+                    // Handle property validator and conditional format rendering
+                    if ((key === 'propertyValidators' || key === 'conditionalFormats') && value !== '') {
+                        value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
+                    }
+
+                    if (key === 'fieldIndex' && value === "") {
+                        value = 0;
+                    }
+                    return [key, value];
+                })
+            );
+        }) as List<Map<string, any>>;
+    }
+
+    getGridColumns(
+        onFieldsChange: DomainOnChange,
+        scrollFunction: (i: number) => void,
+        domainKindName: string,
+        appPropertiesOnly: boolean
+    ): List<GridColumn | DomainPropertiesGridColumn> {
+        const selectionCol = new GridColumn({
+            index: GRID_SELECTION_INDEX,
+            title: GRID_SELECTION_INDEX,
+            width: 20,
+            cell: (data: any, row: any) => {
+                const domainIndex = row.get('domainIndex');
+                const fieldIndex = row.get('fieldIndex');
+                const selected = row.get('selected');
+                const formInputId = createFormInputId(DOMAIN_FIELD_SELECTED, domainIndex, fieldIndex);
+
+                const changes = List.of({ id: formInputId, value: !selected });
+                return (
+                    <>
+                        <Checkbox
+                            className="domain-summary-selection"
+                            id={formInputId}
+                            checked={selected}
+                            onChange={() => {
+                                onFieldsChange(changes, fieldIndex, false);
+                            }}
+                        />
+                    </>
+                );
+            },
+        });
+
+        const nameCol = new GridColumn({
+            index: GRID_NAME_INDEX,
+            title: GRID_NAME_INDEX,
+            raw: {index: 'name', caption: 'Name', sortable: true},
+            cell: (data: any, row: any) => {
+                const text = row.get('name');
+                const fieldIndex = row.get('fieldIndex');
+
+                return (
+                    <>
+                        <a onClick={() => scrollFunction(fieldIndex)} style={{ cursor: 'pointer' }}>
+                            {text}
+                        </a>
+                    </>
+                );
+            },
+        });
+
+        const specialCols = List([selectionCol, nameCol]);
+        const firstField = this.fields.get(0);
+        let columns = DomainField.serialize(firstField);
+
+        delete columns.name;
+        columns = removeUnusedProperties(columns);
+        columns = removeUnusedOntologyProperties(columns);
+        if (appPropertiesOnly) {
+            columns = removeNonAppProperties(columns);
+        }
+        if (domainKindName !== 'List') {
+            delete columns.isPrimaryKey;
+        }
+
+        const unsortedColumns = List(
+            Object.keys(columns).map(key => {
+                return { index: key, caption: camelCaseToTitleCase(key), sortable: true };
+            })
+        );
+        const sortedColumns = unsortedColumns.sort(reorderSummaryColumns);
+        return specialCols.concat(sortedColumns) as List<GridColumn | DomainPropertiesGridColumn>;
     }
 }
 
@@ -543,7 +685,6 @@ export class DomainField
         mvEnabled: false,
         name: undefined,
         PHI: undefined,
-        primaryKey: undefined,
         propertyId: undefined,
         propertyURI: undefined,
         propertyValidators: List<PropertyValidator>(),
@@ -596,7 +737,6 @@ export class DomainField
     mvEnabled?: boolean;
     name: string;
     PHI?: string;
-    primaryKey?: boolean;
     propertyId?: number;
     propertyURI: string;
     propertyValidators: List<PropertyValidator>;

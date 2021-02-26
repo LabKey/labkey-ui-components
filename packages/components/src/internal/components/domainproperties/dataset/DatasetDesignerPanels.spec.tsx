@@ -23,7 +23,8 @@ import { NEW_DATASET_MODEL_WITHOUT_DATASPACE } from '../../../../test/data/const
 import { Alert } from '../../../..';
 import { PROPERTIES_PANEL_ERROR_MSG } from '../constants';
 
-import { initUnitTestMocks, waitForLifecycle } from '../../../testHelpers';
+import { waitForLifecycle } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { DatasetDesignerPanels } from './DatasetDesignerPanels';
 
@@ -44,6 +45,7 @@ describe('Dataset Designer', () => {
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
+                testMode={true}
             />
         );
 
@@ -58,6 +60,7 @@ describe('Dataset Designer', () => {
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
+                testMode={true}
             />
         );
 
@@ -72,6 +75,7 @@ describe('Dataset Designer', () => {
                 useTheme={true}
                 onCancel={jest.fn()}
                 onComplete={jest.fn()}
+                testMode={true}
             />
         );
 

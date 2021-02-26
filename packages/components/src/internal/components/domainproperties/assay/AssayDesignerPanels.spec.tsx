@@ -6,7 +6,8 @@ import { Panel } from 'react-bootstrap';
 import { DomainDesign } from '../models';
 import { FileAttachmentForm } from '../../../..';
 
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
+import { sleep } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';
@@ -66,6 +67,7 @@ function setAssayName(wrapper: any, value: string) {
 const BASE_PROPS = {
     onComplete: jest.fn(),
     onCancel: jest.fn(),
+    testMode: true,
 };
 
 beforeAll(() => {

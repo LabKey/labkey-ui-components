@@ -39,6 +39,7 @@ interface NavigationBarProps {
     onSearch?: (form: any) => void;
     projectName?: string;
     searchPlaceholder?: string;
+    showNavMenu?: boolean;
     showSearchBox?: boolean;
     user?: User;
 }
@@ -58,6 +59,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         onSignOut,
         projectName,
         searchPlaceholder,
+        showNavMenu,
         showSearchBox,
         signOutUrl,
         user,
@@ -75,10 +77,12 @@ export const NavigationBar: FC<Props> = memo(props => {
         <nav className="navbar navbar-container test-loc-nav-header">
             <div className="container">
                 <div className="row">
-                    <div className="navbar-left col-sm-5 col-xs-7">
+                    <div className="navbar-left col-md-5 col-sm-4 col-xs-7">
                         <span className="navbar-item pull-left">{brand}</span>
                         <span className="navbar-item-padded">
-                            {!!model && <ProductMenu model={model} sectionConfigs={menuSectionConfigs} />}
+                            {showNavMenu && !!model && (
+                                <ProductMenu model={model} sectionConfigs={menuSectionConfigs} />
+                            )}
                         </span>
                         {projectName && (
                             <span className="navbar-item hidden-sm hidden-xs">
@@ -88,7 +92,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                             </span>
                         )}
                     </div>
-                    <div className="navbar-right col-sm-7 col-xs-5">
+                    <div className="navbar-right col-md-7 col-sm-8 col-xs-5">
                         <div className="navbar-item pull-right">
                             {!!user && (
                                 <UserMenu
@@ -120,5 +124,6 @@ export const NavigationBar: FC<Props> = memo(props => {
 });
 
 NavigationBar.defaultProps = {
+    showNavMenu: true,
     showSearchBox: false,
 };

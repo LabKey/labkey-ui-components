@@ -9,7 +9,8 @@ import DomainForm from '../DomainForm';
 
 import { DomainDetails } from '../models';
 
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
+import { sleep } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeDesigner } from './SampleTypeDesigner';
@@ -18,6 +19,7 @@ const BASE_PROPS = {
     initModel: undefined,
     onComplete: jest.fn(),
     onCancel: jest.fn(),
+    testMode: true,
 };
 
 beforeAll(() => {

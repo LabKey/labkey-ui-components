@@ -18,7 +18,7 @@ describe('<UserDetailHeader/>', () => {
                 dateFormat={undefined}
             />
         );
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
@@ -29,10 +29,10 @@ describe('<UserDetailHeader/>', () => {
                 user={TEST_USER_ASSAY_DESIGNER}
                 userProperties={fromJS({ lastLogin: '2019-11-15 13:50:17.987' })}
                 dateFormat="YYYY-MM-DD"
-                renderButtons={() => <Button>Test</Button>}
+                renderButtons={<Button>Test</Button>}
             />
         );
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
@@ -46,7 +46,7 @@ describe('<UserDetailHeader/>', () => {
                 description="My custom description"
             />
         );
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 });

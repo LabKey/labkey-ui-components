@@ -1,0 +1,401 @@
+{
+  "parent": {
+    "path": "/NCIT/",
+    "code": "labkey_ontology:NCIT",
+    "children": [
+      {
+        "path": "/NCIT/ST1000000/",
+        "code": "NCIT:ST1000000",
+        "label": "Neoplastic Process",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000001/",
+        "code": "NCIT:ST1000001",
+        "label": "Inorganic Chemical",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000002/",
+        "code": "NCIT:ST1000002",
+        "label": "Pharmacologic Substance",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000003/",
+        "code": "NCIT:ST1000003",
+        "label": "Amino Acid, Peptide, or Protein",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000004/",
+        "code": "NCIT:ST1000004",
+        "label": "Gene or Genome",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000005/",
+        "code": "NCIT:ST1000005",
+        "label": "Enzyme",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000006/",
+        "code": "NCIT:ST1000006",
+        "label": "Receptor",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000007/",
+        "code": "NCIT:ST1000007",
+        "label": "Organic Chemical",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000008/",
+        "code": "NCIT:ST1000008",
+        "label": "Hormone",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000009/",
+        "code": "NCIT:ST1000009",
+        "label": "Immunologic Factor",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000010/",
+        "code": "NCIT:ST1000010",
+        "label": "Disease or Syndrome",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000011/",
+        "code": "NCIT:ST1000011",
+        "label": "Nucleic Acid, Nucleoside, or Nucleotide",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000012/",
+        "code": "NCIT:ST1000012",
+        "label": "Therapeutic or Preventive Procedure",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000013/",
+        "code": "NCIT:ST1000013",
+        "label": "Classification",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000014/",
+        "code": "NCIT:ST1000014",
+        "label": "Cell",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000015/",
+        "code": "NCIT:ST1000015",
+        "label": "Organism",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000016/",
+        "code": "NCIT:ST1000016",
+        "label": "Antibiotic",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000017/",
+        "code": "NCIT:ST1000017",
+        "label": "Finding",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000018/",
+        "code": "NCIT:ST1000018",
+        "label": "Biologically Active Substance",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000019/",
+        "code": "NCIT:ST1000019",
+        "label": "Biologic Function",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000020/",
+        "code": "NCIT:ST1000020",
+        "label": "Indicator, Reagent, or Diagnostic Aid",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000021/",
+        "code": "NCIT:ST1000021",
+        "label": "Cell Function",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000022/",
+        "code": "NCIT:ST1000022",
+        "label": "Clinical Attribute",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000023/",
+        "code": "NCIT:ST1000023",
+        "label": "Conceptual Entity",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000024/",
+        "code": "NCIT:ST1000024",
+        "label": "Cell or Molecular Dysfunction",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000025/",
+        "code": "NCIT:ST1000025",
+        "label": "Functional Concept",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000026/",
+        "code": "NCIT:ST1000026",
+        "label": "Congenital Abnormality",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000027/",
+        "code": "NCIT:ST1000027",
+        "label": "Activity",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000028/",
+        "code": "NCIT:ST1000028",
+        "label": "Pathologic Function",
+        "hasChildren": true
+      },
+      {
+        "path": "/NCIT/ST1000029/",
+        "code": "NCIT:ST1000029",
+        "label": "Manufactured Object",
+        "hasChildren": true
+      }
+    ]
+  },
+  "concepts": [
+    {
+      "code": "NCIT:ST1000000",
+      "label": "Neoplastic Process",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000001",
+      "label": "Inorganic Chemical",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000002",
+      "label": "Pharmacologic Substance",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000003",
+      "label": "Amino Acid, Peptide, or Protein",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000004",
+      "label": "Gene or Genome",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000005",
+      "label": "Enzyme",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000006",
+      "label": "Receptor",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000007",
+      "label": "Organic Chemical",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000008",
+      "label": "Hormone",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000009",
+      "label": "Immunologic Factor",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000010",
+      "label": "Disease or Syndrome",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000011",
+      "label": "Nucleic Acid, Nucleoside, or Nucleotide",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000012",
+      "label": "Therapeutic or Preventive Procedure",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000013",
+      "label": "Classification",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000014",
+      "label": "Cell",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000015",
+      "label": "Organism",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000016",
+      "label": "Antibiotic",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000017",
+      "label": "Finding",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000018",
+      "label": "Biologically Active Substance",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000019",
+      "label": "Biologic Function",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000020",
+      "label": "Indicator, Reagent, or Diagnostic Aid",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000021",
+      "label": "Cell Function",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000022",
+      "label": "Clinical Attribute",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000023",
+      "label": "Conceptual Entity",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000024",
+      "label": "Cell or Molecular Dysfunction",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000025",
+      "label": "Functional Concept",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000026",
+      "label": "Congenital Abnormality",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000027",
+      "label": "Activity",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000028",
+      "label": "Pathologic Function",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    },
+    {
+      "code": "NCIT:ST1000029",
+      "label": "Manufactured Object",
+      "description": null,
+      "hasChildren": true,
+      "url": null
+    }
+  ],
+  "success": true
+}

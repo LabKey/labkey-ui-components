@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, memo, ReactNode, useCallback, useState } from 'react';
+import React, { MouseEvent, FC, memo, ReactNode, useCallback, useState } from 'react';
+import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { DropdownButton } from 'react-bootstrap';
 
@@ -44,20 +45,30 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
         blurActiveElement();
     }, [menuOpen, setMenuOpen]);
 
-    let containerCls = 'product-menu-content ';
-    let menuSectionCls = 'menu-section col-' + model.sections.size;
+    // Only toggle the menu closing if a link has been clicked.
+    // Clicking anywhere else inside the menu will not toggle the menu.
+    const onClick = useCallback(
+        (evt: MouseEvent<HTMLDivElement>) => {
+            const nodeName = (evt.target as any).nodeName;
+            if (!nodeName || nodeName.toLowerCase() === 'a') {
+                toggleMenu();
+            }
+        },
+        [toggleMenu]
+    );
+
+    let menuSectionCls = `menu-section col-${model.sections.size}`;
     let content: ReactNode = (
-        <div className={menuSectionCls + ' menu-loading'}>
+        <div className={`${menuSectionCls} menu-loading`}>
             <LoadingSpinner />
         </div>
     );
 
     if (model?.isLoaded) {
         if (model.isError) {
-            containerCls += ' error';
             content = <span>{model.message}</span>;
         } else if (sectionConfigs) {
-            menuSectionCls = 'menu-section col-' + sectionConfigs.size;
+            menuSectionCls = `menu-section col-${sectionConfigs.size}`;
 
             content = sectionConfigs.map((sectionConfig, ind) => (
                 <div key={ind} className={menuSectionCls}>
@@ -92,11 +103,9 @@ export const ProductMenu: FC<ProductMenuProps> = memo(props => {
             open={menuOpen}
             title="Menu"
         >
-            <div className={containerCls} onClick={toggleMenu}>
-                <div>
-                    <div className="navbar-connector" />
-                    {content}
-                </div>
+            <div className={classNames('product-menu-content', { error: !!model?.isError })} onClick={onClick}>
+                <div className="navbar-connector" />
+                {content}
             </div>
         </DropdownButton>
     );

@@ -71,6 +71,7 @@ interface Props {
     dataClassParentageLabel?: string;
     showParentLabelPrefix?: boolean;
     isValidParentOptionFn?: (row: any, isDataClass: boolean) => boolean;
+    testMode?: boolean;
 
     // EntityDetailsForm props
     nounSingular?: string;
@@ -477,7 +478,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             dataClassTypeCaption,
             dataClassParentageLabel,
             metricUnitProps,
-            domainFormDisplayOptions
+            testMode,
+            domainFormDisplayOptions,
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -550,6 +552,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     useTheme={useTheme}
                     successBsStyle={successBsStyle}
                     allowImportExport={true}
+                    testMode={testMode}
                     domainFormDisplayOptions={domainFormDisplayOptions}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}

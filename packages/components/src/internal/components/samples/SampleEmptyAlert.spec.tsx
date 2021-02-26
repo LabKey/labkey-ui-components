@@ -1,36 +1,46 @@
-import * as React from 'react';
-import renderer from 'react-test-renderer';
+import React from 'react';
+import { mount } from 'enzyme';
 
 import { App } from '../../..';
 
-import { SampleEmptyAlert } from './SampleEmptyAlert';
+import { SampleEmptyAlert, SampleTypeEmptyAlert } from './SampleEmptyAlert';
 
-describe('<SampleEmptyAlert/>', () => {
-    test('admin', () => {
-        const component = <SampleEmptyAlert user={App.TEST_USER_FOLDER_ADMIN} />;
+const EMPTY_ALERT = '.empty-alert';
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+describe('SampleEmptyAlert', () => {
+    test('with permissions', () => {
+        const wrapper = mount(<SampleEmptyAlert user={App.TEST_USER_FOLDER_ADMIN} />);
+
+        // Expect default message
+        expect(wrapper.find(EMPTY_ALERT).at(0).text()).toContain(
+            'No samples have been created. Click here to create samples.'
+        );
+
+        // Expect link to design
+        expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(App.NEW_SAMPLES_HREF.toHref());
     });
+    test('without permissions', () => {
+        const expectedMessage = 'I am just a reader';
+        const wrapper = mount(<SampleEmptyAlert message={expectedMessage} user={App.TEST_USER_READER} />);
 
-    test('author', () => {
-        const component = <SampleEmptyAlert user={App.TEST_USER_AUTHOR} />;
-
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.find(EMPTY_ALERT).at(0).text()).toEqual(expectedMessage);
     });
+});
 
-    test('reader', () => {
-        const component = <SampleEmptyAlert user={App.TEST_USER_READER} />;
+describe('SampleTypeEmptyAlert', () => {
+    test('with permissions', () => {
+        const wrapper = mount(<SampleTypeEmptyAlert user={App.TEST_USER_APP_ADMIN} />);
 
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        // Expect default message
+        expect(wrapper.find(EMPTY_ALERT).at(0).text()).toContain('No sample types have been created');
+
+        // Expect link to design
+        expect(wrapper.find(`${EMPTY_ALERT} a`).prop('href')).toEqual(App.NEW_SAMPLE_TYPE_HREF.toHref());
     });
+    test('without permissions', () => {
+        const expectedMessage = 'I am just a reader';
+        const wrapper = mount(<SampleTypeEmptyAlert message={expectedMessage} user={App.TEST_USER_READER} />);
 
-    test('custom props', () => {
-        const component = <SampleEmptyAlert user={App.TEST_USER_READER} className="testClass" message="Test Message" />;
-
-        const tree = renderer.create(component).toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(wrapper.find(EMPTY_ALERT).at(0).text()).toEqual(expectedMessage);
     });
 });

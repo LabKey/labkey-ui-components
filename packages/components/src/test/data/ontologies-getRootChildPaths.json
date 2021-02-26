@@ -1,0 +1,18 @@
+{
+  "parent" : {
+    "path" : "/",
+    "code" : "/",
+    "children" : [ {
+      "path" : "/i2b2/",
+      "code" : "labkey_ontology:i2b2",
+      "hasChildren" : true,
+      "label" : "i2b2"
+    }, {
+      "path" : "/owl/",
+      "code" : "labkey_ontology:owl",
+      "hasChildren" : true,
+      "label" : "owl"
+    } ]
+  },
+  "success" : true
+}

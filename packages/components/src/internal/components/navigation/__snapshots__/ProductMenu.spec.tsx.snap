@@ -27,19 +27,17 @@ exports[`ProductMenu render error display 1`] = `
     role="menu"
   >
     <div
-      className="product-menu-content  error"
+      className="product-menu-content error"
       onClick={[Function]}
       onKeyDown={[Function]}
       onSelect={[Function]}
     >
-      <div>
-        <div
-          className="navbar-connector"
-        />
-        <span>
-          Test error message
-        </span>
-      </div>
+      <div
+        className="navbar-connector"
+      />
+      <span>
+        Test error message
+      </span>
     </div>
   </ul>
 </div>
@@ -72,29 +70,27 @@ exports[`ProductMenu render loading 1`] = `
     role="menu"
   >
     <div
-      className="product-menu-content "
+      className="product-menu-content"
       onClick={[Function]}
       onKeyDown={[Function]}
       onSelect={[Function]}
     >
-      <div>
-        <div
-          className="navbar-connector"
-        />
-        <div
-          className="menu-section col-0 menu-loading"
+      <div
+        className="navbar-connector"
+      />
+      <div
+        className="menu-section col-0 menu-loading"
+      >
+        <span
+          className=""
         >
-          <span
-            className=""
-          >
-            <i
-              aria-hidden="true"
-              className="fa fa-spinner fa-pulse"
-            />
-             
-            Loading...
-          </span>
-        </div>
+          <i
+            aria-hidden="true"
+            className="fa fa-spinner fa-pulse"
+          />
+           
+          Loading...
+        </span>
       </div>
     </div>
   </ul>
@@ -343,317 +339,315 @@ exports[`ProductMenu render multiple sections no sectionConfigs 1`] = `
                     role="menu"
                   >
                     <div
-                      className="product-menu-content "
+                      className="product-menu-content"
                       key=".0"
                       onClick={[Function]}
                       onKeyDown={[Function]}
                       onSelect={[Function]}
                     >
-                      <div>
-                        <div
-                          className="navbar-connector"
-                        />
-                        <div
-                          className="menu-section col-3"
-                          key="samples"
+                      <div
+                        className="navbar-connector"
+                      />
+                      <div
+                        className="menu-section col-3"
+                        key="samples"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "activeJobIconCls": "fa-spinner fa-pulse",
+                              "emptyText": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                              "iconCls": undefined,
+                              "iconURL": undefined,
+                              "maxColumns": 1,
+                              "maxItemsPerColumn": 12,
+                              "seeAllURL": undefined,
+                              "showActiveJobIcon": true,
+                            }
+                          }
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Sample Sets",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 1,
+                                  "key": undefined,
+                                  "label": "Sample Set 1",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 2,
+                                  "key": undefined,
+                                  "label": "Sample Set 2",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": true,
+                                },
+                                Immutable.Record {
+                                  "id": 3,
+                                  "key": undefined,
+                                  "label": "Sample Set 3",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 4,
+                                  "key": undefined,
+                                  "label": "Sample Set 4",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": 2,
+                              "key": "samples",
+                              "productId": undefined,
+                              "sectionKey": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "activeJobIconCls": "fa-spinner fa-pulse",
-                                "emptyText": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                                "iconCls": undefined,
-                                "iconURL": undefined,
-                                "maxColumns": 1,
-                                "maxItemsPerColumn": 12,
-                                "seeAllURL": undefined,
-                                "showActiveJobIcon": true,
-                              }
-                            }
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Sample Sets",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 1,
-                                    "key": undefined,
-                                    "label": "Sample Set 1",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 2,
-                                    "key": undefined,
-                                    "label": "Sample Set 2",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": true,
-                                  },
-                                  Immutable.Record {
-                                    "id": 3,
-                                    "key": undefined,
-                                    "label": "Sample Set 3",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 4,
-                                    "key": undefined,
-                                    "label": "Sample Set 4",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": 2,
-                                "key": "samples",
-                                "productId": undefined,
-                                "sectionKey": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
-                            <span
-                              className="menu-section-header"
+                            Sample Sets
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="samplescol-1"
+                          >
+                            <li
+                              key="Sample Set 1"
                             >
-                              Sample Sets
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="samplescol-1"
+                              Sample Set 1
+                            </li>
+                            <li
+                              key="Sample Set 2"
                             >
-                              <li
-                                key="Sample Set 1"
+                              <i
+                                className="fa fa-spinner fa-pulse"
+                              />
+                              <span
+                                className="spacer-left product-menu-item"
                               >
-                                Sample Set 1
-                              </li>
-                              <li
-                                key="Sample Set 2"
-                              >
-                                <i
-                                  className="fa fa-spinner fa-pulse"
-                                />
-                                <span
-                                  className="spacer-left product-menu-item"
-                                >
-                                  Sample Set 2
-                                </span>
-                              </li>
-                              <li
-                                key="Sample Set 3"
-                              >
-                                Sample Set 3
-                              </li>
-                              <li
-                                key="Sample Set 4"
-                              >
-                                Sample Set 4
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
-                        <div
-                          className="menu-section col-3"
-                          key="assays"
+                                Sample Set 2
+                              </span>
+                            </li>
+                            <li
+                              key="Sample Set 3"
+                            >
+                              Sample Set 3
+                            </li>
+                            <li
+                              key="Sample Set 4"
+                            >
+                              Sample Set 4
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
+                      </div>
+                      <div
+                        className="menu-section col-3"
+                        key="assays"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "activeJobIconCls": "fa-spinner fa-pulse",
+                              "emptyText": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                              "iconCls": undefined,
+                              "iconURL": undefined,
+                              "maxColumns": 1,
+                              "maxItemsPerColumn": 12,
+                              "seeAllURL": undefined,
+                              "showActiveJobIcon": true,
+                            }
+                          }
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Assays",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 11,
+                                  "key": undefined,
+                                  "label": "Assay 1",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": true,
+                                },
+                                Immutable.Record {
+                                  "id": 12,
+                                  "key": undefined,
+                                  "label": "Assay 2",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 13,
+                                  "key": undefined,
+                                  "label": "Assay 3",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 14,
+                                  "key": undefined,
+                                  "label": "Assay 4",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 15,
+                                  "key": undefined,
+                                  "label": "Assay 5",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": undefined,
+                              "key": "assays",
+                              "productId": undefined,
+                              "sectionKey": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "activeJobIconCls": "fa-spinner fa-pulse",
-                                "emptyText": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                                "iconCls": undefined,
-                                "iconURL": undefined,
-                                "maxColumns": 1,
-                                "maxItemsPerColumn": 12,
-                                "seeAllURL": undefined,
-                                "showActiveJobIcon": true,
-                              }
-                            }
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Assays",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 11,
-                                    "key": undefined,
-                                    "label": "Assay 1",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": true,
-                                  },
-                                  Immutable.Record {
-                                    "id": 12,
-                                    "key": undefined,
-                                    "label": "Assay 2",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 13,
-                                    "key": undefined,
-                                    "label": "Assay 3",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 14,
-                                    "key": undefined,
-                                    "label": "Assay 4",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 15,
-                                    "key": undefined,
-                                    "label": "Assay 5",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": undefined,
-                                "key": "assays",
-                                "productId": undefined,
-                                "sectionKey": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
-                            <span
-                              className="menu-section-header"
+                            Assays
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="assayscol-1"
+                          >
+                            <li
+                              key="Assay 1"
                             >
-                              Assays
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="assayscol-1"
+                              <i
+                                className="fa fa-spinner fa-pulse"
+                              />
+                              <span
+                                className="spacer-left product-menu-item"
+                              >
+                                Assay 1
+                              </span>
+                            </li>
+                            <li
+                              key="Assay 2"
                             >
-                              <li
-                                key="Assay 1"
-                              >
-                                <i
-                                  className="fa fa-spinner fa-pulse"
-                                />
-                                <span
-                                  className="spacer-left product-menu-item"
-                                >
-                                  Assay 1
-                                </span>
-                              </li>
-                              <li
-                                key="Assay 2"
-                              >
-                                Assay 2
-                              </li>
-                              <li
-                                key="Assay 3"
-                              >
-                                Assay 3
-                              </li>
-                              <li
-                                key="Assay 4"
-                              >
-                                Assay 4
-                              </li>
-                              <li
-                                key="Assay 5"
-                              >
-                                Assay 5
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
-                        <div
-                          className="menu-section col-3"
-                          key="user"
+                              Assay 2
+                            </li>
+                            <li
+                              key="Assay 3"
+                            >
+                              Assay 3
+                            </li>
+                            <li
+                              key="Assay 4"
+                            >
+                              Assay 4
+                            </li>
+                            <li
+                              key="Assay 5"
+                            >
+                              Assay 5
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
+                      </div>
+                      <div
+                        className="menu-section col-3"
+                        key="user"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "activeJobIconCls": "fa-spinner fa-pulse",
+                              "emptyText": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                              "iconCls": undefined,
+                              "iconURL": undefined,
+                              "maxColumns": 1,
+                              "maxItemsPerColumn": 12,
+                              "seeAllURL": undefined,
+                              "showActiveJobIcon": true,
+                            }
+                          }
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Your Items",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 21,
+                                  "key": undefined,
+                                  "label": "Documentation",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": undefined,
+                              "key": "user",
+                              "productId": undefined,
+                              "sectionKey": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "activeJobIconCls": "fa-spinner fa-pulse",
-                                "emptyText": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                                "iconCls": undefined,
-                                "iconURL": undefined,
-                                "maxColumns": 1,
-                                "maxItemsPerColumn": 12,
-                                "seeAllURL": undefined,
-                                "showActiveJobIcon": true,
-                              }
-                            }
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Your Items",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 21,
-                                    "key": undefined,
-                                    "label": "Documentation",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": undefined,
-                                "key": "user",
-                                "productId": undefined,
-                                "sectionKey": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
-                            <span
-                              className="menu-section-header"
+                            Your Items
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="usercol-1"
+                          >
+                            <li
+                              key="Documentation"
                             >
-                              Your Items
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="usercol-1"
-                            >
-                              <li
-                                key="Documentation"
-                              >
-                                Documentation
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
+                              Documentation
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
                       </div>
                     </div>
                   </ul>
@@ -946,257 +940,255 @@ exports[`ProductMenu render multiple sections with sectionConfigs 1`] = `
                     role="menu"
                   >
                     <div
-                      className="product-menu-content "
+                      className="product-menu-content"
                       key=".0"
                       onClick={[Function]}
                       onKeyDown={[Function]}
                       onSelect={[Function]}
                     >
-                      <div>
-                        <div
-                          className="navbar-connector"
-                        />
-                        <div
-                          className="menu-section col-2"
-                          key="0"
+                      <div
+                        className="navbar-connector"
+                      />
+                      <div
+                        className="menu-section col-2"
+                        key="0"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "activeJobIconCls": "fa-spinner fa-pulse",
+                              "emptyText": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                              "iconCls": "test-icon-cls",
+                              "iconURL": undefined,
+                              "maxColumns": 1,
+                              "maxItemsPerColumn": 12,
+                              "seeAllURL": undefined,
+                              "showActiveJobIcon": false,
+                            }
+                          }
+                          key="samples"
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Sample Sets",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 1,
+                                  "key": undefined,
+                                  "label": "Sample Set 1",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 2,
+                                  "key": undefined,
+                                  "label": "Sample Set 2",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": true,
+                                },
+                                Immutable.Record {
+                                  "id": 3,
+                                  "key": undefined,
+                                  "label": "Sample Set 3",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 4,
+                                  "key": undefined,
+                                  "label": "Sample Set 4",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": 2,
+                              "key": "samples",
+                              "productId": undefined,
+                              "sectionKey": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "activeJobIconCls": "fa-spinner fa-pulse",
-                                "emptyText": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                                "iconCls": "test-icon-cls",
-                                "iconURL": undefined,
-                                "maxColumns": 1,
-                                "maxItemsPerColumn": 12,
-                                "seeAllURL": undefined,
-                                "showActiveJobIcon": false,
-                              }
-                            }
-                            key="samples"
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Sample Sets",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 1,
-                                    "key": undefined,
-                                    "label": "Sample Set 1",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 2,
-                                    "key": undefined,
-                                    "label": "Sample Set 2",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": true,
-                                  },
-                                  Immutable.Record {
-                                    "id": 3,
-                                    "key": undefined,
-                                    "label": "Sample Set 3",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 4,
-                                    "key": undefined,
-                                    "label": "Sample Set 4",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": 2,
-                                "key": "samples",
-                                "productId": undefined,
-                                "sectionKey": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
                             <span
-                              className="menu-section-header"
+                              className="test-icon-cls menu-section-icon"
+                            />
+                             
+                            Sample Sets
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="samplescol-1"
+                          >
+                            <li
+                              key="Sample Set 1"
                             >
-                              <span
-                                className="test-icon-cls menu-section-icon"
-                              />
-                               
-                              Sample Sets
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="samplescol-1"
+                              Sample Set 1
+                            </li>
+                            <li
+                              key="Sample Set 2"
                             >
-                              <li
-                                key="Sample Set 1"
-                              >
-                                Sample Set 1
-                              </li>
-                              <li
-                                key="Sample Set 2"
-                              >
-                                Sample Set 2
-                              </li>
-                              <li
-                                key="Sample Set 3"
-                              >
-                                Sample Set 3
-                              </li>
-                              <li
-                                key="Sample Set 4"
-                              >
-                                Sample Set 4
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
-                        <div
-                          className="menu-section col-2"
-                          key="1"
+                              Sample Set 2
+                            </li>
+                            <li
+                              key="Sample Set 3"
+                            >
+                              Sample Set 3
+                            </li>
+                            <li
+                              key="Sample Set 4"
+                            >
+                              Sample Set 4
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
+                      </div>
+                      <div
+                        className="menu-section col-2"
+                        key="1"
+                      >
+                        <ProductMenuSection
+                          config={
+                            Immutable.Record {
+                              "activeJobIconCls": "fa-spinner fa-pulse",
+                              "emptyText": undefined,
+                              "emptyURL": undefined,
+                              "emptyURLText": "Get started...",
+                              "headerURL": undefined,
+                              "headerText": undefined,
+                              "iconCls": "test-icon-cls",
+                              "iconURL": undefined,
+                              "maxColumns": 1,
+                              "maxItemsPerColumn": 12,
+                              "seeAllURL": undefined,
+                              "showActiveJobIcon": true,
+                            }
+                          }
+                          key="assays"
+                          maxColumns={1}
+                          section={
+                            Immutable.Record {
+                              "label": "Assays",
+                              "url": undefined,
+                              "items": Immutable.List [
+                                Immutable.Record {
+                                  "id": 11,
+                                  "key": undefined,
+                                  "label": "Assay 1",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": true,
+                                },
+                                Immutable.Record {
+                                  "id": 12,
+                                  "key": undefined,
+                                  "label": "Assay 2",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 13,
+                                  "key": undefined,
+                                  "label": "Assay 3",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 14,
+                                  "key": undefined,
+                                  "label": "Assay 4",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                                Immutable.Record {
+                                  "id": 15,
+                                  "key": undefined,
+                                  "label": "Assay 5",
+                                  "url": undefined,
+                                  "orderNum": undefined,
+                                  "requiresLogin": false,
+                                  "hasActiveJob": false,
+                                },
+                              ],
+                              "totalCount": 0,
+                              "itemLimit": undefined,
+                              "key": "assays",
+                              "productId": undefined,
+                              "sectionKey": undefined,
+                            }
+                          }
                         >
-                          <ProductMenuSection
-                            config={
-                              Immutable.Record {
-                                "activeJobIconCls": "fa-spinner fa-pulse",
-                                "emptyText": undefined,
-                                "emptyURL": undefined,
-                                "emptyURLText": "Get started...",
-                                "headerURL": undefined,
-                                "headerText": undefined,
-                                "iconCls": "test-icon-cls",
-                                "iconURL": undefined,
-                                "maxColumns": 1,
-                                "maxItemsPerColumn": 12,
-                                "seeAllURL": undefined,
-                                "showActiveJobIcon": true,
-                              }
-                            }
-                            key="assays"
-                            maxColumns={1}
-                            section={
-                              Immutable.Record {
-                                "label": "Assays",
-                                "url": undefined,
-                                "items": Immutable.List [
-                                  Immutable.Record {
-                                    "id": 11,
-                                    "key": undefined,
-                                    "label": "Assay 1",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": true,
-                                  },
-                                  Immutable.Record {
-                                    "id": 12,
-                                    "key": undefined,
-                                    "label": "Assay 2",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 13,
-                                    "key": undefined,
-                                    "label": "Assay 3",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 14,
-                                    "key": undefined,
-                                    "label": "Assay 4",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                  Immutable.Record {
-                                    "id": 15,
-                                    "key": undefined,
-                                    "label": "Assay 5",
-                                    "url": undefined,
-                                    "orderNum": undefined,
-                                    "requiresLogin": false,
-                                    "hasActiveJob": false,
-                                  },
-                                ],
-                                "totalCount": 0,
-                                "itemLimit": undefined,
-                                "key": "assays",
-                                "productId": undefined,
-                                "sectionKey": undefined,
-                              }
-                            }
+                          <span
+                            className="menu-section-header"
                           >
                             <span
-                              className="menu-section-header"
+                              className="test-icon-cls menu-section-icon"
+                            />
+                             
+                            Assays
+                          </span>
+                          <hr />
+                          <ul
+                            className="col-1"
+                            key="assayscol-1"
+                          >
+                            <li
+                              key="Assay 1"
                             >
-                              <span
-                                className="test-icon-cls menu-section-icon"
+                              <i
+                                className="fa fa-spinner fa-pulse"
                               />
-                               
-                              Assays
-                            </span>
-                            <hr />
-                            <ul
-                              className="col-1"
-                              key="assayscol-1"
+                              <span
+                                className="spacer-left product-menu-item"
+                              >
+                                Assay 1
+                              </span>
+                            </li>
+                            <li
+                              key="Assay 2"
                             >
-                              <li
-                                key="Assay 1"
-                              >
-                                <i
-                                  className="fa fa-spinner fa-pulse"
-                                />
-                                <span
-                                  className="spacer-left product-menu-item"
-                                >
-                                  Assay 1
-                                </span>
-                              </li>
-                              <li
-                                key="Assay 2"
-                              >
-                                Assay 2
-                              </li>
-                              <li
-                                key="Assay 3"
-                              >
-                                Assay 3
-                              </li>
-                              <li
-                                key="Assay 4"
-                              >
-                                Assay 4
-                              </li>
-                              <li
-                                key="Assay 5"
-                              >
-                                Assay 5
-                              </li>
-                            </ul>
-                          </ProductMenuSection>
-                        </div>
+                              Assay 2
+                            </li>
+                            <li
+                              key="Assay 3"
+                            >
+                              Assay 3
+                            </li>
+                            <li
+                              key="Assay 4"
+                            >
+                              Assay 4
+                            </li>
+                            <li
+                              key="Assay 5"
+                            >
+                              Assay 5
+                            </li>
+                          </ul>
+                        </ProductMenuSection>
                       </div>
                     </div>
                   </ul>

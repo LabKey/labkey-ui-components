@@ -1,4 +1,5 @@
 import React, { FC, memo } from 'react';
+import classNames from 'classnames';
 
 import { LKS_PRODUCT_ID } from '../../app/constants';
 
@@ -10,17 +11,15 @@ interface ProductNavigationHeaderProps {
 
 export const ProductNavigationHeader: FC<ProductNavigationHeaderProps> = memo(props => {
     const { productId, title, onClick } = props;
+    const contentCls = classNames('header-title', { clickable: !!productId });
 
     return (
-        <>
-            {productId && (
-                <div className="back-icon" onClick={onClick}>
-                    <i className="fa fa-chevron-left" />
-                </div>
-            )}
-            <div className={'header-title' + (productId ? ' header-padding' : '')}>
+        <h3 className="product-navigation-header navbar-menu-header">
+            <div className="navbar-icon-connector" />
+            <span className={contentCls} onClick={productId ? onClick : undefined}>
+                {productId && <i className="back-icon fa fa-chevron-left" />}
                 {title ? title : productId === LKS_PRODUCT_ID ? 'LabKey Server' : 'Applications'}
-            </div>
-        </>
+            </span>
+        </h3>
     );
 });

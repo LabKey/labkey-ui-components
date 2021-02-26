@@ -6,6 +6,8 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: XXX
 * Add isSampleAliquotEnabled experimental flag
 * Add "Aliquot Options" to domain row
+* Allow DetailEditing to use custom set of update columns via getUpdateDisplayColumns
+* Hide aliquot fields for insert editable grid and bulk insert form
 
 ### version 2.2.0
 *Released*: 19 February 2021

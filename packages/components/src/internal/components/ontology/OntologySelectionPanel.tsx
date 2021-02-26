@@ -1,6 +1,7 @@
 import React, { FC, memo, useEffect, useState } from 'react';
+import { getServerContext } from '@labkey/api';
 
-import { LoadingSpinner, Alert, SelectInput } from '../../..';
+import { LoadingSpinner, Alert, SelectInput, buildURL } from '../../..';
 
 import { fetchChildPaths } from './actions';
 import { PathModel } from './models';
@@ -17,8 +18,8 @@ export const OntologySelectionPanel: FC<OntologySelectionPanelProps> = memo(prop
 
     useEffect(() => {
         fetchChildPaths('/')
-            .then(ontologies => {
-                setOntologies(ontologies.children);
+            .then(response => {
+                setOntologies(response.children);
             })
             .catch(reason => {
                 setError('Error: unable to load ontology information for selection. ' + reason?.exception);
@@ -30,6 +31,16 @@ export const OntologySelectionPanel: FC<OntologySelectionPanelProps> = memo(prop
         <>
             <Alert>{error}</Alert>
             {!ontologies && <LoadingSpinner msg="Loading ontologies..." />}
+            {ontologies?.length === 0 && (
+                <Alert bsStyle="warning">
+                    No ontologies have been loaded for this server.
+                    {getServerContext().user.isRootAdmin && (
+                        <>
+                            &nbsp;Click <a href={buildURL('ontology', 'begin')}>here</a> to get started.
+                        </>
+                    )}
+                </Alert>
+            )}
             {ontologies && (
                 <SelectInput
                     key="ontology-select"

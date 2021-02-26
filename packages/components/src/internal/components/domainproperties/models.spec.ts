@@ -54,44 +54,71 @@ import {
     DOMAIN_FIELD_FULLY_LOCKED,
 } from './constants';
 
-const gridDataConst = [
+const GRID_DATA = DomainDesign.create({
+    fields: [{
+        name: 'a',
+        rangeURI: INTEGER_TYPE.rangeURI,
+        sourceOntology: 'b',
+        conceptImportColumn: 'c',
+        conceptLabelColumn: 'd',
+        principalConceptCode: 'e',
+        wrappedColumnName: 'f',
+        propertyId: 123,
+    }],
+});
+const gridDataAppPropsOnlyConst = [
     {
-        excludeFromShifting: 'false',
-        shownInUpdateView: 'true',
         lockType: 'NotLocked',
-        dimension: '',
-        lookupContainer: '',
         isPrimaryKey: 'false',
         defaultScale: '',
         scale: 4000,
-        hidden: 'false',
-        defaultValueType: '',
         name: 'a',
-        lookupQuery: '',
         URL: '',
         conceptURI: '',
         rangeURI: 'http://www.w3.org/2001/XMLSchema#int',
-        defaultDisplayValue: '',
-        defaultValue: '',
-        shownInDetailsView: 'true',
         PHI: '',
         visible: true,
         label: '',
-        shownInInsertView: 'true',
-        conditionalFormats: '',
         propertyValidators: '',
-        recommendedVariable: 'false',
         format: '',
-        mvEnabled: 'false',
         fieldIndex: 0,
         importAliases: '',
         selected: '',
-        lookupSchema: '',
         description: '',
-        measure: '',
         required: 'false',
     },
 ];
+const gridDataConst = [
+    {
+        ...gridDataAppPropsOnlyConst[0],
+        excludeFromShifting: 'false',
+        shownInUpdateView: 'true',
+        dimension: '',
+        lookupContainer: '',
+        hidden: 'false',
+        defaultValueType: '',
+        lookupQuery: '',
+        defaultDisplayValue: '',
+        defaultValue: '',
+        shownInDetailsView: 'true',
+        shownInInsertView: 'true',
+        conditionalFormats: '',
+        recommendedVariable: 'false',
+        mvEnabled: 'false',
+        lookupSchema: '',
+        measure: '',
+    },
+];
+const gridDataConstWithOntology = [
+    {
+        ...gridDataConst[0],
+        sourceOntology: 'b',
+        conceptImportColumn: 'c',
+        conceptLabelColumn: 'd',
+        principalConceptCode: 'e',
+    },
+];
+
 const selectionCol = new GridColumn({
     index: GRID_SELECTION_INDEX,
     title: GRID_SELECTION_INDEX,
@@ -544,11 +571,27 @@ describe('DomainDesign', () => {
         expect(fieldDetails.detailsInfo['text2']).toBe(undefined);
     });
 
-    test('getGridData', () => {
-        const gridData = DomainDesign.create({
-            fields: [{ name: 'a', rangeURI: INTEGER_TYPE.rangeURI }],
-        }).getGridData(false);
+    test('getGridData with ontology', () => {
+        LABKEY.container.activeModules = ['Core', 'Query', 'Ontology'];
+        const gridData = GRID_DATA.getGridData(false);
+        expect(gridData.toJS()).toStrictEqual(gridDataConstWithOntology);
+    });
+
+    test('getGridData without ontology', () => {
+        LABKEY.container.activeModules = ['Core', 'Query'];
+        const gridData = GRID_DATA.getGridData(false);
         expect(gridData.toJS()).toStrictEqual(gridDataConst);
+    });
+
+    test('getGridData appPropertiesOnly', () => {
+        LABKEY.container.activeModules = ['Core', 'Query', 'Ontology'];
+        let gridData = GRID_DATA.getGridData(true);
+        expect(gridData.toJS()).toStrictEqual(gridDataAppPropsOnlyConst);
+
+        // should be the same with or without the Ontology module in this case
+        LABKEY.container.activeModules = ['Core', 'Query'];
+        gridData = GRID_DATA.getGridData(true);
+        expect(gridData.toJS()).toStrictEqual(gridDataAppPropsOnlyConst);
     });
 
     test('getGridColumns', () => {

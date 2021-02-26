@@ -201,6 +201,13 @@ export function removeNonAppProperties(obj) {
     delete obj.recommendedVariable;
     delete obj.mvEnabled;
 
+    // this props are always removed for appPropertiesOnly and then also conditionally removed for
+    // containers that dont' have the Ontology module enabled (see removeUnusedOntologyProperties)
+    delete obj.sourceOntology;
+    delete obj.conceptImportColumn;
+    delete obj.conceptLabelColumn;
+    delete obj.principalConceptCode;
+
     delete obj.lookupContainer;
     delete obj.lookupSchema;
     delete obj.lookupQuery;

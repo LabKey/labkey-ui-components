@@ -19,10 +19,8 @@ export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(
         if (code) {
             fetchConceptForCode(code)
                 .then(setConcept)
-                .catch(reason => {
-                    setError(
-                        'Error: unable to get concept information for ' + code + '. '
-                    );
+                .catch(() => {
+                    setError('Error: unable to get concept information for ' + code + '. ');
                 });
         }
     }, [code, setConcept, setError]);
@@ -30,7 +28,7 @@ export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(
     return (
         <>
             <Alert>{error}</Alert>
-            {concept && <ConceptOverviewPanelImpl concept={concept}/>}
+            {concept && <ConceptOverviewPanelImpl concept={concept} />}
         </>
     );
 });

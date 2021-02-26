@@ -12,7 +12,7 @@ interface OntologySelectionPanelProps {
 }
 
 export const OntologySelectionPanel: FC<OntologySelectionPanelProps> = memo(props => {
-    const { onOntologySelection, asPanel } = props;
+    const { onOntologySelection } = props;
     const [error, setError] = useState<string>();
     const [ontologies, setOntologies] = useState<PathModel[]>();
 
@@ -31,6 +31,18 @@ export const OntologySelectionPanel: FC<OntologySelectionPanelProps> = memo(prop
                 setOntologies([]);
             });
     }, [setOntologies, setError, onOntologySelection]);
+
+    return <OntologySelectionPanelImpl {...props} error={error} ontologies={ontologies} />;
+});
+
+interface OntologySelectionPanelImplProps extends OntologySelectionPanelProps {
+    error: string;
+    ontologies: PathModel[];
+}
+
+// exported for jest testing
+export const OntologySelectionPanelImpl: FC<OntologySelectionPanelImplProps> = memo(props => {
+    const { onOntologySelection, asPanel, error, ontologies } = props;
 
     const body = (
         <>

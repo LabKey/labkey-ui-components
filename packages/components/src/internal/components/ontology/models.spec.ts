@@ -1,4 +1,4 @@
-import { OntologyModel } from './models';
+import { ConceptModel, OntologyModel } from './models';
 
 describe('OntologyModel', () => {
     test('create', () => {
@@ -23,5 +23,12 @@ describe('OntologyModel', () => {
                 Abbreviation: { value: 'test' },
             }).getDisplayName()
         ).toBe('test');
+    });
+});
+
+describe('ConceptModel', () => {
+    test('getDisplayLabel', () => {
+        expect(new ConceptModel({}).getDisplayLabel()).toBe('undefined (undefined)');
+        expect(new ConceptModel({ code: 'a', label: 'b' }).getDisplayLabel()).toBe('b (a)');
     });
 });

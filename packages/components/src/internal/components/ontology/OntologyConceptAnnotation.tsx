@@ -21,14 +21,10 @@ interface OntologyConceptAnnotationProps {
 }
 
 export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = memo(props => {
-    const { id, field, successBsStyle, onChange } = props;
-    const { principalConceptCode, lockType } = field;
-    const [showSelectModal, setShowSelectModal] = useState<boolean>();
-    const [showConceptModal, setShowConceptModal] = useState<boolean>();
+    const { field } = props;
+    const { principalConceptCode } = field;
     const [error, setError] = useState<string>();
     const [concept, setConcept] = useState<ConceptModel>();
-    const title = 'Select Concept'; // useMemo(() => (principalConceptCode ? 'Edit' : 'Select') + ' Concept', [principalConceptCode]);
-    const isFieldLocked = useMemo(() => isFieldFullyLocked(lockType), [lockType]);
 
     useEffect(() => {
         if (!principalConceptCode) {
@@ -36,13 +32,28 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
         } else {
             fetchConceptForCode(principalConceptCode)
                 .then(setConcept)
-                .catch(reason => {
-                    setError(
-                        'Error: unable to get concept information for ' + principalConceptCode + '. '
-                    );
+                .catch(() => {
+                    setError('Error: unable to get concept information for ' + principalConceptCode + '. ');
                 });
         }
     }, [principalConceptCode, setConcept, setError]);
+
+    return <OntologyConceptAnnotationImpl {...props} error={error} concept={concept} />;
+});
+
+interface OntologyConceptAnnotationImplProps extends OntologyConceptAnnotationProps {
+    error: string;
+    concept: ConceptModel;
+}
+
+// exported for jest testing
+export const OntologyConceptAnnotationImpl: FC<OntologyConceptAnnotationImplProps> = memo(props => {
+    const { id, field, successBsStyle, onChange, error, concept } = props;
+    const { principalConceptCode, lockType } = field;
+    const [showSelectModal, setShowSelectModal] = useState<boolean>();
+    const [showConceptModal, setShowConceptModal] = useState<boolean>();
+    const isFieldLocked = useMemo(() => isFieldFullyLocked(lockType), [lockType]);
+    const title = 'Select Concept';
 
     const toggleSelectModal = useCallback(() => {
         setShowSelectModal(!showSelectModal);
@@ -53,8 +64,8 @@ export const OntologyConceptAnnotation: FC<OntologyConceptAnnotationProps> = mem
     }, [showConceptModal, setShowConceptModal]);
 
     const onApply = useCallback(
-        (concept: ConceptModel) => {
-            onChange(id, concept?.code);
+        (selectedConcept: ConceptModel) => {
+            onChange(id, selectedConcept?.code);
             setShowSelectModal(false);
         },
         [onChange, id, setShowSelectModal]
@@ -126,7 +137,7 @@ function getOntologyConceptAnnotationHelpTipBody(): ReactNode {
             Select an ontology concept to use as an annotation for this field.
             <br />
             <br />
-            {/*TODO update link topic once annotation case is added to docs page*/}
+            {/* TODO update link topic once annotation case is added to docs page*/}
             Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.
         </>
     );

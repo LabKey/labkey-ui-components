@@ -25,7 +25,7 @@ import { AliasInput } from './input/AliasInput';
 export function resolveRenderer(column: QueryColumn) {
     let inputRenderer;
 
-    if (column && column.inputRenderer) {
+    if (column?.inputRenderer) {
         switch (column.inputRenderer.toLowerCase()) {
             case 'experimentalias':
                 inputRenderer = (

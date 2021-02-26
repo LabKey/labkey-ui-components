@@ -45,6 +45,7 @@ export function titleRenderer(col: QueryColumn): React.ReactNode {
     return <LabelOverlay column={col} />;
 }
 
+// TODO: Merge this functionality with <QueryFormInputs />
 export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boolean): React.ReactNode {
     return data => {
         const editable = col.isEditable();
@@ -89,7 +90,7 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
             }
         }
 
-        if (col.inputType == 'textarea') {
+        if (col.inputType === 'textarea') {
             return (
                 <Textarea
                     changeDebounceInterval={0}
@@ -172,7 +173,7 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
 export function resolveDetailRenderer(column: QueryColumn) {
     let renderer; // defaults to undefined -- leave it up to the details
 
-    if (column && column.detailRenderer) {
+    if (column?.detailRenderer) {
         switch (column.detailRenderer.toLowerCase()) {
             case 'multivaluedetailrenderer':
                 renderer = d => <MultiValueRenderer data={d} />;

@@ -75,6 +75,7 @@ interface State {
     labels: any;
 }
 
+// TODO: Merge this functionality with resolveDetailEditRenderer()
 export class QueryFormInputs extends React.Component<QueryFormInputsProps, State> {
     static defaultProps: Partial<QueryFormInputsProps> = {
         checkRequiredFields: true,
@@ -135,9 +136,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             }));
         }
 
-        if (onQSChange) {
-            onQSChange(name, value, items);
-        }
+        onQSChange?.(name, value, items);
     };
 
     onToggleDisable = (disabled: boolean): void => {
@@ -146,9 +145,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
         } else {
             this._fieldEnabledCount++;
         }
-        if (this.props.onFieldsEnabledChange) {
-            this.props.onFieldsEnabledChange(this._fieldEnabledCount);
-        }
+        this.props.onFieldsEnabledChange?.(this._fieldEnabledCount);
     };
 
     renderLabelField = (col: QueryColumn): ReactNode => {

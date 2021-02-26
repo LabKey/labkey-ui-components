@@ -101,7 +101,8 @@ interface OntologyBrowserPanelImplProps {
     asPanel: boolean;
 }
 
-const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
+// exported for jest testing
+export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
     const { ontology, selectedConcept, setSelectedConcept, asPanel } = props;
 
     if (!ontology) {
@@ -113,10 +114,10 @@ const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props =
 
     const body = (
         <>
-            {description && <p>{description}</p>}
+            {description && <p className="ontology-description">{description}</p>}
             <Row>
                 <Col xs={6} className="left-panel">
-                    <p>{conceptCount} total concepts</p>
+                    <p className="ontology-concept-count">{conceptCount} total concepts</p>
                     <OntologyTreePanel root={root} onNodeSelection={setSelectedConcept} />
                 </Col>
                 <Col xs={6} className="right-panel">

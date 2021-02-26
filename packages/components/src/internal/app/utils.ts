@@ -129,6 +129,10 @@ export function isBiologicsEnabled(): boolean {
     return getServerContext().moduleContext?.biologics !== undefined;
 }
 
+export function isFreezerManagerEnabledInBiologics(): boolean {
+    return getServerContext().moduleContext?.biologics?.isFreezerManagerEnabled === true;
+}
+
 export function hasPremiumModule(): boolean {
     const { moduleContext } = getServerContext();
     return useMemo(() => moduleContext?.samplemanagement?.hasPremiumModule ?? false, [moduleContext]);

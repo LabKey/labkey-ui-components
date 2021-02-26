@@ -27,7 +27,7 @@ export const AssayDesignUploadPanel: FC<AssayDesignUploadPanelProps> = memo(prop
                         <a href={getHelpLink("XarTutorial")} target="_blank">
                             .XAR or .XAR.XML
                         </a>
-                        file here. You will be able to customize the design after importing.
+                        {' '}file here. You will be able to customize the design after importing.
                     </p>
                 </Col>
             </Row>

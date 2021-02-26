@@ -77,7 +77,7 @@ export const NavigationBar: FC<Props> = memo(props => {
         <nav className="navbar navbar-container test-loc-nav-header">
             <div className="container">
                 <div className="row">
-                    <div className="navbar-left col-sm-4 col-xs-7">
+                    <div className="navbar-left col-md-5 col-sm-4 col-xs-7">
                         <span className="navbar-item pull-left">{brand}</span>
                         <span className="navbar-item-padded">
                             {showNavMenu && !!model && (
@@ -92,7 +92,7 @@ export const NavigationBar: FC<Props> = memo(props => {
                             </span>
                         )}
                     </div>
-                    <div className="navbar-right col-sm-8 col-xs-5">
+                    <div className="navbar-right col-md-7 col-sm-8 col-xs-5">
                         <div className="navbar-item pull-right">
                             {!!user && (
                                 <UserMenu

@@ -817,12 +817,19 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
         this.setState(() => ({ error: undefined }));
     };
 
+    getInsertColumns = () : List<QueryColumn> => {
+        const queryGridModel = this.getQueryGridModel();
+        return queryGridModel.getInsertColumns().filter(col => {
+            return col.derivationDataScope !== 'ChildOnly'
+        }).toList();
+    };
+
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel } = this.state;
         const { entityDataType, creationTypeOptions, onBulkAdd } = this.props;
 
-        const columnFilter = colInfo => {
-            return insertColumnFilter(colInfo) && colInfo['fieldKey'] !== entityDataType.uniqueFieldKey;
+        const columnFilter = (colInfo : QueryColumn) => {
+            return insertColumnFilter(colInfo) && colInfo['fieldKey'] !== entityDataType.uniqueFieldKey && colInfo.derivationDataScope != 'ChildOnly';
         };
 
         const bulkAddProps = {
@@ -899,6 +906,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
                                 'Start by adding the quantity of ' + this.props.nounPlural + ' you want to create.'
                             }
                             maxTotalRows={this.props.maxEntities}
+                            getInsertColumns={this.getInsertColumns}
                         />
                     ) : !insertModel.isError && insertModel.targetEntityType && insertModel.targetEntityType.value ? (
                         <LoadingSpinner wrapperClassName="loading-data-message" />

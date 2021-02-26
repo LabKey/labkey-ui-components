@@ -183,6 +183,7 @@ export interface EditableGridProps {
     hideCountCol?: boolean;
     rowNumColumn?: GridColumn;
     onCellModify?: () => any;
+    getInsertColumns?: () => List<QueryColumn>;
 }
 
 export interface EditableGridState {
@@ -319,6 +320,8 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
         if (this.props.forUpdate) {
             return model.getUpdateColumns(this.props.readOnlyColumns);
         } else {
+            if (this.props.getInsertColumns)
+                return this.props.getInsertColumns();
             return model.getInsertColumns();
         }
     };

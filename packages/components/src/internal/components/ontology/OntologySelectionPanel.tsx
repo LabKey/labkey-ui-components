@@ -19,13 +19,18 @@ export const OntologySelectionPanel: FC<OntologySelectionPanelProps> = memo(prop
     useEffect(() => {
         fetchChildPaths('/')
             .then(response => {
-                setOntologies(response.children);
+                // if only one ontology present, just select it
+                if (response.children.length === 1) {
+                    onOntologySelection('ontology-select', undefined, response.children[0]);
+                } else {
+                    setOntologies(response.children);
+                }
             })
             .catch(reason => {
                 setError('Error: unable to load ontology information for selection. ' + reason?.exception);
                 setOntologies([]);
             });
-    }, [setOntologies, setError]);
+    }, [setOntologies, setError, onOntologySelection]);
 
     const body = (
         <>

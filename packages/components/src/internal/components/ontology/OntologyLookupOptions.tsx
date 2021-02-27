@@ -101,8 +101,8 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                     <p>
                                         <i>
                                             This is currently an experimental feature and is not officially supported.
-                                            By using this feature By using this feature you acknowledge that these
-                                            functions may change, possibly affecting your possibly affecting your data.
+                                            By using this feature you acknowledge that these functions may change,
+                                            possibly affecting your data.
                                         </i>
                                     </p>
                                     <p>Choose which ontology to use to lookup concept codes and preferred names.</p>

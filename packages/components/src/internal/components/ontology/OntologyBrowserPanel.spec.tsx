@@ -46,7 +46,12 @@ const DEFAULT_PROPS = {
     asPanel: false,
 };
 
-const TEST_ONTOLOGY = new OntologyModel({ abbreviation: 't', name: 'test name', conceptCount: 100, description: 'test desc' });
+const TEST_ONTOLOGY = new OntologyModel({
+    abbreviation: 't',
+    name: 'test name',
+    conceptCount: 100,
+    description: 'test desc',
+});
 const TEST_CONCEPT = new ConceptModel({ code: 'a', label: 'b' });
 
 describe('OntologyBrowserPanelImpl', () => {
@@ -78,7 +83,9 @@ describe('OntologyBrowserPanelImpl', () => {
     });
 
     test('selectedConcept', () => {
-        const wrapper = mount(<OntologyBrowserPanelImpl {...DEFAULT_PROPS} ontology={TEST_ONTOLOGY} selectedConcept={TEST_CONCEPT} />);
+        const wrapper = mount(
+            <OntologyBrowserPanelImpl {...DEFAULT_PROPS} ontology={TEST_ONTOLOGY} selectedConcept={TEST_CONCEPT} />
+        );
         validate(wrapper, false);
         expect(wrapper.find(ConceptInformationTabs).prop('concept')).toBe(TEST_CONCEPT);
         wrapper.unmount();

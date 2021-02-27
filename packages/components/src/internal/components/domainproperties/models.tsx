@@ -67,8 +67,8 @@ import {
     removeFalseyObjKeys,
     removeUnusedOntologyProperties,
     reorderSummaryColumns,
-    removeNonAppProperties
-} from "./propertiesUtil";
+    removeNonAppProperties,
+} from './propertiesUtil';
 
 export interface IFieldChange {
     id: string;
@@ -346,7 +346,7 @@ export class DomainDesign
                         value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
                     }
 
-                    if (key === 'fieldIndex' && value === "") {
+                    if (key === 'fieldIndex' && value === '') {
                         value = 0;
                     }
                     return [key, value];
@@ -390,7 +390,7 @@ export class DomainDesign
         const nameCol = new GridColumn({
             index: GRID_NAME_INDEX,
             title: GRID_NAME_INDEX,
-            raw: {index: 'name', caption: 'Name', sortable: true},
+            raw: { index: 'name', caption: 'Name', sortable: true },
             cell: (data: any, row: any) => {
                 const text = row.get('name');
                 const fieldIndex = row.get('fieldIndex');

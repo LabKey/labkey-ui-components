@@ -3,9 +3,10 @@ import { getServerContext } from '@labkey/api';
 
 import { LoadingSpinner, Alert, SelectInput, buildURL } from '../../..';
 
+import { hasActiveModule } from '../domainproperties/actions';
+
 import { fetchChildPaths } from './actions';
 import { PathModel } from './models';
-import { hasActiveModule } from '../domainproperties/actions';
 
 interface OntologySelectionPanelProps {
     onOntologySelection: (name: string, value: string, model: PathModel) => void;

@@ -70,7 +70,7 @@ describe('ConceptOverviewModal', () => {
     });
 
     test('error', () => {
-        const wrapper = mount(<ConceptOverviewModal error={'test error'} concept={TEST_CONCEPT} onClose={onCloseFn} />);
+        const wrapper = mount(<ConceptOverviewModal error="test error" concept={TEST_CONCEPT} onClose={onCloseFn} />);
         validate(wrapper, 'test error');
         wrapper.unmount();
     });

@@ -1,6 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
+
 import { DomainRowExpandedOptions } from './DomainRowExpandedOptions';
 import { DomainField } from './models';
 import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, DOMAIN_FIELD_FULLY_LOCKED } from './constants';
@@ -15,7 +17,6 @@ import {
     SAMPLE_TYPE,
     TEXT_TYPE,
 } from './PropDescType';
-import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 import { TextFieldOptions } from './TextFieldOptions';
 import { BooleanFieldOptions } from './BooleanFieldOptions';
 import { DateTimeFieldOptions } from './DateTimeFieldOptions';

@@ -19,6 +19,8 @@ import { List } from 'immutable';
 
 import { Col } from 'react-bootstrap';
 
+import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
+
 import { DomainField, IDomainFormDisplayOptions, IFieldChange } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
 import { TextFieldOptions } from './TextFieldOptions';
@@ -29,7 +31,6 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
-import { OntologyLookupOptions } from '../ontology/OntologyLookupOptions';
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;

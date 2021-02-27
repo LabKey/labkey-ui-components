@@ -1,4 +1,5 @@
 import { immerable } from 'immer';
+
 import { caseInsensitive } from '../../..';
 
 export class ConceptModel {

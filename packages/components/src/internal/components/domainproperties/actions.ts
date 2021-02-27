@@ -23,6 +23,8 @@ import { processSchemas } from '../../schemas';
 
 import { SimpleResponse } from '../files/models';
 
+import { OntologyModel } from '../ontology/models';
+
 import {
     decodeLookup,
     DomainDesign,
@@ -59,7 +61,6 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
-import { OntologyModel } from '../ontology/models';
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -942,7 +943,9 @@ export function getOntologyUpdatedFieldName(
 
     // check for a field removal prior to the ontology lookup field
     const propFieldRemoved = removedFieldIndexes
-        ? removedFieldIndexes.some(removedField => removedField.originalIndex === origFieldIndex && removedField.newIndex === undefined)
+        ? removedFieldIndexes.some(
+              removedField => removedField.originalIndex === origFieldIndex && removedField.newIndex === undefined
+          )
         : removedFieldIndexes;
 
     if (removedFieldIndexes) {

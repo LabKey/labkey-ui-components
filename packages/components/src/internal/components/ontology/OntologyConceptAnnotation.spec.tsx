@@ -3,8 +3,9 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { DomainField, DomainFieldLabel } from '../../..';
 
-import { ConceptModel } from './models';
 import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
+
+import { ConceptModel } from './models';
 import { OntologyConceptAnnotationImpl } from './OntologyConceptAnnotation';
 import { OntologyBrowserModal } from './OntologyBrowserModal';
 import { ConceptOverviewModal } from './ConceptOverviewPanel';
@@ -53,7 +54,9 @@ describe('OntologyConceptAnnotation', () => {
     });
 
     test('principalConceptCode, with concept', () => {
-        const wrapper = mount(<OntologyConceptAnnotationImpl {...DEFAULT_PROPS} field={TEST_FIELD} concept={TEST_CONCEPT} />);
+        const wrapper = mount(
+            <OntologyConceptAnnotationImpl {...DEFAULT_PROPS} field={TEST_FIELD} concept={TEST_CONCEPT} />
+        );
         validate(wrapper, true);
         expect(wrapper.find('.domain-annotation-item').text()).toBe(TEST_CONCEPT.getDisplayLabel());
         expect(wrapper.find('.fa-remove')).toHaveLength(1);
@@ -90,7 +93,7 @@ describe('OntologyConceptAnnotation', () => {
                 {...DEFAULT_PROPS}
                 field={TEST_FIELD}
                 concept={TEST_CONCEPT}
-                error={'test error'}
+                error="test error"
             />
         );
         validate(wrapper, true);

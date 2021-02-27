@@ -74,7 +74,7 @@ describe('OntologySelectionPanel', () => {
     });
 
     test('error', () => {
-        const wrapper = mount(<OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={[]} error={'test error'} />);
+        const wrapper = mount(<OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={[]} error="test error" />);
         validate(wrapper, 0, 'test error');
         wrapper.unmount();
     });

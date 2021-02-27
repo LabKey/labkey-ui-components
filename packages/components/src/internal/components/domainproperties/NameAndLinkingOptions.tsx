@@ -3,6 +3,8 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 
 import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
+import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation';
+
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName, hasActiveModule } from './actions';
 import {
@@ -15,7 +17,6 @@ import {
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
-import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation';
 
 interface NameAndLinkingProps {
     index: number;

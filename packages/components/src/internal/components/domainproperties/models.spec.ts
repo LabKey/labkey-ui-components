@@ -36,13 +36,7 @@ import {
     USERS_TYPE,
 } from './PropDescType';
 
-import {
-    acceptablePropertyType,
-    DomainDesign,
-    DomainField,
-    FieldErrors,
-    isPropertyTypeAllowed,
-} from './models';
+import { acceptablePropertyType, DomainDesign, DomainField, FieldErrors, isPropertyTypeAllowed } from './models';
 import {
     CONCEPT_CODE_CONCEPT_URI,
     DOMAIN_FIELD_NOT_LOCKED,

@@ -29,6 +29,7 @@ describe('OntologySelectionPanel', () => {
     });
 
     test('no ontologies, non root admin', () => {
+        LABKEY.container.activeModules = ['Core', 'Query', 'Ontology'];
         const ontologies = [];
         const wrapper = mount(<OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={ontologies} />);
         validate(wrapper, 0);
@@ -38,6 +39,17 @@ describe('OntologySelectionPanel', () => {
     });
 
     test('no ontologies, as root admin', () => {
+        LABKEY.container.activeModules = ['Core', 'Query', 'Ontology'];
+        LABKEY.user.isRootAdmin = true;
+        const ontologies = [];
+        const wrapper = mount(<OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={ontologies} />);
+        validate(wrapper, 0);
+        expect(wrapper.find('.alert-warning').text()).toContain('Click here to get started.');
+        wrapper.unmount();
+    });
+
+    test('no ontologies, as root admin without ontology module', () => {
+        LABKEY.container.activeModules = ['Core', 'Query'];
         LABKEY.user.isRootAdmin = true;
         const ontologies = [];
         const wrapper = mount(<OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={ontologies} />);

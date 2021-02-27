@@ -116,6 +116,10 @@
     .menu-section-header {
       font-family: FontAwesome, $font-family-sans-serif;
       color: $brand-primary;
+
+        a {
+            display: block;
+        }
     }
 
     .menu-loading {
@@ -127,7 +131,6 @@
       margin-top: 5px;
     }
 
-
     ul {
       display: inline-block;
       vertical-align: top;
@@ -136,17 +139,16 @@
       list-style-type: none;
 
       li {
-        padding-bottom: 5px;
-        //white-space: nowrap;
-        //overflow: hidden;
-        //text-overflow: ellipsis;
-      }
+          padding-bottom: 5px;
 
-      li a {
-        color: $text-color;
-      }
-      li a:focus, li a:hover {
-        color: $link-hover-color;
+          a {
+              color: $text-color;
+              display: block;
+
+              &:focus, &:hover {
+                  color: $link-hover-color;
+              }
+          }
       }
 
       &.col-1 {

@@ -3,15 +3,7 @@ import { act } from 'react-dom/test-utils';
 import { Map } from 'immutable';
 import { mount, MountRendererProps, ReactWrapper } from 'enzyme';
 import { LabKey, Query } from '@labkey/api';
-import mock, { proxy } from 'xhr-mock';
 
-import {
-    initDomainPropertiesMocks,
-    initLineageMocks,
-    initPipelineStatusDetailsMocks,
-    initQueryGridMocks,
-    initUserPropsMocks,
-} from '../stories/mock';
 import { initQueryGridState, QueryInfo, ServerContextProvider } from '..';
 
 import { RowsResponse } from '../public/QueryModel/QueryModelLoader';
@@ -46,28 +38,6 @@ export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map
     });
     initQueryGridState(metadata, columnRenderers);
 };
-
-/**
- * Use this method in beforeAll() for your jest tests and you'll have full access
- * to all of the same mock API responses we use in storybook.
- */
-export function initUnitTestMocks(
-    metadata?: Map<string, any>,
-    columnRenderers?: Map<string, any>,
-    includePipeline?: boolean
-): void {
-    window['__react-beautiful-dnd-disable-dev-warnings'] = true;
-    initUnitTests(metadata, columnRenderers);
-    mock.setup();
-    initQueryGridMocks();
-    initDomainPropertiesMocks();
-    initLineageMocks();
-    initUserPropsMocks();
-    if (includePipeline) {
-        initPipelineStatusDetailsMocks();
-    }
-    mock.use(proxy);
-}
 
 export function registerDefaultURLMappers(): void {
     URLService.registerURLMappers(

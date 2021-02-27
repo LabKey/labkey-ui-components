@@ -6,7 +6,7 @@ import { Button } from 'react-bootstrap';
 
 import { Alert, DataClassDataType, LoadingSpinner, QueryGridModel, SchemaQuery } from '../../..';
 import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { EntityChoice } from './models';
 import { ParentEntityEditPanel } from './ParentEntityEditPanel';

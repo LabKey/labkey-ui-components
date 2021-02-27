@@ -5,6 +5,7 @@
  */
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const IgnorePlugin = require('webpack').IgnorePlugin;
 
 module.exports = {
     entry: './src/index.ts',
@@ -85,7 +86,8 @@ module.exports = {
                     to: 'assets/scss/theme'
                 }
             ]
-        })
+        }),
+        new IgnorePlugin(/^\.\/locale$/, /moment$/)
     ],
     externals: ['react', 'react-dom', 'reactn', 'react-bootstrap', 'immutable', 'jquery']
 };

@@ -2,7 +2,8 @@ import React from 'react';
 import { mount } from 'enzyme';
 import { List } from 'immutable';
 
-import { initUnitTestMocks, sleep } from '../../testHelpers';
+import { sleep } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { OntologyLookupOptions } from './OntologyLookupOptions';
 import { DomainField } from './models';

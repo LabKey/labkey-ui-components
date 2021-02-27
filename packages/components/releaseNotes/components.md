@@ -1,6 +1,20 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.5.2
+*Released*: 26 February 2021
+* Issue 42515: Layout issue for NavBar with medium-sized screens
+* ProductMenu: prevent closing menu on non-link click
+* ProductMenu: expand link clickable area
+* ProductNavigationHeader: clickable text to go back
+
+### version 2.5.1
+*Released*: 25 February 2021
+* @labkey/components package bundle optimizations
+    - webpack.config.js: add back in new IgnorePlugin(/^\.\/locale$/, /moment$/)
+    - split initUnitTestMocks() into a separate testHelperMocks.tsx file so it isn't referenced via ./src/index.ts
+    - add localDev.md doc info on using webpack-bundle-analyzer
+
 ### version 2.5.0
 *Released*: 24 February 2021
 * Item 8359: Add initial OntologyBrowserPanel and associated files

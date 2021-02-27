@@ -133,12 +133,10 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             useEditIcon,
         } = this.props;
         const { canSubmit, editing, error, warning } = this.state;
-        const panelClass = editing ? 'panel-info' : 'panel-default';
-        const renderer = editing ? resolveDetailEditRenderer : resolveDetailRenderer;
         const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
 
         const panel = (
-            <div className={`panel ${panelClass}`}>
+            <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
                 <div className="panel-heading">
                     <DetailPanelHeader
                         useEditIcon={useEditIcon}
@@ -156,7 +154,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                     <DetailPanel
                         actions={actions}
-                        detailRenderer={renderer}
+                        detailRenderer={editing ? resolveDetailEditRenderer : resolveDetailRenderer}
                         editingMode={editing}
                         model={model}
                         queryColumns={editing ? undefined : queryColumns}

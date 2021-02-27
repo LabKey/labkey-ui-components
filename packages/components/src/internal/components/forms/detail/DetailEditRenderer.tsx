@@ -34,7 +34,7 @@ import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceR
 
 import { getUnFormattedNumber } from '../../../util/Date';
 
-import { _defaultRenderer } from './DetailDisplay';
+import { _defaultRenderer, Renderer } from './DetailDisplay';
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is
@@ -46,7 +46,7 @@ export function titleRenderer(col: QueryColumn): React.ReactNode {
 }
 
 // TODO: Merge this functionality with <QueryFormInputs />
-export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boolean): React.ReactNode {
+export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boolean): Renderer {
     return data => {
         const editable = col.isEditable();
 
@@ -170,7 +170,7 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
     };
 }
 
-export function resolveDetailRenderer(column: QueryColumn) {
+export function resolveDetailRenderer(column: QueryColumn): Renderer {
     let renderer; // defaults to undefined -- leave it up to the details
 
     if (column?.detailRenderer) {

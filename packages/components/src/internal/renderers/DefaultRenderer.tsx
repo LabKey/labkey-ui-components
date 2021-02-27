@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, memo } from 'react';
 import { List } from 'immutable';
 
 import { MultiValueRenderer } from './MultiValueRenderer';
@@ -21,34 +21,31 @@ import { MultiValueRenderer } from './MultiValueRenderer';
 /**
  * This is the default cell renderer for Details/Grids using a QueryGridModel.
  */
-export class DefaultRenderer extends React.PureComponent<any> {
-    render(): ReactNode {
-        const { data } = this.props;
+export const DefaultRenderer: FC<any> = memo(({ data }) => {
+    let display = null;
 
-        let display = null;
-        if (data) {
-            if (typeof data === 'string') {
-                display = data;
-            } else if (typeof data === 'boolean') {
-                display = data ? 'true' : 'false';
-            } else if (List.isList(data)) {
-                // defensively return a MultiValueRenderer, this column likely wasn't declared properly as "multiValue"
-                return <MultiValueRenderer data={data} />;
+    if (data) {
+        if (typeof data === 'string') {
+            display = data;
+        } else if (typeof data === 'boolean') {
+            display = data ? 'true' : 'false';
+        } else if (List.isList(data)) {
+            // defensively return a MultiValueRenderer, this column likely wasn't declared properly as "multiValue"
+            return <MultiValueRenderer data={data} />;
+        } else {
+            if (data.has('formattedValue')) {
+                display = data.get('formattedValue');
             } else {
-                if (data.has('formattedValue')) {
-                    display = data.get('formattedValue');
-                } else {
-                    const o = data.has('displayValue') ? data.get('displayValue') : data.get('value');
-                    display = o !== null && o !== undefined ? o.toString() : null;
-                }
+                const o = data.has('displayValue') ? data.get('displayValue') : data.get('value');
+                display = o !== null && o !== undefined ? o.toString() : null;
+            }
 
-                if (data.get('url')) {
-                    return <a href={data.get('url')}>{display}</a>;
-                }
+            if (data.get('url')) {
+                return <a href={data.get('url')}>{display}</a>;
             }
         }
-
-        // Issue 36941: when using the default renderer, add css so that line breaks as preserved
-        return <span className="detail-display">{display}</span>;
     }
-}
+
+    // Issue 36941: when using the default renderer, add css so that line breaks as preserved
+    return <span className="detail-display">{display}</span>;
+});

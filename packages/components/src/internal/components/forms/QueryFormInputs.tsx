@@ -180,7 +180,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             showQuerySelectPreviewOptions,
         } = this.props;
 
-        const filter = columnFilter ? columnFilter : insertColumnFilter;
+        const filter = columnFilter ?? insertColumnFilter;
         const columns = queryInfo ? queryInfo.columns : queryColumns;
 
         // CONSIDER: separately establishing the set of columns and allow

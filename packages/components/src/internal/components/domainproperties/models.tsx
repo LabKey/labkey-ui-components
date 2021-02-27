@@ -67,8 +67,8 @@ import {
     removeFalseyObjKeys,
     removeUnusedOntologyProperties,
     reorderSummaryColumns,
-    removeNonAppProperties
-} from "./propertiesUtil";
+    removeNonAppProperties,
+} from './propertiesUtil';
 
 export interface IFieldChange {
     id: string;
@@ -346,7 +346,7 @@ export class DomainDesign
                         value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
                     }
 
-                    if (key === 'fieldIndex' && value === "") {
+                    if (key === 'fieldIndex' && value === '') {
                         value = 0;
                     }
                     return [key, value];
@@ -390,7 +390,7 @@ export class DomainDesign
         const nameCol = new GridColumn({
             index: GRID_NAME_INDEX,
             title: GRID_NAME_INDEX,
-            raw: {index: 'name', caption: 'Name', sortable: true},
+            raw: { index: 'name', caption: 'Name', sortable: true },
             cell: (data: any, row: any) => {
                 const text = row.get('name');
                 const fieldIndex = row.get('fieldIndex');
@@ -661,6 +661,7 @@ export interface IDomainField {
     sourceOntology?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
+    principalConceptCode?: string;
 }
 
 export class DomainField
@@ -713,6 +714,7 @@ export class DomainField
         sourceOntology: undefined,
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
+        principalConceptCode: undefined,
         selected: false,
     })
     implements IDomainField {
@@ -764,6 +766,7 @@ export class DomainField
     sourceOntology?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
+    principalConceptCode?: string;
     selected: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
@@ -1046,6 +1049,11 @@ export class DomainField
             period = '. ';
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
             details.push(period + this.sourceOntology);
+            period = '. ';
+        }
+
+        if (this.principalConceptCode) {
+            details.push(period + 'Concept Annotation: ' + this.principalConceptCode);
             period = '. ';
         }
 
@@ -1663,30 +1671,6 @@ export class DomainDetails extends Record({
 export interface DomainFieldIndexChange {
     originalIndex: number;
     newIndex: number;
-}
-
-export class OntologyModel {
-    [immerable] = true;
-
-    rowId: number;
-    abbreviation: string;
-    name: string;
-
-    constructor(values?: Partial<OntologyModel>) {
-        Object.assign(this, values);
-    }
-
-    static create(raw: any): OntologyModel {
-        return new OntologyModel({
-            rowId: caseInsensitive(raw, 'RowId')?.value,
-            name: caseInsensitive(raw, 'Name')?.value,
-            abbreviation: caseInsensitive(raw, 'Abbreviation')?.value,
-        });
-    }
-
-    getLabel() {
-        return this.name + ' (' + this.abbreviation + ')';
-    }
 }
 
 export interface BulkDeleteConfirmInfo {

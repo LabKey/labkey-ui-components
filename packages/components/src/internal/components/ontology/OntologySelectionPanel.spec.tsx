@@ -54,7 +54,7 @@ describe('OntologySelectionPanel', () => {
         const ontologies = [];
         const wrapper = mount(<OntologySelectionPanelImpl {...DEFAULT_PROPS} ontologies={ontologies} />);
         validate(wrapper, 0);
-        expect(wrapper.find('.alert-warning').text()).toContain('Click here to get started.');
+        expect(wrapper.find('.alert-warning').text()).toBe('No ontologies have been loaded for this server.');
         wrapper.unmount();
     });
 

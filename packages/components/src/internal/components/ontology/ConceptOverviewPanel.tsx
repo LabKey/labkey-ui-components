@@ -10,6 +10,10 @@ interface ConceptOverviewPanelProps {
     code: string;
 }
 
+/**
+ * An ontology concept overview panel that takes in a concept code as a prop and will load the concept details
+ * to show in the ConceptOverviewPanelImpl.
+ */
 export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(props => {
     const { code } = props;
     const [error, setError] = useState<string>();
@@ -37,6 +41,10 @@ interface ConceptOverviewPanelImplProps {
     concept: ConceptModel;
 }
 
+/**
+ * The ontology concept overview display panel that takes in the concept prop (i.e. ConceptModel) and displays
+ * the information about the concept label, code, description, etc.
+ */
 export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(props => {
     const { concept } = props;
 
@@ -66,6 +74,10 @@ interface ConceptOverviewModalProps {
     onClose: () => void;
 }
 
+/**
+ * A modal dialog version that will display the same concept overview display panel from ConceptOverviewPanelImpl
+ * but in a modal dialog. This component takes in the concept (i.e. ConceptModel) as a prop.
+ */
 export const ConceptOverviewModal: FC<ConceptOverviewModalProps> = memo(props => {
     const { onClose, concept, error } = props;
 

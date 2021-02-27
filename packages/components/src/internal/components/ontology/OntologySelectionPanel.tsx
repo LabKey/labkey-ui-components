@@ -5,6 +5,7 @@ import { LoadingSpinner, Alert, SelectInput, buildURL } from '../../..';
 
 import { fetchChildPaths } from './actions';
 import { PathModel } from './models';
+import { hasActiveModule } from '../domainproperties/actions';
 
 interface OntologySelectionPanelProps {
     onOntologySelection: (name: string, value: string, model: PathModel) => void;
@@ -51,7 +52,7 @@ export const OntologySelectionPanelImpl: FC<OntologySelectionPanelImplProps> = m
             {ontologies?.length === 0 && (
                 <Alert bsStyle="warning">
                     No ontologies have been loaded for this server.
-                    {getServerContext().user.isRootAdmin && (
+                    {getServerContext().user.isRootAdmin && hasActiveModule('Ontology') && (
                         <>
                             &nbsp;Click <a href={buildURL('ontology', 'begin')}>here</a> to get started.
                         </>

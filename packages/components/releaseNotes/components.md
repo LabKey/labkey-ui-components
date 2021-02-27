@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.6.0
+*Released*: 27 February 2021
 * Item 8583: Ontology concept picker usages in Field Editor for field concept annotation
     - Add principalConceptCode to DomainField model
     - Add field editor expanded row input for OntologyConceptAnnotation with button to open the Ontology Concept Browser in modal dialog

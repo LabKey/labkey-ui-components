@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.7.0
+*Released*: 1 March 2021
+* Add TabbedGridPanel component
+* Add "title" field to QueryModel
+
 ### version 2.6.0
 *Released*: 27 February 2021
 * Item 8583: Ontology concept picker usages in Field Editor for field concept annotation

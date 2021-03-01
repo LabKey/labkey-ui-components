@@ -40,6 +40,8 @@ interface NavigationBarProps {
     projectName?: string;
     searchPlaceholder?: string;
     showNavMenu?: boolean;
+    showNotifications?: boolean;
+    showProductNav?: boolean;
     showSearchBox?: boolean;
     user?: User;
 }
@@ -60,6 +62,8 @@ export const NavigationBar: FC<Props> = memo(props => {
         projectName,
         searchPlaceholder,
         showNavMenu,
+        showNotifications,
+        showProductNav,
         showSearchBox,
         signOutUrl,
         user,
@@ -69,9 +73,8 @@ export const NavigationBar: FC<Props> = memo(props => {
         onSearch('');
     }, [onSearch]);
 
-    const notifications =
-        !!notificationsConfig && user && !user.isGuest ? <ServerNotifications {...notificationsConfig} /> : null;
-    const productNav = hasPremiumModule() || getServerContext().devMode ? <ProductNavigation /> : null;
+    const _showNotifications = showNotifications !== false && !!notificationsConfig && user && !user.isGuest;
+    const _showProductNav = (hasPremiumModule() || getServerContext().devMode) && showProductNav !== false;
 
     return (
         <nav className="navbar navbar-container test-loc-nav-header">
@@ -106,8 +109,16 @@ export const NavigationBar: FC<Props> = memo(props => {
                                 />
                             )}
                         </div>
-                        <div className="navbar-item pull-right navbar-item-notification">{notifications}</div>
-                        <div className="navbar-item pull-right navbar-item-product-navigation">{productNav}</div>
+                        {_showNotifications && (
+                            <div className="navbar-item pull-right navbar-item-notification">
+                                <ServerNotifications {...notificationsConfig} />
+                            </div>
+                        )}
+                        {_showProductNav && (
+                            <div className="navbar-item pull-right navbar-item-product-navigation">
+                                <ProductNavigation />
+                            </div>
+                        )}
                         <div className="navbar-item pull-right hidden-xs">
                             {showSearchBox && <SearchBox onSearch={onSearch} placeholder={searchPlaceholder} />}
                         </div>
@@ -125,5 +136,9 @@ export const NavigationBar: FC<Props> = memo(props => {
 
 NavigationBar.defaultProps = {
     showNavMenu: true,
+    showNotifications: true,
+    showProductNav: true,
     showSearchBox: false,
 };
+
+NavigationBar.displayName = 'NavigationBar';

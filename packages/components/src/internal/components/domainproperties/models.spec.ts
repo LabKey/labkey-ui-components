@@ -36,14 +36,7 @@ import {
     USERS_TYPE,
 } from './PropDescType';
 
-import {
-    acceptablePropertyType,
-    DomainDesign,
-    DomainField,
-    FieldErrors,
-    isPropertyTypeAllowed,
-    OntologyModel,
-} from './models';
+import { acceptablePropertyType, DomainDesign, DomainField, FieldErrors, isPropertyTypeAllowed } from './models';
 import {
     CONCEPT_CODE_CONCEPT_URI,
     DOMAIN_FIELD_NOT_LOCKED,
@@ -55,44 +48,73 @@ import {
     DOMAIN_FIELD_FULLY_LOCKED,
 } from './constants';
 
-const gridDataConst = [
+const GRID_DATA = DomainDesign.create({
+    fields: [
+        {
+            name: 'a',
+            rangeURI: INTEGER_TYPE.rangeURI,
+            sourceOntology: 'b',
+            conceptImportColumn: 'c',
+            conceptLabelColumn: 'd',
+            principalConceptCode: 'e',
+            wrappedColumnName: 'f',
+            propertyId: 123,
+        },
+    ],
+});
+const gridDataAppPropsOnlyConst = [
     {
-        excludeFromShifting: 'false',
-        shownInUpdateView: 'true',
         lockType: 'NotLocked',
-        dimension: '',
-        lookupContainer: '',
         isPrimaryKey: 'false',
         defaultScale: '',
         scale: 4000,
-        hidden: 'false',
-        defaultValueType: '',
         name: 'a',
-        lookupQuery: '',
         URL: '',
         conceptURI: '',
         rangeURI: 'http://www.w3.org/2001/XMLSchema#int',
-        defaultDisplayValue: '',
-        defaultValue: '',
-        shownInDetailsView: 'true',
         PHI: '',
         visible: true,
         label: '',
-        shownInInsertView: 'true',
-        conditionalFormats: '',
         propertyValidators: '',
-        recommendedVariable: 'false',
         format: '',
-        mvEnabled: 'false',
         fieldIndex: 0,
         importAliases: '',
         selected: '',
-        lookupSchema: '',
         description: '',
-        measure: '',
         required: 'false',
     },
 ];
+const gridDataConst = [
+    {
+        ...gridDataAppPropsOnlyConst[0],
+        excludeFromShifting: 'false',
+        shownInUpdateView: 'true',
+        dimension: '',
+        lookupContainer: '',
+        hidden: 'false',
+        defaultValueType: '',
+        lookupQuery: '',
+        defaultDisplayValue: '',
+        defaultValue: '',
+        shownInDetailsView: 'true',
+        shownInInsertView: 'true',
+        conditionalFormats: '',
+        recommendedVariable: 'false',
+        mvEnabled: 'false',
+        lookupSchema: '',
+        measure: '',
+    },
+];
+const gridDataConstWithOntology = [
+    {
+        ...gridDataConst[0],
+        sourceOntology: 'b',
+        conceptImportColumn: 'c',
+        conceptLabelColumn: 'd',
+        principalConceptCode: 'e',
+    },
+];
+
 const selectionCol = new GridColumn({
     index: GRID_SELECTION_INDEX,
     title: GRID_SELECTION_INDEX,
@@ -545,11 +567,27 @@ describe('DomainDesign', () => {
         expect(fieldDetails.detailsInfo['text2']).toBe(undefined);
     });
 
-    test('getGridData', () => {
-        const gridData = DomainDesign.create({
-            fields: [{ name: 'a', rangeURI: INTEGER_TYPE.rangeURI }],
-        }).getGridData(false);
+    test('getGridData with ontology', () => {
+        LABKEY.container.activeModules = ['Core', 'Query', 'Ontology'];
+        const gridData = GRID_DATA.getGridData(false);
+        expect(gridData.toJS()).toStrictEqual(gridDataConstWithOntology);
+    });
+
+    test('getGridData without ontology', () => {
+        LABKEY.container.activeModules = ['Core', 'Query'];
+        const gridData = GRID_DATA.getGridData(false);
         expect(gridData.toJS()).toStrictEqual(gridDataConst);
+    });
+
+    test('getGridData appPropertiesOnly', () => {
+        LABKEY.container.activeModules = ['Core', 'Query', 'Ontology'];
+        let gridData = GRID_DATA.getGridData(true);
+        expect(gridData.toJS()).toStrictEqual(gridDataAppPropsOnlyConst);
+
+        // should be the same with or without the Ontology module in this case
+        LABKEY.container.activeModules = ['Core', 'Query'];
+        gridData = GRID_DATA.getGridData(true);
+        expect(gridData.toJS()).toStrictEqual(gridDataAppPropsOnlyConst);
     });
 
     test('getGridColumns', () => {
@@ -678,31 +716,17 @@ describe('DomainField', () => {
         field = field.merge({ lockType: DOMAIN_FIELD_FULLY_LOCKED }) as DomainField;
         expect(field.getDetailsTextArray().join('')).toBe('Updated. SRC. Primary Key. Locked');
 
+        field = field.merge({ principalConceptCode: 'abc:123' }) as DomainField;
+        expect(field.getDetailsTextArray().join('')).toBe(
+            'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked'
+        );
+
         expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
-            'Updated. SRC. Primary Key. Locked. Additional Info'
+            'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked. Additional Info'
         );
         field = field.merge({ name: '' }) as DomainField;
         expect(field.getDetailsTextArray({ test: 'Additional Info' }).join('')).toBe(
-            'Updated. SRC. Primary Key. Locked'
+            'Updated. SRC. Concept Annotation: abc:123. Primary Key. Locked'
         );
-    });
-});
-
-describe('OntologyModel', () => {
-    test('create', () => {
-        expect(OntologyModel.create({}).name).toBe(undefined);
-        expect(OntologyModel.create({ name: {} }).name).toBe(undefined);
-        expect(OntologyModel.create({ Name: {} }).name).toBe(undefined);
-        expect(OntologyModel.create({ name: { value: 'test' } }).name).toBe('test');
-        expect(OntologyModel.create({ Name: { value: 'test' } }).name).toBe('test');
-    });
-
-    test('getLabel', () => {
-        expect(
-            OntologyModel.create({
-                Name: { value: 'test' },
-                Abbreviation: { value: 'T' },
-            }).getLabel()
-        ).toBe('test (T)');
     });
 });

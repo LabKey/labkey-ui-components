@@ -23,6 +23,8 @@ import { processSchemas } from '../../schemas';
 
 import { SimpleResponse } from '../files/models';
 
+import { OntologyModel } from '../ontology/models';
+
 import {
     decodeLookup,
     DomainDesign,
@@ -34,7 +36,6 @@ import {
     IBannerMessage,
     IDomainField,
     IFieldChange,
-    OntologyModel,
     QueryInfoLite,
     updateSampleField,
 } from './models';
@@ -942,7 +943,9 @@ export function getOntologyUpdatedFieldName(
 
     // check for a field removal prior to the ontology lookup field
     const propFieldRemoved = removedFieldIndexes
-        ? removedFieldIndexes.some(removedField => removedField.originalIndex === origFieldIndex && removedField.newIndex === undefined)
+        ? removedFieldIndexes.some(
+              removedField => removedField.originalIndex === origFieldIndex && removedField.newIndex === undefined
+          )
         : removedFieldIndexes;
 
     if (removedFieldIndexes) {

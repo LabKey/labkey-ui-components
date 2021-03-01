@@ -32,7 +32,7 @@ export const initUnitTests = (metadata?: Map<string, any>, columnRenderers?: Map
                 dateTimeFormat: 'yyyy-MM-dd HH:mm',
                 numberFormat: null,
             },
-            activeModules: ['Core', 'Query'],
+            activeModules: ['Core', 'Query'], // add in the Ontology module if you want to test the Field Editor integrations
         },
         contextPath: 'labkey',
     });

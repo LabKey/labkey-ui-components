@@ -102,11 +102,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
 
     return (
         <div className={classNames('tabbed-grid-panel', { panel: asPanel, 'panel-default': asPanel })}>
-            {title !== undefined && asPanel && (
-                <div className="tabbed-grid-panel__title panel-heading">
-                    <span>{title}</span>
-                </div>
-            )}
+            {title !== undefined && asPanel && <div className="tabbed-grid-panel__title panel-heading">{title}</div>}
 
             <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
                 {tabOrder.length > 1 && (

@@ -7,17 +7,7 @@ import { AuditBehaviorTypes } from '@labkey/api';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
 
-import {
-    Alert,
-    DetailPanel,
-    QueryColumn,
-    RequiresModelAndActions,
-    resolveDetailEditRenderer,
-    resolveDetailRenderer,
-    resolveErrorMessage,
-    titleRenderer,
-    updateRows,
-} from '../..';
+import { Alert, DetailPanel, QueryColumn, RequiresModelAndActions, resolveErrorMessage, updateRows } from '../..';
 
 interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;
@@ -154,11 +144,9 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                     <DetailPanel
                         actions={actions}
-                        detailRenderer={editing ? resolveDetailEditRenderer : resolveDetailRenderer}
                         editingMode={editing}
                         model={model}
                         queryColumns={editing ? undefined : queryColumns}
-                        titleRenderer={editing ? titleRenderer : undefined}
                     />
                 </div>
             </div>

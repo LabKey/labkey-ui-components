@@ -49,8 +49,7 @@ beforeAll(() => {
 describe('<Detail/>', () => {
     test('loading', () => {
         const tree = renderer.create(<Detail />);
-
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     test('with QueryGridModel', () => {
@@ -73,7 +72,7 @@ describe('<Detail/>', () => {
         const model = getQueryGridModel(MODEL_ID);
         const tree = renderer.create(<Detail asPanel={true} queryModel={model} />);
 
-        expect(tree.toJSON()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     test('titleRenderer', () => {

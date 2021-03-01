@@ -189,7 +189,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
             return columns
                 .filter(filter)
                 .valueSeq()
-                .map((col: QueryColumn, i: number) => {
+                .map((col, i) => {
                     const shouldDisableField =
                         initiallyDisableFields || disabledFields.contains(col.name.toLowerCase());
                     if (!shouldDisableField) {
@@ -237,7 +237,7 @@ export class QueryFormInputs extends React.Component<QueryFormInputsProps, State
                         if (col.displayAsLookup !== false) {
                             const multiple = col.isJunctionLookup();
                             const joinValues = multiple;
-                            const id = col.fieldKey + i + (componentKey ? componentKey : '');
+                            const id = col.fieldKey + i + (componentKey ?? '');
 
                             return (
                                 <React.Fragment key={i}>

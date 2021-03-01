@@ -21,7 +21,6 @@ import { AuditBehaviorTypes } from '@labkey/api';
 
 import { updateRows, Alert, resolveErrorMessage, QueryColumn, QueryGridModel } from '../../../..';
 
-import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
@@ -191,11 +190,9 @@ export class DetailEditing extends Component<DetailEditingProps, DetailEditingSt
                             <div className="detail__editing">
                                 {error && <Alert>{error}</Alert>}
                                 <Detail
-                                    detailRenderer={resolveDetailEditRenderer}
                                     editingMode
                                     getUpdateDisplayColumns={getUpdateDisplayColumns}
                                     queryModel={queryModel}
-                                    titleRenderer={titleRenderer}
                                 />
                             </div>
                         </Panel.Body>
@@ -222,11 +219,7 @@ export class DetailEditing extends Component<DetailEditingProps, DetailEditingSt
             <Panel>
                 <Panel.Heading>{header}</Panel.Heading>
                 <Panel.Body>
-                    <Detail
-                        queryModel={queryModel}
-                        queryColumns={queryColumns}
-                        detailRenderer={resolveDetailRenderer}
-                    />
+                    <Detail queryColumns={queryColumns} queryModel={queryModel} />
                 </Panel.Body>
             </Panel>
         );

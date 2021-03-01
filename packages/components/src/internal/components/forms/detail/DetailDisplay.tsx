@@ -1,4 +1,4 @@
-import React, { FC, memo, ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
 
@@ -6,11 +6,22 @@ import { DefaultRenderer, QueryColumn } from '../../../..';
 
 import { DETAIL_TABLE_CLASSES } from '../constants';
 
+import {
+    resolveDetailEditRenderer,
+    resolveDetailRenderer,
+    titleRenderer as defaultTitleRenderer,
+} from './DetailEditRenderer';
+
 export type Renderer = (data: any, row?: any) => ReactNode;
 
-type DetailRenderer = (column: QueryColumn, useDatePicker?: boolean) => Renderer;
+export interface RenderOptions {
+    useDatePicker?: boolean;
+    useQuerySelect?: boolean;
+}
 
-type TitleRenderer = (column: QueryColumn) => ReactNode;
+export type DetailRenderer = (column: QueryColumn, options?: RenderOptions) => Renderer;
+
+export type TitleRenderer = (column: QueryColumn) => ReactNode;
 
 export const _defaultRenderer: Renderer = d => <DefaultRenderer data={d} />;
 
@@ -18,14 +29,14 @@ function processFields(
     queryColumns: List<QueryColumn>,
     detailRenderer: DetailRenderer,
     titleRenderer: TitleRenderer,
-    useDatePicker: boolean
+    options?: RenderOptions
 ): Map<string, DetailField> {
     return queryColumns.reduce((fields, c) => {
         const fieldKey = c.fieldKey.toLowerCase();
         let renderer;
 
         if (detailRenderer) {
-            renderer = detailRenderer(c, useDatePicker);
+            renderer = detailRenderer(c, options);
         }
 
         if (!renderer) {
@@ -69,12 +80,11 @@ class DetailField {
     }
 }
 
-export interface DetailDisplaySharedProps {
+export interface DetailDisplaySharedProps extends RenderOptions {
     asPanel?: boolean;
     detailRenderer?: DetailRenderer;
     editingMode?: boolean;
     titleRenderer?: TitleRenderer;
-    useDatePicker?: boolean;
 }
 
 interface DetailDisplayProps extends DetailDisplaySharedProps {
@@ -83,14 +93,22 @@ interface DetailDisplayProps extends DetailDisplaySharedProps {
 }
 
 export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
-    const { asPanel, data, detailRenderer, displayColumns, useDatePicker, titleRenderer } = props;
+    const { asPanel, data, displayColumns, editingMode, useDatePicker, useQuerySelect } = props;
+
+    const detailRenderer = useMemo(() => {
+        return props.detailRenderer ?? (editingMode ? resolveDetailEditRenderer : resolveDetailRenderer);
+    }, [props.detailRenderer, editingMode]);
+
+    const titleRenderer = useMemo(() => {
+        return props.titleRenderer ?? (editingMode ? defaultTitleRenderer : undefined);
+    }, [props.titleRenderer, editingMode]);
 
     let body;
 
     if (data.size === 0) {
         body = <div>No data available.</div>;
     } else {
-        const fields = processFields(displayColumns, detailRenderer, titleRenderer, useDatePicker);
+        const fields = processFields(displayColumns, detailRenderer, titleRenderer, { useDatePicker, useQuerySelect });
 
         body = (
             <div>

@@ -26,7 +26,7 @@ import { initSelect } from './actions';
 import { FOCUS_FLAG } from './constants';
 import { QuerySelectModel } from './model';
 
-function getValue(model: QuerySelectModel, props: any): any {
+function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
     const { rawSelectedValue } = model;
 
     if (rawSelectedValue !== undefined && !Utils.isString(rawSelectedValue)) {
@@ -76,7 +76,7 @@ function renderPreviewOption(option: Option, model: QuerySelectModel): React.Rea
 
         return (
             <div className="wizard--select-option">
-                {queryInfo.getDisplayColumns(model.schemaQuery.viewName).map((column: QueryColumn, i: number) => {
+                {queryInfo.getDisplayColumns(model.schemaQuery.viewName).map((column, i) => {
                     if (item !== undefined) {
                         let text = resolveDetailFieldValue(item.get(column.name));
                         if (!Utils.isString(text)) {
@@ -121,7 +121,7 @@ interface InheritedSelectInputProps {
     delimiter?: string;
     description?: string;
     disabled?: boolean;
-    filterOptions?: (options, filterString, values) => any; // from ReactSelect
+    filterOptions?: (options: Option[], inputValue: string, currentValue: Option[]) => any; // from ReactSelect
     formsy?: boolean;
     initiallyDisabled?: boolean;
     inputClass?: string;
@@ -163,14 +163,15 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     valueColumn?: string;
 }
 
-interface QuerySelectStateProps {
+interface State {
     model: QuerySelectModel;
     error: any;
 }
 
-export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelectStateProps> {
+export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
     static defaultProps = {
         delimiter: DELIMITER,
+        filterOptions: noopFilterOptions,
         fireQSChangeOnInit: false,
         loadOnChange: false,
         loadOnFocus: false,
@@ -182,21 +183,9 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
     _mounted: boolean;
     querySelectTimer: number;
 
-    constructor(props: QuerySelectOwnProps) {
-        super(props);
+    state: Readonly<State> = { error: undefined, model: undefined };
 
-        this.filterOptions = this.filterOptions.bind(this);
-        this.loadOptions = this.loadOptions.bind(this);
-        this.onChange = this.onChange.bind(this);
-        this.onFocus = this.onFocus.bind(this);
-
-        this.state = {
-            model: undefined,
-            error: undefined,
-        };
-    }
-
-    componentDidMount() {
+    componentDidMount(): void {
         this._mounted = true;
         this.initModel(this.props);
     }
@@ -207,7 +196,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
         }
     }
 
-    initModel(props: QuerySelectOwnProps) {
+    initModel = (props: QuerySelectOwnProps): void => {
         initSelect(props).then(
             model => {
                 this.setState(() => ({ error: undefined, model }));
@@ -216,18 +205,14 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 this.setState(() => ({ error: reason }));
             }
         );
-    }
+    };
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this._mounted = false;
         clearTimeout(this.querySelectTimer);
     }
 
-    filterOptions(options: Option[], inputValue: string, currentValue: Option[]): Option[] {
-        return this.props.filterOptions(options, inputValue, currentValue);
-    }
-
-    loadOptions(input: string, callback) {
+    loadOptions = (input: string, callback): void => {
         const { model } = this.state;
 
         const token = model.parseSearch(input);
@@ -263,9 +248,9 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 options: model.formatSavedResults(),
             });
         }
-    }
+    };
 
-    onChange(name: string, value: any, selectedOptions, selectRef: any) {
+    onChange = (name: string, value: any, selectedOptions, selectRef: any): void => {
         const { loadOnChange, onQSChange } = this.props;
         const { model } = this.state;
 
@@ -274,30 +259,28 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                 model: model.setSelection(value),
             }),
             () => {
-                if (loadOnChange && Utils.isFunction(selectRef.loadOptions)) {
-                    selectRef.loadOptions(FOCUS_FLAG);
+                if (loadOnChange) {
+                    selectRef.loadOptions?.(FOCUS_FLAG);
                 }
 
-                if (Utils.isFunction(onQSChange)) {
-                    onQSChange(name, value, selectedOptions);
-                }
+                onQSChange?.(name, value, selectedOptions);
             }
         );
-    }
+    };
 
-    optionRenderer(option) {
+    optionRenderer = (option): ReactNode => {
         const { model } = this.state;
         return renderPreviewOption(option, model);
-    }
+    };
 
-    onFocus(event: Event, selectRef: any) {
+    onFocus = (event: Event, selectRef: any): void => {
         const { loadOnFocus } = this.props;
         const { model } = this.state;
 
-        if ((model.preLoad || loadOnFocus) && Utils.isFunction(selectRef.loadOptions)) {
-            selectRef.loadOptions(FOCUS_FLAG);
+        if (model.preLoad || loadOnFocus) {
+            selectRef.loadOptions?.(FOCUS_FLAG);
         }
-    }
+    };
 
     render() {
         const {
@@ -346,13 +329,13 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, QuerySelec
                     autoload: true,
                     cache: true,
                     description,
-                    filterOptions: Utils.isFunction(filterOptions) ? this.filterOptions : noopFilterOptions,
+                    filterOptions,
                     ignoreCase: false,
                     loadOptions: this.loadOptions,
                     onChange: this.onChange,
                     onFocus: this.onFocus,
                     options: undefined, // prevent override
-                    optionRenderer: previewOptions ? this.optionRenderer.bind(this) : undefined,
+                    optionRenderer: previewOptions ? this.optionRenderer : undefined,
                     selectedOptions: model.getSelectedOptions(),
                     value: getValue(model, this.props), // needed to initialize the Formsy "value" properly
                 }

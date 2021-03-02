@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "outDir": "staging",
-    "onlyCompileBundledFiles": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "esModuleInterop": true,
@@ -9,8 +8,6 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": true,
-    "allowJs": true,
-    "isolatedModules": true,
     "target": "es6",
     "lib": ["es2015", "es2017", "dom"],
     "types": ["jest"]

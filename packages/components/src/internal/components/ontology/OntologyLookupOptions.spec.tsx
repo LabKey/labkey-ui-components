@@ -1,14 +1,16 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { List } from 'immutable';
 
-import { initUnitTestMocks, sleep } from '../../testHelpers';
+import { DomainField } from '../../..';
+import { sleep } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
+
+import { SectionHeading } from '../domainproperties/SectionHeading';
+import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from '../domainproperties/PropDescType';
+import { DOMAIN_FIELD_FULLY_LOCKED } from '../domainproperties/constants';
 
 import { OntologyLookupOptions } from './OntologyLookupOptions';
-import { DomainField } from './models';
-import { SectionHeading } from './SectionHeading';
-import { INTEGER_TYPE, ONTOLOGY_LOOKUP_TYPE, TEXT_TYPE } from './PropDescType';
-import { DOMAIN_FIELD_FULLY_LOCKED } from './constants';
 
 const DEFAULT_PROPS = {
     index: 0,
@@ -53,12 +55,12 @@ beforeAll(() => {
 
 describe('OntologyLookupOptions', () => {
     function validate(
-        wrapper: any,
+        wrapper: ReactWrapper,
         disabled: boolean,
         selectedSource: string,
         importOptions: string[],
         labelOptions: string[]
-    ) {
+    ): void {
         expect(wrapper.find(SectionHeading)).toHaveLength(1);
         expect(wrapper.find('.domain-field-label')).toHaveLength(3);
 

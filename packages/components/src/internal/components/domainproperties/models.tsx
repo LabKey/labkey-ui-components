@@ -666,6 +666,7 @@ export interface IDomainField {
     sourceOntology?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
+    principalConceptCode?: string;
 }
 
 export class DomainField
@@ -718,6 +719,7 @@ export class DomainField
         sourceOntology: undefined,
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
+        principalConceptCode: undefined,
         selected: false,
     })
     implements IDomainField {
@@ -769,6 +771,7 @@ export class DomainField
     sourceOntology?: string;
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
+    principalConceptCode?: string;
     selected: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
@@ -1051,6 +1054,11 @@ export class DomainField
             period = '. ';
         } else if (this.dataType.isOntologyLookup() && this.sourceOntology) {
             details.push(period + this.sourceOntology);
+            period = '. ';
+        }
+
+        if (this.principalConceptCode) {
+            details.push(period + 'Concept Annotation: ' + this.principalConceptCode);
             period = '. ';
         }
 
@@ -1676,30 +1684,6 @@ export class DomainDetails extends Record({
 export interface DomainFieldIndexChange {
     originalIndex: number;
     newIndex: number;
-}
-
-export class OntologyModel {
-    [immerable] = true;
-
-    rowId: number;
-    abbreviation: string;
-    name: string;
-
-    constructor(values?: Partial<OntologyModel>) {
-        Object.assign(this, values);
-    }
-
-    static create(raw: any): OntologyModel {
-        return new OntologyModel({
-            rowId: caseInsensitive(raw, 'RowId')?.value,
-            name: caseInsensitive(raw, 'Name')?.value,
-            abbreviation: caseInsensitive(raw, 'Abbreviation')?.value,
-        });
-    }
-
-    getLabel() {
-        return this.name + ' (' + this.abbreviation + ')';
-    }
 }
 
 export interface BulkDeleteConfirmInfo {

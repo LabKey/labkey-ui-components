@@ -1,0 +1,9 @@
+{
+  "path" : "/NCIT/",
+  "children" : [],
+  "name" : "National Cancer Institute Thesaurus",
+  "description" : "This is the description for the National Cancer Institute Thesaurus ontology.",
+  "abbreviation" : "NCIT",
+  "conceptCount" : 160426,
+  "rowId" : 42
+}

@@ -559,7 +559,8 @@
 }
 
 .domain-validator-link {
-  cursor: pointer;
+    cursor: pointer;
+    padding-right: 5px;
 }
 
 .domain-validator-filter-row {
@@ -594,6 +595,14 @@
 .domain-validator-modal-apply {
   display: inline-flex;
   float: right;
+}
+
+.domain-annotation-table td {
+    vertical-align: top;
+
+    &.content {
+        padding-top: 5px;
+    }
 }
 
 .domain-color-preview {

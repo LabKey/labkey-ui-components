@@ -13,24 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC } from 'react';
 import { Alert as BootstrapAlert, AlertProps } from 'react-bootstrap';
 
 /**
  * An Alert that will only display if children are available. Defaults to bsStyle "danger".
  */
-export class Alert extends React.Component<AlertProps, any> {
-    static defaultProps = {
-        bsStyle: 'danger',
-    };
+export const Alert: FC<AlertProps> = props => {
+    const { children } = props;
+    if (!children) return null;
+    return <BootstrapAlert {...props}>{children}</BootstrapAlert>;
+};
 
-    render() {
-        const { children } = this.props;
+Alert.defaultProps = {
+    bsStyle: 'danger',
+};
 
-        if (children) {
-            return <BootstrapAlert {...this.props}>{children}</BootstrapAlert>;
-        }
-
-        return null;
-    }
-}
+Alert.displayName = 'Alert';

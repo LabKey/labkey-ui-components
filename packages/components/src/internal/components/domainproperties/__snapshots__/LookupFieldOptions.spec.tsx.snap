@@ -93,6 +93,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "sourceOntology": undefined,
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
+        "principalConceptCode": undefined,
         "selected": false,
       }
     }
@@ -644,6 +645,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "sourceOntology": undefined,
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
+        "principalConceptCode": undefined,
         "selected": false,
       }
     }
@@ -1298,6 +1300,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "sourceOntology": undefined,
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
+        "principalConceptCode": undefined,
         "selected": false,
       }
     }
@@ -1952,6 +1955,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "sourceOntology": undefined,
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
+        "principalConceptCode": undefined,
         "selected": false,
       }
     }

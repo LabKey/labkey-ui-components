@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 
 import { TEST_USER_READER } from '../../../test/data/users';
 import { getQueryDetails, FileInput, SCHEMAS, TextInput } from '../../..';
-import { initUnitTestMocks } from '../../testHelpers';
+import { initUnitTestMocks } from '../../testHelperMocks';
 
 import { UserProfile } from './UserProfile';
 

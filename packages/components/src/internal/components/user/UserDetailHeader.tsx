@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 import { Map } from 'immutable';
 
 import { PageDetailHeader, User } from '../../..';
@@ -6,30 +6,35 @@ import { PageDetailHeader, User } from '../../..';
 import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
 
 interface HeaderProps {
+    dateFormat: string;
+    description?: string;
+    renderButtons?: ReactNode;
     title: string;
     user: User;
-    userProperties: Map<string, any>;
-    dateFormat: string;
-    renderButtons?: () => any;
-    description?: string;
+    userProperties?: Map<string, any>;
 }
 
-export class UserDetailHeader extends React.Component<HeaderProps> {
-    render() {
-        const { user, userProperties, title, dateFormat, renderButtons, description } = this.props;
-        const lastLogin = getUserLastLogin(userProperties, dateFormat);
+export const UserDetailHeader: FC<HeaderProps> = props => {
+    const { user, userProperties, title, dateFormat, renderButtons, description } = props;
+    const lastLogin = useMemo(() => getUserLastLogin(userProperties, dateFormat), [dateFormat, userProperties]);
+    const userDescription = useMemo(() => {
+        return description || getUserPermissionsDisplay(user).join(', ');
+    }, [description, user]);
 
-        return (
-            <PageDetailHeader
-                user={user}
-                iconUrl={user.avatar}
-                title={title}
-                description={description || getUserPermissionsDisplay(user).join(', ')}
-                leftColumns={10}
-            >
-                {lastLogin && <div className="detail__header--desc">Last Login: {lastLogin}</div>}
-                {renderButtons && <div className={lastLogin ? 'detail__header--buttons' : ''}>{renderButtons()}</div>}
-            </PageDetailHeader>
-        );
-    }
-}
+    return (
+        <PageDetailHeader
+            user={user}
+            iconUrl={user.avatar}
+            title={title}
+            description={userDescription}
+            leftColumns={10}
+        >
+            {lastLogin && <div className="detail__header--desc">Last Login: {lastLogin}</div>}
+            {renderButtons && <div className={lastLogin ? 'detail__header--buttons' : ''}>{renderButtons}</div>}
+        </PageDetailHeader>
+    );
+};
+
+UserDetailHeader.defaultProps = {
+    userProperties: Map<string, any>(),
+};

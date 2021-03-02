@@ -115,16 +115,13 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
                 (showProductDrawer || (showProjectsDrawer && productProjects.length === 0) ? ' wider' : '')
             }
         >
-            <h3 className="product-navigation-header navbar-menu-header">
-                <div className="navbar-icon-connector" />
-                <ProductNavigationHeader
-                    title={selectedProject?.title || selectedProduct?.productName}
-                    productId={selectedProductId}
-                    onClick={() =>
-                        onSelection(selectedProject && productProjects?.length > 1 ? selectedProductId : undefined)
-                    }
-                />
-            </h3>
+            <ProductNavigationHeader
+                productId={selectedProductId}
+                onClick={() =>
+                    onSelection(selectedProject && productProjects?.length > 1 ? selectedProductId : undefined)
+                }
+                title={selectedProject?.title || selectedProduct?.productName}
+            />
             <ul className="product-navigation-listing">
                 {showProductDrawer && <ProductAppsDrawer {...props} onClick={onSelection} />}
                 {showLKSDrawer && <ProductLKSDrawer projects={projects} tabs={tabs} />}
@@ -150,7 +147,7 @@ export const ProductNavigationMenuImpl: FC<ProductNavigationMenuImplProps> = mem
     );
 });
 
-// below function are exported for test testing
+// below function are exported for jest testing
 
 export function getSelectedProject(
     productId: string,

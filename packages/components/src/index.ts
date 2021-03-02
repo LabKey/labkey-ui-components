@@ -57,7 +57,7 @@ import {
     toggleDevTools,
     valueIsEmpty,
 } from './internal/util/utils';
-import { getUserProperties } from './internal/components/user/actions';
+import { getUserProperties, getUserRoleDisplay } from './internal/components/user/actions';
 import { BeforeUnload } from './internal/util/BeforeUnload';
 import { getActionErrorMessage, resolveErrorMessage } from './internal/util/messaging';
 import { WHERE_FILTER_TYPE } from './internal/url/WhereFilterType';
@@ -78,6 +78,7 @@ import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsPage } from './internal/components/permissions/InsufficientPermissionsPage';
 import { BasePermissionsCheckPage } from './internal/components/permissions/BasePermissionsCheckPage';
+import { APPLICATION_SECURITY_ROLES } from './internal/components/permissions/constants';
 import { NotFound } from './internal/components/base/NotFound';
 import { Page, PageProps } from './internal/components/base/Page';
 import { LoadingPage, LoadingPageProps } from './internal/components/base/LoadingPage';
@@ -279,7 +280,7 @@ import {
     getSampleTypeDetails,
     loadSelectedSamples,
 } from './internal/components/samples/actions';
-import { SampleEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
+import { SampleEmptyAlert, SampleTypeEmptyAlert } from './internal/components/samples/SampleEmptyAlert';
 import { SampleSetSummary } from './internal/components/samples/SampleSetSummary';
 import { SampleSetDeleteModal } from './internal/components/samples/SampleSetDeleteModal';
 import { SampleCreationTypeModal } from './internal/components/samples/SampleCreationTypeModal';
@@ -295,9 +296,11 @@ import { AssayDesignDeleteConfirmModal } from './internal/components/assay/Assay
 import { AssayDesignDeleteModal } from './internal/components/assay/AssayDesignDeleteModal';
 import { AssayResultDeleteModal } from './internal/components/assay/AssayResultDeleteModal';
 import { AssayRunDeleteModal } from './internal/components/assay/AssayRunDeleteModal';
+import { AssayDesignEmptyAlert } from './internal/components/assay/AssayDesignEmptyAlert';
 import { AssaysHeatMap } from './internal/components/assay/AssaysHeatMap';
 import { AssaySubNavMenu } from './internal/components/assay/AssaySubNavMenu';
 import { AssayTypeSummary } from './internal/components/assay/AssayTypeSummary';
+import { RecentAssayPanel } from './internal/components/assay/RecentAssayPanel';
 import { AssayPicker, AssayPickerTabs, AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
@@ -341,7 +344,6 @@ import { MenuSectionConfig } from './internal/components/navigation/ProductMenuS
 import { ITab, SubNav } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
-import { UserMenu } from './internal/components/navigation/UserMenu';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
 
 import { UserSelectInput } from './internal/components/forms/input/UserSelectInput';
@@ -389,6 +391,8 @@ import {
     WrappedRouteLeaveProps,
 } from './internal/util/RouteLeave';
 import * as App from './internal/app';
+import { BarChartViewer } from './internal/components/chart/BarChartViewer';
+import { CHART_GROUPS } from './internal/components/chart/configs';
 import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
@@ -448,6 +452,7 @@ import {
     withQueryModels,
 } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
+import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
@@ -463,6 +468,8 @@ import {
     SampleCreationTypeModel,
 } from './internal/components/samples/models';
 import { createMockWithRouterProps } from './test/mockUtils';
+import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
+import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -598,11 +605,13 @@ export {
     // user/permissions related items
     getUsersWithPermissions,
     getUserProperties,
+    getUserRoleDisplay,
     UserDetailHeader,
     UserProfile,
     ChangePasswordModal,
     SiteUsersGridPanel,
     InsufficientPermissionsPage,
+    APPLICATION_SECURITY_ROLES,
     BasePermissionsCheckPage,
     RequiresPermission,
     hasAllPermissions,
@@ -630,6 +639,7 @@ export {
     SampleTypeDataType,
     DataClassDataType,
     SampleEmptyAlert,
+    SampleTypeEmptyAlert,
     SampleSetSummary,
     SampleCreationType,
     SampleCreationTypeModel,
@@ -667,6 +677,7 @@ export {
     AssayUploadResultModel,
     AssayDesignDeleteModal,
     AssayDesignDeleteConfirmModal,
+    AssayDesignEmptyAlert,
     AssayResultDeleteModal,
     AssayRunDeleteModal,
     AssaysHeatMap,
@@ -678,6 +689,7 @@ export {
     AssayPickerTabs,
     AssayPickerSelectionModel,
     assayPage,
+    RecentAssayPanel,
     withAssayModels,
     withAssayModelsFromLocation,
     InjectedAssayModel,
@@ -710,6 +722,8 @@ export {
     monthSort,
     // report / chart related items
     BaseBarChart,
+    BarChartViewer,
+    CHART_GROUPS,
     processChartData,
     DataViewInfoTypes,
     IDataViewInfo,
@@ -742,7 +756,6 @@ export {
     SubNav,
     Breadcrumb,
     BreadcrumbCreate,
-    UserMenu, // Removed once Biologics home page no longer uses directly
     // notification related items
     NO_UPDATES_MESSAGE,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT,
@@ -952,6 +965,7 @@ export {
     DetailPanel,
     DetailPanelWithModel,
     EditableDetailPanel,
+    TabbedGridPanel,
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
     Pagination,
@@ -975,4 +989,7 @@ export {
     sleep,
     waitForLifecycle,
     createMockWithRouterProps,
+    // Ontology
+    OntologyBrowserPanel,
+    OntologyConceptOverviewPanel,
 };

@@ -5,6 +5,7 @@
 import { fromJS } from 'immutable';
 
 import {
+    TEST_USER_APP_ADMIN,
     TEST_USER_ASSAY_DESIGNER,
     TEST_USER_AUTHOR,
     TEST_USER_EDITOR,
@@ -13,7 +14,7 @@ import {
     TEST_USER_READER,
 } from '../../../test/data/users';
 
-import { getUserLastLogin, getUserPermissionsDisplay } from './actions';
+import { getUserLastLogin, getUserPermissionsDisplay, getUserRoleDisplay } from './actions';
 
 describe('User actions', () => {
     test('getUserPermissionsDisplay guest', () => {
@@ -57,5 +58,15 @@ describe('User actions', () => {
         expect(getUserLastLogin(fromJS({ lastlogin: lastLogin }), 'YYYY-MM-DD')).toBe('2019-11-15');
         expect(getUserLastLogin(fromJS({ lastLogin }), 'YYYY-MM-DD')).toBe('2019-11-15');
         expect(getUserLastLogin(fromJS({ LastLogin: lastLogin }), 'YYYY-MM-DD')).toBe('2019-11-15');
+    });
+
+    test('getUserRoleDisplay', () => {
+        expect(getUserRoleDisplay(TEST_USER_GUEST)).toBe('Reader');
+        expect(getUserRoleDisplay(TEST_USER_READER)).toBe('Reader');
+        expect(getUserRoleDisplay(TEST_USER_AUTHOR)).toBe('Reader');
+        expect(getUserRoleDisplay(TEST_USER_EDITOR)).toBe('Editor');
+        expect(getUserRoleDisplay(TEST_USER_ASSAY_DESIGNER)).toBe('Reader');
+        expect(getUserRoleDisplay(TEST_USER_FOLDER_ADMIN)).toBe('Administrator');
+        expect(getUserRoleDisplay(TEST_USER_APP_ADMIN)).toBe('Administrator');
     });
 });

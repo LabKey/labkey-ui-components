@@ -20,7 +20,7 @@ import { fromJS } from 'immutable';
 
 import { getQueryGridModel, getStateQueryGridModel, gridInit, SchemaQuery } from '../../../..';
 import sampleDetailsQuery from '../../../../test/data/sampleDetails-getQuery.json';
-import { initUnitTestMocks } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { Detail } from './Detail';
 

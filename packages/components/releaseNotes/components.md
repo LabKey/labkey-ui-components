@@ -1,6 +1,47 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.7.0
+*Released*: 1 March 2021
+* Add TabbedGridPanel component
+  * To be used as a replacement for QueryGridPanel's tabbed mode
+* Add "title" field to QueryModel
+
+### version 2.6.0
+*Released*: 27 February 2021
+* Item 8583: Ontology concept picker usages in Field Editor for field concept annotation
+    - Add principalConceptCode to DomainField model
+    - Add field editor expanded row input for OntologyConceptAnnotation with button to open the Ontology Concept Browser in modal dialog
+    - Move components related to ontology from /domainproperties to /ontology
+    - Expose OntologyConceptOverviewPanel for use in ontology module
+    - Add OntologyBrowserModal to wrap the browser in a modal with cancel and apply buttons
+    - Factor out OntologyTextDomainFieldSelect from OntologyLookupOptions component
+
+### version 2.5.2
+*Released*: 26 February 2021
+* Issue 42515: Layout issue for NavBar with medium-sized screens
+* ProductMenu: prevent closing menu on non-link click
+* ProductMenu: expand link clickable area
+* ProductNavigationHeader: clickable text to go back
+
+### version 2.5.1
+*Released*: 25 February 2021
+* @labkey/components package bundle optimizations
+    - webpack.config.js: add back in new IgnorePlugin(/^\.\/locale$/, /moment$/)
+    - split initUnitTestMocks() into a separate testHelperMocks.tsx file so it isn't referenced via ./src/index.ts
+    - add localDev.md doc info on using webpack-bundle-analyzer
+
+### version 2.5.0
+*Released*: 24 February 2021
+* Item 8359: Add initial OntologyBrowserPanel and associated files
+
+### version 2.4.0
+*Released*: 24 February 2021
+* Migrates `AssayDesignEmptyAlert`, `BarChartViewer`, and `RecentAssayPanel` to `@labkey/components`.
+* Migration includes chart configurations for assays and samples.
+* No longer need to export `UserMenu` as last external usage was removed.
+* Remove jQuery from `BaseBarChart` as it is no longer necessary.
+
 ### version 2.3.1
 *Released*: 24 February 2021
 * Make 'auto-scroll to field' functionality in Summary View also expand given field

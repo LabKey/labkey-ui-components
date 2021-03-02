@@ -6,7 +6,8 @@ import { Panel } from 'react-bootstrap';
 import { DomainDesign } from '../models';
 import { FileAttachmentForm } from '../../../..';
 
-import { initUnitTestMocks, sleep } from '../../../testHelpers';
+import { sleep } from '../../../testHelpers';
+import { initUnitTestMocks } from '../../../testHelperMocks';
 
 import { AssayProtocolModel } from './models';
 import { DescriptionInput, NameInput } from './AssayPropertiesInput';

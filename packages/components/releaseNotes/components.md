@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.6.1
+*Released*: 2 March 2021
+* Issue 42589: Product Menu attempts to load before application initialized
+* Add and respect `showNotifications` and `showProductNav` props to `<NavigationBar />`
+
 ### version 2.6.0
 *Released*: 27 February 2021
 * Item 8583: Ontology concept picker usages in Field Editor for field concept annotation

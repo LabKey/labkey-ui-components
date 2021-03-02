@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.7.0
 *Released*: 1 March 2021
 * Add TabbedGridPanel component
+  * To be used as a replacement for QueryGridPanel's tabbed mode
 * Add "title" field to QueryModel
 
 ### version 2.6.0

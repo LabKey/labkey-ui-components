@@ -85,6 +85,7 @@ import {
 } from './models';
 
 import { getEntityTypeData } from './actions';
+import {DERIVATION_DATA_SCOPE_CHILD_ONLY} from "../domainproperties/constants";
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -822,7 +823,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
         return queryGridModel
             .getInsertColumns()
             .filter(col => {
-                return col.derivationDataScope !== 'ChildOnly';
+                return col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY;
             })
             .toList();
     };
@@ -835,7 +836,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
             return (
                 insertColumnFilter(colInfo) &&
                 colInfo['fieldKey'] !== entityDataType.uniqueFieldKey &&
-                colInfo.derivationDataScope != 'ChildOnly'
+                colInfo.derivationDataScope != DERIVATION_DATA_SCOPE_CHILD_ONLY
             );
         };
 

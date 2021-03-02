@@ -5,7 +5,7 @@ import { LabelHelpTip } from '../../..';
 
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
-import { DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
+import {DERIVATION_DATA_SCOPE_CHILD_ONLY, DOMAIN_FIELD_DERIVATION_DATA_SCOPE} from './constants';
 import { IDerivationDataScope, ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 
@@ -13,8 +13,6 @@ interface Props extends ITypeDependentProps {
     value?: string;
     config?: IDerivationDataScope;
 }
-
-const CHILD_ONLY = 'ChildOnly';
 
 export class DerivationDataScopeFieldOptions extends React.PureComponent<Props, any> {
     static defaultProps = {
@@ -30,7 +28,7 @@ export class DerivationDataScopeFieldOptions extends React.PureComponent<Props, 
 
         if (onChange) {
             const value = getCheckedValue(evt);
-            onChange(evt.target.id, value ? CHILD_ONLY : '');
+            onChange(evt.target.id, value ? DERIVATION_DATA_SCOPE_CHILD_ONLY : '');
         }
     };
 
@@ -39,7 +37,7 @@ export class DerivationDataScopeFieldOptions extends React.PureComponent<Props, 
         return config.helpLinkNode ? (
             config.helpLinkNode
         ) : (
-            <LabelHelpTip title="Child specific field">
+            <LabelHelpTip title="Child-specific field">
                 <div>
                     <p>If checked, this field is only available for child data.</p>
                 </div>
@@ -60,7 +58,7 @@ export class DerivationDataScopeFieldOptions extends React.PureComponent<Props, 
                 <Row>
                     <Col xs={3}>
                         <Checkbox
-                            checked={value?.toLocaleLowerCase() === CHILD_ONLY.toLocaleLowerCase()}
+                            checked={value?.toLocaleLowerCase() === DERIVATION_DATA_SCOPE_CHILD_ONLY.toLocaleLowerCase()}
                             onChange={this.handleCheckboxChange}
                             id={createFormInputId(DOMAIN_FIELD_DERIVATION_DATA_SCOPE, domainIndex, index)}
                             disabled={config.disable || isFieldFullyLocked(lockType)}

@@ -35,7 +35,6 @@ describe('DerivationDataScopeFieldOptions', () => {
         checkbox = aliquot.find({ id: fieldName, bsClass: 'checkbox' });
         expect(checkbox.props().checked).toEqual(true);
 
-        expect(aliquot).toMatchSnapshot();
         aliquot.unmount();
     });
 
@@ -50,14 +49,17 @@ describe('DerivationDataScopeFieldOptions', () => {
             lockType: DOMAIN_FIELD_NOT_LOCKED,
             config: {
                 show: true,
-                disable: false,
+                disable: true,
                 sectionTitle: 'Aliquot field',
                 fieldLabel: 'Aliquot Only',
             },
         };
 
         const aliquot = mount(<DerivationDataScopeFieldOptions {...props} />);
-        expect(aliquot).toMatchSnapshot();
+        const fieldName = createFormInputId(DOMAIN_FIELD_DERIVATION_DATA_SCOPE, 1, 1);
+
+        let checkbox = aliquot.find({ id: fieldName, bsClass: 'checkbox' });
+        expect(checkbox.props().disabled).toEqual(true);
         aliquot.unmount();
     });
 });

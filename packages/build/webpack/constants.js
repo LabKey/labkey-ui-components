@@ -209,11 +209,13 @@ module.exports = {
                         babelrc: false,
                         cacheDirectory: true,
                         presets: [
-                            "@babel/preset-env",
-                            {
-                                // support async/await
-                                "targets": "last 2 versions, not dead, not IE 11, > 5%",
-                            }
+                            [
+                                "@babel/preset-env",
+                                {
+                                    // support async/await
+                                    "targets": "last 2 versions, not dead, not IE 11, > 5%",
+                                }
+                            ],
                         ],
                         plugins: [
                             "react-hot-loader/babel",

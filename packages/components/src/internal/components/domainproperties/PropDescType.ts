@@ -20,6 +20,7 @@ import {
     STRING_RANGE_URI,
     TIME_RANGE_URI,
     USER_RANGE_URI,
+    VISITID_CONCEPT_URI,
 } from './constants';
 
 export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
@@ -65,6 +66,14 @@ export class PropDescType
 
     static isOntologyLookup(conceptURI: string): boolean {
         return conceptURI === CONCEPT_CODE_CONCEPT_URI;
+    }
+
+    static isVisitId(conceptURI: string) {
+        return conceptURI === VISITID_CONCEPT_URI;
+    }
+
+    static isVisitDate(conceptURI: string) {
+        return conceptURI === VISITID_CONCEPT_URI;
     }
 
     static isLookup(name: string): boolean {
@@ -251,6 +260,19 @@ export const AUTOINT_TYPE = new PropDescType({
     alternateRangeURI: 'xsd:int',
 });
 
+export const VISIT_DATE_TYPE = new PropDescType({
+    name: 'visitDate',
+    display: 'VisitDate',
+    rangeURI: DATETIME_RANGE_URI,
+    conceptURI: VISITID_CONCEPT_URI,
+});
+export const VISIT_ID_TYPE = new PropDescType({
+    name: 'visitId',
+    display: 'VisitID',
+    rangeURI: DOUBLE_RANGE_URI,
+    conceptURI: VISITID_CONCEPT_URI,
+});
+
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     MULTILINE_TYPE,
@@ -266,6 +288,8 @@ export const PROP_DESC_TYPES = List([
     LOOKUP_TYPE,
     SAMPLE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);

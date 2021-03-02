@@ -44,6 +44,8 @@ import {
     FLAG_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     PROP_DESC_TYPES,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
     PropDescType,
 } from './PropDescType';
 import {
@@ -228,6 +230,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === ATTACHMENT_TYPE && !domain.allowAttachmentProperties) {
+        return false;
+    }
+
+    if ((type === VISIT_DATE_TYPE || type === VISIT_ID_TYPE) && !domain.allowTimepointProperties) {
         return false;
     }
 

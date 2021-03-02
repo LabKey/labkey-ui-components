@@ -227,6 +227,26 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitDate",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -2399,6 +2419,26 @@ exports[`DomainRow client side warning on field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitDate",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -3089,6 +3129,18 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
+                                              </option>
+                                              <option
+                                                key="14"
+                                                value="visitDate"
+                                              >
+                                                VisitDate
+                                              </option>
+                                              <option
+                                                key="15"
+                                                value="visitId"
+                                              >
+                                                VisitID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -4516,6 +4568,26 @@ exports[`DomainRow date time field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitDate",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -5116,6 +5188,12 @@ exports[`DomainRow date time field 1`] = `
                                                 value="dateTime"
                                               >
                                                 Date Time
+                                              </option>
+                                              <option
+                                                key="1"
+                                                value="visitDate"
+                                              >
+                                                VisitDate
                                               </option>
                                             </select>
                                           </FormControl>
@@ -6785,6 +6863,26 @@ exports[`DomainRow decimal field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitDate",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -7385,6 +7483,12 @@ exports[`DomainRow decimal field 1`] = `
                                                 value="double"
                                               >
                                                 Decimal (floating point)
+                                              </option>
+                                              <option
+                                                key="1"
+                                                value="visitId"
+                                              >
+                                                VisitID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -9084,6 +9188,26 @@ exports[`DomainRow participant id field 1`] = `
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitDate",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -11167,6 +11291,26 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitDate",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -11857,6 +12001,18 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
+                                              </option>
+                                              <option
+                                                key="14"
+                                                value="visitDate"
+                                              >
+                                                VisitDate
+                                              </option>
+                                              <option
+                                                key="15"
+                                                value="visitId"
+                                              >
+                                                VisitID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -13168,6 +13324,26 @@ exports[`DomainRow string field test 1`] = `
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitDate",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -15561,6 +15737,26 @@ exports[`DomainRow with empty domain form 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitDate",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "VisitID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -16238,6 +16434,18 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 value="ontologyLookup"
                                               >
                                                 Ontology Lookup
+                                              </option>
+                                              <option
+                                                key="14"
+                                                value="visitDate"
+                                              >
+                                                VisitDate
+                                              </option>
+                                              <option
+                                                key="15"
+                                                value="visitId"
+                                              >
+                                                VisitID
                                               </option>
                                             </select>
                                           </FormControl>

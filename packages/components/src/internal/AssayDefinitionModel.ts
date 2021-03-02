@@ -25,7 +25,7 @@ interface ScopedSampleColumn {
     column: QueryColumn;
 }
 
-export const enum AssayUploadTabs {
+export enum AssayUploadTabs {
     Files = 1,
     Copy = 2,
     Grid = 3,

@@ -16,14 +16,14 @@
 import React from 'react';
 import { Record } from 'immutable';
 
-import { Draft, immerable, produce } from "immer";
+import { Draft, immerable, produce } from 'immer';
 
-import { User } from "../base/models/User"; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
-import { generateId } from "../../util/utils"; // // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
+import { User } from '../base/models/User'; // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
+import { generateId } from '../../util/utils'; // // do not refactor to '../..', cause jest test to failure with typescript constructor error due to circular class loading
 
 export type MessageFunction<T> = (props?: T, user?: User, data?: any) => React.ReactNode;
 
-export const enum Persistence {
+export enum Persistence {
     PAGE_LOAD,
     LOGIN_SESSION,
 }
@@ -78,7 +78,6 @@ export class NotificationItemModel
 function nextNotificationId(): string {
     return generateId('notification_');
 }
-
 
 export class ServerActivityData {
     [immerable] = true;
@@ -138,8 +137,7 @@ export interface ServerNotificationsConfig {
     onRead?: () => any;
 }
 
-export interface IServerNotificationModel
-{
+export interface IServerNotificationModel {
     data: ServerActivityData[];
     totalRows: number;
     unreadCount: number;
@@ -151,7 +149,7 @@ export interface IServerNotificationModel
     errorMessage: string;
 }
 
-const DEFAULT_SERVER_NOTIFICATION_MODEL : IServerNotificationModel = {
+const DEFAULT_SERVER_NOTIFICATION_MODEL: IServerNotificationModel = {
     data: undefined,
     totalRows: 0,
     unreadCount: 0,
@@ -160,7 +158,7 @@ const DEFAULT_SERVER_NOTIFICATION_MODEL : IServerNotificationModel = {
     isError: false,
     isLoaded: false,
     isLoading: false,
-    errorMessage: undefined
+    errorMessage: undefined,
 };
 
 export class ServerNotificationModel implements IServerNotificationModel {
@@ -187,18 +185,16 @@ export class ServerNotificationModel implements IServerNotificationModel {
     }
 
     setLoadingStart() {
-        return this.mutate({isLoading: true, isLoaded: false, isError: false, errorMessage: undefined})
+        return this.mutate({ isLoading: true, isLoaded: false, isError: false, errorMessage: undefined });
     }
 
     setLoadingComplete(result: Partial<ServerNotificationModel>) {
-        return this
-            .mutate({isLoading: false, isLoaded: true, isError: false, errorMessage: undefined})
-            .mutate(result);
+        return this.mutate({ isLoading: false, isLoaded: true, isError: false, errorMessage: undefined }).mutate(
+            result
+        );
     }
 
     setError(errorMessage: string) {
-        return this
-            .mutate({isLoading: false, isLoaded: true, isError: true, errorMessage: errorMessage});
+        return this.mutate({ isLoading: false, isLoaded: true, isError: true, errorMessage });
     }
-
 }

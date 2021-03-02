@@ -30,7 +30,9 @@ function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
     const { rawSelectedValue } = model;
 
     if (rawSelectedValue !== undefined && !Utils.isString(rawSelectedValue)) {
-        if (List.isList(rawSelectedValue)) {
+        if (Array.isArray(rawSelectedValue)) {
+            return rawSelectedValue;
+        } else if (List.isList(rawSelectedValue)) {
             return rawSelectedValue.toArray();
         } else if (isNaN(rawSelectedValue)) {
             console.warn('QuerySelect: NaN is not a valid value', rawSelectedValue);

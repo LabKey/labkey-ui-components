@@ -23,7 +23,6 @@ import {
     MultiValueRenderer,
     AliasRenderer,
     AppendUnits,
-    LookupSelectInput,
     QueryColumn,
     LabelColorRenderer,
     SchemaQuery,
@@ -75,42 +74,27 @@ export function resolveDetailEditRenderer(col: QueryColumn, options?: RenderOpti
             // Must be explicitly false to prevent drop-down.
             if (col.displayAsLookup !== false) {
                 // 29232: When displaying a lookup, always use the value
-                const multiple = col.isJunctionLookup(),
-                    joinValues = multiple && !col.isDataInput();
-
-                if (options?.useQuerySelect) {
-                    return (
-                        <QuerySelect
-                            componentId={col.fieldKey}
-                            displayColumn={col.lookup.displayColumn}
-                            inputClass="col-sm-12"
-                            joinValues={joinValues}
-                            label={col.caption}
-                            loadOnChange
-                            loadOnFocus
-                            maxRows={10}
-                            multiple={multiple}
-                            name={col.name}
-                            placeholder="Select or type to search..."
-                            preLoad
-                            required={col.required}
-                            schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
-                            value={resolveDetailFieldValue(data, true)}
-                            valueColumn={col.lookup.keyColumn}
-                        />
-                    );
-                }
+                const multiple = col.isJunctionLookup();
+                const joinValues = multiple && !col.isDataInput();
 
                 return (
-                    <LookupSelectInput
-                        containerClass="form-group row"
+                    <QuerySelect
+                        componentId={col.fieldKey}
+                        displayColumn={col.lookup.displayColumn}
                         inputClass="col-sm-12"
                         joinValues={joinValues}
-                        key={col.name}
+                        label={col.caption}
+                        loadOnChange
+                        loadOnFocus
+                        maxRows={10}
                         multiple={multiple}
-                        queryColumn={col}
-                        value={resolveDetailFieldValue(data, true)}
+                        name={col.name}
+                        placeholder="Select or type to search..."
+                        preLoad
                         required={col.required}
+                        schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
+                        value={resolveDetailFieldValue(data, true)}
+                        valueColumn={col.lookup.keyColumn}
                     />
                 );
             }

@@ -16,7 +16,6 @@ export type Renderer = (data: any, row?: any) => ReactNode;
 
 export interface RenderOptions {
     useDatePicker?: boolean;
-    useQuerySelect?: boolean;
 }
 
 export type DetailRenderer = (column: QueryColumn, options?: RenderOptions) => Renderer;
@@ -93,7 +92,7 @@ interface DetailDisplayProps extends DetailDisplaySharedProps {
 }
 
 export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
-    const { asPanel, data, displayColumns, editingMode, useDatePicker, useQuerySelect } = props;
+    const { asPanel, data, displayColumns, editingMode, useDatePicker } = props;
 
     const detailRenderer = useMemo(() => {
         return props.detailRenderer ?? (editingMode ? resolveDetailEditRenderer : resolveDetailRenderer);
@@ -108,7 +107,7 @@ export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
     if (data.size === 0) {
         body = <div>No data available.</div>;
     } else {
-        const fields = processFields(displayColumns, detailRenderer, titleRenderer, { useDatePicker, useQuerySelect });
+        const fields = processFields(displayColumns, detailRenderer, titleRenderer, { useDatePicker });
 
         body = (
             <div>

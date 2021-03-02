@@ -71,13 +71,6 @@ const SASS_PLUGINS = [
 ];
 
 const BABEL_PLUGINS = [
-    [
-        "const-enum",
-        {
-            "transform": "constObject"
-        }
-    ],
-
     // These make up @babel/preset-react, we cannot use preset-react because we need to ensure that the
     // typescript plugins run before the class properties plugins
     '@babel/plugin-syntax-jsx',

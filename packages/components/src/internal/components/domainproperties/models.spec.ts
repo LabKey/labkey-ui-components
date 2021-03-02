@@ -67,6 +67,7 @@ const gridDataAppPropsOnlyConst = [
         lockType: 'NotLocked',
         isPrimaryKey: 'false',
         defaultScale: '',
+        derivationDataScope: '',
         scale: 4000,
         name: 'a',
         URL: '',
@@ -130,6 +131,11 @@ const nameCol = new GridColumn({
 const gridColumnsConst = [
     selectionCol,
     nameCol,
+    {
+        caption: "Derivation Data Scope",
+        index: "derivationDataScope",
+        sortable: true,
+    },
     { index: 'URL', caption: 'URL', sortable: true },
     { index: 'PHI', caption: 'PHI', sortable: true },
     { index: 'rangeURI', caption: 'Range URI', sortable: true },

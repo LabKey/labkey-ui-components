@@ -114,6 +114,10 @@ export interface QueryConfig {
      */
     sorts?: QuerySort[];
     /**
+     * String value to use in grid panel header.
+     */
+    title?: string;
+    /**
      * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
      */
     urlPrefix?: string;
@@ -217,6 +221,10 @@ export class QueryModel {
      * Array of [[QuerySort]] objects to use for the QueryModel data load.
      */
     readonly sorts: QuerySort[];
+    /**
+     * String value to use in grid panel header.
+     */
+    readonly title?: string;
     /**
      * Prefix string value to use in url parameters when bindURL is true. Defaults to "query".
      */
@@ -350,6 +358,7 @@ export class QueryModel {
         this.selections = undefined;
         this.selectionsError = undefined;
         this.selectionsLoadingState = LoadingState.INITIALIZED;
+        this.title = queryConfig.title;
         this.urlPrefix = queryConfig.urlPrefix ?? 'query'; // match Data Region defaults
         this.charts = undefined;
         this.chartsError = undefined;

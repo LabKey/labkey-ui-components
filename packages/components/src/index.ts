@@ -452,6 +452,7 @@ import {
     withQueryModels,
 } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
+import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
@@ -964,6 +965,7 @@ export {
     DetailPanel,
     DetailPanelWithModel,
     EditableDetailPanel,
+    TabbedGridPanel,
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
     Pagination,

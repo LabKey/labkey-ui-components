@@ -11,30 +11,30 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 // Conditionalize the path to use for the @labkey packages based on if the user wants to LINK their labkey-ui-components repo.
 // NOTE: the LABKEY_UI_COMPONENTS_HOME environment variable must be set for this to work.
-let labkeyUIComponentsPath = path.resolve("./node_modules/@labkey/components");
-let freezerManagerPath = path.resolve("./node_modules/@labkey/freezermanager");
-let workflowPath = path.resolve("./node_modules/@labkey/workflow");
+let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
+let freezerManagerPath = path.resolve('./node_modules/@labkey/freezermanager');
+let workflowPath = path.resolve('./node_modules/@labkey/workflow');
 if (process.env.LINK) {
     if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
-        throw "ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.";
+        throw 'ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.';
     }
 
-    labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + "/packages/components";
+    labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components';
 
-    const freezerManagerRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "inventory/packages/freezermanager";
+    const freezerManagerRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'inventory/packages/freezermanager';
     freezerManagerPath = path.resolve(__dirname, freezerManagerRelPath);
 
-    const workflowRelPath = (lkModuleContainer ? "../../../../../../" : "../../../../../") + "sampleManagement/packages/workflow";
+    const workflowRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'sampleManagement/packages/workflow';
     workflowPath = path.resolve(__dirname, workflowRelPath);
 }
 if (process.env.npm_package_dependencies__labkey_components) {
-    console.log("Using @labkey/components path: " + labkeyUIComponentsPath);
+    console.log('Using @labkey/components path: ' + labkeyUIComponentsPath);
 }
 if (process.env.npm_package_dependencies__labkey_freezermanager) {
-    console.log("Using @labkey/freezermanager path: " + freezerManagerPath);
+    console.log('Using @labkey/freezermanager path: ' + freezerManagerPath);
 }
 if (process.env.npm_package_dependencies__labkey_workflow) {
-    console.log("Using @labkey/workflow path: " + workflowPath);
+    console.log('Using @labkey/workflow path: ' + workflowPath);
 }
 
 const watchPort = process.env.WATCH_PORT || 3001;
@@ -45,7 +45,7 @@ const watchPort = process.env.WATCH_PORT || 3001;
 // For more information see https://github.com/jantimon/html-webpack-plugin#minification.
 const minifyTemplateOptions = {
     caseSensitive: true,
-    collapseWhitespace: process.env.NODE_ENV === "production",
+    collapseWhitespace: process.env.NODE_ENV === 'production',
     keepClosingSlash: true,
     removeComments: true,
     removeRedundantAttributes: true,
@@ -53,6 +53,73 @@ const minifyTemplateOptions = {
     removeStyleLinkTypeAttributes: true,
     useShortDoctype: true
 }
+
+const SASS_PLUGINS = [
+    {
+        loader: 'css-loader',
+        options: {
+            importLoaders: 1
+        }
+    },{
+        loader: 'resolve-url-loader'
+    },{
+        loader: 'sass-loader',
+        options: {
+            sourceMap: true
+        }
+    }
+];
+
+const BABEL_PLUGINS = [
+    [
+        "const-enum",
+        {
+            "transform": "constObject"
+        }
+    ],
+
+    // These make up @babel/preset-react, we cannot use preset-react because we need to ensure that the
+    // typescript plugins run before the class properties plugins
+    '@babel/plugin-syntax-jsx',
+    '@babel/plugin-transform-react-jsx',
+    '@babel/plugin-transform-react-display-name',
+
+    // These make up @babel/preset-typescript
+    ['@babel/plugin-transform-typescript', {
+        allExtensions: true, // required when using isTSX
+        allowDeclareFields: true,
+        isTSX: true,
+    }],
+
+    ['@babel/proposal-class-properties'],
+    '@babel/proposal-object-rest-spread',
+];
+
+const BABEL_CONFIG = {
+    loader: 'babel-loader',
+    options: {
+        babelrc: false,
+        cacheDirectory: true,
+        presets: [
+            [
+                '@babel/preset-env',
+                {
+                    // support async/await
+                    'targets': 'last 2 versions, not dead, not IE 11, > 5%',
+                }
+            ],
+        ],
+        plugins: BABEL_PLUGINS,
+    }
+};
+
+const BABEL_DEV_CONFIG = {
+    ...BABEL_CONFIG,
+    options: {
+        ...BABEL_CONFIG.options,
+        plugins: ['react-hot-loader/babel'].concat(BABEL_PLUGINS),
+    }
+};
 
 module.exports = {
     labkeyUIComponentsPath: labkeyUIComponentsPath,
@@ -70,7 +137,7 @@ module.exports = {
             {
                 test: /\.(woff|woff2)$/,
                 use: {
-                    loader: "url-loader",
+                    loader: 'url-loader',
                     options: {
                         limit: 10000,
                         mimetype: 'application/font-woff',
@@ -80,7 +147,7 @@ module.exports = {
             {
                 test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
                 use: {
-                    loader: "url-loader",
+                    loader: 'url-loader',
                     options: {
                         limit: 10000,
                         mimetype: 'application/octet-stream',
@@ -94,7 +161,7 @@ module.exports = {
             {
                 test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
                 use: {
-                    loader: "url-loader",
+                    loader: 'url-loader',
                     options: {
                         limit: 10000,
                         mimetype: 'image/svg+xml',
@@ -104,7 +171,7 @@ module.exports = {
             {
                 test: /\.png(\?v=\d+\.\d+\.\d+)?$/,
                 use: {
-                    loader: "url-loader",
+                    loader: 'url-loader',
                     options: {
                         limit: 10000,
                         mimetype: 'image/png',
@@ -115,130 +182,33 @@ module.exports = {
         STYLE: [
             {
                 test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader'
-                ]
+                use: [MiniCssExtractPlugin.loader, 'css-loader']
             },
             {
                 test: /\.scss$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
-                    },
-                    {
-                        loader: 'resolve-url-loader'
-                    },
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sourceMap: true
-                        }
-                    }
-                ]
+                use: [MiniCssExtractPlugin.loader].concat(SASS_PLUGINS),
             },
         ],
         STYLE_DEV: [
             {
                 test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-                ]
+                use: ['style-loader', 'css-loader']
             },
             {
                 test: /\.scss$/,
-                use: [
-                    'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1
-                        }
-                    },{
-                        loader: 'resolve-url-loader'
-                    },{
-                        loader: 'sass-loader',
-                        options: {
-                            sourceMap: true
-                        }
-                    }]
+                use: ['style-loader'].concat(SASS_PLUGINS),
             },
         ],
         TYPESCRIPT: [
             {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
-                use: [{
-                    loader: 'babel-loader',
-                    options: {
-                        babelrc: false,
-                        cacheDirectory: true,
-                        presets: [
-                            [
-                                "@babel/preset-env",
-                                {
-                                    // support async/await
-                                    "targets": {
-                                        "node": "10"
-                                    }
-                                }
-                            ],
-                            "@babel/preset-react"
-                        ]
-                    }
-                },{
-                    loader: 'ts-loader',
-                    options: {
-                        onlyCompileBundledFiles: true
-                        // this flag and the test regex will make sure that test files do not get bundled
-                        // see: https://github.com/TypeStrong/ts-loader/issues/267
-                    }
-                }]
+                use: [BABEL_CONFIG]
             }
         ],
         TYPESCRIPT_DEV: [
             {
                 test: /^(?!.*spec\.tsx?$).*\.tsx?$/,
-                use: [{
-                    loader: 'babel-loader',
-                    options: {
-                        babelrc: false,
-                        cacheDirectory: true,
-                        presets: [
-                            [
-                                "@babel/preset-env",
-                                {
-                                    // support async/await
-                                    "targets": "last 2 versions, not dead, not IE 11, > 5%",
-                                }
-                            ],
-                        ],
-                        plugins: [
-                            "react-hot-loader/babel",
-                            "const-enum",
-
-                            // These make up @babel/preset-react
-                            "@babel/plugin-syntax-jsx",
-                            "@babel/plugin-transform-react-jsx",
-                            "@babel/plugin-transform-react-display-name",
-
-                            // These make up @babel/preset-typescript
-                            ["@babel/plugin-transform-typescript", {
-                                allExtensions: true,
-                                allowDeclareFields: true,
-                                isTSX: true,
-                                // onlyRemoveTypeImports: true,
-                            }],
-
-                            ["@babel/proposal-class-properties", { loose: true }],
-                            "@babel/proposal-object-rest-spread",
-                        ]
-                    }
-                }]
+                use: [BABEL_DEV_CONFIG]
             }
         ]
     },
@@ -315,7 +285,9 @@ module.exports = {
             return plugins;
         }, []);
 
-        allPlugins.push(new MiniCssExtractPlugin());
+        allPlugins.push(new MiniCssExtractPlugin({
+            filename: '[name].[contenthash].css',
+        }));
 
         return allPlugins;
     }

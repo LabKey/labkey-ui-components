@@ -69,8 +69,8 @@ import {
     removeFalseyObjKeys,
     removeUnusedOntologyProperties,
     reorderSummaryColumns,
-    removeNonAppProperties
-} from "./propertiesUtil";
+    removeNonAppProperties,
+} from './propertiesUtil';
 
 export interface IFieldChange {
     id: string;
@@ -351,7 +351,7 @@ export class DomainDesign
                         value = JSON.stringify(value.map(cf => removeFalseyObjKeys(cf)));
                     }
 
-                    if (key === 'fieldIndex' && value === "") {
+                    if (key === 'fieldIndex' && value === '') {
                         value = 0;
                     }
                     return [key, value];
@@ -395,7 +395,7 @@ export class DomainDesign
         const nameCol = new GridColumn({
             index: GRID_NAME_INDEX,
             title: GRID_NAME_INDEX,
-            raw: {index: 'name', caption: 'Name', sortable: true},
+            raw: { index: 'name', caption: 'Name', sortable: true },
             cell: (data: any, row: any) => {
                 const text = row.get('name');
                 const fieldIndex = row.get('fieldIndex');
@@ -1182,7 +1182,15 @@ export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boole
     if (type === FILE_TYPE) return includeFileType;
 
     // We are excluding the field types below for the App
-    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE, ONTOLOGY_LOOKUP_TYPE, VISIT_DATE_TYPE, VISIT_ID_TYPE].includes(type);
+    return ![
+        LOOKUP_TYPE,
+        PARTICIPANT_TYPE,
+        FLAG_TYPE,
+        ATTACHMENT_TYPE,
+        ONTOLOGY_LOOKUP_TYPE,
+        VISIT_DATE_TYPE,
+        VISIT_ID_TYPE,
+    ].includes(type);
 }
 
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {

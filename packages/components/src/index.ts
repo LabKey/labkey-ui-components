@@ -453,6 +453,7 @@ import {
     withQueryModels,
 } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
+import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
@@ -469,6 +470,7 @@ import {
 } from './internal/components/samples/models';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
+import { OntologyConceptOverviewPanel } from './internal/components/ontology/ConceptOverviewPanel';
 
 // See Immer docs for why we do this: https://immerjs.github.io/immer/docs/installation#pick-your-immer-version
 enableMapSet();
@@ -966,6 +968,7 @@ export {
     DetailPanel,
     DetailPanelWithModel,
     EditableDetailPanel,
+    TabbedGridPanel,
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
     Pagination,
@@ -991,4 +994,5 @@ export {
     createMockWithRouterProps,
     // Ontology
     OntologyBrowserPanel,
+    OntologyConceptOverviewPanel,
 };

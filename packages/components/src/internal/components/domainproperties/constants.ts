@@ -52,6 +52,7 @@ export const DOMAIN_FIELD_DEFAULT_DISPLAY_VALUE = 'defaultDisplayValue';
 export const DOMAIN_FIELD_ONTOLOGY_SOURCE = 'sourceOntology';
 export const DOMAIN_FIELD_ONTOLOGY_LABEL_COL = 'conceptLabelColumn';
 export const DOMAIN_FIELD_ONTOLOGY_IMPORT_COL = 'conceptImportColumn';
+export const DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT = 'principalConceptCode';
 export const DOMAIN_FIELD_DERIVATION_DATA_SCOPE = 'derivationDataScope';
 
 // TextFieldOptions

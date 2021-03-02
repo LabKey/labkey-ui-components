@@ -14,8 +14,10 @@ import {
     QueryInfo,
     QuerySort,
     Pagination,
+    DataViewInfoTypes,
 } from '../..';
 import { GRID_SELECTION_INDEX } from '../../internal/constants';
+import { DataViewInfo } from '../../internal/models';
 import { headerCell, headerSelectionCell } from '../../internal/renderers';
 import { ActionValue } from '../../internal/components/omnibox/actions/Action';
 import { FilterAction } from '../../internal/components/omnibox/actions/Filter';
@@ -33,7 +35,7 @@ import { ChartMenu } from './ChartMenu';
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { createQueryModelId } from './QueryModel';
 
-interface GridPanelProps<ButtonsComponentProps> {
+export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
     allowSorting?: boolean;
     asPanel?: boolean;
@@ -43,6 +45,8 @@ interface GridPanelProps<ButtonsComponentProps> {
     emptyText?: string;
     hideEmptyChartMenu?: boolean;
     hideEmptyViewMenu?: boolean;
+    onChartClicked?: (chart: DataViewInfo) => boolean;
+    onCreateReportClicked?: (type: DataViewInfoTypes) => void;
     pageSizes?: number[];
     title?: string;
     showButtonBar?: boolean;
@@ -96,6 +100,8 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             ButtonsComponent,
             hideEmptyChartMenu,
             hideEmptyViewMenu,
+            onChartClicked,
+            onCreateReportClicked,
             onViewSelect,
             pageSizes,
             showChartMenu,
@@ -126,6 +132,8 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                                 hideEmptyChartMenu={hideEmptyChartMenu}
                                 actions={actions}
                                 model={model}
+                                onChartClicked={onChartClicked}
+                                onCreateReportClicked={onCreateReportClicked}
                                 showSampleComparisonReports={showSampleComparisonReports}
                             />
                         )}

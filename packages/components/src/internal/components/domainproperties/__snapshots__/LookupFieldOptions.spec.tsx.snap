@@ -94,6 +94,7 @@ exports[`LookupFieldOptions Lookup field options 1`] = `
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
         "principalConceptCode": undefined,
+        "derivationDataScope": undefined,
         "selected": false,
       }
     }
@@ -646,6 +647,7 @@ exports[`LookupFieldOptions Selected container changes queries 1`] = `
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
         "principalConceptCode": undefined,
+        "derivationDataScope": undefined,
         "selected": false,
       }
     }
@@ -1301,6 +1303,7 @@ exports[`LookupFieldOptions Selected container changes schemas 1`] = `
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
         "principalConceptCode": undefined,
+        "derivationDataScope": undefined,
         "selected": false,
       }
     }
@@ -1956,6 +1959,7 @@ exports[`LookupFieldOptions Selected schema changes queries 1`] = `
         "conceptLabelColumn": undefined,
         "conceptImportColumn": undefined,
         "principalConceptCode": undefined,
+        "derivationDataScope": undefined,
         "selected": false,
       }
     }

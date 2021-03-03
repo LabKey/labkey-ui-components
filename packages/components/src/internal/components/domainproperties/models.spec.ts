@@ -132,8 +132,8 @@ const gridColumnsConst = [
     selectionCol,
     nameCol,
     {
-        caption: "Derivation Data Scope",
-        index: "derivationDataScope",
+        caption: 'Derivation Data Scope',
+        index: 'derivationDataScope',
         sortable: true,
     },
     { index: 'URL', caption: 'URL', sortable: true },

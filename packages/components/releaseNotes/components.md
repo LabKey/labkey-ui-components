@@ -2,8 +2,8 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 
-### version XXX
-*Released*: XXX
+### version 2.8.0
+*Released*: 3 March 2021
 * Add isSampleAliquotEnabled experimental flag
 * Add "Aliquot Options" to domain row
 * Allow DetailEditing to use custom set of update columns via getUpdateDisplayColumns

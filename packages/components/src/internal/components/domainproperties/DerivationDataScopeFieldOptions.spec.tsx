@@ -58,7 +58,7 @@ describe('DerivationDataScopeFieldOptions', () => {
         const aliquot = mount(<DerivationDataScopeFieldOptions {...props} />);
         const fieldName = createFormInputId(DOMAIN_FIELD_DERIVATION_DATA_SCOPE, 1, 1);
 
-        let checkbox = aliquot.find({ id: fieldName, bsClass: 'checkbox' });
+        const checkbox = aliquot.find({ id: fieldName, bsClass: 'checkbox' });
         expect(checkbox.props().disabled).toEqual(true);
         aliquot.unmount();
     });

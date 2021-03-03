@@ -5,7 +5,7 @@ import { LabelHelpTip } from '../../..';
 
 import { createFormInputId, createFormInputName, getCheckedValue } from './actions';
 import { isFieldFullyLocked } from './propertiesUtil';
-import {DERIVATION_DATA_SCOPE_CHILD_ONLY, DOMAIN_FIELD_DERIVATION_DATA_SCOPE} from './constants';
+import { DERIVATION_DATA_SCOPE_CHILD_ONLY, DOMAIN_FIELD_DERIVATION_DATA_SCOPE } from './constants';
 import { IDerivationDataScope, ITypeDependentProps } from './models';
 import { SectionHeading } from './SectionHeading';
 
@@ -58,7 +58,9 @@ export class DerivationDataScopeFieldOptions extends React.PureComponent<Props, 
                 <Row>
                     <Col xs={3}>
                         <Checkbox
-                            checked={value?.toLocaleLowerCase() === DERIVATION_DATA_SCOPE_CHILD_ONLY.toLocaleLowerCase()}
+                            checked={
+                                value?.toLocaleLowerCase() === DERIVATION_DATA_SCOPE_CHILD_ONLY.toLocaleLowerCase()
+                            }
                             onChange={this.handleCheckboxChange}
                             id={createFormInputId(DOMAIN_FIELD_DERIVATION_DATA_SCOPE, domainIndex, index)}
                             disabled={config.disable || isFieldFullyLocked(lockType)}

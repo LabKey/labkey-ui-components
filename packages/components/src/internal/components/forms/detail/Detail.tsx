@@ -23,6 +23,7 @@ import { DetailDisplay, DetailDisplaySharedProps } from './DetailDisplay';
 interface DetailProps extends DetailDisplaySharedProps {
     queryModel?: QueryGridModel;
     queryColumns?: List<QueryColumn>;
+    getUpdateDisplayColumns?: () => List<QueryColumn>;
 }
 
 export class Detail extends PureComponent<DetailProps> {
@@ -32,14 +33,15 @@ export class Detail extends PureComponent<DetailProps> {
     }
 
     render() {
-        const { editingMode, queryColumns, queryModel } = this.props;
+        const { editingMode, queryColumns, queryModel, getUpdateDisplayColumns } = this.props;
 
         if (queryModel && queryModel.isLoaded) {
             let displayColumns: List<QueryColumn>;
             if (queryColumns) {
                 displayColumns = queryColumns;
             } else if (editingMode) {
-                displayColumns = queryModel.getUpdateDisplayColumns();
+                if (getUpdateDisplayColumns) displayColumns = getUpdateDisplayColumns();
+                else displayColumns = queryModel.getUpdateDisplayColumns();
             } else {
                 displayColumns = queryModel.getDetailsDisplayColumns();
             }

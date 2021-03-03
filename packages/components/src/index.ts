@@ -190,7 +190,7 @@ import {
 } from './internal/constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
-import { getHelpLink, helpLinkNode } from './internal/util/helpLinks';
+import { getHelpLink, helpLinkNode, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -358,6 +358,7 @@ import {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
@@ -807,6 +808,7 @@ export {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     ListDesignerPanels,
     ListModel,
     fetchListDesign,
@@ -854,6 +856,7 @@ export {
     resolveErrorMessage,
     getHelpLink,
     helpLinkNode,
+    SAMPLE_ALIQUOT_TOPIC,
     // devTools functions
     applyDevTools,
     devToolsActive,

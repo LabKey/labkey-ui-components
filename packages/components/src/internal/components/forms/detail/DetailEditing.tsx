@@ -39,6 +39,7 @@ interface DetailEditingProps {
     submitText?: string;
     onEditToggle?: (editing: boolean) => any;
     auditBehavior?: AuditBehaviorTypes;
+    getUpdateDisplayColumns?: () => List<QueryColumn>;
 }
 
 interface DetailEditingState {
@@ -96,7 +97,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     };
 
     handleSubmit = values => {
-        this.setState(() => ({isSubmitting: true}));
+        this.setState(() => ({ isSubmitting: true }));
 
         const { auditBehavior, queryModel, onUpdate } = this.props;
         const queryData = queryModel.getRow();
@@ -167,7 +168,16 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     }
 
     render(): ReactNode {
-        const { queryModel, queryColumns, canUpdate, useEditIcon, appEditable, asSubPanel, title } = this.props;
+        const {
+            queryModel,
+            queryColumns,
+            canUpdate,
+            useEditIcon,
+            appEditable,
+            asSubPanel,
+            title,
+            getUpdateDisplayColumns,
+        } = this.props;
         const { editing, warning, error } = this.state;
 
         let isEditable = false;
@@ -206,6 +216,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                                     editingMode={true}
                                     detailRenderer={resolveDetailEditRenderer}
                                     titleRenderer={titleRenderer}
+                                    getUpdateDisplayColumns={getUpdateDisplayColumns}
                                 />
                             </div>
                         </Panel.Body>

@@ -1,6 +1,14 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+
+### version 2.8.0
+*Released*: 3 March 2021
+* Add isSampleAliquotEnabled experimental flag
+* Add "Aliquot Options" to domain row
+* Allow DetailEditing to use custom set of update columns via getUpdateDisplayColumns
+* Hide aliquot fields for insert editable grid and bulk insert form
+
 ### version 2.7.0
 *Released*: 1 March 2021
 * Add TabbedGridPanel component

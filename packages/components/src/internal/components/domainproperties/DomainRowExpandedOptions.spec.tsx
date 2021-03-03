@@ -188,7 +188,8 @@ describe('DomainExpandedOptions', () => {
             rangeURI: BOOLEAN_TYPE.rangeURI,
         });
 
-        const displayOption = { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, ...{ includeDerivationDataScope: true } };
+        let displayOption = { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS};
+        displayOption['derivationDataScopeConfig'] = {show: true};
         const props = { ...DEFAULT_PROPS, ...{ domainFormDisplayOptions: displayOption } };
         const row = mount(<DomainRowExpandedOptions {...props} field={field} />);
         validateRender(row, { boolean: 1, aliquot: 1 });

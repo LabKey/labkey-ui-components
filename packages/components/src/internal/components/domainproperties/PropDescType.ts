@@ -254,13 +254,13 @@ export const AUTOINT_TYPE = new PropDescType({
 
 export const VISIT_DATE_TYPE = new PropDescType({
     name: 'visitDate',
-    display: 'VisitDate',
+    display: 'Visit Date',
     rangeURI: DATETIME_RANGE_URI,
     conceptURI: VISITID_CONCEPT_URI,
 });
 export const VISIT_ID_TYPE = new PropDescType({
     name: 'visitId',
-    display: 'VisitID',
+    display: 'Visit ID',
     rangeURI: DOUBLE_RANGE_URI,
     conceptURI: VISITID_CONCEPT_URI,
 });

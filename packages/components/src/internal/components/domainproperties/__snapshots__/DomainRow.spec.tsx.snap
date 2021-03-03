@@ -229,7 +229,7 @@ exports[`DomainRow Sample Field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitDate",
+                      "display": "Visit Date",
                       "name": "visitDate",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       "alternateRangeURI": undefined,
@@ -239,7 +239,7 @@ exports[`DomainRow Sample Field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitID",
+                      "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
@@ -2421,7 +2421,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitDate",
+                      "display": "Visit Date",
                       "name": "visitDate",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       "alternateRangeURI": undefined,
@@ -2431,7 +2431,7 @@ exports[`DomainRow client side warning on field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitID",
+                      "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
@@ -3134,13 +3134,13 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 key="14"
                                                 value="visitDate"
                                               >
-                                                VisitDate
+                                                Visit Date
                                               </option>
                                               <option
                                                 key="15"
                                                 value="visitId"
                                               >
-                                                VisitID
+                                                Visit ID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -4570,7 +4570,7 @@ exports[`DomainRow date time field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitDate",
+                      "display": "Visit Date",
                       "name": "visitDate",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       "alternateRangeURI": undefined,
@@ -4580,7 +4580,7 @@ exports[`DomainRow date time field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitID",
+                      "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
@@ -5193,7 +5193,7 @@ exports[`DomainRow date time field 1`] = `
                                                 key="1"
                                                 value="visitDate"
                                               >
-                                                VisitDate
+                                                Visit Date
                                               </option>
                                             </select>
                                           </FormControl>
@@ -6865,7 +6865,7 @@ exports[`DomainRow decimal field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitDate",
+                      "display": "Visit Date",
                       "name": "visitDate",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       "alternateRangeURI": undefined,
@@ -6875,7 +6875,7 @@ exports[`DomainRow decimal field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitID",
+                      "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
@@ -7488,7 +7488,7 @@ exports[`DomainRow decimal field 1`] = `
                                                 key="1"
                                                 value="visitId"
                                               >
-                                                VisitID
+                                                Visit ID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -9195,7 +9195,7 @@ exports[`DomainRow participant id field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitDate",
+                      "display": "Visit Date",
                       "name": "visitDate",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       "alternateRangeURI": undefined,
@@ -9205,7 +9205,7 @@ exports[`DomainRow participant id field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitID",
+                      "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
@@ -11293,7 +11293,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitDate",
+                      "display": "Visit Date",
                       "name": "visitDate",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       "alternateRangeURI": undefined,
@@ -11303,7 +11303,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitID",
+                      "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
@@ -12006,13 +12006,13 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 key="14"
                                                 value="visitDate"
                                               >
-                                                VisitDate
+                                                Visit Date
                                               </option>
                                               <option
                                                 key="15"
                                                 value="visitId"
                                               >
-                                                VisitID
+                                                Visit ID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -13331,7 +13331,7 @@ exports[`DomainRow string field test 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitDate",
+                      "display": "Visit Date",
                       "name": "visitDate",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       "alternateRangeURI": undefined,
@@ -13341,7 +13341,7 @@ exports[`DomainRow string field test 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitID",
+                      "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
@@ -15739,7 +15739,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitDate",
+                      "display": "Visit Date",
                       "name": "visitDate",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
                       "alternateRangeURI": undefined,
@@ -15749,7 +15749,7 @@ exports[`DomainRow with empty domain form 1`] = `
                     },
                     Immutable.Record {
                       "conceptURI": "http://cpas.labkey.com/Study#VisitId",
-                      "display": "VisitID",
+                      "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
@@ -16439,13 +16439,13 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 key="14"
                                                 value="visitDate"
                                               >
-                                                VisitDate
+                                                Visit Date
                                               </option>
                                               <option
                                                 key="15"
                                                 value="visitId"
                                               >
-                                                VisitID
+                                                Visit ID
                                               </option>
                                             </select>
                                           </FormControl>

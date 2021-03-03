@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Support tagging participant and time point columns in sample types
+
 ### version 2.7.0
 *Released*: 1 March 2021
 * Add TabbedGridPanel component

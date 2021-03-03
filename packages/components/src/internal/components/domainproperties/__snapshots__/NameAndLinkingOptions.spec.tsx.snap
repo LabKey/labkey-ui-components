@@ -2,6 +2,7 @@
 
 exports[`NameAndLinkingOptions Name and Linking options 1`] = `
 <NameAndLinkingOptions
+  appPropertiesOnly={false}
   domainIndex={1}
   field={
     Immutable.Record {
@@ -89,7 +90,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
     }
   }
   index={1}
-  onChange={[MockFunction]}
+  onChange={[Function]}
 >
   <div>
     <Row

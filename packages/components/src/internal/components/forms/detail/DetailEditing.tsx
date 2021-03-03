@@ -25,38 +25,37 @@ import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
 
-interface DetailEditingProps {
-    queryModel: QueryGridModel;
-    queryColumns?: List<QueryColumn>;
-    canUpdate: boolean;
-    onUpdate?: () => void;
-    useEditIcon: boolean;
+interface Props {
     appEditable?: boolean;
     asSubPanel?: boolean;
-    title?: string;
-    cancelText?: string;
-    submitText?: string;
-    onEditToggle?: (editing: boolean) => void;
     auditBehavior?: AuditBehaviorTypes;
-    getUpdateDisplayColumns?: () => List<QueryColumn>;
+    cancelText?: string;
+    canUpdate: boolean;
+    onEditToggle?: (editing: boolean) => void;
+    onUpdate?: () => void;
+    queryColumns?: List<QueryColumn>;
+    queryModel: QueryGridModel;
+    submitText?: string;
+    title?: string;
+    useEditIcon: boolean;
 }
 
-interface DetailEditingState {
-    canSubmit?: boolean;
-    editing?: boolean;
-    warning?: string;
-    error?: ReactNode;
-    isSubmitting?: boolean;
+interface State {
+    canSubmit: boolean;
+    editing: boolean;
+    error: ReactNode;
+    isSubmitting: boolean;
+    warning: string;
 }
 
-export class DetailEditing extends Component<DetailEditingProps, DetailEditingState> {
+export class DetailEditing extends Component<Props, State> {
     static defaultProps = {
         useEditIcon: true,
         cancelText: 'Cancel',
         submitText: 'Save',
     };
 
-    state: Readonly<DetailEditingState> = {
+    state: Readonly<State> = {
         canSubmit: false,
         editing: false,
         warning: undefined,
@@ -154,7 +153,6 @@ export class DetailEditing extends Component<DetailEditingProps, DetailEditingSt
             asSubPanel,
             submitText,
             title,
-            getUpdateDisplayColumns,
         } = this.props;
         const { canSubmit, editing, isSubmitting, warning, error } = this.state;
 
@@ -189,11 +187,7 @@ export class DetailEditing extends Component<DetailEditingProps, DetailEditingSt
                         <Panel.Body>
                             <div className="detail__editing">
                                 {error && <Alert>{error}</Alert>}
-                                <Detail
-                                    editingMode
-                                    getUpdateDisplayColumns={getUpdateDisplayColumns}
-                                    queryModel={queryModel}
-                                />
+                                <Detail editingMode queryColumns={queryColumns} queryModel={queryModel} />
                             </div>
                         </Panel.Body>
                     </Panel>

@@ -48,6 +48,7 @@ export const DetailPanel: FC<DetailPanelProps> = memo(({ actions, model, queryCo
         return <LoadingSpinner />;
     }
 
+    // This logic should be kept consistent with corollary logic in <Detail/>
     if (queryColumns !== undefined) {
         displayColumns = List(queryColumns);
     } else {

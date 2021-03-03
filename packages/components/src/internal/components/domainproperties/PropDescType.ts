@@ -68,14 +68,6 @@ export class PropDescType
         return conceptURI === CONCEPT_CODE_CONCEPT_URI;
     }
 
-    static isVisitId(conceptURI: string) {
-        return conceptURI === VISITID_CONCEPT_URI;
-    }
-
-    static isVisitDate(conceptURI: string) {
-        return conceptURI === VISITID_CONCEPT_URI;
-    }
-
     static isLookup(name: string): boolean {
         return name === 'lookup';
     }

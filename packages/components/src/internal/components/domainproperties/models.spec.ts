@@ -34,6 +34,8 @@ import {
     SAMPLE_TYPE,
     TEXT_TYPE,
     USERS_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
 } from './PropDescType';
 
 import { acceptablePropertyType, DomainDesign, DomainField, FieldErrors, isPropertyTypeAllowed } from './models';
@@ -370,6 +372,8 @@ describe('PropDescType', () => {
         expect(isPropertyTypeAllowed(SAMPLE_TYPE, true)).toBeTruthy();
         expect(isPropertyTypeAllowed(PARTICIPANT_TYPE, true)).toBeFalsy();
         expect(isPropertyTypeAllowed(ONTOLOGY_LOOKUP_TYPE, true)).toBeFalsy();
+        expect(isPropertyTypeAllowed(VISIT_DATE_TYPE, true)).toBeFalsy();
+        expect(isPropertyTypeAllowed(VISIT_ID_TYPE, true)).toBeFalsy();
     });
 
     test('acceptablePropertyType', () => {

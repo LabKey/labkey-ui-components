@@ -50,6 +50,8 @@ import {
     INTEGER_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
     TEXT_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -333,23 +335,29 @@ describe('domain properties actions', () => {
             allowFlagProperties: true,
             allowFileLinkProperties: true,
             allowAttachmentProperties: true,
+            allowTimepointProperties: true,
         });
         expect(getAvailableTypes(domain).contains(FLAG_TYPE)).toBeTruthy();
         expect(getAvailableTypes(domain).contains(FILE_TYPE)).toBeTruthy();
         expect(getAvailableTypes(domain).contains(ATTACHMENT_TYPE)).toBeTruthy();
         expect(getAvailableTypes(domain).contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
         expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
+        expect(getAvailableTypes(domain).contains(VISIT_DATE_TYPE)).toBeTruthy();
+        expect(getAvailableTypes(domain).contains(VISIT_ID_TYPE)).toBeTruthy();
 
         domain = DomainDesign.create({
             allowFlagProperties: false,
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
-        });
+            allowTimepointProperties: false,
+    });
         expect(getAvailableTypes(domain).contains(FLAG_TYPE)).toBeFalsy();
         expect(getAvailableTypes(domain).contains(FILE_TYPE)).toBeFalsy();
         expect(getAvailableTypes(domain).contains(ATTACHMENT_TYPE)).toBeFalsy();
         expect(getAvailableTypes(domain).contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
         expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
+        expect(getAvailableTypes(domain).contains(VISIT_DATE_TYPE)).toBeFalsy();
+        expect(getAvailableTypes(domain).contains(VISIT_ID_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypesForOntology', async () => {

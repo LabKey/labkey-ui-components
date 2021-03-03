@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "2.0.0-fb-fix-hmr.1",
+  "version": "2.0.0-fb-fix-hmr.2",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

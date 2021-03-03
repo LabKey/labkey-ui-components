@@ -116,6 +116,7 @@ import getFolderTabsInfo from '../test/data/admin-getFolderTabs.json';
 import getOntologyChildPathsInfo from '../test/data/ontologies-getChildPaths.json';
 import getOntologiesChildPathsInfo from '../test/data/ontologies-getRootChildPaths.json';
 import getOntologyInfo from '../test/data/ontologies-getOntology.json';
+import getConceptAlternatePaths from '../test/data/ontologies-getConceptAlternatePaths.json'
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -230,6 +231,7 @@ const QUERY_RESPONSES = fromJS({
     ontology: {
         ontologies: ontologiesQuery,
         getchildpaths: getOntologyChildPathsInfo,
+        getconceptalternatepaths: getConceptAlternatePaths,
     },
     pipeline: {
         job: pipelineJobQuery,
@@ -700,6 +702,11 @@ export function initOnotologyMocks(): void {
         return jsonResponse(getOntologyChildPathsInfo, res);
     });
 
+    mock.get(/.*\/ontology\/?.*\/getConceptAlternatePaths.*/, (req, res) => {
+        const queryParams = req.url().query;
+        return jsonResponse(getConceptAlternatePaths, res);
+    });
+
     mock.get(/.*\/ontology\/?.*\/getConcept.*/, (req, res) => {
         const queryParams = req.url().query;
         return jsonResponse({
@@ -708,7 +715,12 @@ export function initOnotologyMocks(): void {
                 code : queryParams.code,
                 label : queryParams.code.split(':').join(' '),
                 description : 'This is the description for this concept.',
-                hasChildren : false,
+                synonyms: [
+                    "c987654321",
+                    "code",
+                    "synonym one",
+                    "Max length label ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta metus nec lobortis. Aliquam erat volutpat. Vivamus cursus dui sit amet efficitur semper. Fusce vehicula sollicitudin volutpat. Cras auctor mi at tellus interdum aliquam. Morbi et faucibus turpis. Donec quis malesuada enim. Etiam scelerisque pharetra libero, blandit efficitur nisl varius mollis. Etiam orci nunc, aliquet ac hendrerit ac, porttitor in ex. Aenean placerat justo ut metus maximus ullamcorper. Morbi metus lorem, gravida eget massa in, finibus egestas erat. Suspendisse sollicitudin metus sapien, vitae dictum odio aliquam a. Ut euismod nisi ultricies condimentum luctus. Vestibulum tempor ultrices nunc.",
+                ],
                 url : null
             }
         }, res);

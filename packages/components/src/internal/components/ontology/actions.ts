@@ -6,6 +6,7 @@ const ONTOLOGY_CONTROLLER = 'ontology';
 const GET_CHILD_PATHS_ACTION = 'getChildPaths.api';
 const GET_ONTOLOGY_ACTION = 'getOntology.api';
 const GET_CONCEPT_ACTION = 'getConcept.api';
+const GET_ALTERNATE_CONCEPT_PATHS_ACTION = 'getAlternateConceptPaths.api';
 const SHARED_CONTAINER = 'shared';
 
 class Ontology {
@@ -87,8 +88,34 @@ export function getOntologyChildPathsAndConcepts(ontologyPath: string, container
     });
 }
 
+function getAlternateConceptPaths(conceptCode?: string, container: string = SHARED_CONTAINER): Promise<PathModel[]> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_ALTERNATE_CONCEPT_PATHS_ACTION, container, {
+                code: conceptCode,
+            }),
+            method: 'GET',
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response.paths?.map(path => new PathModel(path)));
+            }),
+            failure: Utils.getCallbackWrapper(
+                response => {
+                    console.error(response);
+                    reject(response);
+                },
+                null,
+                false
+            ),
+        });
+    });
+}
+
 export function fetchChildPaths(ontologyPath?: string): Promise<PathModel> {
     return getOntologyChildPathsAndConcepts(ontologyPath);
+}
+
+export function fetchAlternatePaths(conceptCode: string): Promise<PathModel[]> {
+    return getAlternateConceptPaths(conceptCode);
 }
 
 export function fetchConceptForCode(code: string): Promise<ConceptModel> {

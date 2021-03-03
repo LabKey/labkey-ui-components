@@ -21,7 +21,7 @@
         color: $gray-light;
     }
 
-    .title, .description-title, .description-text {
+    .title, .description-title, .description-text, .synonyms-title, .synonyms-text {
         color: $text-color;
     }
 
@@ -30,7 +30,7 @@
         font-weight: bold;
     }
 
-    .description-title {
+    .description-title, .synonyms-title {
         font-weight: bold;
         padding-top: 30px;
     }
@@ -45,6 +45,34 @@
     }
 }
 
+.ontology-path-breadcrumb-container {
+    color: $text-color;
+
+    //.ontology-path-breadcrumb {
+    //    overflow: hidden;
+    //    white-space: nowrap;
+    //    width: 120px;
+    //    text-overflow: ellipsis;
+    //}
+    //
+    //.ontology-path-breadcrumb :hover {
+    //    overflow: visible;
+    //    white-space: normal;
+    //    width: auto;
+    //    position: absolute;
+    //}
+
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .ontology-path-breadcrumb-spacer, .ontology-path-breadcrumb-leaf {
+        font-weight: bold;
+    }
+}
+
+
 /* PATH INFORMATION */
 .ontology-concept-pathinfo-container {
     padding-top: 10px;
@@ -55,4 +83,32 @@
     }
 }
 
+.concept-paths-container {
+    color: $text-color;
+
+    .concept-path {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 120px;
+        text-overflow: ellipsis;
+        direction: rtl;
+
+        &:hover {
+            overflow: visible;
+            white-space: normal;
+            width: auto;
+            position: absolute;
+            background: $panel-bg;
+        }
+    }
+
+    .title {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    //.concept-path, {
+    //    font-weight: bold;
+    //}
+}
 

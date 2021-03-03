@@ -9,6 +9,7 @@ export class ConceptModel {
     readonly code: string;
     readonly paths: string[];
     readonly description: string;
+    readonly synonyms: string[];
 
     constructor(values?: Partial<ConceptModel>) {
         Object.assign(this, values);
@@ -22,11 +23,12 @@ export class ConceptModel {
 export class PathModel {
     [immerable] = true;
 
-    readonly path: string;
-    readonly code: string;
-    readonly label: string;
-    readonly hasChildren: boolean;
-    readonly children: PathModel[];
+    readonly path: string; // Ontology coded path
+    readonly code: string; // Concept code for the concept at this path
+    readonly label: string; // Human readable label for this path node
+    readonly pathLabel?: string; // a Human readable full path string using the '>' as a spacer between nodes
+    readonly hasChildren: boolean; // flag indicating if node path has any children
+    readonly children: PathModel[] | undefined; // Array of Child paths, undefined if not loaded or hasChildren is false
 
     constructor(values?: Partial<PathModel>) {
         Object.assign(this, values);

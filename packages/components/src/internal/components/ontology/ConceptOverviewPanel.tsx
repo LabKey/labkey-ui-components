@@ -1,7 +1,7 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
-import { Alert } from '../../..';
+import { Alert, naturalSort } from '../../..';
 
 import { ConceptModel } from './models';
 import { fetchConceptForCode } from './actions';
@@ -41,6 +41,21 @@ interface ConceptOverviewPanelImplProps {
     concept: ConceptModel;
 }
 
+function renderConceptSynonyms(synonyms: string[]): React.ReactNode {
+    if (!synonyms || synonyms.length === 0) return undefined;
+
+    const synonymList = synonyms.sort(naturalSort).map(synonym => {
+        return <div key={synonym}>{synonym}</div>;
+    });
+
+    return (
+        <div>
+            <div className="synonyms-title">Synonyms</div>
+            <p className="synonyms-text">{synonymList}</p>
+        </div>
+    );
+}
+
 /**
  * The ontology concept overview display panel that takes in the concept prop (i.e. ConceptModel) and displays
  * the information about the concept label, code, description, etc.
@@ -52,7 +67,8 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
         return <div className="none-selected">No concept selected</div>;
     }
 
-    const { code, label, description } = concept;
+    const { code, label, description, synonyms } = concept;
+    renderConceptSynonyms(synonyms);
 
     return (
         <>
@@ -64,6 +80,7 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
                     <p className="description-text">{description}</p>
                 </div>
             )}
+            {synonyms && renderConceptSynonyms(synonyms)}
         </>
     );
 });

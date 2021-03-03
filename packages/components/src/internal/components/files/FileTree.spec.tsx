@@ -192,10 +192,10 @@ describe('Header', () => {
         wrapper.unmount();
     });
 
-    test('customStyles and selected', () => {
+    test('customStyles and not selected', () => {
         const title = { fontWeight: 'normal' };
         const customTitle = { fontWeight: 'bold' };
-        let wrapper = mount(
+        const wrapper = mount(
             <Header
                 {...DEFAULT_PROPS}
                 node={{
@@ -212,8 +212,12 @@ describe('Header', () => {
         validate(wrapper);
         expect(wrapper.find('.filetree-resource-row').prop('style')).toStrictEqual(title);
         wrapper.unmount();
+    });
 
-        wrapper = mount(
+    test('customStyles and selected', () => {
+        const title = { fontWeight: 'normal' };
+        const customTitle = { fontWeight: 'bold' };
+        const wrapper = mount(
             <Header
                 {...DEFAULT_PROPS}
                 node={{

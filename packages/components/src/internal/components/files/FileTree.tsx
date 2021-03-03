@@ -93,8 +93,8 @@ const DEFAULT_ROOT_PREFIX = '|root';
 const CHECK_ID_PREFIX = 'filetree-check-';
 
 // Place holder names for empty or loading display.  Uses asterisk which will never be in a file name.
-const EMPTY_FILE_NAME = '*empty';
-const LOADING_FILE_NAME = '*loading';
+export const EMPTY_FILE_NAME = '*empty';
+export const LOADING_FILE_NAME = '*loading';
 
 const nodeIsLoading = (id: string): boolean => {
     return id.endsWith('|' + LOADING_FILE_NAME);
@@ -104,7 +104,8 @@ const nodeIsEmpty = (id: string): boolean => {
     return id.endsWith('|' + EMPTY_FILE_NAME);
 };
 
-const NodeIcon = props => {
+// exported for jest testing
+export const NodeIcon = props => {
     const { isDirectory, useFileIconCls, node } = props;
     const icon = isDirectory ? (node.toggled ? faFolderOpen : faFolder) : faFileAlt;
 
@@ -119,7 +120,8 @@ const NodeIcon = props => {
     );
 };
 
-const Header = props => {
+// exported for jest testing
+export const Header = props => {
     const {
         style,
         onSelect,
@@ -178,7 +180,12 @@ const Header = props => {
                         {showNodeIcon && (
                             <NodeIcon useFileIconCls={useFileIconCls} isDirectory={isDirectory} node={node} />
                         )}
-                        <div className={classNames({'filetree-file-name': !isDirectory, 'filetree-directory-name': isDirectory })}>
+                        <div
+                            className={classNames({
+                                'filetree-file-name': !isDirectory,
+                                'filetree-directory-name': isDirectory,
+                            })}
+                        >
                             {node.name}
                         </div>
                     </div>

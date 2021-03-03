@@ -18,18 +18,20 @@ __dirname = lkModule;
 const devServer = {
     host: 'localhost',
     port: constants.watchPort,
-
     // enable the HMR on the server
     hot: true,
-
     headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
         "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
     },
-
     compress: true,
-    overlay: true
+    overlay: true,
+    watchOptions: {
+        // Ignore any packages folders, if we don't ignore packages then we will incorrectly trigger builds in
+        // package folders (e.g. changing a file in the SM Workflow package would incorrectly trigger a build in SM)
+        ignored: ['**/packages']
+    }
 };
 
 const devServerURL = 'http://' + devServer.host + ':' + devServer.port;
@@ -95,21 +97,6 @@ module.exports = {
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // enable HMR globally
         // This Plugin type checks our TS code, @babel/preset-typescript does not type check, it only transforms
-        new ForkTsCheckerWebpackPlugin({
-            typescript: {
-                configOverwrite: {
-                    compilerOptions: {
-                        "baseUrl": ".",
-                        "noEmit": true,
-                        "paths": {
-                            "immutable": [constants.labkeyUIComponentsPath + "/node_modules/immutable"],
-                            "@labkey/components": [constants.labkeyUIComponentsPath],
-                            "@labkey/freezermanager": [constants.freezerManagerPath],
-                            "@labkey/workflow": [constants.workflowPath]
-                        }
-                    }
-                }
-            }
-        })
-    ]
+        new ForkTsCheckerWebpackPlugin(constants.TS_CHECKER_DEV_CONFIG)
+    ],
 };

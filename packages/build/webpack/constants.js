@@ -8,12 +8,15 @@ const lkModuleContainer = process.env.LK_MODULE_CONTAINER;
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 // Conditionalize the path to use for the @labkey packages based on if the user wants to LINK their labkey-ui-components repo.
 // NOTE: the LABKEY_UI_COMPONENTS_HOME environment variable must be set for this to work.
 let labkeyUIComponentsPath = path.resolve('./node_modules/@labkey/components');
 let freezerManagerPath = path.resolve('./node_modules/@labkey/freezermanager');
 let workflowPath = path.resolve('./node_modules/@labkey/workflow');
+const tsconfigPath = path.resolve('./node_modules/@labkey/build/webpack/tsconfig.json');
+
 if (process.env.LINK) {
     if (process.env.LABKEY_UI_COMPONENTS_HOME === undefined) {
         throw 'ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.';
@@ -72,7 +75,8 @@ const SASS_PLUGINS = [
 
 const BABEL_PLUGINS = [
     // These make up @babel/preset-react, we cannot use preset-react because we need to ensure that the
-    // typescript plugins run before the class properties plugins
+    // typescript plugins run before the class properties plugins in order for allowDeclareFields to work
+    // properly. We can use preset-react and stop using allowDeclareFields if we stop using Immutable.
     '@babel/plugin-syntax-jsx',
     '@babel/plugin-transform-react-jsx',
     '@babel/plugin-transform-react-display-name',
@@ -84,7 +88,7 @@ const BABEL_PLUGINS = [
         isTSX: true,
     }],
 
-    ['@babel/proposal-class-properties'],
+    '@babel/proposal-class-properties',
     '@babel/proposal-object-rest-spread',
 ];
 
@@ -114,11 +118,43 @@ const BABEL_DEV_CONFIG = {
     }
 };
 
+const TS_CHECKER_CONFIG = {
+    typescript: {
+        configFile: tsconfigPath,
+        context: '.',
+        diagnosticOptions: {
+            semantic: true,
+            syntactic: true,
+        },
+        mode: "write-references",
+    }
+};
+
+const TS_CHECKER_DEV_CONFIG = {
+    ...TS_CHECKER_CONFIG,
+    typescript: {
+        ...TS_CHECKER_CONFIG.typescript,
+        configOverwrite: {
+            compilerOptions: {
+                "paths": {
+                    "immutable": [labkeyUIComponentsPath + "/node_modules/immutable"],
+                    "@labkey/components": [labkeyUIComponentsPath],
+                    "@labkey/freezermanager": [freezerManagerPath],
+                    "@labkey/workflow": [workflowPath]
+                }
+            }
+        },
+    }
+};
+
 module.exports = {
     labkeyUIComponentsPath: labkeyUIComponentsPath,
     freezerManagerPath: freezerManagerPath,
     workflowPath: workflowPath,
+    tsconfigPath: tsconfigPath,
     watchPort: watchPort,
+    TS_CHECKER_CONFIG: TS_CHECKER_CONFIG,
+    TS_CHECKER_DEV_CONFIG: TS_CHECKER_DEV_CONFIG,
     context: function(dir) {
         return path.resolve(dir, '..');
     },
@@ -281,6 +317,8 @@ module.exports = {
         allPlugins.push(new MiniCssExtractPlugin({
             filename: '[name].[contenthash].css',
         }));
+
+        allPlugins.push(new ForkTsCheckerWebpackPlugin(TS_CHECKER_CONFIG));
 
         return allPlugins;
     }

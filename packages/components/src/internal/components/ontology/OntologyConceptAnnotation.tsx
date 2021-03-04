@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 
 import { DomainField, DomainFieldLabel } from '../../..';
 
-import { helpLinkNode, ONTOLOGY_TOPIC } from '../../util/helpLinks';
+import { helpLinkNode, ONTOLOGY_CONCEPT_TOPIC } from '../../util/helpLinks';
 import { createFormInputName } from '../domainproperties/actions';
 import { DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT } from '../domainproperties/constants';
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
@@ -137,8 +137,7 @@ function getOntologyConceptAnnotationHelpTipBody(): ReactNode {
             Select an ontology concept to use as an annotation for this field.
             <br />
             <br />
-            {/* TODO update link topic once annotation case is added to docs page*/}
-            Learn more about {helpLinkNode(ONTOLOGY_TOPIC, 'ontology integration')} in LabKey.
+            Learn more about {helpLinkNode(ONTOLOGY_CONCEPT_TOPIC, 'ontology integration')} in LabKey.
         </>
     );
 }

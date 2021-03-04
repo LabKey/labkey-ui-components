@@ -13,14 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { List, Map } from 'immutable';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Button, Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Sticky, StickyContainer } from 'react-sticky';
 
-import { AddEntityButton, ConfirmModal, InferDomainResponse, FileAttachmentForm, Alert, valueIsEmpty } from '../../..';
+import {
+    AddEntityButton,
+    ConfirmModal,
+    InferDomainResponse,
+    FileAttachmentForm,
+    Alert,
+    valueIsEmpty,
+    QueryColumn
+} from '../../..';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
 
@@ -145,6 +153,7 @@ interface IDomainFormState {
     file: File;
     filePreviewMsg: string;
     bulkDeleteConfirmInfo: BulkDeleteConfirmInfo;
+    reservedFieldsMsg: ReactNode
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -196,6 +205,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             visibleFieldsCount: props.domain?.fields.size,
             summaryViewMode: false,
             search: undefined,
+            reservedFieldsMsg: undefined,
         };
 
         this.refsArray = [];
@@ -399,7 +409,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             });
         }
 
-        this.setState(() => ({ fieldDetails: updatedDomain.getFieldDetails() }));
+        this.setState(() => ({ reservedFieldsMsg: undefined, fieldDetails: updatedDomain.getFieldDetails() }));
 
         this.props.onChange?.(updatedDomain, dirty !== undefined ? dirty : true, rowIndexChanges);
     }
@@ -876,12 +886,13 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderRowHeaders() {
         const { domainFormDisplayOptions } = this.props;
-        const { visibleSelection, selectAll, visibleFieldsCount } = this.state;
+        const { visibleSelection, selectAll, visibleFieldsCount, reservedFieldsMsg } = this.state;
         const fieldPlural = visibleSelection.size !== 1 ? 'fields' : 'field';
         const clearText =
             visibleFieldsCount !== 0 && visibleSelection.size === visibleFieldsCount ? 'Clear All' : 'Clear';
         return (
             <div className="domain-field-row domain-row-border-default domain-floating-hdr">
+                <Alert bsStyle="info">{reservedFieldsMsg}</Alert>
                 <Row>
                     <div className="domain-field-header">
                         {visibleSelection.size} {fieldPlural} selected
@@ -930,21 +941,43 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     }
 
     handleFilePreviewLoad = (response: InferDomainResponse, file: File) => {
-        const { domain, setFileImportData } = this.props;
+        const { domain, setFileImportData, domainFormDisplayOptions } = this.props;
 
-        // if the DomainForm usage wants to show the file preview and import data options, then set these state values
-        if (response && response.fields.size > 0) {
+        let fields = List<QueryColumn>();
+        let reservedFields = response.reservedFields || List<QueryColumn>();
+
+        if (response?.fields?.size) {
+            response.fields.forEach(field => {
+                if (domain.reservedFieldNames?.indexOf(field.name) < 0)  {
+                    fields = fields.push(field);
+                }
+                else {
+                    reservedFields = reservedFields.push(field);
+                }
+            });
+        }
+        if (fields.size === 0) {
+            this.setState({
+                filePreviewMsg:
+                    'The selected file does not have any fields that will not be created by default. Please remove it and try selecting another file.',
+            });
+        }
+        else {
+            // if the DomainForm usage wants to show the file preview and import data options, then set these state values
             if (setFileImportData) {
                 this.setState({ filePreviewData: response, file, filePreviewMsg: undefined });
                 setFileImportData(file, true);
             }
 
-            this.onDomainChange(setDomainFields(domain, response.fields));
-        } else {
+            this.onDomainChange(setDomainFields(domain, fields));
+        }
+        if (reservedFields.size) {
             this.setState({
-                filePreviewMsg:
-                    'The selected file does not have any data. Please remove it and try selecting another file.',
-            });
+                reservedFieldsMsg: 'Reserved fields found in your file are not shown below. ' +
+                    'These fields are already used by LabKey' +
+                    (domainFormDisplayOptions.domainKindDisplayName ? ' to support this ' + domainFormDisplayOptions.domainKindDisplayName : '') + ': ' +
+                    reservedFields.map((field) => field.name).join(', ')
+            })
         }
     };
 
@@ -985,7 +1018,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     renderEmptyDomain() {
-        const { allowImportExport, index } = this.props;
+        const { allowImportExport, domain, index } = this.props;
         const shouldShowInferFromFile = this.shouldShowInferFromFile();
         if (shouldShowInferFromFile || allowImportExport) {
             let acceptedFormats = [];
@@ -1020,6 +1053,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                 previewCount: 3,
                                 skipPreviewGrid: true,
                                 onPreviewLoad: this.handleFilePreviewLoad,
+                                domainKindName: domain.domainKindName,
                             }
                         }
                         fileSpecificCallback={Map({ '.json': this.importFieldsFromJson })}

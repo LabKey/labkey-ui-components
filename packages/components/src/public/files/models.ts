@@ -20,4 +20,5 @@ export interface FileGridPreviewProps {
     initialData?: InferDomainResponse;
     skipPreviewGrid?: boolean;
     errorStyle?: string;
+    domainKindName?: string;
 }

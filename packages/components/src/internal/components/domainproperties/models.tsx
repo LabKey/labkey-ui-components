@@ -1630,6 +1630,7 @@ export interface IDomainFormDisplayOptions {
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
     derivationDataScopeConfig?: IDerivationDataScope;
+    domainKindDisplayName?: string;
 }
 
 export interface IDerivationDataScope {

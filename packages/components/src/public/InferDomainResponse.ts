@@ -5,13 +5,16 @@ import { QueryColumn } from '../index';
 export class InferDomainResponse extends Record({
     data: List<any>(),
     fields: List<QueryColumn>(),
+    reservedFields: List<QueryColumn>(),
 }) {
     data: List<any>;
     fields: List<QueryColumn>;
+    reservedFields: List<QueryColumn>;
 
     static create(rawModel): InferDomainResponse {
         let data = List<any>();
         let fields = List<QueryColumn>();
+        let reservedFields = List<QueryColumn>();
 
         if (rawModel) {
             if (rawModel.data) {
@@ -21,11 +24,16 @@ export class InferDomainResponse extends Record({
             if (rawModel.fields) {
                 fields = List(rawModel.fields.map(QueryColumn.create));
             }
+
+            if (rawModel.reservedFields) {
+                reservedFields = List(rawModel.reservedFields.map(QueryColumn.create));
+            }
         }
 
         return new InferDomainResponse({
             data,
             fields,
+            reservedFields,
         });
     }
 }

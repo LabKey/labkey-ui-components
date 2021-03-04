@@ -1,6 +1,9 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Update DomainForm and FileAttachmentForm to ignore reserved fields when inferring fields
 
 ### version 2.8.0
 *Released*: 3 March 2021

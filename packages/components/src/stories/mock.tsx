@@ -116,6 +116,8 @@ import getFolderTabsInfo from '../test/data/admin-getFolderTabs.json';
 import getOntologyChildPathsInfo from '../test/data/ontologies-getChildPaths.json';
 import getOntologiesChildPathsInfo from '../test/data/ontologies-getRootChildPaths.json';
 import getOntologyInfo from '../test/data/ontologies-getOntology.json';
+import getOntologyConceptSearchInfo from '../test/data/ontologies-searchConcepts.json';
+import getSearchEmptyInfo from '../test/data/search-jsonEmpty.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -712,5 +714,15 @@ export function initOnotologyMocks(): void {
                 url : null
             }
         }, res);
+    });
+
+    mock.get(/.*\/search\/?.*\/json.*/, (req, res) => {
+        const queryParams = req.url().query;
+
+        if (queryParams.category === 'concept') {
+            return jsonResponse(getOntologyConceptSearchInfo, res);
+        }
+
+        return jsonResponse(getSearchEmptyInfo, res);
     });
 }

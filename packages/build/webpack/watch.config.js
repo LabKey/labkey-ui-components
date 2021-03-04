@@ -30,7 +30,7 @@ const devServer = {
     watchOptions: {
         // Ignore any packages folders, if we don't ignore packages then we will incorrectly trigger builds in
         // package folders (e.g. changing a file in the SM Workflow package would incorrectly trigger a build in SM)
-        ignored: ['**/packages']
+        ignored: process.env.LINK ? [] : ['**/packages']
     }
 };
 

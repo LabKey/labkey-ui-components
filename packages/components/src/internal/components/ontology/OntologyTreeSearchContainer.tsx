@@ -15,12 +15,12 @@ interface OntologyBrowserPanelImplProps {
     setSelectedConcept: (conceptCode: string) => void;
     asPanel: boolean;
     selectedConcept?: ConceptModel;
-    initSelectedPath?: string;
+    // initSelectedPath?: string;
 }
 
 // exported for jest testing
 export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
-    const { ontology, selectedConcept, setSelectedConcept, asPanel, initSelectedPath } = props;
+    const { ontology, selectedConcept, setSelectedConcept, asPanel } = props;
 
     if (!ontology) {
         return <LoadingSpinner />;
@@ -36,7 +36,7 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
                 <OntologyTreePanel
                     root={root}
                     onNodeSelection={setSelectedConcept}
-                    initSelectedPath={initSelectedPath}
+                    // initSelectedPath={initSelectedPath}
                 />
             </Col>
             <Col xs={6} className="right-panel">

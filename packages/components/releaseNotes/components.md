@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.6.#
-*Released*: # March 2021
+### version 2.6.2
+*Released*: 4 March 2021
 * 42608: Bulk Insert erroneously transposes columns
 
 ### version 2.6.1

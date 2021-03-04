@@ -122,7 +122,7 @@ export function bindColumnRenderers(columns: OrderedMap<string, QueryColumn>): O
     if (columns) {
         const columnRenderers: Map<string, any> = getQueryColumnRenderers();
 
-        return columns.map((col: QueryColumn) => {
+        return columns.map(col => {
             let node = DefaultRenderer;
             if (col && col.columnRenderer && columnRenderers.has(col.columnRenderer.toLowerCase())) {
                 node = columnRenderers.get(col.columnRenderer.toLowerCase());

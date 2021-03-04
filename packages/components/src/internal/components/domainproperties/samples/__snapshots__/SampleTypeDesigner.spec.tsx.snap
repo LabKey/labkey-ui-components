@@ -1084,6 +1084,19 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "required": true,
       }
     }
+    domainFormDisplayOptions={
+      Object {
+        "disableMvEnabled": false,
+        "domainKindDisplayName": "sample type",
+        "hideAddFieldsButton": false,
+        "hideImportData": false,
+        "hideRequired": false,
+        "hideTextOptions": false,
+        "hideValidators": false,
+        "isDragDisabled": false,
+        "phiLevelDisabled": false,
+      }
+    }
     firstState={true}
     helpTopic="createSampleType"
     includeDataClasses={false}
@@ -1318,7 +1331,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "indices": Immutable.List [],
             "domainException": undefined,
             "mandatoryFieldNames": Immutable.List [],
-            "reservedFieldNames": Immutable.List [],
+            "reservedFieldNames": Immutable.List [
+              "SampleId",
+            ],
             "newDesignFields": undefined,
             "instructions": undefined,
             "domainKindName": undefined,
@@ -1452,7 +1467,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "indices": Immutable.List [],
               "domainException": undefined,
               "mandatoryFieldNames": Immutable.List [],
-              "reservedFieldNames": Immutable.List [],
+              "reservedFieldNames": Immutable.List [
+                "SampleId",
+              ],
               "newDesignFields": undefined,
               "instructions": undefined,
               "domainKindName": undefined,
@@ -1601,7 +1618,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "indices": Immutable.List [],
                 "domainException": undefined,
                 "mandatoryFieldNames": Immutable.List [],
-                "reservedFieldNames": Immutable.List [],
+                "reservedFieldNames": Immutable.List [
+                  "SampleId",
+                ],
                 "newDesignFields": undefined,
                 "instructions": undefined,
                 "domainKindName": undefined,
@@ -1756,7 +1775,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "indices": Immutable.List [],
                   "domainException": undefined,
                   "mandatoryFieldNames": Immutable.List [],
-                  "reservedFieldNames": Immutable.List [],
+                  "reservedFieldNames": Immutable.List [
+                    "SampleId",
+                  ],
                   "newDesignFields": undefined,
                   "instructions": undefined,
                   "domainKindName": undefined,
@@ -2103,7 +2124,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         "indices": Immutable.List [],
                                         "domainException": undefined,
                                         "mandatoryFieldNames": Immutable.List [],
-                                        "reservedFieldNames": Immutable.List [],
+                                        "reservedFieldNames": Immutable.List [
+                                          "SampleId",
+                                        ],
                                         "newDesignFields": undefined,
                                         "instructions": undefined,
                                         "domainKindName": undefined,
@@ -2809,10 +2832,25 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "indices": Immutable.List [],
             "domainException": undefined,
             "mandatoryFieldNames": Immutable.List [],
-            "reservedFieldNames": Immutable.List [],
+            "reservedFieldNames": Immutable.List [
+              "SampleId",
+            ],
             "newDesignFields": undefined,
             "instructions": undefined,
             "domainKindName": undefined,
+          }
+        }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "sample type",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
           }
         }
         domainIndex={0}
@@ -2935,7 +2973,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "indices": Immutable.List [],
                 "domainException": undefined,
                 "mandatoryFieldNames": Immutable.List [],
-                "reservedFieldNames": Immutable.List [],
+                "reservedFieldNames": Immutable.List [
+                  "SampleId",
+                ],
                 "newDesignFields": undefined,
                 "instructions": undefined,
                 "domainKindName": undefined,
@@ -2944,6 +2984,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "sample type",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -3461,6 +3502,9 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   <div
                                                     className="domain-field-row domain-row-border-default domain-floating-hdr"
                                                   >
+                                                    <Alert
+                                                      bsStyle="info"
+                                                    />
                                                     <Row
                                                       bsClass="row"
                                                       componentClass="div"
@@ -3777,6 +3821,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "sample type",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -3971,6 +4016,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "sample type",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -4585,6 +4631,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "sample type",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -5494,6 +5541,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "sample type",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,

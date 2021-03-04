@@ -11,6 +11,7 @@ import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesi
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from "../constants";
 
 interface Props {
     onChange?: (model: AssayProtocolModel) => void;
@@ -236,7 +237,7 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                             successBsStyle={successBsStyle}
                             allowImportExport={true}
                             testMode={testMode}
-                            domainFormDisplayOptions={{domainKindDisplayName: 'assay design'}}
+                            domainFormDisplayOptions={{...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'assay design'}}
                         >
                             <div>{domain.description}</div>
                         </DomainForm>

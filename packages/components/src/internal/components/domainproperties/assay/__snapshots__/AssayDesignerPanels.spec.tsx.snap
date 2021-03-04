@@ -1639,6 +1639,19 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={0}
         helpTopic={null}
         index={0}
@@ -1750,6 +1763,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -2406,6 +2420,19 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={1}
         helpTopic={null}
         index={1}
@@ -2517,6 +2544,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -3173,6 +3201,19 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={2}
         helpTopic={null}
         index={2}
@@ -3284,6 +3325,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -3764,6 +3806,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                   onFileRemoval={[Function]}
                                   previewGridProps={
                                     Object {
+                                      "domainKindName": undefined,
                                       "onPreviewLoad": [Function],
                                       "previewCount": 3,
                                       "skipPreviewGrid": true,
@@ -8221,6 +8264,19 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={0}
         headerPrefix="Test Assay Protocol"
         helpTopic={null}
@@ -8565,6 +8621,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -9643,6 +9700,19 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={1}
         headerPrefix="Test Assay Protocol"
         helpTopic={null}
@@ -10240,6 +10310,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -11084,6 +11155,9 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                   <div
                                                     className="domain-field-row domain-row-border-default domain-floating-hdr"
                                                   >
+                                                    <Alert
+                                                      bsStyle="info"
+                                                    />
                                                     <Row
                                                       bsClass="row"
                                                       componentClass="div"
@@ -11400,6 +11474,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -11595,6 +11670,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -12209,6 +12285,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -13118,6 +13195,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -13545,6 +13623,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -13740,6 +13819,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -14354,6 +14434,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -15209,6 +15290,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -15636,6 +15718,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -15831,6 +15914,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -16445,6 +16529,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -17265,6 +17350,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -19605,6 +19691,19 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={0}
         helpTopic={null}
         index={0}
@@ -19716,6 +19815,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -20371,6 +20471,19 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={1}
         helpTopic={null}
         index={1}
@@ -20482,6 +20595,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -21137,6 +21251,19 @@ exports[`AssayDesignerPanels default properties 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={2}
         helpTopic={null}
         index={2}
@@ -21248,6 +21375,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -21728,6 +21856,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                   onFileRemoval={[Function]}
                                   previewGridProps={
                                     Object {
+                                      "domainKindName": undefined,
                                       "onPreviewLoad": [Function],
                                       "previewCount": 3,
                                       "skipPreviewGrid": true,
@@ -23838,6 +23967,19 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={1}
         helpTopic={null}
         index={1}
@@ -23949,6 +24091,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -24604,6 +24747,19 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={2}
         helpTopic={null}
         index={2}
@@ -24715,6 +24871,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -25195,6 +25352,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                   onFileRemoval={[Function]}
                                   previewGridProps={
                                     Object {
+                                      "domainKindName": undefined,
                                       "onPreviewLoad": [Function],
                                       "previewCount": 3,
                                       "skipPreviewGrid": true,
@@ -30882,6 +31040,19 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={1}
         headerPrefix="Test Assay Protocol"
         helpTopic={null}
@@ -31479,6 +31650,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -32323,6 +32495,9 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                   <div
                                                     className="domain-field-row domain-row-border-default domain-floating-hdr"
                                                   >
+                                                    <Alert
+                                                      bsStyle="info"
+                                                    />
                                                     <Row
                                                       bsClass="row"
                                                       componentClass="div"
@@ -32639,6 +32814,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -32834,6 +33010,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -33466,6 +33643,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -34375,6 +34553,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -34942,6 +35121,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -35137,6 +35317,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -35769,6 +35950,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -36624,6 +36806,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -37191,6 +37374,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -37386,6 +37570,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -38018,6 +38203,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -38838,6 +39024,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -44642,6 +44829,19 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={0}
         headerPrefix="Test Assay Protocol"
         helpTopic={null}
@@ -44986,6 +45186,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -46063,6 +46264,19 @@ exports[`AssayDesignerPanels initModel 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "assay design",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={1}
         headerPrefix="Test Assay Protocol"
         helpTopic={null}
@@ -46660,6 +46874,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "assay design",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -47504,6 +47719,9 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                   <div
                                                     className="domain-field-row domain-row-border-default domain-floating-hdr"
                                                   >
+                                                    <Alert
+                                                      bsStyle="info"
+                                                    />
                                                     <Row
                                                       bsClass="row"
                                                       componentClass="div"
@@ -47820,6 +48038,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -48015,6 +48234,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -48647,6 +48867,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -49556,6 +49777,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -50123,6 +50345,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -50318,6 +50541,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -50950,6 +51174,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -51805,6 +52030,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -52372,6 +52598,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "assay design",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -52567,6 +52794,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "assay design",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -53199,6 +53427,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "assay design",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -54019,6 +54248,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "assay design",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,

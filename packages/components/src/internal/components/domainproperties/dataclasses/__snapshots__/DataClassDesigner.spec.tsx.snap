@@ -1352,6 +1352,19 @@ exports[`DataClassDesigner initModel 1`] = `
 >
   <DataClassDesignerImpl
     currentPanelIndex={0}
+    domainFormDisplayOptions={
+      Object {
+        "disableMvEnabled": false,
+        "domainKindDisplayName": "data class",
+        "hideAddFieldsButton": false,
+        "hideImportData": false,
+        "hideRequired": false,
+        "hideTextOptions": false,
+        "hideValidators": false,
+        "isDragDisabled": false,
+        "phiLevelDisabled": false,
+      }
+    }
     firstState={true}
     initModel={
       DataClassModel {
@@ -4394,6 +4407,19 @@ exports[`DataClassDesigner initModel 1`] = `
             "domainKindName": undefined,
           }
         }
+        domainFormDisplayOptions={
+          Object {
+            "disableMvEnabled": false,
+            "domainKindDisplayName": "data class",
+            "hideAddFieldsButton": false,
+            "hideImportData": false,
+            "hideRequired": false,
+            "hideTextOptions": false,
+            "hideValidators": false,
+            "isDragDisabled": false,
+            "phiLevelDisabled": false,
+          }
+        }
         domainIndex={0}
         headerTitle="Fields"
         helpTopic={null}
@@ -4704,6 +4730,7 @@ exports[`DataClassDesigner initModel 1`] = `
             domainFormDisplayOptions={
               Object {
                 "disableMvEnabled": false,
+                "domainKindDisplayName": "data class",
                 "hideAddFieldsButton": false,
                 "hideImportData": false,
                 "hideRequired": false,
@@ -5155,6 +5182,9 @@ exports[`DataClassDesigner initModel 1`] = `
                                                   <div
                                                     className="domain-field-row domain-row-border-default domain-floating-hdr"
                                                   >
+                                                    <Alert
+                                                      bsStyle="info"
+                                                    />
                                                     <Row
                                                       bsClass="row"
                                                       componentClass="div"
@@ -5487,6 +5517,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "data class",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -5698,6 +5729,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "data class",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -6303,6 +6335,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "data class",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -7234,6 +7267,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "data class",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -7828,6 +7862,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "data class",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -8028,6 +8063,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "data class",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -8616,6 +8652,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "data class",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -9475,6 +9512,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "data class",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,
@@ -10058,6 +10096,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                         domainFormDisplayOptions={
                                                           Object {
                                                             "disableMvEnabled": false,
+                                                            "domainKindDisplayName": "data class",
                                                             "hideAddFieldsButton": false,
                                                             "hideImportData": false,
                                                             "hideRequired": false,
@@ -10258,6 +10297,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                         domainFormDisplayOptions={
                                                                           Object {
                                                                             "disableMvEnabled": false,
+                                                                            "domainKindDisplayName": "data class",
                                                                             "hideAddFieldsButton": false,
                                                                             "hideImportData": false,
                                                                             "hideRequired": false,
@@ -10828,6 +10868,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                           domainFormDisplayOptions={
                                                                             Object {
                                                                               "disableMvEnabled": false,
+                                                                              "domainKindDisplayName": "data class",
                                                                               "hideAddFieldsButton": false,
                                                                               "hideImportData": false,
                                                                               "hideRequired": false,
@@ -11649,6 +11690,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                     domainFormDisplayOptions={
                                                                                       Object {
                                                                                         "disableMvEnabled": false,
+                                                                                        "domainKindDisplayName": "data class",
                                                                                         "hideAddFieldsButton": false,
                                                                                         "hideImportData": false,
                                                                                         "hideRequired": false,

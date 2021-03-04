@@ -120,6 +120,7 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
                 <OntologyTreePanel
                     root={root}
                     onNodeSelection={setSelectedConcept}
+                    // initSelectedPath={initSelectedPath}
                 />
             </Col>
             <Col xs={6} className="right-panel">

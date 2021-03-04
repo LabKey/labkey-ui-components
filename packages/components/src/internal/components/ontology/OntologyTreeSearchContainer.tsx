@@ -1,76 +1,13 @@
 import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Col, Row } from 'react-bootstrap';
 
-import { Alert, LabelHelpTip, LoadingSpinner, searchUsingIndex } from '../../..';
+import { Alert, searchUsingIndex } from '../../..';
 
 import { ConceptModel, OntologyModel } from './models';
-import { ConceptInformationTabs } from './ConceptInformationTabs';
-import { OntologyTreePanel } from './OntologyTreePanel';
 
 const CONCEPT_CATEGORY = 'concept';
 const SEARCH_LIMIT = 10;
-
-interface OntologyBrowserPanelImplProps {
-    ontology: OntologyModel;
-    setSelectedConcept: (conceptCode: string) => void;
-    asPanel: boolean;
-    selectedConcept?: ConceptModel;
-    // initSelectedPath?: string;
-}
-
-// exported for jest testing
-export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
-    const { ontology, selectedConcept, setSelectedConcept, asPanel } = props;
-
-    if (!ontology) {
-        return <LoadingSpinner />;
-    }
-
-    const { conceptCount, description } = ontology;
-    const root = ontology.getPathModel();
-
-    const body = (
-        <Row>
-            <Col xs={6} className="left-panel">
-                <OntologyTreeSearchContainer ontology={ontology} />
-                <OntologyTreePanel
-                    root={root}
-                    onNodeSelection={setSelectedConcept}
-                    // initSelectedPath={initSelectedPath}
-                />
-            </Col>
-            <Col xs={6} className="right-panel">
-                <ConceptInformationTabs concept={selectedConcept} />
-            </Col>
-        </Row>
-    );
-
-    if (!asPanel) {
-        return <div className="ontology-browser-container">{body}</div>;
-    }
-
-    return (
-        <div className="panel panel-default ontology-browser-container">
-            <div className="panel-heading">
-                Browse {ontology.getDisplayName()}
-                &nbsp;
-                <LabelHelpTip
-                    title="Ontology Details"
-                    placement="bottom"
-                    iconComponent={<i className="fa fa-info-circle" />}
-                >
-                    {description && <p className="ontology-description">{description}</p>}
-                    <p className="ontology-concept-count">{Number(conceptCount).toLocaleString()} total concepts</p>
-                </LabelHelpTip>
-            </div>
-            <div className="panel-body">{body}</div>
-        </div>
-    );
-});
-
-// TODO move this to separate file
 interface OntologyTreeSearchContainerProps {
-    ontology: OntologyModel,
+    ontology: OntologyModel;
 }
 
 export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> = memo(props => {

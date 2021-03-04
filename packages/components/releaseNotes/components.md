@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Item 8546: Ontology concept picker panel search
+
 ### version 2.6.1
 *Released*: 2 March 2021
 * Issue 42589: Product Menu attempts to load before application initialized

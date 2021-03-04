@@ -238,11 +238,7 @@ import { QuerySelect, QuerySelectOwnProps } from './internal/components/forms/Qu
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailEditing } from './internal/components/forms/detail/DetailEditing';
 
-import {
-    resolveDetailEditRenderer,
-    resolveDetailRenderer,
-    titleRenderer,
-} from './internal/components/forms/detail/DetailEditRenderer';
+import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
 import { Detail } from './internal/components/forms/detail/Detail';
 import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './internal/components/forms/actions';
 import { ISelectInitData } from './internal/components/forms/model';
@@ -564,9 +560,7 @@ export {
     LabelColorRenderer,
     MultiValueRenderer,
     StorageStatusRenderer,
-    resolveDetailEditRenderer,
     resolveDetailRenderer,
-    titleRenderer,
     resolveRenderer,
     // form related items
     BulkAddUpdateForm,

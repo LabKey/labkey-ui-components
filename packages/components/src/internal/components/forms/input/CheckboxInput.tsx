@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 import { Utils } from '@labkey/api';
 
@@ -80,9 +80,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                 };
             },
             () => {
-                if (this.props.onToggleDisable) {
-                    this.props.onToggleDisable(this.state.isDisabled);
-                }
+                this.props.onToggleDisable?.(this.state.isDisabled);
             }
         );
     };
@@ -120,7 +118,7 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
                 <div className="col-sm-9 col-xs-12">
                     <input
                         disabled={this.state.isDisabled}
-                        name={name ? name : queryColumn.name}
+                        name={name ?? queryColumn.name}
                         required={queryColumn.required}
                         type="checkbox"
                         value={this.props.formsy ? this.props.getValue() : this.state.checked}
@@ -139,24 +137,15 @@ class CheckboxInputImpl extends DisableableInput<CheckboxInputProps, CheckboxInp
  */
 const CheckboxInputFormsy = withFormsy(CheckboxInputImpl);
 
-export class CheckboxInput extends React.Component<CheckboxInputProps, any> {
-    static defaultProps = {
-        formsy: true,
-    };
-
-    constructor(props: CheckboxInputProps) {
-        super(props);
+export const CheckboxInput: FC<CheckboxInputProps> = props => {
+    if (props.formsy) {
+        return <CheckboxInputFormsy name={props.name ?? props.queryColumn.name} {...props} />;
     }
+    return <CheckboxInputImpl {...props} />;
+};
 
-    render() {
-        if (this.props.formsy) {
-            return (
-                <CheckboxInputFormsy
-                    name={this.props.name ? this.props.name : this.props.queryColumn.name}
-                    {...this.props}
-                />
-            );
-        }
-        return <CheckboxInputImpl {...this.props} />;
-    }
-}
+CheckboxInput.defaultProps = {
+    formsy: true,
+};
+
+CheckboxInput.displayName = 'CheckboxInput';

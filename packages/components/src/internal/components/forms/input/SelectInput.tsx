@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
 import ReactSelect, { Option } from 'react-select';
 import { Utils } from '@labkey/api';
@@ -178,12 +178,13 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         super(props);
 
         this._id = generateId('selectinput-');
+        const originalOptions = props.autoValue === true ? initOptions(props) : props.selectedOptions;
 
-        this.handleBlur = this.handleBlur.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleFocus = this.handleFocus.bind(this);
-
-        this.initState(props);
+        this.state = {
+            selectedOptions: originalOptions,
+            originalOptions,
+            isDisabled: props.initiallyDisabled,
+        };
     }
 
     refs: {
@@ -214,17 +215,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         this.change = false;
     }
 
-    initState(props: SelectInputProps) {
-        const { autoValue, selectedOptions } = props;
-        const originalOptions = autoValue === true ? initOptions(props) : selectedOptions;
-        this.state = {
-            selectedOptions: originalOptions,
-            originalOptions,
-            isDisabled: props.initiallyDisabled,
-        };
-    }
-
-    toggleDisabled = () => {
+    toggleDisabled = (): void => {
         const { selectedOptions } = this.state;
 
         this.setState(
@@ -235,22 +226,16 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
                 };
             },
             () => {
-                if (this.props.onToggleDisable) {
-                    this.props.onToggleDisable(this.state.isDisabled);
-                }
+                this.props.onToggleDisable?.(this.state.isDisabled);
             }
         );
     };
 
-    getId() {
-        if (this.props.id) {
-            return this.props.id;
-        }
+    getId = (): string => {
+        return this.props.id ?? this._id;
+    };
 
-        return this._id;
-    }
-
-    handleBlur(event: any) {
+    handleBlur = (event: any): void => {
         const { onBlur, saveOnBlur } = this.props;
 
         // 33774: fields should be able to preserve input onBlur
@@ -284,12 +269,10 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             }
         }
 
-        if (Utils.isFunction(onBlur)) {
-            onBlur(event);
-        }
-    }
+        onBlur?.(event);
+    };
 
-    handleChange(selectedOptions) {
+    handleChange = (selectedOptions): void => {
         const { clearCacheOnChange, name, onChange } = this.props;
 
         this.change = true;
@@ -301,26 +284,20 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         // set the formsy value from the selected options
         const formValue = this._setOptionsAndValue(selectedOptions);
 
-        if (onChange) {
-            onChange(name, formValue, selectedOptions, this.refs.reactSelect);
-        }
-    }
+        onChange?.(name, formValue, selectedOptions, this.refs.reactSelect);
+    };
 
-    handleFocus(event) {
-        const { onFocus } = this.props;
+    handleFocus = (event): void => {
+        this.props.onFocus?.(event, this.refs.reactSelect);
+    };
 
-        if (onFocus) {
-            onFocus(event, this.refs.reactSelect);
-        }
-    }
-
-    isAsync(): boolean {
+    isAsync = (): boolean => {
         return Utils.isFunction(this.props.loadOptions);
-    }
+    };
 
-    isCreatable(): boolean {
+    isCreatable = (): boolean => {
         return this.props.allowCreate === true;
-    }
+    };
 
     _setOptionsAndValue(options: any): any {
         const { delimiter, formsy, multiple, joinValues, setValue } = this.props;
@@ -547,15 +524,15 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
  */
 const SelectInputFormsy = withFormsy(SelectInputImpl);
 
-export class SelectInput extends React.Component<SelectInputProps, any> {
-    static defaultProps = {
-        formsy: true,
-    };
-
-    render() {
-        if (this.props.formsy) {
-            return <SelectInputFormsy {...this.props} />;
-        }
-        return <SelectInputImpl {...this.props} />;
+export const SelectInput: FC<SelectInputProps> = props => {
+    if (props.formsy) {
+        return <SelectInputFormsy {...props} />;
     }
-}
+    return <SelectInputImpl {...props} />;
+};
+
+SelectInput.defaultProps = {
+    formsy: true,
+};
+
+SelectInput.displayName = 'SelectInput';

@@ -23,18 +23,19 @@ import {
     MultiValueRenderer,
     AliasRenderer,
     AppendUnits,
-    LookupSelectInput,
     QueryColumn,
     LabelColorRenderer,
+    SchemaQuery,
 } from '../../../..';
 
+import { QuerySelect } from '../QuerySelect';
 import { resolveDetailFieldValue, resolveRenderer } from '../renderers';
 
 import { AssayRunReferenceRenderer } from '../../../renderers/AssayRunReferenceRenderer';
 
 import { getUnFormattedNumber } from '../../../util/Date';
 
-import { _defaultRenderer } from './DetailDisplay';
+import { _defaultRenderer, Renderer, RenderOptions } from './DetailDisplay';
 
 export function titleRenderer(col: QueryColumn): React.ReactNode {
     // If the column cannot be edited, return the label as is
@@ -45,7 +46,8 @@ export function titleRenderer(col: QueryColumn): React.ReactNode {
     return <LabelOverlay column={col} />;
 }
 
-export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boolean): React.ReactNode {
+// TODO: Merge this functionality with <QueryFormInputs />
+export function resolveDetailEditRenderer(col: QueryColumn, options?: RenderOptions): Renderer {
     return data => {
         const editable = col.isEditable();
 
@@ -72,24 +74,33 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
             // Must be explicitly false to prevent drop-down.
             if (col.displayAsLookup !== false) {
                 // 29232: When displaying a lookup, always use the value
-                const multiple = col.isJunctionLookup(),
-                    joinValues = multiple && !col.isDataInput();
+                const multiple = col.isJunctionLookup();
+                const joinValues = multiple && !col.isDataInput();
+
                 return (
-                    <LookupSelectInput
-                        containerClass="form-group row"
+                    <QuerySelect
+                        componentId={col.fieldKey}
+                        displayColumn={col.lookup.displayColumn}
                         inputClass="col-sm-12"
                         joinValues={joinValues}
-                        key={col.name}
+                        label={col.caption}
+                        loadOnChange
+                        loadOnFocus
+                        maxRows={10}
                         multiple={multiple}
-                        queryColumn={col}
-                        value={resolveDetailFieldValue(data, true)}
+                        name={col.name}
+                        placeholder="Select or type to search..."
+                        preLoad
                         required={col.required}
+                        schemaQuery={SchemaQuery.create(col.lookup.schemaName, col.lookup.queryName)}
+                        value={resolveDetailFieldValue(data, true)}
+                        valueColumn={col.lookup.keyColumn}
                     />
                 );
             }
         }
 
-        if (col.inputType == 'textarea') {
+        if (col.inputType === 'textarea') {
             return (
                 <Textarea
                     changeDebounceInterval={0}
@@ -118,7 +129,7 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
                     />
                 );
             case 'date':
-                if (useDatePicker && (!value || typeof value === 'string')) {
+                if (options?.useDatePicker && (!value || typeof value === 'string')) {
                     return (
                         <DatePickerInput
                             showLabel={false}
@@ -169,10 +180,10 @@ export function resolveDetailEditRenderer(col: QueryColumn, useDatePicker: boole
     };
 }
 
-export function resolveDetailRenderer(column: QueryColumn) {
+export function resolveDetailRenderer(column: QueryColumn): Renderer {
     let renderer; // defaults to undefined -- leave it up to the details
 
-    if (column && column.detailRenderer) {
+    if (column?.detailRenderer) {
         switch (column.detailRenderer.toLowerCase()) {
             case 'multivaluedetailrenderer':
                 renderer = d => <MultiValueRenderer data={d} />;

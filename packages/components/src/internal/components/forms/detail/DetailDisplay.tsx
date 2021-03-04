@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { FC, memo, ReactNode, useMemo } from 'react';
 import { List, Map, OrderedMap } from 'immutable';
 import { Panel } from 'react-bootstrap';
 
@@ -6,22 +6,36 @@ import { DefaultRenderer, QueryColumn } from '../../../..';
 
 import { DETAIL_TABLE_CLASSES } from '../constants';
 
-export const _defaultRenderer = d => {
-    return <DefaultRenderer data={d} />;
-};
+import {
+    resolveDetailEditRenderer,
+    resolveDetailRenderer,
+    titleRenderer as defaultTitleRenderer,
+} from './DetailEditRenderer';
+
+export type Renderer = (data: any, row?: any) => ReactNode;
+
+export interface RenderOptions {
+    useDatePicker?: boolean;
+}
+
+export type DetailRenderer = (column: QueryColumn, options?: RenderOptions) => Renderer;
+
+export type TitleRenderer = (column: QueryColumn) => ReactNode;
+
+export const _defaultRenderer: Renderer = d => <DefaultRenderer data={d} />;
 
 function processFields(
     queryColumns: List<QueryColumn>,
-    detailRenderer: Function,
-    titleRenderer: Function,
-    useDatePicker: boolean
+    detailRenderer: DetailRenderer,
+    titleRenderer: TitleRenderer,
+    options?: RenderOptions
 ): Map<string, DetailField> {
     return queryColumns.reduce((fields, c) => {
-        let fieldKey = c.fieldKey.toLowerCase(),
-            renderer;
+        const fieldKey = c.fieldKey.toLowerCase();
+        let renderer;
 
         if (detailRenderer) {
-            renderer = detailRenderer(c, useDatePicker);
+            renderer = detailRenderer(c, options);
         }
 
         if (!renderer) {
@@ -44,7 +58,7 @@ interface DetailFieldProps {
     fieldKey: string;
     index?: string;
     title: string;
-    renderer: (data: any) => void; // React.Element
+    renderer: Renderer;
     titleRenderer: ReactNode;
 }
 
@@ -53,7 +67,7 @@ class DetailField {
     fieldKey: string;
     index?: string;
     title: string;
-    renderer: Function;
+    renderer: Renderer;
     titleRenderer: ReactNode;
 
     constructor(config: DetailFieldProps) {
@@ -65,12 +79,11 @@ class DetailField {
     }
 }
 
-export interface DetailDisplaySharedProps {
+export interface DetailDisplaySharedProps extends RenderOptions {
     asPanel?: boolean;
-    detailRenderer?: Function;
+    detailRenderer?: DetailRenderer;
     editingMode?: boolean;
-    titleRenderer?: Function;
-    useDatePicker?: boolean;
+    titleRenderer?: TitleRenderer;
 }
 
 interface DetailDisplayProps extends DetailDisplaySharedProps {
@@ -78,66 +91,72 @@ interface DetailDisplayProps extends DetailDisplaySharedProps {
     displayColumns: List<QueryColumn>;
 }
 
-export class DetailDisplay extends PureComponent<DetailDisplayProps> {
-    static defaultProps = {
-        asPanel: false,
-        editingMode: false,
-        useDatePicker: true,
-    };
+export const DetailDisplay: FC<DetailDisplayProps> = memo(props => {
+    const { asPanel, data, displayColumns, editingMode, useDatePicker } = props;
 
-    render() {
-        const { asPanel, data, detailRenderer, displayColumns, useDatePicker, titleRenderer } = this.props;
+    const detailRenderer = useMemo(() => {
+        return props.detailRenderer ?? (editingMode ? resolveDetailEditRenderer : resolveDetailRenderer);
+    }, [props.detailRenderer, editingMode]);
 
-        let body;
+    const titleRenderer = useMemo(() => {
+        return props.titleRenderer ?? (editingMode ? defaultTitleRenderer : undefined);
+    }, [props.titleRenderer, editingMode]);
 
-        if (data.size === 0) {
-            body = <div>No data available.</div>;
-        } else {
-            const fields = processFields(displayColumns, detailRenderer, titleRenderer, useDatePicker);
+    let body;
 
-            body = (
-                <div>
-                    {data.map((row: any, i: number) => {
-                        // key safety
-                        const newRow = row.reduce((newRow, value, key) => {
-                            return newRow.set(key.toLowerCase(), value);
-                        }, OrderedMap<string, any>());
+    if (data.size === 0) {
+        body = <div>No data available.</div>;
+    } else {
+        const fields = processFields(displayColumns, detailRenderer, titleRenderer, { useDatePicker });
 
-                        return (
-                            <table className={DETAIL_TABLE_CLASSES} key={i}>
-                                <tbody>
-                                    {fields
-                                        .map((field, key) => {
-                                            // 'data-caption' tag for test hooks
-                                            return (
-                                                <tr key={key}>
-                                                    <td>{field.titleRenderer}</td>
-                                                    <td data-caption={field.title} data-fieldkey={field.fieldKey}>
-                                                        {field.renderer(newRow.get(key), row)}
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })
-                                        .toArray()}
-                                </tbody>
-                            </table>
-                        );
-                    })}
-                </div>
-            );
-        }
+        body = (
+            <div>
+                {data.map((row: any, i: number) => {
+                    // key safety
+                    const newRow = row.reduce((newRow, value, key) => {
+                        return newRow.set(key.toLowerCase(), value);
+                    }, OrderedMap<string, any>());
 
-        return (
-            <>
-                {asPanel ? (
-                    <Panel>
-                        <Panel.Heading>Details</Panel.Heading>
-                        <Panel.Body>{body}</Panel.Body>
-                    </Panel>
-                ) : (
-                    body
-                )}
-            </>
+                    return (
+                        <table className={DETAIL_TABLE_CLASSES} key={i}>
+                            <tbody>
+                                {fields
+                                    .map((field, key) => {
+                                        // 'data-caption' tag for test hooks
+                                        return (
+                                            <tr key={key}>
+                                                <td>{field.titleRenderer}</td>
+                                                <td data-caption={field.title} data-fieldkey={field.fieldKey}>
+                                                    {field.renderer(newRow.get(key), row)}
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                    .toArray()}
+                            </tbody>
+                        </table>
+                    );
+                })}
+            </div>
         );
     }
-}
+
+    if (asPanel) {
+        return (
+            <Panel>
+                <Panel.Heading>Details</Panel.Heading>
+                <Panel.Body>{body}</Panel.Body>
+            </Panel>
+        );
+    }
+
+    return body;
+});
+
+DetailDisplay.defaultProps = {
+    asPanel: false,
+    editingMode: false,
+    useDatePicker: true,
+};
+
+DetailDisplay.displayName = 'DetailDisplay';

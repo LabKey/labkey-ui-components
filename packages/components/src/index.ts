@@ -190,7 +190,7 @@ import {
 } from './internal/constants';
 import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
-import { getHelpLink, helpLinkNode } from './internal/util/helpLinks';
+import { getHelpLink, helpLinkNode, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
 import {
     AppRouteResolver,
     AssayResolver,
@@ -238,11 +238,7 @@ import { QuerySelect, QuerySelectOwnProps } from './internal/components/forms/Qu
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailEditing } from './internal/components/forms/detail/DetailEditing';
 
-import {
-    resolveDetailEditRenderer,
-    resolveDetailRenderer,
-    titleRenderer,
-} from './internal/components/forms/detail/DetailEditRenderer';
+import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
 import { Detail } from './internal/components/forms/detail/Detail';
 import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './internal/components/forms/actions';
 import { ISelectInitData } from './internal/components/forms/model';
@@ -358,6 +354,7 @@ import {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
 } from './internal/components/domainproperties/constants';
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
@@ -452,6 +449,7 @@ import {
     withQueryModels,
 } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
+import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
 import { makeTestActions, makeTestQueryModel } from './public/QueryModel/testUtils';
 import { QueryDetailPage } from './internal/components/listing/pages/QueryDetailPage';
@@ -562,9 +560,7 @@ export {
     LabelColorRenderer,
     MultiValueRenderer,
     StorageStatusRenderer,
-    resolveDetailEditRenderer,
     resolveDetailRenderer,
-    titleRenderer,
     resolveRenderer,
     // form related items
     BulkAddUpdateForm,
@@ -806,6 +802,7 @@ export {
     DOMAIN_FIELD_TYPE,
     RANGE_URIS,
     SAMPLE_TYPE_CONCEPT_URI,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     ListDesignerPanels,
     ListModel,
     fetchListDesign,
@@ -853,6 +850,7 @@ export {
     resolveErrorMessage,
     getHelpLink,
     helpLinkNode,
+    SAMPLE_ALIQUOT_TOPIC,
     // devTools functions
     applyDevTools,
     devToolsActive,
@@ -964,6 +962,7 @@ export {
     DetailPanel,
     DetailPanelWithModel,
     EditableDetailPanel,
+    TabbedGridPanel,
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
     Pagination,

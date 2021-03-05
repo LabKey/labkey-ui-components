@@ -17,7 +17,14 @@ import React, { FC, memo, useMemo } from 'react';
 import { fromJS, List } from 'immutable';
 import { Alert } from 'react-bootstrap';
 
-import { InjectedQueryModels, LoadingSpinner, QueryColumn, QueryConfig, RequiresModelAndActions, withQueryModels } from '../..';
+import {
+    InjectedQueryModels,
+    LoadingSpinner,
+    QueryColumn,
+    QueryConfig,
+    RequiresModelAndActions,
+    withQueryModels,
+} from '../..';
 
 import { DetailDisplay, DetailDisplaySharedProps } from '../../internal/components/forms/detail/DetailDisplay';
 
@@ -41,6 +48,7 @@ export const DetailPanel: FC<DetailPanelProps> = memo(({ actions, model, queryCo
         return <LoadingSpinner />;
     }
 
+    // This logic should be kept consistent with corollary logic in <Detail/>
     if (queryColumns !== undefined) {
         displayColumns = List(queryColumns);
     } else {
@@ -54,9 +62,11 @@ interface DetailPanelBodyProps extends DetailDisplaySharedProps {
     queryColumns?: QueryColumn[];
 }
 
-const DetailPanelWithModelBodyImpl: FC<DetailPanelBodyProps & InjectedQueryModels> = memo(({ queryModels, ...rest }) => {
-    return <DetailPanel {...rest} model={queryModels.model} />;
-});
+const DetailPanelWithModelBodyImpl: FC<DetailPanelBodyProps & InjectedQueryModels> = memo(
+    ({ queryModels, ...rest }) => {
+        return <DetailPanel {...rest} model={queryModels.model} />;
+    }
+);
 
 const DetailPanelWithModelBody = withQueryModels<DetailPanelBodyProps>(DetailPanelWithModelBodyImpl);
 
@@ -64,8 +74,9 @@ interface DetailPanelWithModelProps extends DetailDisplaySharedProps {
     queryConfig: QueryConfig;
 }
 
-export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(({ asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, queryConfig }) => {
-    const queryConfigs = useMemo(() => ({ model: queryConfig }), [ queryConfig ]);
+export const DetailPanelWithModel: FC<DetailPanelWithModelProps> = memo(props => {
+    const { asPanel, detailRenderer, editingMode, titleRenderer, useDatePicker, queryConfig } = props;
+    const queryConfigs = useMemo(() => ({ model: queryConfig }), [queryConfig]);
     const { keyValue, schemaQuery } = queryConfig;
     const { schemaName, queryName } = schemaQuery;
     // Key is used here to ensure we re-mount the DetailPanel when the queryConfig changes

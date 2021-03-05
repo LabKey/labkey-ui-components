@@ -1,6 +1,27 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.9.0
+*Released*: 4 March 2021
+* Replace `<LookupSelectInput/>` with `<QuerySelect/>` in detail editing.
+* Configures a `QuerySelect` component for detail editing.
+* Support defaults for `detailRenderer` and `titleRenderer` on `DetailDisplay`.
+* No longer publicly export `resolveDetailEditRenderer` or `titleRenderer`.
+* Improve types for our rendering methods.
+
+### version 2.8.0
+*Released*: 3 March 2021
+* Add isSampleAliquotEnabled experimental flag
+* Add "Aliquot Options" to domain row
+* Allow DetailEditing to use custom set of update columns via getUpdateDisplayColumns
+* Hide aliquot fields for insert editable grid and bulk insert form
+
+### version 2.7.0
+*Released*: 1 March 2021
+* Add TabbedGridPanel component
+    * To be used as a replacement for QueryGridPanel's tabbed mode
+* Add "title" field to QueryModel
+
 ### version 2.6.2
 *Released*: 4 March 2021
 * 42608: Bulk Insert erroneously transposes columns

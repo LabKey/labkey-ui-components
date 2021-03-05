@@ -125,6 +125,10 @@ export function isSampleManagerEnabled(): boolean {
     return getServerContext().moduleContext?.samplemanagement !== undefined;
 }
 
+export function isSampleAliquotEnabled(): boolean {
+    return getServerContext().experimental['sampleAliquot'] === true;
+}
+
 export function hasPremiumModule(): boolean {
     const { moduleContext } = getServerContext();
     return useMemo(() => moduleContext?.samplemanagement?.hasPremiumModule ?? false, [moduleContext]);

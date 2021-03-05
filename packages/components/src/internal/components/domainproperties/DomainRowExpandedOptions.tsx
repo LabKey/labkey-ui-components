@@ -31,6 +31,7 @@ import { LookupFieldOptions } from './LookupFieldOptions';
 import { ConditionalFormattingAndValidation } from './ConditionalFormattingAndValidation';
 import { isFieldFullyLocked } from './propertiesUtil';
 import { SampleFieldOptions } from './SampleFieldOptions';
+import { DerivationDataScopeFieldOptions } from './DerivationDataScopeFieldOptions';
 
 interface IDomainRowExpandedOptionsProps {
     field: DomainField;
@@ -221,6 +222,19 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             appPropertiesOnly={appPropertiesOnly}
                         />
                     </Col>
+                    {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (
+                        <Col xs={12} lg={10}>
+                            <DerivationDataScopeFieldOptions
+                                index={index}
+                                domainIndex={domainIndex}
+                                config={domainFormDisplayOptions?.derivationDataScopeConfig}
+                                value={field.derivationDataScope}
+                                label={domainFormDisplayOptions?.derivationDataScopeConfig?.sectionTitle}
+                                onChange={onChange}
+                                lockType={field.lockType}
+                            />
+                        </Col>
+                    )}
                     {!isFieldFullyLocked(field.lockType) && (
                         <Col xs={12}>
                             <ConditionalFormattingAndValidation

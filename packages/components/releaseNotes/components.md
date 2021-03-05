@@ -2,6 +2,10 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 
+### version TBD
+*Released*: TBD
+* Hide 'Derivation Data Scope' column within Designer Summary View. Will be updated when aliquot functionality is no longer an experimental feature
+
 ### version 2.9.0
 *Released*: 4 March 2021
 * Replace `<LookupSelectInput/>` with `<QuerySelect/>` in detail editing.

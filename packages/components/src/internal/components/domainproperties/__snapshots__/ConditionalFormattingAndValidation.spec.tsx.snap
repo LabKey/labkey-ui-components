@@ -174,7 +174,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
               <div
                 className="domain-field-label domain-no-wrap"
               >
-                <Component
+                <DomainFieldLabel
                   helpTipBody={
                     <React.Fragment>
                       <p>
@@ -318,7 +318,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                       </span>
                     </Component>
                   </span>
-                </Component>
+                </DomainFieldLabel>
               </div>
               <div>
                 <Button
@@ -357,7 +357,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
               <div
                 className="domain-field-label domain-no-wrap"
               >
-                <Component
+                <DomainFieldLabel
                   helpTipBody={
                     <React.Fragment>
                       <p>
@@ -459,7 +459,7 @@ exports[`ConditionalFormattingAndValidation Multiple validators or formats 1`] =
                       </span>
                     </Component>
                   </span>
-                </Component>
+                </DomainFieldLabel>
               </div>
               <div>
                 <Button
@@ -649,7 +649,7 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
               <div
                 className="domain-field-label domain-no-wrap"
               >
-                <Component
+                <DomainFieldLabel
                   helpTipBody={
                     <React.Fragment>
                       <p>
@@ -751,7 +751,7 @@ exports[`ConditionalFormattingAndValidation No validators 1`] = `
                       </span>
                     </Component>
                   </span>
-                </Component>
+                </DomainFieldLabel>
               </div>
               <div>
                 <Button
@@ -948,7 +948,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
               <div
                 className="domain-field-label domain-no-wrap"
               >
-                <Component
+                <DomainFieldLabel
                   helpTipBody={
                     <React.Fragment>
                       <p>
@@ -1092,7 +1092,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                       </span>
                     </Component>
                   </span>
-                </Component>
+                </DomainFieldLabel>
               </div>
               <div>
                 <Button
@@ -1130,7 +1130,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
               <div
                 className="domain-field-label domain-no-wrap"
               >
-                <Component
+                <DomainFieldLabel
                   helpTipBody={
                     <React.Fragment>
                       <p>
@@ -1232,7 +1232,7 @@ exports[`ConditionalFormattingAndValidation No validators or formats 1`] = `
                       </span>
                     </Component>
                   </span>
-                </Component>
+                </DomainFieldLabel>
               </div>
               <div>
                 <Button

@@ -390,7 +390,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         <div
                           className="col-lg-2 col-xs-3"
                         >
-                          <Component
+                          <DomainFieldLabel
                             helpTipBody={
                               <p>
                                 The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -482,7 +482,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                               </Component>
                                *
                             </span>
-                          </Component>
+                          </DomainFieldLabel>
                         </div>
                       </Col>
                       <Col
@@ -652,7 +652,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         <div
                           className="col-lg-2 col-xs-3"
                         >
-                          <Component
+                          <DomainFieldLabel
                             helpTipBody={
                               <p>
                                 A short description for this assay design.
@@ -741,7 +741,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                 </span>
                               </Component>
                             </span>
-                          </Component>
+                          </DomainFieldLabel>
                         </div>
                       </Col>
                       <Col
@@ -910,7 +910,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                         <div
                           className="col-lg-2 col-xs-3"
                         >
-                          <Component
+                          <DomainFieldLabel
                             helpTipBody={
                               <p>
                                 If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -1000,7 +1000,7 @@ exports[`AssayPropertiesPanel asPanel, helpTopic, and appPropertiesOnly 1`] = `
                                 </span>
                               </Component>
                             </span>
-                          </Component>
+                          </DomainFieldLabel>
                         </div>
                       </Col>
                       <Col
@@ -1637,7 +1637,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -1729,7 +1729,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                             </Component>
                                              *
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -1899,7 +1899,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               A short description for this assay design.
@@ -1988,7 +1988,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -2157,7 +2157,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -2247,7 +2247,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -2430,7 +2430,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <React.Fragment>
                                               <p>
@@ -2525,7 +2525,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -3168,7 +3168,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -3260,7 +3260,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                             </Component>
                                              *
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -3430,7 +3430,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               A short description for this assay design.
@@ -3519,7 +3519,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -3688,7 +3688,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -3778,7 +3778,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -3961,7 +3961,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <React.Fragment>
                                               <p>
@@ -4056,7 +4056,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -4433,7 +4433,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -4525,7 +4525,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                             </Component>
                                              *
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -4628,7 +4628,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               A short description for this assay design.
@@ -4717,7 +4717,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -4819,7 +4819,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -4909,7 +4909,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -5025,7 +5025,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       <div
                                         className="col-lg-4 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <React.Fragment>
                                               <p>
@@ -5120,7 +5120,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -5734,7 +5734,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       <div
                                         className="col-lg-2 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -5826,7 +5826,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                             </Component>
                                              *
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -5996,7 +5996,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       <div
                                         className="col-lg-2 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               A short description for this assay design.
@@ -6085,7 +6085,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -6254,7 +6254,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                       <div
                                         className="col-lg-2 col-xs-3"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody={
                                             <p>
                                               If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -6344,7 +6344,7 @@ exports[`AssayPropertiesPanel without helpTopic 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col

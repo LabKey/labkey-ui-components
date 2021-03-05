@@ -6,6 +6,16 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Merge release21.3-SNAPSHOT to master.
 * Includes changes from versions 2.6.1 and 2.6.2.
 
+### version 2.10.1
+*Released*: 4 March 2021
+* Don't use const enums, they are not compatible with our new typescript babel build
+
+### version 2.10.0
+*Released*: 4 March 2021
+* Support tagging participant and time point columns in sample types
+* Add two PropDescTypes to include within field Data Type dropdown. The new options render when domain property allowTimepointProperties is true, which is currently the case for only Sample Types
+* Ensure two new Data Type options mentioned above do not render in SampleManagement Sample Types
+
 ### version 2.9.0
 *Released*: 4 March 2021
 * Replace `<LookupSelectInput/>` with `<QuerySelect/>` in detail editing.

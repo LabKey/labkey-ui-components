@@ -20,6 +20,7 @@ import {
     STRING_RANGE_URI,
     TIME_RANGE_URI,
     USER_RANGE_URI,
+    VISITID_CONCEPT_URI,
 } from './constants';
 
 export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
@@ -251,6 +252,19 @@ export const AUTOINT_TYPE = new PropDescType({
     alternateRangeURI: 'xsd:int',
 });
 
+export const VISIT_DATE_TYPE = new PropDescType({
+    name: 'visitDate',
+    display: 'Visit Date',
+    rangeURI: DATETIME_RANGE_URI,
+    conceptURI: VISITID_CONCEPT_URI,
+});
+export const VISIT_ID_TYPE = new PropDescType({
+    name: 'visitId',
+    display: 'Visit ID',
+    rangeURI: DOUBLE_RANGE_URI,
+    conceptURI: VISITID_CONCEPT_URI,
+});
+
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     MULTILINE_TYPE,
@@ -266,6 +280,8 @@ export const PROP_DESC_TYPES = List([
     LOOKUP_TYPE,
     SAMPLE_TYPE,
     ONTOLOGY_LOOKUP_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);

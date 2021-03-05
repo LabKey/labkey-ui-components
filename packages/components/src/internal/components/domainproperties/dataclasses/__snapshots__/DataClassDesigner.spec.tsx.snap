@@ -1058,6 +1058,7 @@ exports[`DataClassDesigner initModel 1`] = `
         "allowFileLinkProperties": false,
         "allowAttachmentProperties": true,
         "allowFlagProperties": true,
+        "allowTimepointProperties": false,
         "showDefaultValueSettings": false,
         "defaultDefaultValueType": "FIXED_EDITABLE",
         "defaultValueOptions": Immutable.List [
@@ -1366,6 +1367,7 @@ exports[`DataClassDesigner initModel 1`] = `
           "allowFileLinkProperties": false,
           "allowAttachmentProperties": true,
           "allowFlagProperties": true,
+          "allowTimepointProperties": false,
           "showDefaultValueSettings": false,
           "defaultDefaultValueType": "FIXED_EDITABLE",
           "defaultValueOptions": Immutable.List [
@@ -1677,6 +1679,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "allowFileLinkProperties": false,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "allowTimepointProperties": false,
             "showDefaultValueSettings": false,
             "defaultDefaultValueType": "FIXED_EDITABLE",
             "defaultValueOptions": Immutable.List [
@@ -1982,6 +1985,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "allowFileLinkProperties": false,
               "allowAttachmentProperties": true,
               "allowFlagProperties": true,
+              "allowTimepointProperties": false,
               "showDefaultValueSettings": false,
               "defaultDefaultValueType": "FIXED_EDITABLE",
               "defaultValueOptions": Immutable.List [
@@ -2295,6 +2299,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "allowFileLinkProperties": false,
                 "allowAttachmentProperties": true,
                 "allowFlagProperties": true,
+                "allowTimepointProperties": false,
                 "showDefaultValueSettings": false,
                 "defaultDefaultValueType": "FIXED_EDITABLE",
                 "defaultValueOptions": Immutable.List [
@@ -2612,6 +2617,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "allowFileLinkProperties": false,
                   "allowAttachmentProperties": true,
                   "allowFlagProperties": true,
+                  "allowTimepointProperties": false,
                   "showDefaultValueSettings": false,
                   "defaultDefaultValueType": "FIXED_EDITABLE",
                   "defaultValueOptions": Immutable.List [
@@ -4114,6 +4120,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "allowFileLinkProperties": false,
             "allowAttachmentProperties": true,
             "allowFlagProperties": true,
+            "allowTimepointProperties": false,
             "showDefaultValueSettings": false,
             "defaultDefaultValueType": "FIXED_EDITABLE",
             "defaultValueOptions": Immutable.List [
@@ -4421,6 +4428,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "allowFileLinkProperties": false,
                 "allowAttachmentProperties": true,
                 "allowFlagProperties": true,
+                "allowTimepointProperties": false,
                 "showDefaultValueSettings": false,
                 "defaultDefaultValueType": "FIXED_EDITABLE",
                 "defaultValueOptions": Immutable.List [

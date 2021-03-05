@@ -18,7 +18,7 @@ import { Button } from 'react-bootstrap';
 import { Map, OrderedMap } from 'immutable';
 import { AssayDOM, Utils } from '@labkey/api';
 
-import { IMPORT_DATA_FORM_TYPES } from '../../constants';
+import { IMPORT_DATA_FORM_TYPES, AssayUploadTabs } from '../../constants';
 
 import {
     Alert,
@@ -51,8 +51,6 @@ import {
     WizardNavButtons,
     AssayProtocolModel,
 } from '../../..';
-
-import { AssayUploadTabs } from '../../AssayDefinitionModel';
 
 import { AssayReimportHeader } from './AssayReimportHeader';
 import { ImportWithRenameConfirmModal } from './ImportWithRenameConfirmModal';

@@ -1,7 +1,7 @@
 # @labkey/build
 
 ### version 2.0.1
-*Released # March 2021*
+*Released 5 March 2021*
 * Fix generation of file paths in lib.template.xml
 
 ### version 2.0.0

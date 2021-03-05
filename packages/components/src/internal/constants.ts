@@ -24,6 +24,12 @@ export const SAMPLE_SET_DISPLAY_TEXT = 'Sample Type';
 export const MAX_EDITABLE_GRID_ROWS = 1000;
 export const LOOKUP_DEFAULT_SIZE = 25;
 
+export enum AssayUploadTabs {
+    Files = 1,
+    Copy = 2,
+    Grid = 3,
+}
+
 export enum EXPORT_TYPES {
     CSV,
     EXCEL,

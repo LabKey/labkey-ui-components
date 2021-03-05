@@ -3,6 +3,8 @@ import { Filter } from '@labkey/api';
 
 import { AppURL, QueryColumn, SchemaQuery, WHERE_FILTER_TYPE } from '..';
 
+import { AssayUploadTabs } from './constants';
+
 export enum AssayDomainTypes {
     BATCH = 'Batch',
     RUN = 'Run',
@@ -23,12 +25,6 @@ export enum AssayLink {
 interface ScopedSampleColumn {
     domain: AssayDomainTypes;
     column: QueryColumn;
-}
-
-export enum AssayUploadTabs {
-    Files = 1,
-    Copy = 2,
-    Grid = 3,
 }
 
 export class AssayDefinitionModel extends Record({

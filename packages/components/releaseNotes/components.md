@@ -1,13 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.#.#
-*Released*: # March 2021
+### version 2.10.2
+*Released*: 5 March 2021
 * Merge release21.3-SNAPSHOT to master.
 * Includes changes from versions 2.6.1 and 2.6.2.
 
 ### version 2.10.1
-*Released*: 4 March 2021
+*Released*: 5 March 2021
 * Don't use const enums, they are not compatible with our new typescript babel build
 
 ### version 2.10.0

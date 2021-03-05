@@ -1,6 +1,6 @@
 {
   "name": "@labkey/build",
-  "version": "2.0.0",
+  "version": "2.0.1-fb-fix-lib-template-xml.0",
   "description": "LabKey client-side build assets",
   "files": [
     "webpack/"

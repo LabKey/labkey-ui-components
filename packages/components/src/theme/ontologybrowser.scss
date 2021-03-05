@@ -10,6 +10,10 @@
     .filetree-directory-name {
         max-width: unset;
     }
+
+    .title {
+        font-weight: bold;
+    }
 }
 
 /* CONCEPT OVERVIEW */
@@ -45,70 +49,76 @@
     }
 }
 
-.ontology-path-breadcrumb-container {
-    color: $text-color;
-
-    //.ontology-path-breadcrumb {
-    //    overflow: hidden;
-    //    white-space: nowrap;
-    //    width: 120px;
-    //    text-overflow: ellipsis;
-    //}
-    //
-    //.ontology-path-breadcrumb :hover {
-    //    overflow: visible;
-    //    white-space: normal;
-    //    width: auto;
-    //    position: absolute;
-    //}
+/* PATH INFORMATION */
+.concept-pathinfo-container {
+    padding-top: 10px;
+    font-size: 14px;
 
     .title {
         font-size: 20px;
-        font-weight: bold;
     }
 
-    .ontology-path-breadcrumb-spacer, .ontology-path-breadcrumb-leaf {
-        font-weight: bold;
+    .current-path-container, .alternate-paths-container {
+        margin-top: 15px;
+
+        .concept-path-container{
+            margin-top: 5px;
+
+            &:hover {
+                background-color: $btn-info-bg;
+            }
+        }
+
+        .title {
+            font-size: 14px;
+        }
     }
 }
 
-
-/* PATH INFORMATION */
-.ontology-concept-pathinfo-container {
-    padding-top: 10px;
-
-    .placeholder {
-        font-size: 20px;
-        color: $gray-light;
-    }
-}
-
-.concept-paths-container {
+.concept-path-container {
     color: $text-color;
+    display: inline-block;
+    padding: 2px 5px 2px;
+    border: solid $gray-no-highlight 1px;
+    border-radius: 2px;
+    font-size: 14px;
 
-    .concept-path {
-        overflow: hidden;
-        white-space: nowrap;
-        width: 120px;
-        text-overflow: ellipsis;
+    &.selected {
+        background-color: $light-gray;
+    }
+
+    &.collapsed {
         direction: rtl;
+        float: right;
+
+        .concept-path {
+            overflow: hidden;
+            white-space: nowrap;
+            //width: auto;
+            width: 60ch; //TODO figure out what this should actually be
+            text-overflow: ellipsis;
+        }
 
         &:hover {
-            overflow: visible;
-            white-space: normal;
-            width: auto;
-            position: absolute;
-            background: $panel-bg;
+            .concept-path {
+                overflow: visible;
+                white-space: normal;
+                width: auto;
+                //position: absolute;
+                direction: ltr;
+                background: $light-gray;
+                padding-left: 5px;
+            }
+        }
+    }
+
+    .concept-path {
+        i {
+            padding: 0 5px 0;
         }
     }
 
     .title {
-        font-size: 20px;
-        font-weight: bold;
+        font-size: 14px;
     }
-
-    //.concept-path, {
-    //    font-weight: bold;
-    //}
 }
-

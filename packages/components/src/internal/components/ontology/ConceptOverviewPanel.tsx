@@ -3,8 +3,11 @@ import { Modal } from 'react-bootstrap';
 
 import { Alert, naturalSort } from '../../..';
 
-import { ConceptModel } from './models';
+import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
+import { ConceptPathDisplay } from './ConceptPath';
+
+const CURRENT_PATH_TITLE = 'Current Path';
 
 interface ConceptOverviewPanelProps {
     code: string;
@@ -39,6 +42,7 @@ export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(
 
 interface ConceptOverviewPanelImplProps {
     concept: ConceptModel;
+    selectedPath?: PathModel;
 }
 
 function renderConceptSynonyms(synonyms: string[]): React.ReactNode {
@@ -51,7 +55,7 @@ function renderConceptSynonyms(synonyms: string[]): React.ReactNode {
     return (
         <div>
             <div className="synonyms-title">Synonyms</div>
-            <p className="synonyms-text">{synonymList}</p>
+            <div className="synonyms-text">{synonymList}</div>
         </div>
     );
 }
@@ -61,17 +65,18 @@ function renderConceptSynonyms(synonyms: string[]): React.ReactNode {
  * the information about the concept label, code, description, etc.
  */
 export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(props => {
-    const { concept } = props;
+    const { concept, selectedPath = undefined } = props;
 
     if (!concept) {
         return <div className="none-selected">No concept selected</div>;
     }
 
     const { code, label, description, synonyms } = concept;
-    renderConceptSynonyms(synonyms);
+    const rSynonyms = renderConceptSynonyms(synonyms);
 
     return (
         <>
+            {selectedPath && <ConceptPathDisplay title={CURRENT_PATH_TITLE} path={selectedPath} isSelected={true} isCollapsed={true} />}
             {label && <div className="title margin-bottom">{label}</div>}
             {code && <span className="code">{code}</span>}
             {description && (
@@ -80,7 +85,7 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
                     <p className="description-text">{description}</p>
                 </div>
             )}
-            {synonyms && renderConceptSynonyms(synonyms)}
+            {synonyms && rSynonyms}
         </>
     );
 });

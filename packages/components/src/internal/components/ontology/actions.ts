@@ -7,6 +7,7 @@ const GET_CHILD_PATHS_ACTION = 'getChildPaths.api';
 const GET_ONTOLOGY_ACTION = 'getOntology.api';
 const GET_CONCEPT_ACTION = 'getConcept.api';
 const GET_ALTERNATE_CONCEPT_PATHS_ACTION = 'getAlternateConceptPaths.api';
+const GET_PARENT_PATHS_ACTION = 'getConceptParentPaths.api';
 const SHARED_CONTAINER = 'shared';
 
 class Ontology {
@@ -110,12 +111,38 @@ function getAlternateConceptPaths(conceptCode?: string, container: string = SHAR
     });
 }
 
+function getConceptParentPaths(conceptPath?: string, container: string = SHARED_CONTAINER): Promise<PathModel[]> {
+    return new Promise((resolve, reject) => {
+        return Ajax.request({
+            url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_PARENT_PATHS_ACTION, container, {
+                path: conceptPath,
+            }),
+            method: 'GET',
+            success: Utils.getCallbackWrapper(response => {
+                resolve(response.parents?.map(path => new PathModel(path)));
+            }),
+            failure: Utils.getCallbackWrapper(
+                response => {
+                    console.error(response);
+                    reject(response);
+                },
+                null,
+                false
+            ),
+        });
+    });
+}
+
 export function fetchChildPaths(ontologyPath?: string): Promise<PathModel> {
     return getOntologyChildPathsAndConcepts(ontologyPath);
 }
 
 export function fetchAlternatePaths(conceptCode: string): Promise<PathModel[]> {
     return getAlternateConceptPaths(conceptCode);
+}
+
+export function fetchParentPaths(conceptPath: string): Promise<PathModel[]> {
+    return getConceptParentPaths(conceptPath);
 }
 
 export function fetchConceptForCode(code: string): Promise<ConceptModel> {

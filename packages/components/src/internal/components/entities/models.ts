@@ -548,7 +548,7 @@ export interface IEntityTypeDetails extends IEntityDetails {
     importAliasValues?: string[];
 }
 
-export const enum EntityInsertPanelTabs {
+export enum EntityInsertPanelTabs {
     First = 1,
     Second = 2,
 }

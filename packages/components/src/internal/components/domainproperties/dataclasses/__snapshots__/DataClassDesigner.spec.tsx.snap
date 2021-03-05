@@ -1158,6 +1158,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "conceptLabelColumn": undefined,
             "conceptImportColumn": undefined,
             "principalConceptCode": undefined,
+            "derivationDataScope": undefined,
             "selected": false,
           },
           Immutable.Record {
@@ -1241,6 +1242,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "conceptLabelColumn": undefined,
             "conceptImportColumn": undefined,
             "principalConceptCode": undefined,
+            "derivationDataScope": undefined,
             "selected": false,
           },
           Immutable.Record {
@@ -1324,6 +1326,7 @@ exports[`DataClassDesigner initModel 1`] = `
             "conceptLabelColumn": undefined,
             "conceptImportColumn": undefined,
             "principalConceptCode": undefined,
+            "derivationDataScope": undefined,
             "selected": false,
           },
         ],
@@ -1464,6 +1467,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -1547,6 +1551,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -1630,6 +1635,7 @@ exports[`DataClassDesigner initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
           ],
@@ -1773,6 +1779,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -1856,6 +1863,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -1939,6 +1947,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -2076,6 +2085,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -2159,6 +2169,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -2242,6 +2253,7 @@ exports[`DataClassDesigner initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
               ],
@@ -2387,6 +2399,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -2470,6 +2483,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -2553,6 +2567,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -2702,6 +2717,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -2785,6 +2801,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -2868,6 +2885,7 @@ exports[`DataClassDesigner initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -3626,6 +3644,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                           componentId="entity-category"
                                           delimiter=","
                                           displayColumn="Value"
+                                          filterOptions={[Function]}
                                           fireQSChangeOnInit={false}
                                           formsy={false}
                                           loadOnChange={true}
@@ -3908,6 +3927,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                         <QuerySelect
                                           componentId="entity-sampleSet"
                                           delimiter=","
+                                          filterOptions={[Function]}
                                           fireQSChangeOnInit={false}
                                           formsy={false}
                                           loadOnChange={true}
@@ -4200,6 +4220,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4283,6 +4304,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4366,6 +4388,7 @@ exports[`DataClassDesigner initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -4505,6 +4528,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -4588,6 +4612,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -4671,6 +4696,7 @@ exports[`DataClassDesigner initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -5576,6 +5602,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -5783,6 +5810,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -6386,6 +6414,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -6828,6 +6857,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -7315,6 +7345,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -7901,6 +7932,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -8097,6 +8129,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -8683,6 +8716,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -9064,6 +9098,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -9540,6 +9575,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -10126,6 +10162,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -10322,6 +10359,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -10890,6 +10928,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -11233,6 +11272,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -11709,6 +11749,7 @@ exports[`DataClassDesigner initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }

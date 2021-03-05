@@ -7,6 +7,21 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add two PropDescTypes to include within field Data Type dropdown. The new options render when domain property allowTimepointProperties is true, which is currently the case for only Sample Types
 * Ensure two new Data Type options mentioned above do not render in SampleManagement Sample Types
 
+### version 2.9.0
+*Released*: 4 March 2021
+* Replace `<LookupSelectInput/>` with `<QuerySelect/>` in detail editing.
+* Configures a `QuerySelect` component for detail editing.
+* Support defaults for `detailRenderer` and `titleRenderer` on `DetailDisplay`.
+* No longer publicly export `resolveDetailEditRenderer` or `titleRenderer`.
+* Improve types for our rendering methods.
+
+### version 2.8.0
+*Released*: 3 March 2021
+* Add isSampleAliquotEnabled experimental flag
+* Add "Aliquot Options" to domain row
+* Allow DetailEditing to use custom set of update columns via getUpdateDisplayColumns
+* Hide aliquot fields for insert editable grid and bulk insert form
+
 ### version 2.7.0
 *Released*: 1 March 2021
 * Add TabbedGridPanel component

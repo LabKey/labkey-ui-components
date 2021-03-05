@@ -2,7 +2,7 @@ import React from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import { DomainDesign, DomainDetails, IDomainField } from '../models';
+import { DomainDesign, DomainDetails, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import {
     IParentOption,
@@ -89,6 +89,8 @@ interface Props {
     metricUnitProps?: MetricUnitProps;
 
     validateProperties?: (designerDetails?: any) => Promise<any>;
+
+    domainFormDisplayOptions?: IDomainFormDisplayOptions;
 }
 
 interface State {
@@ -477,6 +479,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
             dataClassParentageLabel,
             metricUnitProps,
             testMode,
+            domainFormDisplayOptions,
         } = this.props;
         const { error, model, parentOptions } = this.state;
 
@@ -550,6 +553,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     successBsStyle={successBsStyle}
                     allowImportExport={true}
                     testMode={testMode}
+                    domainFormDisplayOptions={domainFormDisplayOptions}
                 />
                 {error && <div className="domain-form-panel">{error && <Alert bsStyle="danger">{error}</Alert>}</div>}
             </BaseDomainDesigner>

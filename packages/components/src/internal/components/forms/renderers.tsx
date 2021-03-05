@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { ReactNode, ReactText } from 'react';
 import { List, Map } from 'immutable';
 import { Input } from 'formsy-react-components';
 
@@ -22,69 +22,75 @@ import { QueryColumn } from '../../..';
 import { LabelOverlay } from './LabelOverlay';
 import { AliasInput } from './input/AliasInput';
 
-export function resolveRenderer(column: QueryColumn) {
-    let inputRenderer;
+type InputRenderer = (
+    col: QueryColumn,
+    key: ReactText,
+    value?: any,
+    editing?: boolean,
+    allowFieldDisable?: boolean,
+    initiallyDisabled?: boolean,
+    onToggleDisable?: (disabled: boolean) => void
+) => ReactNode;
 
-    if (column && column.inputRenderer) {
+const AliasInputRenderer: InputRenderer = (
+    col: QueryColumn,
+    key: ReactText,
+    value?: any,
+    editing?: boolean,
+    allowFieldDisable = false,
+    initiallyDisabled = false,
+    onToggleDisable?: (disabled: boolean) => void
+) => (
+    <AliasInput
+        col={col}
+        editing={editing}
+        key={key}
+        value={value}
+        allowDisable={allowFieldDisable}
+        initiallyDisabled={initiallyDisabled}
+        onToggleDisable={onToggleDisable}
+    />
+);
+
+const AppendUnitsInputRenderer: InputRenderer = (
+    col: QueryColumn,
+    key: ReactText,
+    value?: any,
+    editing?: boolean,
+    allowFieldDisable = false,
+    initiallyDisabled = false
+) => (
+    <Input
+        allowDisable={allowFieldDisable}
+        disabled={initiallyDisabled}
+        addonAfter={<span>{col.units}</span>}
+        changeDebounceInterval={0}
+        elementWrapperClassName={editing ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}
+        id={col.name}
+        key={key}
+        label={<LabelOverlay column={col} inputId={col.name} />}
+        labelClassName="control-label text-left"
+        name={col.name}
+        required={col.required}
+        type="text"
+        value={value}
+        validations="isNumericWithError"
+    />
+);
+
+export function resolveRenderer(column: QueryColumn): InputRenderer {
+    if (column?.inputRenderer) {
         switch (column.inputRenderer.toLowerCase()) {
             case 'experimentalias':
-                inputRenderer = (
-                    col: QueryColumn,
-                    key: any,
-                    value?: string,
-                    editing?: boolean,
-                    allowFieldDisable = false,
-                    initiallyDisabled = false,
-                    onToggleDisable?: (disabled: boolean) => void
-                ) => {
-                    return (
-                        <AliasInput
-                            col={col}
-                            editing={editing}
-                            key={key}
-                            value={value}
-                            allowDisable={allowFieldDisable}
-                            initiallyDisabled={initiallyDisabled}
-                            onToggleDisable={onToggleDisable}
-                        />
-                    );
-                };
-                break;
+                return AliasInputRenderer;
             case 'appendunitsinput':
-                inputRenderer = (
-                    col: QueryColumn,
-                    key: any,
-                    val?: string,
-                    editing?: boolean,
-                    allowFieldDisable = false,
-                    initiallyDisabled = false
-                ) => {
-                    return (
-                        <Input
-                            allowDisable={allowFieldDisable}
-                            disabled={initiallyDisabled}
-                            addonAfter={<span>{col.units}</span>}
-                            changeDebounceInterval={0}
-                            elementWrapperClassName={editing ? [{ 'col-sm-9': false }, 'col-sm-12'] : undefined}
-                            id={col.name}
-                            key={key}
-                            label={<LabelOverlay column={col} inputId={col.name} />}
-                            labelClassName="control-label text-left"
-                            name={col.name}
-                            required={col.required}
-                            type="text"
-                            value={val}
-                            validations="isNumericWithError"
-                        />
-                    );
-                };
-                break;
+                return AppendUnitsInputRenderer;
             default:
                 break;
         }
     }
 
-    return inputRenderer;
+    return undefined;
 }
 
 interface FieldValue {

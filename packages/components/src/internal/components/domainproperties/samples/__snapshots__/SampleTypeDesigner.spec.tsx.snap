@@ -1033,6 +1033,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "conceptLabelColumn": undefined,
             "conceptImportColumn": undefined,
             "principalConceptCode": undefined,
+            "derivationDataScope": undefined,
             "selected": false,
           },
         ],
@@ -1184,6 +1185,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
           ],
@@ -1312,6 +1314,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -1446,6 +1449,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
               ],
@@ -1595,6 +1599,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -1750,6 +1755,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -2097,6 +2103,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             "conceptLabelColumn": undefined,
                                             "conceptImportColumn": undefined,
                                             "principalConceptCode": undefined,
+                                            "derivationDataScope": undefined,
                                             "selected": false,
                                           },
                                         ],
@@ -2803,6 +2810,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -2929,6 +2937,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -3873,6 +3882,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -4063,6 +4073,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -4675,6 +4686,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -5106,6 +5118,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -5582,6 +5595,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }

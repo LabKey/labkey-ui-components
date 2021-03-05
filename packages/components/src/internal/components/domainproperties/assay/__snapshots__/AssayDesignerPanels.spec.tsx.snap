@@ -4150,6 +4150,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -4233,6 +4234,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -4316,6 +4318,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
           ],
@@ -4487,6 +4490,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4570,6 +4574,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4653,6 +4658,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -4812,6 +4818,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4895,6 +4902,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -4978,6 +4986,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -5136,6 +5145,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -5219,6 +5229,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -5302,6 +5313,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -5476,6 +5488,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -5559,6 +5572,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -5642,6 +5656,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -5818,6 +5833,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
                         "principalConceptCode": undefined,
+                        "derivationDataScope": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -5901,6 +5917,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
                         "principalConceptCode": undefined,
+                        "derivationDataScope": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -5984,6 +6001,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
                         "principalConceptCode": undefined,
+                        "derivationDataScope": undefined,
                         "selected": false,
                       },
                     ],
@@ -6417,6 +6435,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -6500,6 +6519,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -6583,6 +6603,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -6908,6 +6929,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -6991,6 +7013,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -7074,6 +7097,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -7394,6 +7418,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -7477,6 +7502,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -7560,6 +7586,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -7868,6 +7895,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -7951,6 +7979,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -8034,6 +8063,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -8388,6 +8418,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -8471,6 +8502,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -8554,6 +8586,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
               ],
@@ -8742,6 +8775,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -8825,6 +8859,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -8908,6 +8943,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -9504,6 +9540,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -9587,6 +9624,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -9670,6 +9708,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -9807,6 +9846,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -9890,6 +9930,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -9973,6 +10014,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
               ],
@@ -10095,6 +10137,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -10178,6 +10221,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -10261,6 +10305,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -10411,6 +10456,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -10494,6 +10540,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -10577,6 +10624,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -11531,6 +11579,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -11722,6 +11771,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -12334,6 +12384,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -12765,6 +12816,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -13241,6 +13293,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -13671,6 +13724,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -13862,6 +13916,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -14474,6 +14529,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -14851,6 +14907,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -15327,6 +15384,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -15757,6 +15815,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -15948,6 +16007,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -16560,6 +16620,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -16902,6 +16963,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -17378,6 +17440,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -25650,6 +25713,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -25733,6 +25797,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -25816,6 +25881,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
           ],
@@ -25987,6 +26053,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -26070,6 +26137,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -26153,6 +26221,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -26312,6 +26381,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -26395,6 +26465,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -26478,6 +26549,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -26635,6 +26707,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -26718,6 +26791,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -26801,6 +26875,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -26975,6 +27050,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -27058,6 +27134,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -27141,6 +27218,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -27317,6 +27395,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
                         "principalConceptCode": undefined,
+                        "derivationDataScope": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -27400,6 +27479,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
                         "principalConceptCode": undefined,
+                        "derivationDataScope": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -27483,6 +27563,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
                         "principalConceptCode": undefined,
+                        "derivationDataScope": undefined,
                         "selected": false,
                       },
                     ],
@@ -27916,6 +27997,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -27999,6 +28081,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -28082,6 +28165,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -28407,6 +28491,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -28490,6 +28575,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -28573,6 +28659,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -28893,6 +28980,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -28976,6 +29064,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -29059,6 +29148,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -29367,6 +29457,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -29450,6 +29541,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -29533,6 +29625,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -29864,6 +29957,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -29947,6 +30041,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -30030,6 +30125,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -30355,6 +30451,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -30438,6 +30535,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -30521,6 +30619,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -30810,6 +30909,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -30893,6 +30993,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -30976,6 +31077,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -31113,6 +31215,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -31196,6 +31299,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -31279,6 +31383,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
               ],
@@ -31401,6 +31506,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -31484,6 +31590,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -31567,6 +31674,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -31717,6 +31825,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -31800,6 +31909,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -31883,6 +31993,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -32837,6 +32948,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -33028,6 +33140,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -33658,6 +33771,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -34089,6 +34203,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -34565,6 +34680,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -35135,6 +35251,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -35326,6 +35443,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -35956,6 +36074,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -36333,6 +36452,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -36809,6 +36929,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -37379,6 +37500,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -37570,6 +37692,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -38200,6 +38323,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -38542,6 +38666,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -39018,6 +39143,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -39631,6 +39757,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -39714,6 +39841,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
             Immutable.Record {
@@ -39797,6 +39925,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
               "conceptLabelColumn": undefined,
               "conceptImportColumn": undefined,
               "principalConceptCode": undefined,
+              "derivationDataScope": undefined,
               "selected": false,
             },
           ],
@@ -39967,6 +40096,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -40050,6 +40180,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -40133,6 +40264,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -40292,6 +40424,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -40375,6 +40508,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -40458,6 +40592,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -40615,6 +40750,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -40698,6 +40834,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -40781,6 +40918,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -40955,6 +41093,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -41038,6 +41177,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -41121,6 +41261,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -41297,6 +41438,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
                         "principalConceptCode": undefined,
+                        "derivationDataScope": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -41380,6 +41522,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
                         "principalConceptCode": undefined,
+                        "derivationDataScope": undefined,
                         "selected": false,
                       },
                       Immutable.Record {
@@ -41463,6 +41606,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                         "conceptLabelColumn": undefined,
                         "conceptImportColumn": undefined,
                         "principalConceptCode": undefined,
+                        "derivationDataScope": undefined,
                         "selected": false,
                       },
                     ],
@@ -41896,6 +42040,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -41979,6 +42124,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -42062,6 +42208,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -42387,6 +42534,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -42470,6 +42618,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -42553,6 +42702,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -42873,6 +43023,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -42956,6 +43107,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -43039,6 +43191,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -43347,6 +43500,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -43430,6 +43584,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -43513,6 +43668,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -43844,6 +44000,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -43927,6 +44084,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -44010,6 +44168,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -44335,6 +44494,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -44418,6 +44578,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                       Immutable.Record {
@@ -44501,6 +44662,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         "conceptLabelColumn": undefined,
                                                         "conceptImportColumn": undefined,
                                                         "principalConceptCode": undefined,
+                                                        "derivationDataScope": undefined,
                                                         "selected": false,
                                                       },
                                                     ],
@@ -44843,6 +45005,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -44926,6 +45089,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -45009,6 +45173,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
               ],
@@ -45197,6 +45362,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -45280,6 +45446,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -45363,6 +45530,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -45958,6 +46126,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -46041,6 +46210,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
               Immutable.Record {
@@ -46124,6 +46294,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                 "conceptLabelColumn": undefined,
                 "conceptImportColumn": undefined,
                 "principalConceptCode": undefined,
+                "derivationDataScope": undefined,
                 "selected": false,
               },
             ],
@@ -46261,6 +46432,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -46344,6 +46516,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
                 Immutable.Record {
@@ -46427,6 +46600,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                   "conceptLabelColumn": undefined,
                   "conceptImportColumn": undefined,
                   "principalConceptCode": undefined,
+                  "derivationDataScope": undefined,
                   "selected": false,
                 },
               ],
@@ -46549,6 +46723,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -46632,6 +46807,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                   Immutable.Record {
@@ -46715,6 +46891,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                     "conceptLabelColumn": undefined,
                     "conceptImportColumn": undefined,
                     "principalConceptCode": undefined,
+                    "derivationDataScope": undefined,
                     "selected": false,
                   },
                 ],
@@ -46865,6 +47042,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -46948,6 +47126,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                     Immutable.Record {
@@ -47031,6 +47210,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                       "conceptLabelColumn": undefined,
                       "conceptImportColumn": undefined,
                       "principalConceptCode": undefined,
+                      "derivationDataScope": undefined,
                       "selected": false,
                     },
                   ],
@@ -47985,6 +48165,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -48176,6 +48357,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -48806,6 +48988,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -49237,6 +49420,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -49713,6 +49897,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -50283,6 +50468,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -50474,6 +50660,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -51104,6 +51291,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -51481,6 +51669,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -51957,6 +52146,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -52527,6 +52717,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             "conceptLabelColumn": undefined,
                                                             "conceptImportColumn": undefined,
                                                             "principalConceptCode": undefined,
+                                                            "derivationDataScope": undefined,
                                                             "selected": false,
                                                           }
                                                         }
@@ -52718,6 +52909,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                             "conceptLabelColumn": undefined,
                                                                             "conceptImportColumn": undefined,
                                                                             "principalConceptCode": undefined,
+                                                                            "derivationDataScope": undefined,
                                                                             "selected": false,
                                                                           }
                                                                         }
@@ -53348,6 +53540,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                               "conceptLabelColumn": undefined,
                                                                               "conceptImportColumn": undefined,
                                                                               "principalConceptCode": undefined,
+                                                                              "derivationDataScope": undefined,
                                                                               "selected": false,
                                                                             }
                                                                           }
@@ -53690,6 +53883,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }
@@ -54166,6 +54360,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                         "conceptLabelColumn": undefined,
                                                                                         "conceptImportColumn": undefined,
                                                                                         "principalConceptCode": undefined,
+                                                                                        "derivationDataScope": undefined,
                                                                                         "selected": false,
                                                                                       }
                                                                                     }

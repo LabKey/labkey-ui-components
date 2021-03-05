@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.10.0
+*Released*: 4 March 2021
 * Support tagging participant and time point columns in sample types
 * Add two PropDescTypes to include within field Data Type dropdown. The new options render when domain property allowTimepointProperties is true, which is currently the case for only Sample Types
 * Ensure two new Data Type options mentioned above do not render in SampleManagement Sample Types

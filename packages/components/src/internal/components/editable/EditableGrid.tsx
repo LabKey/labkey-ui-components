@@ -740,8 +740,7 @@ export class EditableGrid extends ReactN.PureComponent<EditableGridProps, Editab
             totalItems = bulkAddData.totalItems;
         }
 
-        let updatedData = data.delete('numItems');
-        updatedData = data.delete('creationType');
+        let updatedData = data.delete('numItems').delete('creationType');
 
         if (totalItems === 0) totalItems = numItems;
 

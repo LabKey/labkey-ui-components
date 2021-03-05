@@ -60,6 +60,8 @@ import {
     SAMPLE_TYPE,
     TEXT_TYPE,
     USERS_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
 } from './PropDescType';
 import {
     removeUnusedProperties,
@@ -113,6 +115,7 @@ interface IDomainDesign {
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    allowTimepointProperties: boolean;
     showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
@@ -134,6 +137,7 @@ export class DomainDesign
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
         allowFlagProperties: true,
+        allowTimepointProperties: false,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
         defaultValueOptions: List<string>(),
@@ -155,6 +159,7 @@ export class DomainDesign
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    allowTimepointProperties: boolean;
     showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
@@ -1186,7 +1191,15 @@ export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boole
     if (type === FILE_TYPE) return includeFileType;
 
     // We are excluding the field types below for the App
-    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
+    return ![
+        LOOKUP_TYPE,
+        PARTICIPANT_TYPE,
+        FLAG_TYPE,
+        ATTACHMENT_TYPE,
+        ONTOLOGY_LOOKUP_TYPE,
+        VISIT_DATE_TYPE,
+        VISIT_ID_TYPE,
+    ].includes(type);
 }
 
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {

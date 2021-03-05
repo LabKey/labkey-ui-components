@@ -5,7 +5,7 @@ import { Alert, searchUsingIndex } from '../../..';
 import { ConceptModel, OntologyModel } from './models';
 
 const CONCEPT_CATEGORY = 'concept';
-const SEARCH_LIMIT = 10;
+const SEARCH_LIMIT = 20;
 interface OntologyTreeSearchContainerProps {
     ontology: OntologyModel;
 }

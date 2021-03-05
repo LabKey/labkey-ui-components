@@ -43,7 +43,9 @@ storiesOf('SampleTypeDesigner', module)
                 dataClassAliasCaption={text('dataClassAliasCaption', undefined)}
                 dataClassTypeCaption={text('dataClassTypeCaption', undefined)}
                 dataClassParentageLabel={text('dataClassParentageLabel', undefined)}
-                initModel={DomainDetails.create()}
+                initModel={DomainDetails.create(
+                    Map<string, any>({ domainDesign: { allowTimepointProperties: true } })
+                )}
                 onCancel={() => console.log('Cancel clicked')}
                 onComplete={() => console.log('Create clicked')}
                 nameExpressionInfoUrl={text('nameExpressionInfoUrl', undefined)}
@@ -74,7 +76,7 @@ storiesOf('SampleTypeDesigner', module)
             <SampleTypeDesigner
                 initModel={DomainDetails.create(
                     Map<string, any>({
-                        domainDesign: { name: "Can't Touch Me" },
+                        domainDesign: { name: "Can't Touch Me", allowTimepointProperties: true },
                         nameReadOnly: true,
                     })
                 )}

@@ -18,6 +18,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
     const [totalHits, setTotalHits] = useState<number>();
     const [error, setError] = useState<string>();
     const showMenu = useMemo(() => isFocused && (searchHits !== undefined || error !== undefined), [isFocused, searchHits, error]);
+    const hitsHaveDescriptions = useMemo(() => searchHits?.findIndex(hit => hit.description !== undefined) > -1, [searchHits]);
 
     const onSearchChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -33,9 +34,9 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
     useEffect(() => {
         setError(undefined);
         setTotalHits(undefined);
-        if (!searchTerm) {
-            setSearchHits(undefined);
-        } else {
+        setSearchHits(undefined);
+
+        if (searchTerm) {
             const timeOutId = setTimeout(() => {
                 searchUsingIndex({ q: searchTerm, category: CONCEPT_CATEGORY, limit: SEARCH_LIMIT }, undefined, [CONCEPT_CATEGORY])
                     .then(response => {
@@ -51,8 +52,8 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
                         setTotalHits(response.totalHits);
                     })
                     .catch(reason => {
-                        setError('Error: unable to get search results. ' + reason?.exception);
-                        setSearchHits(undefined);
+                        console.error(reason);
+                        setError('Error: unable to get search results. Check for syntax errors in your search term.');
                     });
             }, 500);
 
@@ -75,16 +76,30 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
             </form>
             {showMenu && (
                 <div>
-                    <ul className="result-menu">
+                    <ul className="result-menu container">
                         <Alert>{error}</Alert>
-                        {searchHits === undefined && <li key="none">No search results found.</li>}
+                        {searchHits?.length === 0 && (
+                            <li key="none">
+                                <div className="row">
+                                    <div className="col col-xs-12">No search results found.</div>
+                                </div>
+                            </li>
+                        )}
                         {searchHits?.map(hit => (
-                            <li key={hit.code}>{hit.label}</li>
+                            <li key={hit.code}>
+                                <div className="row">
+                                    <div className={'col bold ' + (hitsHaveDescriptions ? 'col-xs-5' : 'col-xs-10')}>
+                                        {hit.label}
+                                    </div>
+                                    <div className="col col-xs-2">{hit.code}</div>
+                                    {hitsHaveDescriptions && <div className="col col-xs-5">{hit.description}</div>}
+                                </div>
+                            </li>
                         ))}
                         {searchHits?.length < totalHits && (
-                            <div>
-                                More then {SEARCH_LIMIT} results found. Update your search term to further refine your
-                                results.
+                            <div className="result-footer">
+                                {Number(totalHits).toLocaleString()} results found. Update your search term to further
+                                refine your results.
                             </div>
                         )}
                     </ul>

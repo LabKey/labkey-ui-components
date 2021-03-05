@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.#.#
+*Released*: # March 2021
+* Merge release21.3-SNAPSHOT to master.
+* Includes changes from versions 2.6.1 and 2.6.2.
+
 ### version 2.9.0
 *Released*: 4 March 2021
 * Replace `<LookupSelectInput/>` with `<QuerySelect/>` in detail editing.
@@ -19,7 +24,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.7.0
 *Released*: 1 March 2021
 * Add TabbedGridPanel component
-    * To be used as a replacement for QueryGridPanel's tabbed mode
+  * To be used as a replacement for QueryGridPanel's tabbed mode
 * Add "title" field to QueryModel
 
 ### version 2.6.2

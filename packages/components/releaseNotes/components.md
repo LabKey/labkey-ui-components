@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.TBD
+*Released*: TBD March 2021
+* TODO add info about webpack aliases /src and theme/SCSS assets
+
 ### version 2.11.0
 *Released*: 6 March 2021
 * Package Updates

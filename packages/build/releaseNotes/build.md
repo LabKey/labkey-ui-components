@@ -1,5 +1,9 @@
 # @labkey/build
 
+### version 2.TBD
+*Released*: TBD March 2021
+* TODO add info about webpack aliases /src and theme/SCSS assets
+
 ### version 2.0.1
 *Released 5 March 2021*
 * Fix generation of file paths in lib.template.xml

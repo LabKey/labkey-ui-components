@@ -73,6 +73,11 @@
             font-size: 14px;
         }
     }
+
+    .none-selected, .no-path-info {
+        font-size: 20px;
+        color: $gray-light;
+    }
 }
 
 .concept-path-container {

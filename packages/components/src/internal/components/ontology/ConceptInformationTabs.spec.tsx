@@ -5,6 +5,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { ConceptInformationTabs, ConceptInfoTabs } from './ConceptInformationTabs';
 import { ConceptOverviewPanelImpl } from './ConceptOverviewPanel';
 import { ConceptModel } from './models';
+import { ConceptPathInfo } from './ConceptPathInfo';
 
 const DEFAULT_PROPS = {
     concept: undefined,
@@ -16,8 +17,7 @@ describe('ConceptInformationTabs', () => {
         expect(wrapper.find(NavItem)).toHaveLength(2);
         expect(wrapper.find('.ontology-concept-overview-container')).toHaveLength(2);
         expect(wrapper.find(ConceptOverviewPanelImpl)).toHaveLength(1);
-        expect(wrapper.find('.ontology-concept-pathinfo-container')).toHaveLength(2);
-        expect(wrapper.find('.placeholder')).toHaveLength(1);
+        expect(wrapper.find(ConceptPathInfo)).toHaveLength(1);
     }
 
     test('no concept', () => {

@@ -30,20 +30,24 @@ export const ConceptPathInfo: FC<ConceptPathInfoProps> = memo(props => {
         }
     }, [selectedCode, setAlternatePaths]);
 
-    return <ConceptPathInfoImpl code={selectedCode} error={error} alternatePaths={alternatePaths} {...props} />;
+    return (
+        <>
+            <Alert>{error}</Alert>
+            <ConceptPathInfoImpl code={selectedCode} alternatePaths={alternatePaths} {...props} />;
+        </>
+    );
 });
 
 interface ConceptPathInfoImplProps {
     code: string;
     alternatePaths?: PathModel[];
-    error?: string;
 
     selectedPath?: PathModel;
     alternatePathClickHandler?: (path: PathModel) => void;
 }
 
 export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
-    const { code, selectedPath, error, alternatePaths, alternatePathClickHandler } = props;
+    const { code, selectedPath, alternatePaths, alternatePathClickHandler } = props;
 
     if (!code) {
         return <div className="none-selected">No concept selected</div>;
@@ -51,7 +55,6 @@ export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
 
     return (
         <div className="concept-pathinfo-container">
-            <Alert>{error}</Alert>
             {selectedPath && <div className="title">{selectedPath.label}</div>}
             {!alternatePaths && <LoadingSpinner msg="Loading path information for concept..." />}
             {alternatePaths && alternatePaths.length > 0 && (
@@ -59,7 +62,7 @@ export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
                     {selectedPath && (
                         <div className="current-path-container">
                             <div className="title">Current Path</div>
-                            <ConceptPathDisplay path={selectedPath} isSelected={true} />
+                            <ConceptPathDisplay key={selectedPath.path} path={selectedPath} isSelected={true} />
                         </div>
                     )}
                     <div className="alternate-paths-container">
@@ -72,7 +75,7 @@ export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
                     </div>
                 </>
             )}
-            {alternatePaths?.length === 0 && <div>No path information available</div>}
+            {alternatePaths?.length === 0 && <div className="no-path-info">No path information available</div>}
         </div>
     );
 });

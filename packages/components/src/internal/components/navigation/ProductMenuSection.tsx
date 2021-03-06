@@ -39,18 +39,18 @@ export class MenuSectionConfig extends Record({
     seeAllURL: undefined,
     showActiveJobIcon: true,
 }) {
-    activeJobIconCls?: string;
-    emptyText?: string;
-    emptyURL?: AppURL | string;
-    emptyURLText: string;
-    headerURL: AppURL | string;
-    headerText?: string;
-    iconCls?: string;
-    iconURL?: string;
-    maxColumns: number;
-    maxItemsPerColumn: number;
-    seeAllURL?: AppURL | string;
-    showActiveJobIcon?: boolean;
+    declare activeJobIconCls?: string;
+    declare emptyText?: string;
+    declare emptyURL?: AppURL | string;
+    declare emptyURLText: string;
+    declare headerURL: AppURL | string;
+    declare headerText?: string;
+    declare iconCls?: string;
+    declare iconURL?: string;
+    declare maxColumns: number;
+    declare maxItemsPerColumn: number;
+    declare seeAllURL?: AppURL | string;
+    declare showActiveJobIcon?: boolean;
 }
 
 interface MenuSectionProps {

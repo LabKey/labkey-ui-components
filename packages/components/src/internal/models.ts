@@ -178,25 +178,25 @@ const DataViewInfoDefaultValues = {
 
 // commented out attributes are not used in app
 export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
-    name: string;
-    description?: string;
-    detailsUrl: string;
-    runUrl: string;
-    type: DataViewInfoType;
-    visible: boolean;
-    id: string;
-    reportId: string;
-    created?: Date;
-    modified: Date;
-    createdBy?: string;
-    modifiedBy?: string;
-    thumbnail: string;
-    icon: string;
-    iconCls: string;
-    shared: boolean;
-    schemaName?: string;
-    queryName?: string;
-    viewName?: string;
+    declare name: string;
+    declare description?: string;
+    declare detailsUrl: string;
+    declare runUrl: string;
+    declare type: DataViewInfoType;
+    declare visible: boolean;
+    declare id: string;
+    declare reportId: string;
+    declare created?: Date;
+    declare modified: Date;
+    declare createdBy?: string;
+    declare modifiedBy?: string;
+    declare thumbnail: string;
+    declare icon: string;
+    declare iconCls: string;
+    declare shared: boolean;
+    declare schemaName?: string;
+    declare queryName?: string;
+    declare viewName?: string;
 
     // Client Side only attributes
     appUrl?: AppURL;
@@ -213,8 +213,8 @@ export class VisualizationConfigModel extends Record({
     queryConfig: undefined,
     chartConfig: undefined,
 }) {
-    queryConfig: QueryConfigModel;
-    chartConfig: ChartConfigModel;
+    declare queryConfig: QueryConfigModel;
+    declare chartConfig: ChartConfigModel;
 
     static create(raw: any): VisualizationConfigModel {
         return new VisualizationConfigModel(
@@ -236,14 +236,14 @@ export class ChartConfigModel extends Record({
     scales: undefined,
     width: undefined,
 }) {
-    geomOptions: any;
-    height: number;
-    labels: any;
-    measures: any;
-    pointType: string;
-    renderType: string;
-    scales: any;
-    width: number;
+    declare geomOptions: any;
+    declare height: number;
+    declare labels: any;
+    declare measures: any;
+    declare pointType: string;
+    declare renderType: string;
+    declare scales: any;
+    declare width: number;
 }
 
 export class QueryConfigModel extends Record({
@@ -261,19 +261,19 @@ export class QueryConfigModel extends Record({
     // sort: undefined,
     viewName: undefined,
 }) {
-    columns: List<string>;
-    containerPath: string;
-    // dataRegionName: string;
-    filterArray: List<any>;
-    maxRows: number;
-    method: string;
-    parameters: any;
-    // queryLabel: string;
-    queryName: string;
-    requiredVersion: string;
-    schemaName: string;
-    // sort: string;
-    viewName: string;
+    declare columns: List<string>;
+    declare containerPath: string;
+    // declare dataRegionName: string;
+    declare filterArray: List<any>;
+    declare maxRows: number;
+    declare method: string;
+    declare parameters: any;
+    // declare queryLabel: string;
+    declare queryName: string;
+    declare requiredVersion: string;
+    declare schemaName: string;
+    // declare sort: string;
+    declare viewName: string;
 }
 
 export interface ValueDescriptor {
@@ -322,20 +322,20 @@ export class EditorModel
         selectionCells: Set<string>(),
     })
     implements EditorModelProps {
-    cellMessages: CellMessages;
-    cellValues: CellValues;
-    colCount: number;
-    deletedIds: Set<any>;
-    id: string;
-    isPasting: boolean;
-    focusColIdx: number;
-    focusRowIdx: number;
-    focusValue: List<ValueDescriptor>;
-    numPastedRows: number;
-    rowCount: number;
-    selectedColIdx: number;
-    selectedRowIdx: number;
-    selectionCells: Set<string>;
+    declare cellMessages: CellMessages;
+    declare cellValues: CellValues;
+    declare colCount: number;
+    declare deletedIds: Set<any>;
+    declare id: string;
+    declare isPasting: boolean;
+    declare focusColIdx: number;
+    declare focusRowIdx: number;
+    declare focusValue: List<ValueDescriptor>;
+    declare numPastedRows: number;
+    declare rowCount: number;
+    declare selectedColIdx: number;
+    declare selectedRowIdx: number;
+    declare selectionCells: Set<string>;
 
     findNextCell(
         startCol: number,
@@ -723,13 +723,13 @@ export class LookupStore extends Record({
     loadCount: 0,
     matchCount: 0,
 }) {
-    key: string;
-    descriptors: OrderedMap<any, ValueDescriptor>;
-    isLoaded: boolean;
-    isLoading: boolean;
-    lastToken: string;
-    loadCount: number;
-    matchCount: number;
+    declare key: string;
+    declare descriptors: OrderedMap<any, ValueDescriptor>;
+    declare isLoaded: boolean;
+    declare isLoading: boolean;
+    declare lastToken: string;
+    declare loadCount: number;
+    declare matchCount: number;
 
     static key(col: QueryColumn): string {
         return [col.lookup.schemaName, col.lookup.queryName, col.fieldKey].join('|');

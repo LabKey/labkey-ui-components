@@ -36,15 +36,15 @@ export class FieldEditProps extends Record({
     value: undefined,
     autoFocus: true,
 }) {
-    caption: string;
-    fieldKey: string;
-    inputPlaceholder: string;
-    inputType: string;
-    minValue: number; // used for number input types
-    step: number; // used for number input types; default is 1
-    key: string;
-    value?: string;
-    autoFocus?: boolean;
+    declare caption: string;
+    declare fieldKey: string;
+    declare inputPlaceholder: string;
+    declare inputType: string;
+    declare minValue: number; // used for number input types
+    declare step: number; // used for number input types; default is 1
+    declare key: string;
+    declare value?: string;
+    declare autoFocus?: boolean;
 
     getFieldEditInputName(): string {
         return 'fieldEditInput_' + this.fieldKey;

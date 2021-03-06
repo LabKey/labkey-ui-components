@@ -25,14 +25,14 @@ export class AppModel extends Record({
     user,
     needsInvalidateQueryGrid: false,
 }) {
-    container: Container;
-    contextPath: string;
-    initialUserId: number;
-    logoutReason: LogoutReason;
-    reloadRequired: boolean;
-    requestPermissions: boolean;
-    user: User;
-    needsInvalidateQueryGrid: boolean; // separate query grid invalidate from menu reload, allow grid to invalidate on route change, to avoid invalid query grid state
+    declare container: Container;
+    declare contextPath: string;
+    declare initialUserId: number;
+    declare logoutReason: LogoutReason;
+    declare reloadRequired: boolean;
+    declare requestPermissions: boolean;
+    declare user: User;
+    declare needsInvalidateQueryGrid: boolean; // separate query grid invalidate from menu reload, allow grid to invalidate on route change, to avoid invalid query grid state
 
     hasUserChanged(): boolean {
         return this.initialUserId !== this.user.id;

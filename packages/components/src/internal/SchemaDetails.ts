@@ -7,11 +7,11 @@ export class SchemaDetails extends Record({
     schemaName: undefined,
     schemas: List<string>(),
 }) {
-    description: string;
-    fullyQualifiedName: string;
-    hidden: boolean;
-    schemaName: string;
-    schemas: List<string>;
+    declare description: string;
+    declare fullyQualifiedName: string;
+    declare hidden: boolean;
+    declare schemaName: string;
+    declare schemas: List<string>;
 
     static create(schema): SchemaDetails {
         const copy = Object.assign({}, schema);

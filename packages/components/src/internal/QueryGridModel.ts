@@ -135,55 +135,55 @@ export class QueryGridModel
         view: undefined,
     })
     implements IQueryGridModel {
-    id: string;
-    schema: string;
-    query: string;
-    queryParameters: any; // an object mapping parameter names to values such as {'MinTemp': '36', 'MinWeight': '90'}
-    allowSelection: boolean;
-    baseFilters: List<Filter.IFilter>;
-    bindURL: boolean;
-    containerPath?: string;
-    containerFilter?: Query.ContainerFilter;
-    data: Map<any, Map<string, any>>;
-    dataIds: List<any>;
-    displayColumns: List<string>;
-    editable: boolean;
-    editing: boolean;
-    filterArray: List<Filter.IFilter>;
-    includeDetailsColumn?: boolean;
-    includeUpdateColumn?: boolean;
-    isError: boolean;
-    isLoaded: boolean;
-    isLoading: boolean;
-    isPaged: boolean;
-    keyValue: any;
-    loader?: IGridLoader;
-    maxRows: number;
-    message: string;
-    messages?: List<Map<string, string>>;
-    offset: number;
-    omittedColumns: List<string>;
-    pageNumber: number;
-    queryInfo: QueryInfo;
-    requiredColumns: List<string>;
-    showSearchBox: boolean;
-    showViewSelector: boolean;
-    hideEmptyViewSelector: boolean;
-    showChartSelector: boolean;
-    showExport: boolean;
-    hideEmptyChartSelector: boolean;
-    sortable: boolean;
-    sorts: string;
-    selectedIds: List<string>; // should be the set of ids selected for the current view, whether filtered or not
-    selectedLoaded: boolean;
-    selectedState: GRID_CHECKBOX_OPTIONS;
-    selectedQuantity: number; // should be the quantity in the current view, whether filtered or not
-    title: string;
-    totalRows: number;
-    urlParams: List<string>;
-    urlParamValues: Map<string, any>;
-    urlPrefix: string;
-    view: string;
+    declare id: string;
+    declare schema: string;
+    declare query: string;
+    declare queryParameters: any; // an object mapping parameter names to values such as {'MinTemp': '36', 'MinWeight': '90'}
+    declare allowSelection: boolean;
+    declare baseFilters: List<Filter.IFilter>;
+    declare bindURL: boolean;
+    declare containerPath?: string;
+    declare containerFilter?: Query.ContainerFilter;
+    declare data: Map<any, Map<string, any>>;
+    declare dataIds: List<any>;
+    declare displayColumns: List<string>;
+    declare editable: boolean;
+    declare editing: boolean;
+    declare filterArray: List<Filter.IFilter>;
+    declare includeDetailsColumn?: boolean;
+    declare includeUpdateColumn?: boolean;
+    declare isError: boolean;
+    declare isLoaded: boolean;
+    declare isLoading: boolean;
+    declare isPaged: boolean;
+    declare keyValue: any;
+    declare loader?: IGridLoader;
+    declare maxRows: number;
+    declare message: string;
+    declare messages?: List<Map<string, string>>;
+    declare offset: number;
+    declare omittedColumns: List<string>;
+    declare pageNumber: number;
+    declare queryInfo: QueryInfo;
+    declare requiredColumns: List<string>;
+    declare showSearchBox: boolean;
+    declare showViewSelector: boolean;
+    declare hideEmptyViewSelector: boolean;
+    declare showChartSelector: boolean;
+    declare showExport: boolean;
+    declare hideEmptyChartSelector: boolean;
+    declare sortable: boolean;
+    declare sorts: string;
+    declare selectedIds: List<string>; // should be the set of ids selected for the current view, whether filtered or not
+    declare selectedLoaded: boolean;
+    declare selectedState: GRID_CHECKBOX_OPTIONS;
+    declare selectedQuantity: number; // should be the quantity in the current view, whether filtered or not
+    declare title: string;
+    declare totalRows: number;
+    declare urlParams: List<string>;
+    declare urlParamValues: Map<string, any>;
+    declare urlPrefix: string;
+    declare view: string;
 
     static EMPTY_SELECTION = {
         selectedQuantity: 0,

@@ -11,11 +11,11 @@ export class Principal extends Record({
     type: undefined,
     active: true,
 }) {
-    userId: number;
-    name: string;
-    displayName: string;
-    type: string;
-    active: boolean;
+    declare userId: number;
+    declare name: string;
+    declare displayName: string;
+    declare type: string;
+    declare active: boolean;
 
     static create(raw: any): Principal {
         return new Principal({ ...raw });
@@ -59,13 +59,13 @@ export class SecurityRole extends Record({
     sourceModule: undefined,
     uniqueName: undefined,
 }) {
-    description: string;
-    displayName: string;
-    excludedPrincipals: List<number>;
-    name: string;
-    permissions: List<string>;
-    sourceModule: string;
-    uniqueName: string;
+    declare description: string;
+    declare displayName: string;
+    declare excludedPrincipals: List<number>;
+    declare name: string;
+    declare permissions: List<string>;
+    declare sourceModule: string;
+    declare uniqueName: string;
 
     static create(raw: any): SecurityRole {
         let excludedPrincipals = List<number>();
@@ -104,11 +104,11 @@ export class SecurityAssignment extends Record({
     type: undefined,
     isNew: false,
 }) {
-    role: string;
-    userId: number;
-    displayName: string;
-    type: string;
-    isNew: boolean;
+    declare role: string;
+    declare userId: number;
+    declare displayName: string;
+    declare type: string;
+    declare isNew: boolean;
 
     static isTypeMatch(assignmentType: string, typeToMatch: string): boolean {
         // inactive users will return type of undefined
@@ -137,12 +137,12 @@ export class SecurityPolicy extends Record({
     relevantRoles: List<string>(),
     containerId: undefined,
 }) {
-    assignments: List<SecurityAssignment>;
-    assignmentsByRole: Map<string, List<SecurityAssignment>>;
-    modified: string;
-    resourceId: string;
-    relevantRoles: List<string>;
-    containerId: string;
+    declare assignments: List<SecurityAssignment>;
+    declare assignmentsByRole: Map<string, List<SecurityAssignment>>;
+    declare modified: string;
+    declare resourceId: string;
+    declare relevantRoles: List<string>;
+    declare containerId: string;
 
     static create(raw: any): SecurityPolicy {
         let assignments = List<SecurityAssignment>();

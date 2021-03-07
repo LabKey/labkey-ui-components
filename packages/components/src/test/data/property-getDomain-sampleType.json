@@ -22,6 +22,7 @@
     "allowFileLinkProperties": true,
     "allowAttachmentProperties": false,
     "allowFlagProperties": true,
+    "allowTimepointProperties": true,
     "showDefaultValueSettings": false,
     "defaultDefaultValueType": "FIXED_EDITABLE",
     "defaultValueOptions": [

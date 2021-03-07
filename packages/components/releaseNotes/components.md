@@ -5,6 +5,25 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update DomainForm and FileAttachmentForm to ignore reserved fields when inferring fields
 
+### version 2.11.0
+*Released*: 6 March 2021
+* Package Updates
+
+### version 2.10.2
+*Released*: 5 March 2021
+* Merge release21.3-SNAPSHOT to master.
+* Includes changes from versions 2.6.1 and 2.6.2.
+
+### version 2.10.1
+*Released*: 5 March 2021
+* Don't use const enums, they are not compatible with our new typescript babel build
+
+### version 2.10.0
+*Released*: 4 March 2021
+* Support tagging participant and time point columns in sample types
+* Add two PropDescTypes to include within field Data Type dropdown. The new options render when domain property allowTimepointProperties is true, which is currently the case for only Sample Types
+* Ensure two new Data Type options mentioned above do not render in SampleManagement Sample Types
+
 ### version 2.9.0
 *Released*: 4 March 2021
 * Replace `<LookupSelectInput/>` with `<QuerySelect/>` in detail editing.
@@ -25,6 +44,15 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add TabbedGridPanel component
   * To be used as a replacement for QueryGridPanel's tabbed mode
 * Add "title" field to QueryModel
+
+### version 2.6.2
+*Released*: 4 March 2021
+* 42608: Bulk Insert erroneously transposes columns
+
+### version 2.6.1
+*Released*: 2 March 2021
+* Issue 42589: Product Menu attempts to load before application initialized
+* Add and respect `showNotifications` and `showProductNav` props to `<NavigationBar />`
 
 ### version 2.6.0
 *Released*: 27 February 2021

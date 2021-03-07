@@ -227,6 +227,26 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Date",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit ID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -1590,7 +1610,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Define alternate field names to be used when importing from a file.
@@ -1683,7 +1703,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -1718,7 +1738,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -1817,7 +1837,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -2010,7 +2030,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -2112,7 +2132,7 @@ exports[`DomainRow Sample Field 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -2399,6 +2419,26 @@ exports[`DomainRow client side warning on field 1`] = `
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Date",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit ID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -3097,6 +3137,18 @@ exports[`DomainRow client side warning on field 1`] = `
                                               >
                                                 Ontology Lookup
                                               </option>
+                                              <option
+                                                key="14"
+                                                value="visitDate"
+                                              >
+                                                Visit Date
+                                              </option>
+                                              <option
+                                                key="15"
+                                                value="visitId"
+                                              >
+                                                Visit ID
+                                              </option>
                                             </select>
                                           </FormControl>
                                         </div>
@@ -3712,7 +3764,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Define alternate field names to be used when importing from a file.
@@ -3805,7 +3857,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -3840,7 +3892,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -3939,7 +3991,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -4132,7 +4184,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -4234,7 +4286,7 @@ exports[`DomainRow client side warning on field 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -4521,6 +4573,26 @@ exports[`DomainRow date time field 1`] = `
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Date",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit ID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -5129,6 +5201,12 @@ exports[`DomainRow date time field 1`] = `
                                               >
                                                 Date Time
                                               </option>
+                                              <option
+                                                key="1"
+                                                value="visitDate"
+                                              >
+                                                Visit Date
+                                              </option>
                                             </select>
                                           </FormControl>
                                         </div>
@@ -5471,7 +5549,7 @@ exports[`DomainRow date time field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               To control how a date or time value is displayed, provide a string format compatible with the Java class SimpleDateFormat.
@@ -5571,7 +5649,7 @@ exports[`DomainRow date time field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                     </div>
                                                   </Col>
@@ -5846,7 +5924,7 @@ exports[`DomainRow date time field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Define alternate field names to be used when importing from a file.
@@ -5939,7 +6017,7 @@ exports[`DomainRow date time field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -5974,7 +6052,7 @@ exports[`DomainRow date time field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -6073,7 +6151,7 @@ exports[`DomainRow date time field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -6266,7 +6344,7 @@ exports[`DomainRow date time field 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -6368,7 +6446,7 @@ exports[`DomainRow date time field 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -6406,7 +6484,7 @@ exports[`DomainRow date time field 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -6508,7 +6586,7 @@ exports[`DomainRow date time field 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -6795,6 +6873,26 @@ exports[`DomainRow decimal field 1`] = `
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Date",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit ID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -7403,6 +7501,12 @@ exports[`DomainRow decimal field 1`] = `
                                               >
                                                 Decimal (floating point)
                                               </option>
+                                              <option
+                                                key="1"
+                                                value="visitId"
+                                              >
+                                                Visit ID
+                                              </option>
                                             </select>
                                           </FormControl>
                                         </div>
@@ -7744,7 +7848,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               To control how a number value is displayed, provide a string format compatible with the Java class DecimalFormat.
@@ -7844,7 +7948,7 @@ exports[`DomainRow decimal field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                     </div>
                                                   </Col>
@@ -8155,7 +8259,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Define alternate field names to be used when importing from a file.
@@ -8248,7 +8352,7 @@ exports[`DomainRow decimal field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -8283,7 +8387,7 @@ exports[`DomainRow decimal field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -8382,7 +8486,7 @@ exports[`DomainRow decimal field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -8575,7 +8679,7 @@ exports[`DomainRow decimal field 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -8677,7 +8781,7 @@ exports[`DomainRow decimal field 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -8715,7 +8819,7 @@ exports[`DomainRow decimal field 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -8817,7 +8921,7 @@ exports[`DomainRow decimal field 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -9104,6 +9208,26 @@ exports[`DomainRow participant id field 1`] = `
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Date",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit ID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -10238,7 +10362,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Define alternate field names to be used when importing from a file.
@@ -10331,7 +10455,7 @@ exports[`DomainRow participant id field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -10366,7 +10490,7 @@ exports[`DomainRow participant id field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -10465,7 +10589,7 @@ exports[`DomainRow participant id field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -10658,7 +10782,7 @@ exports[`DomainRow participant id field 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -10760,7 +10884,7 @@ exports[`DomainRow participant id field 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -10798,7 +10922,7 @@ exports[`DomainRow participant id field 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -10900,7 +11024,7 @@ exports[`DomainRow participant id field 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -11187,6 +11311,26 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Date",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit ID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -11885,6 +12029,18 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                               >
                                                 Ontology Lookup
                                               </option>
+                                              <option
+                                                key="14"
+                                                value="visitDate"
+                                              >
+                                                Visit Date
+                                              </option>
+                                              <option
+                                                key="15"
+                                                value="visitId"
+                                              >
+                                                Visit ID
+                                              </option>
                                             </select>
                                           </FormControl>
                                         </div>
@@ -12389,7 +12545,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Define alternate field names to be used when importing from a file.
@@ -12482,7 +12638,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -12517,7 +12673,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -12616,7 +12772,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -12809,7 +12965,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -12911,7 +13067,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -13198,6 +13354,26 @@ exports[`DomainRow string field test 1`] = `
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Date",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit ID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -14178,7 +14354,7 @@ exports[`DomainRow string field test 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               <p>
@@ -14315,7 +14491,7 @@ exports[`DomainRow string field test 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                     </div>
                                                   </Col>
@@ -14642,7 +14818,7 @@ exports[`DomainRow string field test 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Define alternate field names to be used when importing from a file.
@@ -14735,7 +14911,7 @@ exports[`DomainRow string field test 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -14770,7 +14946,7 @@ exports[`DomainRow string field test 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -14869,7 +15045,7 @@ exports[`DomainRow string field test 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -15062,7 +15238,7 @@ exports[`DomainRow string field test 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -15164,7 +15340,7 @@ exports[`DomainRow string field test 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -15202,7 +15378,7 @@ exports[`DomainRow string field test 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -15304,7 +15480,7 @@ exports[`DomainRow string field test 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -15591,6 +15767,26 @@ exports[`DomainRow with empty domain form 1`] = `
                       "display": "Ontology Lookup",
                       "name": "ontologyLookup",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit Date",
+                      "name": "visitDate",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#dateTime",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://cpas.labkey.com/Study#VisitId",
+                      "display": "Visit ID",
+                      "name": "visitId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -16276,6 +16472,18 @@ exports[`DomainRow with empty domain form 1`] = `
                                               >
                                                 Ontology Lookup
                                               </option>
+                                              <option
+                                                key="14"
+                                                value="visitDate"
+                                              >
+                                                Visit Date
+                                              </option>
+                                              <option
+                                                key="15"
+                                                value="visitId"
+                                              >
+                                                Visit ID
+                                              </option>
                                             </select>
                                           </FormControl>
                                         </div>
@@ -16620,7 +16828,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               <p>
@@ -16757,7 +16965,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                     </div>
                                                   </Col>
@@ -17084,7 +17292,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Define alternate field names to be used when importing from a file.
@@ -17177,7 +17385,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -17212,7 +17420,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                       <div
                                                         className="domain-field-label"
                                                       >
-                                                        <Component
+                                                        <DomainFieldLabel
                                                           helpTipBody={
                                                             <React.Fragment>
                                                               Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -17311,7 +17519,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                               </span>
                                                             </Component>
                                                           </span>
-                                                        </Component>
+                                                        </DomainFieldLabel>
                                                       </div>
                                                       <FormControl
                                                         bsClass="form-control"
@@ -17504,7 +17712,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -17606,7 +17814,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button
@@ -17644,7 +17852,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                         <div
                                                           className="domain-field-label domain-no-wrap"
                                                         >
-                                                          <Component
+                                                          <DomainFieldLabel
                                                             helpTipBody={
                                                               <React.Fragment>
                                                                 <p>
@@ -17746,7 +17954,7 @@ exports[`DomainRow with empty domain form 1`] = `
                                                                 </span>
                                                               </Component>
                                                             </span>
-                                                          </Component>
+                                                          </DomainFieldLabel>
                                                         </div>
                                                         <div>
                                                           <Button

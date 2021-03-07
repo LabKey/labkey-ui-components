@@ -136,6 +136,7 @@ export const RANGE_URIS = {
 
 export const FLAG_CONCEPT_URI = 'http://www.labkey.org/exp/xml#flag';
 export const PARTICIPANTID_CONCEPT_URI = 'http://cpas.labkey.com/Study#ParticipantId';
+export const VISITID_CONCEPT_URI = 'http://cpas.labkey.com/Study#VisitId';
 export const SAMPLE_TYPE_CONCEPT_URI = 'http://www.labkey.org/exp/xml#sample';
 export const CONCEPT_CODE_CONCEPT_URI = 'http://www.labkey.org/types#conceptCode';
 

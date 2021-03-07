@@ -9,7 +9,7 @@ import { Meta, Story } from '@storybook/react/types-6-0';
 import { AssayImportPanels } from '..';
 
 import { ASSAY_WIZARD_MODEL } from '../test/data/constants';
-import { AssayUploadTabs } from '../internal/AssayDefinitionModel';
+import { AssayUploadTabs } from '../internal/constants';
 
 import { initGlobal } from './storyUtils';
 

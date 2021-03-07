@@ -947,6 +947,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         "allowFileLinkProperties": false,
         "allowAttachmentProperties": false,
         "allowFlagProperties": true,
+        "allowTimepointProperties": false,
         "showDefaultValueSettings": false,
         "defaultDefaultValueType": undefined,
         "defaultValueOptions": Immutable.List [],
@@ -1111,6 +1112,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           "allowFileLinkProperties": false,
           "allowAttachmentProperties": false,
           "allowFlagProperties": true,
+          "allowTimepointProperties": false,
           "showDefaultValueSettings": false,
           "defaultDefaultValueType": undefined,
           "defaultValueOptions": Immutable.List [],
@@ -1239,6 +1241,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "allowFileLinkProperties": false,
             "allowAttachmentProperties": false,
             "allowFlagProperties": true,
+            "allowTimepointProperties": false,
             "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
@@ -1375,6 +1378,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "allowFileLinkProperties": false,
               "allowAttachmentProperties": false,
               "allowFlagProperties": true,
+              "allowTimepointProperties": false,
               "showDefaultValueSettings": false,
               "defaultDefaultValueType": undefined,
               "defaultValueOptions": Immutable.List [],
@@ -1526,6 +1530,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "allowFileLinkProperties": false,
                 "allowAttachmentProperties": false,
                 "allowFlagProperties": true,
+                "allowTimepointProperties": false,
                 "showDefaultValueSettings": false,
                 "defaultDefaultValueType": undefined,
                 "defaultValueOptions": Immutable.List [],
@@ -1683,6 +1688,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "allowFileLinkProperties": false,
                   "allowAttachmentProperties": false,
                   "allowFlagProperties": true,
+                  "allowTimepointProperties": false,
                   "showDefaultValueSettings": false,
                   "defaultDefaultValueType": undefined,
                   "defaultValueOptions": Immutable.List [],
@@ -2032,6 +2038,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         "allowFileLinkProperties": false,
                                         "allowAttachmentProperties": false,
                                         "allowFlagProperties": true,
+                                        "allowTimepointProperties": false,
                                         "showDefaultValueSettings": false,
                                         "defaultDefaultValueType": undefined,
                                         "defaultValueOptions": Immutable.List [],
@@ -2165,7 +2172,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             <div
                                               className="col-xs-2"
                                             >
-                                              <Component
+                                              <DomainFieldLabel
                                                 helpTipBody="The name for this sample type. Note that this can't be changed after sample type creation."
                                                 label="Name"
                                                 required={true}
@@ -2253,7 +2260,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                   </Component>
                                                    *
                                                 </span>
-                                              </Component>
+                                              </DomainFieldLabel>
                                             </div>
                                           </Col>
                                           <Col
@@ -2304,7 +2311,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             <div
                                               className="col-xs-2"
                                             >
-                                              <Component
+                                              <DomainFieldLabel
                                                 helpTipBody="A short description for this sample type."
                                                 label="Description"
                                               >
@@ -2389,7 +2396,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                     </span>
                                                   </Component>
                                                 </span>
-                                              </Component>
+                                              </DomainFieldLabel>
                                             </div>
                                           </Col>
                                           <Col
@@ -2426,7 +2433,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                             <div
                                               className="col-xs-2"
                                             >
-                                              <Component
+                                              <DomainFieldLabel
                                                 helpTipBody={
                                                   <React.Fragment>
                                                     <p>
@@ -2528,7 +2535,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                     </span>
                                                   </Component>
                                                 </span>
-                                              </Component>
+                                              </DomainFieldLabel>
                                             </div>
                                           </Col>
                                           <Col
@@ -2589,7 +2596,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                       <div
                                         className="col-xs-2"
                                       >
-                                        <Component
+                                        <DomainFieldLabel
                                           helpTipBody="The label color will be used to distinguish this sample type in various views in the application."
                                           label="Label Color"
                                         >
@@ -2675,7 +2682,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                               </span>
                                             </Component>
                                           </span>
-                                        </Component>
+                                        </DomainFieldLabel>
                                       </div>
                                     </Col>
                                     <Col
@@ -2740,6 +2747,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "allowFileLinkProperties": false,
             "allowAttachmentProperties": false,
             "allowFlagProperties": true,
+            "allowTimepointProperties": false,
             "showDefaultValueSettings": false,
             "defaultDefaultValueType": undefined,
             "defaultValueOptions": Immutable.List [],
@@ -2881,6 +2889,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "allowFileLinkProperties": false,
                 "allowAttachmentProperties": false,
                 "allowFlagProperties": true,
+                "allowTimepointProperties": false,
                 "showDefaultValueSettings": false,
                 "defaultDefaultValueType": undefined,
                 "defaultValueOptions": Immutable.List [],
@@ -4807,7 +4816,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       <p>
@@ -4944,7 +4953,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -5272,7 +5281,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -5365,7 +5374,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -5400,7 +5409,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -5499,7 +5508,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -5695,7 +5704,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -5797,7 +5806,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button

@@ -57,7 +57,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
             <div
               className="domain-field-label"
             >
-              <Component
+              <DomainFieldLabel
                 helpTipBody={
                   <React.Fragment>
                     To control how a date or time value is displayed, provide a string format compatible with the Java class SimpleDateFormat.
@@ -199,7 +199,7 @@ exports[`DateTimeFieldOptions Date Time data type 1`] = `
                     </span>
                   </Component>
                 </span>
-              </Component>
+              </DomainFieldLabel>
             </div>
           </div>
         </Col>

@@ -1,5 +1,17 @@
 # @labkey/build
 
+### version 2.0.1
+*Released 5 March 2021*
+* Fix generation of file paths in lib.template.xml
+
+### version 2.0.0
+*Released 4 March 2021*
+* Upgrade to Webpack 5
+  * Also upgraded all other build plugins
+* Use babel loaders instead of ts-loader for typescript
+* Refactor constants to re-use more configurations across builds
+* Add tsconfig.json
+
 ### version 1.1.2
 *Released*: 12 January 2021
 * Add minify options to HtmlWebpackPlugin configurations

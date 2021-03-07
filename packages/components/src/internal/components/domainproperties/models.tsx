@@ -1631,6 +1631,7 @@ export interface IDomainFormDisplayOptions {
     hideImportData?: boolean;
     derivationDataScopeConfig?: IDerivationDataScope;
     domainKindDisplayName?: string;
+    retainReservedFields?: boolean;
 }
 
 export interface IDerivationDataScope {

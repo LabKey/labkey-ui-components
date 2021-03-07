@@ -944,22 +944,24 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         const { domain, setFileImportData, domainFormDisplayOptions } = this.props;
 
         let fields = List<QueryColumn>();
-        let reservedFields = response.reservedFields || List<QueryColumn>();
-
-        if (response?.fields?.size) {
-            response.fields.forEach(field => {
-                if (domain.reservedFieldNames?.indexOf(field.name) < 0)  {
-                    fields = fields.push(field);
-                }
-                else {
-                    reservedFields = reservedFields.push(field);
-                }
-            });
+        let reservedFields = response?.reservedFields || List<QueryColumn>();
+        if (domainFormDisplayOptions?.retainReservedFields) {
+            fields = fields.merge(reservedFields);
+        } else {
+            if (response?.fields?.size) {
+                response.fields.forEach(field => {
+                    if (domain.reservedFieldNames?.indexOf(field.name) < 0) {
+                        fields = fields.push(field);
+                    } else {
+                        reservedFields = reservedFields.push(field);
+                    }
+                });
+            }
         }
         if (fields.size === 0) {
             this.setState({
                 filePreviewMsg:
-                    'The selected file does not have any fields that will not be created by default. Please remove it and try selecting another file.',
+                    'The selected file contains only fields that will be created by default. Please remove the file and try uploading a new one.',
             });
         }
         else {
@@ -971,11 +973,11 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
             this.onDomainChange(setDomainFields(domain, fields));
         }
-        if (reservedFields.size) {
+        if (reservedFields.size && !domainFormDisplayOptions?.retainReservedFields) {
             this.setState({
                 reservedFieldsMsg: 'Reserved fields found in your file are not shown below. ' +
                     'These fields are already used by LabKey' +
-                    (domainFormDisplayOptions.domainKindDisplayName ? ' to support this ' + domainFormDisplayOptions.domainKindDisplayName : '') + ': ' +
+                    (domainFormDisplayOptions?.domainKindDisplayName ? ' to support this ' + domainFormDisplayOptions.domainKindDisplayName : '') + ': ' +
                     reservedFields.map((field) => field.name).join(', ')
             })
         }

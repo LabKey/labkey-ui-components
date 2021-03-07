@@ -22,12 +22,12 @@ if (process.env.LINK) {
         throw 'ERROR: You must set your LABKEY_UI_COMPONENTS_HOME environment variable in order to link your @labkey packages.';
     }
 
-    labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components';
+    labkeyUIComponentsPath = process.env.LABKEY_UI_COMPONENTS_HOME + '/packages/components/src';
 
-    const freezerManagerRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'inventory/packages/freezermanager';
+    const freezerManagerRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'inventory/packages/freezermanager/src';
     freezerManagerPath = path.resolve(__dirname, freezerManagerRelPath);
 
-    const workflowRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'sampleManagement/packages/workflow';
+    const workflowRelPath = (lkModuleContainer ? '../../../../../../' : '../../../../../') + 'sampleManagement/packages/workflow/src';
     workflowPath = path.resolve(__dirname, workflowRelPath);
 }
 if (process.env.npm_package_dependencies__labkey_components) {
@@ -137,7 +137,6 @@ const TS_CHECKER_DEV_CONFIG = {
         configOverwrite: {
             compilerOptions: {
                 "paths": {
-                    "immutable": [labkeyUIComponentsPath + "/node_modules/immutable"],
                     "@labkey/components": [labkeyUIComponentsPath],
                     "@labkey/freezermanager": [freezerManagerPath],
                     "@labkey/workflow": [workflowPath]
@@ -240,6 +239,25 @@ module.exports = {
                 use: [BABEL_DEV_CONFIG]
             }
         ]
+    },
+    aliases: {
+        LABKEY_PACKAGES: {
+            '@labkey/components-scss': labkeyUIComponentsPath + '/dist/assets/scss/theme',
+            '@labkey/components-app-scss': labkeyUIComponentsPath + '/dist/assets/scss',
+            '@labkey/freezermanager-scss': freezerManagerPath + '/dist/assets/scss/theme',
+            '@labkey/workflow-scss': workflowPath + '/dist/assets/scss/theme',
+        },
+        LABKEY_PACKAGES_DEV: {
+            // Note that for modules that don't have these packages, the aliases are just ignored and don't
+            // seem to cause any problems.
+            '@labkey/components': labkeyUIComponentsPath,
+            '@labkey/components-scss': labkeyUIComponentsPath + '/theme',
+            '@labkey/components-app-scss': labkeyUIComponentsPath + '/internal/app/scss',
+            '@labkey/freezermanager': freezerManagerPath,
+            '@labkey/freezermanager-scss': freezerManagerPath + '/theme',
+            '@labkey/workflow': workflowPath,
+            '@labkey/workflow-scss': workflowPath + '/theme',
+        },
     },
     outputPath: function(dir) {
         return path.resolve(dir, '../resources/web/' + lkModule + '/gen');

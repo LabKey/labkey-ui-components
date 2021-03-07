@@ -71,17 +71,10 @@ module.exports = {
 
     resolve: {
         alias: {
-            // Note that for modules that don't have these packages, the aliases are just ignored and don't
-            // seem to cause any problems.
-            '@labkey/components': constants.labkeyUIComponentsPath,
-            '@labkey/freezermanager': constants.freezerManagerPath,
-            '@labkey/workflow': constants.workflowPath,
-
-            // This assures there is only one copy of react and react-dom in the application
+            ...constants.aliases.LABKEY_PACKAGES_DEV,
+            // This assures there is only one copy of react in the application
             react: path.resolve(__dirname, "../node_modules/react"),
-            'react-dom': require.resolve('@hot-loader/react-dom'),
         },
-
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')
     },
 

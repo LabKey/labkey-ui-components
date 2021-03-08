@@ -2,7 +2,7 @@
  * Copyright (c) 2016-2018 LabKey Corporation. All rights reserved. No portion of this work may be reproduced in
  * any form or by any electronic or mechanical means without written permission from LabKey Corporation.
  */
-import React from 'react';
+import React, { Component, CSSProperties, ReactNode } from 'react';
 
 import { QueryColumn } from '../../..';
 
@@ -10,22 +10,22 @@ import { ToggleWithInputField, ToggleWithInputFieldProps } from './input/ToggleW
 import { getFieldEnabledFieldName } from './QueryFormInputs';
 import { LabelOverlay, LabelOverlayProps } from './LabelOverlay';
 
-interface FieldLabelProps {
-    id?: any; // required if column is not provided and showToggle is true
-    fieldName?: string; // required if column is not provided and showToggle is true
-    label?: React.ReactNode;
+export interface FieldLabelProps {
     column?: QueryColumn;
-    showToggle?: boolean;
+    fieldName?: string; // required if column is not provided and showToggle is true
+    id?: any; // required if column is not provided and showToggle is true
     isDisabled?: boolean;
+    label?: ReactNode;
     labelOverlayProps?: LabelOverlayProps;
     showLabel?: boolean;
-    style?: any;
-    withLabelOverlay?: boolean;
+    showToggle?: boolean;
+    style?: CSSProperties;
     toggleProps?: Partial<ToggleWithInputFieldProps>;
+    withLabelOverlay?: boolean;
 }
 
-export class FieldLabel extends React.Component<FieldLabelProps, any> {
-    static defaultProps: Partial<FieldLabelProps> = {
+export class FieldLabel extends Component<FieldLabelProps> {
+    static defaultProps = {
         showLabel: true,
         withLabelOverlay: true,
     };
@@ -46,6 +46,7 @@ export class FieldLabel extends React.Component<FieldLabelProps, any> {
             column,
             fieldName,
             id,
+            labelOverlayProps,
             showLabel,
             showToggle,
             isDisabled,
@@ -53,7 +54,6 @@ export class FieldLabel extends React.Component<FieldLabelProps, any> {
             toggleProps,
             withLabelOverlay,
         } = this.props;
-        const labelOverlayProps = this.props.labelOverlayProps;
 
         if (!showLabel) return null;
 

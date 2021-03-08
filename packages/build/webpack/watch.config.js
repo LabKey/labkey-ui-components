@@ -30,7 +30,7 @@ const devServer = {
     watchOptions: {
         // Ignore any packages folders, if we don't ignore packages then we will incorrectly trigger builds in
         // package folders (e.g. changing a file in the SM Workflow package would incorrectly trigger a build in SM)
-        ignored: process.env.LINK ? [] : ['**/packages']
+        ignored: process.env.LINK ? undefined : ['**/packages']
     }
 };
 
@@ -72,7 +72,7 @@ module.exports = {
     resolve: {
         alias: {
             ...constants.aliases.LABKEY_PACKAGES_DEV,
-            // This assures there is only one copy of react in the application
+            // This assures there is only one copy of react used while doing start-link
             react: path.resolve(__dirname, "../node_modules/react"),
         },
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')

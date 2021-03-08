@@ -25,6 +25,7 @@ import { FilterAction } from '../omnibox/actions/Filter';
 import { SearchAction } from '../omnibox/actions/Search';
 import { SortAction } from '../omnibox/actions/Sort';
 import { ViewAction } from '../omnibox/actions/View';
+import { GlobalAppState } from '../../global';
 
 /**
  * This is a mapping of actions with their associated URL param. It is keyed by the name of action
@@ -57,7 +58,7 @@ interface URLBoxState {
     location: Location;
 }
 
-export class URLBox extends ReactN.Component<URLBoxProps, URLBoxState> {
+export class URLBox extends ReactN.Component<URLBoxProps, URLBoxState, GlobalAppState> {
     static defaultProps = {
         // TODO: There is only one consumer of URLBox (QueryGridPanel) and it never overrides this. Does it need to be
         //  a prop? Probably not. We can probably simplify some code in this component if we remove it.

@@ -87,6 +87,7 @@ import {
 } from './models';
 
 import { getEntityTypeData } from './actions';
+import { GlobalAppState } from '../../global';
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -143,7 +144,7 @@ interface StateProps {
     useAsync: boolean;
 }
 
-export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
+export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps, GlobalAppState> {
     private readonly capNounSingular;
     private readonly capNounPlural;
     private readonly capIdsText;

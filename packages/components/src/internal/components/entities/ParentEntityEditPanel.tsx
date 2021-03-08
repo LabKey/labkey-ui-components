@@ -34,6 +34,7 @@ import {
     getUpdatedRowForParentChanges,
     parentValuesDiffer,
 } from './utils';
+import { GlobalAppState } from '../../global';
 
 interface Props {
     canUpdate: boolean;
@@ -60,7 +61,7 @@ interface State {
     originalValueLoaded: List<boolean>;
 }
 
-export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
+export class ParentEntityEditPanel extends ReactN.Component<Props, State, GlobalAppState> {
     static defaultProps = {
         cancelText: 'Cancel',
         submitText: 'Save',

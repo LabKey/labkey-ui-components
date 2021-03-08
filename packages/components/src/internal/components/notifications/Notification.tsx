@@ -26,13 +26,14 @@ import { createNotification, setTrialBannerDismissSessionKey } from './actions';
 import { NotificationItem } from './NotificationItem';
 
 import { dismissNotifications } from './global';
+import { GlobalAppState } from '../../global';
 
 interface NotificationProps {
     notificationHeader?: string;
     user?: User;
 }
 
-export class Notification extends ReactN.Component<NotificationProps, any> {
+export class Notification extends ReactN.Component<NotificationProps, any, GlobalAppState> {
     UNSAFE_componentWillMount(): void {
         this.createSystemNotification();
     }

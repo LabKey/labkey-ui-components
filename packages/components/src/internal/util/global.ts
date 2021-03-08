@@ -20,7 +20,7 @@ import createHistory from 'history/createBrowserHistory';
  * Initialize the global state object for this package.
  */
 export function initBrowserHistoryState() {
-    if (!getGlobal().BrowserHistory) {
+    if (!getGlobal()['BrowserHistory']) {
         setGlobal(
             {
                 BrowserHistory: createHistory(),
@@ -38,9 +38,9 @@ export function initBrowserHistoryState() {
  * Access method for better browser history object from global state
  */
 export function getBrowserHistory() {
-    if (!getGlobal().BrowserHistory) {
+    if (!getGlobal()['BrowserHistory']) {
         throw new Error('Must call initBrowserHistoryState before you can access the global.BrowserHistory object.');
     }
 
-    return getGlobal().BrowserHistory;
+    return getGlobal()['BrowserHistory'];
 }

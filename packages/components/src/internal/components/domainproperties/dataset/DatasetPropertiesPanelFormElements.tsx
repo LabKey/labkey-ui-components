@@ -16,7 +16,7 @@
 import React, { ReactNode } from 'react';
 import { Col, Checkbox, Radio, Row } from 'react-bootstrap';
 
-import { Creatable, Option } from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 
@@ -34,6 +34,8 @@ import { DatasetSettingsInput, DatasetSettingsSelect } from './DatasetProperties
 
 import '../../../../theme/dataset.scss';
 import { TIME_KEY_FIELD_KEY } from './constants';
+
+type Option = any;
 
 interface BasicPropertiesInputsProps {
     model: DatasetModel;
@@ -139,12 +141,12 @@ export class BasicPropertiesFields extends React.PureComponent<BasicPropertiesIn
                     </Col>
 
                     <Col xs={7}>
-                        <Creatable
+                        <CreatableSelect
                             name="category"
-                            placeholder="Select dataset category"
                             onChange={onCategoryChange}
-                            value={model.category}
                             options={availableCategories}
+                            placeholder="Select dataset category"
+                            value={model.category}
                         />
                     </Col>
 

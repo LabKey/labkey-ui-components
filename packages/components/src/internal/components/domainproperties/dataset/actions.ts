@@ -17,7 +17,7 @@
 import { ActionURL, Ajax, Domain, getServerContext, Utils } from '@labkey/api';
 
 import { fromJS, List } from 'immutable';
-import { Option } from 'react-select';
+// import { Option } from 'react-select';
 
 import { DomainDesign, DomainField, selectRows } from '../../../..';
 
@@ -33,6 +33,8 @@ import {
     TIME_KEY_FIELD_KEY,
     VISIT_DATE_TIP,
 } from './constants';
+
+type Option = any;
 
 export function fetchCategories(): Promise<List<Option>> {
     return new Promise((resolve, reject) => {

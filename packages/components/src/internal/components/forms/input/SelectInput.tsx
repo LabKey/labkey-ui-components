@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FC, ReactNode } from 'react';
+import React, { Component, FC, FocusEvent, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
-import ReactSelect, { Option } from 'react-select';
+import ReactSelect from 'react-select';
+import AsyncSelect from 'react-select/async';
+import AsyncCreatableSelect from 'react-select/async-creatable';
+import CreatableSelect from 'react-select/creatable';
 import { getServerContext, Utils } from '@labkey/api';
 
 import { FieldLabel } from '../FieldLabel';
 
 import { generateId, QueryColumn } from '../../../..';
-
-import { DisableableInput, DisableableInputProps, DisableableInputState } from './DisableableInput';
 
 // DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
 // any other delimiter value will break the "multiple" configuration parameter
@@ -91,14 +92,17 @@ function initOptions(props: SelectInputProps): any {
     return options;
 }
 
-export interface SelectInputProps extends DisableableInputProps {
+export interface SelectInputProps {
     addLabelText?: string;
+    afterInputElement?: ReactNode; // this can be used to render an element to the right of the input
     allowCreate?: boolean;
+    allowDisable?: boolean;
     autoload?: boolean;
     autoValue?: boolean;
     autoFocus?: boolean;
     backspaceRemoves?: boolean;
     deleteRemoves?: boolean;
+    cacheOptions?: boolean;
     clearCacheOnChange?: boolean;
     clearable?: boolean;
     containerClass?: string;
@@ -108,6 +112,7 @@ export interface SelectInputProps extends DisableableInputProps {
     filterOptions?: (options, filterString, values) => any; // from ReactSelect
     formsy?: boolean;
     ignoreCase?: boolean;
+    initiallyDisabled?: boolean;
     inputClass?: string;
     isLoading?: boolean;
     // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
@@ -119,24 +124,24 @@ export interface SelectInputProps extends DisableableInputProps {
     multiple?: boolean;
     name?: string;
     noResultsText?: string;
-    onBlur?: (event) => any;
-    onFocus?: (event, selectRef) => void;
+    onBlur?: (event: FocusEvent<HTMLElement>) => void;
+    onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
+    onToggleDisable?: (disabled: boolean) => void;
     options?: any[];
     placeholder?: string;
     promptTextCreator?: (filterText: string) => string;
     required?: boolean;
     saveOnBlur?: boolean;
-    selectedOptions?: Option | Option[];
+    selectedOptions?: any; // Option | Option[];
     showLabel?: boolean;
     addLabelAsterisk?: boolean;
     renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     valueKey?: string;
     onChange?: Function; // this is getting confused with formsy on change, need to separate
     optionRenderer?: any;
-    afterInputElement?: React.ReactNode; // this can be used to render an element to the right of the input
 
     id?: any;
-    label?: React.ReactNode;
+    label?: ReactNode;
     value?: any;
 
     // from formsy-react
@@ -147,29 +152,29 @@ export interface SelectInputProps extends DisableableInputProps {
     validations?: any;
 }
 
-export interface SelectInputState extends DisableableInputState {
-    selectedOptions?: any;
-    originalOptions?: any;
+export interface SelectInputState {
+    isDisabled: boolean;
+    originalOptions: any;
+    selectedOptions: any;
 }
 
 // Implementation exported only for tests
-export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectInputState> {
+export class SelectInputImpl extends Component<SelectInputProps, SelectInputState> {
     static defaultProps = {
-        ...DisableableInput.defaultProps,
-        ...{
-            allowCreate: false,
-            autoload: true,
-            autoValue: true,
-            clearCacheOnChange: true,
-            containerClass: 'form-group row',
-            delimiter: DELIMITER,
-            inputClass: 'col-sm-9 col-xs-12',
-            labelClass: 'control-label col-sm-3 text-left col-xs-12',
-            labelKey: 'label',
-            saveOnBlur: false,
-            showLabel: true,
-            valueKey: 'value',
-        },
+        allowCreate: false,
+        allowDisable: false,
+        autoload: true,
+        autoValue: true,
+        clearCacheOnChange: true,
+        containerClass: 'form-group row',
+        delimiter: DELIMITER,
+        initiallyDisabled: false,
+        inputClass: 'col-sm-9 col-xs-12',
+        labelClass: 'control-label col-sm-3 text-left col-xs-12',
+        labelKey: 'label',
+        saveOnBlur: false,
+        showLabel: true,
+        valueKey: 'value',
     };
 
     _id: string;
@@ -236,7 +241,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         return this.props.id ?? this._id;
     };
 
-    handleBlur = (event: any): void => {
+    handleBlur = (event: FocusEvent<HTMLElement>): void => {
         const { onBlur, saveOnBlur } = this.props;
 
         // 33774: fields should be able to preserve input onBlur
@@ -273,7 +278,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         onBlur?.(event);
     };
 
-    handleChange = (selectedOptions): void => {
+    handleChange = (selectedOptions: any, actionMeta: any): void => {
         const { clearCacheOnChange, name, onChange } = this.props;
 
         this.change = true;
@@ -293,7 +298,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
     };
 
     isAsync = (): boolean => {
-        return Utils.isFunction(this.props.loadOptions);
+        return !!this.props.loadOptions;
     };
 
     isCreatable = (): boolean => {
@@ -310,9 +315,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             selectedOptions = options;
         }
 
-        this.setState({
-            selectedOptions,
-        });
+        this.setState({ selectedOptions });
 
         let formValue;
 
@@ -336,8 +339,8 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             }
         }
 
-        if (formsy && Utils.isFunction(setValue)) {
-            setValue(formValue);
+        if (formsy) {
+            setValue?.(formValue);
         }
 
         return formValue;
@@ -361,7 +364,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         return null;
     }
 
-    renderLabel(inputProps: any) {
+    renderLabel = (): ReactNode => {
         const {
             allowDisable,
             label,
@@ -391,7 +394,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
 
                 return (
                     <FieldLabel
-                        id={inputProps.id}
+                        id={this.getId()}
                         fieldName={name}
                         labelOverlayProps={{
                             inputId: name,
@@ -416,16 +419,17 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         }
 
         return null;
-    }
+    };
 
-    renderSelect(inputProps: any) {
+    renderSelect = (): ReactNode => {
         const {
             addLabelText,
             autoFocus,
             autoload,
             backspaceRemoves,
-            deleteRemoves,
+            cacheOptions,
             clearable,
+            deleteRemoves,
             delimiter,
             disabled,
             filterOptions,
@@ -456,7 +460,7 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
             disabled: disabled || this.state.isDisabled,
             filterOptions,
             ignoreCase,
-            inputProps,
+            inputProps: { id: this.getId() },
             isLoading,
             labelKey,
             multi: multiple,
@@ -485,35 +489,28 @@ export class SelectInputImpl extends DisableableInput<SelectInputProps, SelectIn
         }
 
         if (this.isAsync()) {
-            const asyncProps = Object.assign(selectProps, {
-                cache: false, // Issue 38631 and Issue 36478 we say no to the cache so it will get cleared of all intermittent results.
-                loadOptions,
-            });
+            const asyncProps = { ...selectProps, cacheOptions, loadOptions };
 
             if (this.isCreatable()) {
-                return <ReactSelect.AsyncCreatable {...asyncProps} />;
+                return <AsyncCreatableSelect defaultOptions {...asyncProps} />;
             }
 
-            return <ReactSelect.Async {...asyncProps} />;
+            return <AsyncSelect defaultOptions {...asyncProps} />;
         } else if (this.isCreatable()) {
-            return <ReactSelect.Creatable {...selectProps} />;
+            return <CreatableSelect {...selectProps} />;
         }
 
         return <ReactSelect {...selectProps} />;
-    }
+    };
 
     render() {
         const { containerClass, inputClass, afterInputElement } = this.props;
 
-        const inputProps = {
-            id: this.getId(),
-        };
-
         return (
             <div className={containerClass}>
-                {this.renderLabel(inputProps)}
+                {this.renderLabel()}
                 <div className={inputClass}>
-                    {this.renderSelect(inputProps)}
+                    {this.renderSelect()}
                     {this.renderError()}
                 </div>
                 {afterInputElement}

@@ -56,7 +56,7 @@ describe('SelectInput', () => {
             .simulate('change', { target: { value: 'Hello' } })
             .simulate('blur');
 
-        expect(setValue.mock.calls.length).toBe(1);
+        expect(setValue).toHaveBeenCalledTimes(1);
         const state = component.state() as any;
         expect(state.selectedOptions).toHaveProperty('value', 'Hello');
 
@@ -68,13 +68,10 @@ describe('SelectInput', () => {
 
         const selectProps = Object.assign({}, formsyProps, {
             loadOptions: (input, callback) => {
-                callback(null, {
-                    options: [
-                        { value: 'one', label: 'One' },
-                        { value: 'two', label: 'Two' },
-                    ],
-                    complete: true,
-                });
+                callback([
+                    { value: 'one', label: 'One' },
+                    { value: 'two', label: 'Two' },
+                ]);
             },
             multiple: true,
             saveOnBlur: true,

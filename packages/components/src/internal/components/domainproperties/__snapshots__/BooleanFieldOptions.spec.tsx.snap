@@ -56,7 +56,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
             <div
               className="domain-field-label"
             >
-              <Component
+              <DomainFieldLabel
                 helpTipBody={
                   <div>
                     Use boolean formatting to specify the text to show when a value is true and false. Text can optionally be shown for null values.
@@ -191,7 +191,7 @@ exports[`BooleanFieldOptions Boolean data type 1`] = `
                     </span>
                   </Component>
                 </span>
-              </Component>
+              </DomainFieldLabel>
             </div>
           </div>
         </Col>

@@ -977,7 +977,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                                     <div
                                                       className="col-lg-2 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -1069,7 +1069,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                                           </Component>
                                                            *
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -1239,7 +1239,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                                     <div
                                                       className="col-lg-2 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             A short description for this assay design.
@@ -1328,7 +1328,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -1497,7 +1497,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                                     <div
                                                       className="col-lg-2 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -1587,7 +1587,7 @@ exports[`AssayDesignerPanels appPropertiesOnly for new assay 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -6664,7 +6664,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     <div
                                                       className="col-lg-2 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -6756,7 +6756,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                           </Component>
                                                            *
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -7157,7 +7157,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     <div
                                                       className="col-lg-2 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             A short description for this assay design.
@@ -7246,7 +7246,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -7646,7 +7646,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     <div
                                                       className="col-lg-2 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -7736,7 +7736,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -8123,7 +8123,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                     <div
                                                       className="col-lg-2 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, users with sufficient permissions can edit and delete at the individual results row level after the initial import is complete. New result rows cannot be added to existing runs. These changes will be audited.
@@ -8213,7 +8213,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -12467,7 +12467,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       <p>
@@ -12604,7 +12604,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -12932,7 +12932,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -13025,7 +13025,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -13060,7 +13060,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -13159,7 +13159,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -13354,7 +13354,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -13456,7 +13456,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -14611,7 +14611,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       To control how a number value is displayed, provide a string format compatible with the Java class DecimalFormat.
@@ -14711,7 +14711,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -15023,7 +15023,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -15116,7 +15116,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -15151,7 +15151,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -15250,7 +15250,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -15445,7 +15445,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -15547,7 +15547,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -16703,7 +16703,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       To control how a date or time value is displayed, provide a string format compatible with the Java class SimpleDateFormat.
@@ -16803,7 +16803,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -17079,7 +17079,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -17172,7 +17172,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -17207,7 +17207,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -17306,7 +17306,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -17501,7 +17501,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -17603,7 +17603,7 @@ exports[`AssayDesignerPanels appPropertiesOnly with initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -18753,7 +18753,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -18845,7 +18845,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                           </Component>
                                                            *
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -19015,7 +19015,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             A short description for this assay design.
@@ -19104,7 +19104,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -19273,7 +19273,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -19363,7 +19363,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -19546,7 +19546,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
@@ -19641,7 +19641,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -23040,7 +23040,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -23132,7 +23132,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                           </Component>
                                                            *
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -23302,7 +23302,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             A short description for this assay design.
@@ -23391,7 +23391,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -23560,7 +23560,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -23650,7 +23650,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -23833,7 +23833,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
@@ -23928,7 +23928,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -28226,7 +28226,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -28318,7 +28318,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                           </Component>
                                                            *
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -28719,7 +28719,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             A short description for this assay design.
@@ -28808,7 +28808,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -29208,7 +29208,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -29298,7 +29298,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -29685,7 +29685,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, users with sufficient permissions can edit and delete at the individual results row level after the initial import is complete. New result rows cannot be added to existing runs. These changes will be audited.
@@ -29775,7 +29775,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -30189,7 +30189,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
@@ -30284,7 +30284,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -30678,7 +30678,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, assay imports will be processed as jobs in the data pipeline. If there are any errors during the import, they can be viewed from the log file for that job.
@@ -30768,7 +30768,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -33854,7 +33854,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       <p>
@@ -33991,7 +33991,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -34319,7 +34319,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -34412,7 +34412,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -34447,7 +34447,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -34546,7 +34546,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -34741,7 +34741,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -34843,7 +34843,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -34881,7 +34881,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -34983,7 +34983,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -36156,7 +36156,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       To control how a number value is displayed, provide a string format compatible with the Java class DecimalFormat.
@@ -36256,7 +36256,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -36568,7 +36568,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -36661,7 +36661,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -36696,7 +36696,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -36795,7 +36795,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -36990,7 +36990,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -37092,7 +37092,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -37130,7 +37130,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -37232,7 +37232,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -38406,7 +38406,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       To control how a date or time value is displayed, provide a string format compatible with the Java class SimpleDateFormat.
@@ -38506,7 +38506,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -38782,7 +38782,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -38875,7 +38875,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -38910,7 +38910,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -39009,7 +39009,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -39204,7 +39204,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -39306,7 +39306,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -39344,7 +39344,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -39446,7 +39446,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -42269,7 +42269,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             The name for this assay design. Note that this can't be changed after the assay design is created.
@@ -42361,7 +42361,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                           </Component>
                                                            *
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -42762,7 +42762,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             A short description for this assay design.
@@ -42851,7 +42851,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -43251,7 +43251,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, users with sufficient permissions can edit values at the run level after the initial import is complete. These changes will be audited.
@@ -43341,7 +43341,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -43728,7 +43728,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, users with sufficient permissions can edit and delete at the individual results row level after the initial import is complete. New result rows cannot be added to existing runs. These changes will be audited.
@@ -43818,7 +43818,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -44232,7 +44232,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
@@ -44327,7 +44327,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -44721,7 +44721,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     <div
                                                       className="col-lg-4 col-xs-3"
                                                     >
-                                                      <Component
+                                                      <DomainFieldLabel
                                                         helpTipBody={
                                                           <p>
                                                             If enabled, assay imports will be processed as jobs in the data pipeline. If there are any errors during the import, they can be viewed from the log file for that job.
@@ -44811,7 +44811,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             </span>
                                                           </Component>
                                                         </span>
-                                                      </Component>
+                                                      </DomainFieldLabel>
                                                     </div>
                                                   </Col>
                                                   <Col
@@ -49071,7 +49071,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       <p>
@@ -49208,7 +49208,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -49536,7 +49536,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -49629,7 +49629,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -49664,7 +49664,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -49763,7 +49763,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -49958,7 +49958,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -50060,7 +50060,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -50098,7 +50098,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -50200,7 +50200,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -51373,7 +51373,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       To control how a number value is displayed, provide a string format compatible with the Java class DecimalFormat.
@@ -51473,7 +51473,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -51785,7 +51785,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -51878,7 +51878,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -51913,7 +51913,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -52012,7 +52012,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -52207,7 +52207,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -52309,7 +52309,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -52347,7 +52347,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -52449,7 +52449,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -53623,7 +53623,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       To control how a date or time value is displayed, provide a string format compatible with the Java class SimpleDateFormat.
@@ -53723,7 +53723,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                             </div>
                                                                                           </Col>
@@ -53999,7 +53999,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Define alternate field names to be used when importing from a file.
@@ -54092,7 +54092,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -54127,7 +54127,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                               <div
                                                                                                 className="domain-field-label"
                                                                                               >
-                                                                                                <Component
+                                                                                                <DomainFieldLabel
                                                                                                   helpTipBody={
                                                                                                     <React.Fragment>
                                                                                                       Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -54226,7 +54226,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                       </span>
                                                                                                     </Component>
                                                                                                   </span>
-                                                                                                </Component>
+                                                                                                </DomainFieldLabel>
                                                                                               </div>
                                                                                               <FormControl
                                                                                                 bsClass="form-control"
@@ -54421,7 +54421,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -54523,7 +54523,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button
@@ -54561,7 +54561,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                 <div
                                                                                                   className="domain-field-label domain-no-wrap"
                                                                                                 >
-                                                                                                  <Component
+                                                                                                  <DomainFieldLabel
                                                                                                     helpTipBody={
                                                                                                       <React.Fragment>
                                                                                                         <p>
@@ -54663,7 +54663,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                                                                         </span>
                                                                                                       </Component>
                                                                                                     </span>
-                                                                                                  </Component>
+                                                                                                  </DomainFieldLabel>
                                                                                                 </div>
                                                                                                 <div>
                                                                                                   <Button

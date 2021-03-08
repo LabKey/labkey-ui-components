@@ -56,7 +56,7 @@ exports[`TextFieldOptions Text data type 1`] = `
             <div
               className="domain-field-label"
             >
-              <Component
+              <DomainFieldLabel
                 helpTipBody={
                   <React.Fragment>
                     <p>
@@ -193,7 +193,7 @@ exports[`TextFieldOptions Text data type 1`] = `
                     </span>
                   </Component>
                 </span>
-              </Component>
+              </DomainFieldLabel>
             </div>
           </div>
         </Col>

@@ -251,12 +251,14 @@ module.exports = {
             // Note that for modules that don't have these packages, the aliases are just ignored and don't
             // seem to cause any problems.
             '@labkey/components': labkeyUIComponentsPath,
-            '@labkey/components-scss': labkeyUIComponentsPath + '/theme',
-            '@labkey/components-app-scss': labkeyUIComponentsPath + '/internal/app/scss',
             '@labkey/freezermanager': freezerManagerPath,
-            '@labkey/freezermanager-scss': freezerManagerPath + '/theme',
             '@labkey/workflow': workflowPath,
-            '@labkey/workflow-scss': workflowPath + '/theme',
+
+            // need to set the path based on the LINK var
+            '@labkey/components-scss': labkeyUIComponentsPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
+            '@labkey/components-app-scss': labkeyUIComponentsPath + (process.env.LINK ? '/internal/app/scss' : '/dist/assets/scss'),
+            '@labkey/freezermanager-scss': freezerManagerPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
+            '@labkey/workflow-scss': workflowPath + (process.env.LINK ? '/theme' : '/dist/assets/scss/theme'),
         },
     },
     outputPath: function(dir) {

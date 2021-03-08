@@ -89,6 +89,7 @@ export class QueryColumn extends Record({
     removeFromViews: false,
     sorts: undefined,
     units: undefined,
+    derivationDataScope: undefined,
 }) {
     align: string;
     // autoIncrement: boolean;
@@ -151,6 +152,7 @@ export class QueryColumn extends Record({
     sorts: '+' | '-';
     removeFromViews: boolean; // strips this column from all ViewInfo definitions
     units: string;
+    derivationDataScope: string;
 
     static create(rawColumn): QueryColumn {
         if (rawColumn && rawColumn.lookup !== undefined) {

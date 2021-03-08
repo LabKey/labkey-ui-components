@@ -103,7 +103,7 @@ describe('<DetailEditing/>', () => {
         expect(editButton.find('i')).toHaveLength(1);
         editButton.hostNodes().simulate('click');
         expect(wrapper.find(headingSelector).text()).toBe('Editing Details');
-        expect(wrapper.find('.form-group')).toHaveLength(6);
+        expect(wrapper.find('.form-group')).toHaveLength(7);
 
         // find the save button and click it
         expect(wrapper.find('.edit__warning')).toHaveLength(0);

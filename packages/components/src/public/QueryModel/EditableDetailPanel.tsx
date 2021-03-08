@@ -7,17 +7,7 @@ import { AuditBehaviorTypes } from '@labkey/api';
 import { DetailPanelHeader } from '../../internal/components/forms/detail/DetailPanelHeader';
 import { extractChanges } from '../../internal/components/forms/detail/utils';
 
-import {
-    Alert,
-    DetailPanel,
-    QueryColumn,
-    RequiresModelAndActions,
-    resolveDetailEditRenderer,
-    resolveDetailRenderer,
-    resolveErrorMessage,
-    titleRenderer,
-    updateRows,
-} from '../..';
+import { Alert, DetailPanel, QueryColumn, RequiresModelAndActions, resolveErrorMessage, updateRows } from '../..';
 
 interface EditableDetailPanelProps extends RequiresModelAndActions {
     appEditable?: boolean;
@@ -133,12 +123,10 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             useEditIcon,
         } = this.props;
         const { canSubmit, editing, error, warning } = this.state;
-        const panelClass = editing ? 'panel-info' : 'panel-default';
-        const renderer = editing ? resolveDetailEditRenderer : resolveDetailRenderer;
         const isEditable = !model.isLoading && model.hasRows && (model.queryInfo?.isAppEditable() || appEditable);
 
         const panel = (
-            <div className={`panel ${panelClass}`}>
+            <div className={`panel ${editing ? 'panel-info' : 'panel-default'}`}>
                 <div className="panel-heading">
                     <DetailPanelHeader
                         useEditIcon={useEditIcon}
@@ -156,11 +144,9 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                     <DetailPanel
                         actions={actions}
-                        detailRenderer={renderer}
                         editingMode={editing}
                         model={model}
                         queryColumns={editing ? undefined : queryColumns}
-                        titleRenderer={editing ? titleRenderer : undefined}
                     />
                 </div>
             </div>

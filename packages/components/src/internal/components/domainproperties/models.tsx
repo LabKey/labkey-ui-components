@@ -16,8 +16,7 @@
 import { fromJS, List, Map, Record } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
 import { immerable } from 'immer';
-
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 
@@ -61,6 +60,8 @@ import {
     SAMPLE_TYPE,
     TEXT_TYPE,
     USERS_TYPE,
+    VISIT_DATE_TYPE,
+    VISIT_ID_TYPE,
 } from './PropDescType';
 import {
     removeUnusedProperties,
@@ -114,6 +115,7 @@ interface IDomainDesign {
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    allowTimepointProperties: boolean;
     showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
@@ -135,6 +137,7 @@ export class DomainDesign
         allowFileLinkProperties: false,
         allowAttachmentProperties: false,
         allowFlagProperties: true,
+        allowTimepointProperties: false,
         showDefaultValueSettings: false,
         defaultDefaultValueType: undefined,
         defaultValueOptions: List<string>(),
@@ -156,6 +159,7 @@ export class DomainDesign
     allowFileLinkProperties: boolean;
     allowAttachmentProperties: boolean;
     allowFlagProperties: boolean;
+    allowTimepointProperties: boolean;
     showDefaultValueSettings: boolean;
     defaultDefaultValueType: string;
     defaultValueOptions: List<string>;
@@ -715,6 +719,7 @@ export class DomainField
         conceptLabelColumn: undefined,
         conceptImportColumn: undefined,
         principalConceptCode: undefined,
+        derivationDataScope: undefined,
         selected: false,
     })
     implements IDomainField {
@@ -767,6 +772,7 @@ export class DomainField
     conceptLabelColumn?: string;
     conceptImportColumn?: string;
     principalConceptCode?: string;
+    derivationDataScope?: string;
     selected: boolean;
 
     static create(rawField: any, shouldApplyDefaultValues?: boolean, mandatoryFieldNames?: List<string>): DomainField {
@@ -1185,7 +1191,15 @@ export function isPropertyTypeAllowed(type: PropDescType, includeFileType: boole
     if (type === FILE_TYPE) return includeFileType;
 
     // We are excluding the field types below for the App
-    return ![LOOKUP_TYPE, PARTICIPANT_TYPE, FLAG_TYPE, ATTACHMENT_TYPE, ONTOLOGY_LOOKUP_TYPE].includes(type);
+    return ![
+        LOOKUP_TYPE,
+        PARTICIPANT_TYPE,
+        FLAG_TYPE,
+        ATTACHMENT_TYPE,
+        ONTOLOGY_LOOKUP_TYPE,
+        VISIT_DATE_TYPE,
+        VISIT_ID_TYPE,
+    ].includes(type);
 }
 
 export function acceptablePropertyType(type: PropDescType, rangeURI: string): boolean {
@@ -1628,6 +1642,15 @@ export interface IDomainFormDisplayOptions {
     hideAddFieldsButton?: boolean;
     disableMvEnabled?: boolean;
     hideImportData?: boolean;
+    derivationDataScopeConfig?: IDerivationDataScope;
+}
+
+export interface IDerivationDataScope {
+    show?: boolean;
+    disable?: boolean;
+    sectionTitle?: string;
+    fieldLabel?: string;
+    helpLinkNode?: ReactNode;
 }
 
 /**

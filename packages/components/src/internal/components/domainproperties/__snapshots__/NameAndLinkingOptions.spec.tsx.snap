@@ -2,6 +2,7 @@
 
 exports[`NameAndLinkingOptions Name and Linking options 1`] = `
 <NameAndLinkingOptions
+  appPropertiesOnly={false}
   domainIndex={1}
   field={
     Immutable.Record {
@@ -85,11 +86,12 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
       "conceptLabelColumn": undefined,
       "conceptImportColumn": undefined,
       "principalConceptCode": undefined,
+      "derivationDataScope": undefined,
       "selected": false,
     }
   }
   index={1}
-  onChange={[MockFunction]}
+  onChange={[Function]}
 >
   <div>
     <Row
@@ -200,7 +202,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             <div
               className="domain-field-label"
             >
-              <Component
+              <DomainFieldLabel
                 helpTipBody={
                   <React.Fragment>
                     Define alternate field names to be used when importing from a file.
@@ -293,7 +295,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                     </span>
                   </Component>
                 </span>
-              </Component>
+              </DomainFieldLabel>
             </div>
             <FormControl
               bsClass="form-control"
@@ -328,7 +330,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
             <div
               className="domain-field-label"
             >
-              <Component
+              <DomainFieldLabel
                 helpTipBody={
                   <React.Fragment>
                     Use this to change the display of the field value within a data grid into a link. Multiple formats are supported, which allows ways to easily substitute and link to other locations in LabKey.
@@ -427,7 +429,7 @@ exports[`NameAndLinkingOptions Name and Linking options 1`] = `
                     </span>
                   </Component>
                 </span>
-              </Component>
+              </DomainFieldLabel>
             </div>
             <FormControl
               bsClass="form-control"

@@ -1,6 +1,59 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.11.1
+*Released*: 8 March 2021
+* Hide 'Derivation Data Scope' column within Designer Summary View. Will be updated when aliquot functionality is no longer an experimental feature
+
+### version 2.11.0
+*Released*: 6 March 2021
+* Package Updates
+
+### version 2.10.2
+*Released*: 5 March 2021
+* Merge release21.3-SNAPSHOT to master.
+* Includes changes from versions 2.6.1 and 2.6.2.
+
+### version 2.10.1
+*Released*: 5 March 2021
+* Don't use const enums, they are not compatible with our new typescript babel build
+
+### version 2.10.0
+*Released*: 4 March 2021
+* Support tagging participant and time point columns in sample types
+* Add two PropDescTypes to include within field Data Type dropdown. The new options render when domain property allowTimepointProperties is true, which is currently the case for only Sample Types
+* Ensure two new Data Type options mentioned above do not render in SampleManagement Sample Types
+
+### version 2.9.0
+*Released*: 4 March 2021
+* Replace `<LookupSelectInput/>` with `<QuerySelect/>` in detail editing.
+* Configures a `QuerySelect` component for detail editing.
+* Support defaults for `detailRenderer` and `titleRenderer` on `DetailDisplay`.
+* No longer publicly export `resolveDetailEditRenderer` or `titleRenderer`.
+* Improve types for our rendering methods.
+
+### version 2.8.0
+*Released*: 3 March 2021
+* Add isSampleAliquotEnabled experimental flag
+* Add "Aliquot Options" to domain row
+* Allow DetailEditing to use custom set of update columns via getUpdateDisplayColumns
+* Hide aliquot fields for insert editable grid and bulk insert form
+
+### version 2.7.0
+*Released*: 1 March 2021
+* Add TabbedGridPanel component
+  * To be used as a replacement for QueryGridPanel's tabbed mode
+* Add "title" field to QueryModel
+
+### version 2.6.2
+*Released*: 4 March 2021
+* 42608: Bulk Insert erroneously transposes columns
+
+### version 2.6.1
+*Released*: 2 March 2021
+* Issue 42589: Product Menu attempts to load before application initialized
+* Add and respect `showNotifications` and `showProductNav` props to `<NavigationBar />`
+
 ### version 2.6.0
 *Released*: 27 February 2021
 * Item 8583: Ontology concept picker usages in Field Editor for field concept annotation

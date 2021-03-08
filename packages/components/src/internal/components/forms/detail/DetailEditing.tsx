@@ -13,73 +13,66 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 import { List } from 'immutable';
 import Formsy from 'formsy-react';
-import { AuditBehaviorTypes, Utils } from '@labkey/api';
+import { AuditBehaviorTypes } from '@labkey/api';
 
 import { updateRows, Alert, resolveErrorMessage, QueryColumn, QueryGridModel } from '../../../..';
 
-import { resolveDetailEditRenderer, resolveDetailRenderer, titleRenderer } from './DetailEditRenderer';
 import { Detail } from './Detail';
 import { DetailPanelHeader } from './DetailPanelHeader';
 import { extractChanges } from './utils';
 
-interface DetailEditingProps {
-    queryModel: QueryGridModel;
-    queryColumns?: List<QueryColumn>;
-    canUpdate: boolean;
-    onUpdate?: () => void;
-    useEditIcon: boolean;
+interface Props {
     appEditable?: boolean;
     asSubPanel?: boolean;
-    title?: string;
-    cancelText?: string;
-    submitText?: string;
-    onEditToggle?: (editing: boolean) => any;
     auditBehavior?: AuditBehaviorTypes;
+    cancelText?: string;
+    canUpdate: boolean;
+    onEditToggle?: (editing: boolean) => void;
+    onUpdate?: () => void;
+    queryColumns?: List<QueryColumn>;
+    queryModel: QueryGridModel;
+    submitText?: string;
+    title?: string;
+    useEditIcon: boolean;
 }
 
-interface DetailEditingState {
-    canSubmit?: boolean;
-    editing?: boolean;
-    warning?: string;
-    error?: React.ReactNode;
-    isSubmitting?: boolean;
+interface State {
+    canSubmit: boolean;
+    editing: boolean;
+    error: ReactNode;
+    isSubmitting: boolean;
+    warning: string;
 }
 
-export class DetailEditing extends React.Component<DetailEditingProps, DetailEditingState> {
+export class DetailEditing extends Component<Props, State> {
     static defaultProps = {
         useEditIcon: true,
         cancelText: 'Cancel',
         submitText: 'Save',
     };
 
-    constructor(props: DetailEditingProps) {
-        super(props);
-
-        this.state = {
-            canSubmit: false,
-            editing: false,
-            warning: undefined,
-            error: undefined,
-            isSubmitting: false,
-        };
-    }
-
-    disableSubmitButton = () => {
-        this.setState(() => ({ canSubmit: false }));
+    state: Readonly<State> = {
+        canSubmit: false,
+        editing: false,
+        warning: undefined,
+        error: undefined,
+        isSubmitting: false,
     };
 
-    enableSubmitButton = () => {
-        this.setState(() => ({ canSubmit: true }));
+    disableSubmitButton = (): void => {
+        this.setState({ canSubmit: false });
     };
 
-    handleClick = () => {
-        if (Utils.isFunction(this.props.onEditToggle)) {
-            this.props.onEditToggle(!this.state.editing);
-        }
+    enableSubmitButton = (): void => {
+        this.setState({ canSubmit: true });
+    };
+
+    handleClick = (): void => {
+        this.props.onEditToggle?.(!this.state.editing);
 
         this.setState(state => ({
             editing: !state.editing,
@@ -88,7 +81,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
         }));
     };
 
-    handleFormChange = () => {
+    handleFormChange = (): void => {
         const { warning } = this.state;
         if (warning) {
             this.setState(() => ({ warning: undefined }));
@@ -96,9 +89,9 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
     };
 
     handleSubmit = values => {
-        this.setState(() => ({isSubmitting: true}));
+        this.setState(() => ({ isSubmitting: true }));
 
-        const { auditBehavior, queryModel, onUpdate } = this.props;
+        const { auditBehavior, queryModel, onEditToggle, onUpdate } = this.props;
         const queryData = queryModel.getRow();
         const queryInfo = queryModel.queryInfo;
         const schemaQuery = queryInfo.schemaQuery;
@@ -126,10 +119,8 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                     this.setState(
                         () => ({ isSubmitting: false, editing: false }),
                         () => {
-                            if (onUpdate) {
-                                onUpdate();
-                            }
-                            if (Utils.isFunction(this.props.onEditToggle)) this.props.onEditToggle(false);
+                            onUpdate?.();
+                            onEditToggle?.(false);
                         }
                     );
                 })
@@ -142,36 +133,31 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                     }));
                 });
         } else {
-            this.setState(() => ({
+            this.setState({
                 canSubmit: false,
                 warning: 'No changes detected. Please update the form and click save.',
                 error: undefined,
                 isSubmitting: false,
-            }));
+            });
         }
     };
 
-    renderEditControls(): ReactNode {
-        const { cancelText, submitText } = this.props;
-        const { canSubmit, isSubmitting } = this.state;
-        return (
-            <div className="full-width bottom-spacing">
-                <Button className="pull-left" onClick={this.handleClick}>
-                    {cancelText}
-                </Button>
-                <Button className="pull-right" bsStyle="success" type="submit" disabled={!canSubmit || isSubmitting}>
-                    {submitText}
-                </Button>
-            </div>
-        );
-    }
-
     render(): ReactNode {
-        const { queryModel, queryColumns, canUpdate, useEditIcon, appEditable, asSubPanel, title } = this.props;
-        const { editing, warning, error } = this.state;
+        const {
+            cancelText,
+            queryModel,
+            queryColumns,
+            canUpdate,
+            useEditIcon,
+            appEditable,
+            asSubPanel,
+            submitText,
+            title,
+        } = this.props;
+        const { canSubmit, editing, isSubmitting, warning, error } = this.state;
 
         let isEditable = false;
-        if (queryModel && queryModel.queryInfo) {
+        if (queryModel?.queryInfo) {
             const hasData = queryModel.getData().size > 0;
             isEditable = hasData && (queryModel.queryInfo.isAppEditable() || appEditable);
         }
@@ -201,16 +187,23 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
                         <Panel.Body>
                             <div className="detail__editing">
                                 {error && <Alert>{error}</Alert>}
-                                <Detail
-                                    queryModel={queryModel}
-                                    editingMode={true}
-                                    detailRenderer={resolveDetailEditRenderer}
-                                    titleRenderer={titleRenderer}
-                                />
+                                <Detail editingMode queryColumns={queryColumns} queryModel={queryModel} />
                             </div>
                         </Panel.Body>
                     </Panel>
-                    {this.renderEditControls()}
+                    <div className="full-width bottom-spacing">
+                        <Button className="pull-left" onClick={this.handleClick}>
+                            {cancelText}
+                        </Button>
+                        <Button
+                            className="pull-right"
+                            bsStyle="success"
+                            type="submit"
+                            disabled={!canSubmit || isSubmitting}
+                        >
+                            {submitText}
+                        </Button>
+                    </div>
                     {asSubPanel && <div className="panel-divider-spacing" />}
                 </Formsy>
             );
@@ -220,11 +213,7 @@ export class DetailEditing extends React.Component<DetailEditingProps, DetailEdi
             <Panel>
                 <Panel.Heading>{header}</Panel.Heading>
                 <Panel.Body>
-                    <Detail
-                        queryModel={queryModel}
-                        queryColumns={queryColumns}
-                        detailRenderer={resolveDetailRenderer}
-                    />
+                    <Detail queryColumns={queryColumns} queryModel={queryModel} />
                 </Panel.Body>
             </Panel>
         );

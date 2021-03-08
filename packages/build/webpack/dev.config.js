@@ -26,7 +26,7 @@ module.exports = {
     },
 
     module: {
-        rules: constants.loaders.TYPESCRIPT_LOADERS.concat(constants.loaders.STYLE_LOADERS)
+        rules: constants.loaders.TYPESCRIPT.concat(constants.loaders.STYLE).concat(constants.loaders.FILES),
     },
 
     resolve: {

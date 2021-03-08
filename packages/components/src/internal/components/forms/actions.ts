@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { fromJS, List, Map } from 'immutable';
-import { Option } from 'react-select';
+// import { Option } from 'react-select';
 import { Filter, Security, PermissionTypes, User, Utils } from '@labkey/api';
 
 import { getUsers, setUsers } from '../../global';
@@ -32,6 +32,8 @@ import { similaritySortFactory } from '../../util/similaritySortFactory';
 
 import { QuerySelectModel, QuerySelectModelProps } from './model';
 import { FOCUS_FLAG } from './constants';
+
+type Option = any;
 
 const emptyMap = Map<string, any>();
 

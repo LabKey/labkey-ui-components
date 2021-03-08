@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 import { List, Map, Record } from 'immutable';
-import { Option } from 'react-select';
+// import { Option } from 'react-select';
 import { Filter } from '@labkey/api';
 
 import { ISelectRowsResult, QueryInfo, SchemaQuery } from '../../..';
 
 import { DELIMITER } from './input/SelectInput';
 import * as actions from './actions';
+
+type Option = any;
 
 export interface QuerySelectModelProps {
     allResults: Map<string, Map<string, any>>;

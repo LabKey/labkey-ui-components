@@ -43,14 +43,12 @@ export const UserSelectInput: FC<UserSelectInputProps> = props => {
                 console.error(error);
             }
 
-            cb(null, { complete: true, options });
+            cb(options);
         },
         [notifyList, permissions, useEmail]
     );
 
-    return (
-        <SelectInput cache={false} delimiter={notifyList ? ';' : ','} loadOptions={loadOptions} {...selectInputProps} />
-    );
+    return <SelectInput delimiter={notifyList ? ';' : ','} loadOptions={loadOptions} {...selectInputProps} />;
 };
 
 UserSelectInput.defaultProps = {

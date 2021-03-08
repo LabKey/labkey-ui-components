@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
+import React, { FocusEvent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
-import { Option } from 'react-select';
+// import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api';
 
 import { QueryColumn, SchemaQuery } from '../../..';
@@ -25,6 +25,8 @@ import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { FOCUS_FLAG } from './constants';
 import { QuerySelectModel } from './model';
+
+type Option = any;
 
 function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
     const { rawSelectedValue } = model;
@@ -214,42 +216,41 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         clearTimeout(this.querySelectTimer);
     }
 
-    loadOptions = (input: string, callback): void => {
-        const { model } = this.state;
-
-        const token = model.parseSearch(input);
+    loadOptions = (input: string, callback): Promise<any> => {
         clearTimeout(this.querySelectTimer);
 
-        if (token !== false) {
-            this.querySelectTimer = window.setTimeout(() => {
-                this.querySelectTimer = undefined;
-                const v = token === true ? input : token;
-                model.search(v).then(data => {
-                    const { model } = this.state;
+        return new Promise((resolve, reject) => {
+            const { model } = this.state;
 
-                    // prevent stale state updates of ReactSelect
-                    // -- yes, a cancelable promise would work as well
-                    if (this._mounted !== true) {
-                        return;
-                    }
+            const token = model.parseSearch(input);
 
-                    const key = data.key,
-                        models = fromJS(data.models[key]);
+            if (token !== false) {
+                this.querySelectTimer = window.setTimeout(() => {
+                    this.querySelectTimer = undefined;
+                    const v = token === true ? input : token;
+                    model.search(v).then(data => {
+                        const { model } = this.state;
 
-                    callback(null, {
-                        options: model.formatSavedResults(models, v),
+                        // prevent stale state updates of ReactSelect
+                        // -- yes, a cancelable promise would work as well
+                        if (this._mounted !== true) {
+                            return;
+                        }
+
+                        const key = data.key,
+                            models = fromJS(data.models[key]);
+
+                        resolve(model.formatSavedResults(models, v));
+
+                        this.setState(() => ({
+                            model: model.saveSearchResults(models),
+                        }));
                     });
-
-                    this.setState(() => ({
-                        model: model.saveSearchResults(models),
-                    }));
-                });
-            }, 250);
-        } else {
-            callback(null, {
-                options: model.formatSavedResults(),
-            });
-        }
+                }, 250);
+            } else {
+                resolve(model.formatSavedResults());
+            }
+        });
     };
 
     onChange = (name: string, value: any, selectedOptions, selectRef: any): void => {
@@ -261,9 +262,9 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 model: model.setSelection(value),
             }),
             () => {
-                if (loadOnChange) {
-                    selectRef.loadOptions?.(FOCUS_FLAG);
-                }
+                // if (loadOnChange) {
+                //     selectRef.loadOptions?.(FOCUS_FLAG);
+                // }
 
                 onQSChange?.(name, value, selectedOptions, this.state.model.selectedItems);
             }
@@ -275,13 +276,13 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         return renderPreviewOption(option, model);
     };
 
-    onFocus = (event: Event, selectRef: any): void => {
+    onFocus = (event: FocusEvent<HTMLElement>, selectRef: any): void => {
         const { loadOnFocus } = this.props;
         const { model } = this.state;
 
-        if (model.preLoad || loadOnFocus) {
-            selectRef.loadOptions?.(FOCUS_FLAG);
-        }
+        // if (model.preLoad || loadOnFocus) {
+        //     selectRef.loadOptions?.(FOCUS_FLAG);
+        // }
     };
 
     render() {
@@ -318,7 +319,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
             };
 
             return <SelectInput {...inputProps} />;
-        } else if (model && model.isInit) {
+        } else if (model?.isInit) {
             const inputProps = Object.assign(
                 {
                     id: model.id,
@@ -329,7 +330,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                     allowCreate: false,
                     autoValue: false, // QuerySelect will directly control value of ReactSelect via selectedOptions
                     autoload: true,
-                    cache: true,
+                    cacheOptions: true,
                     description,
                     filterOptions,
                     ignoreCase: false,

@@ -3,7 +3,7 @@ import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap'
 
 import { getServerContext } from '@labkey/api';
 
-import { Option } from 'react-select';
+// import { Option } from 'react-select';
 
 import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInput } from '../../../..';
 
@@ -18,6 +18,8 @@ import { fetchCohorts, getVisitDateColumns, getHelpTip, getStudySubjectProp } fr
 import { SHOW_IN_OVERVIEW } from './constants';
 
 import '../../../../theme/dataset.scss';
+
+type Option = any;
 
 interface DatasetSettingsSelectProps {
     name: string;

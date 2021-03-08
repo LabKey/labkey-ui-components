@@ -1,31 +1,42 @@
-import React from 'react';
+import React, { CSSProperties, FC, ReactNode } from 'react';
 import { Input } from 'formsy-react-components';
 import ReactBootstrapToggle from 'react-bootstrap-toggle';
 
-export interface ToggleWithInputFieldProps {
+type BootstrapEmphasis = 'danger' | 'default' | 'info' | 'primary' | 'success' | 'warning';
+
+interface ReactBootstrapToggleProps {
     active: boolean;
-    onClick: any;
-    id: string;
+    handlestyle?: BootstrapEmphasis;
+    handleClassName?: string;
+    height?: number;
+    id?: string;
+    off?: ReactNode;
+    offstyle?: BootstrapEmphasis;
+    offClassName?: string;
+    on?: ReactNode;
+    onstyle?: BootstrapEmphasis;
+    onClassName?: string;
+    onClick?: (state: any, node: any, evt: any) => void;
+    recalculateOnResize?: boolean;
+    size?: 'xs' | 'sm' | 'lg';
+    style?: CSSProperties;
+    width?: number;
+}
+
+interface OwnProps {
+    containerClassName?: string;
     inputFieldName?: string;
-    on?: string;
-    off?: string;
-    style?: any; // style for the bootstrap toggle
-    containerClassName?: any;
 }
 
-export class ToggleWithInputField extends React.Component<ToggleWithInputFieldProps, any> {
-    render = () => {
-        const { active, containerClassName, inputFieldName } = this.props;
+export type ToggleWithInputFieldProps = OwnProps & ReactBootstrapToggleProps;
 
-        const toggleProps = { ...this.props } as any;
-        delete toggleProps.inputFieldName;
-        delete toggleProps.containerClassName;
+export const ToggleWithInputField: FC<ToggleWithInputFieldProps> = props => {
+    const { containerClassName, inputFieldName, ...toggleProps } = props;
 
-        return (
-            <span className={containerClassName}>
-                {inputFieldName && <Input name={inputFieldName} type="hidden" value={active.toString()} />}
-                <ReactBootstrapToggle {...toggleProps} />
-            </span>
-        );
-    };
-}
+    return (
+        <span className={containerClassName}>
+            {inputFieldName && <Input name={inputFieldName} type="hidden" value={props.active.toString()} />}
+            <ReactBootstrapToggle {...toggleProps} />
+        </span>
+    );
+};

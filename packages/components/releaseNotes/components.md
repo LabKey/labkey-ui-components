@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.11.1
+*Released*: 8 March 2021
+* Hide 'Derivation Data Scope' column within Designer Summary View. Will be updated when aliquot functionality is no longer an experimental feature
+
 ### version 2.11.0
 *Released*: 6 March 2021
 * Package Updates
@@ -19,10 +23,6 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Support tagging participant and time point columns in sample types
 * Add two PropDescTypes to include within field Data Type dropdown. The new options render when domain property allowTimepointProperties is true, which is currently the case for only Sample Types
 * Ensure two new Data Type options mentioned above do not render in SampleManagement Sample Types
-
-### version TBD
-*Released*: TBD
-* Hide 'Derivation Data Scope' column within Designer Summary View. Will be updated when aliquot functionality is no longer an experimental feature
 
 ### version 2.9.0
 *Released*: 4 March 2021

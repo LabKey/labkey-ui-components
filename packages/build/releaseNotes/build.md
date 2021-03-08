@@ -2,7 +2,10 @@
 
 ### version 2.TBD
 *Released*: TBD March 2021
-* TODO add info about webpack aliases /src and theme/SCSS assets
+* Changes to support webpack aliases from /src and theme/SCSS assets
+    * update to use /src path for LINK
+    * update to include aliases for theme/scss assets (for both dev/prod build and watch case)
+    * update to watchOptions ignored to use undefined instead of empty array in LINK case
 
 ### version 2.0.1
 *Released 5 March 2021*

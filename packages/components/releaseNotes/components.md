@@ -3,7 +3,11 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.TBD
 *Released*: TBD March 2021
-* TODO add info about webpack aliases /src and theme/SCSS assets
+* Changes to support webpack aliases from /src and theme/SCSS assets
+    * index.ts and app/index.ts updates to export types separately
+    * add "declare" to various immutable Record properties
+    * remove global.d.ts in favor of GlobalAppState defined and used for ReactN components types directly
+    * remove "const" from usages of const enum
 
 ### version 2.11.0
 *Released*: 6 March 2021

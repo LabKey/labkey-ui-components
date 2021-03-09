@@ -55,7 +55,11 @@ export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(prop
                             className="ontology-concept-pathinfo-container"
                             eventKey={ConceptInfoTabs.PATH_INFO_TAB}
                         >
-                            <ConceptPathInfo selectedCode={concept?.code} selectedPath={selectedPath} alternatePathClickHandler={alternatePathClickHandler} />
+                            <ConceptPathInfo
+                                selectedCode={concept?.code}
+                                selectedPath={selectedPath}
+                                alternatePathClickHandler={alternatePathClickHandler}
+                            />
                         </Tab.Pane>
                     </Tab.Content>
                 </Col>

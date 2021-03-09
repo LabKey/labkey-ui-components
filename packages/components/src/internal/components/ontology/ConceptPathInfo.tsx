@@ -33,7 +33,7 @@ export const ConceptPathInfo: FC<ConceptPathInfoProps> = memo(props => {
     return (
         <>
             <Alert>{error}</Alert>
-            <ConceptPathInfoImpl code={selectedCode} alternatePaths={alternatePaths} {...props} />;
+            <ConceptPathInfoImpl code={selectedCode} alternatePaths={alternatePaths} {...props} />
         </>
     );
 });

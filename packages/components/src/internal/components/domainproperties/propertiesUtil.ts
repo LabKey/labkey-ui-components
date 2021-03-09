@@ -170,6 +170,9 @@ export function removeUnusedProperties(obj) {
     // Not surfaced in UI, and so removed from summary view
     delete obj.propertyId;
     delete obj.propertyURI;
+    // Currently only surfaced in SM Sample Types as a experimental feature.
+    // To be added to Summary View columns when aliquots are no longer hidden behind experimental flag
+    delete obj.derivationDataScope;
 
     return obj;
 }
@@ -185,6 +188,17 @@ export function removeUnusedOntologyProperties(obj) {
 }
 
 export function removeNonAppProperties(obj) {
+    delete obj.lookupContainer;
+    delete obj.lookupSchema;
+    delete obj.lookupQuery;
+
+    // these props are always removed for appPropertiesOnly and then also conditionally removed for
+    // containers that don't have the Ontology module enabled (see removeUnusedOntologyProperties)
+    delete obj.sourceOntology;
+    delete obj.conceptImportColumn;
+    delete obj.conceptLabelColumn;
+    delete obj.principalConceptCode;
+
     delete obj.conditionalFormats;
 
     delete obj.hidden;
@@ -200,17 +214,6 @@ export function removeNonAppProperties(obj) {
     delete obj.dimension;
     delete obj.recommendedVariable;
     delete obj.mvEnabled;
-
-    // this props are always removed for appPropertiesOnly and then also conditionally removed for
-    // containers that dont' have the Ontology module enabled (see removeUnusedOntologyProperties)
-    delete obj.sourceOntology;
-    delete obj.conceptImportColumn;
-    delete obj.conceptLabelColumn;
-    delete obj.principalConceptCode;
-
-    delete obj.lookupContainer;
-    delete obj.lookupSchema;
-    delete obj.lookupQuery;
 
     return obj;
 }

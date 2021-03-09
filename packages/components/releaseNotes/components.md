@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Update DomainForm and FileAttachmentForm to ignore reserved fields when inferring fields
 
+### version 2.11.1
+*Released*: 8 March 2021
+* Hide 'Derivation Data Scope' column within Designer Summary View. Will be updated when aliquot functionality is no longer an experimental feature
+
 ### version 2.11.0
 *Released*: 6 March 2021
 * Package Updates

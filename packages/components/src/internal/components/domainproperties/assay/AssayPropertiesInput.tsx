@@ -275,11 +275,11 @@ export function BackgroundUploadInput(props: InputProps) {
     );
 }
 
-interface AutoCopyDataInputState {
+interface AutoLinkDataInputState {
     containers: List<Container>;
 }
 
-export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyDataInputState> {
+export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkDataInputState> {
     constructor(props) {
         super(props);
 
@@ -294,7 +294,7 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
                 this.setState(() => ({ containers }));
             })
             .catch(response => {
-                console.error('Unable to load valid study targets for Auto-Copy Data to Study input.');
+                console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
                 this.setState(() => ({ containers: List<Container>() }));
             });
     }
@@ -305,11 +305,11 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
 
         return (
             <AssayPropertiesInput
-                label="Auto-Copy Data to Study"
+                label="Auto-Link Data to Study"
                 helpTipBody={
                     <>
                         <p>
-                            When new runs are imported, automatically copy their data rows to the specified target
+                            When new runs are imported, automatically link their data rows to the specified target
                             study. Only rows that include subject and visit/date information will be copied.
                         </p>
                         <p>
@@ -324,7 +324,7 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
                 ) : (
                     <FormControl
                         componentClass="select"
-                        id={FORM_IDS.AUTO_COPY_TARGET}
+                        id={FORM_IDS.AUTO_LINK_TARGET}
                         onChange={onChange}
                         value={model.autoCopyTargetContainerId || ''}
                     >

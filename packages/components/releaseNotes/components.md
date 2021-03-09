@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Add 'Auto-Link Data to Study' field in Sample Type properties
+
 ### version 2.11.1
 *Released*: 8 March 2021
 * Hide 'Derivation Data Scope' column within Designer Summary View. Will be updated when aliquot functionality is no longer an experimental feature

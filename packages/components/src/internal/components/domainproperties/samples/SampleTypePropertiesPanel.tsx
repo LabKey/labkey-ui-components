@@ -1,5 +1,5 @@
 import React from 'react';
-import { OrderedMap } from 'immutable';
+import {List, OrderedMap} from 'immutable';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import { getFormNameFromId } from '../entities/actions';
@@ -13,6 +13,7 @@ import {
     MetricUnitProps,
     SCHEMAS,
     SelectInput,
+    Container,
 } from '../../../..';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 
@@ -30,6 +31,8 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SectionHeading } from '../SectionHeading';
 
 import { IParentAlias, SampleTypeModel } from './models';
+import { getValidPublishTargets } from "../assay/actions";
+import { ENTITY_FORM_IDS } from "../entities/constants";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
@@ -65,6 +68,7 @@ interface EntityProps {
 
 interface State {
     isValid: boolean;
+    containerOptions: any;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
@@ -112,7 +116,20 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
         this.state = {
             isValid: true,
+            containerOptions: undefined,
         };
+    }
+
+    componentDidMount() {
+        getValidPublishTargets()
+            .then(containers => {
+                const containerOptions = containers.toJS().map((c) => {return {id: c.id, label: c.name}});
+                this.setState({ containerOptions });
+            })
+            .catch(response => {
+                console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
+                this.setState(() => ({ containerOptions: List<Container>() }));
+            });
     }
 
     updateValidStatus = (newModel?: SampleTypeModel) => {
@@ -266,7 +283,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             appPropertiesOnly,
             metricUnitProps,
         } = this.props;
-        const { isValid } = this.state;
+        const { isValid, containerOptions } = this.state;
 
         const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
             metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',
@@ -338,6 +355,28 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         </Col>
                     </Row>
                 )}
+
+                {!appPropertiesOnly &&
+                    <Row className="margin-top">
+                        <Col xs={2}> Auto-Link Data to Study </Col>
+                        <Col xs={5}>
+                            <FormControl
+                                componentClass="select"
+                                id={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
+                                onChange={this.onFormChange}
+                                value={model.autoLinkTargetContainerId || ''}
+                            >
+                                <option key="_empty" value={null} />
+                                {containerOptions && containerOptions.map((container, i) => (
+                                    <option key={i} value={container.id}>
+                                        {container.label}
+                                    </option>
+                                ))}
+                            </FormControl>
+                        </Col>
+                    </Row>
+                 }
+
                 {appPropertiesOnly && (
                     <>
                         <SectionHeading title="Appearance Settings" />

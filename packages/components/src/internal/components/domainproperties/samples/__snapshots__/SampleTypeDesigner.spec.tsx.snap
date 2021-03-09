@@ -226,6 +226,29 @@ Array [
             </div>
           </div>
         </form>
+        <div
+          className="margin-top row"
+        >
+          <div
+            className="col-xs-2"
+          >
+             Auto-Link Data to Study 
+          </div>
+          <div
+            className="col-xs-5"
+          >
+            <select
+              className="form-control"
+              id="entity-autoLinkTargetContainerId"
+              onChange={[Function]}
+              value=""
+            >
+              <option
+                value={null}
+              />
+            </select>
+          </div>
+        </div>
       </div>
     </div>
   </div>,
@@ -1461,6 +1484,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "instructions": undefined,
               "domainKindName": undefined,
             },
+            "autoLinkTargetContainerId": undefined,
             "exception": undefined,
           }
         }
@@ -1611,6 +1635,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "instructions": undefined,
                 "domainKindName": undefined,
               },
+              "autoLinkTargetContainerId": undefined,
               "exception": undefined,
             }
           }
@@ -1767,6 +1792,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "instructions": undefined,
                   "domainKindName": undefined,
                 },
+                "autoLinkTargetContainerId": undefined,
                 "exception": undefined,
               }
             }
@@ -2115,6 +2141,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         "instructions": undefined,
                                         "domainKindName": undefined,
                                       },
+                                      "autoLinkTargetContainerId": undefined,
                                       "exception": undefined,
                                     }
                                   }

@@ -561,6 +561,64 @@ exports[`<SampleTypePropertiesPanel/> default props 1`] = `
         </span>
       </div>
     </div>
+    <div
+      className="margin-top row"
+    >
+      <div
+        className="col-xs-2"
+      >
+         Auto-Link Data to Study 
+      </div>
+      <div
+        className="col-xs-5"
+      >
+        <select
+          className="form-control"
+          id="entity-autoLinkTargetContainerId"
+          onChange={[Function]}
+          value=""
+        >
+          <option
+            value={null}
+          />
+          <option
+            value="E0EA3E55-3420-1035-8057-68FEA9BFB3A0"
+          >
+            Demo Study
+          </option>
+          <option
+            value="07CA4E97-5F45-1035-9DE2-B52FFB884F60"
+          >
+            New Study
+          </option>
+          <option
+            value="4F02B61D-9826-1036-81BD-543EAB96F314"
+          >
+            Visit Study
+          </option>
+          <option
+            value="5B75A3A6-FAED-1035-9558-2CC2863E7240"
+          >
+            Research Study
+          </option>
+          <option
+            value="DDFDA233-F0C8-1036-95AB-F5B7057CFF74"
+          >
+            New Study
+          </option>
+          <option
+            value="D9D312F3-BD4E-1037-BF5B-09F08838BE14"
+          >
+            Explore Research Study
+          </option>
+          <option
+            value="76E48BF0-9CC3-1036-AE6A-F5B7057CF128"
+          >
+            ImportableDemoStudy
+          </option>
+        </select>
+      </div>
+    </div>
   </div>
 </div>
 `;
@@ -859,6 +917,64 @@ exports[`<SampleTypePropertiesPanel/> include dataclass and use custom labels 1`
             </div>
           </div>
         </span>
+      </div>
+    </div>
+    <div
+      className="margin-top row"
+    >
+      <div
+        className="col-xs-2"
+      >
+         Auto-Link Data to Study 
+      </div>
+      <div
+        className="col-xs-5"
+      >
+        <select
+          className="form-control"
+          id="entity-autoLinkTargetContainerId"
+          onChange={[Function]}
+          value=""
+        >
+          <option
+            value={null}
+          />
+          <option
+            value="E0EA3E55-3420-1035-8057-68FEA9BFB3A0"
+          >
+            Demo Study
+          </option>
+          <option
+            value="07CA4E97-5F45-1035-9DE2-B52FFB884F60"
+          >
+            New Study
+          </option>
+          <option
+            value="4F02B61D-9826-1036-81BD-543EAB96F314"
+          >
+            Visit Study
+          </option>
+          <option
+            value="5B75A3A6-FAED-1035-9558-2CC2863E7240"
+          >
+            Research Study
+          </option>
+          <option
+            value="DDFDA233-F0C8-1036-95AB-F5B7057CFF74"
+          >
+            New Study
+          </option>
+          <option
+            value="D9D312F3-BD4E-1037-BF5B-09F08838BE14"
+          >
+            Explore Research Study
+          </option>
+          <option
+            value="76E48BF0-9CC3-1036-AE6A-F5B7057CF128"
+          >
+            ImportableDemoStudy
+          </option>
+        </select>
       </div>
     </div>
   </div>
@@ -1915,6 +2031,64 @@ exports[`<SampleTypePropertiesPanel/> nameExpressionInfoUrl 1`] = `
             </div>
           </div>
         </span>
+      </div>
+    </div>
+    <div
+      className="margin-top row"
+    >
+      <div
+        className="col-xs-2"
+      >
+         Auto-Link Data to Study 
+      </div>
+      <div
+        className="col-xs-5"
+      >
+        <select
+          className="form-control"
+          id="entity-autoLinkTargetContainerId"
+          onChange={[Function]}
+          value=""
+        >
+          <option
+            value={null}
+          />
+          <option
+            value="E0EA3E55-3420-1035-8057-68FEA9BFB3A0"
+          >
+            Demo Study
+          </option>
+          <option
+            value="07CA4E97-5F45-1035-9DE2-B52FFB884F60"
+          >
+            New Study
+          </option>
+          <option
+            value="4F02B61D-9826-1036-81BD-543EAB96F314"
+          >
+            Visit Study
+          </option>
+          <option
+            value="5B75A3A6-FAED-1035-9558-2CC2863E7240"
+          >
+            Research Study
+          </option>
+          <option
+            value="DDFDA233-F0C8-1036-95AB-F5B7057CFF74"
+          >
+            New Study
+          </option>
+          <option
+            value="D9D312F3-BD4E-1037-BF5B-09F08838BE14"
+          >
+            Explore Research Study
+          </option>
+          <option
+            value="76E48BF0-9CC3-1036-AE6A-F5B7057CF128"
+          >
+            ImportableDemoStudy
+          </option>
+        </select>
       </div>
     </div>
   </div>

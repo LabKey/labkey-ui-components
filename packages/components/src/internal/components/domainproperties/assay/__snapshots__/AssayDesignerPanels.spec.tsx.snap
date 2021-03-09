@@ -19411,7 +19411,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                               Import Settings
                                             </div>
                                           </SectionHeading>
-                                          <AutoCopyDataInput
+                                          <AutoLinkDataInput
                                             model={
                                               Immutable.Record {
                                                 "allowBackgroundUpload": false,
@@ -19520,14 +19520,14 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                               helpTipBody={
                                                 <React.Fragment>
                                                   <p>
-                                                    When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
                                                   </p>
                                                   <p>
                                                     The user performing the import must have insert permission in the target study and the corresponding dataset.
                                                   </p>
                                                 </React.Fragment>
                                               }
-                                              label="Auto-Copy Data to Study"
+                                              label="Auto-Link Data to Study"
                                             >
                                               <Row
                                                 bsClass="row"
@@ -19550,16 +19550,16 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
-                                                              When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
                                                             </p>
                                                             <p>
                                                               The user performing the import must have insert permission in the target study and the corresponding dataset.
                                                             </p>
                                                           </React.Fragment>
                                                         }
-                                                        label="Auto-Copy Data to Study"
+                                                        label="Auto-Link Data to Study"
                                                       >
-                                                        Auto-Copy Data to 
+                                                        Auto-Link Data to 
                                                         <span
                                                           className="domain-no-wrap"
                                                         >
@@ -19568,7 +19568,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                             customStyle={Object {}}
                                                             id="tooltip"
                                                             size="1x"
-                                                            title="Auto-Copy Data to Study"
+                                                            title="Auto-Link Data to Study"
                                                           >
                                                             <span
                                                               className="label-help-target"
@@ -19673,7 +19673,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                 </div>
                                               </Row>
                                             </Component>
-                                          </AutoCopyDataInput>
+                                          </AutoLinkDataInput>
                                         </div>
                                       </div>
                                     </Col>
@@ -23698,7 +23698,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                               Import Settings
                                             </div>
                                           </SectionHeading>
-                                          <AutoCopyDataInput
+                                          <AutoLinkDataInput
                                             model={
                                               Immutable.Record {
                                                 "allowBackgroundUpload": false,
@@ -23807,14 +23807,14 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                               helpTipBody={
                                                 <React.Fragment>
                                                   <p>
-                                                    When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
                                                   </p>
                                                   <p>
                                                     The user performing the import must have insert permission in the target study and the corresponding dataset.
                                                   </p>
                                                 </React.Fragment>
                                               }
-                                              label="Auto-Copy Data to Study"
+                                              label="Auto-Link Data to Study"
                                             >
                                               <Row
                                                 bsClass="row"
@@ -23837,16 +23837,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
-                                                              When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
                                                             </p>
                                                             <p>
                                                               The user performing the import must have insert permission in the target study and the corresponding dataset.
                                                             </p>
                                                           </React.Fragment>
                                                         }
-                                                        label="Auto-Copy Data to Study"
+                                                        label="Auto-Link Data to Study"
                                                       >
-                                                        Auto-Copy Data to 
+                                                        Auto-Link Data to 
                                                         <span
                                                           className="domain-no-wrap"
                                                         >
@@ -23855,7 +23855,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                             customStyle={Object {}}
                                                             id="tooltip"
                                                             size="1x"
-                                                            title="Auto-Copy Data to Study"
+                                                            title="Auto-Link Data to Study"
                                                           >
                                                             <span
                                                               className="label-help-target"
@@ -23960,7 +23960,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                 </div>
                                               </Row>
                                             </Component>
-                                          </AutoCopyDataInput>
+                                          </AutoLinkDataInput>
                                         </div>
                                       </div>
                                     </Col>
@@ -29823,7 +29823,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                               Import Settings
                                             </div>
                                           </SectionHeading>
-                                          <AutoCopyDataInput
+                                          <AutoLinkDataInput
                                             model={
                                               Immutable.Record {
                                                 "allowBackgroundUpload": true,
@@ -30163,14 +30163,14 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                               helpTipBody={
                                                 <React.Fragment>
                                                   <p>
-                                                    When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
                                                   </p>
                                                   <p>
                                                     The user performing the import must have insert permission in the target study and the corresponding dataset.
                                                   </p>
                                                 </React.Fragment>
                                               }
-                                              label="Auto-Copy Data to Study"
+                                              label="Auto-Link Data to Study"
                                             >
                                               <Row
                                                 bsClass="row"
@@ -30193,16 +30193,16 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
-                                                              When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
                                                             </p>
                                                             <p>
                                                               The user performing the import must have insert permission in the target study and the corresponding dataset.
                                                             </p>
                                                           </React.Fragment>
                                                         }
-                                                        label="Auto-Copy Data to Study"
+                                                        label="Auto-Link Data to Study"
                                                       >
-                                                        Auto-Copy Data to 
+                                                        Auto-Link Data to 
                                                         <span
                                                           className="domain-no-wrap"
                                                         >
@@ -30211,7 +30211,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                             customStyle={Object {}}
                                                             id="tooltip"
                                                             size="1x"
-                                                            title="Auto-Copy Data to Study"
+                                                            title="Auto-Link Data to Study"
                                                           >
                                                             <span
                                                               className="label-help-target"
@@ -30316,7 +30316,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                 </div>
                                               </Row>
                                             </Component>
-                                          </AutoCopyDataInput>
+                                          </AutoLinkDataInput>
                                           <BackgroundUploadInput
                                             model={
                                               Immutable.Record {
@@ -43866,7 +43866,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                               Import Settings
                                             </div>
                                           </SectionHeading>
-                                          <AutoCopyDataInput
+                                          <AutoLinkDataInput
                                             model={
                                               Immutable.Record {
                                                 "allowBackgroundUpload": true,
@@ -44206,14 +44206,14 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                               helpTipBody={
                                                 <React.Fragment>
                                                   <p>
-                                                    When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
                                                   </p>
                                                   <p>
                                                     The user performing the import must have insert permission in the target study and the corresponding dataset.
                                                   </p>
                                                 </React.Fragment>
                                               }
-                                              label="Auto-Copy Data to Study"
+                                              label="Auto-Link Data to Study"
                                             >
                                               <Row
                                                 bsClass="row"
@@ -44236,16 +44236,16 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
-                                                              When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
                                                             </p>
                                                             <p>
                                                               The user performing the import must have insert permission in the target study and the corresponding dataset.
                                                             </p>
                                                           </React.Fragment>
                                                         }
-                                                        label="Auto-Copy Data to Study"
+                                                        label="Auto-Link Data to Study"
                                                       >
-                                                        Auto-Copy Data to 
+                                                        Auto-Link Data to 
                                                         <span
                                                           className="domain-no-wrap"
                                                         >
@@ -44254,7 +44254,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                             customStyle={Object {}}
                                                             id="tooltip"
                                                             size="1x"
-                                                            title="Auto-Copy Data to Study"
+                                                            title="Auto-Link Data to Study"
                                                           >
                                                             <span
                                                               className="label-help-target"
@@ -44359,7 +44359,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                 </div>
                                               </Row>
                                             </Component>
-                                          </AutoCopyDataInput>
+                                          </AutoLinkDataInput>
                                           <BackgroundUploadInput
                                             model={
                                               Immutable.Record {

@@ -15,6 +15,7 @@ export class SampleTypeModel extends Record({
     importAliases: undefined,
     domainId: undefined,
     domain: undefined,
+    autoLinkTargetContainerId: undefined,
     exception: undefined,
 }) {
     rowId: number;
@@ -28,6 +29,7 @@ export class SampleTypeModel extends Record({
     importAliases?: Map<string, string>;
     domainId?: number;
     domain?: DomainDesign;
+    autoLinkTargetContainerId: string;
     exception: string;
 
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {

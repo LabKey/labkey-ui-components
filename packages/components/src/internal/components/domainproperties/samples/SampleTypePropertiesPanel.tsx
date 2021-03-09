@@ -68,7 +68,7 @@ interface EntityProps {
 
 interface State {
     isValid: boolean;
-    containerOptions: any;
+    containers: List<Container>;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
@@ -116,19 +116,18 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
         this.state = {
             isValid: true,
-            containerOptions: undefined,
+            containers: undefined,
         };
     }
 
     componentDidMount() {
         getValidPublishTargets()
             .then(containers => {
-                const containerOptions = containers.toJS().map((c) => {return {id: c.id, label: c.name}});
-                this.setState({ containerOptions });
+                this.setState({ containers });
             })
             .catch(response => {
                 console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
-                this.setState(() => ({ containerOptions: List<Container>() }));
+                this.setState(() => ({ containers: List<Container>() }));
             });
     }
 
@@ -283,7 +282,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             appPropertiesOnly,
             metricUnitProps,
         } = this.props;
-        const { isValid, containerOptions } = this.state;
+        const { isValid, containers } = this.state;
 
         const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
             metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',
@@ -367,9 +366,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                 value={model.autoLinkTargetContainerId || ''}
                             >
                                 <option key="_empty" value={null} />
-                                {containerOptions && containerOptions.map((container, i) => (
+                                {containers && containers.map((container, i) => (
                                     <option key={i} value={container.id}>
-                                        {container.label}
+                                        {container.name}
                                     </option>
                                 ))}
                             </FormControl>

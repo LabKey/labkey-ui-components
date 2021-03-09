@@ -45,20 +45,21 @@ interface ConceptOverviewPanelImplProps {
     selectedPath?: PathModel;
 }
 
-function renderConceptSynonyms(synonyms: string[]): React.ReactNode {
+const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
+    const { synonyms } = props;
     if (!synonyms || synonyms.length === 0) return undefined;
 
     const synonymList = synonyms.sort(naturalSort).map(synonym => {
-        return <div key={synonym}>{synonym}</div>;
+        return <li key={synonym}>{synonym}</li>;
     });
 
     return (
-        <div>
+        <>
             <div className="synonyms-title">Synonyms</div>
-            <div className="synonyms-text">{synonymList}</div>
-        </div>
+            <ul className="synonyms-text">{synonymList}</ul>
+        </>
     );
-}
+});
 
 /**
  * The ontology concept overview display panel that takes in the concept prop (i.e. ConceptModel) and displays
@@ -72,7 +73,6 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
     }
 
     const { code, label, description, synonyms } = concept;
-    const rSynonyms = renderConceptSynonyms(synonyms);
 
     return (
         <>
@@ -92,7 +92,7 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
                     <p className="description-text">{description}</p>
                 </div>
             )}
-            {synonyms && rSynonyms}
+            <ConceptSynonyms synonyms={synonyms} />
         </>
     );
 });

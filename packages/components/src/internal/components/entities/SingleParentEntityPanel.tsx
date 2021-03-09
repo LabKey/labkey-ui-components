@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component, ReactNode } from 'react';
 
 import { List } from 'immutable';
 
@@ -30,18 +30,16 @@ import { getParentGridPrefix } from './utils';
 interface Props {
     childNounSingular?: string;
     chosenValue?: string | any[];
+    editing?: boolean;
+    index: number;
+    onChangeParentType?: (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index: number) => void;
+    onChangeParentValue?: (name: string, value: string | any[], index: number) => void;
+    onInitialParentValue?: (value: string, selectedValues: List<any>, index: number) => void;
+    onRemoveParentType?: (index: number) => void;
     parentDataType: EntityDataType;
     parentLSIDs?: string[];
-    parentTypeQueryName?: string;
-    requiredColumns?: List<string>;
-    omittedColumns?: List<string>;
     parentTypeOptions?: List<IEntityTypeOption>;
-    index: number;
-    editing?: boolean;
-    onRemoveParentType?: (index: number) => any;
-    onChangeParentType?: (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index: number) => any;
-    onChangeParentValue?: (name: string, value: string | any[], index: number) => any;
-    onInitialParentValue?: (value: string, selectedValues: List<any>, index: number) => any;
+    parentTypeQueryName?: string;
 }
 
 interface State {
@@ -49,7 +47,7 @@ interface State {
     chosenValue: string | string[];
 }
 
-export class SingleParentEntityPanel extends React.Component<Props, State> {
+export class SingleParentEntityPanel extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -58,71 +56,69 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         };
     }
 
-    UNSAFE_componentWillMount(): void {
+    componentDidMount(): void {
         this.init();
     }
 
-    init() {
+    init = (): void => {
         const model = this.getParentModel();
         if (model) {
             gridInit(model, true, this);
         }
-    }
+    };
 
-    getParentModel(): QueryGridModel {
-        const { parentDataType, parentLSIDs } = this.props;
+    getParentModel = (): QueryGridModel => {
+        const { parentDataType } = this.props;
         const { chosenType } = this.state;
 
         if (!chosenType) {
             return undefined;
         }
 
-        let baseFilters = List<any>();
-        if (parentLSIDs && parentLSIDs.length > 0) {
-            baseFilters = baseFilters.push(Filter.create('LSID', parentLSIDs, Filter.Types.IN));
-        }
         const model = getStateQueryGridModel(
             getParentGridPrefix(parentDataType),
             SchemaQuery.create(parentDataType.instanceSchemaName, chosenType),
-            {
-                isPaged: true,
-                bindURL: false,
-                allowSelection: false,
-                baseFilters,
-                requiredColumns: this.props.requiredColumns || List<string>(),
-                omittedColumns: this.props.omittedColumns || List<string>(),
+            () => {
+                const { parentLSIDs } = this.props;
+                let baseFilters = List<any>();
+
+                if (parentLSIDs?.length > 0) {
+                    baseFilters = baseFilters.push(Filter.create('LSID', parentLSIDs, Filter.Types.IN));
+                }
+
+                return {
+                    allowSelection: false,
+                    baseFilters,
+                    bindURL: false,
+                    isPaged: true,
+                };
             }
         );
-        return getQueryGridModel(model.getId()) || model;
-    }
 
-    onChangeParentType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption) => {
+        return getQueryGridModel(model.getId()) || model;
+    };
+
+    onChangeParentType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption): void => {
         this.setState(
             () => ({
                 chosenType: formValue,
                 chosenValue: undefined,
             }),
             () => {
-                if (this.props.onChangeParentType) {
-                    this.props.onChangeParentType(fieldName, formValue, selectedOption, this.props.index);
-                }
+                this.props.onChangeParentType?.(fieldName, formValue, selectedOption, this.props.index);
             }
         );
     };
 
-    removeParent = () => {
-        if (this.props.onRemoveParentType) {
-            this.props.onRemoveParentType(this.props.index);
-        }
+    removeParent = (): void => {
+        this.props.onRemoveParentType?.(this.props.index);
     };
 
-    onChangeParentValue = (name: string, value: string | any[], items: any) => {
+    onChangeParentValue = (name: string, value: string | any[]): void => {
         this.setState(
             state => ({ chosenValue: value }),
             () => {
-                if (this.props.onChangeParentValue) {
-                    this.props.onChangeParentValue(name, value, this.props.index);
-                }
+                this.props.onChangeParentValue?.(name, value, this.props.index);
             }
         );
     };
@@ -131,30 +127,26 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         this.setState(
             state => ({ chosenValue: value }),
             () => {
-                if (this.props.onInitialParentValue) {
-                    this.props.onInitialParentValue(value, selectedValues, this.props.index);
-                }
+                this.props.onInitialParentValue?.(value, selectedValues, this.props.index);
             }
         );
     };
 
-    renderParentSelection() {
+    renderParentSelection = (model: QueryGridModel): ReactNode => {
         const { parentDataType, parentTypeOptions, parentLSIDs, index } = this.props;
         const { chosenType } = this.state;
 
-        const model = this.getParentModel();
-
-        if ((model && model.isLoading) || !parentTypeOptions) {
+        if (model?.isLoading || !parentTypeOptions) {
             return <LoadingSpinner />;
         }
 
         const parentSchemaQuery = chosenType
-            ? SchemaQuery.create(this.props.parentDataType.instanceSchemaName, chosenType)
+            ? SchemaQuery.create(parentDataType.instanceSchemaName, chosenType)
             : undefined;
         const lcTypeName = chosenType ? chosenType.toLowerCase() : undefined;
 
         const parentValues =
-            model && parentLSIDs && parentLSIDs.length > 0
+            model && parentLSIDs?.length > 0
                 ? model
                       .getData()
                       .map(row => row.getIn(['Name', 'value']))
@@ -217,10 +209,10 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                 )}
             </div>
         );
-    }
+    };
 
     renderParentHeader() {
-        const { editing, parentDataType } = this.props;
+        const { childNounSingular, editing, parentDataType } = this.props;
         const { chosenType } = this.state;
 
         if (parentDataType && chosenType) {
@@ -241,8 +233,8 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                     </tbody>
                 </table>
             );
-        } else if (!editing && this.props.childNounSingular) {
-            const lcChildNoun = this.props.childNounSingular.toLowerCase();
+        } else if (!editing && childNounSingular) {
+            const lcChildNoun = childNounSingular.toLowerCase();
             return (
                 <table className={DETAIL_TABLE_CLASSES}>
                     <tbody>
@@ -264,20 +256,19 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         }
     }
 
-    renderGridData() {
+    render() {
+        const { editing, index } = this.props;
         const model = this.getParentModel();
 
+        if (editing) {
+            return this.renderParentSelection(model);
+        }
+
         return (
-            <div className="top-spacing" key={'grid-' + this.props.index}>
+            <div className="top-spacing" key={'grid-' + index}>
                 {this.renderParentHeader()}
-                {model && <QueryGridPanel model={model} asPanel={false} showGridBar={false} />}
+                {model && <QueryGridPanel asPanel={false} model={model} showGridBar={false} />}
             </div>
         );
-    }
-
-    render() {
-        const { editing } = this.props;
-
-        return editing ? this.renderParentSelection() : this.renderGridData();
     }
 }

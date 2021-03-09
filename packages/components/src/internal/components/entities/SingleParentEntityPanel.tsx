@@ -1,31 +1,36 @@
-import React, { Component, ReactNode } from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useMemo, useState } from 'react';
 
 import { List } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { QueryGridPanel } from '../QueryGridPanel';
 import {
+    Alert,
     AppURL,
     capitalizeFirstChar,
     EntityDataType,
-    getQueryGridModel,
-    getStateQueryGridModel,
-    gridInit,
+    GridPanel,
     LoadingSpinner,
-    QueryGridModel,
+    QueryModel,
     QuerySelect,
     RemoveEntityButton,
     SchemaQuery,
     SelectInput,
 } from '../../..';
 
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
 import { DETAIL_TABLE_CLASSES } from '../forms/constants';
 
 import { DELIMITER } from '../forms/input/SelectInput';
 
 import { IEntityTypeOption } from './models';
-import { getParentGridPrefix } from './utils';
+
+interface OwnProps {
+    chosenType: string;
+    onTypeChange: (chosenType: string) => void;
+    onValueChange: (chosenValue: string | string[]) => void;
+}
 
 interface Props {
     childNounSingular?: string;
@@ -42,102 +47,55 @@ interface Props {
     parentTypeQueryName?: string;
 }
 
-interface State {
-    chosenType: string;
-    chosenValue: string | string[];
-}
+type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;
 
-export class SingleParentEntityPanel extends Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            chosenType: props.parentTypeQueryName,
-            chosenValue: props.chosenValue,
-        };
-    }
-
+class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
     componentDidMount(): void {
-        this.init();
+        this.loadModel();
     }
 
-    init = (): void => {
-        const model = this.getParentModel();
-        if (model) {
-            gridInit(model, true, this);
+    componentDidUpdate(prevProps: Readonly<SingleParentEntityProps>): void {
+        if (this.props.chosenType !== prevProps.chosenType) {
+            this.loadModel();
+        }
+    }
+
+    loadModel = (): void => {
+        const { actions, chosenType, queryModels } = this.props;
+
+        if (chosenType && queryModels.model) {
+            actions.loadModel('model');
         }
     };
 
-    getParentModel = (): QueryGridModel => {
-        const { parentDataType } = this.props;
-        const { chosenType } = this.state;
-
-        if (!chosenType) {
-            return undefined;
-        }
-
-        const model = getStateQueryGridModel(
-            getParentGridPrefix(parentDataType),
-            SchemaQuery.create(parentDataType.instanceSchemaName, chosenType),
-            () => {
-                const { parentLSIDs } = this.props;
-                let baseFilters = List<any>();
-
-                if (parentLSIDs?.length > 0) {
-                    baseFilters = baseFilters.push(Filter.create('LSID', parentLSIDs, Filter.Types.IN));
-                }
-
-                return {
-                    allowSelection: false,
-                    baseFilters,
-                    bindURL: false,
-                    isPaged: true,
-                };
-            }
-        );
-
-        return getQueryGridModel(model.getId()) || model;
-    };
-
-    onChangeParentType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption): void => {
-        this.setState(
-            () => ({
-                chosenType: formValue,
-                chosenValue: undefined,
-            }),
-            () => {
-                this.props.onChangeParentType?.(fieldName, formValue, selectedOption, this.props.index);
-            }
-        );
+    onChangeParentType = (fieldName: string, chosenType: any, selectedOption: IEntityTypeOption): void => {
+        const { index, onChangeParentType, onTypeChange, onValueChange } = this.props;
+        onTypeChange(chosenType);
+        onValueChange(undefined);
+        onChangeParentType?.(fieldName, chosenType, selectedOption, index);
     };
 
     removeParent = (): void => {
         this.props.onRemoveParentType?.(this.props.index);
     };
 
-    onChangeParentValue = (name: string, value: string | any[]): void => {
-        this.setState(
-            state => ({ chosenValue: value }),
-            () => {
-                this.props.onChangeParentValue?.(name, value, this.props.index);
-            }
-        );
+    onChangeParentValue = (name: string, chosenValue: string | any[]): void => {
+        this.props.onValueChange(chosenValue);
+        this.props.onChangeParentValue?.(name, chosenValue, this.props.index);
     };
 
-    onInitValue = (value: any, selectedValues: List<any>) => {
-        this.setState(
-            state => ({ chosenValue: value }),
-            () => {
-                this.props.onInitialParentValue?.(value, selectedValues, this.props.index);
-            }
-        );
+    onInitValue = (chosenValue: any, selectedValues: List<any>): void => {
+        this.props.onValueChange(chosenValue);
+        this.props.onInitialParentValue?.(chosenValue, selectedValues, this.props.index);
     };
 
-    renderParentSelection = (model: QueryGridModel): ReactNode => {
-        const { parentDataType, parentTypeOptions, parentLSIDs, index } = this.props;
-        const { chosenType } = this.state;
+    renderParentSelection = (model: QueryModel): ReactNode => {
+        const { chosenType, chosenValue, parentDataType, parentLSIDs, parentTypeOptions, index } = this.props;
 
         if (model?.isLoading || !parentTypeOptions) {
             return <LoadingSpinner />;
+        } else if (model?.rowsError || model?.queryInfoError) {
+            return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
         }
 
         const parentSchemaQuery = chosenType
@@ -145,13 +103,12 @@ export class SingleParentEntityPanel extends Component<Props, State> {
             : undefined;
         const lcTypeName = chosenType ? chosenType.toLowerCase() : undefined;
 
-        const parentValues =
-            model && parentLSIDs?.length > 0
-                ? model
-                      .getData()
-                      .map(row => row.getIn(['Name', 'value']))
-                      .toArray()
-                : undefined;
+        let value = chosenValue ?? undefined;
+        if (!value && model?.hasData && parentLSIDs?.length > 0) {
+            value = Object.values(model.rows)
+                .map(row => row.Name.value)
+                .join(DELIMITER);
+        }
 
         return (
             <div className="bottom-spacing" key={'parent-selections-' + index}>
@@ -195,16 +152,10 @@ export class SingleParentEntityPanel extends Component<Props, State> {
                         previewOptions
                         multiple
                         schemaQuery={parentSchemaQuery}
-                        showLabel={true}
+                        showLabel
                         valueColumn="Name"
-                        showLoading={true}
-                        value={
-                            this.state.chosenValue
-                                ? this.state.chosenValue
-                                : parentValues
-                                ? parentValues.join(DELIMITER)
-                                : undefined
-                        }
+                        showLoading
+                        value={value}
                     />
                 )}
             </div>
@@ -212,8 +163,7 @@ export class SingleParentEntityPanel extends Component<Props, State> {
     };
 
     renderParentHeader() {
-        const { childNounSingular, editing, parentDataType } = this.props;
-        const { chosenType } = this.state;
+        const { childNounSingular, chosenType, editing, parentDataType } = this.props;
 
         if (parentDataType && chosenType) {
             const { appUrlPrefixParts } = parentDataType;
@@ -257,8 +207,8 @@ export class SingleParentEntityPanel extends Component<Props, State> {
     }
 
     render() {
-        const { editing, index } = this.props;
-        const model = this.getParentModel();
+        const { actions, editing, index, queryModels } = this.props;
+        const { model } = queryModels;
 
         if (editing) {
             return this.renderParentSelection(model);
@@ -267,8 +217,53 @@ export class SingleParentEntityPanel extends Component<Props, State> {
         return (
             <div className="top-spacing" key={'grid-' + index}>
                 {this.renderParentHeader()}
-                {model && <QueryGridPanel asPanel={false} model={model} showGridBar={false} />}
+                {model && (
+                    <GridPanel
+                        actions={actions}
+                        allowSelections={false}
+                        asPanel={false}
+                        model={model}
+                        showButtonBar={false}
+                        showChartMenu={false}
+                        showExport={false}
+                        showOmniBox={false}
+                    />
+                )}
             </div>
         );
     }
 }
+
+const SingleParentEntityPanelBody = withQueryModels<Props & OwnProps>(SingleParentEntity);
+
+export const SingleParentEntityPanel: FC<Props> = memo(props => {
+    const { parentDataType, parentLSIDs, parentTypeQueryName } = props;
+    const [chosenType, setChosenType] = useState<string>(parentTypeQueryName);
+    const [chosenValue, setChosenValue] = useState<string | string[]>(props.chosenValue);
+
+    const queryConfigs: QueryConfigMap = useMemo(() => {
+        // Without a chosenType we cannot determine the underlying SchemaQuery
+        if (!chosenType) {
+            return {};
+        }
+
+        return {
+            model: {
+                baseFilters: parentLSIDs?.length > 0 ? [Filter.create('LSID', parentLSIDs, Filter.Types.IN)] : [],
+                bindURL: false,
+                schemaQuery: SchemaQuery.create(parentDataType.instanceSchemaName, chosenType),
+            },
+        };
+    }, [chosenType, parentDataType, parentLSIDs]);
+
+    return (
+        <SingleParentEntityPanelBody
+            {...props}
+            chosenType={chosenType}
+            chosenValue={chosenValue}
+            onTypeChange={setChosenType}
+            onValueChange={setChosenValue}
+            queryConfigs={queryConfigs}
+        />
+    );
+});

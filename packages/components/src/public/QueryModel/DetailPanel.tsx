@@ -51,18 +51,10 @@ export const DetailPanel: FC<DetailPanelProps> = memo(props => {
     }
 
     // This logic should be kept consistent with corollary logic in <Detail/>
-    if (queryColumns !== undefined) {
-        displayColumns = List(queryColumns);
+    if (editingMode) {
+        displayColumns = List(editColumns ?? model.updateColumns);
     } else {
-        if (editingMode) {
-            if (editColumns) {
-                displayColumns = List(editColumns);
-            } else {
-                displayColumns = List(model.updateColumns);
-            }
-        } else {
-            displayColumns = List(model.detailColumns);
-        }
+        displayColumns = List(queryColumns ?? model.detailColumns);
     }
 
     return <DetailDisplay {...detailDisplayProps} data={fromJS(model.gridData)} displayColumns={displayColumns} />;

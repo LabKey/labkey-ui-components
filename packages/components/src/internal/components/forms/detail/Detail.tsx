@@ -28,25 +28,17 @@ interface DetailProps extends DetailDisplaySharedProps {
 
 export const Detail: FC<DetailProps> = memo(props => {
     const { editColumns, queryColumns, queryModel, ...detailDisplayProps } = props;
+    let displayColumns: List<QueryColumn>;
 
     if (!queryModel?.isLoaded) {
         return <LoadingSpinner />;
     }
 
     // This logic should be kept consistent with corollary logic in <DetailPanel/>
-    let displayColumns: List<QueryColumn>;
-    if (queryColumns) {
-        displayColumns = queryColumns;
+    if (props.editingMode) {
+        displayColumns = editColumns ?? queryModel.getUpdateDisplayColumns();
     } else {
-        if (props.editingMode) {
-            if (editColumns) {
-                displayColumns = editColumns;
-            } else {
-                displayColumns = queryModel.getUpdateDisplayColumns();
-            }
-        } else {
-            displayColumns = queryModel.getDetailsDisplayColumns();
-        }
+        displayColumns = queryColumns ?? queryModel.getDetailsDisplayColumns();
     }
 
     return <DetailDisplay {...detailDisplayProps} data={queryModel.getData()} displayColumns={displayColumns} />;

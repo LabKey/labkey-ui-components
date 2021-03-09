@@ -21,12 +21,13 @@ import { LoadingSpinner, QueryColumn, QueryGridModel } from '../../../..';
 import { DetailDisplay, DetailDisplaySharedProps } from './DetailDisplay';
 
 interface DetailProps extends DetailDisplaySharedProps {
+    editColumns?: List<QueryColumn>;
     queryColumns?: List<QueryColumn>;
     queryModel?: QueryGridModel;
 }
 
 export const Detail: FC<DetailProps> = memo(props => {
-    const { queryColumns, queryModel, ...detailDisplayProps } = props;
+    const { editColumns, queryColumns, queryModel, ...detailDisplayProps } = props;
 
     if (!queryModel?.isLoaded) {
         return <LoadingSpinner />;
@@ -38,7 +39,11 @@ export const Detail: FC<DetailProps> = memo(props => {
         displayColumns = queryColumns;
     } else {
         if (props.editingMode) {
-            displayColumns = queryModel.getUpdateDisplayColumns();
+            if (editColumns) {
+                displayColumns = editColumns;
+            } else {
+                displayColumns = queryModel.getUpdateDisplayColumns();
+            }
         } else {
             displayColumns = queryModel.getDetailsDisplayColumns();
         }

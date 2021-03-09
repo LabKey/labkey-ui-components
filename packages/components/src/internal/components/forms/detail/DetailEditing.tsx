@@ -31,6 +31,7 @@ interface Props {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    editColumns?: List<QueryColumn>;
     onEditToggle?: (editing: boolean) => void;
     onUpdate?: () => void;
     queryColumns?: List<QueryColumn>;
@@ -145,6 +146,7 @@ export class DetailEditing extends Component<Props, State> {
     render(): ReactNode {
         const {
             cancelText,
+            editColumns,
             queryModel,
             queryColumns,
             canUpdate,
@@ -187,7 +189,12 @@ export class DetailEditing extends Component<Props, State> {
                         <Panel.Body>
                             <div className="detail__editing">
                                 {error && <Alert>{error}</Alert>}
-                                <Detail editingMode queryColumns={queryColumns} queryModel={queryModel} />
+                                <Detail
+                                    editColumns={editColumns}
+                                    editingMode
+                                    queryColumns={queryColumns}
+                                    queryModel={queryModel}
+                                />
                             </div>
                         </Panel.Body>
                     </Panel>

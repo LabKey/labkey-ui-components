@@ -9,6 +9,7 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "target": "es6",
+    "lib": ["es2017", "dom"],
     "types": ["jest"]
   },
   "exclude": [

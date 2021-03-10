@@ -103,7 +103,7 @@ To add a new `entryPoint` for a LabKey React page:
 
 To allow updates made to TypeScript, JavaScript, CSS, and SCSS files to take effect on your LabKey
 React page without having to manually build the changes each time, you can develop with Hot Module
-Reloading enabled via a webpack development server. You can run the HMR server from the
+Reloading (HMR) enabled via a webpack development server. You can run the HMR server from the
 `trunk/server/modules/<module>` directory via the `npm start` command. Once started, you
 will need to access your page via an alternate action name to view the changes. The server action
 is `module-entryPointDev.view` instead of the normal `module-entryPoint.view`.
@@ -119,10 +119,10 @@ cd trunk/server/modules/<module>
 npm run start
 ```
 
-For those modules that use other @labkey packages (e.g., `@labkey/components`), you can run the start command
-with linking enabled so that the HMR environment will alias to the source repository `/dist` directory.
-This means that you won't have to do a copy of the re-built `/dist` directory for that package in order for the
-changes to be picked up in your module.
+For those modules that use other @labkey packages (e.g., `@labkey/components` or `@labkey/workflow`), you can run
+the start command with linking enabled so that the HMR environment will alias to the source repository `/src` directory.
+This means that the source code from those packages will be included in the HMR for the module so that changes in those
+packages are automatically seen and re-built into the application.
 
 In order to use this linking option, you must set a `LABKEY_UI_COMPONENTS_HOME` environment variable on your
 machine with the absolute path to your `labkey-ui-components` enlistment.

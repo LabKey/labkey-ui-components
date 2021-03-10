@@ -350,7 +350,7 @@ describe('domain properties actions', () => {
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowTimepointProperties: false,
-    });
+        });
         expect(getAvailableTypes(domain).contains(FLAG_TYPE)).toBeFalsy();
         expect(getAvailableTypes(domain).contains(FILE_TYPE)).toBeFalsy();
         expect(getAvailableTypes(domain).contains(ATTACHMENT_TYPE)).toBeFalsy();

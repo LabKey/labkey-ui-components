@@ -112,7 +112,7 @@ describe('DomainForm', () => {
         form.unmount();
     });
 
-    test("with reservedFieldsMsg",  () => {
+    test('with reservedFieldsMsg', () => {
         const fields = [];
         fields.push({
             name: 'key',
@@ -136,8 +136,8 @@ describe('DomainForm', () => {
         });
         const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
 
-        const message = "There are reserved fields";
-        form.setState({reservedFieldsMsg: message});
+        const message = 'There are reserved fields';
+        form.setState({ reservedFieldsMsg: message });
         expect(form.find(Alert).text()).toBe(message);
         form.unmount();
     });

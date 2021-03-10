@@ -3,7 +3,11 @@ import { Ajax, Utils } from '@labkey/api';
 import { buildURL } from '../../url/AppURL';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 
-export function inferDomainFromFile(file: File, numLinesToInclude: number, domainKindName?: string): Promise<InferDomainResponse> {
+export function inferDomainFromFile(
+    file: File,
+    numLinesToInclude: number,
+    domainKindName?: string
+): Promise<InferDomainResponse> {
     return new Promise((resolve, reject) => {
         const form = new FormData();
         form.append('file', file);

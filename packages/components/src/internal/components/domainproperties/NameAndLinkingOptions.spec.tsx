@@ -1,6 +1,8 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
+import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation';
+
 import { createFormInputId } from './actions';
 import {
     DOMAIN_FIELD_DESCRIPTION,
@@ -12,7 +14,6 @@ import {
 
 import { DomainField } from './models';
 import { NameAndLinkingOptions } from './NameAndLinkingOptions';
-import { OntologyConceptAnnotation } from "../ontology/OntologyConceptAnnotation";
 
 const _description = 'This is a description';
 const _label = 'This is a label';

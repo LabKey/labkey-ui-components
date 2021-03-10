@@ -41,7 +41,7 @@ class DataClassDesignerImpl extends PureComponent<Props & InjectedBaseDomainDesi
     static defaultProps = {
         nounSingular: 'Data Class',
         nounPlural: 'Data Classes',
-        domainFormDisplayOptions: {...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'data class'},
+        domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'data class' },
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {

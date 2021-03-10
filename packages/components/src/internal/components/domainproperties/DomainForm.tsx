@@ -27,7 +27,7 @@ import {
     FileAttachmentForm,
     Alert,
     valueIsEmpty,
-    QueryColumn
+    QueryColumn,
 } from '../../..';
 
 import { FIELD_EDITOR_TOPIC, helpLinkNode } from '../../util/helpLinks';
@@ -153,7 +153,7 @@ interface IDomainFormState {
     file: File;
     filePreviewMsg: string;
     bulkDeleteConfirmInfo: BulkDeleteConfirmInfo;
-    reservedFieldsMsg: ReactNode
+    reservedFieldsMsg: ReactNode;
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -964,8 +964,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 filePreviewMsg:
                     'The selected file contains only fields that will be created by default. Please remove the file and try uploading a new one.',
             });
-        }
-        else {
+        } else {
             // if the DomainForm usage wants to show the file preview and import data options, then set these state values
             if (setFileImportData) {
                 this.setState({ filePreviewData: response, file, filePreviewMsg: undefined });
@@ -976,11 +975,15 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
         if (reservedFields.size && !retainReservedFields) {
             this.setState({
-                reservedFieldsMsg: 'Reserved fields found in your file are not shown below. ' +
+                reservedFieldsMsg:
+                    'Reserved fields found in your file are not shown below. ' +
                     'These fields are already used by LabKey' +
-                    (domainFormDisplayOptions?.domainKindDisplayName ? ' to support this ' + domainFormDisplayOptions.domainKindDisplayName : '') + ': ' +
-                    reservedFields.map((field) => field.name).join(', ')
-            })
+                    (domainFormDisplayOptions?.domainKindDisplayName
+                        ? ' to support this ' + domainFormDisplayOptions.domainKindDisplayName
+                        : '') +
+                    ': ' +
+                    reservedFields.map(field => field.name).join(', '),
+            });
         }
     };
 
@@ -1254,7 +1257,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                                         return (
                                             <DomainRow
-                                                ref={ref => {this.refsArray[i] = ref;}}
+                                                ref={ref => {
+                                                    this.refsArray[i] = ref;
+                                                }}
                                                 domainId={domain.domainId}
                                                 helpNoun={helpNoun}
                                                 key={'domain-row-key-' + i}

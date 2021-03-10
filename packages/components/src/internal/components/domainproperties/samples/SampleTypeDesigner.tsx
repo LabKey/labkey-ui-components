@@ -111,7 +111,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         showParentLabelPrefix: true,
         useTheme: false,
         appPropertiesOnly: true,
-        domainFormDisplayOptions: {...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type'}
+        domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type' },
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
@@ -120,7 +120,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         initQueryGridState();
         let domainDetails = this.props.initModel || DomainDetails.create();
         if (props.defaultSampleFieldConfig) {
-            const domainDesign = domainDetails.domainDesign.merge({ reservedFieldNames: List<string>([props.defaultSampleFieldConfig?.name.toLowerCase()]) });
+            const domainDesign = domainDetails.domainDesign.merge({
+                reservedFieldNames: List<string>([props.defaultSampleFieldConfig?.name.toLowerCase()]),
+            });
             domainDetails = domainDetails.set('domainDesign', domainDesign) as DomainDetails;
         }
 

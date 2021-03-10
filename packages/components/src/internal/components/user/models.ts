@@ -6,8 +6,8 @@ export class ChangePasswordModel extends Record({
     password: '',
     password2: '',
 }) {
-    email: string;
-    oldPassword: string;
-    password: string;
-    password2: string;
+    declare email: string;
+    declare oldPassword: string;
+    declare password: string;
+    declare password2: string;
 }

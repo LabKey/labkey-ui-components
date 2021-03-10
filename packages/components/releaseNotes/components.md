@@ -1,6 +1,15 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.13.0
+*Released*: 10 March 2021
+* Changes to support webpack aliases from /src and theme/SCSS assets
+    * index.ts and app/index.ts updates to export types separately
+    * add "declare" to various immutable Record properties
+    * remove global.d.ts in favor of GlobalAppState defined and used for ReactN components types directly
+    * remove "const" from usages of const enum
+    * Remove direct reference to `jest` from test utility methods
+
 ### version 2.12.0
 *Released*: 9 March 2021
 * Add `editColumns` property to `<Detail/>`, `<DetailEditing/>` for `QueryGridModel` support.

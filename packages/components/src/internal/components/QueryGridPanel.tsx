@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import { Utils } from '@labkey/api';
 
 import { gridInit } from '../actions';
-import { getQueryGridModel } from '../global';
+import { getQueryGridModel, GlobalAppState } from '../global';
 
 import '../../theme/index.scss';
 import { QueryGridModel, LoadingSpinner, Alert } from '../..';
@@ -58,7 +58,7 @@ interface State {
     activeTab: number;
 }
 
-export class QueryGridPanel extends ReactN.Component<Props, State> {
+export class QueryGridPanel extends ReactN.Component<Props, State, GlobalAppState> {
     static defaultProps = {
         asPanel: true,
         initModelOnMount: true,

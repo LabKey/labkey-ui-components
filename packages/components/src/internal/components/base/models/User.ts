@@ -35,29 +35,29 @@ const defaultUser: IUserProps = {
  * Model for org.labkey.api.security.User as returned by User.getUserProps()
  */
 export class User extends Record(defaultUser) implements IUserProps {
-    id: number;
+    declare id: number;
 
-    canDelete: boolean;
-    canDeleteOwn: boolean;
-    canInsert: boolean;
-    canUpdate: boolean;
-    canUpdateOwn: boolean;
+    declare canDelete: boolean;
+    declare canDeleteOwn: boolean;
+    declare canInsert: boolean;
+    declare canUpdate: boolean;
+    declare canUpdateOwn: boolean;
 
-    displayName: string;
-    email: string;
-    phone: string;
-    avatar: string;
+    declare displayName: string;
+    declare email: string;
+    declare phone: string;
+    declare avatar: string;
 
-    isAdmin: boolean;
-    isAnalyst: boolean;
-    isDeveloper: boolean;
-    isGuest: boolean;
-    isRootAdmin: boolean;
-    isSignedIn: boolean;
-    isSystemAdmin: boolean;
-    isTrusted: boolean;
+    declare isAdmin: boolean;
+    declare isAnalyst: boolean;
+    declare isDeveloper: boolean;
+    declare isGuest: boolean;
+    declare isRootAdmin: boolean;
+    declare isSignedIn: boolean;
+    declare isSystemAdmin: boolean;
+    declare isTrusted: boolean;
 
-    permissionsList: List<string>;
+    declare permissionsList: List<string>;
 
     static getDefaultUser(): User {
         return new User(defaultUser);

@@ -76,6 +76,8 @@ import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
 
+import { GlobalAppState } from '../../global';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -143,7 +145,7 @@ interface StateProps {
     useAsync: boolean;
 }
 
-export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps> {
+export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps, GlobalAppState> {
     private readonly capNounSingular;
     private readonly capNounPlural;
     private readonly capIdsText;

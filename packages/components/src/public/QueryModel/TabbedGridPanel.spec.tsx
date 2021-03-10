@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { initUnitTests, makeQueryInfo, makeTestData } from '../../internal/testHelpers';
+import { makeQueryInfo, makeTestData } from '../../internal/testHelpers';
 import aminoAcidsQuery from '../../test/data/assayAminoAcidsData-getQuery.json';
 import aminoAcidsQueryInfo from '../../test/data/assayAminoAcidsData-getQueryDetails.json';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
@@ -58,7 +58,7 @@ describe('TabbedGridPanel', () => {
             mixtures: mixturesModel,
             aminoAcids: aminoAcidsModel,
         };
-        actions = makeTestActions();
+        actions = makeTestActions(jest.fn);
     });
 
     const expectTabs = (wrapper: ReactWrapper, activeTab: string): void => {

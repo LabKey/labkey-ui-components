@@ -47,14 +47,14 @@ export class PropDescType
         lookupQuery: undefined,
     })
     implements IPropDescType {
-    conceptURI: string;
-    display: string;
-    name: string;
-    rangeURI: string;
-    alternateRangeURI: string;
-    shortDisplay: string;
-    lookupSchema?: string;
-    lookupQuery?: string;
+    declare conceptURI: string;
+    declare display: string;
+    declare name: string;
+    declare rangeURI: string;
+    declare alternateRangeURI: string;
+    declare shortDisplay: string;
+    declare lookupSchema?: string;
+    declare lookupQuery?: string;
 
     static isUser(name: string): boolean {
         return name === 'users';

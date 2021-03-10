@@ -14,12 +14,12 @@ export class AuditDetailsModel extends Record({
     oldData: undefined,
     newData: undefined,
 }) {
-    rowId?: number;
-    comment?: string;
-    eventUserId?: number;
-    eventDateFormatted?: string;
-    oldData?: Map<string, string>;
-    newData?: Map<string, string>;
+    declare rowId?: number;
+    declare comment?: string;
+    declare eventUserId?: number;
+    declare eventDateFormatted?: string;
+    declare oldData?: Map<string, string>;
+    declare newData?: Map<string, string>;
 
     static create(raw: any): AuditDetailsModel {
         return new AuditDetailsModel({
@@ -62,17 +62,17 @@ export class TimelineEventModel extends Record({
     oldData: undefined,
     newData: undefined,
 }) {
-    rowId?: number;
-    eventType?: string;
-    summary?: string;
-    user?: Map<string, any>;
-    eventUserId?: number;
-    timestamp?: Map<string, any>;
-    eventTimestamp?: any;
-    entity?: Map<string, any>;
-    metadata?: List<Map<string, any>>;
-    oldData?: Map<string, string>;
-    newData?: Map<string, string>;
+    declare rowId?: number;
+    declare eventType?: string;
+    declare summary?: string;
+    declare user?: Map<string, any>;
+    declare eventUserId?: number;
+    declare timestamp?: Map<string, any>;
+    declare eventTimestamp?: any;
+    declare entity?: Map<string, any>;
+    declare metadata?: List<Map<string, any>>;
+    declare oldData?: Map<string, string>;
+    declare newData?: Map<string, string>;
 
     constructor(values?: { [key: string]: any }) {
         super(values);

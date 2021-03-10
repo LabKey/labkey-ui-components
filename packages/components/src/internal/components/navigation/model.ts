@@ -29,14 +29,14 @@ export class MenuSectionModel extends Record({
     productId: undefined,
     sectionKey: undefined,
 }) {
-    label: string;
-    url: string;
-    items: List<MenuItemModel>;
-    totalCount: number;
-    itemLimit: number;
-    key: string;
-    productId: string;
-    sectionKey: string;
+    declare label: string;
+    declare url: string;
+    declare items: List<MenuItemModel>;
+    declare totalCount: number;
+    declare itemLimit: number;
+    declare key: string;
+    declare productId: string;
+    declare sectionKey: string;
 
     static create(rawData: any, currentProductId?: string): MenuSectionModel {
         if (rawData) {
@@ -66,13 +66,13 @@ export class MenuItemModel extends Record({
     requiresLogin: false,
     hasActiveJob: false,
 }) {
-    id: number;
-    key: string;
-    label: string;
-    url: string | AppURL;
-    orderNum: number;
-    requiresLogin: boolean;
-    hasActiveJob: boolean;
+    declare id: number;
+    declare key: string;
+    declare label: string;
+    declare url: string | AppURL;
+    declare orderNum: number;
+    declare requiresLogin: boolean;
+    declare hasActiveJob: boolean;
 
     static create(rawData, sectionKey: string, currentProductId?: string): MenuItemModel {
         if (rawData) {
@@ -135,15 +135,15 @@ export class ProductMenuModel extends Record({
     productIds: undefined,
     needsReload: false,
 }) {
-    isError: boolean;
-    isLoaded: boolean;
-    isLoading: boolean;
-    message: string;
-    sections: List<MenuSectionModel>;
-    currentProductId: string; // the current product's id
-    userMenuProductId: string; // the product's id for the user menu items
-    productIds: List<string>; // the list of all product ids to be included in the menu; leave undefined for all products in the container
-    needsReload: boolean;
+    declare isError: boolean;
+    declare isLoaded: boolean;
+    declare isLoading: boolean;
+    declare message: string;
+    declare sections: List<MenuSectionModel>;
+    declare currentProductId: string; // the current product's id
+    declare userMenuProductId: string; // the product's id for the user menu items
+    declare productIds: List<string>; // the list of all product ids to be included in the menu; leave undefined for all products in the container
+    declare needsReload: boolean;
 
     init(): void {
         if (!this.isLoaded && !this.isLoading) {

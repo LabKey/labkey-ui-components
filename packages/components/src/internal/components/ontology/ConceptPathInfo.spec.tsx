@@ -3,9 +3,11 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Alert } from '../base/Alert';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { PathModel } from './models';
 import { ConceptPathInfo, ConceptPathInfoImpl } from './ConceptPathInfo';
-import { LoadingSpinner } from '../base/LoadingSpinner';
+
 import { ConceptPathDisplay } from './ConceptPath';
 
 describe('ConceptPathInfo', () => {
@@ -24,14 +26,20 @@ describe('ConceptPathInfoImpl', () => {
         code: string = undefined,
         isLoading = false,
         alternatePaths: PathModel[] = undefined,
-        selectedPath: PathModel = undefined,
+        selectedPath: PathModel = undefined
     ): void {
         expect(wrapper.find('.none-selected')).toHaveLength(code ? 0 : 1);
         expect(wrapper.find(LoadingSpinner)).toHaveLength(isLoading ? 1 : 0);
         expect(wrapper.find(ConceptPathDisplay)).toHaveLength(alternatePaths?.length ? alternatePaths.length : 0);
-        expect(wrapper.find('.current-path-container')).toHaveLength(alternatePaths?.length > 0 && selectedPath ? 1 : 0);
-        expect(wrapper.find('.current-path-container')?.find(ConceptPathDisplay)).toHaveLength(alternatePaths?.length > 0 && selectedPath ? 1 : 0);
-        expect(wrapper.find('.current-path-container')?.find('.selected')).toHaveLength(alternatePaths?.length > 0 && selectedPath ? 1 : 0);
+        expect(wrapper.find('.current-path-container')).toHaveLength(
+            alternatePaths?.length > 0 && selectedPath ? 1 : 0
+        );
+        expect(wrapper.find('.current-path-container')?.find(ConceptPathDisplay)).toHaveLength(
+            alternatePaths?.length > 0 && selectedPath ? 1 : 0
+        );
+        expect(wrapper.find('.current-path-container')?.find('.selected')).toHaveLength(
+            alternatePaths?.length > 0 && selectedPath ? 1 : 0
+        );
         expect(wrapper.find('.alternate-paths-container')).toHaveLength(alternatePaths?.length > 0 ? 1 : 0);
         expect(wrapper.find('.alternate-paths-container')?.find(ConceptPathDisplay)).toHaveLength(
             alternatePaths?.length > 0 ? alternatePaths.length - 1 : 0
@@ -40,7 +48,7 @@ describe('ConceptPathInfoImpl', () => {
     }
 
     test('Nothing set', () => {
-        const wrapper = mount(<ConceptPathInfoImpl code={undefined} />);
+        const wrapper = mount(<ConceptPathInfoImpl selectedCode={undefined} />);
         expect(wrapper.find('.none-selected')).toHaveLength(1);
         expect(wrapper.find('.none-selected').text()).toBe('No concept selected');
         expect(wrapper.find('.concept-pathinfo-container')).toHaveLength(0);
@@ -50,7 +58,7 @@ describe('ConceptPathInfoImpl', () => {
 
     test('Code set, aka Loading', () => {
         const code = 'MagicCode';
-        const wrapper = mount(<ConceptPathInfoImpl code={code} />);
+        const wrapper = mount(<ConceptPathInfoImpl selectedCode={code} />);
         validate(wrapper, code, true);
         wrapper.unmount();
     });
@@ -62,7 +70,9 @@ describe('ConceptPathInfoImpl', () => {
             label: 'first',
         });
         const alternatePaths = undefined;
-        const wrapper = mount(<ConceptPathInfoImpl code={code} selectedPath={path} alternatePaths={alternatePaths} />);
+        const wrapper = mount(
+            <ConceptPathInfoImpl selectedCode={code} selectedPath={path} alternatePaths={alternatePaths} />
+        );
         validate(wrapper, code, true, alternatePaths, path);
         wrapper.unmount();
     });
@@ -77,7 +87,9 @@ describe('ConceptPathInfoImpl', () => {
             label: 'first',
         });
         const alternatePaths = [];
-        const wrapper = mount(<ConceptPathInfoImpl code={code} selectedPath={path} alternatePaths={alternatePaths} />);
+        const wrapper = mount(
+            <ConceptPathInfoImpl selectedCode={code} selectedPath={path} alternatePaths={alternatePaths} />
+        );
         validate(wrapper, code, false, alternatePaths, path);
         wrapper.unmount();
     });
@@ -89,7 +101,9 @@ describe('ConceptPathInfoImpl', () => {
             label: 'first',
         });
         const alternatePaths = [path];
-        const wrapper = mount(<ConceptPathInfoImpl code={code} selectedPath={path} alternatePaths={alternatePaths} />);
+        const wrapper = mount(
+            <ConceptPathInfoImpl selectedCode={code} selectedPath={path} alternatePaths={alternatePaths} />
+        );
         validate(wrapper, code, false, alternatePaths, path);
         wrapper.unmount();
     });
@@ -115,9 +129,10 @@ describe('ConceptPathInfoImpl', () => {
         });
         const selected = path3;
         const alternatePaths = [path1, path2, path3, path4];
-        const wrapper = mount(<ConceptPathInfoImpl code={code} selectedPath={selected} alternatePaths={alternatePaths} />);
+        const wrapper = mount(
+            <ConceptPathInfoImpl selectedCode={code} selectedPath={selected} alternatePaths={alternatePaths} />
+        );
         validate(wrapper, code, false, alternatePaths, selected);
         wrapper.unmount();
     });
-
 });

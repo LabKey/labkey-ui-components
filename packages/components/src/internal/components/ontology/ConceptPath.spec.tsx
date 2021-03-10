@@ -44,17 +44,20 @@ describe('ConceptPathDisplayImpl', () => {
     test('No path loaded', () => {
         const wrapper = mount(<ConceptPathDisplayImpl path={undefined} parentPaths={undefined} />);
         validate(wrapper);
+        wrapper.unmount();
     });
 
     test('Parent path not loaded yet', () => {
         const wrapper = mount(<ConceptPathDisplayImpl path={TEST_CONCEPT_PATH} parentPaths={undefined} />);
         validate(wrapper, TEST_CONCEPT_PATH);
+        wrapper.unmount();
     });
 
     test('Parent path empty', () => {
         const parentPaths = [];
         const wrapper = mount(<ConceptPathDisplayImpl path={TEST_CONCEPT_PATH} parentPaths={parentPaths} />);
         validate(wrapper, TEST_CONCEPT_PATH, parentPaths.length);
+        wrapper.unmount();
     });
 
     test('Parent path set', () => {
@@ -67,6 +70,7 @@ describe('ConceptPathDisplayImpl', () => {
         validate(wrapper, TEST_CONCEPT_PATH, parentPaths.length);
 
         expect(wrapper.find('.concept-path-label').at(0).text()).toBe('first');
+        wrapper.unmount();
     });
 
     test('Parent path set', () => {
@@ -89,6 +93,7 @@ describe('ConceptPathDisplayImpl', () => {
         expect(wrapper.find('.concept-path-label').at(0).text()).toBe('first');
         expect(wrapper.find('.concept-path-label').at(1).text()).toBe('second');
         expect(wrapper.find('.concept-path-label').at(2).text()).toBe('third');
+        wrapper.unmount();
     });
 
     test('Title set', () => {
@@ -98,6 +103,7 @@ describe('ConceptPathDisplayImpl', () => {
             <ConceptPathDisplayImpl path={TEST_CONCEPT_PATH} parentPaths={parentPaths} title={title} />
         );
         validate(wrapper, TEST_CONCEPT_PATH, parentPaths.length, title);
+        wrapper.unmount();
     });
 
     test('Collapsed set', () => {
@@ -115,6 +121,7 @@ describe('ConceptPathDisplayImpl', () => {
             />
         );
         validate(wrapper, TEST_CONCEPT_PATH, parentPaths.length, title, collapsed, selected);
+        wrapper.unmount();
     });
 
     test('Selected set', () => {
@@ -132,5 +139,6 @@ describe('ConceptPathDisplayImpl', () => {
             />
         );
         validate(wrapper, TEST_CONCEPT_PATH, parentPaths.length, title, collapsed, selected);
+        wrapper.unmount();
     });
 });

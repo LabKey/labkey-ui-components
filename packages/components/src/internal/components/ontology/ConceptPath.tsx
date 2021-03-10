@@ -16,13 +16,9 @@ export interface ConceptPathDisplayProps {
 }
 
 export const ConceptPathDisplay: FC<ConceptPathDisplayProps> = memo(props => {
-    const { path, onClick } = props;
+    const { path } = props;
     const [parentPaths, setParentPaths] = useState<PathModel[]>();
     const [error, setError] = useState<string>();
-
-    const updatePath = useCallback((): void => {
-        onClick?.(path);
-    }, [path, onClick]);
 
     useEffect(() => {
         if (path) {
@@ -40,47 +36,41 @@ export const ConceptPathDisplay: FC<ConceptPathDisplayProps> = memo(props => {
     return (
         <>
             <Alert>{error}</Alert>
-            {path && (
-                <ConceptPathDisplayImpl key={path.path} {...props} parentPaths={parentPaths} onClick={updatePath} />
-            )}
+            {path && <ConceptPathDisplayImpl key={path.path} {...props} parentPaths={parentPaths} />}
         </>
     );
 });
 
-interface ConceptPathDisplayImplProps {
-    readonly title?: string;
-    readonly path: PathModel;
-    readonly isSelected?: boolean;
-    readonly isCollapsed?: boolean;
-    readonly onClick?: () => void;
-
-    readonly parentPaths: PathModel[];
+interface ConceptPathDisplayImplProps extends ConceptPathDisplayProps {
+    parentPaths: PathModel[];
 }
 
 export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(props => {
     const { isCollapsed = false, isSelected = false, onClick = undefined, parentPaths, path, title } = props;
+    const updatePath = useCallback((): void => {
+        onClick?.(path);
+    }, [path, onClick]);
+
     if (!path) return undefined;
 
     return (
         <div
-            className={classNames({
-                'concept-path-container': true,
+            className={classNames('concept-path-container', {
                 selected: isSelected,
                 collapsed: isCollapsed,
             })}
-            onClick={onClick}
+            onClick={updatePath}
         >
             {title && <div className="title">{title}</div>}
             <div className="concept-path">
-                {parentPaths?.length > 0 &&
-                    parentPaths.map((parent, idx) => {
-                        return (
-                            <>
-                                <span className="concept-path-label">{parent.label}</span>
-                                {idx !== parentPaths.length - 1 && <i className="fa fa-chevron-right" />}
-                            </>
-                        );
-                    })}
+                {parentPaths?.map((parent, idx) => {
+                    return (
+                        <>
+                            <span className="concept-path-label">{parent.label}</span>
+                            {idx !== parentPaths.length - 1 && <i className="fa fa-chevron-right" />}
+                        </>
+                    );
+                })}
             </div>
         </div>
     );

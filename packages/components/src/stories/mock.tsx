@@ -232,8 +232,6 @@ const QUERY_RESPONSES = fromJS({
     ontology: {
         ontologies: ontologiesQuery,
         getchildpaths: getOntologyChildPathsInfo,
-        getalternateconceptpaths: getAlternateConceptPaths,
-        getconceptparentpaths: getConceptParentPaths,
     },
     pipeline: {
         job: pipelineJobQuery,
@@ -709,7 +707,6 @@ export function initOnotologyMocks(): void {
     });
 
     mock.get(/.*\/ontology\/?.*\/getConceptParentPaths.*/, (req, res) => {
-        const queryParams = req.url().query;
         return jsonResponse(getConceptParentPaths, res);
     });
 

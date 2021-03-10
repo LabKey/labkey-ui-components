@@ -33,23 +33,19 @@ export const ConceptPathInfo: FC<ConceptPathInfoProps> = memo(props => {
     return (
         <>
             <Alert>{error}</Alert>
-            <ConceptPathInfoImpl code={selectedCode} alternatePaths={alternatePaths} {...props} />
+            <ConceptPathInfoImpl alternatePaths={alternatePaths} {...props} />
         </>
     );
 });
 
-interface ConceptPathInfoImplProps {
-    code: string;
+interface ConceptPathInfoImplProps extends ConceptPathInfoProps {
     alternatePaths?: PathModel[];
-
-    selectedPath?: PathModel;
-    alternatePathClickHandler?: (path: PathModel) => void;
 }
 
 export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
-    const { code, selectedPath, alternatePaths, alternatePathClickHandler } = props;
+    const { selectedCode, selectedPath, alternatePaths } = props;
 
-    if (!code) {
+    if (!selectedCode) {
         return <div className="none-selected">No concept selected</div>;
     }
 
@@ -57,25 +53,32 @@ export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
         <div className="concept-pathinfo-container">
             {selectedPath && <div className="title">{selectedPath.label}</div>}
             {!alternatePaths && <LoadingSpinner msg="Loading path information for concept..." />}
-            {alternatePaths && alternatePaths.length > 0 && (
-                <>
-                    {selectedPath && (
-                        <div className="current-path-container">
-                            <div className="title">Current Path</div>
-                            <ConceptPathDisplay key={selectedPath.path} path={selectedPath} isSelected={true} />
-                        </div>
-                    )}
-                    <div className="alternate-paths-container">
-                        <div className="title">Alternate Paths</div>
-                        {alternatePaths
-                            .filter(path => path.path !== selectedPath?.path)
-                            .map(path => (
-                                <ConceptPathDisplay key={path.path} path={path} onClick={alternatePathClickHandler} />
-                            ))}
-                    </div>
-                </>
-            )}
             {alternatePaths?.length === 0 && <div className="no-path-info">No path information available</div>}
+            {alternatePaths?.length > 0 && <AlternatePathPanel {...props} />}
         </div>
+    );
+});
+
+const AlternatePathPanel: FC<ConceptPathInfoImplProps> = memo(props => {
+    const { selectedPath, alternatePaths, alternatePathClickHandler } = props;
+
+    const altPaths = alternatePaths.filter(path => path.path !== selectedPath?.path);
+
+    return (
+        <>
+            {selectedPath && (
+                <div className="current-path-container">
+                    <div className="title">Current Path</div>
+                    <ConceptPathDisplay key={selectedPath.path} path={selectedPath} isSelected={true} />
+                </div>
+            )}
+            <div className="alternate-paths-container">
+                <div className="title">Alternate Paths</div>
+                {altPaths?.length === 0 && <div>No alternate paths</div>}
+                {altPaths?.map(path => (
+                    <ConceptPathDisplay key={path.path} path={path} onClick={alternatePathClickHandler} />
+                ))}
+            </div>
+        </>
     );
 });

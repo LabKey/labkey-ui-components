@@ -19,7 +19,6 @@ class Ontology {
                 url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_ONTOLOGY_ACTION, container?.path, {
                     abbreviation: ontologyId,
                 }),
-                method: 'GET',
                 success: Utils.getCallbackWrapper(response => {
                     resolve(new OntologyModel(response));
                 }),
@@ -43,7 +42,6 @@ class Ontology {
                 url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CONCEPT_ACTION, container?.path, {
                     code,
                 }),
-                method: 'GET',
                 success: Utils.getCallbackWrapper(response => {
                     resolve(new ConceptModel(response.concept));
                 }),
@@ -70,7 +68,6 @@ export function getOntologyChildPathsAndConcepts(ontologyPath: string, container
             url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CHILD_PATHS_ACTION, container, {
                 path: ontologyPath,
             }),
-            method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 const parent = response.parent;
                 const { path, code, children } = parent;
@@ -95,7 +92,6 @@ function getAlternateConceptPaths(conceptCode?: string, container: string = SHAR
             url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_ALTERNATE_CONCEPT_PATHS_ACTION, container, {
                 code: conceptCode,
             }),
-            method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.paths?.map(path => new PathModel(path)));
             }),
@@ -117,7 +113,6 @@ function getConceptParentPaths(conceptPath?: string, container: string = SHARED_
             url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_PARENT_PATHS_ACTION, container, {
                 path: conceptPath,
             }),
-            method: 'GET',
             success: Utils.getCallbackWrapper(response => {
                 resolve(response.parents?.map(path => new PathModel(path)));
             }),

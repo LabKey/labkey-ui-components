@@ -26,7 +26,6 @@ export class PathModel {
     readonly path: string; // Ontology coded path
     readonly code: string; // Concept code for the concept at this path
     readonly label: string; // Human readable label for this path node
-    readonly pathLabel?: string; // a Human readable full path string using the '>' as a spacer between nodes
     readonly hasChildren: boolean; // flag indicating if node path has any children
     readonly children: PathModel[] | undefined; // Array of Child paths, undefined if not loaded or hasChildren is false
 

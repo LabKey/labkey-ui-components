@@ -12,7 +12,6 @@ import {
     EntityDataType,
     getActionErrorMessage,
     getQueryGridModel,
-    gridIdInvalidate,
     LoadingSpinner,
     Progress,
     QueryGridModel,
@@ -26,13 +25,7 @@ import { DELIMITER } from '../forms/input/SelectInput';
 import { getEntityTypeOptions } from './actions';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
-
-import {
-    getInitialParentChoices,
-    getParentGridPrefix,
-    getUpdatedRowForParentChanges,
-    parentValuesDiffer,
-} from './utils';
+import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
 
 interface Props {
     auditBehavior?: AuditBehaviorTypes;
@@ -80,10 +73,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
         this.init();
     }
 
-    componentWillUnmount(): void {
-        this.invalidate();
-    }
-
     init = async (): Promise<void> => {
         const { parentDataType } = this.props;
         const { typeListingSchemaQuery } = parentDataType;
@@ -109,10 +98,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                 ),
             });
         }
-    };
-
-    invalidate = (): void => {
-        gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
     };
 
     getChildModel = (): QueryGridModel => {
@@ -201,7 +186,6 @@ export class ParentEntityEditPanel extends Component<Props, State> {
                         editing: false,
                     }),
                     () => {
-                        this.invalidate();
                         onUpdate?.();
                         this.props.onEditToggle?.(false);
                     }

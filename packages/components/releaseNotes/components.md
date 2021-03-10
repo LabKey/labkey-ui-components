@@ -8,6 +8,7 @@ Components, models, actions, and utility functions for LabKey applications and p
     * add "declare" to various immutable Record properties
     * remove global.d.ts in favor of GlobalAppState defined and used for ReactN components types directly
     * remove "const" from usages of const enum
+    * Remove direct reference to `jest` from test utility methods
 
 ### version 2.12.0
 *Released*: 9 March 2021

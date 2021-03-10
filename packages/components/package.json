@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.6.2-21.3-fb-conceptPaths.2",
+  "version": "2.6.3",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

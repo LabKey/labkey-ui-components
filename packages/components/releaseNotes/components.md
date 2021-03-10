@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.TBD
-*Released*: TBD March 2021
+### version 2.13.0
+*Released*: 10 March 2021
 * Changes to support webpack aliases from /src and theme/SCSS assets
     * index.ts and app/index.ts updates to export types separately
     * add "declare" to various immutable Record properties

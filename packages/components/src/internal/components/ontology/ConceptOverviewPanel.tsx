@@ -1,10 +1,13 @@
 import React, { FC, memo, useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
-import { Alert } from '../../..';
+import { Alert, naturalSort } from '../../..';
 
-import { ConceptModel } from './models';
+import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
+import { ConceptPathDisplay } from './ConceptPathDisplay';
+
+const CURRENT_PATH_TITLE = 'Current Path';
 
 interface ConceptOverviewPanelProps {
     code: string;
@@ -39,23 +42,48 @@ export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(
 
 interface ConceptOverviewPanelImplProps {
     concept: ConceptModel;
+    selectedPath?: PathModel;
 }
+
+const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
+    const { synonyms } = props;
+    if (!synonyms || synonyms.length === 0) return undefined;
+
+    const synonymList = synonyms.sort(naturalSort).map(synonym => {
+        return <li key={synonym}>{synonym}</li>;
+    });
+
+    return (
+        <>
+            <div className="synonyms-title">Synonyms</div>
+            <ul className="synonyms-text">{synonymList}</ul>
+        </>
+    );
+});
 
 /**
  * The ontology concept overview display panel that takes in the concept prop (i.e. ConceptModel) and displays
  * the information about the concept label, code, description, etc.
  */
 export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(props => {
-    const { concept } = props;
+    const { concept, selectedPath = undefined } = props;
 
     if (!concept) {
         return <div className="none-selected">No concept selected</div>;
     }
 
-    const { code, label, description } = concept;
+    const { code, label, description, synonyms } = concept;
 
     return (
         <>
+            {selectedPath && (
+                <ConceptPathDisplay
+                    title={CURRENT_PATH_TITLE}
+                    path={selectedPath}
+                    isSelected={true}
+                    isCollapsed={true}
+                />
+            )}
             {label && <div className="title margin-bottom">{label}</div>}
             {code && <span className="code">{code}</span>}
             {description && (
@@ -64,6 +92,7 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
                     <p className="description-text">{description}</p>
                 </div>
             )}
+            <ConceptSynonyms synonyms={synonyms} />
         </>
     );
 });

@@ -21,27 +21,24 @@ import { LoadingSpinner, QueryColumn, QueryGridModel } from '../../../..';
 import { DetailDisplay, DetailDisplaySharedProps } from './DetailDisplay';
 
 interface DetailProps extends DetailDisplaySharedProps {
+    editColumns?: List<QueryColumn>;
     queryColumns?: List<QueryColumn>;
     queryModel?: QueryGridModel;
 }
 
 export const Detail: FC<DetailProps> = memo(props => {
-    const { queryColumns, queryModel, ...detailDisplayProps } = props;
+    const { editColumns, queryColumns, queryModel, ...detailDisplayProps } = props;
+    let displayColumns: List<QueryColumn>;
 
     if (!queryModel?.isLoaded) {
         return <LoadingSpinner />;
     }
 
     // This logic should be kept consistent with corollary logic in <DetailPanel/>
-    let displayColumns: List<QueryColumn>;
-    if (queryColumns) {
-        displayColumns = queryColumns;
+    if (props.editingMode) {
+        displayColumns = editColumns ?? queryModel.getUpdateDisplayColumns();
     } else {
-        if (props.editingMode) {
-            displayColumns = queryModel.getUpdateDisplayColumns();
-        } else {
-            displayColumns = queryModel.getDetailsDisplayColumns();
-        }
+        displayColumns = queryColumns ?? queryModel.getDetailsDisplayColumns();
     }
 
     return <DetailDisplay {...detailDisplayProps} data={queryModel.getData()} displayColumns={displayColumns} />;

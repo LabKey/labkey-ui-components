@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.11.1-fb-LKB-workflow-integration.4",
+  "version": "2.13.0-fb-LKB-workflow-integration.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

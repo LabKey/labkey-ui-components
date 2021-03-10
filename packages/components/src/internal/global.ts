@@ -17,11 +17,27 @@ import { getGlobal, setGlobal } from 'reactn';
 import { List, Map } from 'immutable';
 import { User } from '@labkey/api';
 
-import { naturalSort, QueryColumn, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '..';
+import { naturalSort, NotificationItemModel, QueryColumn, QueryGridModel, resolveSchemaQuery, SchemaQuery } from '..';
 
 import { initBrowserHistoryState } from './util/global';
 import { EditorModel, LookupStore } from './models';
 import { GRID_CHECKBOX_OPTIONS } from './constants';
+
+export type GlobalAppState = {
+    // src/global.ts
+    QueryGrid_editors: Map<string, EditorModel>;
+    QueryGrid_lookups: Map<string, LookupStore>;
+    QueryGrid_metadata: Map<string, any>;
+    QueryGrid_models: Map<string, QueryGridModel>;
+    QueryGrid_columnrenderers: Map<string, any>;
+    QueryGrid_users: Map<string, List<User>>;
+
+    // src/util/global.ts
+    BrowserHistory: any; // TODO what type to use here?
+
+    // src/components/notifications/global.ts
+    Notifications: Map<string, NotificationItemModel>;
+};
 
 // Don't touch this directly, if you need access to it use getQueryMetadata, if you need to set the value use
 // setQueryMetadata
@@ -37,7 +53,7 @@ let _queryColumnRenderers = Map<string, any>();
  * @param columnRenderers Optional Map to set the column renderers for this application
  */
 export function initQueryGridState(metadata?: Map<string, any>, columnRenderers?: Map<string, any>): void {
-    if (!getGlobal().QueryGrid_models) {
+    if (!getGlobal()['QueryGrid_models']) {
         resetQueryGridState();
     }
 

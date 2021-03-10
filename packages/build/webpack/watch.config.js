@@ -30,7 +30,7 @@ const devServer = {
     watchOptions: {
         // Ignore any packages folders, if we don't ignore packages then we will incorrectly trigger builds in
         // package folders (e.g. changing a file in the SM Workflow package would incorrectly trigger a build in SM)
-        ignored: process.env.LINK ? [] : ['**/packages']
+        ignored: process.env.LINK ? undefined : ['**/packages']
     }
 };
 
@@ -71,17 +71,10 @@ module.exports = {
 
     resolve: {
         alias: {
-            // Note that for modules that don't have these packages, the aliases are just ignored and don't
-            // seem to cause any problems.
-            '@labkey/components': constants.labkeyUIComponentsPath,
-            '@labkey/freezermanager': constants.freezerManagerPath,
-            '@labkey/workflow': constants.workflowPath,
-
-            // This assures there is only one copy of react and react-dom in the application
+            ...constants.aliases.LABKEY_PACKAGES_DEV,
+            // This assures there is only one copy of react used while doing start-link
             react: path.resolve(__dirname, "../node_modules/react"),
-            'react-dom': require.resolve('@hot-loader/react-dom'),
         },
-
         extensions: constants.extensions.TYPESCRIPT.concat('.scss')
     },
 

@@ -75,11 +75,11 @@ export class EntityParentType extends Record({
     schema: undefined,
     value: undefined,
 }) {
-    index: number;
-    key: string;
-    query: string;
-    schema: string;
-    value: List<DisplayObject>;
+    declare index: number;
+    declare key: string;
+    declare query: string;
+    declare schema: string;
+    declare value: List<DisplayObject>;
 
     static create(values: any): EntityParentType {
         if (!values.key) values.key = generateId('parent-type-');
@@ -187,12 +187,12 @@ export class GenerateEntityResponse extends Record({
     message: undefined,
     success: false,
 }) {
-    data: {
+    declare data: {
         materialOutputs: MaterialOutput[];
         [key: string]: any;
     };
-    message: string;
-    success: boolean;
+    declare message: string;
+    declare success: boolean;
 
     // Get all of the rowIds of the newly generated entity Ids (or the runs)
     getFilter(): Filter.IFilter {
@@ -230,21 +230,21 @@ export class EntityIdCreationModel extends Record({
     creationType: undefined,
     numPerParent: 1,
 }) {
-    errors: any[];
-    initialEntityType: any;
-    isError: boolean;
-    isInit: boolean;
-    originalParents: string[]; // taken from the query string
-    parentOptions: Map<string, List<IParentOption>>; // map from query name to the options for the different types of parents allowed
-    entityParents: Map<string, List<EntityParentType>>; // map from query name to the parents already selected for that query
-    entityTypeOptions: List<IEntityTypeOption>; // the target type options
-    selectionKey: string;
-    targetEntityType: EntityTypeOption; // the target entity Type
-    entityCount: number; // how many rows are in the grid
-    entityDataType: EntityDataType; // target entity data type
-    auditBehavior: AuditBehaviorTypes;
-    creationType: SampleCreationType;
-    numPerParent: number;
+    declare errors: any[];
+    declare initialEntityType: any;
+    declare isError: boolean;
+    declare isInit: boolean;
+    declare originalParents: string[]; // taken from the query string
+    declare parentOptions: Map<string, List<IParentOption>>; // map from query name to the options for the different types of parents allowed
+    declare entityParents: Map<string, List<EntityParentType>>; // map from query name to the parents already selected for that query
+    declare entityTypeOptions: List<IEntityTypeOption>; // the target type options
+    declare selectionKey: string;
+    declare targetEntityType: EntityTypeOption; // the target entity Type
+    declare entityCount: number; // how many rows are in the grid
+    declare entityDataType: EntityDataType; // target entity data type
+    declare auditBehavior: AuditBehaviorTypes;
+    declare creationType: SampleCreationType;
+    declare numPerParent: number;
 
     static revertParentInputSchema(inputColumn: QueryColumn): SchemaQuery {
         if (inputColumn.isExpInput()) {

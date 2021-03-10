@@ -8,7 +8,7 @@ interface ConceptInformationTabsProps {
     concept?: ConceptModel;
 }
 
-export const enum ConceptInfoTabs {
+export enum ConceptInfoTabs {
     CONCEPT_OVERVIEW_TAB = 'overview',
     PATH_INFO_TAB = 'pathinfo',
 }

@@ -73,27 +73,14 @@ import {
     CloseEventCode,
 } from './utils';
 
-import {
-    AppReducers,
-    AppReducerState,
-    RoutingTableState,
-    RoutingTableReducers,
-    ProductMenuState,
-    ProductMenuReducers,
-    ServerNotificationState,
-    ServerNotificationReducers,
-} from './reducers';
+import { AppReducers, RoutingTableReducers, ProductMenuReducers, ServerNotificationReducers } from './reducers';
 
 export {
     AppModel,
-    AppReducerState,
     AppReducers,
     LogoutReason,
-    ProductMenuState,
     ProductMenuReducers,
-    RoutingTableState,
     RoutingTableReducers,
-    ServerNotificationState,
     ServerNotificationReducers,
     CloseEventCode,
     initWebSocketListeners,
@@ -155,3 +142,9 @@ export {
     TEST_USER_FOLDER_ADMIN,
     TEST_USER_APP_ADMIN,
 };
+
+//  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
+//  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
+//  separately.
+//  https://github.com/babel/babel-loader/issues/603
+export type { RoutingTableState, ServerNotificationState, ProductMenuState, AppReducerState } from './reducers';

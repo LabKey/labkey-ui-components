@@ -16,7 +16,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { mount } from 'enzyme';
-import { fromJS } from 'immutable';
+import { List, fromJS } from 'immutable';
 
 import { getQueryGridModel, getStateQueryGridModel, gridInit, SchemaQuery } from '../../../..';
 import sampleDetailsQuery from '../../../../test/data/sampleDetails-getQuery.json';
@@ -93,5 +93,47 @@ describe('<Detail/>', () => {
         expect(wrapper.find('a')).toHaveLength(0);
         expect(wrapper.find('h1')).toHaveLength(model.getDetailsDisplayColumns().size);
         wrapper.unmount();
+    });
+
+    test('column overrides', () => {
+        // Arrange
+        const detailRenderer = () => () => <span className="column-override-details" />;
+        const detailRowSelector = 'span.column-override-details';
+        const model = getQueryGridModel(MODEL_ID);
+        const expectedDetailColumns = model.getDetailsDisplayColumns();
+        const expectedEditColumns = List();
+        const expectedQueryColumns = model.getAllColumns();
+        const expectedUpdateColumns = model.getUpdateDisplayColumns();
+
+        // This test relies on the column sets being of varying sizes. If this is encountered it
+        // means that one or more column sets are the same size which would result in possibly erroneous
+        // false positive assertions in the test case. To fix this ensure they are of different sizes.
+        expect(
+            new Set([
+                expectedDetailColumns.size,
+                expectedEditColumns.size,
+                expectedQueryColumns.size,
+                expectedUpdateColumns.size,
+            ]).size
+        ).toEqual(4);
+
+        // Act
+        const wrapper = mount(<Detail detailRenderer={detailRenderer} queryModel={model} />);
+
+        // Assert
+        // Not editing -- default columns
+        expect(wrapper.find(detailRowSelector)).toHaveLength(expectedDetailColumns.size);
+
+        // Editing -- default columns
+        wrapper.setProps({ editingMode: true });
+        expect(wrapper.find(detailRowSelector)).toHaveLength(expectedUpdateColumns.size);
+
+        // Editing -- with edit columns
+        wrapper.setProps({ editColumns: expectedEditColumns });
+        expect(wrapper.find(detailRowSelector)).toHaveLength(expectedEditColumns.size);
+
+        // Not editing -- with query columns
+        wrapper.setProps({ editingMode: false, queryColumns: expectedQueryColumns });
+        expect(wrapper.find(detailRowSelector)).toHaveLength(expectedQueryColumns.size);
     });
 });

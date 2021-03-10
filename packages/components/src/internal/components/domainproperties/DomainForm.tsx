@@ -951,7 +951,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
         if (response?.fields?.size) {
             response.fields.forEach(field => {
-                if (domain.reservedFieldNames?.indexOf(field.name) < 0) {
+                if (domain.reservedFieldNames?.indexOf(field.name.toLowerCase()) < 0) {
                     fields = fields.push(field);
                 } else {
                     reservedFields = reservedFields.push(field);

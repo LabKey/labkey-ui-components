@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.##.#
+*Released*: # March 2021
+* Fixes Issue 42438: better handling of lineage metadata loading errors.
+* Lineage: propagate `fetchNodeMetadata` loading errors.
+* display error alert in `<LineageGraph/>`.
+
 ### version 2.12.0
 *Released*: 9 March 2021
 * Add `editColumns` property to `<Detail/>`, `<DetailEditing/>` for `QueryGridModel` support.

@@ -982,7 +982,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                         ? ' to support this ' + domainFormDisplayOptions.domainKindDisplayName
                         : '') +
                     ': ' +
-                    reservedFields.map(field => field.name).join(', '),
+                    reservedFields.map(field => field.name).join(', ') + '.',
             });
         }
     };

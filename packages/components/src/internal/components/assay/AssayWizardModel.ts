@@ -178,7 +178,7 @@ export class AssayWizardModel
             usePreviousRunFile,
             jobDescription,
             jobNotificationProvider,
-            forceAsync
+            forceAsync,
         } = this;
 
         const assayData: any = {
@@ -192,7 +192,7 @@ export class AssayWizardModel
             saveDataAsFile: true,
             jobDescription,
             jobNotificationProvider,
-            forceAsync
+            forceAsync,
         };
 
         Object.keys(assayData).forEach(k => {

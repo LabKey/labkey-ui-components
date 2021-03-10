@@ -21,8 +21,9 @@ import { gridInit } from '../../actions';
 
 import { LoadingSpinner, QueryGridModel } from '../../..';
 
-import { EditableGrid, EditableGridProps } from './EditableGrid';
 import { GlobalAppState } from '../../global';
+
+import { EditableGrid, EditableGridProps } from './EditableGrid';
 
 interface Props extends EditableGridProps {
     title?: string;

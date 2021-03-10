@@ -71,12 +71,7 @@ import {
     CloseEventCode,
 } from './utils';
 
-import {
-    AppReducers,
-    RoutingTableReducers,
-    ProductMenuReducers,
-    ServerNotificationReducers,
-} from './reducers';
+import { AppReducers, RoutingTableReducers, ProductMenuReducers, ServerNotificationReducers } from './reducers';
 
 export {
     AppModel,

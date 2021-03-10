@@ -24,6 +24,8 @@ import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
 import { DELIMITER } from '../forms/input/SelectInput';
 
+import { GlobalAppState } from '../../global';
+
 import { getEntityTypeOptions } from './actions';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
@@ -34,7 +36,6 @@ import {
     getUpdatedRowForParentChanges,
     parentValuesDiffer,
 } from './utils';
-import { GlobalAppState } from '../../global';
 
 interface Props {
     canUpdate: boolean;

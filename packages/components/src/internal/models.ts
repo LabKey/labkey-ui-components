@@ -376,7 +376,12 @@ export class EditorModel
         }
     }
 
-    getRawData(model: QueryGridModel, displayValues: boolean = true, forUpdate = false, readOnlyColumns?: List<string>): List<Map<string, any>> {
+    getRawData(
+        model: QueryGridModel,
+        displayValues = true,
+        forUpdate = false,
+        readOnlyColumns?: List<string>
+    ): List<Map<string, any>> {
         let data = List<Map<string, any>>();
         const columns = this.getColumns(model, forUpdate, readOnlyColumns);
 

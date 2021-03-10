@@ -14,8 +14,10 @@ import {
     LoadingState,
     NotFound,
 } from '../../..';
-import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
+
 import { fetchProtocol } from '../domainproperties/assay/actions';
+
+import { clearAssayDefinitionCache, fetchAllAssays } from './actions';
 
 export interface AssayLoader {
     clearDefinitionsCache: () => void;

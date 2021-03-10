@@ -76,6 +76,8 @@ import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
 
+import { GlobalAppState } from '../../global';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -87,7 +89,6 @@ import {
 } from './models';
 
 import { getEntityTypeData } from './actions';
-import { GlobalAppState } from '../../global';
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;

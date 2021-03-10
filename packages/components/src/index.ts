@@ -334,11 +334,7 @@ import {
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
 import { PermissionsPageContextProvider } from './internal/components/permissions/PermissionsContextProvider';
-import {
-    Principal,
-    SecurityPolicy,
-    SecurityRole,
-} from './internal/components/permissions/models';
+import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
 import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,

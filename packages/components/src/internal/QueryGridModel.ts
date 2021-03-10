@@ -1,6 +1,8 @@
 import { fromJS, List, Map, OrderedSet, Record } from 'immutable';
 import { Filter, Query, Utils } from '@labkey/api';
+
 import { formatDate, formatDateTime, QueryColumn, QueryInfo, resolveKey, SchemaQuery, ViewInfo } from '..';
+
 import { intersect, toLowerSafe } from './util/utils';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
@@ -201,8 +203,8 @@ export class QueryGridModel
                 console.log('Intersection', i.toJS());
                 throw new Error(
                     'Required and omitted columns cannot intersect. Model id: "' +
-                    this.id +
-                    '". See console for colliding columns.'
+                        this.id +
+                        '". See console for colliding columns.'
                 );
             }
         }

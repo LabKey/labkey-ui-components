@@ -20,13 +20,14 @@ import moment from 'moment';
 
 import { User, getDateFormat } from '../../..';
 
+import { GlobalAppState } from '../../global';
+
 import { NotificationItemModel, NotificationItemProps, Persistence } from './model';
 import { createNotification, setTrialBannerDismissSessionKey } from './actions';
 
 import { NotificationItem } from './NotificationItem';
 
 import { dismissNotifications } from './global';
-import { GlobalAppState } from '../../global';
 
 interface NotificationProps {
     notificationHeader?: string;

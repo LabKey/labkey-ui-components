@@ -8,7 +8,7 @@ import { InjectedRouter, WithRouterProps } from 'react-router';
  */
 export const createMockWithRouterProps = (
     mockFn = (): any => () => {},
-    routerOverrides: Partial<InjectedRouter> = {},
+    routerOverrides: Partial<InjectedRouter> = {}
 ): WithRouterProps => {
     const defaultRouter: InjectedRouter = {
         createHref: mockFn(),

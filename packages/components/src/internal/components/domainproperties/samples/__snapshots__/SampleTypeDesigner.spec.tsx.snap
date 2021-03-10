@@ -1335,7 +1335,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "domainException": undefined,
             "mandatoryFieldNames": Immutable.List [],
             "reservedFieldNames": Immutable.List [
-              "SampleId",
+              "sampleid",
             ],
             "newDesignFields": undefined,
             "instructions": undefined,
@@ -1472,7 +1472,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "domainException": undefined,
               "mandatoryFieldNames": Immutable.List [],
               "reservedFieldNames": Immutable.List [
-                "SampleId",
+                "sampleid",
               ],
               "newDesignFields": undefined,
               "instructions": undefined,
@@ -1624,7 +1624,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "domainException": undefined,
                 "mandatoryFieldNames": Immutable.List [],
                 "reservedFieldNames": Immutable.List [
-                  "SampleId",
+                  "sampleid",
                 ],
                 "newDesignFields": undefined,
                 "instructions": undefined,
@@ -1782,7 +1782,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "domainException": undefined,
                   "mandatoryFieldNames": Immutable.List [],
                   "reservedFieldNames": Immutable.List [
-                    "SampleId",
+                    "sampleid",
                   ],
                   "newDesignFields": undefined,
                   "instructions": undefined,
@@ -2132,7 +2132,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         "domainException": undefined,
                                         "mandatoryFieldNames": Immutable.List [],
                                         "reservedFieldNames": Immutable.List [
-                                          "SampleId",
+                                          "sampleid",
                                         ],
                                         "newDesignFields": undefined,
                                         "instructions": undefined,
@@ -2841,7 +2841,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             "domainException": undefined,
             "mandatoryFieldNames": Immutable.List [],
             "reservedFieldNames": Immutable.List [
-              "SampleId",
+              "sampleid",
             ],
             "newDesignFields": undefined,
             "instructions": undefined,
@@ -2983,7 +2983,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "domainException": undefined,
                 "mandatoryFieldNames": Immutable.List [],
                 "reservedFieldNames": Immutable.List [
-                  "SampleId",
+                  "sampleid",
                 ],
                 "newDesignFields": undefined,
                 "instructions": undefined,

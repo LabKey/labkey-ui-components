@@ -152,7 +152,7 @@ export class QueryColumn extends Record({
     declare sorts: '+' | '-';
     declare removeFromViews: boolean; // strips this column from all ViewInfo definitions
     declare units: string;
-    derivationDataScope: string;
+    declare derivationDataScope: string;
 
     static create(rawColumn): QueryColumn {
         if (rawColumn && rawColumn.lookup !== undefined) {

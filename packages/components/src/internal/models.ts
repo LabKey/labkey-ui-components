@@ -199,10 +199,10 @@ export class DataViewInfo extends Record(DataViewInfoDefaultValues) {
     declare viewName?: string;
 
     // Client Side only attributes
-    appUrl?: AppURL;
-    isLoading: boolean;
-    isLoaded: boolean;
-    error: string;
+    declare appUrl?: AppURL;
+    declare isLoading: boolean;
+    declare isLoaded: boolean;
+    declare error: string;
 
     constructor(values?: DataViewClientMetadata) {
         super(values);

@@ -1,24 +1,28 @@
-import { InjectedRouter, WithRouterProps } from "react-router";
+import { InjectedRouter, WithRouterProps } from 'react-router';
 
 /**
  * Util function for creating a WithRouterProps object, useful for testing components that expect to be wrapped by
  * withRouter, or components rendered by a Route component.
+ *
+ * Note: Intentionally does not use jest.fn() to avoid jest becoming an implicit external package dependency.
  */
-export const createMockWithRouterProps = (): WithRouterProps => {
-    const router: InjectedRouter = {
-        createHref: jest.fn(),
-        createPath: jest.fn(),
-        go: jest.fn(),
-        goBack: jest.fn(),
-        goForward: jest.fn(),
-        isActive: jest.fn(),
-        push: jest.fn(),
-        replace: jest.fn(),
-        setRouteLeaveHook: jest.fn(),
+export const createMockWithRouterProps = (
+    mockFn = (): any => () => {},
+    routerOverrides: Partial<InjectedRouter> = {},
+): WithRouterProps => {
+    const defaultRouter: InjectedRouter = {
+        createHref: mockFn(),
+        createPath: mockFn(),
+        go: mockFn(),
+        goBack: mockFn(),
+        goForward: mockFn(),
+        isActive: mockFn(),
+        push: mockFn(),
+        replace: mockFn(),
+        setRouteLeaveHook: mockFn(),
     };
 
     return {
-        router: router,
         location: {
             pathname: '',
             search: '',
@@ -29,6 +33,7 @@ export const createMockWithRouterProps = (): WithRouterProps => {
             key: '',
         },
         params: {},
+        router: Object.assign(defaultRouter, routerOverrides),
         routes: [],
     };
 };

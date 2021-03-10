@@ -237,10 +237,10 @@ export class SecurityPolicy extends Record({
 }
 
 export interface PermissionsProviderProps {
-    roles: List<SecurityRole>;
-    rolesByUniqueName: Map<string, SecurityRole>;
-    principals: List<Principal>;
-    principalsById: Map<number, Principal>;
-    inactiveUsersById: Map<number, Principal>;
-    error: string;
+    roles?: List<SecurityRole>;
+    rolesByUniqueName?: Map<string, SecurityRole>;
+    principals?: List<Principal>;
+    principalsById?: Map<number, Principal>;
+    inactiveUsersById?: Map<number, Principal>;
+    error?: string;
 }

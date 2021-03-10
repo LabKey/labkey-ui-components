@@ -1,11 +1,14 @@
 import React, { FC, memo, SyntheticEvent, useCallback, useState } from 'react';
 import { Col, Nav, NavItem, Row, Tab, TabContainer } from 'react-bootstrap';
 
-import { ConceptModel } from './models';
+import { ConceptModel, PathModel } from './models';
 import { ConceptOverviewPanelImpl } from './ConceptOverviewPanel';
+import { ConceptPathInfo } from './ConceptPathInfo';
 
 interface ConceptInformationTabsProps {
     concept?: ConceptModel;
+    selectedPath?: PathModel;
+    alternatePathClickHandler?: (path: PathModel) => void;
 }
 
 export const enum ConceptInfoTabs {
@@ -14,7 +17,7 @@ export const enum ConceptInfoTabs {
 }
 
 export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(props => {
-    const { concept } = props;
+    const { concept, selectedPath, alternatePathClickHandler } = props;
     const [activeTab, setActiveTab] = useState<ConceptInfoTabs>(ConceptInfoTabs.CONCEPT_OVERVIEW_TAB);
 
     const onSelectionChange = useCallback(
@@ -46,13 +49,17 @@ export const ConceptInformationTabs: FC<ConceptInformationTabsProps> = memo(prop
                             className="ontology-concept-overview-container"
                             eventKey={ConceptInfoTabs.CONCEPT_OVERVIEW_TAB}
                         >
-                            <ConceptOverviewPanelImpl concept={concept} />
+                            <ConceptOverviewPanelImpl concept={concept} selectedPath={selectedPath} />
                         </Tab.Pane>
                         <Tab.Pane
                             className="ontology-concept-pathinfo-container"
                             eventKey={ConceptInfoTabs.PATH_INFO_TAB}
                         >
-                            <div className="placeholder">Coming soon...</div>
+                            <ConceptPathInfo
+                                selectedCode={concept?.code}
+                                selectedPath={selectedPath}
+                                alternatePathClickHandler={alternatePathClickHandler}
+                            />
                         </Tab.Pane>
                     </Tab.Content>
                 </Col>

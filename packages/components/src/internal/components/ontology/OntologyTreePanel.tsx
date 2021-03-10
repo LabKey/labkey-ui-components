@@ -11,13 +11,14 @@ export class OntologyPath {
     name: string;
     children: undefined | PathNode[];
     conceptCode?: string;
+    data?: PathModel;
 }
 
 type PathNode = OntologyPath & TreeNode;
 
 interface OntologyTreeProps {
     root: PathModel;
-    onNodeSelection: (conceptCode: string) => void;
+    onNodeSelection: (conceptCode: PathModel) => void;
 }
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
@@ -29,9 +30,10 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
                 (child: PathModel): PathNode => {
                     return {
                         id: child.path,
-                        name: child.label, // TODO this should really be calculated from concept...
+                        name: child.label,
                         children: child.hasChildren ? [] : undefined,
                         conceptCode: child.code,
+                        data: child,
                     };
                 }
             );
@@ -40,7 +42,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
     );
 
     const onSelect = (a: string, b: string, c: boolean, d: boolean, node: PathNode): boolean => {
-        onNodeSelection(node?.conceptCode);
+        onNodeSelection(node?.data);
         return true;
     };
 

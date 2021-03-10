@@ -116,6 +116,8 @@ import getFolderTabsInfo from '../test/data/admin-getFolderTabs.json';
 import getOntologyChildPathsInfo from '../test/data/ontologies-getChildPaths.json';
 import getOntologiesChildPathsInfo from '../test/data/ontologies-getRootChildPaths.json';
 import getOntologyInfo from '../test/data/ontologies-getOntology.json';
+import getAlternateConceptPaths from '../test/data/ontologies-getAlternateConceptPaths.json';
+import getConceptParentPaths from '../test/data/ontologies-getParentPaths.json';
 import getOntologyConceptSearchInfo from '../test/data/ontologies-searchConcepts.json';
 import getSearchEmptyInfo from '../test/data/search-jsonEmpty.json';
 
@@ -702,18 +704,34 @@ export function initOnotologyMocks(): void {
         return jsonResponse(getOntologyChildPathsInfo, res);
     });
 
+    mock.get(/.*\/ontology\/?.*\/getAlternateConceptPaths.*/, (req, res) => {
+        return jsonResponse(getAlternateConceptPaths, res);
+    });
+
+    mock.get(/.*\/ontology\/?.*\/getConceptParentPaths.*/, (req, res) => {
+        return jsonResponse(getConceptParentPaths, res);
+    });
+
     mock.get(/.*\/ontology\/?.*\/getConcept.*/, (req, res) => {
         const queryParams = req.url().query;
-        return jsonResponse({
-            success : true,
-            concept : {
-                code : queryParams.code,
-                label : queryParams.code.split(':').join(' '),
-                description : 'This is the description for this concept.',
-                hasChildren : false,
-                url : null
-            }
-        }, res);
+        return jsonResponse(
+            {
+                success: true,
+                concept: {
+                    code: queryParams.code,
+                    label: queryParams.code.split(':').join(' '),
+                    description: 'This is the description for this concept.',
+                    synonyms: [
+                        'c987654321',
+                        'code',
+                        'synonym one',
+                        'Max length label ipsum dolor sit amet, consectetur adipiscing elit. Aliquam porta metus nec lobortis. Aliquam erat volutpat. Vivamus cursus dui sit amet efficitur semper. Fusce vehicula sollicitudin volutpat. Cras auctor mi at tellus interdum aliquam. Morbi et faucibus turpis. Donec quis malesuada enim. Etiam scelerisque pharetra libero, blandit efficitur nisl varius mollis. Etiam orci nunc, aliquet ac hendrerit ac, porttitor in ex. Aenean placerat justo ut metus maximus ullamcorper. Morbi metus lorem, gravida eget massa in, finibus egestas erat. Suspendisse sollicitudin metus sapien, vitae dictum odio aliquam a. Ut euismod nisi ultricies condimentum luctus. Vestibulum tempor ultrices nunc.',
+                    ],
+                    url: null,
+                },
+            },
+            res
+        );
     });
 
     mock.get(/.*\/search\/?.*\/json.*/, (req, res) => {

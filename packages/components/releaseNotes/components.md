@@ -1,6 +1,12 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.6.3
+*Released*: 10 March 2021
+* Item 8360: Expand the ontology and concept browsers with additional information
+    - Added synonym and path information to the concept information panels
+    - Added selected path and alternate path displays to path information tab & panel
+
 ### version 2.6.2
 *Released*: 4 March 2021
 * 42608: Bulk Insert erroneously transposes columns

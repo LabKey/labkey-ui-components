@@ -37,7 +37,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight }
 
     return (
         <li className={className}>
-            <a onClick={onClick}>{title || queryInfo.queryLabel || queryInfo.name}</a>
+            <a onClick={onClick}>{title || queryInfo?.queryLabel || queryInfo?.name}</a>
         </li>
     );
 });
@@ -97,7 +97,11 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         [onTabSelect]
     );
     // If the component is passed onTabSelect we will only honor the activeModelId passed to this component.
-    const activeId = onTabSelect === undefined ? internalActiveId : activeModelId;
+    let activeId = onTabSelect === undefined ? internalActiveId : activeModelId;
+
+    // Default activeId if current activeId not in tabOrder
+    activeId = tabOrder.indexOf(activeId) !== -1 ? activeId : tabOrder[0]
+
     const activeModel = queryModels[activeId];
 
     return (

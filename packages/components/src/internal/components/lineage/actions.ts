@@ -187,11 +187,14 @@ export function processLineageResult(lineage: LineageResult, options?: LineageOp
 
                 return applyLineageMetadata(lineage, metadata, iconURLByLsid, options);
             })
-            .then(result => {
-                resolve(result);
-            }, reason => {
-                reject(reason);
-            });
+            .then(
+                result => {
+                    resolve(result);
+                },
+                reason => {
+                    reject(reason);
+                }
+            );
     });
 }
 

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.13.2
+*Released*: 11 March 2021
+* Convert `<SingleParentEntityPanel/>` to use `QueryModel`.
+* Update `<ParentEntityEditPanel/>` to no longer invalidate `QueryGridModel`s for underlying single parent panels.
 
 ### version 2.13.1
 *Released*: 11 March 2021

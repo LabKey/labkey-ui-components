@@ -50,9 +50,6 @@ To configure a LabKey module to participant in the React page build process:
     1. `.npmrc` - Defines the Artifactory registry path for the `@labkey` scope, if you
         plan to use any of the Labkey npm packages for your page.
         See example in study module's [.npmrc] file.
-    1. `tsconfig.json` - Typescript configuration file. This will ensure that your module's `node_modules`
-        and `resources` directories are excluded during the client-side build process.
-        See example in study module's [tsconfig.json] file.
     1. `README.md` - Add your own README file for your module and have it point back to this page
         for the steps in the [Adding a new entryPoint](#adding-a-new-entrypoint) section of this document.
 1. Create the `<module>/src/client` directories and add a file named `entryPoints.js`, more on this in

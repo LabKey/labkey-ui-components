@@ -1,7 +1,7 @@
 import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 
-import { ConceptPathDisplay, ConceptPathDisplayProps } from '../internal/components/ontology/ConceptPath';
+import { ConceptPathDisplay, ConceptPathDisplayProps } from '../internal/components/ontology/ConceptPathDisplay';
 
 import {} from './storyUtils';
 import { PathModel } from '../internal/components/ontology/models';

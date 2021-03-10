@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 
 import { Alert } from '../base/Alert';
 
-import { ConceptPathDisplay, ConceptPathDisplayImpl } from './ConceptPath';
+import { ConceptPathDisplay, ConceptPathDisplayImpl } from './ConceptPathDisplay';
 
 import { PathModel } from './models';
 

@@ -5,7 +5,7 @@ import { Alert, naturalSort } from '../../..';
 
 import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
-import { ConceptPathDisplay } from './ConceptPath';
+import { ConceptPathDisplay } from './ConceptPathDisplay';
 
 const CURRENT_PATH_TITLE = 'Current Path';
 

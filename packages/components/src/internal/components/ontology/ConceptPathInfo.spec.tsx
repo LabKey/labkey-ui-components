@@ -8,7 +8,7 @@ import { LoadingSpinner } from '../base/LoadingSpinner';
 import { PathModel } from './models';
 import { ConceptPathInfo, ConceptPathInfoImpl } from './ConceptPathInfo';
 
-import { ConceptPathDisplay } from './ConceptPath';
+import { ConceptPathDisplay } from './ConceptPathDisplay';
 
 describe('ConceptPathInfo', () => {
     test('Nothing set', () => {

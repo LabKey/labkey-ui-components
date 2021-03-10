@@ -4,7 +4,7 @@ import { Alert, LoadingSpinner } from '../../..';
 
 import { PathModel } from './models';
 import { fetchAlternatePaths } from './actions';
-import { ConceptPathDisplay } from './ConceptPath';
+import { ConceptPathDisplay } from './ConceptPathDisplay';
 
 export interface ConceptPathInfoProps {
     selectedCode?: string;

@@ -3,12 +3,7 @@ import { List, Map, Set } from 'immutable';
 import { naturalSort, QueryGridModel } from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
-import { PARENT_DATA_GRID_PREFIX } from './constants';
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
-
-export function getParentGridPrefix(parentDataType: EntityDataType): string {
-    return parentDataType.typeListingSchemaQuery.queryName + '-' + PARENT_DATA_GRID_PREFIX;
-}
 
 export function parentValuesDiffer(
     sortedOriginalParents: List<EntityChoice>,
@@ -90,7 +85,7 @@ export function getUpdatedRowForParentChanges(
     originalParents: List<EntityChoice>,
     currentParents: List<EntityChoice>,
     childModel: QueryGridModel
-) {
+): Record<string, any> {
     const queryData = childModel.getRow();
     const queryInfo = childModel.queryInfo;
 

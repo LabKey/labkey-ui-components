@@ -7,9 +7,9 @@ export class InferDomainResponse extends Record({
     fields: List<QueryColumn>(),
     reservedFields: List<QueryColumn>(),
 }) {
-    data: List<any>;
-    fields: List<QueryColumn>;
-    reservedFields: List<QueryColumn>;
+    declare data: List<any>;
+    declare fields: List<QueryColumn>;
+    declare reservedFields: List<QueryColumn>;
 
     static create(rawModel): InferDomainResponse {
         let data = List<any>();

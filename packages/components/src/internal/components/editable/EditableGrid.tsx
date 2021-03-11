@@ -33,7 +33,7 @@ import {
     select,
     updateGridFromBulkForm,
 } from '../../actions';
-import { getQueryGridModel } from '../../global';
+import { getQueryGridModel, GlobalAppState } from '../../global';
 
 import { headerSelectionCell } from '../../renderers';
 import { QueryInfoForm, QueryInfoFormProps } from '../forms/QueryInfoForm';
@@ -193,7 +193,7 @@ export interface EditableGridState {
     showBulkUpdate: boolean;
 }
 
-export class EditableGrid extends ReactN.PureComponent<EditableGridProps, EditableGridState> {
+export class EditableGrid extends ReactN.PureComponent<EditableGridProps, EditableGridState, GlobalAppState> {
     static defaultProps = {
         allowAdd: true,
         allowBulkAdd: false,

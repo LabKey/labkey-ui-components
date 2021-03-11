@@ -22,7 +22,7 @@ import { NotificationItemModel, Persistence } from './model';
  * Initialize the global state object for this package.
  */
 export function initNotificationsState() {
-    if (!getGlobal().Notifications) {
+    if (!getGlobal()['Notifications']) {
         resetNotificationsState();
     }
 }

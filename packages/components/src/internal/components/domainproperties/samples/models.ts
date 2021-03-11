@@ -17,18 +17,18 @@ export class SampleTypeModel extends Record({
     domain: undefined,
     exception: undefined,
 }) {
-    rowId: number;
-    name: string;
-    nameReadOnly?: boolean;
-    nameExpression: string;
-    description: string;
-    labelColor: string;
-    metricUnit: string;
-    parentAliases?: OrderedMap<string, IParentAlias>;
-    importAliases?: Map<string, string>;
-    domainId?: number;
-    domain?: DomainDesign;
-    exception: string;
+    declare rowId: number;
+    declare name: string;
+    declare nameReadOnly?: boolean;
+    declare nameExpression: string;
+    declare description: string;
+    declare labelColor: string;
+    declare metricUnit: string;
+    declare parentAliases?: OrderedMap<string, IParentAlias>;
+    declare importAliases?: Map<string, string>;
+    declare domainId?: number;
+    declare domain?: DomainDesign;
+    declare exception: string;
 
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {
         if (!raw) return new SampleTypeModel();

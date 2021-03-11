@@ -84,35 +84,35 @@ export class AssayWizardModel
         forceAsync: false,
     })
     implements FileAttachmentFormModel {
-    assayDef: AssayDefinitionModel;
-    isError?: boolean;
-    isInit: boolean;
-    isLoading: boolean;
-    isWarning?: boolean;
-    batchId?: number;
-    lastRunId?: number;
-    returnUrl?: AppURL;
-    isSubmitted?: boolean;
-    isSubmitting?: boolean;
-    errorMsg?: ReactNode;
+    declare assayDef: AssayDefinitionModel;
+    declare isError?: boolean;
+    declare isInit: boolean;
+    declare isLoading: boolean;
+    declare isWarning?: boolean;
+    declare batchId?: number;
+    declare lastRunId?: number;
+    declare returnUrl?: AppURL;
+    declare isSubmitted?: boolean;
+    declare isSubmitting?: boolean;
+    declare errorMsg?: ReactNode;
 
-    attachedFiles: Map<string, File>;
-    batchColumns: OrderedMap<string, QueryColumn>;
-    batchProperties: Map<string, any>;
-    usePreviousRunFile: boolean;
-    runColumns: OrderedMap<string, QueryColumn>;
-    runId?: string;
-    runProperties?: Map<string, any>;
-    runName?: string;
-    comment?: string;
-    dataText: string;
-    queryInfo: QueryInfo;
-    toDelete?: string;
-    selectedSamples?: Map<string, any>;
+    declare attachedFiles: Map<string, File>;
+    declare batchColumns: OrderedMap<string, QueryColumn>;
+    declare batchProperties: Map<string, any>;
+    declare usePreviousRunFile: boolean;
+    declare runColumns: OrderedMap<string, QueryColumn>;
+    declare runId?: string;
+    declare runProperties?: Map<string, any>;
+    declare runName?: string;
+    declare comment?: string;
+    declare dataText: string;
+    declare queryInfo: QueryInfo;
+    declare toDelete?: string;
+    declare selectedSamples?: Map<string, any>;
 
-    jobDescription?: string;
-    jobNotificationProvider?: string;
-    forceAsync?: boolean;
+    declare jobDescription?: string;
+    declare jobNotificationProvider?: string;
+    declare forceAsync?: boolean;
 
     isFilesTab(currentStep: AssayUploadTabs): boolean {
         return currentStep === AssayUploadTabs.Files;

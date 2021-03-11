@@ -30,6 +30,7 @@ module.exports = {
     },
 
     resolve: {
+        alias: constants.aliases.LABKEY_PACKAGES,
         extensions: constants.extensions.TYPESCRIPT
     },
 

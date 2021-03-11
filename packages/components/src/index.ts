@@ -32,7 +32,6 @@ import { SCHEMAS } from './internal/schemas';
 import { isLoading, LoadingState } from './public/LoadingState';
 
 import {
-    ServerContext,
     ServerContextProvider,
     ServerContextConsumer,
     useServerContext,
@@ -41,7 +40,7 @@ import {
 } from './internal/components/base/ServerContext';
 import { naturalSort, naturalSortByProperty } from './public/sort';
 import { AssayDefinitionModel, AssayDomainTypes, AssayLink } from './internal/AssayDefinitionModel';
-import { IGridLoader, IGridResponse, QueryGridModel } from './internal/QueryGridModel';
+import { QueryGridModel } from './internal/QueryGridModel';
 import {
     applyDevTools,
     blurActiveElement,
@@ -71,8 +70,8 @@ import { OptionsSelectToggle } from './internal/components/base/OptionsSelectTog
 import { DragDropHandle } from './internal/components/base/DragDropHandle';
 import { FieldExpansionToggle } from './internal/components/base/FieldExpansionToggle';
 import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
-import { MenuOption, SubMenu } from './internal/components/menus/SubMenu';
-import { ISubItem, SubMenuItem, SubMenuItemProps } from './internal/components/menus/SubMenuItem';
+import { SubMenu } from './internal/components/menus/SubMenu';
+import { SubMenuItem } from './internal/components/menus/SubMenuItem';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
 import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
@@ -80,17 +79,17 @@ import { InsufficientPermissionsPage } from './internal/components/permissions/I
 import { BasePermissionsCheckPage } from './internal/components/permissions/BasePermissionsCheckPage';
 import { APPLICATION_SECURITY_ROLES } from './internal/components/permissions/constants';
 import { NotFound } from './internal/components/base/NotFound';
-import { Page, PageProps } from './internal/components/base/Page';
-import { LoadingPage, LoadingPageProps } from './internal/components/base/LoadingPage';
-import { PageHeader, PageHeaderProps } from './internal/components/base/PageHeader';
+import { Page } from './internal/components/base/Page';
+import { LoadingPage } from './internal/components/base/LoadingPage';
+import { PageHeader } from './internal/components/base/PageHeader';
 import { Progress } from './internal/components/base/Progress';
 import { LabelHelpTip } from './internal/components/base/LabelHelpTip';
 import { Tip } from './internal/components/base/Tip';
-import { Grid, GridColumn, GridProps } from './internal/components/base/Grid';
+import { Grid, GridColumn } from './internal/components/base/Grid';
 import { FormSection } from './internal/components/base/FormSection';
 import { Section } from './internal/components/base/Section';
 import { FileAttachmentForm } from './public/files/FileAttachmentForm';
-import { DEFAULT_FILE, FileAttachmentFormModel, IFile } from './internal/components/files/models';
+import { DEFAULT_FILE } from './internal/components/files/models';
 import { FileSizeLimitProps } from './public/files/models';
 import { FilesListing } from './internal/components/files/FilesListing';
 import { FilesListingForm } from './internal/components/files/FilesListingForm';
@@ -100,7 +99,6 @@ import { FileTree } from './internal/components/files/FileTree';
 import { Notification } from './internal/components/notifications/Notification';
 import {
     createNotification,
-    NotificationCreatable,
     withTimeout,
     getPipelineActivityData,
     markAllNotificationsAsRead,
@@ -115,15 +113,13 @@ import { formatDate, formatDateTime, getDateFormat } from './internal/util/Date'
 import { SVGIcon, Theme } from './internal/components/base/SVGIcon';
 import { CreatedModified } from './internal/components/base/CreatedModified';
 import {
-    MessageFunction,
     NotificationItemModel,
-    NotificationItemProps,
     Persistence,
     ServerNotificationModel,
     ServerActivityData,
 } from './internal/components/notifications/model';
 import { RequiresPermission } from './internal/components/base/Permissions';
-import { PaginationButtons, PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
+import { PaginationButtons } from './internal/components/buttons/PaginationButtons';
 import { ManageDropdownButton } from './internal/components/buttons/ManageDropdownButton';
 import { WizardNavButtons } from './internal/components/buttons/WizardNavButtons';
 import { SplitButtonGroup } from './internal/components/buttons/SplitButtonGroup';
@@ -131,7 +127,7 @@ import { ToggleButtons } from './internal/components/buttons/ToggleButtons';
 import { Cards } from './internal/components/base/Cards';
 import { Footer } from './internal/components/base/Footer';
 
-import { EditorModel, getStateModelId, getStateQueryGridModel, IDataViewInfo } from './internal/models';
+import { EditorModel, getStateModelId, getStateQueryGridModel } from './internal/models';
 import {
     clearSelected,
     createQueryGridModelFilteredBySample,
@@ -163,14 +159,12 @@ import {
 import {
     deleteRows,
     getQueryDetails,
-    IImportData,
     importData,
     InsertFormats,
     InsertOptions,
     insertRows,
     InsertRowsResponse,
     invalidateQueryDetailsCacheKey,
-    ISelectRowsResult,
     searchRows,
     selectRows,
     updateRows,
@@ -188,18 +182,11 @@ import {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
 } from './internal/constants';
-import { getLocation, Location, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
+import { getLocation, replaceParameter, replaceParameters, resetParameters } from './internal/util/URL';
 import { ActionMapper, URL_MAPPERS, URLResolver, URLService } from './internal/url/URLResolver';
 import { getHelpLink, helpLinkNode, SAMPLE_ALIQUOT_TOPIC } from './internal/util/helpLinks';
-import {
-    AppRouteResolver,
-    AssayResolver,
-    AssayRunResolver,
-    ListResolver,
-    SamplesResolver,
-} from './internal/url/AppURLResolver';
+import { AssayResolver, AssayRunResolver, ListResolver, SamplesResolver } from './internal/url/AppURLResolver';
 import { QueryGridPanel } from './internal/components/QueryGridPanel';
-import { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
 import { EditableGridPanel } from './internal/components/editable/EditableGridPanel';
 import { EditableGridPanelForUpdate } from './internal/components/editable/EditableGridPanelForUpdate';
 import { EditableGridLoader } from './internal/components/editable/EditableGridLoader';
@@ -225,7 +212,7 @@ import {
     QueryFormInputs,
 } from './internal/components/forms/QueryFormInputs';
 import { LookupSelectInput } from './internal/components/forms/input/LookupSelectInput';
-import { SelectInput, SelectInputProps } from './internal/components/forms/input/SelectInput';
+import { SelectInput } from './internal/components/forms/input/SelectInput';
 import { DatePickerInput } from './internal/components/forms/input/DatePickerInput';
 import { DateInput } from './internal/components/forms/input/DateInput';
 import { FileInput } from './internal/components/forms/input/FileInput';
@@ -234,20 +221,19 @@ import { TextAreaInput } from './internal/components/forms/input/TextAreaInput';
 import { FieldEditForm, FieldEditProps } from './internal/components/forms/input/FieldEditInput';
 import { ColorPickerInput } from './internal/components/forms/input/ColorPickerInput';
 import { ColorIcon } from './internal/components/base/ColorIcon';
-import { QuerySelect, QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
+import { QuerySelect } from './internal/components/forms/QuerySelect';
 import { PageDetailHeader } from './internal/components/forms/PageDetailHeader';
 import { DetailEditing } from './internal/components/forms/detail/DetailEditing';
 
 import { resolveDetailRenderer } from './internal/components/forms/detail/DetailEditRenderer';
 import { Detail } from './internal/components/forms/detail/Detail';
 import { getUsersWithPermissions, handleInputTab, handleTabKeyOnTextArea } from './internal/components/forms/actions';
-import { ISelectInitData } from './internal/components/forms/model';
-import { FormStep, FormTabs, withFormSteps, WithFormStepsProps } from './internal/components/forms/FormStep';
+import { FormStep, FormTabs, withFormSteps } from './internal/components/forms/FormStep';
 import { SchemaListing } from './internal/components/listing/SchemaListing';
 import { QueriesListing } from './internal/components/listing/QueriesListing';
 import { QueriesListingPage } from './internal/components/listing/pages/QueriesListingPage';
 import { SchemaListingPage } from './internal/components/listing/pages/SchemaListingPage';
-import { HeatMap, HeatMapCell } from './internal/components/heatmap/HeatMap';
+import { HeatMap } from './internal/components/heatmap/HeatMap';
 import { addDateRangeFilter, last12Months, monthSort } from './internal/components/heatmap/utils';
 import { EntityInsertPanel } from './internal/components/entities/EntityInsertPanel';
 import { EntityDeleteModal } from './internal/components/entities/EntityDeleteModal';
@@ -256,19 +242,11 @@ import {
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
 } from './internal/components/notifications/messaging';
-import {
-    EntityDataType,
-    EntityInputProps,
-    GenerateEntityResponse,
-    IDerivePayload,
-    IEntityTypeOption,
-    IParentOption,
-    MaterialOutput,
-} from './internal/components/entities/models';
+import { GenerateEntityResponse } from './internal/components/entities/models';
 import { SearchResultCard } from './internal/components/search/SearchResultCard';
 import { SearchResultsPanel } from './internal/components/search/SearchResultsPanel';
 import { searchUsingIndex } from './internal/components/search/actions';
-import { SearchResultCardData, SearchResultsModel } from './internal/components/search/models';
+import { SearchResultsModel } from './internal/components/search/models';
 import {
     deleteSampleSet,
     fetchSamples,
@@ -283,10 +261,8 @@ import { SampleCreationTypeModal } from './internal/components/samples/SampleCre
 import {
     AssayContextConsumer,
     assayPage,
-    InjectedAssayModel,
     withAssayModels,
     withAssayModelsFromLocation,
-    WithAssayModelProps,
 } from './internal/components/assay/withAssayModels';
 import { AssayDesignDeleteConfirmModal } from './internal/components/assay/AssayDesignDeleteConfirmModal';
 import { AssayDesignDeleteModal } from './internal/components/assay/AssayDesignDeleteModal';
@@ -297,7 +273,7 @@ import { AssaysHeatMap } from './internal/components/assay/AssaysHeatMap';
 import { AssaySubNavMenu } from './internal/components/assay/AssaySubNavMenu';
 import { AssayTypeSummary } from './internal/components/assay/AssayTypeSummary';
 import { RecentAssayPanel } from './internal/components/assay/RecentAssayPanel';
-import { AssayPicker, AssayPickerTabs, AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
+import { AssayPicker, AssayPickerTabs } from './internal/components/assay/AssayPicker';
 import { AssayImportSubMenuItem } from './internal/components/assay/AssayImportSubMenuItem';
 import { AssayReimportRunButton } from './internal/components/assay/AssayReimportRunButton';
 import { AssayStateModel, AssayUploadResultModel } from './internal/components/assay/models';
@@ -327,7 +303,6 @@ import {
     LineageFilter,
     LineageURLResolvers,
 } from './internal/components/lineage/types';
-import { VisGraphNode } from './internal/components/lineage/vis/VisGraphGenerator';
 import { LineageGraph } from './internal/components/lineage/LineageGraph';
 import { LineageGrid, LineageGridFromLocation } from './internal/components/lineage/grid/LineageGrid';
 import { EntityDeleteConfirmModal } from './internal/components/entities/EntityDeleteConfirmModal';
@@ -337,7 +312,7 @@ import { HeaderWrapper } from './internal/components/navigation/HeaderWrapper';
 import { NavigationBar } from './internal/components/navigation/NavigationBar';
 import { ProductNavigationMenu } from './internal/components/productnavigation/ProductNavigationMenu';
 import { MenuSectionConfig } from './internal/components/navigation/ProductMenuSection';
-import { ITab, SubNav } from './internal/components/navigation/SubNav';
+import { SubNav } from './internal/components/navigation/SubNav';
 import { Breadcrumb } from './internal/components/navigation/Breadcrumb';
 import { BreadcrumbCreate } from './internal/components/navigation/BreadcrumbCreate';
 import { MenuItemModel, MenuSectionModel, ProductMenuModel } from './internal/components/navigation/model';
@@ -347,7 +322,7 @@ import { UserDetailHeader } from './internal/components/user/UserDetailHeader';
 import { UserProfile } from './internal/components/user/UserProfile';
 import { ChangePasswordModal } from './internal/components/user/ChangePasswordModal';
 import { SiteUsersGridPanel } from './internal/components/user/SiteUsersGridPanel';
-import { UserProvider, UserProviderProps } from './internal/components/user/UserProvider';
+import { UserProvider } from './internal/components/user/UserProvider';
 import { FieldEditorOverlay } from './internal/components/forms/FieldEditorOverlay';
 import {
     DOMAIN_FIELD_REQUIRED,
@@ -359,12 +334,7 @@ import {
 import { ExpandableContainer } from './internal/components/ExpandableContainer';
 import { PermissionAssignments } from './internal/components/permissions/PermissionAssignments';
 import { PermissionsPageContextProvider } from './internal/components/permissions/PermissionsContextProvider';
-import {
-    PermissionsProviderProps,
-    Principal,
-    SecurityPolicy,
-    SecurityRole,
-} from './internal/components/permissions/models';
+import { Principal, SecurityPolicy, SecurityRole } from './internal/components/permissions/models';
 import { fetchContainerSecurityPolicy } from './internal/components/permissions/actions';
 import {
     extractEntityTypeOptionFromRow,
@@ -372,25 +342,20 @@ import {
     getSampleDeleteConfirmationData,
 } from './internal/components/entities/actions';
 import { DataClassDataType, SampleTypeDataType } from './internal/components/entities/constants';
-import { SampleTypeModel, MetricUnitProps } from './internal/components/domainproperties/samples/models';
+import { SampleTypeModel } from './internal/components/domainproperties/samples/models';
 
 import { EditableDetailPanel } from './public/QueryModel/EditableDetailPanel';
-import { Pagination, PaginationData } from './internal/components/pagination/Pagination';
+import { Pagination } from './internal/components/pagination/Pagination';
 import {
     getQueryModelExportParams,
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
 } from './public/QueryModel/utils';
-import {
-    InjectedRouteLeaveProps,
-    useRouteLeave,
-    withRouteLeave,
-    WrappedRouteLeaveProps,
-} from './internal/util/RouteLeave';
+import { useRouteLeave, withRouteLeave } from './internal/util/RouteLeave';
 import * as App from './internal/app';
 import { BarChartViewer } from './internal/components/chart/BarChartViewer';
 import { CHART_GROUPS } from './internal/components/chart/configs';
-import { AuditDetailsModel, TimelineGroupedEventInfo, TimelineEventModel } from './internal/components/auditlog/models';
+import { AuditDetailsModel, TimelineEventModel } from './internal/components/auditlog/models';
 import { AuditQueriesListingPage } from './internal/components/auditlog/AuditQueriesListingPage';
 import { AuditDetails } from './internal/components/auditlog/AuditDetails';
 import { TimelineView } from './internal/components/auditlog/TimelineView';
@@ -401,15 +366,7 @@ import {
     saveDomain,
     setDomainFields,
 } from './internal/components/domainproperties/actions';
-import {
-    DomainDesign,
-    DomainDetails,
-    DomainField,
-    IAppDomainHeader,
-    IBannerMessage,
-    IDomainField,
-    IFieldChange,
-} from './internal/components/domainproperties/models';
+import { DomainDesign, DomainDetails, DomainField } from './internal/components/domainproperties/models';
 import { SAMPLE_TYPE } from './internal/components/domainproperties/PropDescType';
 import DomainForm from './internal/components/domainproperties/DomainForm';
 import { BasePropertiesPanel } from './internal/components/domainproperties/BasePropertiesPanel';
@@ -437,17 +394,8 @@ import { deleteDataClass, fetchDataClass } from './internal/components/domainpro
 import { DomainFieldLabel } from './internal/components/domainproperties/DomainFieldLabel';
 import { AssayImportPanels } from './internal/components/assay/AssayImportPanels';
 import { mountWithServerContext, sleep, waitForLifecycle } from './internal/testHelpers';
-import { QueryConfig, QueryModel } from './public/QueryModel/QueryModel';
-import { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
-import {
-    Actions,
-    InjectedQueryModels,
-    MakeQueryModels,
-    QueryConfigMap,
-    QueryModelMap,
-    RequiresModelAndActions,
-    withQueryModels,
-} from './public/QueryModel/withQueryModels';
+import { QueryModel } from './public/QueryModel/QueryModel';
+import { withQueryModels } from './public/QueryModel/withQueryModels';
 import { GridPanel, GridPanelWithModel } from './public/QueryModel/GridPanel';
 import { TabbedGridPanel } from './public/QueryModel/TabbedGridPanel';
 import { DetailPanel, DetailPanelWithModel } from './public/QueryModel/DetailPanel';
@@ -462,7 +410,6 @@ import {
     DERIVATIVE_CREATION,
     POOLED_SAMPLE_CREATION,
     SampleCreationType,
-    SampleCreationTypeModel,
 } from './internal/components/samples/models';
 import { createMockWithRouterProps } from './test/mockUtils';
 import { OntologyBrowserPanel } from './internal/components/ontology/OntologyBrowserPanel';
@@ -504,9 +451,7 @@ export {
     setSnapshotSelections,
     unselectAll,
     // query related items
-    ISelectRowsResult,
     InsertRowsResponse,
-    IImportData,
     InsertFormats,
     InsertOptions,
     insertRows,
@@ -524,18 +469,14 @@ export {
     EditableGridPanel,
     EditableGridPanelForUpdate,
     EditableGridModal,
-    EditableColumnMetadata,
     EditorModel,
     cancelEvent,
-    BulkAddData,
     // url and location related items
     AppURL,
-    Location,
     ActionMapper,
     URL_MAPPERS,
     URLResolver,
     URLService,
-    AppRouteResolver,
     AssayResolver,
     AssayRunResolver,
     ListResolver,
@@ -568,7 +509,6 @@ export {
     QueryFormInputs,
     LookupSelectInput,
     SelectInput,
-    SelectInputProps, // TODO this probably doesn't need to be exported, long-term.  Used by the <Select> element in Biologics, which may want to be moved here instead.
     DatePickerInput,
     DateInput,
     FieldEditorOverlay,
@@ -580,19 +520,16 @@ export {
     FieldEditForm,
     FieldEditProps,
     QuerySelect,
-    QuerySelectOwnProps,
     UserSelectInput,
     DetailEditing,
     handleInputTab,
     handleTabKeyOnTextArea,
     withFormSteps,
-    WithFormStepsProps,
     FormStep,
     getQueryFormLabelFieldName,
     isQueryFormLabelField,
     resolveDetailFieldValue,
     FormTabs,
-    ISelectInitData,
     IMPORT_DATA_FORM_TYPES,
     LabelOverlay,
     WizardNavButtons,
@@ -613,18 +550,15 @@ export {
     fetchContainerSecurityPolicy,
     PermissionAssignments,
     PermissionsPageContextProvider,
-    PermissionsProviderProps,
     SecurityPolicy,
     SecurityRole,
     Principal,
     UserProvider,
-    UserProviderProps,
     // data class and sample type related items
     DataClassModel,
     deleteDataClass,
     fetchDataClass,
     SampleTypeModel,
-    MetricUnitProps,
     deleteSampleSet,
     fetchSamples,
     getSampleSet,
@@ -637,7 +571,6 @@ export {
     SampleTypeEmptyAlert,
     SampleSetSummary,
     SampleCreationType,
-    SampleCreationTypeModel,
     SampleSetDeleteModal,
     SampleCreationTypeModal,
     CHILD_SAMPLE_CREATION,
@@ -648,15 +581,9 @@ export {
     EntityTypeDeleteConfirmModal,
     EntityDeleteConfirmModal,
     EntityDeleteModal,
-    EntityDataType,
     EntityInsertPanel,
     ParentEntityEditPanel,
     extractEntityTypeOptionFromRow,
-    IParentOption,
-    EntityInputProps,
-    IDerivePayload,
-    IEntityTypeOption,
-    MaterialOutput,
     GenerateEntityResponse,
     AddEntityButton,
     RemoveEntityButton,
@@ -667,7 +594,6 @@ export {
     SearchResultCard,
     SearchResultsPanel,
     searchUsingIndex,
-    SearchResultCardData,
     // assay
     AssayUploadResultModel,
     AssayDesignDeleteModal,
@@ -682,13 +608,10 @@ export {
     AssayImportPanels,
     AssayPicker,
     AssayPickerTabs,
-    AssayPickerSelectionModel,
     assayPage,
     RecentAssayPanel,
     withAssayModels,
     withAssayModelsFromLocation,
-    InjectedAssayModel,
-    WithAssayModelProps,
     AssayContextConsumer,
     AssayImportSubMenuItem,
     AssayReimportRunButton,
@@ -711,7 +634,6 @@ export {
     GENERAL_ASSAY_PROVIDER_NAME,
     // heatmap
     HeatMap,
-    HeatMapCell,
     addDateRangeFilter,
     last12Months,
     monthSort,
@@ -721,7 +643,6 @@ export {
     CHART_GROUPS,
     processChartData,
     DataViewInfoTypes,
-    IDataViewInfo,
     loadReports,
     flattenBrowseDataTreeResponse,
     ReportListItem,
@@ -736,7 +657,6 @@ export {
     LineageGridFromLocation,
     LineageURLResolvers,
     SampleTypeLineageCounts,
-    VisGraphNode,
     invalidateLineageResults,
     getImmediateChildLineageFilterValue,
     // Navigation
@@ -745,7 +665,6 @@ export {
     MenuSectionModel,
     MenuItemModel,
     HeaderWrapper,
-    ITab,
     NavigationBar,
     ProductNavigationMenu,
     SubNav,
@@ -757,14 +676,11 @@ export {
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_START,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS,
     SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR,
-    NotificationItemProps,
     NotificationItemModel,
     Notification,
-    NotificationCreatable,
     ServerNotificationModel,
     ServerActivityData,
     Persistence,
-    MessageFunction,
     createNotification,
     dismissNotifications,
     getPipelineActivityData,
@@ -783,14 +699,10 @@ export {
     DomainDesign,
     DomainField,
     DomainFieldLabel,
-    IDomainField,
     DomainDetails,
     inferDomainFromFile,
     getServerFilePreview,
     InferDomainResponse,
-    IFieldChange,
-    IBannerMessage,
-    IAppDomainHeader,
     BasePropertiesPanel,
     AssayPropertiesPanel,
     AssayDesignerPanels,
@@ -816,9 +728,7 @@ export {
     IssuesListDefDesignerPanels,
     fetchIssuesListDefDesign,
     // file / webdav related items
-    FileAttachmentFormModel,
     DEFAULT_FILE,
-    IFile,
     FileSizeLimitProps,
     FilesListing,
     FilesListingForm,
@@ -856,7 +766,6 @@ export {
     devToolsActive,
     toggleDevTools,
     // buttons and menus
-    MenuOption,
     MultiMenuButton,
     SubMenu,
     SubMenuItem,
@@ -864,25 +773,17 @@ export {
     ManageDropdownButton,
     SplitButtonGroup,
     PaginationButtons,
-    PaginationButtonsProps,
-    SubMenuItemProps,
-    ISubItem,
     ToggleButtons,
     // application page related items
     LoadingPage,
-    LoadingPageProps,
     NotFound,
     Page,
-    PageProps,
     PageHeader,
-    PageHeaderProps,
     PageDetailHeader,
     ErrorBoundary,
     BeforeUnload,
-    InjectedRouteLeaveProps,
     useRouteLeave,
     withRouteLeave,
-    WrappedRouteLeaveProps,
     SchemaListing,
     SchemaListingPage,
     QueriesListing,
@@ -899,7 +800,6 @@ export {
     LabelHelpTip,
     Tip,
     Grid,
-    GridProps,
     GridColumn,
     Section,
     ConfirmModal,
@@ -917,7 +817,6 @@ export {
     // base models, enums, constants
     Container,
     User,
-    ServerContext,
     ServerContextProvider,
     ServerContextConsumer,
     useServerContext,
@@ -944,19 +843,9 @@ export {
     QueryGridPanel,
     Detail,
     GRID_CHECKBOX_OPTIONS,
-    IGridLoader,
-    IGridResponse,
     // QueryModel
     QueryModel,
-    QueryConfig,
-    QueryConfigMap,
-    QueryModelMap,
-    QueryModelLoader,
     withQueryModels,
-    MakeQueryModels,
-    Actions,
-    RequiresModelAndActions,
-    InjectedQueryModels,
     GridPanel,
     GridPanelWithModel,
     DetailPanel,
@@ -966,7 +855,6 @@ export {
     runDetailsColumnsForQueryModel,
     flattenValuesFromRow,
     Pagination,
-    PaginationData,
     makeTestActions,
     makeTestQueryModel,
     // AuditLog and Timeline
@@ -976,7 +864,6 @@ export {
     getEventDataValueDisplay,
     getTimelineEntityUrl,
     TimelineEventModel,
-    TimelineGroupedEventInfo,
     TimelineView,
     // pipeline
     PipelineJobsPage,
@@ -990,3 +877,66 @@ export {
     OntologyBrowserPanel,
     OntologyConceptOverviewPanel,
 };
+
+//  Due to babel-loader & typescript babel plugins we need to export/import types separately. The babel plugins require
+//  the typescript compiler option "isolatedModules", which do not export types from modules, so types must be exported
+//  separately.
+//  https://github.com/babel/babel-loader/issues/603
+export type {
+    RequiresModelAndActions,
+    InjectedQueryModels,
+    Actions,
+    MakeQueryModels,
+    QueryConfigMap,
+    QueryModelMap,
+} from './public/QueryModel/withQueryModels';
+export type { TimelineGroupedEventInfo } from './internal/components/auditlog/models';
+export type { PaginationData } from './internal/components/pagination/Pagination';
+export type { QueryModelLoader } from './public/QueryModel/QueryModelLoader';
+export type { QueryConfig } from './public/QueryModel/QueryModel';
+export type { IGridLoader, IGridResponse } from './internal/QueryGridModel';
+export type { ServerContext } from './internal/components/base/ServerContext';
+export type { GridProps } from './internal/components/base/Grid';
+export type { InjectedRouteLeaveProps, WrappedRouteLeaveProps } from './internal/util/RouteLeave';
+export type { PageHeaderProps } from './internal/components/base/PageHeader';
+export type { PageProps } from './internal/components/base/Page';
+export type { LoadingPageProps } from './internal/components/base/LoadingPage';
+export type { ISubItem, SubMenuItemProps } from './internal/components/menus/SubMenuItem';
+export type { PaginationButtonsProps } from './internal/components/buttons/PaginationButtons';
+export type { MenuOption } from './internal/components/menus/SubMenu';
+export type { FileAttachmentFormModel, IFile } from './internal/components/files/models';
+export type {
+    IAppDomainHeader,
+    IBannerMessage,
+    IDomainField,
+    IFieldChange,
+} from './internal/components/domainproperties/models';
+export type { MessageFunction, NotificationItemProps } from './internal/components/notifications/model';
+export type { VisGraphNode } from './internal/components/lineage/vis/VisGraphGenerator';
+export type { ITab } from './internal/components/navigation/SubNav';
+export type { NotificationCreatable } from './internal/components/notifications/actions';
+export type { IDataViewInfo } from './internal/models';
+export type { HeatMapCell } from './internal/components/heatmap/HeatMap';
+export type { InjectedAssayModel, WithAssayModelProps } from './internal/components/assay/withAssayModels';
+export type { SearchResultCardData } from './internal/components/search/models';
+export type { AssayPickerSelectionModel } from './internal/components/assay/AssayPicker';
+export type {
+    EntityDataType,
+    EntityInputProps,
+    IDerivePayload,
+    IEntityTypeOption,
+    IParentOption,
+    MaterialOutput,
+} from './internal/components/entities/models';
+export type { SelectInputProps } from './internal/components/forms/input/SelectInput';
+export type { PermissionsProviderProps } from './internal/components/permissions/models';
+export type { ISelectInitData } from './internal/components/forms/model';
+export type { QuerySelectOwnProps } from './internal/components/forms/QuerySelect';
+export type { UserProviderProps } from './internal/components/user/UserProvider';
+export type { SampleCreationTypeModel } from './internal/components/samples/models';
+export type { MetricUnitProps } from './internal/components/domainproperties/samples/models';
+export type { AppRouteResolver } from './internal/url/AppURLResolver';
+export type { WithFormStepsProps } from './internal/components/forms/FormStep';
+export type { BulkAddData, EditableColumnMetadata } from './internal/components/editable/EditableGrid';
+export type { IImportData, ISelectRowsResult } from './internal/query/api';
+export type { Location } from './internal/util/URL';

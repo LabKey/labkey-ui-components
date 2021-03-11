@@ -21,17 +21,17 @@ const defaultContainer: Partial<IContainer> = {
  * Model for org.labkey.api.data.Container as returned by Container.toJSON()
  */
 export class Container extends Record(defaultContainer) implements Partial<IContainer> {
-    activeModules: string[];
-    folderType: string;
-    hasRestrictedActiveModule: boolean;
-    id: string;
-    isContainerTab: boolean;
-    isWorkbook: boolean;
-    name: string;
-    parentId: string;
-    parentPath: string;
-    path: string;
-    sortOrder: number;
-    title: string;
-    type: string;
+    declare activeModules: string[];
+    declare folderType: string;
+    declare hasRestrictedActiveModule: boolean;
+    declare id: string;
+    declare isContainerTab: boolean;
+    declare isWorkbook: boolean;
+    declare name: string;
+    declare parentId: string;
+    declare parentPath: string;
+    declare path: string;
+    declare sortOrder: number;
+    declare title: string;
+    declare type: string;
 }

@@ -68,33 +68,33 @@ export class ListModel extends Record({
     discussionSettingEnum: undefined,
     containerPath: undefined,
 }) {
-    exception: string;
-    domain: DomainDesign;
-    name: string;
-    domainKindName: string;
-    description: string;
-    lastIndexed: any;
-    keyName: string;
-    titleColumn: string;
-    domainId: number;
-    keyType: string;
-    discussionSetting: number;
-    allowDelete: true;
-    allowUpload: true;
-    allowExport: true;
-    entireListIndex: true;
-    entireListIndexSetting: number;
-    entireListTitleTemplate: string;
-    entireListBodySetting: number;
-    entireListBodyTemplate: string;
-    eachItemIndex: false;
-    eachItemTitleTemplate: string;
-    eachItemBodySetting: number;
-    eachItemBodyTemplate: string;
-    fileAttachmentIndex: false;
-    listId: number;
-    discussionSettingEnum: string;
-    containerPath: string;
+    declare exception: string;
+    declare domain: DomainDesign;
+    declare name: string;
+    declare domainKindName: string;
+    declare description: string;
+    declare lastIndexed: any;
+    declare keyName: string;
+    declare titleColumn: string;
+    declare domainId: number;
+    declare keyType: string;
+    declare discussionSetting: number;
+    declare allowDelete: true;
+    declare allowUpload: true;
+    declare allowExport: true;
+    declare entireListIndex: true;
+    declare entireListIndexSetting: number;
+    declare entireListTitleTemplate: string;
+    declare entireListBodySetting: number;
+    declare entireListBodyTemplate: string;
+    declare eachItemIndex: false;
+    declare eachItemTitleTemplate: string;
+    declare eachItemBodySetting: number;
+    declare eachItemBodyTemplate: string;
+    declare fileAttachmentIndex: false;
+    declare listId: number;
+    declare discussionSettingEnum: string;
+    declare containerPath: string;
 
     static create(raw: any, defaultSettings = null): ListModel {
         if (defaultSettings) {

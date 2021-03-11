@@ -21,6 +21,8 @@ import { gridInit } from '../../actions';
 
 import { LoadingSpinner, QueryGridModel } from '../../..';
 
+import { GlobalAppState } from '../../global';
+
 import { EditableGrid, EditableGridProps } from './EditableGrid';
 
 interface Props extends EditableGridProps {
@@ -29,7 +31,7 @@ interface Props extends EditableGridProps {
     className?: string;
 }
 
-export class EditableGridPanel extends ReactN.Component<Props, any> {
+export class EditableGridPanel extends ReactN.Component<Props, any, GlobalAppState> {
     constructor(props: EditableGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);

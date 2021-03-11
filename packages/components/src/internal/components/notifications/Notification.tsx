@@ -20,6 +20,8 @@ import moment from 'moment';
 
 import { User, getDateFormat } from '../../..';
 
+import { GlobalAppState } from '../../global';
+
 import { NotificationItemModel, NotificationItemProps, Persistence } from './model';
 import { createNotification, setTrialBannerDismissSessionKey } from './actions';
 
@@ -32,7 +34,7 @@ interface NotificationProps {
     user?: User;
 }
 
-export class Notification extends ReactN.Component<NotificationProps, any> {
+export class Notification extends ReactN.Component<NotificationProps, any, GlobalAppState> {
     UNSAFE_componentWillMount(): void {
         this.createSystemNotification();
     }

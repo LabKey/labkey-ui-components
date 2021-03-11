@@ -53,14 +53,14 @@ export class NotificationItemModel
         persistence: Persistence.PAGE_LOAD,
     })
     implements NotificationItemProps {
-    alertClass: string;
-    data?: any;
-    id: string;
-    isDismissible: boolean;
-    isDismissed: boolean;
-    message: string | MessageFunction<NotificationItemProps>;
-    onDismiss?: () => any;
-    persistence?: Persistence;
+    declare alertClass: string;
+    declare data?: any;
+    declare id: string;
+    declare isDismissible: boolean;
+    declare isDismissed: boolean;
+    declare message: string | MessageFunction<NotificationItemProps>;
+    declare onDismiss?: () => any;
+    declare persistence?: Persistence;
 
     static create(values?: NotificationItemProps): NotificationItemModel {
         return new NotificationItemModel(

@@ -24,6 +24,8 @@ import { DetailPanelHeader } from '../forms/detail/DetailPanelHeader';
 
 import { DELIMITER } from '../forms/input/SelectInput';
 
+import { GlobalAppState } from '../../global';
+
 import { getEntityTypeOptions } from './actions';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
@@ -60,7 +62,7 @@ interface State {
     originalValueLoaded: List<boolean>;
 }
 
-export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
+export class ParentEntityEditPanel extends ReactN.Component<Props, State, GlobalAppState> {
     static defaultProps = {
         cancelText: 'Cancel',
         submitText: 'Save',

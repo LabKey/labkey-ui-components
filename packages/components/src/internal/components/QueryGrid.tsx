@@ -22,6 +22,7 @@ import { gridInit, reloadQueryGridModel, sort, toggleGridRowSelection, toggleGri
 import { getStateModelId, getStateQueryGridModel } from '../models';
 import { headerCell, headerSelectionCell } from '../renderers';
 import { getBrowserHistory } from '../util/global';
+import { GlobalAppState } from '../global';
 
 import {
     generateId,
@@ -62,7 +63,7 @@ interface QueryGridState {
     unlisten?: any;
 }
 
-export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState> {
+export class QueryGrid extends ReactN.Component<QueryGridProps, QueryGridState, GlobalAppState> {
     constructor(props: QueryGridProps) {
         // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
         super(props);

@@ -61,22 +61,22 @@ export class ViewInfo extends Record({
     shared: false,
     sorts: List<QuerySort>(),
 }) {
-    // aggregates: List<any>;
-    // analyticsProviders: List<any>;
-    columns: List<IViewInfoColumn>;
-    // deletable: boolean;
-    // editable: boolean;
-    filters: List<Filter.IFilter>;
-    hidden: boolean;
-    // inherit: boolean;
-    isDefault: boolean; // 'default' is a JavaScript keyword
-    label: string;
-    name: string;
-    // revertable: boolean;
-    // savable: boolean;
-    // session: boolean;
-    shared: boolean;
-    sorts: List<QuerySort>;
+    // declare aggregates: List<any>;
+    // declare analyticsProviders: List<any>;
+    declare columns: List<IViewInfoColumn>;
+    // declare deletable: boolean;
+    // declare editable: boolean;
+    declare filters: List<Filter.IFilter>;
+    declare hidden: boolean;
+    // declare inherit: boolean;
+    declare isDefault: boolean; // 'default' is a JavaScript keyword
+    declare label: string;
+    declare name: string;
+    // declare revertable: boolean;
+    // declare savable: boolean;
+    // declare session: boolean;
+    declare shared: boolean;
+    declare sorts: List<QuerySort>;
 
     static DEFAULT_NAME = '~~DEFAULT~~';
     static DETAIL_NAME = '~~DETAILS~~';

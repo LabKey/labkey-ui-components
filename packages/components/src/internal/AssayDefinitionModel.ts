@@ -43,20 +43,20 @@ export class AssayDefinitionModel extends Record({
     templateLink: undefined,
     type: undefined,
 }) {
-    containerPath: string;
-    description: string;
-    domains: Map<string, List<QueryColumn>>;
-    domainTypes: Map<string, string>;
-    id: number;
-    importAction: string;
-    importController: string;
-    links: Map<AssayLink, string>;
-    name: string;
-    projectLevel: boolean;
-    protocolSchemaName: string;
-    reRunSupport: string;
-    templateLink: string;
-    type: string;
+    declare containerPath: string;
+    declare description: string;
+    declare domains: Map<string, List<QueryColumn>>;
+    declare domainTypes: Map<string, string>;
+    declare id: number;
+    declare importAction: string;
+    declare importController: string;
+    declare links: Map<AssayLink, string>;
+    declare name: string;
+    declare projectLevel: boolean;
+    declare protocolSchemaName: string;
+    declare reRunSupport: string;
+    declare templateLink: string;
+    declare type: string;
 
     static create(rawModel): AssayDefinitionModel {
         let domains = Map<string, List<QueryColumn>>();

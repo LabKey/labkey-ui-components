@@ -16,7 +16,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 
-import { FileAttachmentForm } from '../../..';
+import { Alert, FileAttachmentForm } from '../../..';
 
 import { ActionButton } from '../buttons/ActionButton';
 
@@ -109,6 +109,36 @@ describe('DomainForm', () => {
         expect(helpLink.length).toEqual(1);
 
         expect(form).toMatchSnapshot();
+        form.unmount();
+    });
+
+    test('with reservedFieldsMsg', () => {
+        const fields = [];
+        fields.push({
+            name: 'key',
+            rangeURI: INT_RANGE_URI,
+            propertyId: 1,
+            propertyURI: 'test',
+        });
+        fields.push({
+            name: 'string',
+            rangeURI: STRING_RANGE_URI,
+            propertyId: 2,
+            propertyURI: 'test',
+        });
+        const domain = DomainDesign.create({
+            name: 'reserved fields msg',
+            description: 'description',
+            domainURI: 'test',
+            domainId: 1,
+            fields,
+            indices: [],
+        });
+        const form = mount(<DomainFormImpl domain={domain} onChange={jest.fn()} testMode={true} />);
+
+        const message = 'There are reserved fields';
+        form.setState({ reservedFieldsMsg: message });
+        expect(form.find(Alert).text()).toBe(message);
         form.unmount();
     });
 

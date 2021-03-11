@@ -100,7 +100,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     let activeId = onTabSelect === undefined ? internalActiveId : activeModelId;
 
     // Default activeId if current activeId not in tabOrder
-    activeId = tabOrder.indexOf(activeId) === -1 ? tabOrder[0] : activeId
+    activeId = tabOrder.indexOf(activeId) === -1 ? tabOrder[0] : activeId;
 
     const activeModel = queryModels[activeId];
 

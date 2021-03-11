@@ -64,9 +64,7 @@ export const EntityDeleteModal: React.FC<Props> = props => {
     function onConfirm(rowsToDelete: any[], rowsToKeep: any[]): void {
         setNumConfirmed(rowsToDelete.length);
         setShowProgress(true);
-        if (beforeDelete) {
-            beforeDelete();
-        }
+        beforeDelete?.();
         const noun = ' ' + getNoun(rowsToDelete.length);
 
         const schemaQuery = SchemaQuery.create(model.schema, model.query);

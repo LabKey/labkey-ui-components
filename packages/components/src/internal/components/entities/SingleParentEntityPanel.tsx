@@ -1,165 +1,114 @@
-import React from 'react';
+import React, { FC, memo, PureComponent, ReactNode, useMemo, useState } from 'react';
 
 import { List } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { QueryGridPanel } from '../QueryGridPanel';
 import {
+    Alert,
     AppURL,
     capitalizeFirstChar,
     EntityDataType,
-    getQueryGridModel,
-    getStateQueryGridModel,
-    gridInit,
+    GridPanel,
     LoadingSpinner,
-    QueryGridModel,
+    QueryModel,
     QuerySelect,
     RemoveEntityButton,
     SchemaQuery,
     SelectInput,
 } from '../../..';
 
+import { InjectedQueryModels, QueryConfigMap, withQueryModels } from '../../../public/QueryModel/withQueryModels';
+
 import { DETAIL_TABLE_CLASSES } from '../forms/constants';
 
 import { DELIMITER } from '../forms/input/SelectInput';
 
 import { IEntityTypeOption } from './models';
-import { getParentGridPrefix } from './utils';
+
+interface OwnProps {
+    chosenType: string;
+    onTypeChange: (chosenType: string) => void;
+    onValueChange: (chosenValue: string | string[]) => void;
+}
 
 interface Props {
     childNounSingular?: string;
     chosenValue?: string | any[];
+    editing?: boolean;
+    index: number;
+    onChangeParentType?: (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index: number) => void;
+    onChangeParentValue?: (name: string, value: string | any[], index: number) => void;
+    onInitialParentValue?: (value: string, selectedValues: List<any>, index: number) => void;
+    onRemoveParentType?: (index: number) => void;
     parentDataType: EntityDataType;
     parentLSIDs?: string[];
-    parentTypeQueryName?: string;
-    requiredColumns?: List<string>;
-    omittedColumns?: List<string>;
     parentTypeOptions?: List<IEntityTypeOption>;
-    index: number;
-    editing?: boolean;
-    onRemoveParentType?: (index: number) => any;
-    onChangeParentType?: (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index: number) => any;
-    onChangeParentValue?: (name: string, value: string | any[], index: number) => any;
-    onInitialParentValue?: (value: string, selectedValues: List<any>, index: number) => any;
+    parentTypeQueryName?: string;
 }
 
-interface State {
-    chosenType: string;
-    chosenValue: string | string[];
-}
+type SingleParentEntityProps = Props & InjectedQueryModels & OwnProps;
 
-export class SingleParentEntityPanel extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            chosenType: props.parentTypeQueryName,
-            chosenValue: props.chosenValue,
-        };
+class SingleParentEntity extends PureComponent<SingleParentEntityProps> {
+    componentDidMount(): void {
+        this.loadModel();
     }
 
-    UNSAFE_componentWillMount(): void {
-        this.init();
-    }
-
-    init() {
-        const model = this.getParentModel();
-        if (model) {
-            gridInit(model, true, this);
+    componentDidUpdate(prevProps: Readonly<SingleParentEntityProps>): void {
+        if (this.props.chosenType !== prevProps.chosenType) {
+            this.loadModel();
         }
     }
 
-    getParentModel(): QueryGridModel {
-        const { parentDataType, parentLSIDs } = this.props;
-        const { chosenType } = this.state;
+    loadModel = (): void => {
+        const { actions, chosenType, queryModels } = this.props;
 
-        if (!chosenType) {
-            return undefined;
-        }
-
-        let baseFilters = List<any>();
-        if (parentLSIDs && parentLSIDs.length > 0) {
-            baseFilters = baseFilters.push(Filter.create('LSID', parentLSIDs, Filter.Types.IN));
-        }
-        const model = getStateQueryGridModel(
-            getParentGridPrefix(parentDataType),
-            SchemaQuery.create(parentDataType.instanceSchemaName, chosenType),
-            {
-                isPaged: true,
-                bindURL: false,
-                allowSelection: false,
-                baseFilters,
-                requiredColumns: this.props.requiredColumns || List<string>(),
-                omittedColumns: this.props.omittedColumns || List<string>(),
-            }
-        );
-        return getQueryGridModel(model.getId()) || model;
-    }
-
-    onChangeParentType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption) => {
-        this.setState(
-            () => ({
-                chosenType: formValue,
-                chosenValue: undefined,
-            }),
-            () => {
-                if (this.props.onChangeParentType) {
-                    this.props.onChangeParentType(fieldName, formValue, selectedOption, this.props.index);
-                }
-            }
-        );
-    };
-
-    removeParent = () => {
-        if (this.props.onRemoveParentType) {
-            this.props.onRemoveParentType(this.props.index);
+        if (chosenType && queryModels.model) {
+            actions.loadModel('model');
         }
     };
 
-    onChangeParentValue = (name: string, value: string | any[], items: any) => {
-        this.setState(
-            state => ({ chosenValue: value }),
-            () => {
-                if (this.props.onChangeParentValue) {
-                    this.props.onChangeParentValue(name, value, this.props.index);
-                }
-            }
-        );
+    onChangeParentType = (fieldName: string, chosenType: any, selectedOption: IEntityTypeOption): void => {
+        const { index, onChangeParentType, onTypeChange, onValueChange } = this.props;
+        onTypeChange(chosenType);
+        onValueChange(undefined);
+        onChangeParentType?.(fieldName, chosenType, selectedOption, index);
     };
 
-    onInitValue = (value: any, selectedValues: List<any>) => {
-        this.setState(
-            state => ({ chosenValue: value }),
-            () => {
-                if (this.props.onInitialParentValue) {
-                    this.props.onInitialParentValue(value, selectedValues, this.props.index);
-                }
-            }
-        );
+    removeParent = (): void => {
+        this.props.onRemoveParentType?.(this.props.index);
     };
 
-    renderParentSelection() {
-        const { parentDataType, parentTypeOptions, parentLSIDs, index } = this.props;
-        const { chosenType } = this.state;
+    onChangeParentValue = (name: string, chosenValue: string | any[]): void => {
+        this.props.onValueChange(chosenValue);
+        this.props.onChangeParentValue?.(name, chosenValue, this.props.index);
+    };
 
-        const model = this.getParentModel();
+    onInitValue = (chosenValue: any, selectedValues: List<any>): void => {
+        this.props.onValueChange(chosenValue);
+        this.props.onInitialParentValue?.(chosenValue, selectedValues, this.props.index);
+    };
 
-        if ((model && model.isLoading) || !parentTypeOptions) {
+    renderParentSelection = (model: QueryModel): ReactNode => {
+        const { chosenType, chosenValue, parentDataType, parentLSIDs, parentTypeOptions, index } = this.props;
+
+        if (model?.isLoading || !parentTypeOptions) {
             return <LoadingSpinner />;
+        } else if (model?.rowsError || model?.queryInfoError) {
+            return <Alert>{model.rowsError || model.queryInfoError}</Alert>;
         }
 
         const parentSchemaQuery = chosenType
-            ? SchemaQuery.create(this.props.parentDataType.instanceSchemaName, chosenType)
+            ? SchemaQuery.create(parentDataType.instanceSchemaName, chosenType)
             : undefined;
         const lcTypeName = chosenType ? chosenType.toLowerCase() : undefined;
 
-        const parentValues =
-            model && parentLSIDs && parentLSIDs.length > 0
-                ? model
-                      .getData()
-                      .map(row => row.getIn(['Name', 'value']))
-                      .toArray()
-                : undefined;
+        let value = chosenValue ?? undefined;
+        if (!value && model?.hasData && parentLSIDs?.length > 0) {
+            value = Object.values(model.rows)
+                .map(row => row.Name.value)
+                .join(DELIMITER);
+        }
 
         return (
             <div className="bottom-spacing" key={'parent-selections-' + index}>
@@ -203,25 +152,18 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                         previewOptions
                         multiple
                         schemaQuery={parentSchemaQuery}
-                        showLabel={true}
+                        showLabel
                         valueColumn="Name"
-                        showLoading={true}
-                        value={
-                            this.state.chosenValue
-                                ? this.state.chosenValue
-                                : parentValues
-                                ? parentValues.join(DELIMITER)
-                                : undefined
-                        }
+                        showLoading
+                        value={value}
                     />
                 )}
             </div>
         );
-    }
+    };
 
     renderParentHeader() {
-        const { editing, parentDataType } = this.props;
-        const { chosenType } = this.state;
+        const { childNounSingular, chosenType, editing, parentDataType } = this.props;
 
         if (parentDataType && chosenType) {
             const { appUrlPrefixParts } = parentDataType;
@@ -241,8 +183,8 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
                     </tbody>
                 </table>
             );
-        } else if (!editing && this.props.childNounSingular) {
-            const lcChildNoun = this.props.childNounSingular.toLowerCase();
+        } else if (!editing && childNounSingular) {
+            const lcChildNoun = childNounSingular.toLowerCase();
             return (
                 <table className={DETAIL_TABLE_CLASSES}>
                     <tbody>
@@ -264,20 +206,64 @@ export class SingleParentEntityPanel extends React.Component<Props, State> {
         }
     }
 
-    renderGridData() {
-        const model = this.getParentModel();
+    render() {
+        const { actions, editing, index, queryModels } = this.props;
+        const { model } = queryModels;
+
+        if (editing) {
+            return this.renderParentSelection(model);
+        }
 
         return (
-            <div className="top-spacing" key={'grid-' + this.props.index}>
+            <div className="top-spacing" key={'grid-' + index}>
                 {this.renderParentHeader()}
-                {model && <QueryGridPanel model={model} asPanel={false} showGridBar={false} />}
+                {model && (
+                    <GridPanel
+                        actions={actions}
+                        allowSelections={false}
+                        asPanel={false}
+                        model={model}
+                        showButtonBar={false}
+                        showChartMenu={false}
+                        showExport={false}
+                        showOmniBox={false}
+                    />
+                )}
             </div>
         );
     }
-
-    render() {
-        const { editing } = this.props;
-
-        return editing ? this.renderParentSelection() : this.renderGridData();
-    }
 }
+
+const SingleParentEntityPanelBody = withQueryModels<Props & OwnProps>(SingleParentEntity);
+
+export const SingleParentEntityPanel: FC<Props> = memo(props => {
+    const { parentDataType, parentLSIDs, parentTypeQueryName } = props;
+    const [chosenType, setChosenType] = useState<string>(parentTypeQueryName);
+    const [chosenValue, setChosenValue] = useState<string | string[]>(props.chosenValue);
+
+    const queryConfigs: QueryConfigMap = useMemo(() => {
+        // Without a chosenType we cannot determine the underlying SchemaQuery
+        if (!chosenType) {
+            return {};
+        }
+
+        return {
+            model: {
+                baseFilters: parentLSIDs?.length > 0 ? [Filter.create('LSID', parentLSIDs, Filter.Types.IN)] : [],
+                bindURL: false,
+                schemaQuery: SchemaQuery.create(parentDataType.instanceSchemaName, chosenType),
+            },
+        };
+    }, [chosenType, parentDataType, parentLSIDs]);
+
+    return (
+        <SingleParentEntityPanelBody
+            {...props}
+            chosenType={chosenType}
+            chosenValue={chosenValue}
+            onTypeChange={setChosenType}
+            onValueChange={setChosenValue}
+            queryConfigs={queryConfigs}
+        />
+    );
+});

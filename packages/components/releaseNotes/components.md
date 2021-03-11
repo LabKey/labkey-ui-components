@@ -1,6 +1,13 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+
+### version 2.13.1
+*Released*: 11 March 2021
+* Fixes Issue 42438: better handling of lineage metadata loading errors.
+* Lineage: propagate `fetchNodeMetadata` loading errors.
+* display error alert in `<LineageGraph/>`.
+
 ### version 2.13.0
 *Released*: 10 March 2021
 * Changes to support webpack aliases from /src and theme/SCSS assets

@@ -44,7 +44,7 @@ describe('ConceptPathInfoImpl', () => {
         expect(wrapper.find('.alternate-paths-container')?.find(ConceptPathDisplay)).toHaveLength(
             alternatePaths?.length > 0 ? alternatePaths.length - 1 : 0
         );
-        expect(wrapper.find('.no-path-info')).toHaveLength(alternatePaths?.length === 0 ? 1 : 0);
+        expect(wrapper.find('.no-path-info')).toHaveLength(alternatePaths?.length <= 1 ? 1 : 0);
     }
 
     test('Nothing set', () => {

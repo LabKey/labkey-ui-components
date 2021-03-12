@@ -39,7 +39,7 @@
             min-width: 450px;
             width: 65vw;
 
-            li {
+            li.selectable-item {
                 cursor: pointer;
                 &:hover {
                     background-color: $gray-lighter;

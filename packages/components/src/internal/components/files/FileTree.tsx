@@ -1,12 +1,10 @@
-import { Treebeard, decorators, TreeTheme } from 'react-treebeard';
-
 import React, { PureComponent } from 'react';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
+import { Treebeard, decorators, TreeTheme } from 'react-treebeard';
 import { Checkbox, Alert } from 'react-bootstrap';
 import { List } from 'immutable';
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
 import { LoadingSpinner } from '../../..';
 
@@ -89,7 +87,7 @@ const customStyle: TreeTheme = {
     },
 };
 
-const DEFAULT_ROOT_PREFIX = '|root';
+export const DEFAULT_ROOT_PREFIX = '|root';
 const CHECK_ID_PREFIX = 'filetree-check-';
 
 // Place holder names for empty or loading display.  Uses asterisk which will never be in a file name.
@@ -97,11 +95,11 @@ const EMPTY_FILE_NAME = '*empty';
 const LOADING_FILE_NAME = '*loading';
 
 const nodeIsLoading = (id: string): boolean => {
-    return id.endsWith('|' + LOADING_FILE_NAME);
+    return id?.endsWith('|' + LOADING_FILE_NAME);
 };
 
 const nodeIsEmpty = (id: string): boolean => {
-    return id.endsWith('|' + EMPTY_FILE_NAME);
+    return id?.endsWith('|' + EMPTY_FILE_NAME);
 };
 
 const NodeIcon = props => {
@@ -426,7 +424,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             }
         };
 
-        this.onToggle(node, true, afterToggle);
+        this.onToggle(node, true, true, afterToggle);
     };
 
     handleCheckbox = (evt): void => {
@@ -490,9 +488,17 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     // node in this.state.data. This function is updating that node which is directly updating this.state.data, then
     // we make a clone of this.state.data for setState.  Directly manipulating anything in this.state is NOT a recommended React
     // pattern.  This is done in this case to work with the treebeard package, but should not be copied elsewhere.
-    onToggle = (node: any, toggled: boolean, callback?: () => any): void => {
+    onToggle = (node: any, toggled: boolean, active = true, callback?: () => any): void => {
         const { allowMultiSelect } = this.props;
         const { cursor, data } = this.state;
+
+        if (cursor) {
+            cursor.active = false;
+            this.setState(() => ({ cursor, data: { ...data } }));
+        }
+
+        node.active = active;
+        node.toggled = toggled;
 
         if (!allowMultiSelect) {
             if (!this.onFileSelect(node.id, true, !!node.children, node)) {
@@ -500,15 +506,8 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
             }
         }
 
-        if (cursor) {
-            cursor.active = false;
-            this.setState(() => ({ cursor, data: { ...data } }));
-        }
-        node.active = true;
-        node.toggled = toggled;
-
         // load data in directory if not already loaded
-        if (node.children && node.children.length === 0) {
+        if (node.children?.length === 0) {
             node.children = [{ id: node.id + '|' + LOADING_FILE_NAME }];
             this.setState(
                 () => ({ cursor: node, data: { ...data } }),

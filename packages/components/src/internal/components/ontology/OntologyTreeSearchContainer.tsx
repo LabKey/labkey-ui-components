@@ -1,17 +1,20 @@
-import React, { ChangeEvent, FC, memo, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, FC, memo, MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Alert, searchUsingIndex } from '../../..';
 
-import { ConceptModel, OntologyModel } from './models';
+import { ConceptModel, OntologyModel, PathModel } from './models';
+import { fetchAlternatePaths } from './actions';
 
 const CONCEPT_CATEGORY = 'concept';
 const SEARCH_LIMIT = 20;
+
 interface OntologyTreeSearchContainerProps {
     ontology: OntologyModel;
+    searchPathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
 }
 
 export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> = memo(props => {
-    const { ontology } = props;
+    const { ontology, searchPathClickHandler } = props;
     const [isFocused, setIsFocused] = useState<boolean>();
     const [searchTerm, setSearchTerm] = useState<string>();
     const [searchHits, setSearchHits] = useState<ConceptModel[]>();
@@ -61,6 +64,18 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
         }
     }, [searchTerm, setError, setSearchHits, setTotalHits]);
 
+    const onItemClick = useCallback(
+        async (evt: MouseEvent<HTMLLIElement>, code: string) => {
+            // for now we will just send the user to the first path for this concept, in the future we'll add in UI
+            // that lets the user select if more then one path exists for the concept
+            const codePaths = await fetchAlternatePaths(code);
+            if (codePaths?.length > 0) {
+                searchPathClickHandler(codePaths[0], true);
+            }
+        },
+        [searchPathClickHandler]
+    );
+
     return (
         <div className="concept-search-container">
             <form autoComplete="off">
@@ -86,7 +101,7 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
                             </li>
                         )}
                         {searchHits?.map(hit => (
-                            <li key={hit.code}>
+                            <li key={hit.code} className="selectable-item" role="option" onMouseDown={evt => onItemClick(evt, hit.code)}>
                                 <div className="row">
                                     <div className={'col bold ' + (hitsHaveDescriptions ? 'col-xs-5' : 'col-xs-10')}>
                                         {hit.label}

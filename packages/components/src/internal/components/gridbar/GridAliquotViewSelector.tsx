@@ -33,6 +33,10 @@ enum MODE {
     aliquots,
     none//when using omni filter with 'is blank'
 }
+
+const IS_ALIQUOT_COL = "IsAliquot";
+
+//TODO add jest tests
 export class GridAliquotViewSelector extends Component<Props> {
     dropId: string;
 
@@ -55,11 +59,11 @@ export class GridAliquotViewSelector extends Component<Props> {
 
         let newFilter;
         if (filterMode == MODE.all || filterMode == MODE.none)
-            newFilter = Filter.create('IsAliquot', (isAliquot && check) || (!isAliquot && !check));
+            newFilter = Filter.create(IS_ALIQUOT_COL, (isAliquot && check) || (!isAliquot && !check));
         else
             newFilter = null; // if neither is checked, or if both are checked, clear the filter
 
-        replaceFilter(model, 'IsAliquot', newFilter);
+        replaceFilter(model, IS_ALIQUOT_COL, newFilter);
     };
 
     getTitle(mode: MODE) {
@@ -80,7 +84,7 @@ export class GridAliquotViewSelector extends Component<Props> {
         let mode = MODE.all;
         if (model.filterArray) {
             model.filterArray.forEach(filter => {
-                if (filter.getColumnName().toLocaleLowerCase() === 'isaliquot') {
+                if (filter.getColumnName().toLowerCase() === IS_ALIQUOT_COL.toLowerCase()) {
 
                     const filterType = filter.getFilterType();
                     const value = filter.getValue();
@@ -124,7 +128,7 @@ export class GridAliquotViewSelector extends Component<Props> {
     createMenuItems(filterMode: MODE): List<ReactNode> {
         const items = List<ReactNode>().asMutable();
         items.push(
-            <MenuItem header key="private-header">
+            <MenuItem header key="aliquot-selector-header">
                 Show sample amounts
             </MenuItem>
         );

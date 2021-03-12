@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { ReactNode } from 'react';
-import ReactN from 'reactn';
+import React, { Component, FC, memo, ReactNode, useMemo } from 'react';
 import { Button } from 'react-bootstrap';
 import { List, Map, OrderedMap } from 'immutable';
 import { AuditBehaviorTypes, Utils } from '@labkey/api';
@@ -59,6 +58,7 @@ import {
     RemoveEntityButton,
     removeQueryGridModel,
     resolveErrorMessage,
+    SampleCreationType,
     SampleCreationTypeModel,
     SchemaQuery,
     SelectInput,
@@ -74,8 +74,6 @@ import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
-
-import { GlobalAppState } from '../../global';
 
 import {
     EntityDataType,
@@ -120,7 +118,6 @@ interface OwnProps {
     handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean, isAsync?: boolean) => Promise<any>;
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
-    location?: Location;
     maxEntities?: number;
     nounPlural: string;
     nounSingular: string;
@@ -132,7 +129,16 @@ interface OwnProps {
     parentDataTypes?: List<EntityDataType>;
 }
 
-type Props = OwnProps & WithFormStepsProps;
+interface FromLocationProps {
+    creationType?: SampleCreationType;
+    numPerParent?: number;
+    parents?: string[];
+    selectionKey?: string;
+    tab?: number;
+    target?: any;
+}
+
+type Props = FromLocationProps & OwnProps & WithFormStepsProps;
 
 interface StateProps {
     error: ReactNode;
@@ -144,7 +150,12 @@ interface StateProps {
     useAsync: boolean;
 }
 
-export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps, GlobalAppState> {
+class EntityInsertPanelImpl extends Component<Props, StateProps> {
+    static defaultProps = {
+        numPerParent: 1,
+        tab: EntityInsertPanelTabs.First,
+    };
+
     private readonly capNounSingular;
     private readonly capNounPlural;
     private readonly capIdsText;
@@ -152,8 +163,7 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps, G
     private readonly typeTextSingular;
     private readonly typeTextPlural;
 
-    constructor(props: any) {
-        // @ts-ignore // see https://github.com/CharlesStover/reactn/issues/126
+    constructor(props: Props) {
         super(props);
 
         this.capNounPlural = capitalizeFirstChar(props.nounPlural);
@@ -174,16 +184,23 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps, G
         };
     }
 
-    UNSAFE_componentWillMount(): void {
-        this.init(this.props, true);
+    componentDidMount(): void {
+        const { selectStep, tab } = this.props;
+
+        if (tab !== EntityInsertPanelTabs.First) {
+            selectStep(tab);
+        }
+
+        this.init();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: OwnProps): void {
-        if (this.props.location != nextProps.location || this.props.entityDataType !== nextProps.entityDataType)
-            this.init(nextProps);
+    componentDidUpdate(prevProps: Readonly<Props>): void {
+        if (prevProps.entityDataType !== this.props.entityDataType) {
+            this.init();
+        }
     }
 
-    componentWillUnmount() {
+    componentWillUnmount(): void {
         this.removeQueryGridModel();
     }
 
@@ -206,88 +223,64 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps, G
         return ['Create ' + this.capNounPlural + ' from Grid', 'Import ' + this.capNounPlural + ' from File'];
     };
 
-    static getQueryParameters(query: any) {
-        const { parent, selectionKey, target, creationType, numPerParent } = query;
-        let parents;
-        if (parent) {
-            parents = parent.split(';');
-        }
-
-        return {
+    init = async (): Promise<void> => {
+        const {
+            auditBehavior,
+            creationType,
+            entityDataType,
+            numPerParent,
+            parentDataTypes,
             parents,
             selectionKey,
             target,
-            creationType,
-            numPerParent,
-        };
-    }
-
-    init = (props: OwnProps, selectTab = false): void => {
-        const queryParams = props.location
-            ? EntityInsertPanelImpl.getQueryParameters(props.location.query)
-            : {
-                  parents: undefined,
-                  selectionKey: undefined,
-                  target: undefined,
-                  creationType: undefined,
-                  numPerParent: undefined,
-              };
+        } = this.props;
         const allowParents = this.allowParents();
-
-        const tab =
-            props.location && props.location.query && props.location.query.tab
-                ? props.location.query.tab
-                : EntityInsertPanelTabs.First;
-        if (selectTab && tab !== EntityInsertPanelTabs.First) {
-            this.props.selectStep(parseInt(tab, 10));
-        }
 
         let { insertModel } = this.state;
 
         if (
             insertModel &&
-            insertModel.getTargetEntityTypeName() === queryParams.target &&
-            insertModel.selectionKey === queryParams.selectionKey &&
-            (insertModel.originalParents === queryParams.parents || !allowParents)
-        )
+            insertModel.getTargetEntityTypeName() === target &&
+            insertModel.selectionKey === selectionKey &&
+            (insertModel.originalParents === parents || !allowParents)
+        ) {
             return;
+        }
 
-        const { entityDataType, auditBehavior } = props;
         insertModel = new EntityIdCreationModel({
-            originalParents: allowParents ? queryParams.parents : undefined,
-            initialEntityType: queryParams.target,
-            selectionKey: queryParams.selectionKey,
+            auditBehavior,
+            creationType,
             entityCount: 0,
             entityDataType,
-            auditBehavior,
-            creationType: queryParams.creationType,
-            numPerParent: queryParams.numPerParent || 1,
+            initialEntityType: target,
+            numPerParent,
+            originalParents: allowParents ? parents : undefined,
+            selectionKey,
         });
 
         let parentSchemaQueries = Map<string, EntityDataType>();
-        if (this.props.parentDataTypes) {
-            this.props.parentDataTypes.forEach(dataType => {
-                parentSchemaQueries = parentSchemaQueries.set(dataType.instanceSchemaName, dataType);
+        parentDataTypes?.forEach(dataType => {
+            parentSchemaQueries = parentSchemaQueries.set(dataType.instanceSchemaName, dataType);
+        });
+
+        try {
+            const partialModel = await getEntityTypeData(
+                insertModel,
+                entityDataType,
+                parentSchemaQueries,
+                entityDataType.typeListingSchemaQuery.queryName,
+                allowParents
+            );
+
+            this.gridInit(insertModel.merge(partialModel) as EntityIdCreationModel);
+        } catch {
+            this.setState({
+                error: getActionErrorMessage(
+                    'There was a problem initializing the data for import.',
+                    this.typeTextPlural
+                ),
             });
         }
-        getEntityTypeData(
-            insertModel,
-            entityDataType,
-            parentSchemaQueries,
-            entityDataType.typeListingSchemaQuery.queryName,
-            allowParents
-        )
-            .then(partialModel => {
-                this.gridInit(insertModel.merge(partialModel) as EntityIdCreationModel);
-            })
-            .catch(() => {
-                this.setState({
-                    error: getActionErrorMessage(
-                        'There was a problem initializing the data for import.',
-                        this.typeTextPlural
-                    ),
-                });
-            });
     };
 
     gridInit = (insertModel: EntityIdCreationModel): void => {
@@ -331,15 +324,14 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps, G
         if (insertModel) {
             const entityTypeName = insertModel ? insertModel.getTargetEntityTypeName() : undefined;
             if (entityTypeName) {
-                const queryInfoWithParents = this.getGridQueryInfo();
                 const model = getStateQueryGridModel(
                     'insert-entities',
                     SchemaQuery.create(this.props.entityDataType.instanceSchemaName, entityTypeName),
-                    {
+                    () => ({
                         editable: true,
                         loader: new EntityGridLoader(insertModel),
-                        queryInfo: queryInfoWithParents,
-                    }
+                        queryInfo: this.getGridQueryInfo(),
+                    })
                 );
 
                 return getQueryGridModel(model.getId()) || model;
@@ -1093,8 +1085,33 @@ export class EntityInsertPanelImpl extends ReactN.Component<Props, StateProps, G
     }
 }
 
-export const EntityInsertPanel = withFormSteps(EntityInsertPanelImpl, {
+export const EntityInsertPanelFormSteps = withFormSteps(EntityInsertPanelImpl, {
     currentStep: EntityInsertPanelTabs.First,
     furthestStep: EntityInsertPanelTabs.Second,
     hasDependentSteps: false,
 });
+
+export const EntityInsertPanel: FC<{ location?: Location } & FromLocationProps & OwnProps> = memo(props => {
+    const { location, ...entityInsertPanelProps } = props;
+
+    const fromLocationProps = useMemo<FromLocationProps>(() => {
+        if (!location) {
+            return {};
+        }
+
+        const { creationType, numPerParent, parent, selectionKey, tab, target } = location.query;
+
+        return {
+            creationType,
+            numPerParent,
+            parents: parent?.split(';'),
+            selectionKey,
+            tab: parseInt(tab, 10),
+            target,
+        };
+    }, [location]);
+
+    return <EntityInsertPanelFormSteps {...entityInsertPanelProps} {...fromLocationProps} />;
+});
+
+EntityInsertPanel.displayName = 'EntityInsertPanel';

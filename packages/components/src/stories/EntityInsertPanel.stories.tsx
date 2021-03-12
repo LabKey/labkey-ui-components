@@ -28,6 +28,7 @@ storiesOf('EntityInsertPanel', module)
             <EntityInsertPanel
                 entityDataType={SampleTypeDataType}
                 canEditEntityTypeDetails={boolean('canEditEntityTypeDetails', true)}
+                importHelpLinkNode={helpLinkNode('help', 'help text')}
                 nounSingular={text('Singular noun', 'sample')}
                 nounPlural={text('Plural noun', 'samples')}
                 disableMerge={boolean('Disable merge?', false)}

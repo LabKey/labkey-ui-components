@@ -37,6 +37,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
 
                 toggleParentPaths(fileTreeRef.current, alternatePath, parentPaths, true, () => {
                     setShowLoading(false);
+                    scrollToActive();
                 });
             });
         }
@@ -100,5 +101,14 @@ const toggleParentPaths = function (fileTree, alternatePath: PathModel, parentPa
         toggleParentPaths(fileTree, alternatePath, parentPaths, false, callback);
     } else {
         callback();
+    }
+};
+
+const scrollToActive = function (): void {
+    const activeEl = document.getElementsByClassName('filetree-node-active');
+    if (activeEl.length > 0) {
+        activeEl[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+        setTimeout(scrollToActive, 500);
     }
 };

@@ -131,7 +131,7 @@ const Header = props => {
         showNodeIcon = true,
     } = props;
     const isDirectory = node.children !== undefined;
-    const activeColor = node.active && !allowMultiSelect ? 'lk-text-theme-dark' : undefined; // $brand-primary and $gray-light
+    const activeColor = node.active && !allowMultiSelect ? 'lk-text-theme-dark filetree-node-active' : undefined; // $brand-primary and $gray-light
 
     if (nodeIsEmpty(node.id)) {
         return <div className="filetree-empty-directory">{emptyDirectoryText}</div>;

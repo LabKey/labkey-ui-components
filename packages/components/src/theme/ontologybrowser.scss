@@ -114,33 +114,19 @@
         background-color: $light-gray;
         font-size: 14px;
     }
+
+    .synonyms-text {
+        padding-left: 15px;
+
+        li {
+            padding-top: 5px;
+        }
+    }
 }
 
 /* PATH INFORMATION */
-.concept-pathinfo-container {
+.ontology-concept-pathinfo-container {
     padding-top: 10px;
-    font-size: 14px;
-
-    .title {
-        font-size: 20px;
-    }
-
-    .current-path-container, .alternate-paths-container {
-        margin-top: 15px;
-
-        .concept-path-container{
-            margin-top: 5px;
-
-            &:hover {
-                background-color: $btn-info-bg;
-                cursor: pointer;
-            }
-        }
-
-        .title {
-            font-size: 14px;
-        }
-    }
 
     .none-selected, .no-path-info {
         font-size: 20px;
@@ -148,16 +134,40 @@
     }
 }
 
+.concept-pathinfo-container {
+    min-height: 315px;
+    height: 67vh;
+
+    .title {
+        font-size: 20px;
+    }
+
+    .current-path-container, .alternate-paths-container {
+        padding-top: 15px;
+
+        .title {
+            font-size: 14px;
+        }
+
+        .no-path-info {
+            font-size: 14px;
+            padding: 15px;
+        }
+    }
+
+    .alternate-paths-container .concept-path-container:hover {
+        background-color: $gray-lighter;
+        cursor: pointer;
+    }
+}
+
 .concept-path-container {
     color: $text-color;
     display: inline-block;
-    padding: 2px 5px 2px;
-    border: solid $gray-no-highlight 1px;
-    border-radius: 2px;
-    font-size: 14px;
+    padding: 15px;
 
     &.selected {
-        background-color: $light-gray;
+        background-color: $gray-lighter;
     }
 
     &.collapsed {
@@ -179,7 +189,6 @@
                 width: auto;
                 //position: absolute;
                 direction: ltr;
-                background: $light-gray;
                 padding-left: 5px;
             }
         }

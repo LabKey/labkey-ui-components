@@ -74,7 +74,7 @@ const AlternatePathPanel: FC<ConceptPathInfoImplProps> = memo(props => {
             )}
             <div className="alternate-paths-container">
                 <div className="title">Alternate Paths</div>
-                {altPaths?.length === 0 && <div>No alternate paths</div>}
+                {altPaths?.length === 0 && <div className="no-path-info">No alternate paths</div>}
                 {altPaths?.map(path => (
                     <ConceptPathDisplay key={path.path} path={path} onClick={alternatePathClickHandler} />
                 ))}

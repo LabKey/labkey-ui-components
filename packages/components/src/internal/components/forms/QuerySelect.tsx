@@ -15,18 +15,15 @@
  */
 import React, { FocusEvent, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
-// import { Option } from 'react-select';
 import { Filter, Utils } from '@labkey/api';
 
 import { QueryColumn, SchemaQuery } from '../../..';
 
-import { DELIMITER, SelectInput } from './input/SelectInput';
+import { DELIMITER, FilterOption, Option, SelectInput } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { FOCUS_FLAG } from './constants';
 import { QuerySelectModel } from './model';
-
-type Option = any;
 
 function getValue(model: QuerySelectModel, props: QuerySelectOwnProps): any {
     const { rawSelectedValue } = model;
@@ -125,7 +122,7 @@ interface InheritedSelectInputProps {
     delimiter?: string;
     description?: string;
     disabled?: boolean;
-    filterOptions?: (options: Option[], inputValue: string, currentValue: Option[]) => any; // from ReactSelect
+    filterOptions?: FilterOption;
     formsy?: boolean;
     initiallyDisabled?: boolean;
     inputClass?: string;
@@ -216,10 +213,10 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         clearTimeout(this.querySelectTimer);
     }
 
-    loadOptions = (input: string, callback): Promise<any> => {
+    loadOptions = (input: string): Promise<any> => {
         clearTimeout(this.querySelectTimer);
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve): void => {
             const { model } = this.state;
 
             const token = model.parseSearch(input);
@@ -262,6 +259,8 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 model: model.setSelection(value),
             }),
             () => {
+                // TODO: Figure out if we need to support this again or if there is an alternative pattern
+                // with the new ReactSelect async implementation
                 // if (loadOnChange) {
                 //     selectRef.loadOptions?.(FOCUS_FLAG);
                 // }
@@ -280,6 +279,8 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         const { loadOnFocus } = this.props;
         const { model } = this.state;
 
+        // TODO: Figure out if we need to support this again or if there is an alternative pattern
+        // with the new ReactSelect async implementation
         // if (model.preLoad || loadOnFocus) {
         //     selectRef.loadOptions?.(FOCUS_FLAG);
         // }
@@ -329,11 +330,11 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 {
                     allowCreate: false,
                     autoValue: false, // QuerySelect will directly control value of ReactSelect via selectedOptions
-                    autoload: true,
+                    // autoload: true,
                     cacheOptions: true,
                     description,
                     filterOptions,
-                    ignoreCase: false,
+                    // ignoreCase: false,
                     loadOptions: this.loadOptions,
                     onChange: this.onChange,
                     onFocus: this.onFocus,

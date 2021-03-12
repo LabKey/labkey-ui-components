@@ -1071,7 +1071,7 @@ export const EntityInsertPanelFormSteps = withFormSteps(EntityInsertPanelImpl, {
     hasDependentSteps: false,
 });
 
-export const EntityInsertPanel: FC<{ location?: Location } & FromLocationProps & OwnProps> = memo(props => {
+export const EntityInsertPanel: FC<{ location?: Location } & OwnProps> = memo(props => {
     const { location, ...entityInsertPanelProps } = props;
 
     const fromLocationProps = useMemo<FromLocationProps>(() => {

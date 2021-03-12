@@ -174,7 +174,6 @@ export class LookupSelectInput extends React.PureComponent<OwnProps, StateProps>
                 // properties that cannot be changed
                 joinValues,
                 options,
-                queryColumn: undefined,
                 // If joinValues is true, and a value is present ensure value is passed in as an Array<string>
                 value: joinValues && value && !Array.isArray(value) ? [value] : value,
             }

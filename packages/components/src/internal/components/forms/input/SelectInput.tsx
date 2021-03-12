@@ -15,7 +15,7 @@
  */
 import React, { Component, FC, FocusEvent, ReactNode } from 'react';
 import { withFormsy } from 'formsy-react';
-import ReactSelect from 'react-select';
+import ReactSelect, { components } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import AsyncCreatableSelect from 'react-select/async-creatable';
 import CreatableSelect from 'react-select/creatable';
@@ -24,6 +24,16 @@ import { getServerContext, Utils } from '@labkey/api';
 import { FieldLabel } from '../FieldLabel';
 
 import { generateId, QueryColumn } from '../../../..';
+
+// Copied from @types/react-select/src/filter.d.ts
+export interface Option {
+    data: any;
+    label: string;
+    value: string;
+}
+
+// Copied from @types/react-select/src/Select.d.ts
+export type FilterOption = ((option: Option, rawInput: string) => boolean) | null;
 
 // DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
 // any other delimiter value will break the "multiple" configuration parameter
@@ -93,6 +103,7 @@ function initOptions(props: SelectInputProps): any {
 }
 
 export interface SelectInputProps {
+    addLabelAsterisk?: boolean;
     addLabelText?: string;
     afterInputElement?: ReactNode; // this can be used to render an element to the right of the input
     allowCreate?: boolean;
@@ -109,9 +120,9 @@ export interface SelectInputProps {
     delimiter?: string;
     description?: string;
     disabled?: boolean;
-    filterOptions?: (options, filterString, values) => any; // from ReactSelect
+    filterOptions?: FilterOption;
     formsy?: boolean;
-    ignoreCase?: boolean;
+    // ignoreCase?: boolean;
     initiallyDisabled?: boolean;
     inputClass?: string;
     isLoading?: boolean;
@@ -127,18 +138,17 @@ export interface SelectInputProps {
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
     onToggleDisable?: (disabled: boolean) => void;
+    optionRenderer?: any;
     options?: any[];
-    placeholder?: string;
+    placeholder?: ReactNode;
     promptTextCreator?: (filterText: string) => string;
+    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     required?: boolean;
     saveOnBlur?: boolean;
     selectedOptions?: any; // Option | Option[];
     showLabel?: boolean;
-    addLabelAsterisk?: boolean;
-    renderFieldLabel?: (queryColumn: QueryColumn, label?: string, description?: string) => ReactNode;
     valueKey?: string;
     onChange?: Function; // this is getting confused with formsy on change, need to separate
-    optionRenderer?: any;
 
     id?: any;
     label?: ReactNode;
@@ -421,67 +431,77 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         return null;
     };
 
+    Input = inputProps => <components.Input {...inputProps} />;
+    // Input = inputProps => <components.Input {...inputProps} id={this.getId()} />;
+
+    noOptionsMessage = () => this.props.noResultsText;
+
     renderSelect = (): ReactNode => {
         const {
             addLabelText,
             autoFocus,
-            autoload,
+            // autoload,
             backspaceRemoves,
             cacheOptions,
             clearable,
-            deleteRemoves,
+            // deleteRemoves,
             delimiter,
             disabled,
             filterOptions,
-            ignoreCase,
+            // ignoreCase,
             isLoading,
-            labelKey,
+            // labelKey,
             loadOptions,
             multiple,
             name,
-            noResultsText,
+            // noResultsText,
             optionRenderer,
             options,
             placeholder,
             promptTextCreator,
-            required,
-            valueKey,
+            // required,
+            // valueKey,
         } = this.props;
 
         const selectProps = {
-            addLabelText,
-            // newer versions of ReactSelect have renamed this to autoFocus
-            autofocus: autoFocus,
-            autoload,
+            // addLabelText, TODO: Removed. No guidance given.
+            autoFocus,
+            // autoload, TODO: See Async component default options
             backspaceRemoves,
-            deleteRemoves,
-            clearable,
+            // deleteRemoves, TODO: Removed. No guidance given.
+            components: {
+                Input: this.Input,
+                Options: optionRenderer,
+            },
             delimiter,
-            disabled: disabled || this.state.isDisabled,
-            filterOptions,
-            ignoreCase,
-            inputProps: { id: this.getId() },
+            filterOption: filterOptions, // TODO: Rename to filterOption() and determine if "value" is still a property
+            id: this.getId(),
+            // ignoreCase, TODO: Removed. See `createFilter()`
+            // inputProps: { id: this.getId() },
+            isClearable: clearable, // TODO: Rename "clearable" to "isClearable" on SelectInput props
+            isDisabled: disabled || this.state.isDisabled, // TODO: Rename "disabled" to "isDisabled" on SelectInput props
             isLoading,
-            labelKey,
-            multi: multiple,
+            isMulti: multiple, // TODO: Rename "multiple" to "isMulti" on SelectInput props
+            // labelKey, // TODO: Removed. No guidance given.
             name,
-            noResultsText,
+            // TODO: Rename "noResultsText" to "noOptionsMessage" on SelectInput props
+            noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
-            optionRenderer,
+            // optionRenderer,
             options,
             placeholder,
             promptTextCreator,
             ref: 'reactSelect',
-            required,
+            // required, // TODO: No longer supported by ReactSelect. Consider keeping prop for field display. See how this acts on forms.
             value: this.state.selectedOptions,
-            valueKey,
+            // valueKey, TODO: Removed. No guidance given.
         };
 
         if (Array.isArray(selectProps.value) && selectProps.value.length === 0) {
             selectProps.value = undefined;
-        } else if (!selectProps.multi && Array.isArray(selectProps.value)) {
+        } else if (!selectProps.isMulti && Array.isArray(selectProps.value)) {
             console.warn(
                 'SelectInput: value is of type "array" but this component is NOT in "multiple" mode.' +
                     ' Consider either putting in "multiple" mode or fix value to not be an array.'

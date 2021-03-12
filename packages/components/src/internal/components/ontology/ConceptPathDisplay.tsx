@@ -23,6 +23,7 @@ export const ConceptPathDisplay: FC<ConceptPathDisplayProps> = memo(props => {
 
     useEffect(() => {
         if (path) {
+            setParentPaths(undefined);
             fetchParentPaths(path.path)
                 .then(response => {
                     setParentPaths(response);

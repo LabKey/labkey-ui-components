@@ -19,6 +19,7 @@ export const ConceptPathInfo: FC<ConceptPathInfoProps> = memo(props => {
 
     useEffect(() => {
         if (selectedCode) {
+            setAlternatePaths(undefined);
             fetchAlternatePaths(selectedCode)
                 .then(response => {
                     setAlternatePaths(response);

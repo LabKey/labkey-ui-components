@@ -86,6 +86,9 @@
 /* CONCEPT OVERVIEW */
 .ontology-concept-overview-container {
     padding-top: 10px;
+    min-height: 315px;
+    height: 67vh;
+    overflow-y: scroll;
 
     .none-selected {
         font-size: 20px;

@@ -17,9 +17,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { boolean, text, withKnobs } from '@storybook/addon-knobs';
 
-import { Location, EntityInsertPanel, helpLinkNode, DataClassDataType, SampleTypeDataType, EntityDataType } from '..';
-
 import { List } from 'immutable';
+
+import { Location, EntityInsertPanel, helpLinkNode, DataClassDataType, SampleTypeDataType, EntityDataType } from '..';
 
 storiesOf('EntityInsertPanel', module)
     .addDecorator(withKnobs)

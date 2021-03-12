@@ -6,6 +6,7 @@ import { PathModel } from './models';
 import { Alert } from '../base/Alert';
 
 import { fetchParentPaths } from './actions';
+import { LoadingSpinner } from '../../..';
 
 export interface ConceptPathDisplayProps {
     title?: string;
@@ -63,6 +64,7 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
         >
             {title && <div className="title">{title}</div>}
             <div className="concept-path">
+                {!parentPaths && <LoadingSpinner />}
                 {parentPaths?.map((parent, idx) => {
                     return (
                         <>

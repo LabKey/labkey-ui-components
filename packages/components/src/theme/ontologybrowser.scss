@@ -136,7 +136,8 @@
 
 .concept-pathinfo-container {
     min-height: 315px;
-    height: 67vh;
+    height: 65vh;
+    overflow-y: scroll;
 
     .title {
         font-size: 20px;

@@ -564,7 +564,7 @@ exports[`FileTree with data allowMultiSelect false 1`] = `
             }
           >
             <div
-              className="lk-text-theme-dark"
+              className="lk-text-theme-dark filetree-node-active"
             >
               <div
                 className="filetree-resource-row"

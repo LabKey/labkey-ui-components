@@ -24,12 +24,12 @@ describe('ConceptPathInfoImpl', () => {
     function validate(
         wrapper: ReactWrapper,
         code: string = undefined,
-        isLoading = false,
+        loadingCount = 0,
         alternatePaths: PathModel[] = undefined,
         selectedPath: PathModel = undefined
     ): void {
         expect(wrapper.find('.none-selected')).toHaveLength(code ? 0 : 1);
-        expect(wrapper.find(LoadingSpinner)).toHaveLength(isLoading ? 1 : 0);
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(loadingCount);
         expect(wrapper.find(ConceptPathDisplay)).toHaveLength(alternatePaths?.length ? alternatePaths.length : 0);
         expect(wrapper.find('.current-path-container')).toHaveLength(
             alternatePaths?.length > 0 && selectedPath ? 1 : 0
@@ -59,7 +59,7 @@ describe('ConceptPathInfoImpl', () => {
     test('Code set, aka Loading', () => {
         const code = 'MagicCode';
         const wrapper = mount(<ConceptPathInfoImpl selectedCode={code} alternatePathClickHandler={jest.fn} />);
-        validate(wrapper, code, true);
+        validate(wrapper, code, 1);
         wrapper.unmount();
     });
 
@@ -78,7 +78,7 @@ describe('ConceptPathInfoImpl', () => {
                 alternatePathClickHandler={jest.fn}
             />
         );
-        validate(wrapper, code, true, alternatePaths, path);
+        validate(wrapper, code, 1, alternatePaths, path);
         wrapper.unmount();
     });
 
@@ -100,7 +100,7 @@ describe('ConceptPathInfoImpl', () => {
                 alternatePathClickHandler={jest.fn}
             />
         );
-        validate(wrapper, code, false, alternatePaths, path);
+        validate(wrapper, code, 0, alternatePaths, path);
         wrapper.unmount();
     });
 
@@ -119,7 +119,7 @@ describe('ConceptPathInfoImpl', () => {
                 alternatePathClickHandler={jest.fn}
             />
         );
-        validate(wrapper, code, false, alternatePaths, path);
+        validate(wrapper, code, 1, alternatePaths, path);
         wrapper.unmount();
     });
 
@@ -152,7 +152,7 @@ describe('ConceptPathInfoImpl', () => {
                 alternatePathClickHandler={jest.fn}
             />
         );
-        validate(wrapper, code, false, alternatePaths, selected);
+        validate(wrapper, code, 4, alternatePaths, selected);
         wrapper.unmount();
     });
 });

@@ -26,14 +26,15 @@ describe('ConceptPathDisplayImpl', () => {
         parentCount = 0,
         title: string = undefined,
         isCollapsed = false,
-        isSelected = false
+        isSelected = false,
+        isLoading = false,
     ): void {
         expect(wrapper.find('.concept-path-container')).toHaveLength(path ? 1 : 0);
         expect(wrapper.find('.concept-path')).toHaveLength(path ? 1 : 0);
         expect(wrapper.find('.collapsed')).toHaveLength(isCollapsed ? 1 : 0);
         expect(wrapper.find('.selected')).toHaveLength(isSelected ? 1 : 0);
         expect(wrapper.find('.concept-path-label')).toHaveLength(parentCount);
-        expect(wrapper.find('i')).toHaveLength(parentCount === 0 ? 0 : parentCount - 1);
+        expect(wrapper.find('i')).toHaveLength(parentCount === 0 ? (isLoading ? 1 : 0) : parentCount - 1);
         expect(wrapper.find('.title')).toHaveLength(title ? 1 : 0);
 
         if (title) {
@@ -49,7 +50,7 @@ describe('ConceptPathDisplayImpl', () => {
 
     test('Parent path not loaded yet', () => {
         const wrapper = mount(<ConceptPathDisplayImpl path={TEST_CONCEPT_PATH} parentPaths={undefined} />);
-        validate(wrapper, TEST_CONCEPT_PATH);
+        validate(wrapper, TEST_CONCEPT_PATH, 0, undefined, false, false, true);
         wrapper.unmount();
     });
 

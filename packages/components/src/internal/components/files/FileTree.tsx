@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Treebeard, decorators, TreeTheme } from 'react-treebeard';
+import { Treebeard, decorators, TreeTheme, animations } from 'react-treebeard';
 import { Checkbox, Alert } from 'react-bootstrap';
 import { List } from 'immutable';
 import classNames from 'classnames';
@@ -195,6 +195,8 @@ interface FileTreeProps {
     getRootPermissions?: (directory?: string) => Promise<any>;
     defaultRootName?: string;
     showNodeIcon?: boolean;
+    showLoading?: boolean;
+    showAnimations?: boolean;
 }
 
 interface FileTreeState {
@@ -213,6 +215,8 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
         useFileIconCls: false,
         emptyDirectoryText: 'No Files Found',
         defaultRootName: 'root',
+        showLoading: false,
+        showAnimations: true,
     };
 
     constructor(props: FileTreeProps) {
@@ -494,7 +498,6 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
 
         if (cursor) {
             cursor.active = false;
-            this.setState(() => ({ cursor, data: { ...data } }));
         }
 
         node.active = active;
@@ -542,20 +545,24 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
     };
 
     render(): React.ReactNode {
+        const { showLoading, showAnimations } = this.props;
         const { data, error } = this.state;
 
         return (
             <div className="filetree-container">
-                {error ? (
-                    <Alert bsStyle="danger">{error}</Alert>
-                ) : (
-                    <Treebeard
-                        data={data}
-                        onToggle={this.onToggle}
-                        decorators={{ ...decorators, Header: this.headerDecorator }}
-                        style={customStyle}
-                    />
-                )}
+                {showLoading ? <LoadingSpinner />
+                    : error ? (
+                        <Alert bsStyle="danger">{error}</Alert>
+                    ) : (
+                        <Treebeard
+                            animations={showAnimations ? animations : false}
+                            data={data}
+                            onToggle={this.onToggle}
+                            decorators={{ ...decorators, Header: this.headerDecorator }}
+                            style={customStyle}
+                        />
+                    )
+                }
             </div>
         );
     }

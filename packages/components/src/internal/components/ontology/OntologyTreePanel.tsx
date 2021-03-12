@@ -1,4 +1,4 @@
-import React, { FC, useCallback, RefObject, useRef, useEffect } from 'react';
+import React, { FC, useCallback, RefObject, useRef, useEffect, useState } from 'react';
 import { TreeNode } from 'react-treebeard';
 
 import { naturalSortByProperty, FileTree } from '../../..';
@@ -25,16 +25,22 @@ interface OntologyTreeProps {
 
 export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
     const { root, onNodeSelection, alternatePath } = props;
+    const [showLoading, setShowLoading] = useState<boolean>(false);
     const fileTreeRef: RefObject<FileTree> = useRef();
 
     // watch for changes to alternatePath so that we can make sure the tree data down to that node is loaded
     useEffect(() => {
         if (alternatePath?.path) {
             fetchParentPaths(alternatePath.path).then(parentPaths => {
-                toggleParentPaths(fileTreeRef.current, alternatePath, parentPaths, true);
+                // if this is a deeply nested path, let's mask the tree with a loading message while we toggle parents
+                if (parentPaths.length > 5) setShowLoading(true);
+
+                toggleParentPaths(fileTreeRef.current, alternatePath, parentPaths, true, () => {
+                    setShowLoading(false);
+                });
             });
         }
-    }, [alternatePath]);
+    }, [alternatePath, setShowLoading]);
 
     const loadData = useCallback(
         async (ontologyPath: string = root.path): Promise<PathNode[]> => {
@@ -66,6 +72,8 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
             allowMultiSelect={false}
             showNodeIcon={false}
             defaultRootName={root.label}
+            showLoading={showLoading}
+            showAnimations={false}
             ref={fileTreeRef}
         />
     );
@@ -75,16 +83,22 @@ const getTreeNodeForPath = function (fileTree, path: string): any {
     return fileTree.getDataNode(path, fileTree.state.data);
 };
 
-const toggleParentPaths = function (fileTree, alternatePath: PathModel, parentPaths: PathModel[], isRoot = false): void {
+const toggleParentPaths = function (fileTree, alternatePath: PathModel, parentPaths: PathModel[], isRoot: boolean, callback: () => void): void {
     const parentPath = isRoot ? DEFAULT_ROOT_PREFIX : parentPaths[0].path;
     parentPaths.shift();
 
     const node = getTreeNodeForPath(fileTree, parentPath);
     if (node) {
         fileTree.onToggle(node, true, alternatePath.path === node.id, () => {
-            if (parentPaths.length > 0) toggleParentPaths(fileTree, alternatePath, parentPaths);
+            if (parentPaths.length > 0) {
+                toggleParentPaths(fileTree, alternatePath, parentPaths, false, callback);
+            } else {
+                callback();
+            }
         });
     } else if (parentPaths.length > 0) {
-        toggleParentPaths(fileTree, alternatePath, parentPaths);
+        toggleParentPaths(fileTree, alternatePath, parentPaths, false, callback);
+    } else {
+        callback();
     }
 };

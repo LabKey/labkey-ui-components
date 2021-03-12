@@ -9,7 +9,7 @@ import { ConceptPathDisplay } from './ConceptPathDisplay';
 export interface ConceptPathInfoProps {
     selectedCode?: string;
     selectedPath?: PathModel;
-    alternatePathClickHandler: (path: PathModel) => void;
+    alternatePathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
 }
 
 export const ConceptPathInfo: FC<ConceptPathInfoProps> = memo(props => {

@@ -12,7 +12,7 @@ export interface ConceptPathDisplayProps {
     path: PathModel;
     isSelected?: boolean;
     isCollapsed?: boolean;
-    onClick?: (path: PathModel) => void;
+    onClick?: (path: PathModel, isAlternatePath?: boolean) => void;
 }
 
 export const ConceptPathDisplay: FC<ConceptPathDisplayProps> = memo(props => {
@@ -48,7 +48,7 @@ interface ConceptPathDisplayImplProps extends ConceptPathDisplayProps {
 export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(props => {
     const { isCollapsed = false, isSelected = false, onClick = undefined, parentPaths, path, title } = props;
     const updatePath = useCallback((): void => {
-        onClick?.(path);
+        onClick?.(path, true);
     }, [path, onClick]);
 
     if (!path) return undefined;

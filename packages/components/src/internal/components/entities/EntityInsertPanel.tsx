@@ -731,7 +731,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
         return null;
     };
 
-    getBulkAddFormValues = (): any => {
+    getBulkAddFormValues = (): Record<string, any> | null => {
         const { insertModel } = this.state;
         const queryGridModel = this.getQueryGridModel();
 
@@ -780,32 +780,18 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     renderCreateFromGrid = (): ReactNode => {
         const { insertModel } = this.state;
-        const { entityDataType, creationTypeOptions, onBulkAdd } = this.props;
+        const { creationTypeOptions, entityDataType, nounPlural, nounSingular, onBulkAdd } = this.props;
 
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
                 placeholder: '[generated id]',
-                toolTip:
-                    'A generated ' +
-                    this.props.nounSingular +
-                    ' ID will be provided for ' +
-                    this.props.nounPlural +
-                    " that don't have a user-provided ID in the grid.",
+                toolTip: `A generated ${nounSingular} ID will be provided for ${nounPlural} that don't have a user-provided ID in the grid.`,
             });
         } else {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
-                toolTip:
-                    'A ' +
-                    this.props.nounSingular +
-                    ' ID is required for each ' +
-                    this.props.nounSingular +
-                    ' since this ' +
-                    this.typeTextSingular +
-                    ' has no naming pattern. You can provide a naming pattern by editing the ' +
-                    this.typeTextSingular +
-                    ' design.',
+                toolTip: `A ${nounSingular} ID is required for each ${nounSingular} since this ${this.typeTextSingular} has no naming pattern. You can provide a naming pattern by editing the ${this.typeTextSingular} design.`,
             });
         }
 
@@ -833,19 +819,15 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                             allowBulkAdd
                             allowBulkUpdate
                             bordered
-                            condensed={false}
                             striped
                             bulkAddText="Bulk Insert"
                             bulkAddProps={{
-                                title: 'Bulk Creation of ' + this.capNounPlural,
-                                header:
-                                    'Add a batch of ' +
-                                    this.props.nounPlural +
-                                    ' that will share the properties set below.',
+                                title: `Bulk Creation of ${this.capNounPlural}`,
+                                header: `Add a batch of ${nounPlural} that will share the properties set below.`,
                                 columnFilter: this.columnFilter,
                                 fieldValues: this.getBulkAddFormValues(),
                                 creationTypeOptions,
-                                countText: 'New ' + this.props.nounPlural,
+                                countText: `New ${nounPlural}`,
                             }}
                             onBulkAdd={onBulkAdd}
                             bulkUpdateProps={{ columnFilter: this.columnFilter }}
@@ -854,9 +836,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                             onRowCountChange={this.onRowCountChange}
                             model={queryGridModel}
                             initialEmptyRowCount={0}
-                            emptyGridMsg={
-                                'Start by adding the quantity of ' + this.props.nounPlural + ' you want to create.'
-                            }
+                            emptyGridMsg={`Start by adding the quantity of ${nounPlural} you want to create.`}
                             maxTotalRows={this.props.maxEntities}
                             getInsertColumns={this.getInsertColumns}
                         />

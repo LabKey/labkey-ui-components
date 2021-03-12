@@ -12,7 +12,7 @@ import { ConceptPathDisplay } from './ConceptPathDisplay';
 
 describe('ConceptPathInfo', () => {
     test('Nothing set', () => {
-        const wrapper = mount(<ConceptPathInfo />);
+        const wrapper = mount(<ConceptPathInfo alternatePathClickHandler={jest.fn} />);
         expect(wrapper.find(Alert)).toHaveLength(1);
         expect(wrapper.find(Alert).text()).toBe('');
         expect(wrapper.find(ConceptPathInfoImpl)).toHaveLength(1);
@@ -48,7 +48,7 @@ describe('ConceptPathInfoImpl', () => {
     }
 
     test('Nothing set', () => {
-        const wrapper = mount(<ConceptPathInfoImpl selectedCode={undefined} />);
+        const wrapper = mount(<ConceptPathInfoImpl selectedCode={undefined} alternatePathClickHandler={jest.fn} />);
         expect(wrapper.find('.none-selected')).toHaveLength(1);
         expect(wrapper.find('.none-selected').text()).toBe('No concept selected');
         expect(wrapper.find('.concept-pathinfo-container')).toHaveLength(0);
@@ -58,7 +58,7 @@ describe('ConceptPathInfoImpl', () => {
 
     test('Code set, aka Loading', () => {
         const code = 'MagicCode';
-        const wrapper = mount(<ConceptPathInfoImpl selectedCode={code} />);
+        const wrapper = mount(<ConceptPathInfoImpl selectedCode={code} alternatePathClickHandler={jest.fn} />);
         validate(wrapper, code, true);
         wrapper.unmount();
     });
@@ -71,7 +71,12 @@ describe('ConceptPathInfoImpl', () => {
         });
         const alternatePaths = undefined;
         const wrapper = mount(
-            <ConceptPathInfoImpl selectedCode={code} selectedPath={path} alternatePaths={alternatePaths} />
+            <ConceptPathInfoImpl
+                selectedCode={code}
+                selectedPath={path}
+                alternatePaths={alternatePaths}
+                alternatePathClickHandler={jest.fn}
+            />
         );
         validate(wrapper, code, true, alternatePaths, path);
         wrapper.unmount();
@@ -88,7 +93,12 @@ describe('ConceptPathInfoImpl', () => {
         });
         const alternatePaths = [];
         const wrapper = mount(
-            <ConceptPathInfoImpl selectedCode={code} selectedPath={path} alternatePaths={alternatePaths} />
+            <ConceptPathInfoImpl
+                selectedCode={code}
+                selectedPath={path}
+                alternatePaths={alternatePaths}
+                alternatePathClickHandler={jest.fn}
+            />
         );
         validate(wrapper, code, false, alternatePaths, path);
         wrapper.unmount();
@@ -102,7 +112,12 @@ describe('ConceptPathInfoImpl', () => {
         });
         const alternatePaths = [path];
         const wrapper = mount(
-            <ConceptPathInfoImpl selectedCode={code} selectedPath={path} alternatePaths={alternatePaths} />
+            <ConceptPathInfoImpl
+                selectedCode={code}
+                selectedPath={path}
+                alternatePaths={alternatePaths}
+                alternatePathClickHandler={jest.fn}
+            />
         );
         validate(wrapper, code, false, alternatePaths, path);
         wrapper.unmount();
@@ -130,7 +145,12 @@ describe('ConceptPathInfoImpl', () => {
         const selected = path3;
         const alternatePaths = [path1, path2, path3, path4];
         const wrapper = mount(
-            <ConceptPathInfoImpl selectedCode={code} selectedPath={selected} alternatePaths={alternatePaths} />
+            <ConceptPathInfoImpl
+                selectedCode={code}
+                selectedPath={selected}
+                alternatePaths={alternatePaths}
+                alternatePathClickHandler={jest.fn}
+            />
         );
         validate(wrapper, code, false, alternatePaths, selected);
         wrapper.unmount();

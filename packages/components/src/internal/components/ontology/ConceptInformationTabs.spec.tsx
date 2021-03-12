@@ -21,7 +21,7 @@ describe('ConceptInformationTabs', () => {
     }
 
     test('no concept', () => {
-        const wrapper = mount(<ConceptInformationTabs {...DEFAULT_PROPS} />);
+        const wrapper = mount(<ConceptInformationTabs {...DEFAULT_PROPS} alternatePathClickHandler={jest.fn} />);
         validate(wrapper);
         expect(wrapper.find(ConceptOverviewPanelImpl).prop('concept')).toBe(undefined);
         wrapper.unmount();
@@ -29,14 +29,16 @@ describe('ConceptInformationTabs', () => {
 
     test('with concept', () => {
         const concept = new ConceptModel({ code: 'a', label: 'b' });
-        const wrapper = mount(<ConceptInformationTabs {...DEFAULT_PROPS} concept={concept} />);
+        const wrapper = mount(
+            <ConceptInformationTabs {...DEFAULT_PROPS} concept={concept} alternatePathClickHandler={jest.fn} />
+        );
         validate(wrapper);
         expect(wrapper.find(ConceptOverviewPanelImpl).prop('concept')).toBe(concept);
         wrapper.unmount();
     });
 
     test('activeTab and defaultActiveKey', () => {
-        const wrapper = mount(<ConceptInformationTabs {...DEFAULT_PROPS} />);
+        const wrapper = mount(<ConceptInformationTabs {...DEFAULT_PROPS} alternatePathClickHandler={jest.fn} />);
         validate(wrapper);
         expect(wrapper.find(Tab.Container).prop('defaultActiveKey')).toBe(ConceptInfoTabs.CONCEPT_OVERVIEW_TAB);
         expect(wrapper.find(Tab.Container).prop('activeKey')).toBe(ConceptInfoTabs.CONCEPT_OVERVIEW_TAB);

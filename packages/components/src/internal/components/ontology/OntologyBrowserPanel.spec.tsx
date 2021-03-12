@@ -43,6 +43,7 @@ const DEFAULT_PROPS = {
     ontology: undefined,
     selectedConcept: undefined,
     setSelectedConcept: jest.fn,
+    setSelectedPath: jest.fn,
     asPanel: false,
 };
 

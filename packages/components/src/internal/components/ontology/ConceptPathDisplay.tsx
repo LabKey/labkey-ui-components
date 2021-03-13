@@ -87,6 +87,7 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
                         </div>
                     </>
                 }
+                title="Full Path"
             >
                 <div unselectable="on">{fullpath}</div>
             </LabelHelpTip>

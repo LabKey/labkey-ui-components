@@ -1,12 +1,14 @@
+/* eslint-disable import/no-cycle */
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 
-import { PathModel } from './models';
-
 import { Alert } from '../base/Alert';
 
+import { LoadingSpinner } from '../base/LoadingSpinner';
+import { LabelHelpTip } from '../base/LabelHelpTip';
+
+import { PathModel } from './models';
 import { fetchParentPaths } from './actions';
-import { LoadingSpinner } from '../../..';
 
 export interface ConceptPathDisplayProps {
     title?: string;
@@ -55,6 +57,17 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
 
     if (!path) return undefined;
 
+    const fullpath = parentPaths?.map((parent, idx) => {
+        return (
+            <>
+                <span className="concept-path-label">{parent.label}</span>
+                {idx !== parentPaths.length - 1 && <i className="fa fa-chevron-right concept-path-spacer" />}
+            </>
+        );
+    });
+
+    // const icon = ;
+
     return (
         <div
             className={classNames('concept-path-container', {
@@ -63,18 +76,20 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
             })}
             onClick={updatePath}
         >
-            {title && <div className="title">{title}</div>}
-            <div className="concept-path">
-                {!parentPaths && <LoadingSpinner />}
-                {parentPaths?.map((parent, idx) => {
-                    return (
-                        <>
-                            <span className="concept-path-label">{parent.label}</span>
-                            {idx !== parentPaths.length - 1 && <i className="fa fa-chevron-right" />}
-                        </>
-                    );
-                })}
-            </div>
+            <LabelHelpTip
+                placement="bottom"
+                iconComponent={
+                    <>
+                        {title && <div className="title">{title}</div>}
+                        <div className="concept-path">
+                            {!parentPaths && <LoadingSpinner />}
+                            {parentPaths && <>{fullpath}</>}
+                        </div>
+                    </>
+                }
+            >
+                <div unselectable="on">{fullpath}</div>
+            </LabelHelpTip>
         </div>
     );
 });

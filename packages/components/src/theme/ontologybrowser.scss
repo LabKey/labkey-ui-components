@@ -186,26 +186,13 @@
             width: 60ch; //TODO figure out what this should actually be
             text-overflow: ellipsis;
         }
-
-        &:hover {
-            .concept-path {
-                overflow: visible;
-                white-space: normal;
-                width: auto;
-                //position: absolute;
-                direction: ltr;
-                padding-left: 5px;
-            }
-        }
-    }
-
-    .concept-path {
-        i {
-            padding: 0 5px 0;
-        }
     }
 
     .title {
         font-size: 14px;
     }
+}
+
+.concept-path-spacer {
+    padding: 0 5px 0;
 }

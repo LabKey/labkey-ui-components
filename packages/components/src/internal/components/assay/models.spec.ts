@@ -34,5 +34,8 @@ describe('AssayStateModel', () => {
         expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes([GENERAL_ASSAY_PROVIDER_NAME])).toHaveLength(2);
         expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(['NAb'])).toHaveLength(1);
         expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(['nab'])).toHaveLength(1);
+
+        expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(undefined, ['NAb'])).toHaveLength(2);
+        expect(TEST_ASSAY_STATE_MODEL.getDefinitionsByTypes(undefined, [GENERAL_ASSAY_PROVIDER_NAME])).toHaveLength(1);
     });
 });

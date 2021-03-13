@@ -66,7 +66,15 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
         );
     });
 
-    // const icon = ;
+    const pathBody = (
+        <>
+            {title && <div className="title">{title}</div>}
+            <div className="concept-path">
+                {!parentPaths && <LoadingSpinner />}
+                {parentPaths && <>{fullpath}</>}
+            </div>
+        </>
+    );
 
     return (
         <div
@@ -76,21 +84,12 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
             })}
             onClick={updatePath}
         >
-            <LabelHelpTip
-                placement="bottom"
-                iconComponent={
-                    <>
-                        {title && <div className="title">{title}</div>}
-                        <div className="concept-path">
-                            {!parentPaths && <LoadingSpinner />}
-                            {parentPaths && <>{fullpath}</>}
-                        </div>
-                    </>
-                }
-                title="Full Path"
-            >
-                <div unselectable="on">{fullpath}</div>
-            </LabelHelpTip>
+            {isCollapsed && (
+                <LabelHelpTip placement="bottom" iconComponent={pathBody} title="Full Path">
+                    {isCollapsed && <div unselectable="on">{fullpath}</div>}
+                </LabelHelpTip>
+            )}
+            {!isCollapsed && <>{pathBody}</>}
         </div>
     );
 });

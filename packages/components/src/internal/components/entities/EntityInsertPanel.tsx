@@ -73,7 +73,7 @@ import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
 import { BulkAddData } from '../editable/EditableGrid';
 
-import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
+import { DERIVATION_DATA_SCOPE_CHILD_ONLY, UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
 import {
     EntityDataType,
@@ -773,15 +773,14 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
     columnFilter = (col: QueryColumn): boolean => {
         return (
             insertColumnFilter(col) &&
+            col.conceptURI !== UNIQUE_ID_CONCEPT_URI &&
             col.fieldKey !== this.props.entityDataType.uniqueFieldKey &&
             col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY
         );
     };
 
-    renderCreateFromGrid = (): ReactNode => {
-        const { insertModel } = this.state;
-        const { creationTypeOptions, entityDataType, nounPlural, nounSingular, onBulkAdd } = this.props;
-
+    getGeneratedIdColumnMetadata() : Map<string, EditableColumnMetadata> {
+        const { entityDataType, nounSingular, nounPlural } = this.props;
         let columnMetadata = Map<string, EditableColumnMetadata>();
         if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
@@ -794,6 +793,24 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 toolTip: `A ${nounSingular} ID is required for each ${nounSingular} since this ${this.typeTextSingular} has no naming pattern. You can provide a naming pattern by editing the ${this.typeTextSingular} design.`,
             });
         }
+        const queryInfo = this.getGridQueryInfo();
+        queryInfo?.columns.filter((column) => column.conceptURI === UNIQUE_ID_CONCEPT_URI).forEach(
+            column => {
+                columnMetadata = columnMetadata.set(column.fieldKey, {
+                    readOnly: false,
+                    placeholder: '[generated value]',
+                    toolTip: `A unique value will be provided for ${nounPlural} that don't have a user-provided value in the grid.`
+                })
+            }
+        );
+        return columnMetadata;
+    }
+
+    renderCreateFromGrid = (): ReactNode => {
+        const { insertModel } = this.state;
+        const { creationTypeOptions, entityDataType, nounPlural, nounSingular, onBulkAdd } = this.props;
+
+        let columnMetadata = this.getGeneratedIdColumnMetadata();
 
         const queryGridModel = this.getQueryGridModel();
         const isLoaded = !!queryGridModel?.isLoaded;

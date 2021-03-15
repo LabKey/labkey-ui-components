@@ -25,13 +25,11 @@ describe('ConceptPathDisplayImpl', () => {
         path: PathModel = undefined,
         parentCount = 0,
         title: string = undefined,
-        isCollapsed = false,
         isSelected = false,
-        isLoading = false,
+        isLoading = false
     ): void {
         expect(wrapper.find('.concept-path-container')).toHaveLength(path ? 1 : 0);
         expect(wrapper.find('.concept-path')).toHaveLength(path ? 1 : 0);
-        expect(wrapper.find('.collapsed')).toHaveLength(isCollapsed ? 1 : 0);
         expect(wrapper.find('.selected')).toHaveLength(isSelected ? 1 : 0);
         expect(wrapper.find('.concept-path-label')).toHaveLength(parentCount);
         expect(wrapper.find('i')).toHaveLength(parentCount === 0 ? (isLoading ? 1 : 0) : parentCount - 1);
@@ -50,7 +48,7 @@ describe('ConceptPathDisplayImpl', () => {
 
     test('Parent path not loaded yet', () => {
         const wrapper = mount(<ConceptPathDisplayImpl path={TEST_CONCEPT_PATH} parentPaths={undefined} />);
-        validate(wrapper, TEST_CONCEPT_PATH, 0, undefined, false, false, true);
+        validate(wrapper, TEST_CONCEPT_PATH, 0, undefined, false, true);
         wrapper.unmount();
     });
 
@@ -107,39 +105,19 @@ describe('ConceptPathDisplayImpl', () => {
         wrapper.unmount();
     });
 
-    test('Collapsed set', () => {
-        const parentPaths = [];
-        const title = 'Long title to show';
-        const collapsed = true;
-        const selected = false;
-        const wrapper = mount(
-            <ConceptPathDisplayImpl
-                path={TEST_CONCEPT_PATH}
-                parentPaths={parentPaths}
-                title={title}
-                isCollapsed={collapsed}
-                isSelected={selected}
-            />
-        );
-        validate(wrapper, TEST_CONCEPT_PATH, parentPaths.length, title, collapsed, selected);
-        wrapper.unmount();
-    });
-
     test('Selected set', () => {
         const parentPaths = [];
         const title = 'Long title to show';
-        const collapsed = false;
         const selected = true;
         const wrapper = mount(
             <ConceptPathDisplayImpl
                 path={TEST_CONCEPT_PATH}
                 parentPaths={parentPaths}
                 title={title}
-                isCollapsed={collapsed}
                 isSelected={selected}
             />
         );
-        validate(wrapper, TEST_CONCEPT_PATH, parentPaths.length, title, collapsed, selected);
+        validate(wrapper, TEST_CONCEPT_PATH, parentPaths.length, title, selected);
         wrapper.unmount();
     });
 });

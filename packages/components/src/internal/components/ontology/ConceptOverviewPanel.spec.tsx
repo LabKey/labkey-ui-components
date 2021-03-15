@@ -1,13 +1,14 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { mount, ReactWrapper } from 'enzyme';
 
 import { Alert } from '../../..';
 
 import { ConceptOverviewModal, ConceptOverviewPanelImpl, OntologyConceptOverviewPanel } from './ConceptOverviewPanel';
-import { ConceptModel } from './models';
+import { ConceptModel, PathModel } from './models';
 
 const TEST_CONCEPT = new ConceptModel({ code: 'a', label: 'b', description: 'c' });
+const TEST_PATH = new PathModel({});
 
 describe('OntologyConceptOverviewPanel', () => {
     test('without code prop', () => {
@@ -32,10 +33,23 @@ describe('ConceptOverviewPanelImpl', () => {
     });
 
     test('with concept', () => {
-        const wrapper = mount(<ConceptOverviewPanelImpl concept={TEST_CONCEPT} />);
+        const wrapper = mount(<ConceptOverviewPanelImpl concept={TEST_CONCEPT}  />);
         validate(wrapper, false, 3);
         expect(wrapper.find('.title').text()).toBe(TEST_CONCEPT.label);
         expect(wrapper.find('.code').text()).toBe(TEST_CONCEPT.code);
+        expect(wrapper.find(Button)).toHaveLength(0);
+        expect(wrapper.find('.description-title').text()).toBe('Description');
+        expect(wrapper.find('.description-text').text()).toBe(TEST_CONCEPT.description);
+        wrapper.unmount();
+    });
+
+    test('with selected path', () => {
+        const wrapper = mount(<ConceptOverviewPanelImpl concept={TEST_CONCEPT} selectedPath={TEST_PATH} />);
+        validate(wrapper, false, 5);
+        expect(wrapper.find('.title').text()).toBe(TEST_CONCEPT.label);
+        expect(wrapper.find('.code').text()).toBe(TEST_CONCEPT.code);
+        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find(Button).text()).toBe('Show Path');
         expect(wrapper.find('.description-title').text()).toBe('Description');
         expect(wrapper.find('.description-text').text()).toBe(TEST_CONCEPT.description);
         wrapper.unmount();

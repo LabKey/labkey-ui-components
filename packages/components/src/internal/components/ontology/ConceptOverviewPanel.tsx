@@ -84,9 +84,9 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
     return (
         <>
             {selectedPath && (
-                <div className="button-container">
+                <div className="path-button-container">
                     <Button className={showPath ? 'show-path' : ''} onClick={handleShowPath}>
-                        {showPath ? 'Hide ' : 'Show '} Path
+                        {showPath ? 'Hide' : 'Show'} Path
                     </Button>
                 </div>
             )}

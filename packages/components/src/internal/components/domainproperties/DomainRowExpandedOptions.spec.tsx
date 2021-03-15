@@ -30,6 +30,7 @@ const DEFAULT_PROPS = {
     index: 1,
     domainIndex: 1,
     domainFormDisplayOptions: DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+    serverModuleNames: undefined,
     onChange: jest.fn(),
     onMultiChange: jest.fn(),
     showingModal: jest.fn(),

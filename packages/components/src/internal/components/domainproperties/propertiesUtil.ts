@@ -175,12 +175,10 @@ export function removeUnusedProperties(obj) {
 }
 
 export function removeUnusedOntologyProperties(obj) {
-    if (!hasActiveModule('Ontology')) {
-        delete obj.sourceOntology;
-        delete obj.conceptImportColumn;
-        delete obj.conceptLabelColumn;
-        delete obj.principalConceptCode;
-    }
+    delete obj.sourceOntology;
+    delete obj.conceptImportColumn;
+    delete obj.conceptLabelColumn;
+    delete obj.principalConceptCode;
     return obj;
 }
 

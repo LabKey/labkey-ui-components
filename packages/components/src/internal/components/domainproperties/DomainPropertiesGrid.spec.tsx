@@ -30,6 +30,7 @@ describe('DomainPropertiesGrid', () => {
                 actions={ACTIONS}
                 selectAll={false}
                 appPropertiesOnly={false}
+                hasOntologyModule={false}
             />
         );
         const text = domainPropertiesGrid.text();
@@ -62,6 +63,7 @@ describe('DomainPropertiesGrid', () => {
                 actions={ACTIONS}
                 selectAll={false}
                 appPropertiesOnly={true}
+                hasOntologyModule={false}
             />
         );
         const text = domainPropertiesGrid.text();
@@ -76,6 +78,29 @@ describe('DomainPropertiesGrid', () => {
 
         expect(text).not.toContain('Property URI');
         expect(text).not.toContain('Source Ontology');
+
+        domainPropertiesGrid.unmount();
+    });
+
+    test('with ontology module', () => {
+        const domainPropertiesGrid = mount(
+            <DomainPropertiesGrid
+                domain={DOMAIN}
+                search="searchStr"
+                actions={ACTIONS}
+                selectAll={false}
+                appPropertiesOnly={false}
+                hasOntologyModule={true}
+            />
+        );
+        const text = domainPropertiesGrid.text();
+
+        expect(text).toContain('Source Ontology');
+        expect(text).toContain('Concept Import Column');
+        expect(text).toContain('Concept Label Column');
+        expect(text).toContain('Principal Concept Code');
+
+        expect(text).not.toContain('Property URI');
 
         domainPropertiesGrid.unmount();
     });

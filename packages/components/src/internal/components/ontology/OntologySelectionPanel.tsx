@@ -53,7 +53,7 @@ export const OntologySelectionPanelImpl: FC<OntologySelectionPanelImplProps> = m
             {ontologies?.length === 0 && (
                 <Alert bsStyle="warning">
                     No ontologies have been loaded for this server.
-                    {getServerContext().user.isRootAdmin && hasActiveModule('Ontology') && (
+                    {getServerContext().user.isRootAdmin && (
                         <>
                             &nbsp;Click <a href={buildURL('ontology', 'begin')}>here</a> to get started.
                         </>

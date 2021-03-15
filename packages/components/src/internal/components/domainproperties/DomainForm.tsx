@@ -19,6 +19,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Button, Checkbox, Col, Form, FormControl, Panel, Row } from 'react-bootstrap';
 import classNames from 'classnames';
 import { Sticky, StickyContainer } from 'react-sticky';
+import { getServerContext, Security } from '@labkey/api';
 
 import { AddEntityButton, ConfirmModal, InferDomainResponse, FileAttachmentForm, Alert, valueIsEmpty } from '../../..';
 
@@ -59,7 +60,6 @@ import {
     updateDomainPanelClassList,
     getAvailableTypes,
     getAvailableTypesForOntology,
-    hasActiveModule,
     updateOntologyFieldProperties,
     removeFields,
     getNameFromId,
@@ -145,6 +145,7 @@ interface IDomainFormState {
     file: File;
     filePreviewMsg: string;
     bulkDeleteConfirmInfo: BulkDeleteConfirmInfo;
+    serverModuleNames: string[];
 }
 
 export default class DomainForm extends React.PureComponent<IDomainFormInput> {
@@ -196,6 +197,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             visibleFieldsCount: props.domain?.fields.size,
             summaryViewMode: false,
             search: undefined,
+            serverModuleNames: undefined,
         };
 
         this.refsArray = [];
@@ -213,15 +215,27 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             }
         }
 
-        // if the given container does have the Ontology module enabled, get the updated set of available data types
-        if (hasActiveModule('Ontology')) {
-            try {
-                const availableTypes = await getAvailableTypesForOntology(domain);
-                this.setState({ availableTypes });
-            } catch (error) {
-                console.error('Failed to retrieve available types for Ontology.', error);
-            }
-        }
+        // query to get the set of available modules for the given LabKey server
+        Security.getModules({
+            containerPath: getServerContext().container.path,
+            success: async (data) => {
+                const serverModuleNames = data.modules
+                    .filter(module => module.enabled)
+                    .map(module => module.name.toLowerCase());
+
+                // if the Ontology module is available, get the updated set of available data types
+                if (serverModuleNames.indexOf('ontology') > -1) {
+                    try {
+                        const availableTypes = await getAvailableTypesForOntology(domain);
+                        this.setState({ availableTypes, serverModuleNames });
+                    } catch (error) {
+                        console.error('Failed to retrieve available types for Ontology.', error);
+                    }
+                } else {
+                    this.setState({ serverModuleNames });
+                }
+            },
+        });
 
         // TODO since this is called in componentDidUpdate, can it be removed here?
         updateDomainPanelClassList(useTheme, domain);
@@ -1197,6 +1211,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
             dragId,
             availableTypes,
             search,
+            serverModuleNames,
         } = this.state;
 
         return (
@@ -1239,6 +1254,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                                                 defaultDefaultValueType={domain.defaultDefaultValueType}
                                                 defaultValueOptions={domain.defaultValueOptions}
                                                 appPropertiesOnly={appPropertiesOnly}
+                                                serverModuleNames={serverModuleNames}
                                                 showFilePropertyType={showFilePropertyType}
                                                 successBsStyle={successBsStyle}
                                                 isDragDisabled={
@@ -1273,7 +1289,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     renderForm() {
         const { domain, appDomainHeaderRenderer, allowImportExport, appPropertiesOnly } = this.props;
-        const { summaryViewMode, search, selectAll } = this.state;
+        const { summaryViewMode, search, selectAll, serverModuleNames } = this.state;
         const hasFields = domain.fields.size > 0;
         const actions = {
             toggleSelectAll: this.toggleSelectAll,
@@ -1295,6 +1311,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             selectAll={selectAll}
                             actions={actions}
                             appPropertiesOnly={appPropertiesOnly}
+                            hasOntologyModule={serverModuleNames?.indexOf('ontology') > -1}
                         />
                     ) : (
                         this.renderDetailedFieldView()

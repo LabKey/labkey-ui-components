@@ -4,8 +4,8 @@ export class QuerySort extends Record({
     dir: '',
     fieldKey: undefined,
 }) {
-    dir: string;
-    fieldKey: string;
+    declare dir: string;
+    declare fieldKey: string;
 
     toRequestString() {
         const { dir, fieldKey } = this;

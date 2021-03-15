@@ -6,14 +6,11 @@ import { mount } from 'enzyme';
 
 import { initUnitTestMocks } from '../../testHelperMocks';
 
-import { QueryGridPanel, SelectInput } from '../../..';
+import { GridPanel, SelectInput } from '../../..';
 
 import { IEntityTypeOption } from './models';
 import { DataClassDataType } from './constants';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
-
-// Mock all the actions to test just the rendering parts for QueryGrid itself
-jest.mock('./actions');
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -94,7 +91,7 @@ describe('<SingleParentEntityPanel>', () => {
                 }}
             />
         );
-        expect(wrapper.find(QueryGridPanel)).toHaveLength(1);
+        expect(wrapper.find(GridPanel)).toHaveLength(1);
         expect(wrapper.find(SelectInput)).toHaveLength(0);
         expect(wrapper).toMatchSnapshot();
     });

@@ -7,8 +7,6 @@ import { EntityDataType } from './models';
 export const DATA_DELETE_CONFIRMATION_ACTION = 'getDataDeleteConfirmationData.api';
 export const SAMPLE_DELETE_CONFIRMATION_ACTION = 'getMaterialDeleteConfirmationData.api';
 
-export const PARENT_DATA_GRID_PREFIX = 'parent-data';
-
 export const SampleTypeDataType: EntityDataType = {
     typeListingSchemaQuery: SCHEMAS.EXP_TABLES.SAMPLE_SETS,
     instanceSchemaName: SCHEMAS.SAMPLE_SETS.SCHEMA,

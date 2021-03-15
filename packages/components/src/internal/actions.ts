@@ -596,57 +596,60 @@ export function gridLoad(model: QueryGridModel, connectedComponent?: React.Compo
 
     let newModel = updateQueryGridModel(model, { isLoading: true }, connectedComponent, true);
 
-    newModel.loader.fetch(newModel).then(
-        response => {
-            if (newModel.editable) {
-                loadDataForEditor(newModel, response);
-            }
+    newModel.loader
+        .fetch(newModel)
+        .then(
+            response => {
+                if (newModel.editable) {
+                    loadDataForEditor(newModel, response);
+                }
 
-            // data we have here is the filtered data, so totalRows is the number of items in the filtered grid.
-            // model.selectedIds, however, is the selection from the previous (likely unfiltered) grid.  We need to
-            // trigger a load of the selectedIds with the filter applied.
-            const { data, dataIds, totalRows, messages } = response;
+                // data we have here is the filtered data, so totalRows is the number of items in the filtered grid.
+                // model.selectedIds, however, is the selection from the previous (likely unfiltered) grid.  We need to
+                // trigger a load of the selectedIds with the filter applied.
+                const { data, dataIds, totalRows, messages } = response;
 
-            // if filtered, find the selected ids that are in the set of (filtered) dataIds returned
-            const filteredIds = model.isFiltered() ? intersect(dataIds, model.selectedIds) : List<string>();
+                // if filtered, find the selected ids that are in the set of (filtered) dataIds returned
+                const filteredIds = model.isFiltered() ? intersect(dataIds, model.selectedIds) : List<string>();
 
-            newModel = updateQueryGridModel(
-                newModel,
-                {
-                    isError: false,
-                    isLoading: false,
-                    isLoaded: true,
-                    message: undefined,
-                    messages,
-                    selectedState: getSelectedState(
+                newModel = updateQueryGridModel(
+                    newModel,
+                    {
+                        isError: false,
+                        isLoading: false,
+                        isLoaded: true,
+                        message: undefined,
+                        messages,
+                        selectedState: getSelectedState(
+                            dataIds,
+                            model.isFiltered() ? filteredIds : model.selectedIds,
+                            model.maxRows,
+                            totalRows
+                        ),
+                        totalRows,
+                        data,
                         dataIds,
-                        model.isFiltered() ? filteredIds : model.selectedIds,
-                        model.maxRows,
-                        totalRows
-                    ),
-                    totalRows,
-                    data,
-                    dataIds,
-                },
-                connectedComponent,
-                true
-            );
+                    },
+                    connectedComponent,
+                    true
+                );
 
-            if (newModel.allowSelection) {
-                fetchSelectedIfNeeded(newModel, connectedComponent);
+                if (newModel.allowSelection) {
+                    fetchSelectedIfNeeded(newModel, connectedComponent);
+                }
+            },
+            payload => {
+                if (payload.model) {
+                    setError(payload.model, resolveErrorMessage(payload.error, 'data'), connectedComponent);
+                } else {
+                    console.error('No model available for loading.', payload.error || payload);
+                    setError(model, resolveErrorMessage(payload.error, 'data'));
+                }
             }
-        },
-        payload => {
-            if (payload.model) {
-                setError(payload.model, resolveErrorMessage(payload.error, 'data'), connectedComponent);
-            } else {
-                console.error('No model available for loading.', payload.error || payload);
-                setError(model, resolveErrorMessage(payload.error, 'data'));
-            }
-        }
-    ).catch((reason) => {
-        setError(model, resolveErrorMessage(reason, 'data'));
-    });
+        )
+        .catch(reason => {
+            setError(model, resolveErrorMessage(reason, 'data'));
+        });
 }
 
 function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
@@ -673,12 +676,12 @@ function bindURLProps(model: QueryGridModel): Partial<QueryGridModel> {
     props.view = view ? decodeURIComponent(view) : undefined;
 
     if (model.isPaged) {
-        const pageNumber = parseInt(p);
+        const pageNumber = parseInt(p, 10);
         if (!isNaN(pageNumber)) {
             props.pageNumber = pageNumber;
         }
 
-        let maxRows = parseInt(pageCount);
+        let maxRows = parseInt(pageCount, 10);
         if (!isNaN(maxRows)) {
             // Issue 39420: pageCount param of negative number will result in all rows being shown in QueryGrid
             if (maxRows < 0) {
@@ -1086,7 +1089,6 @@ export function setSelected(
     queryName?: string,
     filterList?: List<Filter.IFilter>,
     queryParameters?: { [key: string]: any }
-
 ): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
@@ -1102,7 +1104,7 @@ export function setSelected(
                 schemaName,
                 queryName,
                 filterList,
-                queryParameters
+                queryParameters,
             },
             success: Utils.getCallbackWrapper(response => {
                 resolve(response);
@@ -1155,7 +1157,11 @@ export function replaceSelected(key: string, ids: string[] | string, containerPa
  * @param ids ids to change selection for
  * @param containerPath optional path to the container for this grid.  Default is the current container path
  */
-export function setSnapshotSelections(key: string, ids: string[] | string, containerPath?: string): Promise<ISelectResponse> {
+export function setSnapshotSelections(
+    key: string,
+    ids: string[] | string,
+    containerPath?: string
+): Promise<ISelectResponse> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: buildURL('query', 'setSnapshotSelection.api', undefined, {
@@ -1179,7 +1185,6 @@ export function setSnapshotSelections(key: string, ids: string[] | string, conta
         });
     });
 }
-
 
 function removeAll(selected: List<string>, toDelete: List<string>): List<string> {
     toDelete.forEach(id => {
@@ -1435,9 +1440,7 @@ function setError(model: QueryGridModel, message: string, connectedComponent?: R
 export function gridShowError(model: QueryGridModel, error: any, connectedComponent?: React.Component): void {
     setError(
         model,
-        error
-            ?  resolveErrorMessage(error)
-            : 'There was a problem retrieving the data.',
+        error ? resolveErrorMessage(error) : 'There was a problem retrieving the data.',
         connectedComponent
     );
 }
@@ -1450,8 +1453,8 @@ function parseCellKey(cellKey: string): { colIdx: number; rowIdx: number } {
     const [colIdx, rowIdx] = cellKey.split('-');
 
     return {
-        colIdx: parseInt(colIdx),
-        rowIdx: parseInt(rowIdx),
+        colIdx: parseInt(colIdx, 10),
+        rowIdx: parseInt(rowIdx, 10),
     };
 }
 
@@ -1973,7 +1976,7 @@ function prepareInsertRowDataFromBulkForm(
             // If it's the display value, which happens to be a number, much confusion will arise.
             const values = data.toString().split(',');
             values.forEach(val => {
-                const intVal = parseInt(val);
+                const intVal = parseInt(val, 10);
                 const { message, valueDescriptor } = getLookupDisplayValue(
                     col,
                     getLookup(col),
@@ -2246,7 +2249,7 @@ export function changeColumn(
 
     // get rid of existing messages and values at the designated index.
     newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-        const [oldColIdx] = cellKey.split('-').map(v => parseInt(v));
+        const [oldColIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx !== colIndex) {
             return newCellMessages.set(cellKey, message);
         }
@@ -2255,7 +2258,7 @@ export function changeColumn(
     }, Map<string, CellMessage>());
 
     newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx !== colIndex) {
             return newCellValues.set(cellKey, value);
@@ -2332,7 +2335,7 @@ export function addColumns(
     let newCellValues = editorModel.cellValues;
 
     newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx >= editorColIndex) {
             return newCellMessages.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), message);
         } else if (oldColIdx < editorColIndex) {
@@ -2343,7 +2346,7 @@ export function addColumns(
     }, Map<string, CellMessage>());
 
     newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx >= editorColIndex) {
             return newCellValues.set([oldColIdx + queryColumns.size, oldRowIdx].join('-'), value);
@@ -2401,7 +2404,7 @@ export function removeColumn(model: QueryGridModel, fieldKey: string): EditorMod
     let newCellValues = editorModel.cellValues;
 
     newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
         if (oldColIdx > deleteIndex) {
             return newCellMessages.set([oldColIdx - 1, oldRowIdx].join('-'), message);
         } else if (oldColIdx < deleteIndex) {
@@ -2412,7 +2415,7 @@ export function removeColumn(model: QueryGridModel, fieldKey: string): EditorMod
     }, Map<string, CellMessage>());
 
     newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
+        const [oldColIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
         if (oldColIdx > deleteIndex) {
             return newCellValues.set([oldColIdx - 1, oldRowIdx].join('-'), value);
@@ -2459,12 +2462,18 @@ function beginPaste(model: EditorModel, numRows: number): EditorModel {
     });
 }
 
-export function addRowsPerPivotValue(model: QueryGridModel, numPerParent: number, pivotKey: string, pivotValues: Array<string>, rowData: Map<string, any>): EditorModel {
+export function addRowsPerPivotValue(
+    model: QueryGridModel,
+    numPerParent: number,
+    pivotKey: string,
+    pivotValues: string[],
+    rowData: Map<string, any>
+): EditorModel {
     let editorModel = getEditorModel(model.getId());
     let data = model.data;
     let dataIds = model.dataIds;
     if (numPerParent > 0) {
-        pivotValues.forEach((value) => {
+        pivotValues.forEach(value => {
             rowData = rowData.set(pivotKey, value);
             editorModel = updateEditorData(model, rowData.toList(), numPerParent, dataIds.size);
             for (let i = 0; i < numPerParent; i++) {
@@ -2940,7 +2949,7 @@ function prepareUpdateRowDataFromBulkForm(
             // If it's the display value, which happens to be a number, much confusion will arise.
             const values = data.toString().split(',');
             values.forEach(val => {
-                const intVal = parseInt(val);
+                const intVal = parseInt(val, 10);
                 const { message, valueDescriptor } = getLookupDisplayValue(
                     col,
                     getLookup(col),
@@ -2991,7 +3000,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>): 
 
         sortedIdIndexes.forEach(rowIdx => {
             newCellMessages = newCellMessages.reduce((newCellMessages, message, cellKey) => {
-                const [colIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
+                const [colIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
                 if (oldRowIdx > rowIdx) {
                     return newCellMessages.set([colIdx, oldRowIdx - 1].join('-'), message);
                 } else if (oldRowIdx < rowIdx) {
@@ -3002,7 +3011,7 @@ export function removeRows(model: QueryGridModel, dataIdIndexes: List<number>): 
             }, Map<string, CellMessage>());
 
             newCellValues = newCellValues.reduce((newCellValues, value, cellKey) => {
-                const [colIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v));
+                const [colIdx, oldRowIdx] = cellKey.split('-').map(v => parseInt(v, 10));
 
                 if (oldRowIdx > rowIdx) {
                     return newCellValues.set([colIdx, oldRowIdx - 1].join('-'), value);

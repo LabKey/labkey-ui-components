@@ -45,32 +45,36 @@ export const makeTestQueryModel = (
 
 /**
  * @ignore
- * Creates an Actions object with jest.fn() for every action. Use this in beforeEach so your actions get refreshed
+ * Creates an Actions object with a mock function for every action. For most use cases you'll want to pass `jest.fn`
+ * to the `mockFn` parameter. You can use this in beforeEach so your actions get refreshed
  * between every test, jest.fn() objects track all calls overtime, so you'll want a fresh one for every test.
+ *
+ * Note: Intentionally does not use jest.fn() to avoid jest becoming an implicit external package dependency.
  */
-export const makeTestActions = (): Actions => {
-    return {
-        addModel: jest.fn(),
-        clearSelections: jest.fn(),
-        loadModel: jest.fn(),
-        loadAllModels: jest.fn(),
-        loadRows: jest.fn(),
-        loadNextPage: jest.fn(),
-        loadPreviousPage: jest.fn(),
-        loadFirstPage: jest.fn(),
-        loadLastPage: jest.fn(),
-        loadCharts: jest.fn(),
-        selectAllRows: jest.fn(),
-        selectRow: jest.fn(),
-        selectPage: jest.fn(),
-        selectReport: jest.fn(),
-        setFilters: jest.fn(),
-        setMaxRows: jest.fn(),
-        setOffset: jest.fn(),
-        setSchemaQuery: jest.fn(),
-        setSorts: jest.fn(),
-        setView: jest.fn(),
-        setSelections: jest.fn(),
-        replaceSelections: jest.fn(),
+export const makeTestActions = (mockFn = (): any => () => {}, overrides: Partial<Actions> = {}): Actions => {
+    const defaultActions: Actions = {
+        addModel: mockFn(),
+        clearSelections: mockFn(),
+        loadModel: mockFn(),
+        loadAllModels: mockFn(),
+        loadRows: mockFn(),
+        loadNextPage: mockFn(),
+        loadPreviousPage: mockFn(),
+        loadFirstPage: mockFn(),
+        loadLastPage: mockFn(),
+        loadCharts: mockFn(),
+        selectAllRows: mockFn(),
+        selectRow: mockFn(),
+        selectPage: mockFn(),
+        selectReport: mockFn(),
+        setFilters: mockFn(),
+        setMaxRows: mockFn(),
+        setOffset: mockFn(),
+        setSchemaQuery: mockFn(),
+        setSorts: mockFn(),
+        setView: mockFn(),
+        setSelections: mockFn(),
+        replaceSelections: mockFn(),
     };
+    return Object.assign(defaultActions, overrides);
 };

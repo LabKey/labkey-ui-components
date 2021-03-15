@@ -5,6 +5,35 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add 'Auto-Link Data to Study' field in Sample Type properties
 
+### version 2.14.0
+*Released*: 11 March 2021
+* Update DomainForm and FileAttachmentForm to ignore reserved fields when inferring fields
+
+### version 2.13.2
+*Released*: 11 March 2021
+* Convert `<SingleParentEntityPanel/>` to use `QueryModel`.
+* Update `<ParentEntityEditPanel/>` to no longer invalidate `QueryGridModel`s for underlying single parent panels.
+
+### version 2.13.1
+*Released*: 11 March 2021
+* Fixes Issue 42438: better handling of lineage metadata loading errors.
+* Lineage: propagate `fetchNodeMetadata` loading errors.
+* display error alert in `<LineageGraph/>`.
+
+### version 2.13.0
+*Released*: 10 March 2021
+* Changes to support webpack aliases from /src and theme/SCSS assets
+    * index.ts and app/index.ts updates to export types separately
+    * add "declare" to various immutable Record properties
+    * remove global.d.ts in favor of GlobalAppState defined and used for ReactN components types directly
+    * remove "const" from usages of const enum
+    * Remove direct reference to `jest` from test utility methods
+
+### version 2.12.0
+*Released*: 9 March 2021
+* Add `editColumns` property to `<Detail/>`, `<DetailEditing/>` for `QueryGridModel` support.
+* Add `editColumns` property to `<DetailPanel/>`, `<EditableDetailPanel/>` for `QueryModel` support.
+
 ### version 2.11.1
 *Released*: 8 March 2021
 * Hide 'Derivation Data Scope' column within Designer Summary View. Will be updated when aliquot functionality is no longer an experimental feature

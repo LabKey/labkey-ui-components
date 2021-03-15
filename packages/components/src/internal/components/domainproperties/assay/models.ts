@@ -51,36 +51,36 @@ export class AssayProtocolModel extends Record({
     selectedPlateTemplate: undefined,
     qcEnabled: undefined,
 }) {
-    allowBackgroundUpload: boolean;
-    allowEditableResults: boolean;
-    allowQCStates: boolean;
-    allowSpacesInPath: boolean;
-    allowTransformationScript: boolean;
-    allowPlateMetadata: boolean;
-    autoCopyTargetContainer: {};
-    autoCopyTargetContainerId: string;
-    availableDetectionMethods: [];
-    availableMetadataInputFormats: {};
-    availablePlateTemplates: [];
-    backgroundUpload: boolean;
-    description: string;
-    domains: List<DomainDesign>;
-    editableResults: boolean;
-    editableRuns: boolean;
-    exception: string;
-    metadataInputFormatHelp: any;
-    moduleTransformScripts: List<string>;
-    name: string;
-    plateMetadata: boolean;
-    protocolId: number;
-    protocolParameters: any;
-    protocolTransformScripts: List<string>;
-    providerName: string;
-    saveScriptFiles: boolean;
-    selectedDetectionMethod: string;
-    selectedMetadataInputFormat: string;
-    selectedPlateTemplate: string;
-    qcEnabled: boolean;
+    declare allowBackgroundUpload: boolean;
+    declare allowEditableResults: boolean;
+    declare allowQCStates: boolean;
+    declare allowSpacesInPath: boolean;
+    declare allowTransformationScript: boolean;
+    declare allowPlateMetadata: boolean;
+    declare autoCopyTargetContainer: {};
+    declare autoCopyTargetContainerId: string;
+    declare availableDetectionMethods: [];
+    declare availableMetadataInputFormats: {};
+    declare availablePlateTemplates: [];
+    declare backgroundUpload: boolean;
+    declare description: string;
+    declare domains: List<DomainDesign>;
+    declare editableResults: boolean;
+    declare editableRuns: boolean;
+    declare exception: string;
+    declare metadataInputFormatHelp: any;
+    declare moduleTransformScripts: List<string>;
+    declare name: string;
+    declare plateMetadata: boolean;
+    declare protocolId: number;
+    declare protocolParameters: any;
+    declare protocolTransformScripts: List<string>;
+    declare providerName: string;
+    declare saveScriptFiles: boolean;
+    declare selectedDetectionMethod: string;
+    declare selectedMetadataInputFormat: string;
+    declare selectedPlateTemplate: string;
+    declare qcEnabled: boolean;
 
     static create(raw: any): AssayProtocolModel {
         let domains = raw.domains || List<DomainDesign>();

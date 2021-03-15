@@ -8,6 +8,8 @@ import { getDomainPanelStatus } from '../actions';
 import DomainForm from '../DomainForm';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
+
 import { saveAssayDesign } from './actions';
 import { AssayProtocolModel } from './models';
 import { AssayPropertiesPanel } from './AssayPropertiesPanel';
@@ -236,6 +238,10 @@ class AssayDesignerPanelsImpl extends React.PureComponent<Props & InjectedBaseDo
                             successBsStyle={successBsStyle}
                             allowImportExport={true}
                             testMode={testMode}
+                            domainFormDisplayOptions={{
+                                ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
+                                domainKindDisplayName: 'assay design',
+                            }}
                         >
                             <div>{domain.description}</div>
                         </DomainForm>

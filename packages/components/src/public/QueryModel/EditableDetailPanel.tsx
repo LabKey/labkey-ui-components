@@ -15,6 +15,7 @@ interface EditableDetailPanelProps extends RequiresModelAndActions {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    editColumns?: QueryColumn[];
     onEditToggle?: (editing: boolean) => void;
     onUpdate: () => void;
     queryColumns?: QueryColumn[];
@@ -116,6 +117,7 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
             asSubPanel,
             cancelText,
             canUpdate,
+            editColumns,
             model,
             queryColumns,
             submitText,
@@ -144,9 +146,10 @@ export class EditableDetailPanel extends PureComponent<EditableDetailPanelProps,
 
                     <DetailPanel
                         actions={actions}
+                        editColumns={editColumns}
                         editingMode={editing}
                         model={model}
-                        queryColumns={editing ? undefined : queryColumns}
+                        queryColumns={queryColumns}
                     />
                 </div>
             </div>

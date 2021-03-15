@@ -1,10 +1,11 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, LoadingSpinner } from '../../..';
+import { Alert, LabelHelpTip, LoadingSpinner } from '../../..';
 
 import { OntologyBrowserPanel, OntologyBrowserPanelImpl } from './OntologyBrowserPanel';
 import { OntologySelectionPanel } from './OntologySelectionPanel';
+import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
 import { OntologyTreePanel } from './OntologyTreePanel';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { ConceptModel, OntologyModel } from './models';
@@ -60,9 +61,11 @@ describe('OntologyBrowserPanelImpl', () => {
         expect(wrapper.find('.ontology-browser-container')).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find('.left-panel')).toHaveLength(!loading ? 2 : 0);
         expect(wrapper.find('.right-panel')).toHaveLength(!loading ? 2 : 0);
+        expect(wrapper.find(OntologyTreeSearchContainer)).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find(OntologyTreePanel)).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find(ConceptInformationTabs)).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find('.panel-body')).toHaveLength(asPanel ? 1 : 0);
+        expect(wrapper.find(LabelHelpTip)).toHaveLength(asPanel ? 1 : 0);
     }
 
     test('loading', () => {
@@ -75,6 +78,7 @@ describe('OntologyBrowserPanelImpl', () => {
     test('ontology', () => {
         const wrapper = mount(<OntologyBrowserPanelImpl {...DEFAULT_PROPS} ontology={TEST_ONTOLOGY} />);
         validate(wrapper, false);
+        expect(wrapper.find(OntologyTreeSearchContainer).prop('ontology')).toBe(TEST_ONTOLOGY);
         expect(wrapper.find(OntologyTreePanel).prop('root').label).toBe(TEST_ONTOLOGY.name);
         wrapper.unmount();
     });

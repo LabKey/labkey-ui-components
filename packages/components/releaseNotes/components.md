@@ -4,6 +4,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version TBD
 *Released*: TBD
 * Item 8546: Ontology concept picker panel search
+    - FileTree component updates show props to `showLoading` and `showAnimations`
+    - Concept path display update for hover to get full path info for "current path"
+    - Ontology tree panel update for adding search input field and results menu behavior
+    - Ontology tree panel update to allow for loading data into tree and navigating to an alternate path via search or alternate path click in path information tab
+    - Ontology panel header update to show ontology description and concept count in tooltip
+    - search/actions.ts update to allow for a custom category filter array
 
 ### version 2.6.3
 *Released*: 10 March 2021

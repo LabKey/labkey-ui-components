@@ -3,7 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Add Concept URI for unique Id fields
+* Add support for uniqueId (barcode) fields
+    * Add Concept URI for unique Id fields.
+    * In EntityInsertPanel, add placeholder text for generated Ids
+    * Add condition on column filter used for bulk insert to remove the unique id filds
 
 ### version 2.14.1
 *Released*: 15 March 2021

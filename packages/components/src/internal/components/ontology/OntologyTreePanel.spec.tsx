@@ -18,6 +18,8 @@ describe('OntologyTreePanel', () => {
         expect(fileTree.prop('allowMultiSelect')).toBe(false);
         expect(fileTree.prop('showNodeIcon')).toBe(false);
         expect(fileTree.prop('defaultRootName')).toBe(DEFAULT_PROPS.root.label);
+        expect(fileTree.prop('showLoading')).toBe(false);
+        expect(fileTree.prop('showAnimations')).toBe(false);
         wrapper.unmount();
     });
 });

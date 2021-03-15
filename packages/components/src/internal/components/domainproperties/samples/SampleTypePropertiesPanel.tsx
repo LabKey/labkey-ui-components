@@ -290,6 +290,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 metricUnitProps?.metricUnitHelpMsg || 'The unit of measurement used for the sample type.',
             metricUnitOptions = metricUnitProps?.metricUnitOptions,
             metricUnitRequired = metricUnitProps?.metricUnitRequired;
+        const allowTimepointProperties = model.domain.allowTimepointProperties;
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
         return (
@@ -355,7 +356,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     </Row>
                 )}
 
-                {!appPropertiesOnly &&
+                {allowTimepointProperties &&
                     <Row className="margin-top">
                         <Col xs={2}> Auto-Link Data to Study </Col>
                         <Col xs={5}>

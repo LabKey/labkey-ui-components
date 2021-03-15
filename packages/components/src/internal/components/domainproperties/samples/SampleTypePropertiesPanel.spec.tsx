@@ -21,7 +21,7 @@ import { fromJS, Map } from 'immutable';
 import { sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../testHelperMocks';
 import { ENTITY_FORM_IDS } from '../entities/constants';
-import { DomainDetails, DomainPanelStatus } from '../models';
+import {DomainDesign, DomainDetails, DomainPanelStatus} from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
@@ -39,12 +39,15 @@ beforeAll(() => {
     initUnitTestMocks();
 });
 
+const baseData = DomainDetails.create(fromJS({domainDesign: DomainDesign.create({allowTimepointProperties: false})}));
+const sampleTypeModel = SampleTypeModel.create(baseData);
+
 describe('<SampleTypePropertiesPanel/>', () => {
     test('default props', async () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
@@ -63,7 +66,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
                 appPropertiesOnly={true}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
@@ -81,7 +84,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
                 updateModel={jest.fn}
                 nameExpressionInfoUrl="#anything"
                 onAddParentAlias={jest.fn}
@@ -107,6 +110,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                     description: descVal,
                 }),
                 domainKindName: 'SampleType',
+                domainDesign: DomainDesign.create({allowTimepointProperties: false})
             })
         );
 
@@ -142,7 +146,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
         const tree = renderer.create(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
@@ -169,7 +173,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 {...BASE_PROPS}
                 appPropertiesOnly={true}
                 metricUnitProps={{ includeMetricUnitProperty: true }}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
@@ -200,7 +204,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                         { id: 'g', label: 'g' },
                     ],
                 }}
-                model={SampleTypeModel.create()}
+                model={sampleTypeModel}
                 updateModel={jest.fn}
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}

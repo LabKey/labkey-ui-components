@@ -60,13 +60,13 @@ export class SchemaQuery extends Record({
     queryName: undefined,
     viewName: undefined,
 }) {
+    declare schemaName: string;
+    declare queryName: string;
+    declare viewName: string;
+
     static create(schemaName: string, queryName: string, viewName?: string): SchemaQuery {
         return new SchemaQuery({ schemaName, queryName, viewName });
     }
-
-    schemaName: string;
-    queryName: string;
-    viewName: string;
 
     // TODO: remove unnecessary function, Records are Immutable and/or this can be a getter function.
     getSchema() {

@@ -1,5 +1,4 @@
-import React, { ReactNode } from 'react';
-import ReactN from 'reactn';
+import React, { Component, ReactNode } from 'react';
 import { Button, Panel } from 'react-bootstrap';
 
 import { List } from 'immutable';
@@ -13,7 +12,6 @@ import {
     EntityDataType,
     getActionErrorMessage,
     getQueryGridModel,
-    gridIdInvalidate,
     LoadingSpinner,
     Progress,
     QueryGridModel,
@@ -27,104 +25,84 @@ import { DELIMITER } from '../forms/input/SelectInput';
 import { getEntityTypeOptions } from './actions';
 import { EntityChoice, IEntityTypeOption } from './models';
 import { SingleParentEntityPanel } from './SingleParentEntityPanel';
-
-import {
-    getInitialParentChoices,
-    getParentGridPrefix,
-    getUpdatedRowForParentChanges,
-    parentValuesDiffer,
-} from './utils';
+import { getInitialParentChoices, getUpdatedRowForParentChanges, parentValuesDiffer } from './utils';
 
 interface Props {
+    auditBehavior?: AuditBehaviorTypes;
+    cancelText?: string;
     canUpdate: boolean;
     childName: string;
     childNounSingular: string;
     childModel: QueryGridModel;
     onUpdate?: () => void;
-    onEditToggle?: (editing: boolean) => any;
+    onEditToggle?: (editing: boolean) => void;
     parentDataType: EntityDataType;
-    title: string;
-    cancelText?: string;
     submitText?: string;
-    auditBehavior?: AuditBehaviorTypes;
+    title: string;
 }
 
 interface State {
+    currentParents: List<EntityChoice>;
     editing: boolean;
     error: ReactNode;
     loading: boolean;
+    originalParents: List<EntityChoice>;
+    originalValueLoaded: List<boolean>;
     parentTypeOptions: List<IEntityTypeOption>;
     submitting: boolean;
-    originalParents: List<EntityChoice>;
-    currentParents: List<EntityChoice>;
-    originalValueLoaded: List<boolean>;
 }
 
-export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
+export class ParentEntityEditPanel extends Component<Props, State> {
     static defaultProps = {
         cancelText: 'Cancel',
         submitText: 'Save',
     };
 
-    constructor() {
-        super();
+    state: Readonly<State> = {
+        currentParents: undefined,
+        editing: false,
+        error: undefined,
+        loading: true,
+        originalParents: undefined,
+        originalValueLoaded: List<boolean>(),
+        parentTypeOptions: undefined,
+        submitting: false,
+    };
 
-        this.state = {
-            editing: false,
-            error: undefined,
-            loading: true,
-            parentTypeOptions: undefined,
-            submitting: false,
-            originalParents: undefined,
-            currentParents: undefined,
-            originalValueLoaded: List<boolean>(),
-        };
-    }
-
-    UNSAFE_componentWillMount(): void {
+    componentDidMount(): void {
         this.init();
     }
 
-    componentWillUnmount() {
-        gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
-    }
-
-    init = (): void => {
+    init = async (): Promise<void> => {
         const { parentDataType } = this.props;
         const { typeListingSchemaQuery } = parentDataType;
 
-        getEntityTypeOptions(parentDataType)
-            .then(optionsMap => {
-                const parentTypeOptions = optionsMap.get(typeListingSchemaQuery.queryName);
-                const originalParents = getInitialParentChoices(
-                    parentTypeOptions,
-                    parentDataType,
-                    this.getChildModel()
-                );
-                const currentParents = originalParents.reduce((list, parent) => {
-                    return list.push({ ...parent });
-                }, List<EntityChoice>());
+        try {
+            const optionsMap = await getEntityTypeOptions(parentDataType);
 
-                this.setState(() => ({
-                    loading: false,
-                    parentTypeOptions,
-                    originalParents,
-                    currentParents,
-                }));
-            })
-            .catch(reason => {
-                this.setState(() => ({
-                    error: getActionErrorMessage(
-                        'Unable to load ' + parentDataType.descriptionSingular + ' data.',
-                        parentDataType.descriptionPlural,
-                        true
-                    ),
-                }));
+            const parentTypeOptions = optionsMap.get(typeListingSchemaQuery.queryName);
+            const originalParents = getInitialParentChoices(parentTypeOptions, parentDataType, this.getChildModel());
+
+            this.setState({
+                currentParents: originalParents,
+                loading: false,
+                originalParents,
+                parentTypeOptions,
             });
+        } catch (reason) {
+            this.setState({
+                error: getActionErrorMessage(
+                    'Unable to load ' + parentDataType.descriptionSingular + ' data.',
+                    parentDataType.descriptionPlural,
+                    true
+                ),
+            });
+        }
     };
 
     getChildModel = (): QueryGridModel => {
-        return getQueryGridModel(this.props.childModel.getId());
+        const { childModel } = this.props;
+        return getQueryGridModel(childModel.getId()) || childModel;
     };
 
     hasParents = (): boolean => {
@@ -132,23 +110,18 @@ export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
     };
 
     toggleEdit = (): void => {
-        if (this.props.onEditToggle) {
-            this.props.onEditToggle(!this.state.editing);
-        }
+        this.props.onEditToggle?.(!this.state.editing);
         this.setState(state => ({ editing: !state.editing }));
     };
 
     changeEntityType = (fieldName: string, formValue: any, selectedOption: IEntityTypeOption, index): void => {
-        this.setState(state => {
-            const updatedParents = state.currentParents.set(index, {
+        this.setState(state => ({
+            currentParents: state.currentParents.set(index, {
                 type: selectedOption,
                 value: undefined,
                 ids: undefined,
-            });
-            return {
-                currentParents: updatedParents,
-            };
-        });
+            }),
+        }));
     };
 
     onParentValueChange = (name: string, value: string | any[], index: number): void => {
@@ -180,13 +153,11 @@ export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
         this.setState(
             state => ({
                 currentParents: state.originalParents,
-                originalValueLoaded: List<boolean>(),
                 editing: false,
+                originalValueLoaded: List<boolean>(),
             }),
             () => {
-                if (this.props.onEditToggle) {
-                    this.props.onEditToggle(false);
-                }
+                this.props.onEditToggle?.(false);
             }
         );
     };
@@ -194,7 +165,7 @@ export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
     onSubmit = (): Promise<any> => {
         if (!this.canSubmit()) return;
 
-        this.setState(() => ({ submitting: true }));
+        this.setState({ submitting: true });
 
         const { auditBehavior, parentDataType, onUpdate } = this.props;
         const { currentParents, originalParents } = this.state;
@@ -215,23 +186,17 @@ export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
                         editing: false,
                     }),
                     () => {
-                        gridIdInvalidate(getParentGridPrefix(this.props.parentDataType), true);
-
-                        if (onUpdate) {
-                            onUpdate();
-                        }
-                        if (this.props.onEditToggle) {
-                            this.props.onEditToggle(false);
-                        }
+                        onUpdate?.();
+                        this.props.onEditToggle?.(false);
                     }
                 );
             })
             .catch(error => {
                 console.error(error);
-                this.setState(() => ({
-                    submitting: false,
+                this.setState({
                     error: resolveErrorMessage(error, 'data', undefined, 'update'),
-                }));
+                    submitting: false,
+                });
             });
     };
 
@@ -255,65 +220,37 @@ export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
         );
     };
 
-    renderEditControls = (): ReactNode => {
-        const { cancelText, submitText } = this.props;
-        const { submitting } = this.state;
-
-        return (
-            <div className="full-width bottom-spacing">
-                <Button className="pull-left" onClick={this.onCancel}>
-                    {cancelText}
-                </Button>
-                <Button
-                    className="pull-right"
-                    bsStyle="success"
-                    type="submit"
-                    disabled={submitting || !this.canSubmit()}
-                    onClick={this.onSubmit}
-                >
-                    {submitText}
-                </Button>
-            </div>
-        );
-    };
-
     getParentTypeOptions = (currentIndex: number): List<IEntityTypeOption> => {
         const { currentParents, parentTypeOptions } = this.state;
         // include the current parent type as a choice, but not the others already chosen
-        let toRemove = List<string>();
-        currentParents.forEach((parent, index) => {
-            if (index !== currentIndex && parent.type) {
-                toRemove = toRemove.push(parent.type.label);
-            }
-        });
+        const toRemove = currentParents
+            .filter((parent, idx) => idx !== currentIndex && !!parent.type)
+            .map(parent => parent.type.label)
+            .toList();
+
         return parentTypeOptions.filter(option => !toRemove.contains(option.label)).toList();
     };
 
     onRemoveParentType = (index: number): void => {
-        this.setState(state => {
-            return {
-                currentParents: state.currentParents.delete(index),
-            };
-        });
+        this.setState(state => ({ currentParents: state.currentParents.delete(index) }));
     };
 
-    renderSingleParentPanels = (): ReactNode => {
-        const { parentDataType } = this.props;
+    renderParentData = (): ReactNode => {
+        const { parentDataType, childNounSingular } = this.props;
+        const { editing } = this.state;
 
-        return this.state.currentParents
-            .map((choice, index) => {
-                const key = choice.type ? choice.type.label + '-' + index : 'unknown-' + index;
-                return (
-                    <div key={key}>
-                        {this.state.editing && <hr />}
+        if (this.hasParents()) {
+            return this.state.currentParents
+                .map((choice, index) => (
+                    <div key={choice.type ? choice.type.label + '-' + index : 'unknown-' + index}>
+                        {editing && <hr />}
                         <SingleParentEntityPanel
-                            key={key}
                             parentDataType={parentDataType}
                             parentTypeOptions={this.getParentTypeOptions(index)}
                             parentTypeQueryName={choice.type ? choice.type.label : undefined}
                             parentLSIDs={choice.ids}
                             index={index}
-                            editing={this.state.editing}
+                            editing={editing}
                             chosenValue={choice.value}
                             onChangeParentType={this.changeEntityType}
                             onChangeParentValue={this.onParentValueChange}
@@ -321,32 +258,25 @@ export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
                             onRemoveParentType={this.onRemoveParentType}
                         />
                     </div>
-                );
-            })
-            .toArray();
-    };
-
-    renderParentData = (): ReactNode => {
-        const { parentDataType, childNounSingular } = this.props;
-        if (this.hasParents()) {
-            return this.renderSingleParentPanels();
-        } else {
-            return (
-                <div key={1}>
-                    <hr />
-                    <SingleParentEntityPanel
-                        editing={this.state.editing}
-                        parentTypeOptions={this.state.parentTypeOptions}
-                        parentDataType={parentDataType}
-                        childNounSingular={childNounSingular}
-                        index={0}
-                        onChangeParentType={this.changeEntityType}
-                        onChangeParentValue={this.onParentValueChange}
-                        onInitialParentValue={this.onInitialParentValue}
-                    />
-                </div>
-            );
+                ))
+                .toArray();
         }
+
+        return (
+            <div>
+                <hr />
+                <SingleParentEntityPanel
+                    editing={editing}
+                    parentTypeOptions={this.state.parentTypeOptions}
+                    parentDataType={parentDataType}
+                    childNounSingular={childNounSingular}
+                    index={0}
+                    onChangeParentType={this.changeEntityType}
+                    onChangeParentValue={this.onParentValueChange}
+                    onInitialParentValue={this.onInitialParentValue}
+                />
+            </div>
+        );
     };
 
     onAddParent = (): void => {
@@ -356,56 +286,52 @@ export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
     };
 
     renderAddParentButton = (): ReactNode => {
-        const { parentTypeOptions } = this.state;
-        if (!parentTypeOptions || parentTypeOptions.size === 0) return null;
-        else {
-            const { parentDataType } = this.props;
-            const { currentParents } = this.state;
+        const { parentDataType } = this.props;
+        const { currentParents, parentTypeOptions } = this.state;
 
-            const disabled = parentTypeOptions.size <= currentParents.size;
-            const title = disabled
-                ? 'Only ' +
-                  parentTypeOptions.size +
-                  ' ' +
-                  (parentTypeOptions.size === 1
-                      ? parentDataType.descriptionSingular
-                      : parentDataType.descriptionPlural) +
-                  ' available.'
-                : undefined;
-
-            return (
-                <AddEntityButton
-                    containerClass="top-spacing"
-                    onClick={this.onAddParent}
-                    title={title}
-                    disabled={disabled}
-                    entity={this.props.parentDataType.nounSingular}
-                />
-            );
+        if (!parentTypeOptions || parentTypeOptions.size === 0) {
+            return null;
         }
+
+        const disabled = parentTypeOptions.size <= currentParents.size;
+        const title = disabled
+            ? 'Only ' +
+              parentTypeOptions.size +
+              ' ' +
+              (parentTypeOptions.size === 1 ? parentDataType.descriptionSingular : parentDataType.descriptionPlural) +
+              ' available.'
+            : undefined;
+
+        return (
+            <AddEntityButton
+                containerClass="top-spacing"
+                onClick={this.onAddParent}
+                title={title}
+                disabled={disabled}
+                entity={this.props.parentDataType.nounSingular}
+            />
+        );
     };
 
     render() {
-        const { parentDataType, title, canUpdate, childName } = this.props;
-        const { editing, error, loading } = this.state;
-
-        const heading = (
-            <DetailPanelHeader
-                useEditIcon={true}
-                isEditable={!loading && canUpdate}
-                canUpdate={canUpdate}
-                editing={editing}
-                title={title}
-                onClickFn={this.toggleEdit}
-            />
-        );
+        const { cancelText, parentDataType, title, canUpdate, childName, submitText } = this.props;
+        const { editing, error, loading, submitting } = this.state;
 
         return (
             <>
                 <Panel bsStyle={editing ? 'info' : 'default'}>
-                    <Panel.Heading>{heading}</Panel.Heading>
+                    <Panel.Heading>
+                        <DetailPanelHeader
+                            canUpdate={canUpdate}
+                            editing={editing}
+                            isEditable={!loading && canUpdate}
+                            onClickFn={this.toggleEdit}
+                            title={title}
+                            useEditIcon
+                        />
+                    </Panel.Heading>
                     <Panel.Body>
-                        {error && <Alert>{error}</Alert>}
+                        <Alert>{error}</Alert>
                         <div className="bottom-spacing">
                             <b>
                                 {capitalizeFirstChar(parentDataType.nounPlural)} for {childName}
@@ -415,7 +341,22 @@ export class ParentEntityEditPanel extends ReactN.Component<Props, State> {
                         {editing && this.renderAddParentButton()}
                     </Panel.Body>
                 </Panel>
-                {editing && this.renderEditControls()}
+                {editing && (
+                    <div className="full-width bottom-spacing">
+                        <Button className="pull-left" onClick={this.onCancel}>
+                            {cancelText}
+                        </Button>
+                        <Button
+                            className="pull-right"
+                            bsStyle="success"
+                            type="submit"
+                            disabled={submitting || !this.canSubmit()}
+                            onClick={this.onSubmit}
+                        >
+                            {submitText}
+                        </Button>
+                    </div>
+                )}
                 {editing && this.renderProgress()}
             </>
         );

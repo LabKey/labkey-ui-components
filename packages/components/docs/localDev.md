@@ -41,16 +41,17 @@ to reference the new pre-release version in order to view the changes within the
 be able to do this without publishing for quicker development iteration.
 
 In order to use and test the components you are developing or modifying in this repository within another application,
-we currently recommend using `yarn watch` together with the LabKey module's `npm run start-link` command.
-The `watch` command will automatically build a package when the source code changes, and if you have hot reloading
-started for your application, changes made in the components will then get re-built into the application.
+we currently recommend using the LabKey module's `npm run start-link` command. This command will link to the @labkey
+package src code in a way that includes it in the files being watched and built by the HMR command.
+This means that changes made in the @labkey packages will then get re-built into the application alongside the Labkey
+module React code changes.
 
 For example, to test changes in `@labkey/components` within the `my_app` module, you could do:
-* ``yarn watch``
-* edit files within the `package/components` dir
-* wait for recompile triggered by the `watch` to happen
-* use [hot module reload mode](../../build/webpack/README.md#developing-with-hot-module-reloading-hmr) in your module
+* `npm run start-link` in the `my_app` module dir to use
+[hot module reload mode](../../build/webpack/README.md#developing-with-hot-module-reloading-hmr) in your module
 with webpack aliases enabled for package linking
+* edit files within the `package/components` dir
+* see changes reflected in your `appDev` LabKey page/view
 
 ### Package Dependencies
 We track our external dependencies in [this spreadsheet](https://docs.google.com/spreadsheets/d/1W39yHLulzLUaXhp5-IRFuloJC9O94CJnwEHrR_4CcSo/edit#gid=0)

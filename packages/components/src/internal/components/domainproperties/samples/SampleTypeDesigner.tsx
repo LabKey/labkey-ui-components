@@ -14,6 +14,7 @@ import {
     resolveErrorMessage,
     SCHEMAS,
     getHelpLink,
+    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
 } from '../../../..';
 
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
@@ -110,13 +111,21 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         showParentLabelPrefix: true,
         useTheme: false,
         appPropertiesOnly: true,
+        domainFormDisplayOptions: { ...DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS, domainKindDisplayName: 'sample type' },
     };
 
     constructor(props: Props & InjectedBaseDomainDesignerProps) {
         super(props);
 
         initQueryGridState();
-        const domainDetails = this.props.initModel || DomainDetails.create();
+        let domainDetails = this.props.initModel || DomainDetails.create();
+        if (props.defaultSampleFieldConfig) {
+            const domainDesign = domainDetails.domainDesign.merge({
+                reservedFieldNames: List<string>([props.defaultSampleFieldConfig?.name.toLowerCase()]),
+            });
+            domainDetails = domainDetails.set('domainDesign', domainDesign) as DomainDetails;
+        }
+
         const model = SampleTypeModel.create(
             domainDetails,
             domainDetails.domainDesign ? domainDetails.domainDesign.name : undefined

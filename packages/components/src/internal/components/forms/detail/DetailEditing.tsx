@@ -31,6 +31,7 @@ interface Props {
     auditBehavior?: AuditBehaviorTypes;
     cancelText?: string;
     canUpdate: boolean;
+    editColumns?: List<QueryColumn>;
     onEditToggle?: (editing: boolean) => void;
     onUpdate?: () => void;
     queryColumns?: List<QueryColumn>;
@@ -145,6 +146,7 @@ export class DetailEditing extends Component<Props, State> {
     render(): ReactNode {
         const {
             cancelText,
+            editColumns,
             queryModel,
             queryColumns,
             canUpdate,
@@ -161,6 +163,7 @@ export class DetailEditing extends Component<Props, State> {
             const hasData = queryModel.getData().size > 0;
             isEditable = hasData && (queryModel.queryInfo.isAppEditable() || appEditable);
         }
+        const editingMode = editing && isEditable;
 
         const header = (
             <DetailPanelHeader
@@ -174,7 +177,16 @@ export class DetailEditing extends Component<Props, State> {
             />
         );
 
-        if (editing && isEditable) {
+        const detail = (
+            <Detail
+                editColumns={editColumns}
+                editingMode={editingMode}
+                queryColumns={queryColumns}
+                queryModel={queryModel}
+            />
+        );
+
+        if (editingMode) {
             return (
                 <Formsy
                     onChange={this.handleFormChange}
@@ -187,7 +199,7 @@ export class DetailEditing extends Component<Props, State> {
                         <Panel.Body>
                             <div className="detail__editing">
                                 {error && <Alert>{error}</Alert>}
-                                <Detail editingMode queryColumns={queryColumns} queryModel={queryModel} />
+                                {detail}
                             </div>
                         </Panel.Body>
                     </Panel>
@@ -212,9 +224,7 @@ export class DetailEditing extends Component<Props, State> {
         return (
             <Panel>
                 <Panel.Heading>{header}</Panel.Heading>
-                <Panel.Body>
-                    <Detail queryColumns={queryColumns} queryModel={queryModel} />
-                </Panel.Body>
+                <Panel.Body>{detail}</Panel.Body>
             </Panel>
         );
     }

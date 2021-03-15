@@ -302,7 +302,7 @@ export class FileAttachmentForm extends React.Component<FileAttachmentFormProps,
 
         this.updatePreviewStatus('Uploading file...');
 
-        inferDomainFromFile(file, previewGridProps.previewCount)
+        inferDomainFromFile(file, previewGridProps.previewCount, previewGridProps.domainKindName)
             .then((response: InferDomainResponse) => {
                 this.updatePreviewStatus(null);
 

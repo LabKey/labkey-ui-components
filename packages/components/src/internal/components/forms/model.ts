@@ -64,24 +64,24 @@ export class QuerySelectModel
         valueColumn: undefined,
     })
     implements QuerySelectModelProps {
-    addExactFilter: boolean;
-    allResults: Map<string, Map<string, any>>;
-    containerPath: string;
-    displayColumn: string;
-    delimiter: string;
-    id: string;
-    isInit: boolean;
-    maxRows: number;
-    multiple: boolean;
-    preLoad: boolean;
-    queryFilters: List<Filter.IFilter>;
-    queryInfo: QueryInfo;
-    rawSelectedValue: any;
-    schemaQuery: SchemaQuery;
-    searchResults: Map<string, Map<string, any>>;
-    selectedQuery: string;
-    selectedItems: Map<string, any>;
-    valueColumn: string;
+    declare addExactFilter: boolean;
+    declare allResults: Map<string, Map<string, any>>;
+    declare containerPath: string;
+    declare displayColumn: string;
+    declare delimiter: string;
+    declare id: string;
+    declare isInit: boolean;
+    declare maxRows: number;
+    declare multiple: boolean;
+    declare preLoad: boolean;
+    declare queryFilters: List<Filter.IFilter>;
+    declare queryInfo: QueryInfo;
+    declare rawSelectedValue: any;
+    declare schemaQuery: SchemaQuery;
+    declare searchResults: Map<string, Map<string, any>>;
+    declare selectedQuery: string;
+    declare selectedItems: Map<string, any>;
+    declare valueColumn: string;
 
     constructor(values?: Partial<QuerySelectModelProps>) {
         super(values);

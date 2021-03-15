@@ -29,6 +29,7 @@ import {
 import { DetailDisplay, DetailDisplaySharedProps } from '../../internal/components/forms/detail/DetailDisplay';
 
 interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndActions {
+    editColumns?: QueryColumn[];
     queryColumns?: QueryColumn[];
 }
 
@@ -36,7 +37,8 @@ interface DetailPanelProps extends DetailDisplaySharedProps, RequiresModelAndAct
  * Render a QueryModel with a single row of a data. For in-depth documentation and examples see
  * components/docs/QueryModel.md.
  */
-export const DetailPanel: FC<DetailPanelProps> = memo(({ actions, model, queryColumns, ...detailDisplayProps }) => {
+export const DetailPanel: FC<DetailPanelProps> = memo(props => {
+    const { actions, editColumns, model, queryColumns, ...detailDisplayProps } = props;
     // ignoring actions so we don't pass to DetailDisplay
     const { editingMode } = detailDisplayProps;
     const error = model.queryInfoError ?? model.rowsError;
@@ -49,10 +51,10 @@ export const DetailPanel: FC<DetailPanelProps> = memo(({ actions, model, queryCo
     }
 
     // This logic should be kept consistent with corollary logic in <Detail/>
-    if (queryColumns !== undefined) {
-        displayColumns = List(queryColumns);
+    if (editingMode) {
+        displayColumns = List(editColumns ?? model.updateColumns);
     } else {
-        displayColumns = List(editingMode ? model.updateColumns : model.detailColumns);
+        displayColumns = List(queryColumns ?? model.detailColumns);
     }
 
     return <DetailDisplay {...detailDisplayProps} data={fromJS(model.gridData)} displayColumns={displayColumns} />;

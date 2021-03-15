@@ -52,7 +52,7 @@ describe('GridPanel', () => {
     let actions;
 
     beforeEach(() => {
-        actions = makeTestActions();
+        actions = makeTestActions(jest.fn);
     });
 
     const expectChartMenu = (wrapper: GridPanelWrapper, disabledState: boolean): void => {

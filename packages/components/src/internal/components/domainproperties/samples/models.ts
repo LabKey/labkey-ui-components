@@ -18,19 +18,19 @@ export class SampleTypeModel extends Record({
     autoLinkTargetContainerId: undefined,
     exception: undefined,
 }) {
-    rowId: number;
-    name: string;
-    nameReadOnly?: boolean;
-    nameExpression: string;
-    description: string;
-    labelColor: string;
-    metricUnit: string;
-    parentAliases?: OrderedMap<string, IParentAlias>;
-    importAliases?: Map<string, string>;
-    domainId?: number;
-    domain?: DomainDesign;
-    autoLinkTargetContainerId: string;
-    exception: string;
+    declare rowId: number;
+    declare name: string;
+    declare nameReadOnly?: boolean;
+    declare nameExpression: string;
+    declare description: string;
+    declare labelColor: string;
+    declare metricUnit: string;
+    declare parentAliases?: OrderedMap<string, IParentAlias>;
+    declare importAliases?: Map<string, string>;
+    declare domainId?: number;
+    declare domain?: DomainDesign;
+    declare autoLinkTargetContainerId: string;
+    declare exception: string;
 
     static create(raw?: DomainDetails, name?: string): SampleTypeModel {
         if (!raw) return new SampleTypeModel();
@@ -45,12 +45,12 @@ export class SampleTypeModel extends Record({
         }
 
         return new SampleTypeModel({
-            ...options.toJS(),
+            ...options?.toJS(),
             name,
             nameReadOnly: raw.nameReadOnly,
             importAliases,
-            labelColor: options.get('labelColor') || undefined, // helps to convert null to undefined
-            metricUnit: options.get('metricUnit') || undefined,
+            labelColor: options?.get('labelColor') || undefined, // helps to convert null to undefined
+            metricUnit: options?.get('metricUnit') || undefined,
             domain,
         });
     }

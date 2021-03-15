@@ -107,9 +107,9 @@ export class AppURL extends Record({
     _filters: undefined,
     _params: undefined,
 }) {
-    _baseUrl: string;
-    _filters: List<Filter.IFilter>;
-    _params: Map<string, any>;
+    declare _baseUrl: string;
+    declare _filters: List<Filter.IFilter>;
+    declare _params: Map<string, any>;
 
     static create(...parts): AppURL {
         let baseUrl = '';

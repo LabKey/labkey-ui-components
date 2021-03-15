@@ -1,5 +1,5 @@
 import React from 'react';
-import {List, OrderedMap} from 'immutable';
+import { List, OrderedMap } from 'immutable';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import { getFormNameFromId } from '../entities/actions';
@@ -30,9 +30,10 @@ import { HelpTopicURL } from '../HelpTopicURL';
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SectionHeading } from '../SectionHeading';
 
+import { getValidPublishTargets } from '../assay/actions';
+import { ENTITY_FORM_IDS } from '../entities/constants';
+
 import { IParentAlias, SampleTypeModel } from './models';
-import { getValidPublishTargets } from "../assay/actions";
-import { ENTITY_FORM_IDS } from "../entities/constants";
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
@@ -356,7 +357,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     </Row>
                 )}
 
-                {allowTimepointProperties &&
+                {allowTimepointProperties && !appPropertiesOnly && (
                     <Row className="margin-top">
                         <Col xs={2}> Auto-Link Data to Study </Col>
                         <Col xs={5}>
@@ -367,15 +368,16 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                 value={model.autoLinkTargetContainerId || ''}
                             >
                                 <option key="_empty" value={null} />
-                                {containers && containers.map((container, i) => (
-                                    <option key={i} value={container.id}>
-                                        {container.name}
-                                    </option>
-                                ))}
+                                {containers &&
+                                    containers.map((container, i) => (
+                                        <option key={i} value={container.id}>
+                                            {container.name}
+                                        </option>
+                                    ))}
                             </FormControl>
                         </Col>
                     </Row>
-                 }
+                )}
 
                 {appPropertiesOnly && (
                     <>

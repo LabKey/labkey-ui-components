@@ -21,7 +21,7 @@ import { fromJS, Map } from 'immutable';
 import { sleep } from '../../../testHelpers';
 import { initUnitTestMocks } from '../../../testHelperMocks';
 import { ENTITY_FORM_IDS } from '../entities/constants';
-import {DomainDesign, DomainDetails, DomainPanelStatus} from '../models';
+import { DomainDesign, DomainDetails, DomainPanelStatus } from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
@@ -39,7 +39,9 @@ beforeAll(() => {
     initUnitTestMocks();
 });
 
-const baseData = DomainDetails.create(fromJS({domainDesign: DomainDesign.create({allowTimepointProperties: false})}));
+const baseData = DomainDetails.create(
+    fromJS({ domainDesign: DomainDesign.create({ allowTimepointProperties: false }) })
+);
 const sampleTypeModel = SampleTypeModel.create(baseData);
 
 describe('<SampleTypePropertiesPanel/>', () => {
@@ -110,7 +112,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                     description: descVal,
                 }),
                 domainKindName: 'SampleType',
-                domainDesign: DomainDesign.create({allowTimepointProperties: false})
+                domainDesign: DomainDesign.create({ allowTimepointProperties: false }),
             })
         );
 

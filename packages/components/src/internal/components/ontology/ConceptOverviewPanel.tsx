@@ -1,7 +1,9 @@
-import React, { FC, memo, useEffect, useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
 
-import { Alert, naturalSort } from '../../..';
+import { Alert } from '../base/Alert';
+
+import { naturalSort } from '../../../public/sort';
 
 import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
@@ -67,6 +69,11 @@ const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
  */
 export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(props => {
     const { concept, selectedPath = undefined } = props;
+    const [showPath, setShowPath] = useState<boolean>();
+
+    const handleShowPath = useCallback((): void => {
+        setShowPath(!showPath);
+    }, [showPath, setShowPath]);
 
     if (!concept) {
         return <div className="none-selected">No concept selected</div>;
@@ -77,15 +84,23 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
     return (
         <>
             {selectedPath && (
-                <ConceptPathDisplay
-                    title={CURRENT_PATH_TITLE}
-                    path={selectedPath}
-                    isSelected={true}
-                    isCollapsed={true}
-                />
+                <div className="button-container">
+                    <Button className={showPath ? 'show-path' : ''} onClick={handleShowPath}>
+                        {showPath ? 'Hide ' : 'Show '} Path
+                    </Button>
+                </div>
             )}
-            {label && <div className="title margin-bottom">{label}</div>}
-            {code && <span className="code">{code}</span>}
+            {label && <div className="title small-margin-bottom">{label}</div>}
+            {code && <span className="code margin-bottom">{code}</span>}
+            {selectedPath && (
+                <div className="concept-overview-selected-path">
+                    {showPath && (
+                        <>
+                            <ConceptPathDisplay title={CURRENT_PATH_TITLE} path={selectedPath} isSelected={true} />
+                        </>
+                    )}
+                </div>
+            )}
             {description && (
                 <div>
                     <div className="description-title">Description</div>

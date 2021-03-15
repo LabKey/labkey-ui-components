@@ -5,7 +5,6 @@ import classNames from 'classnames';
 import { Alert } from '../base/Alert';
 
 import { LoadingSpinner } from '../base/LoadingSpinner';
-import { LabelHelpTip } from '../base/LabelHelpTip';
 
 import { PathModel } from './models';
 import { fetchParentPaths } from './actions';
@@ -14,7 +13,6 @@ export interface ConceptPathDisplayProps {
     title?: string;
     path: PathModel;
     isSelected?: boolean;
-    isCollapsed?: boolean;
     onClick?: (path: PathModel, isAlternatePath?: boolean) => void;
 }
 
@@ -50,7 +48,7 @@ interface ConceptPathDisplayImplProps extends ConceptPathDisplayProps {
 }
 
 export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(props => {
-    const { isCollapsed = false, isSelected = false, onClick = undefined, parentPaths, path, title } = props;
+    const { isSelected = false, onClick = undefined, parentPaths, path, title } = props;
     const updatePath = useCallback((): void => {
         onClick?.(path, true);
     }, [path, onClick]);
@@ -66,30 +64,18 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
         );
     });
 
-    const pathBody = (
-        <>
+    return (
+        <div
+            className={classNames('concept-path-container', {
+                selected: isSelected,
+            })}
+            onClick={updatePath}
+        >
             {title && <div className="title">{title}</div>}
             <div className="concept-path">
                 {!parentPaths && <LoadingSpinner />}
                 {parentPaths && <>{fullpath}</>}
             </div>
-        </>
-    );
-
-    return (
-        <div
-            className={classNames('concept-path-container', {
-                selected: isSelected,
-                collapsed: isCollapsed,
-            })}
-            onClick={updatePath}
-        >
-            {isCollapsed && (
-                <LabelHelpTip placement="bottom" iconComponent={pathBody} title="Full Path">
-                    {isCollapsed && <div unselectable="on">{fullpath}</div>}
-                </LabelHelpTip>
-            )}
-            {!isCollapsed && <>{pathBody}</>}
         </div>
     );
 });

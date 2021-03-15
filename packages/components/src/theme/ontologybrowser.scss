@@ -87,6 +87,7 @@
 /* CONCEPT OVERVIEW */
 .ontology-concept-overview-container {
     padding-top: 10px;
+    padding-right: 5px;
     min-height: 315px;
     height: 67vh;
     overflow-y: scroll;
@@ -124,6 +125,44 @@
 
         li {
             padding-top: 5px;
+        }
+    }
+
+    .button-container {
+        float: right;
+        margin-right: 5px;
+
+        .btn {
+            position: relative;
+
+            &.show-path {
+                &:after {
+                    position: absolute;
+                    content: "";
+                    height: 0;
+                    width: 0;
+                    font-size: 0;
+                    line-height: 0;
+                    margin-top: 28px;
+                    margin-left: -110px;
+                    border-left: 85px solid transparent;
+                    border-right: 40px solid transparent;
+                    border-bottom: 47px solid $gray-lighter;
+                }
+            }
+        }
+
+        .triangle {
+
+        }
+    }
+
+    .concept-overview-selected-path {
+        width: 100%;
+
+        .concept-path-container {
+            width: 100%;
+            border: $gray-lighter;
         }
     }
 }
@@ -173,19 +212,6 @@
 
     &.selected {
         background-color: $gray-lighter;
-    }
-
-    &.collapsed {
-        direction: rtl;
-        float: right;
-
-        .concept-path {
-            overflow: hidden;
-            white-space: nowrap;
-            //width: auto;
-            width: 60ch; //TODO figure out what this should actually be
-            text-overflow: ellipsis;
-        }
     }
 
     .title {

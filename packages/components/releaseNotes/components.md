@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add 'Auto-Link Data to Study' field in Sample Type properties
 
+### version 2.14.1
+*Released*: 15 March 2021
+* Update `<EntityInsertPanel/>` component for reuse for media materials.
+
 ### version 2.14.0
 *Released*: 11 March 2021
 * Update DomainForm and FileAttachmentForm to ignore reserved fields when inferring fields

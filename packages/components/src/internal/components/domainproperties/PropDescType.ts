@@ -21,6 +21,7 @@ import {
     TIME_RANGE_URI,
     USER_RANGE_URI,
     VISITID_CONCEPT_URI,
+    UNIQUE_ID_CONCEPT_URI,
 } from './constants';
 
 export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
@@ -265,6 +266,13 @@ export const VISIT_ID_TYPE = new PropDescType({
     conceptURI: VISITID_CONCEPT_URI,
 });
 
+export const UNIQUE_ID_TYPE = new PropDescType({
+    name: 'uniqueId',
+    display: 'Unique ID',
+    rangeURI: STRING_RANGE_URI,
+    conceptURI: UNIQUE_ID_CONCEPT_URI
+})
+
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,
     MULTILINE_TYPE,
@@ -282,6 +290,7 @@ export const PROP_DESC_TYPES = List([
     ONTOLOGY_LOOKUP_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
+    UNIQUE_ID_TYPE,
 ]);
 
 export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);

@@ -52,6 +52,7 @@ import {
     TEXT_TYPE,
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
+    UNIQUE_ID_TYPE,
 } from './PropDescType';
 import {
     CONCEPT_CODE_CONCEPT_URI,
@@ -344,6 +345,7 @@ describe('domain properties actions', () => {
         expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
         expect(getAvailableTypes(domain).contains(VISIT_DATE_TYPE)).toBeTruthy();
         expect(getAvailableTypes(domain).contains(VISIT_ID_TYPE)).toBeTruthy();
+        expect(getAvailableTypes(domain).contains(UNIQUE_ID_TYPE)).toBeTruthy();
 
         domain = DomainDesign.create({
             allowFlagProperties: false,
@@ -358,6 +360,7 @@ describe('domain properties actions', () => {
         expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
         expect(getAvailableTypes(domain).contains(VISIT_DATE_TYPE)).toBeFalsy();
         expect(getAvailableTypes(domain).contains(VISIT_ID_TYPE)).toBeFalsy();
+        expect(getAvailableTypes(domain).contains(UNIQUE_ID_TYPE)).toBeTruthy();
     });
 
     test('getAvailableTypesForOntology', async () => {

@@ -39,10 +39,9 @@ beforeAll(() => {
     initUnitTestMocks();
 });
 
-const baseData = DomainDetails.create(
-    fromJS({ domainDesign: DomainDesign.create({ allowTimepointProperties: false }) })
-);
-const sampleTypeModel = SampleTypeModel.create(baseData);
+const sampleTypeModel = SampleTypeModel.create({
+    domainDesign: fromJS({ allowTimepointProperties: false }),
+} as DomainDetails);
 
 describe('<SampleTypePropertiesPanel/>', () => {
     test('default props', async () => {
@@ -141,6 +140,9 @@ describe('<SampleTypePropertiesPanel/>', () => {
         // Add parent alias button should be visible
         expect(wrapper.find('.container--addition-icon')).toHaveLength(1);
 
+        // Link to STudy dropdown should not be visible since allowTimepointProperties: false
+        expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
+
         wrapper.unmount();
     });
 
@@ -218,5 +220,30 @@ describe('<SampleTypePropertiesPanel/>', () => {
         await sleep();
 
         expect(tree).toMatchSnapshot();
+    });
+
+    test('allowTimepointProperties', async () => {
+        const sampleTypeModelWithTimepoint = SampleTypeModel.create({
+            domainDesign: fromJS({ allowTimepointProperties: true }),
+        } as DomainDetails);
+        const wrapper = mount(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                appPropertiesOnly={false}
+                model={sampleTypeModelWithTimepoint}
+                updateModel={jest.fn}
+                onAddParentAlias={jest.fn}
+                onRemoveParentAlias={jest.fn}
+                onParentAliasChange={jest.fn}
+                parentOptions={[]}
+            />
+        );
+
+        expect(wrapper.text()).toContain('Auto-Link Data to Study');
+
+        wrapper.setProps({ appPropertiesOnly: true });
+        expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
+
+        wrapper.unmount();
     });
 });

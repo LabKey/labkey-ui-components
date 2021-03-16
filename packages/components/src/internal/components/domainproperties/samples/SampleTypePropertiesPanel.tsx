@@ -291,7 +291,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 metricUnitProps?.metricUnitHelpMsg || 'The unit of measurement used for the sample type.',
             metricUnitOptions = metricUnitProps?.metricUnitOptions,
             metricUnitRequired = metricUnitProps?.metricUnitRequired;
-        const allowTimepointProperties = model.domain.allowTimepointProperties;
+        const allowTimepointProperties = model.domain.get('allowTimepointProperties');
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
         return (

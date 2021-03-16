@@ -19,7 +19,7 @@ describe('ConceptPathDisplay', () => {
     });
 
     test('Path set', () => {
-        const wrapper = mount(<ConceptPathDisplay path={TEST_CONCEPT_PATH} title={'test title'} isSelected={true} />);
+        const wrapper = mount(<ConceptPathDisplay path={TEST_CONCEPT_PATH} title="test title" isSelected={true} />);
         expect(wrapper.find(ConceptPathDisplayImpl)).toHaveLength(1);
         expect(wrapper.find(ConceptPathDisplayImpl).prop('path')).toBe(TEST_CONCEPT_PATH);
         expect(wrapper.find(ConceptPathDisplayImpl).prop('title')).toBe('test title');

@@ -15,6 +15,7 @@ import {
 } from '../domainproperties/constants';
 import { ITypeDependentProps } from '../domainproperties/models';
 import { SectionHeading } from '../domainproperties/SectionHeading';
+
 import { OntologyModel } from './models';
 
 interface Props extends ITypeDependentProps {

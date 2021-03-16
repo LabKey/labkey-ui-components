@@ -160,8 +160,8 @@ describe('ConceptPathInfoImpl', () => {
 });
 
 describe('AlternatePathPanel', () => {
-    const TEST_SELECTED_PATH = new PathModel({ code: 'a', label: 'A', path: 'a/a'});
-    const TEST_ALTERNATE_PATH = new PathModel({ code: 'a', label: 'A', path: 'b/a'});
+    const TEST_SELECTED_PATH = new PathModel({ code: 'a', label: 'A', path: 'a/a' });
+    const TEST_ALTERNATE_PATH = new PathModel({ code: 'a', label: 'A', path: 'b/a' });
 
     function validate(wrapper: ReactWrapper, hasSelectedPath = false, alternatePathCount = 0): void {
         expect(wrapper.find('.current-path-container')).toHaveLength(hasSelectedPath ? 1 : 0);

@@ -135,10 +135,7 @@ export function getProcessedSearchHits(
         ? results
               .filter(result => {
                   const category = result['category'];
-                  return (
-                      filterCategories?.indexOf(category) > -1 ||
-                      result['data']
-                  );
+                  return filterCategories?.indexOf(category) > -1 || result['data'];
               })
               .map(result => {
                   return {

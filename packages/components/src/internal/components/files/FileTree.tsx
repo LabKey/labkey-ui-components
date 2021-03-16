@@ -176,7 +176,12 @@ const Header = props => {
                         {showNodeIcon && (
                             <NodeIcon useFileIconCls={useFileIconCls} isDirectory={isDirectory} node={node} />
                         )}
-                        <div className={classNames({'filetree-file-name': !isDirectory, 'filetree-directory-name': isDirectory })}>
+                        <div
+                            className={classNames({
+                                'filetree-file-name': !isDirectory,
+                                'filetree-directory-name': isDirectory,
+                            })}
+                        >
                             {node.name}
                         </div>
                     </div>
@@ -551,19 +556,19 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
 
         return (
             <div className="filetree-container">
-                {showLoading ? <LoadingSpinner />
-                    : error ? (
-                        <Alert bsStyle="danger">{error}</Alert>
-                    ) : (
-                        <Treebeard
-                            animations={showAnimations ? animations : false}
-                            data={data}
-                            onToggle={this.onToggle}
-                            decorators={{ ...decorators, Header: this.headerDecorator }}
-                            style={customStyle}
-                        />
-                    )
-                }
+                {showLoading ? (
+                    <LoadingSpinner />
+                ) : error ? (
+                    <Alert bsStyle="danger">{error}</Alert>
+                ) : (
+                    <Treebeard
+                        animations={showAnimations ? animations : false}
+                        data={data}
+                        onToggle={this.onToggle}
+                        decorators={{ ...decorators, Header: this.headerDecorator }}
+                        style={customStyle}
+                    />
+                )}
             </div>
         );
     }

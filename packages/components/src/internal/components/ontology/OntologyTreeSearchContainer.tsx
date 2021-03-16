@@ -29,8 +29,12 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
         [setSearchTerm]
     );
 
-    const onSearchFocus = useCallback(() => { setIsFocused(true); }, [setIsFocused]);
-    const onSearchBlur = useCallback(() => { setIsFocused(false); }, [onSearchFocus]);
+    const onSearchFocus = useCallback(() => {
+        setIsFocused(true);
+    }, [setIsFocused]);
+    const onSearchBlur = useCallback(() => {
+        setIsFocused(false);
+    }, [onSearchFocus]);
 
     useEffect(() => {
         setError(undefined);
@@ -39,7 +43,9 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
 
         if (searchTerm) {
             const timeOutId = setTimeout(() => {
-                searchUsingIndex({ q: searchTerm, category: CONCEPT_CATEGORY, limit: SEARCH_LIMIT }, undefined, [CONCEPT_CATEGORY])
+                searchUsingIndex({ q: searchTerm, category: CONCEPT_CATEGORY, limit: SEARCH_LIMIT }, undefined, [
+                    CONCEPT_CATEGORY,
+                ])
                     .then(response => {
                         setSearchHits(
                             response.hits.map(hit => {
@@ -109,8 +115,14 @@ interface OntologySearchResultsMenuProps {
 // exported for jest testing
 export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = memo(props => {
     const { searchHits, isFocused, totalHits, error, onItemClick } = props;
-    const showMenu = useMemo(() => isFocused && (searchHits !== undefined || error !== undefined), [isFocused, searchHits, error]);
-    const hitsHaveDescriptions = useMemo(() => searchHits?.findIndex(hit => hit.description !== undefined) > -1, [searchHits]);
+    const showMenu = useMemo(() => isFocused && (searchHits !== undefined || error !== undefined), [
+        isFocused,
+        searchHits,
+        error,
+    ]);
+    const hitsHaveDescriptions = useMemo(() => searchHits?.findIndex(hit => hit.description !== undefined) > -1, [
+        searchHits,
+    ]);
 
     if (!showMenu) {
         return null;

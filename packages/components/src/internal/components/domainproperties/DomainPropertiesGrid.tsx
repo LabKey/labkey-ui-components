@@ -44,7 +44,13 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         // TODO: Maintain hash of fieldIndex : gridIndex on state in order to make delete and filter run in N rather than N^2 time.
         this.state = {
             gridData,
-            gridColumns: domain.getGridColumns(onFieldsChange, scrollFunction, domainKindName, appPropertiesOnly, hasOntologyModule),
+            gridColumns: domain.getGridColumns(
+                onFieldsChange,
+                scrollFunction,
+                domainKindName,
+                appPropertiesOnly,
+                hasOntologyModule
+            ),
             visibleGridData: this.getVisibleGridData(gridData),
             search: this.props.search,
         };
@@ -60,13 +66,13 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         // When new field added
         if (prevGridData.size < newGridData.size) {
             this.uponRowAdd(newGridData);
-        // When fields are deleted
+            // When fields are deleted
         } else if (prevGridData.size > newGridData.size) {
             this.uponRowDelete();
-        // When search is updated
+            // When search is updated
         } else if (prevSearch !== newSearch) {
             this.uponFilter();
-        // If selection updated
+            // If selection updated
         } else {
             this.uponRowSelection();
         }
@@ -90,7 +96,7 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
         const initGridData = domain.getGridData(appPropertiesOnly, hasOntologyModule);
 
         // Handle bug that occurs if multiple fields have the same name
-        let replaceGridData = (new Set(gridData.map(row => row.get('name')).toJS())).size !== gridData.size;
+        const replaceGridData = new Set(gridData.map(row => row.get('name')).toJS()).size !== gridData.size;
         if (replaceGridData) {
             this.setState({ gridData: initGridData, visibleGridData: this.getVisibleGridData(initGridData) });
             return;
@@ -161,7 +167,9 @@ export class DomainPropertiesGrid extends React.PureComponent<DomainPropertiesGr
     headerCell = (column: GridColumn, index: number, columnCount?: number): ReactNode => {
         const { selectAll, actions } = this.props;
         if (column.index === GRID_SELECTION_INDEX) {
-            return <Checkbox className="domain-summary-selectAll" checked={selectAll} onChange={actions.toggleSelectAll} />;
+            return (
+                <Checkbox className="domain-summary-selectAll" checked={selectAll} onChange={actions.toggleSelectAll} />
+            );
         }
 
         return headerCell(this.sortColumn, column, index, false, true, columnCount);

@@ -3,9 +3,10 @@ import { TreeNode } from 'react-treebeard';
 
 import { naturalSortByProperty, FileTree } from '../../..';
 
+import { DEFAULT_ROOT_PREFIX } from '../files/FileTree';
+
 import { PathModel } from './models';
 import { fetchChildPaths, fetchParentPaths } from './actions';
-import { DEFAULT_ROOT_PREFIX } from '../files/FileTree';
 
 export class OntologyPath {
     id: string;
@@ -85,7 +86,13 @@ const getTreeNodeForPath = function (fileTree, path: string): any {
     return fileTree.getDataNode(path, fileTree.state.data);
 };
 
-const toggleParentPaths = function (fileTree, alternatePath: PathModel, parentPaths: PathModel[], isRoot: boolean, callback: () => void): void {
+const toggleParentPaths = function (
+    fileTree,
+    alternatePath: PathModel,
+    parentPaths: PathModel[],
+    isRoot: boolean,
+    callback: () => void
+): void {
     const parentPath = isRoot ? DEFAULT_ROOT_PREFIX : parentPaths[0].path;
     parentPaths.shift();
 

@@ -35,6 +35,8 @@ import { ActionButton } from '../buttons/ActionButton';
 
 import { ToggleWithInputField } from '../forms/input/ToggleWithInputField';
 
+import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
+
 import {
     DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     EXPAND_TRANSITION,
@@ -91,7 +93,6 @@ import {
     isFieldDeletable,
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
-import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
 interface IDomainFormInput {
     allowImportExport?: boolean;
@@ -219,7 +220,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         // query to get the set of available modules for the given LabKey server
         Security.getModules({
             containerPath: getServerContext().container.path,
-            success: async (data) => {
+            success: async data => {
                 const serverModuleNames = data.modules
                     .filter(module => module.enabled)
                     .map(module => module.name.toLowerCase());
@@ -1232,7 +1233,9 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
                                         return (
                                             <DomainRow
-                                                ref={ref => {this.refsArray[i] = ref;}}
+                                                ref={ref => {
+                                                    this.refsArray[i] = ref;
+                                                }}
                                                 domainId={domain.domainId}
                                                 helpNoun={helpNoun}
                                                 key={'domain-row-key-' + i}

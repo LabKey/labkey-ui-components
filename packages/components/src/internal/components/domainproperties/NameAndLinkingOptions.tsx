@@ -5,6 +5,8 @@ import { helpLinkNode, URL_ENCODING_TOPIC } from '../../util/helpLinks';
 
 import { OntologyConceptAnnotation } from '../ontology/OntologyConceptAnnotation';
 
+import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
+
 import { isFieldFullyLocked } from './propertiesUtil';
 import { createFormInputId, createFormInputName } from './actions';
 import {
@@ -17,7 +19,6 @@ import {
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
-import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
 interface NameAndLinkingProps {
     index: number;

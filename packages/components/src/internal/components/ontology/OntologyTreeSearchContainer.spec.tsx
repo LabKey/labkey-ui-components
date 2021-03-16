@@ -1,10 +1,10 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
+import { Alert } from '../../..';
+
 import { OntologySearchResultsMenu, OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
 import { ConceptModel, OntologyModel } from './models';
-
-import { Alert } from '../../..';
 
 const TEST_ONTOLOGY = new OntologyModel({
     abbreviation: 't',
@@ -68,13 +68,13 @@ describe('OntologySearchResultsMenu', () => {
         validate(wrapper, true, 1);
         wrapper.unmount();
 
-        wrapper = mount(<OntologySearchResultsMenu {...DEFAULT_PROPS} isFocused={true} error={'test error'} />);
+        wrapper = mount(<OntologySearchResultsMenu {...DEFAULT_PROPS} isFocused={true} error="test error" />);
         validate(wrapper, true);
         wrapper.unmount();
     });
 
     test('error', () => {
-        const wrapper = mount(<OntologySearchResultsMenu {...DEFAULT_PROPS} error={'test error'} />);
+        const wrapper = mount(<OntologySearchResultsMenu {...DEFAULT_PROPS} error="test error" />);
         validate(wrapper, true);
         expect(wrapper.find(Alert).text()).toBe('test error');
         wrapper.unmount();
@@ -116,7 +116,7 @@ describe('OntologySearchResultsMenu', () => {
     });
 
     test('with searchHits, without descriptions', () => {
-        const searchHits = [new ConceptModel({code: 'a', label: 'A'})];
+        const searchHits = [new ConceptModel({ code: 'a', label: 'A' })];
 
         const wrapper = mount(
             <OntologySearchResultsMenu {...DEFAULT_PROPS} searchHits={searchHits} totalHits={searchHits.length} />

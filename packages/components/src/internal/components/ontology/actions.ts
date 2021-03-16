@@ -63,7 +63,10 @@ export function getOntologyDetails(ontologyId: string): Promise<OntologyModel> {
     return Ontology.getOntology(ontologyId);
 }
 
-export function getOntologyChildPathsAndConcepts(ontologyPath: string, container: string = SHARED_CONTAINER): Promise<PathModel> {
+export function getOntologyChildPathsAndConcepts(
+    ontologyPath: string,
+    container: string = SHARED_CONTAINER
+): Promise<PathModel> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CHILD_PATHS_ACTION, container, {

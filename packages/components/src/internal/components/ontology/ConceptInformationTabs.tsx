@@ -8,7 +8,7 @@ import { ConceptPathInfo } from './ConceptPathInfo';
 interface ConceptInformationTabsProps {
     concept?: ConceptModel;
     selectedPath?: PathModel;
-    alternatePathClickHandler?: (path: PathModel) => void;
+    alternatePathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
 }
 
 export const enum ConceptInfoTabs {

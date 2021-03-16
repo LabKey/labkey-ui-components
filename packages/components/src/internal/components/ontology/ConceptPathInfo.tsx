@@ -9,7 +9,7 @@ import { ConceptPathDisplay } from './ConceptPathDisplay';
 export interface ConceptPathInfoProps {
     selectedCode?: string;
     selectedPath?: PathModel;
-    alternatePathClickHandler?: (path: PathModel) => void;
+    alternatePathClickHandler: (path: PathModel, isAlternatePath?: boolean) => void;
 }
 
 export const ConceptPathInfo: FC<ConceptPathInfoProps> = memo(props => {
@@ -19,6 +19,7 @@ export const ConceptPathInfo: FC<ConceptPathInfoProps> = memo(props => {
 
     useEffect(() => {
         if (selectedCode) {
+            setAlternatePaths(undefined);
             fetchAlternatePaths(selectedCode)
                 .then(response => {
                     setAlternatePaths(response);
@@ -42,6 +43,7 @@ interface ConceptPathInfoImplProps extends ConceptPathInfoProps {
     alternatePaths?: PathModel[];
 }
 
+// export for jest testing
 export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
     const { selectedCode, selectedPath, alternatePaths } = props;
 
@@ -59,7 +61,8 @@ export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
     );
 });
 
-const AlternatePathPanel: FC<ConceptPathInfoImplProps> = memo(props => {
+// export for jest testing
+export const AlternatePathPanel: FC<ConceptPathInfoImplProps> = memo(props => {
     const { selectedPath, alternatePaths, alternatePathClickHandler } = props;
 
     const altPaths = alternatePaths.filter(path => path.path !== selectedPath?.path);
@@ -73,8 +76,8 @@ const AlternatePathPanel: FC<ConceptPathInfoImplProps> = memo(props => {
                 </div>
             )}
             <div className="alternate-paths-container">
-                <div className="title">Alternate Paths</div>
-                {altPaths?.length === 0 && <div>No alternate paths</div>}
+                <div className="title">Alternate Path(s)</div>
+                {altPaths?.length === 0 && <div className="no-path-info">No alternate paths</div>}
                 {altPaths?.map(path => (
                     <ConceptPathDisplay key={path.path} path={path} onClick={alternatePathClickHandler} />
                 ))}

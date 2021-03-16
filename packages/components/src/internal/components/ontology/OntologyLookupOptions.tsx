@@ -4,7 +4,7 @@ import { List } from 'immutable';
 import { getServerContext } from '@labkey/api';
 
 import { DomainField, LabelHelpTip } from '../../..';
-import { helpLinkNode, ONTOLOGY_TOPIC } from '../../util/helpLinks';
+import { helpLinkNode, ONTOLOGY_LOOKUP_TOPIC } from '../../util/helpLinks';
 
 import { isFieldFullyLocked } from '../domainproperties/propertiesUtil';
 import { createFormInputId, fetchOntologies } from '../domainproperties/actions';
@@ -15,6 +15,7 @@ import {
 } from '../domainproperties/constants';
 import { ITypeDependentProps } from '../domainproperties/models';
 import { SectionHeading } from '../domainproperties/SectionHeading';
+
 import { OntologyModel } from './models';
 
 interface Props extends ITypeDependentProps {
@@ -84,6 +85,9 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
         const sourceId = this.getSourceInputId();
         const labelColId = createFormInputId(DOMAIN_FIELD_ONTOLOGY_LABEL_COL, domainIndex, index);
         const importColId = createFormInputId(DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, domainIndex, index);
+        const learnMore = (
+            <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>
+        );
 
         return (
             <div>
@@ -106,10 +110,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                         </i>
                                     </p>
                                     <p>Choose which ontology to use to lookup concept codes and preferred names.</p>
-                                    <p>
-                                        Learn more about {helpLinkNode(ONTOLOGY_TOPIC + '#lookup', 'ontology integration')} in
-                                        LabKey.
-                                    </p>
+                                    {learnMore}
                                 </>
                             </LabelHelpTip>
                         </div>
@@ -121,9 +122,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                 <p>
                                     Choose which text field to use when looking up a code against the selected ontology.
                                 </p>
-                                <p>
-                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC + '#lookup', 'ontology integration')} in LabKey.
-                                </p>
+                                {learnMore}
                             </LabelHelpTip>
                         </div>
                     </Col>
@@ -132,9 +131,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                             Choose a Label Field
                             <LabelHelpTip title="Experimental Feature">
                                 <p>Choose which text field to store the preferred name of the concept.</p>
-                                <p>
-                                    Learn more about {helpLinkNode(ONTOLOGY_TOPIC + '#lookup', 'ontology integration')} in LabKey.
-                                </p>
+                                {learnMore}
                             </LabelHelpTip>
                         </div>
                     </Col>

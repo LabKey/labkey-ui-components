@@ -118,6 +118,8 @@ import getOntologiesChildPathsInfo from '../test/data/ontologies-getRootChildPat
 import getOntologyInfo from '../test/data/ontologies-getOntology.json';
 import getAlternateConceptPaths from '../test/data/ontologies-getAlternateConceptPaths.json';
 import getConceptParentPaths from '../test/data/ontologies-getParentPaths.json';
+import getOntologyConceptSearchInfo from '../test/data/ontologies-searchConcepts.json';
+import getSearchEmptyInfo from '../test/data/search-jsonEmpty.json';
 
 export const ICON_URL = 'http://labkey.wpengine.com/wp-content/uploads/2015/12/cropped-LK-icon.png';
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
@@ -730,5 +732,15 @@ export function initOnotologyMocks(): void {
             },
             res
         );
+    });
+
+    mock.get(/.*\/search\/?.*\/json.*/, (req, res) => {
+        const queryParams = req.url().query;
+
+        if (queryParams.category === 'concept') {
+            return jsonResponse(getOntologyConceptSearchInfo, res);
+        }
+
+        return jsonResponse(getSearchEmptyInfo, res);
     });
 }

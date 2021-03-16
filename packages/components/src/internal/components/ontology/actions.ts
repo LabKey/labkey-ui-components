@@ -2,7 +2,8 @@ import { ActionURL, Ajax, getServerContext, Utils } from '@labkey/api';
 
 import { ConceptModel, OntologyModel, PathModel } from './models';
 
-const ONTOLOGY_CONTROLLER = 'ontology';
+export const ONTOLOGY_MODULE_NAME = 'ontology';
+export const ONTOLOGY_CONTROLLER = 'ontology';
 const GET_CHILD_PATHS_ACTION = 'getChildPaths.api';
 const GET_ONTOLOGY_ACTION = 'getOntology.api';
 const GET_CONCEPT_ACTION = 'getConcept.api';
@@ -62,7 +63,10 @@ export function getOntologyDetails(ontologyId: string): Promise<OntologyModel> {
     return Ontology.getOntology(ontologyId);
 }
 
-export function getOntologyChildPathsAndConcepts(ontologyPath: string, container: string = SHARED_CONTAINER): Promise<PathModel> {
+export function getOntologyChildPathsAndConcepts(
+    ontologyPath: string,
+    container: string = SHARED_CONTAINER
+): Promise<PathModel> {
     return new Promise((resolve, reject) => {
         return Ajax.request({
             url: ActionURL.buildURL(ONTOLOGY_CONTROLLER, GET_CHILD_PATHS_ACTION, container, {

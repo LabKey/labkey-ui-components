@@ -31,7 +31,15 @@ describe('NameAndLinkingOptions', () => {
             propertyURI: 'test',
         });
 
-        const numeric = mount(<NameAndLinkingOptions index={1} domainIndex={1} field={field} onChange={jest.fn()} />);
+        const numeric = mount(
+            <NameAndLinkingOptions
+                index={1}
+                domainIndex={1}
+                field={field}
+                serverModuleNames={undefined}
+                onChange={jest.fn()}
+            />
+        );
 
         // Verify section label
         const sectionLabel = numeric.find({ className: 'domain-field-section-heading domain-field-section-hdr' });

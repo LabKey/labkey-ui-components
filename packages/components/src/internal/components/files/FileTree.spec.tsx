@@ -1,6 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount, ReactWrapper, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
+import { Treebeard, animations } from 'react-treebeard';
+
+import { LoadingSpinner } from '../../..';
 
 import { FileTree } from './FileTree';
 import { fetchFileTestTree } from './FileTreeTest';
@@ -27,7 +30,9 @@ describe('FileTree', () => {
     });
 
     test('with data allowMultiSelect false', () => {
-        const component = <FileTree allowMultiSelect={false} loadData={fetchFileTestTree} onFileSelect={jest.fn(() => true)} />;
+        const component = (
+            <FileTree allowMultiSelect={false} loadData={fetchFileTestTree} onFileSelect={jest.fn(() => true)} />
+        );
         const tree = shallow(component);
 
         return waitForLoad(tree).then(() => {
@@ -42,5 +47,34 @@ describe('FileTree', () => {
                 tree.unmount();
             });
         });
+    });
+
+    function validate(wrapper: ReactWrapper, loading = false): void {
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(loading ? 1 : 0);
+        expect(wrapper.find(Treebeard)).toHaveLength(!loading ? 1 : 0);
+    }
+
+    test('showLoading', () => {
+        const wrapper = mount(
+            <FileTree loadData={fetchFileTestTree} onFileSelect={jest.fn(() => true)} showLoading={true} />
+        );
+        validate(wrapper, true);
+        wrapper.unmount();
+    });
+
+    test('showAnimations', () => {
+        let wrapper = mount(
+            <FileTree loadData={fetchFileTestTree} onFileSelect={jest.fn(() => true)} showAnimations={true} />
+        );
+        validate(wrapper);
+        expect(wrapper.find(Treebeard).prop('animations')).toBe(animations);
+        wrapper.unmount();
+
+        wrapper = mount(
+            <FileTree loadData={fetchFileTestTree} onFileSelect={jest.fn(() => true)} showAnimations={false} />
+        );
+        validate(wrapper);
+        expect(wrapper.find(Treebeard).prop('animations')).toBe(false);
+        wrapper.unmount();
     });
 });

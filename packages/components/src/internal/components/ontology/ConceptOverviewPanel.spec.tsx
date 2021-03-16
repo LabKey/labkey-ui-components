@@ -45,7 +45,7 @@ describe('ConceptOverviewPanelImpl', () => {
 
     test('with selected path', () => {
         const wrapper = mount(<ConceptOverviewPanelImpl concept={TEST_CONCEPT} selectedPath={TEST_PATH} />);
-        validate(wrapper, false, 5);
+        validate(wrapper, false, 4);
         expect(wrapper.find('.title').text()).toBe(TEST_CONCEPT.label);
         expect(wrapper.find('.code').text()).toBe(TEST_CONCEPT.code);
         expect(wrapper.find(Button)).toHaveLength(1);

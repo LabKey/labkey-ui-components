@@ -17,6 +17,16 @@ describe('ConceptPathDisplay', () => {
         expect(wrapper.find(ConceptPathDisplayImpl)).toHaveLength(0);
         wrapper.unmount();
     });
+
+    test('Path set', () => {
+        const wrapper = mount(<ConceptPathDisplay path={TEST_CONCEPT_PATH} title={'test title'} isSelected={true} />);
+        expect(wrapper.find(ConceptPathDisplayImpl)).toHaveLength(1);
+        expect(wrapper.find(ConceptPathDisplayImpl).prop('path')).toBe(TEST_CONCEPT_PATH);
+        expect(wrapper.find(ConceptPathDisplayImpl).prop('title')).toBe('test title');
+        expect(wrapper.find(ConceptPathDisplayImpl).prop('isSelected')).toBe(true);
+        expect(wrapper.find(ConceptPathDisplayImpl).prop('parentPaths')).toBe(undefined);
+        wrapper.unmount();
+    });
 });
 
 describe('ConceptPathDisplayImpl', () => {
@@ -33,6 +43,7 @@ describe('ConceptPathDisplayImpl', () => {
         expect(wrapper.find('.selected')).toHaveLength(isSelected ? 1 : 0);
         expect(wrapper.find('.concept-path-label')).toHaveLength(parentCount);
         expect(wrapper.find('i')).toHaveLength(parentCount === 0 ? (isLoading ? 1 : 0) : parentCount - 1);
+        expect(wrapper.find('.concept-path-spacer')).toHaveLength(parentCount > 0 ? parentCount - 1 : 0);
         expect(wrapper.find('.title')).toHaveLength(title ? 1 : 0);
 
         if (title) {

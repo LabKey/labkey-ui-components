@@ -49,6 +49,11 @@ interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      */
     activeModelId?: string;
     /**
+     * By default if there is only one model, the tabs will not be shown.  Setting this to true will show the tab
+     * even if there is only on model.
+     */
+    alwaysShowTabs?: boolean;
+    /**
      * Defaults to true. Determines if we render the TabbedGridPanel as a Bootstrap panel.
      */
     asPanel?: boolean;
@@ -77,6 +82,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     const {
         activeModelId,
         actions,
+        alwaysShowTabs,
         asPanel = true,
         onTabSelect,
         queryModels,
@@ -109,7 +115,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
             {title !== undefined && asPanel && <div className="tabbed-grid-panel__title panel-heading">{title}</div>}
 
             <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
-                {tabOrder.length > 1 && (
+                {(tabOrder.length > 1 || alwaysShowTabs) && (
                     <ul className="nav nav-tabs">
                         {tabOrder.map(modelId => (
                             <GridTab

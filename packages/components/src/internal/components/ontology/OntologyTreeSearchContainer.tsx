@@ -20,8 +20,6 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
     const [searchHits, setSearchHits] = useState<ConceptModel[]>();
     const [totalHits, setTotalHits] = useState<number>();
     const [error, setError] = useState<string>();
-    const showMenu = useMemo(() => isFocused && (searchHits !== undefined || error !== undefined), [isFocused, searchHits, error]);
-    const hitsHaveDescriptions = useMemo(() => searchHits?.findIndex(hit => hit.description !== undefined) > -1, [searchHits]);
 
     const onSearchChange = useCallback(
         (evt: ChangeEvent<HTMLInputElement>) => {
@@ -89,37 +87,69 @@ export const OntologyTreeSearchContainer: FC<OntologyTreeSearchContainerProps> =
                     onBlur={onSearchBlur}
                 />
             </form>
-            {showMenu && (
-                <div>
-                    <ul className="result-menu container">
-                        <Alert>{error}</Alert>
-                        {searchHits?.length === 0 && (
-                            <li key="none">
-                                <div className="row">
-                                    <div className="col col-xs-12">No search results found.</div>
-                                </div>
-                            </li>
-                        )}
-                        {searchHits?.map(hit => (
-                            <li key={hit.code} className="selectable-item" role="option" onMouseDown={evt => onItemClick(evt, hit.code)}>
-                                <div className="row">
-                                    <div className={'col bold ' + (hitsHaveDescriptions ? 'col-xs-5' : 'col-xs-10')}>
-                                        {hit.label}
-                                    </div>
-                                    <div className="col col-xs-2">{hit.code}</div>
-                                    {hitsHaveDescriptions && <div className="col col-xs-5">{hit.description}</div>}
-                                </div>
-                            </li>
-                        ))}
-                        {searchHits?.length < totalHits && (
-                            <div className="result-footer">
-                                {Number(totalHits).toLocaleString()} results found. Update your search term to further
-                                refine your results.
+            <OntologySearchResultsMenu
+                searchHits={searchHits}
+                totalHits={totalHits}
+                isFocused={isFocused}
+                error={error}
+                onItemClick={onItemClick}
+            />
+        </div>
+    );
+});
+
+interface OntologySearchResultsMenuProps {
+    searchHits: ConceptModel[];
+    totalHits: number;
+    isFocused: boolean;
+    error: string;
+    onItemClick: (evt: MouseEvent<HTMLLIElement>, code: string) => void;
+}
+
+// exported for jest testing
+export const OntologySearchResultsMenu: FC<OntologySearchResultsMenuProps> = memo(props => {
+    const { searchHits, isFocused, totalHits, error, onItemClick } = props;
+    const showMenu = useMemo(() => isFocused && (searchHits !== undefined || error !== undefined), [isFocused, searchHits, error]);
+    const hitsHaveDescriptions = useMemo(() => searchHits?.findIndex(hit => hit.description !== undefined) > -1, [searchHits]);
+
+    if (!showMenu) {
+        return null;
+    }
+
+    return (
+        <div>
+            <ul className="result-menu container">
+                <Alert>{error}</Alert>
+                {searchHits?.length === 0 && (
+                    <li key="none">
+                        <div className="row">
+                            <div className="col col-xs-12">No search results found.</div>
+                        </div>
+                    </li>
+                )}
+                {searchHits?.map(hit => (
+                    <li
+                        key={hit.code}
+                        className="selectable-item"
+                        role="option"
+                        onMouseDown={evt => onItemClick(evt, hit.code)}
+                    >
+                        <div className="row">
+                            <div className={'col bold ' + (hitsHaveDescriptions ? 'col-xs-5' : 'col-xs-10')}>
+                                {hit.label}
                             </div>
-                        )}
-                    </ul>
-                </div>
-            )}
+                            <div className="col col-xs-2">{hit.code}</div>
+                            {hitsHaveDescriptions && <div className="col col-xs-5">{hit.description}</div>}
+                        </div>
+                    </li>
+                ))}
+                {searchHits?.length < totalHits && (
+                    <div className="result-footer">
+                        {Number(totalHits).toLocaleString()} results found. Update your search term to further refine
+                        your results.
+                    </div>
+                )}
+            </ul>
         </div>
     );
 });

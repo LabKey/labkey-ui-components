@@ -236,8 +236,8 @@ export enum GRID_CHECKBOX_OPTIONS {
     NONE,
 }
 
-export const SM_PIPELINE_JOB_NOTIFICATION_EVENT = 'org.labkey.samplemanagement.notification.SampleManagerPipelineJobNotificationProvider.ImportNotify';
+export const SM_PIPELINE_JOB_NOTIFICATION_EVENT =
+    'org.labkey.samplemanagement.notification.SampleManagerPipelineJobNotificationProvider.ImportNotify';
 export const SM_PIPELINE_JOB_NOTIFICATION_EVENT_START = SM_PIPELINE_JOB_NOTIFICATION_EVENT + '#Start';
 export const SM_PIPELINE_JOB_NOTIFICATION_EVENT_SUCCESS = SM_PIPELINE_JOB_NOTIFICATION_EVENT + '#Success';
 export const SM_PIPELINE_JOB_NOTIFICATION_EVENT_ERROR = SM_PIPELINE_JOB_NOTIFICATION_EVENT + '#Error';
-

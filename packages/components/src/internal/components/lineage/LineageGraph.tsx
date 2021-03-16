@@ -136,9 +136,13 @@ class LineageGraphDisplay extends PureComponent<Props, Partial<State>> {
     }
 }
 
-export const LineageGraph = withLineage<LinageGraphOwnProps>((props: Props) => (
+export const LineageGraph = withLineage<LinageGraphOwnProps>((props: Props) => {
     // Optimization: This FunctionComponent allows for "generateGraph" to only be called
     // when the lineage is updated. If it is called in the render loop of <LineageGraphDisplay/>
     // it is run each time a user interacts with the graph (e.g. hovers a node, clicks a node, etc).
-    <LineageGraphDisplay {...props} visGraphOptions={props.lineage?.generateGraph(props)} />
-));
+    if (props.lineage?.error) {
+        return <Alert>{props.lineage.error}</Alert>;
+    }
+
+    return <LineageGraphDisplay {...props} visGraphOptions={props.lineage?.generateGraph(props)} />;
+});

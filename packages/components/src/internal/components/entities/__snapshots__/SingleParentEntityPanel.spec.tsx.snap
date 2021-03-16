@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SingleParentEntityPanel> empty state editing 1`] = `
-<SingleParentEntityPanel
+<Memo()
   childNounSingular="Sample"
   editing={true}
   index={0}
@@ -58,23 +58,198 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
     ]
   }
 >
-  <div
-    className="bottom-spacing"
-    key="parent-selections-0"
+  <withRouter(ComponentWithQueryModels)
+    childNounSingular="Sample"
+    editing={true}
+    index={0}
+    onTypeChange={[Function]}
+    onValueChange={[Function]}
+    parentDataType={
+      Object {
+        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "deleteHelpLinkTopic": "dataClass",
+        "dependencyText": "derived sample dependencies",
+        "descriptionPlural": "parent types",
+        "descriptionSingular": "parent type",
+        "inputColumnName": "Inputs/Data/First",
+        "inputTypeColumnName": "Inputs/Data/First/DataClass",
+        "inputTypeValueField": "rowId",
+        "insertColumnNamePrefix": "DataInputs/",
+        "instanceSchemaName": "exp.data",
+        "nounAsParentSingular": "Parent",
+        "nounPlural": "data",
+        "nounSingular": "data",
+        "typeListingSchemaQuery": Immutable.Record {
+          "schemaName": "exp",
+          "queryName": "DataClasses",
+          "viewName": undefined,
+        },
+        "typeNounSingular": "Data Type",
+        "uniqueFieldKey": "Name",
+      }
+    }
+    parentTypeOptions={
+      Immutable.List [
+        Object {
+          "label": "Second Source",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+          "query": "Second Source",
+          "rowId": 322,
+          "schema": "exp.data",
+          "value": "second source",
+        },
+        Object {
+          "label": "Source 1",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+          "query": "Source 1",
+          "rowId": 321,
+          "schema": "exp.data",
+          "value": "source 1",
+        },
+        Object {
+          "label": "Vendor 3",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+          "query": "Vendor 3",
+          "rowId": 323,
+          "schema": "exp.data",
+          "value": "vendor 3",
+        },
+      ]
+    }
+    queryConfigs={Object {}}
   >
-    <div
-      className="form-group row"
+    <ComponentWithQueryModels
+      autoLoad={false}
+      childNounSingular="Sample"
+      editing={true}
+      index={0}
+      modelLoader={
+        Object {
+          "clearSelections": [Function],
+          "loadCharts": [Function],
+          "loadQueryInfo": [Function],
+          "loadRows": [Function],
+          "loadSelections": [Function],
+          "replaceSelections": [Function],
+          "selectAllRows": [Function],
+          "setSelections": [Function],
+        }
+      }
+      onTypeChange={[Function]}
+      onValueChange={[Function]}
+      parentDataType={
+        Object {
+          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "deleteHelpLinkTopic": "dataClass",
+          "dependencyText": "derived sample dependencies",
+          "descriptionPlural": "parent types",
+          "descriptionSingular": "parent type",
+          "inputColumnName": "Inputs/Data/First",
+          "inputTypeColumnName": "Inputs/Data/First/DataClass",
+          "inputTypeValueField": "rowId",
+          "insertColumnNamePrefix": "DataInputs/",
+          "instanceSchemaName": "exp.data",
+          "nounAsParentSingular": "Parent",
+          "nounPlural": "data",
+          "nounSingular": "data",
+          "typeListingSchemaQuery": Immutable.Record {
+            "schemaName": "exp",
+            "queryName": "DataClasses",
+            "viewName": undefined,
+          },
+          "typeNounSingular": "Data Type",
+          "uniqueFieldKey": "Name",
+        }
+      }
+      parentTypeOptions={
+        Immutable.List [
+          Object {
+            "label": "Second Source",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+            "query": "Second Source",
+            "rowId": 322,
+            "schema": "exp.data",
+            "value": "second source",
+          },
+          Object {
+            "label": "Source 1",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+            "query": "Source 1",
+            "rowId": 321,
+            "schema": "exp.data",
+            "value": "source 1",
+          },
+          Object {
+            "label": "Vendor 3",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+            "query": "Vendor 3",
+            "rowId": 323,
+            "schema": "exp.data",
+            "value": "vendor 3",
+          },
+        ]
+      }
+      queryConfigs={Object {}}
     >
-      <SelectInput
-        containerClass=""
-        formsy={false}
-        inputClass="col-sm-6"
-        label="Data Type 1"
-        labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-        name="entityType0"
-        onChange={[Function]}
-        options={
-          Array [
+      <SingleParentEntity
+        actions={
+          Object {
+            "addModel": [Function],
+            "clearSelections": [Function],
+            "loadAllModels": [Function],
+            "loadCharts": [Function],
+            "loadFirstPage": [Function],
+            "loadLastPage": [Function],
+            "loadModel": [Function],
+            "loadNextPage": [Function],
+            "loadPreviousPage": [Function],
+            "loadRows": [Function],
+            "replaceSelections": [Function],
+            "selectAllRows": [Function],
+            "selectPage": [Function],
+            "selectReport": [Function],
+            "selectRow": [Function],
+            "setFilters": [Function],
+            "setMaxRows": [Function],
+            "setOffset": [Function],
+            "setSchemaQuery": [Function],
+            "setSelections": [Function],
+            "setSorts": [Function],
+            "setView": [Function],
+          }
+        }
+        autoLoad={false}
+        childNounSingular="Sample"
+        editing={true}
+        index={0}
+        onTypeChange={[Function]}
+        onValueChange={[Function]}
+        parentDataType={
+          Object {
+            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "deleteHelpLinkTopic": "dataClass",
+            "dependencyText": "derived sample dependencies",
+            "descriptionPlural": "parent types",
+            "descriptionSingular": "parent type",
+            "inputColumnName": "Inputs/Data/First",
+            "inputTypeColumnName": "Inputs/Data/First/DataClass",
+            "inputTypeValueField": "rowId",
+            "insertColumnNamePrefix": "DataInputs/",
+            "instanceSchemaName": "exp.data",
+            "nounAsParentSingular": "Parent",
+            "nounPlural": "data",
+            "nounSingular": "data",
+            "typeListingSchemaQuery": Immutable.Record {
+              "schemaName": "exp",
+              "queryName": "DataClasses",
+              "viewName": undefined,
+            },
+            "typeNounSingular": "Data Type",
+            "uniqueFieldKey": "Name",
+          }
+        }
+        parentTypeOptions={
+          Immutable.List [
             Object {
               "label": "Second Source",
               "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
@@ -101,199 +276,70 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
             },
           ]
         }
-        placeholder="Select a Data Type ..."
-        required={true}
+        queryModels={Object {}}
       >
-        <SelectInputImpl
-          allowCreate={false}
-          allowDisable={false}
-          autoValue={true}
-          autoload={true}
-          clearCacheOnChange={true}
-          containerClass=""
-          delimiter=","
-          formsy={false}
-          initiallyDisabled={false}
-          inputClass="col-sm-6"
-          label="Data Type 1"
-          labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-          labelKey="label"
-          name="entityType0"
-          onChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "Second Source",
-                "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
-                "query": "Second Source",
-                "rowId": 322,
-                "schema": "exp.data",
-                "value": "second source",
-              },
-              Object {
-                "label": "Source 1",
-                "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
-                "query": "Source 1",
-                "rowId": 321,
-                "schema": "exp.data",
-                "value": "source 1",
-              },
-              Object {
-                "label": "Vendor 3",
-                "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
-                "query": "Vendor 3",
-                "rowId": 323,
-                "schema": "exp.data",
-                "value": "vendor 3",
-              },
-            ]
-          }
-          placeholder="Select a Data Type ..."
-          required={true}
-          saveOnBlur={false}
-          showLabel={true}
-          valueKey="value"
+        <div
+          className="bottom-spacing"
+          key="parent-selections-0"
         >
           <div
-            className=""
+            className="form-group row"
           >
-            <FieldLabel
-              fieldName="entityType0"
-              id="selectinput-0"
-              isDisabled={false}
-              labelOverlayProps={
-                Object {
-                  "addLabelAsterisk": undefined,
-                  "description": "Select  a Data Type 1",
-                  "inputId": "entityType0",
-                  "isFormsy": false,
-                  "label": "Data Type 1",
-                  "labelClass": "col-sm-3 col-xs-12 entity-insert--parent-label",
-                  "required": true,
-                }
+            <SelectInput
+              containerClass=""
+              formsy={false}
+              inputClass="col-sm-6"
+              label="Data Type 1"
+              labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+              name="entityType0"
+              onChange={[Function]}
+              options={
+                Array [
+                  Object {
+                    "label": "Second Source",
+                    "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+                    "query": "Second Source",
+                    "rowId": 322,
+                    "schema": "exp.data",
+                    "value": "second source",
+                  },
+                  Object {
+                    "label": "Source 1",
+                    "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+                    "query": "Source 1",
+                    "rowId": 321,
+                    "schema": "exp.data",
+                    "value": "source 1",
+                  },
+                  Object {
+                    "label": "Vendor 3",
+                    "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+                    "query": "Vendor 3",
+                    "rowId": 323,
+                    "schema": "exp.data",
+                    "value": "vendor 3",
+                  },
+                ]
               }
-              showLabel={true}
-              showToggle={false}
-              toggleProps={
-                Object {
-                  "onClick": [Function],
-                }
-              }
-              withLabelOverlay={true}
+              placeholder="Select a Data Type ..."
+              required={true}
             >
-              <LabelOverlay
-                addLabelAsterisk={false}
-                canMouseOverTooltip={false}
-                description="Select  a Data Type 1"
-                inputId="entityType0"
-                isFormsy={false}
+              <SelectInputImpl
+                allowCreate={false}
+                allowDisable={false}
+                autoValue={true}
+                autoload={true}
+                clearCacheOnChange={true}
+                containerClass=""
+                delimiter=","
+                formsy={false}
+                initiallyDisabled={false}
+                inputClass="col-sm-6"
                 label="Data Type 1"
                 labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
-                required={true}
-              >
-                <label
-                  className="col-sm-3 col-xs-12 entity-insert--parent-label text__truncate-and-wrap"
-                  htmlFor="entityType0"
-                >
-                  <span>
-                    Data Type 1
-                  </span>
-                   
-                  <OverlayTrigger
-                    defaultOverlayShown={false}
-                    overlay={
-                      <Popover
-                        bsClass="popover"
-                        id="labkey-app-1"
-                        placement="right"
-                        title="Data Type 1"
-                      >
-                        <React.Fragment>
-                          <p>
-                            <strong>
-                              Description: 
-                            </strong>
-                            Select  a Data Type 1
-                          </p>
-                          <p>
-                            <small>
-                              <i>
-                                This field is required.
-                              </i>
-                            </small>
-                          </p>
-                        </React.Fragment>
-                      </Popover>
-                    }
-                    trigger={
-                      Array [
-                        "hover",
-                        "focus",
-                      ]
-                    }
-                  >
-                    <i
-                      className="fa fa-question-circle"
-                      onBlur={[Function]}
-                      onClick={null}
-                      onFocus={[Function]}
-                      onMouseOut={[Function]}
-                      onMouseOver={[Function]}
-                    />
-                  </OverlayTrigger>
-                  <span
-                    className="required-symbol"
-                  >
-                     *
-                  </span>
-                </label>
-              </LabelOverlay>
-            </FieldLabel>
-            <div
-              className="col-sm-6"
-            >
-              <Select
-                addLabelText="Add \\"{label}\\"?"
-                arrowRenderer={[Function]}
-                autoload={true}
-                autosize={true}
-                backspaceRemoves={true}
-                backspaceToRemoveMessage="Press backspace to remove {label}"
-                clearAllText="Clear all"
-                clearRenderer={[Function]}
-                clearValueText="Clear value"
-                clearable={true}
-                closeOnSelect={true}
-                deleteRemoves={true}
-                delimiter=","
-                disabled={false}
-                escapeClearsValue={true}
-                filterOptions={[Function]}
-                ignoreAccents={true}
-                ignoreCase={true}
-                inputProps={
-                  Object {
-                    "id": "selectinput-0",
-                  }
-                }
-                isLoading={false}
-                joinValues={false}
                 labelKey="label"
-                matchPos="any"
-                matchProp="any"
-                menuBuffer={0}
-                menuRenderer={[Function]}
-                multi={false}
                 name="entityType0"
-                noResultsText="No results found"
-                onBlur={[Function]}
-                onBlurResetsInput={true}
                 onChange={[Function]}
-                onCloseResetsInput={true}
-                onFocus={[Function]}
-                onSelectResetsInput={true}
-                openOnClick={true}
-                optionComponent={[Function]}
                 options={
                   Array [
                     Object {
@@ -322,118 +368,295 @@ exports[`<SingleParentEntityPanel> empty state editing 1`] = `
                     },
                   ]
                 }
-                pageSize={5}
                 placeholder="Select a Data Type ..."
                 required={true}
-                scrollMenuIntoView={true}
-                searchable={true}
-                simpleValue={false}
-                tabSelectsValue={true}
-                valueComponent={[Function]}
+                saveOnBlur={false}
+                showLabel={true}
                 valueKey="value"
               >
                 <div
-                  className="Select Select--single is-clearable is-searchable"
+                  className=""
                 >
-                  <div
-                    className="Select-control"
-                    onKeyDown={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchEnd={[Function]}
-                    onTouchMove={[Function]}
-                    onTouchStart={[Function]}
+                  <FieldLabel
+                    fieldName="entityType0"
+                    id="selectinput-0"
+                    isDisabled={false}
+                    labelOverlayProps={
+                      Object {
+                        "addLabelAsterisk": undefined,
+                        "description": "Select  a Data Type 1",
+                        "inputId": "entityType0",
+                        "isFormsy": false,
+                        "label": "Data Type 1",
+                        "labelClass": "col-sm-3 col-xs-12 entity-insert--parent-label",
+                        "required": true,
+                      }
+                    }
+                    showLabel={true}
+                    showToggle={false}
+                    toggleProps={
+                      Object {
+                        "onClick": [Function],
+                      }
+                    }
+                    withLabelOverlay={true}
                   >
-                    <span
-                      className="Select-multi-value-wrapper"
-                      id="react-select-2--value"
+                    <LabelOverlay
+                      addLabelAsterisk={false}
+                      canMouseOverTooltip={false}
+                      description="Select  a Data Type 1"
+                      inputId="entityType0"
+                      isFormsy={false}
+                      label="Data Type 1"
+                      labelClass="col-sm-3 col-xs-12 entity-insert--parent-label"
+                      required={true}
                     >
-                      <div
-                        className="Select-placeholder"
+                      <label
+                        className="col-sm-3 col-xs-12 entity-insert--parent-label text__truncate-and-wrap"
+                        htmlFor="entityType0"
                       >
-                        Select a Data Type ...
-                      </div>
-                      <AutosizeInput
-                        aria-activedescendant="react-select-2--value"
-                        aria-expanded="false"
-                        aria-haspopup="false"
-                        aria-owns=""
-                        className="Select-input"
-                        id="selectinput-0"
-                        injectStyles={true}
-                        minWidth="5"
-                        onBlur={[Function]}
-                        onChange={[Function]}
-                        onFocus={[Function]}
-                        required={true}
-                        role="combobox"
-                        value=""
-                      >
-                        <div
-                          className="Select-input"
-                          style={
-                            Object {
-                              "display": "inline-block",
-                            }
+                        <span>
+                          Data Type 1
+                        </span>
+                         
+                        <OverlayTrigger
+                          defaultOverlayShown={false}
+                          overlay={
+                            <Popover
+                              bsClass="popover"
+                              id="labkey-app-1"
+                              placement="right"
+                              title="Data Type 1"
+                            >
+                              <React.Fragment>
+                                <p>
+                                  <strong>
+                                    Description: 
+                                  </strong>
+                                  Select  a Data Type 1
+                                </p>
+                                <p>
+                                  <small>
+                                    <i>
+                                      This field is required.
+                                    </i>
+                                  </small>
+                                </p>
+                              </React.Fragment>
+                            </Popover>
+                          }
+                          trigger={
+                            Array [
+                              "hover",
+                              "focus",
+                            ]
                           }
                         >
-                          <input
-                            aria-activedescendant="react-select-2--value"
-                            aria-expanded="false"
-                            aria-haspopup="false"
-                            aria-owns=""
-                            id="selectinput-0"
+                          <i
+                            className="fa fa-question-circle"
                             onBlur={[Function]}
-                            onChange={[Function]}
+                            onClick={null}
                             onFocus={[Function]}
-                            required={true}
-                            role="combobox"
-                            style={
-                              Object {
-                                "boxSizing": "content-box",
-                                "width": "5px",
-                              }
-                            }
-                            value=""
+                            onMouseOut={[Function]}
+                            onMouseOver={[Function]}
                           />
-                          <div
-                            style={
-                              Object {
-                                "height": 0,
-                                "left": 0,
-                                "overflow": "scroll",
-                                "position": "absolute",
-                                "top": 0,
-                                "visibility": "hidden",
-                                "whiteSpace": "pre",
-                              }
-                            }
-                          />
-                        </div>
-                      </AutosizeInput>
-                    </span>
-                    <span
-                      className="Select-arrow-zone"
-                      onMouseDown={[Function]}
+                        </OverlayTrigger>
+                        <span
+                          className="required-symbol"
+                        >
+                           *
+                        </span>
+                      </label>
+                    </LabelOverlay>
+                  </FieldLabel>
+                  <div
+                    className="col-sm-6"
+                  >
+                    <Select
+                      addLabelText="Add \\"{label}\\"?"
+                      arrowRenderer={[Function]}
+                      autoload={true}
+                      autosize={true}
+                      backspaceRemoves={true}
+                      backspaceToRemoveMessage="Press backspace to remove {label}"
+                      clearAllText="Clear all"
+                      clearRenderer={[Function]}
+                      clearValueText="Clear value"
+                      clearable={true}
+                      closeOnSelect={true}
+                      deleteRemoves={true}
+                      delimiter=","
+                      disabled={false}
+                      escapeClearsValue={true}
+                      filterOptions={[Function]}
+                      ignoreAccents={true}
+                      ignoreCase={true}
+                      inputProps={
+                        Object {
+                          "id": "selectinput-0",
+                        }
+                      }
+                      isLoading={false}
+                      joinValues={false}
+                      labelKey="label"
+                      matchPos="any"
+                      matchProp="any"
+                      menuBuffer={0}
+                      menuRenderer={[Function]}
+                      multi={false}
+                      name="entityType0"
+                      noResultsText="No results found"
+                      onBlur={[Function]}
+                      onBlurResetsInput={true}
+                      onChange={[Function]}
+                      onCloseResetsInput={true}
+                      onFocus={[Function]}
+                      onSelectResetsInput={true}
+                      openOnClick={true}
+                      optionComponent={[Function]}
+                      options={
+                        Array [
+                          Object {
+                            "label": "Second Source",
+                            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+                            "query": "Second Source",
+                            "rowId": 322,
+                            "schema": "exp.data",
+                            "value": "second source",
+                          },
+                          Object {
+                            "label": "Source 1",
+                            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+                            "query": "Source 1",
+                            "rowId": 321,
+                            "schema": "exp.data",
+                            "value": "source 1",
+                          },
+                          Object {
+                            "label": "Vendor 3",
+                            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+                            "query": "Vendor 3",
+                            "rowId": 323,
+                            "schema": "exp.data",
+                            "value": "vendor 3",
+                          },
+                        ]
+                      }
+                      pageSize={5}
+                      placeholder="Select a Data Type ..."
+                      required={true}
+                      scrollMenuIntoView={true}
+                      searchable={true}
+                      simpleValue={false}
+                      tabSelectsValue={true}
+                      valueComponent={[Function]}
+                      valueKey="value"
                     >
-                      <span
-                        className="Select-arrow"
-                        onMouseDown={[Function]}
-                      />
-                    </span>
+                      <div
+                        className="Select Select--single is-clearable is-searchable"
+                      >
+                        <div
+                          className="Select-control"
+                          onKeyDown={[Function]}
+                          onMouseDown={[Function]}
+                          onTouchEnd={[Function]}
+                          onTouchMove={[Function]}
+                          onTouchStart={[Function]}
+                        >
+                          <span
+                            className="Select-multi-value-wrapper"
+                            id="react-select-2--value"
+                          >
+                            <div
+                              className="Select-placeholder"
+                            >
+                              Select a Data Type ...
+                            </div>
+                            <AutosizeInput
+                              aria-activedescendant="react-select-2--value"
+                              aria-expanded="false"
+                              aria-haspopup="false"
+                              aria-owns=""
+                              className="Select-input"
+                              id="selectinput-0"
+                              injectStyles={true}
+                              minWidth="5"
+                              onBlur={[Function]}
+                              onChange={[Function]}
+                              onFocus={[Function]}
+                              required={true}
+                              role="combobox"
+                              value=""
+                            >
+                              <div
+                                className="Select-input"
+                                style={
+                                  Object {
+                                    "display": "inline-block",
+                                  }
+                                }
+                              >
+                                <input
+                                  aria-activedescendant="react-select-2--value"
+                                  aria-expanded="false"
+                                  aria-haspopup="false"
+                                  aria-owns=""
+                                  id="selectinput-0"
+                                  onBlur={[Function]}
+                                  onChange={[Function]}
+                                  onFocus={[Function]}
+                                  required={true}
+                                  role="combobox"
+                                  style={
+                                    Object {
+                                      "boxSizing": "content-box",
+                                      "width": "5px",
+                                    }
+                                  }
+                                  value=""
+                                />
+                                <div
+                                  style={
+                                    Object {
+                                      "height": 0,
+                                      "left": 0,
+                                      "overflow": "scroll",
+                                      "position": "absolute",
+                                      "top": 0,
+                                      "visibility": "hidden",
+                                      "whiteSpace": "pre",
+                                    }
+                                  }
+                                />
+                              </div>
+                            </AutosizeInput>
+                          </span>
+                          <span
+                            className="Select-arrow-zone"
+                            onMouseDown={[Function]}
+                          >
+                            <span
+                              className="Select-arrow"
+                              onMouseDown={[Function]}
+                            />
+                          </span>
+                        </div>
+                      </div>
+                    </Select>
                   </div>
                 </div>
-              </Select>
-            </div>
+              </SelectInputImpl>
+            </SelectInput>
           </div>
-        </SelectInputImpl>
-      </SelectInput>
-    </div>
-  </div>
-</SingleParentEntityPanel>
+        </div>
+      </SingleParentEntity>
+    </ComponentWithQueryModels>
+  </withRouter(ComponentWithQueryModels)>
+</Memo()>
 `;
 
 exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
-<SingleParentEntityPanel
+<Memo()
   childNounSingular="Sample"
   editing={false}
   index={0}
@@ -490,50 +713,273 @@ exports[`<SingleParentEntityPanel> empty state not editing 1`] = `
     ]
   }
 >
-  <div
-    className="top-spacing"
-    key="grid-0"
+  <withRouter(ComponentWithQueryModels)
+    childNounSingular="Sample"
+    editing={false}
+    index={0}
+    onTypeChange={[Function]}
+    onValueChange={[Function]}
+    parentDataType={
+      Object {
+        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "deleteHelpLinkTopic": "dataClass",
+        "dependencyText": "derived sample dependencies",
+        "descriptionPlural": "parent types",
+        "descriptionSingular": "parent type",
+        "inputColumnName": "Inputs/Data/First",
+        "inputTypeColumnName": "Inputs/Data/First/DataClass",
+        "inputTypeValueField": "rowId",
+        "insertColumnNamePrefix": "DataInputs/",
+        "instanceSchemaName": "exp.data",
+        "nounAsParentSingular": "Parent",
+        "nounPlural": "data",
+        "nounSingular": "data",
+        "typeListingSchemaQuery": Immutable.Record {
+          "schemaName": "exp",
+          "queryName": "DataClasses",
+          "viewName": undefined,
+        },
+        "typeNounSingular": "Data Type",
+        "uniqueFieldKey": "Name",
+      }
+    }
+    parentTypeOptions={
+      Immutable.List [
+        Object {
+          "label": "Second Source",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+          "query": "Second Source",
+          "rowId": 322,
+          "schema": "exp.data",
+          "value": "second source",
+        },
+        Object {
+          "label": "Source 1",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+          "query": "Source 1",
+          "rowId": 321,
+          "schema": "exp.data",
+          "value": "source 1",
+        },
+        Object {
+          "label": "Vendor 3",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+          "query": "Vendor 3",
+          "rowId": 323,
+          "schema": "exp.data",
+          "value": "vendor 3",
+        },
+      ]
+    }
+    queryConfigs={Object {}}
   >
-    <table
-      className="table table-responsive table-condensed detail-component--table__fixed"
+    <ComponentWithQueryModels
+      autoLoad={false}
+      childNounSingular="Sample"
+      editing={false}
+      index={0}
+      modelLoader={
+        Object {
+          "clearSelections": [Function],
+          "loadCharts": [Function],
+          "loadQueryInfo": [Function],
+          "loadRows": [Function],
+          "loadSelections": [Function],
+          "replaceSelections": [Function],
+          "selectAllRows": [Function],
+          "setSelections": [Function],
+        }
+      }
+      onTypeChange={[Function]}
+      onValueChange={[Function]}
+      parentDataType={
+        Object {
+          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "deleteHelpLinkTopic": "dataClass",
+          "dependencyText": "derived sample dependencies",
+          "descriptionPlural": "parent types",
+          "descriptionSingular": "parent type",
+          "inputColumnName": "Inputs/Data/First",
+          "inputTypeColumnName": "Inputs/Data/First/DataClass",
+          "inputTypeValueField": "rowId",
+          "insertColumnNamePrefix": "DataInputs/",
+          "instanceSchemaName": "exp.data",
+          "nounAsParentSingular": "Parent",
+          "nounPlural": "data",
+          "nounSingular": "data",
+          "typeListingSchemaQuery": Immutable.Record {
+            "schemaName": "exp",
+            "queryName": "DataClasses",
+            "viewName": undefined,
+          },
+          "typeNounSingular": "Data Type",
+          "uniqueFieldKey": "Name",
+        }
+      }
+      parentTypeOptions={
+        Immutable.List [
+          Object {
+            "label": "Second Source",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+            "query": "Second Source",
+            "rowId": 322,
+            "schema": "exp.data",
+            "value": "second source",
+          },
+          Object {
+            "label": "Source 1",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+            "query": "Source 1",
+            "rowId": 321,
+            "schema": "exp.data",
+            "value": "source 1",
+          },
+          Object {
+            "label": "Vendor 3",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+            "query": "Vendor 3",
+            "rowId": 323,
+            "schema": "exp.data",
+            "value": "vendor 3",
+          },
+        ]
+      }
+      queryConfigs={Object {}}
     >
-      <tbody>
-        <tr
-          key="type-name"
+      <SingleParentEntity
+        actions={
+          Object {
+            "addModel": [Function],
+            "clearSelections": [Function],
+            "loadAllModels": [Function],
+            "loadCharts": [Function],
+            "loadFirstPage": [Function],
+            "loadLastPage": [Function],
+            "loadModel": [Function],
+            "loadNextPage": [Function],
+            "loadPreviousPage": [Function],
+            "loadRows": [Function],
+            "replaceSelections": [Function],
+            "selectAllRows": [Function],
+            "selectPage": [Function],
+            "selectReport": [Function],
+            "selectRow": [Function],
+            "setFilters": [Function],
+            "setMaxRows": [Function],
+            "setOffset": [Function],
+            "setSchemaQuery": [Function],
+            "setSelections": [Function],
+            "setSorts": [Function],
+            "setView": [Function],
+          }
+        }
+        autoLoad={false}
+        childNounSingular="Sample"
+        editing={false}
+        index={0}
+        onTypeChange={[Function]}
+        onValueChange={[Function]}
+        parentDataType={
+          Object {
+            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "deleteHelpLinkTopic": "dataClass",
+            "dependencyText": "derived sample dependencies",
+            "descriptionPlural": "parent types",
+            "descriptionSingular": "parent type",
+            "inputColumnName": "Inputs/Data/First",
+            "inputTypeColumnName": "Inputs/Data/First/DataClass",
+            "inputTypeValueField": "rowId",
+            "insertColumnNamePrefix": "DataInputs/",
+            "instanceSchemaName": "exp.data",
+            "nounAsParentSingular": "Parent",
+            "nounPlural": "data",
+            "nounSingular": "data",
+            "typeListingSchemaQuery": Immutable.Record {
+              "schemaName": "exp",
+              "queryName": "DataClasses",
+              "viewName": undefined,
+            },
+            "typeNounSingular": "Data Type",
+            "uniqueFieldKey": "Name",
+          }
+        }
+        parentTypeOptions={
+          Immutable.List [
+            Object {
+              "label": "Second Source",
+              "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+              "query": "Second Source",
+              "rowId": 322,
+              "schema": "exp.data",
+              "value": "second source",
+            },
+            Object {
+              "label": "Source 1",
+              "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+              "query": "Source 1",
+              "rowId": 321,
+              "schema": "exp.data",
+              "value": "source 1",
+            },
+            Object {
+              "label": "Vendor 3",
+              "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+              "query": "Vendor 3",
+              "rowId": 323,
+              "schema": "exp.data",
+              "value": "vendor 3",
+            },
+          ]
+        }
+        queryModels={Object {}}
+      >
+        <div
+          className="top-spacing"
+          key="grid-0"
         >
-          <td>
-            Data Type
-          </td>
-          <td>
-            No 
-            data type
-             has been set for this 
-            sample
-            .
-          </td>
-        </tr>
-        <tr
-          key="parent-id"
-        >
-          <td>
-            Data ID
-          </td>
-          <td>
-            No 
-            data
-             ID has been set for this 
-            sample
-            .
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</SingleParentEntityPanel>
+          <table
+            className="table table-responsive table-condensed detail-component--table__fixed"
+          >
+            <tbody>
+              <tr
+                key="type-name"
+              >
+                <td>
+                  Data Type
+                </td>
+                <td>
+                  No 
+                  data type
+                   has been set for this 
+                  sample
+                  .
+                </td>
+              </tr>
+              <tr
+                key="parent-id"
+              >
+                <td>
+                  Data ID
+                </td>
+                <td>
+                  No 
+                  data
+                   ID has been set for this 
+                  sample
+                  .
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </SingleParentEntity>
+    </ComponentWithQueryModels>
+  </withRouter(ComponentWithQueryModels)>
+</Memo()>
 `;
 
 exports[`<SingleParentEntityPanel> with data not editing 1`] = `
-<SingleParentEntityPanel
+<Memo()
   childNounSingular="Sample"
   editing={false}
   index={0}
@@ -600,41 +1046,79 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
   }
   parentTypeQueryName="Second Source"
 >
-  <div
-    className="top-spacing"
-    key="grid-0"
-  >
-    <table
-      className="table table-responsive table-condensed detail-component--table__fixed"
-    >
-      <tbody>
-        <tr
-          key="type-name"
-        >
-          <td>
-            Data Type
-          </td>
-          <td>
-            <a
-              href="#/sources/Second%20Source"
-            >
-              Second Source
-            </a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <QueryGridPanel
-      asPanel={false}
-      initModelOnMount={true}
-      model={
-        Immutable.Record {
-          "id": "dataclasses-parent-data|exp$pdata/second source",
-          "schema": "exp.data",
+  <withRouter(ComponentWithQueryModels)
+    childNounSingular="Sample"
+    chosenType="Second Source"
+    editing={false}
+    index={0}
+    onRemoveParentType={[Function]}
+    onTypeChange={[Function]}
+    onValueChange={[Function]}
+    parentDataType={
+      Object {
+        "appUrlPrefixParts": Array [
+          "sources",
+        ],
+        "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+        "deleteHelpLinkTopic": "dataClass",
+        "dependencyText": "derived sample dependencies",
+        "descriptionPlural": "parent types",
+        "descriptionSingular": "parent type",
+        "inputColumnName": "Inputs/Data/First",
+        "inputTypeColumnName": "Inputs/Data/First/DataClass",
+        "inputTypeValueField": "rowId",
+        "insertColumnNamePrefix": "DataInputs/",
+        "instanceSchemaName": "exp.data",
+        "nounAsParentSingular": "Parent",
+        "nounPlural": "data",
+        "nounSingular": "data",
+        "typeListingSchemaQuery": Immutable.Record {
+          "schemaName": "exp",
+          "queryName": "DataClasses",
+          "viewName": undefined,
+        },
+        "typeNounSingular": "Data Type",
+        "uniqueFieldKey": "Name",
+      }
+    }
+    parentLSIDs={
+      Array [
+        "url:lsid:blah",
+      ]
+    }
+    parentTypeOptions={
+      Immutable.List [
+        Object {
+          "label": "Second Source",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
           "query": "Second Source",
-          "queryParameters": undefined,
-          "allowSelection": false,
-          "baseFilters": Immutable.List [
+          "rowId": 322,
+          "schema": "exp.data",
+          "value": "second source",
+        },
+        Object {
+          "label": "Source 1",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+          "query": "Source 1",
+          "rowId": 321,
+          "schema": "exp.data",
+          "value": "source 1",
+        },
+        Object {
+          "label": "Vendor 3",
+          "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+          "query": "Vendor 3",
+          "rowId": 323,
+          "schema": "exp.data",
+          "value": "vendor 3",
+        },
+      ]
+    }
+    parentTypeQueryName="Second Source"
+    queryConfigs={
+      Object {
+        "model": Object {
+          "baseFilters": Array [
             Filter {
               "columnName": "LSID",
               "filterType": Object {
@@ -661,252 +1145,470 @@ exports[`<SingleParentEntityPanel> with data not editing 1`] = `
             },
           ],
           "bindURL": false,
-          "containerPath": undefined,
-          "containerFilter": undefined,
-          "data": Immutable.Map {},
-          "dataIds": Immutable.List [],
-          "displayColumns": undefined,
-          "editable": false,
-          "editing": false,
-          "filterArray": Immutable.List [],
-          "includeDetailsColumn": false,
-          "includeUpdateColumn": false,
-          "isError": false,
-          "isLoaded": false,
-          "isLoading": true,
-          "isPaged": true,
-          "keyValue": undefined,
-          "loader": GridLoader {},
-          "maxRows": 20,
-          "message": undefined,
-          "messages": undefined,
-          "offset": 0,
-          "omittedColumns": Immutable.List [],
-          "pageNumber": 1,
-          "queryInfo": undefined,
-          "requiredColumns": Immutable.List [],
-          "selectedIds": Immutable.List [],
-          "selectedLoaded": false,
-          "selectedState": 2,
-          "selectedQuantity": 0,
-          "showSearchBox": true,
-          "showViewSelector": true,
-          "hideEmptyViewSelector": undefined,
-          "showChartSelector": true,
-          "showExport": true,
-          "hideEmptyChartSelector": undefined,
-          "sortable": true,
-          "sorts": undefined,
-          "title": undefined,
-          "totalRows": 0,
-          "urlParams": Immutable.List [
-            "p",
-            "reportId",
-          ],
-          "urlParamValues": Immutable.Map {},
-          "urlPrefix": undefined,
-          "view": undefined,
+          "schemaQuery": Immutable.Record {
+            "schemaName": "exp.data",
+            "queryName": "Second Source",
+            "viewName": undefined,
+          },
+        },
+      }
+    }
+  >
+    <ComponentWithQueryModels
+      autoLoad={false}
+      childNounSingular="Sample"
+      chosenType="Second Source"
+      editing={false}
+      index={0}
+      modelLoader={
+        Object {
+          "clearSelections": [Function],
+          "loadCharts": [Function],
+          "loadQueryInfo": [Function],
+          "loadRows": [Function],
+          "loadSelections": [Function],
+          "replaceSelections": [Function],
+          "selectAllRows": [Function],
+          "setSelections": [Function],
         }
       }
-      showGridBar={false}
-      showSampleComparisonReports={false}
+      onRemoveParentType={[Function]}
+      onTypeChange={[Function]}
+      onValueChange={[Function]}
+      parentDataType={
+        Object {
+          "appUrlPrefixParts": Array [
+            "sources",
+          ],
+          "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+          "deleteHelpLinkTopic": "dataClass",
+          "dependencyText": "derived sample dependencies",
+          "descriptionPlural": "parent types",
+          "descriptionSingular": "parent type",
+          "inputColumnName": "Inputs/Data/First",
+          "inputTypeColumnName": "Inputs/Data/First/DataClass",
+          "inputTypeValueField": "rowId",
+          "insertColumnNamePrefix": "DataInputs/",
+          "instanceSchemaName": "exp.data",
+          "nounAsParentSingular": "Parent",
+          "nounPlural": "data",
+          "nounSingular": "data",
+          "typeListingSchemaQuery": Immutable.Record {
+            "schemaName": "exp",
+            "queryName": "DataClasses",
+            "viewName": undefined,
+          },
+          "typeNounSingular": "Data Type",
+          "uniqueFieldKey": "Name",
+        }
+      }
+      parentLSIDs={
+        Array [
+          "url:lsid:blah",
+        ]
+      }
+      parentTypeOptions={
+        Immutable.List [
+          Object {
+            "label": "Second Source",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+            "query": "Second Source",
+            "rowId": 322,
+            "schema": "exp.data",
+            "value": "second source",
+          },
+          Object {
+            "label": "Source 1",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+            "query": "Source 1",
+            "rowId": 321,
+            "schema": "exp.data",
+            "value": "source 1",
+          },
+          Object {
+            "label": "Vendor 3",
+            "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+            "query": "Vendor 3",
+            "rowId": 323,
+            "schema": "exp.data",
+            "value": "vendor 3",
+          },
+        ]
+      }
+      parentTypeQueryName="Second Source"
+      queryConfigs={
+        Object {
+          "model": Object {
+            "baseFilters": Array [
+              Filter {
+                "columnName": "LSID",
+                "filterType": Object {
+                  "getDisplaySymbol": [Function],
+                  "getDisplayText": [Function],
+                  "getLongDisplayText": [Function],
+                  "getMultiValueFilter": [Function],
+                  "getMultiValueMaxOccurs": [Function],
+                  "getMultiValueMinOccurs": [Function],
+                  "getMultiValueSeparator": [Function],
+                  "getOpposite": [Function],
+                  "getSingleValueFilter": [Function],
+                  "getURLParameterValue": [Function],
+                  "getURLSuffix": [Function],
+                  "isDataValueRequired": [Function],
+                  "isMultiValued": [Function],
+                  "isTableWise": [Function],
+                  "parseValue": [Function],
+                  "validate": [Function],
+                },
+                "value": Array [
+                  "url:lsid:blah",
+                ],
+              },
+            ],
+            "bindURL": false,
+            "schemaQuery": Immutable.Record {
+              "schemaName": "exp.data",
+              "queryName": "Second Source",
+              "viewName": undefined,
+            },
+          },
+        }
+      }
     >
-      <div
-        className=""
+      <SingleParentEntity
+        actions={
+          Object {
+            "addModel": [Function],
+            "clearSelections": [Function],
+            "loadAllModels": [Function],
+            "loadCharts": [Function],
+            "loadFirstPage": [Function],
+            "loadLastPage": [Function],
+            "loadModel": [Function],
+            "loadNextPage": [Function],
+            "loadPreviousPage": [Function],
+            "loadRows": [Function],
+            "replaceSelections": [Function],
+            "selectAllRows": [Function],
+            "selectPage": [Function],
+            "selectReport": [Function],
+            "selectRow": [Function],
+            "setFilters": [Function],
+            "setMaxRows": [Function],
+            "setOffset": [Function],
+            "setSchemaQuery": [Function],
+            "setSelections": [Function],
+            "setSorts": [Function],
+            "setView": [Function],
+          }
+        }
+        autoLoad={false}
+        childNounSingular="Sample"
+        chosenType="Second Source"
+        editing={false}
+        index={0}
+        onRemoveParentType={[Function]}
+        onTypeChange={[Function]}
+        onValueChange={[Function]}
+        parentDataType={
+          Object {
+            "appUrlPrefixParts": Array [
+              "sources",
+            ],
+            "deleteConfirmationActionName": "getDataDeleteConfirmationData.api",
+            "deleteHelpLinkTopic": "dataClass",
+            "dependencyText": "derived sample dependencies",
+            "descriptionPlural": "parent types",
+            "descriptionSingular": "parent type",
+            "inputColumnName": "Inputs/Data/First",
+            "inputTypeColumnName": "Inputs/Data/First/DataClass",
+            "inputTypeValueField": "rowId",
+            "insertColumnNamePrefix": "DataInputs/",
+            "instanceSchemaName": "exp.data",
+            "nounAsParentSingular": "Parent",
+            "nounPlural": "data",
+            "nounSingular": "data",
+            "typeListingSchemaQuery": Immutable.Record {
+              "schemaName": "exp",
+              "queryName": "DataClasses",
+              "viewName": undefined,
+            },
+            "typeNounSingular": "Data Type",
+            "uniqueFieldKey": "Name",
+          }
+        }
+        parentLSIDs={
+          Array [
+            "url:lsid:blah",
+          ]
+        }
+        parentTypeOptions={
+          Immutable.List [
+            Object {
+              "label": "Second Source",
+              "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Second+Source",
+              "query": "Second Source",
+              "rowId": 322,
+              "schema": "exp.data",
+              "value": "second source",
+            },
+            Object {
+              "label": "Source 1",
+              "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Source+1",
+              "query": "Source 1",
+              "rowId": 321,
+              "schema": "exp.data",
+              "value": "source 1",
+            },
+            Object {
+              "label": "Vendor 3",
+              "lsid": "urn:lsid:labkey.com:DataClass.Folder-252:Vendor+3",
+              "query": "Vendor 3",
+              "rowId": 323,
+              "schema": "exp.data",
+              "value": "vendor 3",
+            },
+          ]
+        }
+        parentTypeQueryName="Second Source"
+        queryModels={
+          Object {
+            "model": QueryModel {
+              "baseFilters": Array [
+                Filter {
+                  "columnName": "LSID",
+                  "filterType": Object {
+                    "getDisplaySymbol": [Function],
+                    "getDisplayText": [Function],
+                    "getLongDisplayText": [Function],
+                    "getMultiValueFilter": [Function],
+                    "getMultiValueMaxOccurs": [Function],
+                    "getMultiValueMinOccurs": [Function],
+                    "getMultiValueSeparator": [Function],
+                    "getOpposite": [Function],
+                    "getSingleValueFilter": [Function],
+                    "getURLParameterValue": [Function],
+                    "getURLSuffix": [Function],
+                    "isDataValueRequired": [Function],
+                    "isMultiValued": [Function],
+                    "isTableWise": [Function],
+                    "parseValue": [Function],
+                    "validate": [Function],
+                  },
+                  "value": Array [
+                    "url:lsid:blah",
+                  ],
+                },
+              ],
+              "bindURL": false,
+              "charts": undefined,
+              "chartsError": undefined,
+              "chartsLoadingState": "INITIALIZED",
+              "containerFilter": undefined,
+              "containerPath": undefined,
+              "filterArray": Array [],
+              "id": "model",
+              "includeDetailsColumn": false,
+              "includeUpdateColumn": false,
+              "keyValue": undefined,
+              "maxRows": 20,
+              "messages": Array [],
+              "offset": 0,
+              "omittedColumns": Array [],
+              "orderedRows": undefined,
+              "queryInfo": undefined,
+              "queryInfoError": undefined,
+              "queryInfoLoadingState": "LOADING",
+              "queryParameters": undefined,
+              "requiredColumns": Array [],
+              "rowCount": undefined,
+              "rows": undefined,
+              "rowsError": undefined,
+              "rowsLoadingState": "INITIALIZED",
+              "schemaQuery": Immutable.Record {
+                "schemaName": "exp.data",
+                "queryName": "Second Source",
+                "viewName": undefined,
+              },
+              "selectedReportId": undefined,
+              "selections": undefined,
+              "selectionsError": undefined,
+              "selectionsLoadingState": "INITIALIZED",
+              "sorts": Array [],
+              "title": undefined,
+              "urlPrefix": "query",
+              Symbol(immer-draftable): true,
+            },
+          }
+        }
       >
         <div
-          className=""
+          className="top-spacing"
+          key="grid-0"
         >
-          <div
-            className="row"
+          <table
+            className="table table-responsive table-condensed detail-component--table__fixed"
+          >
+            <tbody>
+              <tr
+                key="type-name"
+              >
+                <td>
+                  Data Type
+                </td>
+                <td>
+                  <a
+                    href="#/sources/Second%20Source"
+                  >
+                    Second Source
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <GridPanel
+            actions={
+              Object {
+                "addModel": [Function],
+                "clearSelections": [Function],
+                "loadAllModels": [Function],
+                "loadCharts": [Function],
+                "loadFirstPage": [Function],
+                "loadLastPage": [Function],
+                "loadModel": [Function],
+                "loadNextPage": [Function],
+                "loadPreviousPage": [Function],
+                "loadRows": [Function],
+                "replaceSelections": [Function],
+                "selectAllRows": [Function],
+                "selectPage": [Function],
+                "selectReport": [Function],
+                "selectRow": [Function],
+                "setFilters": [Function],
+                "setMaxRows": [Function],
+                "setOffset": [Function],
+                "setSchemaQuery": [Function],
+                "setSelections": [Function],
+                "setSorts": [Function],
+                "setView": [Function],
+              }
+            }
+            allowSelections={false}
+            allowSorting={true}
+            asPanel={false}
+            hideEmptyChartSelector={false}
+            hideEmptyViewMenu={false}
+            model={
+              QueryModel {
+                "baseFilters": Array [
+                  Filter {
+                    "columnName": "LSID",
+                    "filterType": Object {
+                      "getDisplaySymbol": [Function],
+                      "getDisplayText": [Function],
+                      "getLongDisplayText": [Function],
+                      "getMultiValueFilter": [Function],
+                      "getMultiValueMaxOccurs": [Function],
+                      "getMultiValueMinOccurs": [Function],
+                      "getMultiValueSeparator": [Function],
+                      "getOpposite": [Function],
+                      "getSingleValueFilter": [Function],
+                      "getURLParameterValue": [Function],
+                      "getURLSuffix": [Function],
+                      "isDataValueRequired": [Function],
+                      "isMultiValued": [Function],
+                      "isTableWise": [Function],
+                      "parseValue": [Function],
+                      "validate": [Function],
+                    },
+                    "value": Array [
+                      "url:lsid:blah",
+                    ],
+                  },
+                ],
+                "bindURL": false,
+                "charts": undefined,
+                "chartsError": undefined,
+                "chartsLoadingState": "INITIALIZED",
+                "containerFilter": undefined,
+                "containerPath": undefined,
+                "filterArray": Array [],
+                "id": "model",
+                "includeDetailsColumn": false,
+                "includeUpdateColumn": false,
+                "keyValue": undefined,
+                "maxRows": 20,
+                "messages": Array [],
+                "offset": 0,
+                "omittedColumns": Array [],
+                "orderedRows": undefined,
+                "queryInfo": undefined,
+                "queryInfoError": undefined,
+                "queryInfoLoadingState": "LOADING",
+                "queryParameters": undefined,
+                "requiredColumns": Array [],
+                "rowCount": undefined,
+                "rows": undefined,
+                "rowsError": undefined,
+                "rowsLoadingState": "INITIALIZED",
+                "schemaQuery": Immutable.Record {
+                  "schemaName": "exp.data",
+                  "queryName": "Second Source",
+                  "viewName": undefined,
+                },
+                "selectedReportId": undefined,
+                "selections": undefined,
+                "selectionsError": undefined,
+                "selectionsLoadingState": "INITIALIZED",
+                "sorts": Array [],
+                "title": undefined,
+                "urlPrefix": "query",
+                Symbol(immer-draftable): true,
+              }
+            }
+            showButtonBar={false}
+            showChartMenu={false}
+            showExport={false}
+            showHeader={true}
+            showOmniBox={false}
+            showPagination={true}
+            showSampleComparisonReports={false}
+            showViewMenu={true}
           >
             <div
-              className="col-md-12"
+              className="grid-panel"
             >
-              <QueryGrid
-                model={
-                  Immutable.Record {
-                    "id": "dataclasses-parent-data|exp$pdata/second source",
-                    "schema": "exp.data",
-                    "query": "Second Source",
-                    "queryParameters": undefined,
-                    "allowSelection": false,
-                    "baseFilters": Immutable.List [
-                      Filter {
-                        "columnName": "LSID",
-                        "filterType": Object {
-                          "getDisplaySymbol": [Function],
-                          "getDisplayText": [Function],
-                          "getLongDisplayText": [Function],
-                          "getMultiValueFilter": [Function],
-                          "getMultiValueMaxOccurs": [Function],
-                          "getMultiValueMinOccurs": [Function],
-                          "getMultiValueSeparator": [Function],
-                          "getOpposite": [Function],
-                          "getSingleValueFilter": [Function],
-                          "getURLParameterValue": [Function],
-                          "getURLSuffix": [Function],
-                          "isDataValueRequired": [Function],
-                          "isMultiValued": [Function],
-                          "isTableWise": [Function],
-                          "parseValue": [Function],
-                          "validate": [Function],
-                        },
-                        "value": Array [
-                          "url:lsid:blah",
-                        ],
-                      },
-                    ],
-                    "bindURL": false,
-                    "containerPath": undefined,
-                    "containerFilter": undefined,
-                    "data": Immutable.Map {},
-                    "dataIds": Immutable.List [],
-                    "displayColumns": undefined,
-                    "editable": false,
-                    "editing": false,
-                    "filterArray": Immutable.List [],
-                    "includeDetailsColumn": false,
-                    "includeUpdateColumn": false,
-                    "isError": false,
-                    "isLoaded": false,
-                    "isLoading": true,
-                    "isPaged": true,
-                    "keyValue": undefined,
-                    "loader": GridLoader {},
-                    "maxRows": 20,
-                    "message": undefined,
-                    "messages": undefined,
-                    "offset": 0,
-                    "omittedColumns": Immutable.List [],
-                    "pageNumber": 1,
-                    "queryInfo": undefined,
-                    "requiredColumns": Immutable.List [],
-                    "selectedIds": Immutable.List [],
-                    "selectedLoaded": false,
-                    "selectedState": 2,
-                    "selectedQuantity": 0,
-                    "showSearchBox": true,
-                    "showViewSelector": true,
-                    "hideEmptyViewSelector": undefined,
-                    "showChartSelector": true,
-                    "showExport": true,
-                    "hideEmptyChartSelector": undefined,
-                    "sortable": true,
-                    "sorts": undefined,
-                    "title": undefined,
-                    "totalRows": 0,
-                    "urlParams": Immutable.List [
-                      "p",
-                      "reportId",
-                    ],
-                    "urlParamValues": Immutable.Map {},
-                    "urlPrefix": undefined,
-                    "view": undefined,
-                  }
-                }
+              <div
+                className="grid-panel__body"
               >
-                <Grid
-                  bordered={true}
-                  calcWidths={true}
-                  cellular={false}
-                  columns={Immutable.List []}
-                  condensed={true}
-                  data={Immutable.List []}
-                  emptyText="No data available."
-                  gridId="dataclasses-parent-data|exp$pdata/second source"
-                  headerCell={[Function]}
-                  isLoading={true}
-                  loadingText={
-                    <LoadingSpinner
-                      msg="Loading..."
-                      wrapperClassName=""
-                    />
-                  }
-                  messages={Immutable.List []}
-                  responsive={true}
-                  showHeader={true}
-                  striped={true}
-                  transpose={false}
+                <div
+                  className="grid-panel__info"
                 >
-                  <div
-                    className="table-responsive"
-                    data-gridid="dataclasses-parent-data|exp$pdata/second source"
+                  <LoadingSpinner
+                    msg="Loading data..."
+                    wrapperClassName=""
                   >
-                    <GridMessages
-                      messages={Immutable.List []}
+                    <span
+                      className=""
                     >
-                      <div
-                        className="grid-messages"
-                      >
-                        <Component />
-                      </div>
-                    </GridMessages>
-                    <table
-                      className="table table-striped table-bordered table-condensed"
-                    >
-                      <GridHeader
-                        calcWidths={true}
-                        columns={Immutable.List []}
-                        headerCell={[Function]}
-                        showHeader={true}
-                        transpose={false}
-                      >
-                        <thead>
-                          <tr>
-                            <Component />
-                          </tr>
-                        </thead>
-                      </GridHeader>
-                      <GridBody
-                        columns={Immutable.List []}
-                        data={Immutable.List []}
-                        emptyText="No data available."
-                        isLoading={true}
-                        loadingText={
-                          <LoadingSpinner
-                            msg="Loading..."
-                            wrapperClassName=""
-                          />
-                        }
-                        transpose={false}
-                      >
-                        <tbody>
-                          <tr
-                            className="grid-loading"
-                            key="grid-default-row"
-                          >
-                            <td
-                              colSpan={0}
-                            >
-                              <LoadingSpinner
-                                msg="Loading..."
-                                wrapperClassName=""
-                              >
-                                <span
-                                  className=""
-                                >
-                                  <i
-                                    aria-hidden="true"
-                                    className="fa fa-spinner fa-pulse"
-                                  />
-                                   
-                                  Loading...
-                                </span>
-                              </LoadingSpinner>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </GridBody>
-                    </table>
-                  </div>
-                </Grid>
-              </QueryGrid>
+                      <i
+                        aria-hidden="true"
+                        className="fa fa-spinner fa-pulse"
+                      />
+                       
+                      Loading data...
+                    </span>
+                  </LoadingSpinner>
+                </div>
+                <div
+                  className="grid-panel__grid"
+                />
+              </div>
             </div>
-          </div>
+          </GridPanel>
         </div>
-      </div>
-    </QueryGridPanel>
-  </div>
-</SingleParentEntityPanel>
+      </SingleParentEntity>
+    </ComponentWithQueryModels>
+  </withRouter(ComponentWithQueryModels)>
+</Memo()>
 `;

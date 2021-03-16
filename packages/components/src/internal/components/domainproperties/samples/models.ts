@@ -43,12 +43,12 @@ export class SampleTypeModel extends Record({
         }
 
         return new SampleTypeModel({
-            ...options.toJS(),
+            ...options?.toJS(),
             name,
             nameReadOnly: raw.nameReadOnly,
             importAliases,
-            labelColor: options.get('labelColor') || undefined, // helps to convert null to undefined
-            metricUnit: options.get('metricUnit') || undefined,
+            labelColor: options?.get('labelColor') || undefined, // helps to convert null to undefined
+            metricUnit: options?.get('metricUnit') || undefined,
             domain,
         });
     }

@@ -76,7 +76,7 @@ describe('NodeIcon', () => {
     });
 
     test('isDirectory toggled', () => {
-        const wrapper = mount(<NodeIcon {...DEFAULT_PROPS} isDirectory node={{toggled: true}} />);
+        const wrapper = mount(<NodeIcon {...DEFAULT_PROPS} isDirectory node={{ toggled: true }} />);
         expect(wrapper.find('i')).toHaveLength(0);
         expect(wrapper.find(FontAwesomeIcon)).toHaveLength(1);
         expect(wrapper.find(FontAwesomeIcon).prop('icon')).toBe(faFolderOpen);

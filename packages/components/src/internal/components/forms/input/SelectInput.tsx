@@ -25,18 +25,16 @@ import { FieldLabel } from '../FieldLabel';
 
 import { generateId, QueryColumn } from '../../../..';
 
-// Copied from @types/react-select/src/filter.d.ts
+// Molded from @types/react-select/src/filter.d.ts
 export interface Option {
-    data: any;
+    data?: any;
     label: string;
-    value: string;
+    value: any;
+    [key:string]: any;
 }
 
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: Option, rawInput: string) => boolean) | null;
-
-// Copied from @types/react-select/src/Select.d.ts
-export type NoOptionsMessage = (obj: { inputValue: string }) => string | null; // Should be => ReactNode
 
 // DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
 // any other delimiter value will break the "multiple" configuration parameter
@@ -116,7 +114,7 @@ export interface SelectInputProps {
     autoValue?: boolean;
     // backspaceRemoves?: boolean;  -- RENAMED: backspaceRemovesValue
     backspaceRemovesValue?: boolean;
-    deleteRemoves?: boolean;
+    // deleteRemoves?: boolean;
     cacheOptions?: boolean;
     clearCacheOnChange?: boolean;
     // clearable?: boolean; -- RENAMED: isClearable
@@ -140,8 +138,7 @@ export interface SelectInputProps {
     loadOptions?: any; // no way to currently require one or the other, options/loadOptions
     multiple?: boolean;
     name?: string;
-    noOptionsMessage?: NoOptionsMessage;
-    // noResultsText?: string; -- REMOVED. Use noOptionsMessage.
+    noResultsText?: string;
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
     onToggleDisable?: (disabled: boolean) => void;
@@ -170,6 +167,10 @@ export interface SelectInputProps {
 }
 
 export interface SelectInputState {
+    // This state property is used in conjunction with the prop "clearCacheOnChange" which when true
+    // is intended to clear the underlying asynchronous React Select's cache.
+    // See https://github.com/JedWatson/react-select/issues/1879
+    asyncKey: number;
     isDisabled: boolean;
     originalOptions: any;
     selectedOptions: any;
@@ -205,6 +206,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         const originalOptions = props.autoValue === true ? initOptions(props) : props.selectedOptions;
 
         this.state = {
+            asyncKey: 0,
             selectedOptions: originalOptions,
             originalOptions,
             isDisabled: props.initiallyDisabled,
@@ -222,7 +224,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         // here, that the cache value for the key LOAD_ON_FOCUS (from QuerySelect) will get set to an empty
         // list of options.  Once that is stashed in the ReactSelect cache, it's pretty much impossible to get
         // rid of it through normal component update operations, so we do this surgery here.
-        this.refs.reactSelect._cache = {};
+        // this.refs.reactSelect._cache = {};
 
         if (!this.change && !equalValues(this.props.value, nextProps.value)) {
             if (nextProps.autoValue) {
@@ -243,12 +245,10 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         const { selectedOptions } = this.state;
 
         this.setState(
-            state => {
-                return {
-                    isDisabled: !state.isDisabled,
-                    selectedOptions: state.isDisabled ? selectedOptions : state.originalOptions,
-                };
-            },
+            state => ({
+                isDisabled: !state.isDisabled,
+                selectedOptions: state.isDisabled ? selectedOptions : state.originalOptions,
+            }),
             () => {
                 this.props.onToggleDisable?.(this.state.isDisabled);
             }
@@ -262,35 +262,39 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
     handleBlur = (event: FocusEvent<HTMLElement>): void => {
         const { onBlur, saveOnBlur } = this.props;
 
+        // TODO: Consider using onBlur or onMenuClose -- ReactSelect does not natively support "saveOnBlur".
+        // See: https://github.com/JedWatson/react-select/issues/1764
+
         // 33774: fields should be able to preserve input onBlur
         if (saveOnBlur) {
+            console.warn('SelectInput: "saveOnBlur" is not yet implemented.');
             // determine which ReactSelect version we are using
             // then get the associated inputValue
-            const { reactSelect } = this.refs;
-
-            if (this.isAsync()) {
-                // <ReactSelect.Async/> || <ReactSelect.AsyncCreatable/>
-                if (reactSelect.state.inputValue) {
-                    if (reactSelect.select && Utils.isFunction(reactSelect.select.selectFocusedOption)) {
-                        reactSelect.select.selectFocusedOption();
-                    } else if (getServerContext().devMode) {
-                        console.warn(
-                            'ReactSelect.Async implementation may have changed. SelectInput "saveOnBlur" no longer working.'
-                        );
-                    }
-                }
-            } else if (this.isCreatable()) {
-                // <ReactSelect.Creatable/>
-                if (reactSelect.inputValue) {
-                    if (Utils.isFunction(reactSelect.createNewOption)) {
-                        reactSelect.createNewOption();
-                    } else if (getServerContext().devMode) {
-                        console.warn(
-                            'ReactSelect.Creatable implementation may have changed. SelectInput "saveOnBlur" no longer working.'
-                        );
-                    }
-                }
-            }
+            // const { reactSelect } = this.refs;
+            //
+            // if (this.isAsync()) {
+            //     // <AsyncSelect/> || <AsyncCreatableSelect/>
+            //     if (reactSelect.state.inputValue) {
+            //         if (reactSelect.select && Utils.isFunction(reactSelect.select.selectFocusedOption)) {
+            //             reactSelect.select.selectFocusedOption();
+            //         } else if (getServerContext().devMode) {
+            //             console.warn(
+            //                 'ReactSelect.Async implementation may have changed. SelectInput "saveOnBlur" no longer working.'
+            //             );
+            //         }
+            //     }
+            // } else if (this.isCreatable()) {
+            //     // <CreatableSelect/>
+            //     if (reactSelect.inputValue) {
+            //         if (Utils.isFunction(reactSelect.createNewOption)) {
+            //             reactSelect.createNewOption();
+            //         } else if (getServerContext().devMode) {
+            //             console.warn(
+            //                 'ReactSelect.Creatable implementation may have changed. SelectInput "saveOnBlur" no longer working.'
+            //             );
+            //         }
+            //     }
+            // }
         }
 
         onBlur?.(event);
@@ -302,7 +306,8 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         this.change = true;
 
         if (clearCacheOnChange) {
-            this.refs.reactSelect._cache = {};
+            this.setState(state => ({ asyncKey: state.asyncKey + 1 }));
+            // this.refs.reactSelect._cache = {};
         }
 
         // set the formsy value from the selected options
@@ -442,6 +447,8 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
     Input = inputProps => <components.Input {...inputProps} />;
     // Input = inputProps => <components.Input {...inputProps} id={this.getId()} />;
 
+    noOptionsMessage = (): string => this.props.noResultsText;
+
     renderSelect = (): ReactNode => {
         const {
             autoFocus,
@@ -460,8 +467,6 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             loadOptions,
             multiple,
             name,
-            noOptionsMessage,
-            // noResultsText,
             optionRenderer,
             options,
             placeholder,
@@ -490,7 +495,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             isMulti: multiple, // TODO: Rename "multiple" to "isMulti" on SelectInput props
             // labelKey, // TODO: Removed. No guidance given.
             name,
-            noOptionsMessage, // TODO: Rename "noResultsText" to "noOptionsMessage" on SelectInput props
+            noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
@@ -514,7 +519,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         }
 
         if (this.isAsync()) {
-            const asyncProps = { ...selectProps, cacheOptions, defaultOptions, loadOptions };
+            const asyncProps = { ...selectProps, cacheOptions, defaultOptions, loadOptions, key: this.state.asyncKey };
 
             if (this.isCreatable()) {
                 return <AsyncCreatableSelect {...asyncProps} />;

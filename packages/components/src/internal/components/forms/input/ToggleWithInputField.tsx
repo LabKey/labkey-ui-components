@@ -16,7 +16,7 @@ interface ReactBootstrapToggleProps {
     on?: ReactNode;
     onstyle?: BootstrapEmphasis;
     onClassName?: string;
-    onClick?: (state: any, node: any, evt: any) => void;
+    onClick: (state: any, node: any, evt: any) => void;
     recalculateOnResize?: boolean;
     size?: 'xs' | 'sm' | 'lg';
     style?: CSSProperties;

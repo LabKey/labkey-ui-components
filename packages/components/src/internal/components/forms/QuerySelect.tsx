@@ -19,7 +19,7 @@ import { Filter, Utils } from '@labkey/api';
 
 import { QueryColumn, SchemaQuery } from '../../..';
 
-import { DELIMITER, FilterOption, NoOptionsMessage, Option, SelectInput } from './input/SelectInput';
+import { DELIMITER, FilterOption, Option, SelectInput } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { FOCUS_FLAG } from './constants';
@@ -130,7 +130,7 @@ interface InheritedSelectInputProps {
     labelClass?: string;
     multiple?: boolean;
     name?: string;
-    noOptionsMessage?: NoOptionsMessage;
+    noResultsText?: string;
     placeholder?: string;
     required?: boolean;
     saveOnBlur?: boolean;
@@ -151,7 +151,7 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
     containerPath?: string; // The path to the LK container that the queries should be scoped to.
     displayColumn?: string;
     fireQSChangeOnInit?: boolean;
-    loadOnChange?: boolean;
+    loadOnChange?: boolean; // TODO: Hook "loadOnChange" to "clearCacheOnChange". May/may not fully overlap.
     loadOnFocus?: boolean;
     maxRows?: number;
     onQSChange?: (name: string, value: string | any[], items: any, selectedItems: Map<string, any>) => void;

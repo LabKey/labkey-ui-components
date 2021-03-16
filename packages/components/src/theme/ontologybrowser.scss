@@ -130,31 +130,8 @@
 
     .path-button-container {
         float: right;
-        margin-right: 5px;
-
-        .btn {
-            position: relative;
-
-            &.show-path {
-                &:after {
-                    position: absolute;
-                    content: "";
-                    height: 0;
-                    width: 0;
-                    font-size: 0;
-                    line-height: 0;
-                    margin-top: 28px;
-                    margin-left: -110px;
-                    border-left: 85px solid transparent;
-                    border-right: 40px solid transparent;
-                    border-bottom: 47px solid $gray-lighter;
-                }
-            }
-        }
-
-        .triangle {
-
-        }
+        width: 80px;
+        margin-left: 5px;
     }
 
     .concept-overview-selected-path {
@@ -163,6 +140,17 @@
         .concept-path-container {
             width: 100%;
             border: $gray-lighter;
+        }
+
+        &:before {
+            content: "";
+            float: right;
+            line-height: 0;
+            margin-top: -20px;
+            margin-right: 26px;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 20px solid $gray-lighter;
         }
     }
 }
@@ -216,9 +204,14 @@
 
     .title {
         font-size: 14px;
+        padding-bottom: 5px;
     }
-}
 
-.concept-path-spacer {
-    padding: 0 5px 0;
+    .concept-path-spacer {
+        padding: 0 5px 0;
+    }
+
+    .concept-path-label {
+        line-height: 23px;
+    }
 }

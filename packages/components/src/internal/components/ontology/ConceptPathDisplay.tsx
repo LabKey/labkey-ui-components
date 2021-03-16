@@ -55,15 +55,6 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
 
     if (!path) return undefined;
 
-    const fullpath = parentPaths?.map((parent, idx) => {
-        return (
-            <>
-                <span className="concept-path-label">{parent.label}</span>
-                {idx !== parentPaths.length - 1 && <i className="fa fa-chevron-right concept-path-spacer" />}
-            </>
-        );
-    });
-
     return (
         <div
             className={classNames('concept-path-container', {
@@ -74,7 +65,16 @@ export const ConceptPathDisplayImpl: FC<ConceptPathDisplayImplProps> = memo(prop
             {title && <div className="title">{title}</div>}
             <div className="concept-path">
                 {!parentPaths && <LoadingSpinner />}
-                {parentPaths && <>{fullpath}</>}
+                {parentPaths?.map((parent, idx) => {
+                    return (
+                        <>
+                            <span className="concept-path-label">{parent.label}</span>
+                            {idx !== parentPaths.length - 1 && (
+                                <i className="fa fa-chevron-right concept-path-spacer" />
+                            )}
+                        </>
+                    );
+                })}
             </div>
         </div>
     );

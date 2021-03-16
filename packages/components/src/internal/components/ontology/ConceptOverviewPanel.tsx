@@ -92,13 +92,9 @@ export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(
             )}
             {label && <div className="title small-margin-bottom">{label}</div>}
             {code && <span className="code margin-bottom">{code}</span>}
-            {selectedPath && (
+            {selectedPath && showPath && (
                 <div className="concept-overview-selected-path">
-                    {showPath && (
-                        <>
-                            <ConceptPathDisplay title={CURRENT_PATH_TITLE} path={selectedPath} isSelected={true} />
-                        </>
-                    )}
+                    <ConceptPathDisplay title={CURRENT_PATH_TITLE} path={selectedPath} isSelected={true} />
                 </div>
             )}
             {description && (

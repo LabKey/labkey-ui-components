@@ -1,9 +1,7 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 
-import { Alert } from '../base/Alert';
-
-import { naturalSort } from '../../../public/sort';
+import { Alert, naturalSort } from '../../..';
 
 import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
@@ -47,7 +45,8 @@ interface ConceptOverviewPanelImplProps {
     selectedPath?: PathModel;
 }
 
-const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
+// exported for jest testing
+export const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
     const { synonyms } = props;
     if (!synonyms || synonyms.length === 0) return undefined;
 

@@ -32,8 +32,6 @@ export class AliasInput extends Component<AliasInputProps> {
         }
     }
 
-    noOptionsMessage = (): string => 'Enter alias name(s)';
-
     promptTextCreator = (text: string): string => `Create alias "${text}"`;
 
     render() {
@@ -53,7 +51,7 @@ export class AliasInput extends Component<AliasInputProps> {
                 required={col.required}
                 multiple={true}
                 name={col.fieldKey}
-                noOptionsMessage={this.noOptionsMessage}
+                noResultsText="Enter alias name(s)"
                 placeholder="Enter alias name(s)"
                 promptTextCreator={this.promptTextCreator}
                 saveOnBlur={true}

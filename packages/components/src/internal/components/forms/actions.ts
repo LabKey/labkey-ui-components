@@ -323,22 +323,18 @@ export function setSelection(model: QuerySelectModel, rawSelectedValue: any): Qu
 export function selectShouldSearch(model: QuerySelectModel, input: any): boolean | string {
     const { delimiter, preLoad, rawSelectedValue, selectedQuery } = model;
 
-    // To do: reduce unnecessary extra loads from values
-    if (input) {
-        if (input === FOCUS_FLAG && preLoad) {
-            return true;
-        } else if (selectedQuery) {
-            const processed = Array.isArray(input) ? input.join(delimiter) : input.toString();
-
-            if (processed === selectedQuery || processed === rawSelectedValue) {
-                return '';
-            }
-        }
-        // if there is an input, but none of the above scenarios match, search
+    // TODO: This only returns "true"/'' now -- is it even needed with the new loadOptions configuraton?
+    if (input === '' && preLoad) {
         return true;
+    } else if (selectedQuery) {
+        const processed = Array.isArray(input) ? input.join(delimiter) : input.toString();
+
+        if (processed === selectedQuery || processed === rawSelectedValue) {
+            return '';
+        }
     }
 
-    return false;
+    return true;
 }
 
 // "selectedQuery" should match against displayColumn as that is what the user is typing against

@@ -43,6 +43,7 @@ interface ConceptPathInfoImplProps extends ConceptPathInfoProps {
     alternatePaths?: PathModel[];
 }
 
+// export for jest testing
 export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
     const { selectedCode, selectedPath, alternatePaths } = props;
 
@@ -60,7 +61,8 @@ export const ConceptPathInfoImpl: FC<ConceptPathInfoImplProps> = memo(props => {
     );
 });
 
-const AlternatePathPanel: FC<ConceptPathInfoImplProps> = memo(props => {
+// export for jest testing
+export const AlternatePathPanel: FC<ConceptPathInfoImplProps> = memo(props => {
     const { selectedPath, alternatePaths, alternatePathClickHandler } = props;
 
     const altPaths = alternatePaths.filter(path => path.path !== selectedPath?.path);

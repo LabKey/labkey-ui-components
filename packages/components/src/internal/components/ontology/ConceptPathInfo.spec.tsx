@@ -6,7 +6,7 @@ import { Alert } from '../base/Alert';
 import { LoadingSpinner } from '../base/LoadingSpinner';
 
 import { PathModel } from './models';
-import { ConceptPathInfo, ConceptPathInfoImpl } from './ConceptPathInfo';
+import { AlternatePathPanel, ConceptPathInfo, ConceptPathInfoImpl } from './ConceptPathInfo';
 
 import { ConceptPathDisplay } from './ConceptPathDisplay';
 
@@ -16,6 +16,8 @@ describe('ConceptPathInfo', () => {
         expect(wrapper.find(Alert)).toHaveLength(1);
         expect(wrapper.find(Alert).text()).toBe('');
         expect(wrapper.find(ConceptPathInfoImpl)).toHaveLength(1);
+        expect(wrapper.find(ConceptPathInfoImpl).prop('selectedCode')).toBe(undefined);
+        expect(wrapper.find(ConceptPathInfoImpl).prop('alternatePaths')).toBe(undefined);
         wrapper.unmount();
     });
 });
@@ -153,6 +155,77 @@ describe('ConceptPathInfoImpl', () => {
             />
         );
         validate(wrapper, code, 4, alternatePaths, selected);
+        wrapper.unmount();
+    });
+});
+
+describe('AlternatePathPanel', () => {
+    const TEST_SELECTED_PATH = new PathModel({ code: 'a', label: 'A', path: 'a/a'});
+    const TEST_ALTERNATE_PATH = new PathModel({ code: 'a', label: 'A', path: 'b/a'});
+
+    function validate(wrapper: ReactWrapper, hasSelectedPath = false, alternatePathCount = 0): void {
+        expect(wrapper.find('.current-path-container')).toHaveLength(hasSelectedPath ? 1 : 0);
+        expect(wrapper.find('.alternate-paths-container')).toHaveLength(1);
+        expect(wrapper.find('.no-path-info')).toHaveLength(alternatePathCount === 0 ? 1 : 0);
+        expect(wrapper.find('.title')).toHaveLength(1 + (hasSelectedPath ? 1 : 0));
+        expect(wrapper.find(ConceptPathDisplay)).toHaveLength(alternatePathCount + (hasSelectedPath ? 1 : 0));
+    }
+
+    test('no paths', () => {
+        const wrapper = mount(
+            <AlternatePathPanel selectedPath={undefined} alternatePaths={[]} alternatePathClickHandler={jest.fn} />
+        );
+        validate(wrapper);
+        wrapper.unmount();
+    });
+
+    test('with selected path but no alternates', () => {
+        const wrapper = mount(
+            <AlternatePathPanel
+                selectedPath={TEST_SELECTED_PATH}
+                alternatePaths={[TEST_SELECTED_PATH]}
+                alternatePathClickHandler={jest.fn}
+            />
+        );
+        validate(wrapper, true);
+        expect(wrapper.find(ConceptPathDisplay).prop('path')).toBe(TEST_SELECTED_PATH);
+        expect(wrapper.find(ConceptPathDisplay).prop('isSelected')).toBe(true);
+        wrapper.unmount();
+    });
+
+    test('with selected path and alternate', () => {
+        const wrapper = mount(
+            <AlternatePathPanel
+                selectedPath={TEST_SELECTED_PATH}
+                alternatePaths={[TEST_SELECTED_PATH, TEST_ALTERNATE_PATH]}
+                alternatePathClickHandler={jest.fn}
+            />
+        );
+        validate(wrapper, true, 1);
+        expect(wrapper.find(ConceptPathDisplay).first().prop('path')).toBe(TEST_SELECTED_PATH);
+        expect(wrapper.find(ConceptPathDisplay).first().prop('isSelected')).toBe(true);
+        expect(wrapper.find(ConceptPathDisplay).first().prop('onClick')).toBeUndefined();
+        expect(wrapper.find(ConceptPathDisplay).last().prop('path')).toBe(TEST_ALTERNATE_PATH);
+        expect(wrapper.find(ConceptPathDisplay).last().prop('isSelected')).toBeUndefined();
+        expect(wrapper.find(ConceptPathDisplay).last().prop('onClick')).toBeDefined();
+        wrapper.unmount();
+    });
+
+    test('with no selected path and alternates', () => {
+        const wrapper = mount(
+            <AlternatePathPanel
+                selectedPath={undefined}
+                alternatePaths={[TEST_SELECTED_PATH, TEST_ALTERNATE_PATH]}
+                alternatePathClickHandler={jest.fn}
+            />
+        );
+        validate(wrapper, false, 2);
+        expect(wrapper.find(ConceptPathDisplay).first().prop('path')).toBe(TEST_SELECTED_PATH);
+        expect(wrapper.find(ConceptPathDisplay).first().prop('isSelected')).toBeUndefined();
+        expect(wrapper.find(ConceptPathDisplay).first().prop('onClick')).toBeDefined();
+        expect(wrapper.find(ConceptPathDisplay).last().prop('path')).toBe(TEST_ALTERNATE_PATH);
+        expect(wrapper.find(ConceptPathDisplay).last().prop('isSelected')).toBeUndefined();
+        expect(wrapper.find(ConceptPathDisplay).last().prop('onClick')).toBeDefined();
         wrapper.unmount();
     });
 });

@@ -193,7 +193,7 @@ export class CommentSortDirectionDropDown extends PureComponent<IssuesListDefBas
                         showLabel={true}
                         multiple={false}
                         required={false}
-                        clearable={false}
+                        isClearable={false}
                     />
                 </Col>
             </Row>
@@ -268,13 +268,13 @@ export class DefaultUserAssignmentInput extends PureComponent<AssignmentOptionsI
                     ) : (
                         <SelectInput
                             name="assignedToUser"
-                            options={coreUsers ? coreUsers.toArray() : undefined}
+                            options={coreUsers?.toArray()}
                             placeholder="Unassigned"
                             inputClass="col-xs-12"
                             valueKey="userId"
                             labelKey="displayName"
                             onChange={this.onChange}
-                            value={model.assignedToUser ? model.assignedToUser : undefined}
+                            value={model.assignedToUser}
                             formsy={false}
                             showLabel={false}
                             multiple={false}

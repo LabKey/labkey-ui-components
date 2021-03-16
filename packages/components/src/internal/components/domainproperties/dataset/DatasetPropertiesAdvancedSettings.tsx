@@ -70,7 +70,7 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
                         labelKey={labelKey}
                         valueKey={valueKey}
                         disabled={disabled}
-                        clearable={clearable}
+                        isClearable={clearable}
                     />
                 </Col>
             </Row>

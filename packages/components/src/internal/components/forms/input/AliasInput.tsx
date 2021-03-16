@@ -32,6 +32,10 @@ export class AliasInput extends Component<AliasInputProps> {
         }
     }
 
+    noOptionsMessage = (): string => 'Enter alias name(s)';
+
+    promptTextCreator = (text: string): string => `Create alias "${text}"`;
+
     render() {
         const { allowDisable, col, editing, value, initiallyDisabled, onToggleDisable } = this.props;
 
@@ -41,7 +45,6 @@ export class AliasInput extends Component<AliasInputProps> {
                 initiallyDisabled={initiallyDisabled}
                 onToggleDisable={onToggleDisable}
                 showLabel={true}
-                addLabelText="Press enter to add '{label}'"
                 allowCreate={true}
                 id={this._id}
                 inputClass={editing ? 'col-sm-12' : undefined}
@@ -50,9 +53,9 @@ export class AliasInput extends Component<AliasInputProps> {
                 required={col.required}
                 multiple={true}
                 name={col.fieldKey}
-                noResultsText="Enter alias name(s)"
+                noOptionsMessage={this.noOptionsMessage}
                 placeholder="Enter alias name(s)"
-                promptTextCreator={(text: string) => `Create alias "${text}"`}
+                promptTextCreator={this.promptTextCreator}
                 saveOnBlur={true}
                 value={value}
                 labelKey={this._labelKey}

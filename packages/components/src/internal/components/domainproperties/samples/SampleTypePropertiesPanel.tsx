@@ -448,7 +448,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                             name="metricUnit"
                                             options={metricUnitOptions}
                                             required={metricUnitRequired}
-                                            clearable={!metricUnitRequired}
+                                            isClearable={!metricUnitRequired}
                                             onChange={(name, formValue, option) => {
                                                 this.onFieldChange(
                                                     name,

@@ -23,11 +23,13 @@ import {
     capitalizeFirstChar,
     generateId,
     insertRows,
+    InsertRowsResponse,
     QueryColumn,
     QueryGridModel,
     QueryInfo,
+    SampleCreationType,
     SCHEMAS,
-    SchemaQuery, SampleCreationType,
+    SchemaQuery,
 } from '../../..';
 import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
@@ -471,7 +473,7 @@ export class EntityIdCreationModel extends Record({
         return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
-    postEntityGrid(queryGridModel: QueryGridModel): Promise<any> {
+    postEntityGrid(queryGridModel: QueryGridModel): Promise<InsertRowsResponse> {
         const editorModel = getEditorModel(queryGridModel.getId());
         if (!editorModel) {
             gridShowError(queryGridModel, {

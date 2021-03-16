@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
-import { LoadingSpinner } from '../../..';
+import { LoadingSpinner } from '../base/LoadingSpinner';
 
 const fileTree_color = '#777';
 const customStyle: TreeTheme = {
@@ -419,6 +419,7 @@ export class FileTree extends PureComponent<FileTreeProps, FileTreeState> {
 
     // recursively toggle all child files. afterCascade used to check selection box of each subfile
     cascadeToggle = (node, afterCascade: (any) => any): void => {
+        // TODO move this to be defined as a function of the component so it isn't redefined for each recursive call
         const afterToggle = () => {
             afterCascade(node);
             if (node.children) {

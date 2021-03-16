@@ -84,6 +84,9 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
         const sourceId = this.getSourceInputId();
         const labelColId = createFormInputId(DOMAIN_FIELD_ONTOLOGY_LABEL_COL, domainIndex, index);
         const importColId = createFormInputId(DOMAIN_FIELD_ONTOLOGY_IMPORT_COL, domainIndex, index);
+        const learnMore = (
+            <p>Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.</p>
+        );
 
         return (
             <div>
@@ -106,10 +109,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                         </i>
                                     </p>
                                     <p>Choose which ontology to use to lookup concept codes and preferred names.</p>
-                                    <p>
-                                        Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in
-                                        LabKey.
-                                    </p>
+                                    {learnMore}
                                 </>
                             </LabelHelpTip>
                         </div>
@@ -121,9 +121,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                                 <p>
                                     Choose which text field to use when looking up a code against the selected ontology.
                                 </p>
-                                <p>
-                                    Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.
-                                </p>
+                                {learnMore}
                             </LabelHelpTip>
                         </div>
                     </Col>
@@ -132,9 +130,7 @@ export class OntologyLookupOptions extends PureComponent<Props, State> {
                             Choose a Label Field
                             <LabelHelpTip title="Experimental Feature">
                                 <p>Choose which text field to store the preferred name of the concept.</p>
-                                <p>
-                                    Learn more about {helpLinkNode(ONTOLOGY_LOOKUP_TOPIC, 'ontology integration')} in LabKey.
-                                </p>
+                                {learnMore}
                             </LabelHelpTip>
                         </div>
                     </Col>

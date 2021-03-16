@@ -91,6 +91,7 @@ import {
     isFieldDeletable,
 } from './propertiesUtil';
 import { DomainPropertiesGrid } from './DomainPropertiesGrid';
+import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
 interface IDomainFormInput {
     allowImportExport?: boolean;
@@ -222,17 +223,16 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                 const serverModuleNames = data.modules
                     .filter(module => module.enabled)
                     .map(module => module.name.toLowerCase());
+                this.setState({ serverModuleNames });
 
                 // if the Ontology module is available, get the updated set of available data types
-                if (serverModuleNames.indexOf('ontology') > -1) {
+                if (serverModuleNames.indexOf(ONTOLOGY_MODULE_NAME) > -1) {
                     try {
                         const availableTypes = await getAvailableTypesForOntology(domain);
-                        this.setState({ availableTypes, serverModuleNames });
+                        this.setState({ availableTypes });
                     } catch (error) {
                         console.error('Failed to retrieve available types for Ontology.', error);
                     }
-                } else {
-                    this.setState({ serverModuleNames });
                 }
             },
         });
@@ -1311,7 +1311,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
                             selectAll={selectAll}
                             actions={actions}
                             appPropertiesOnly={appPropertiesOnly}
-                            hasOntologyModule={serverModuleNames?.indexOf('ontology') > -1}
+                            hasOntologyModule={serverModuleNames?.indexOf(ONTOLOGY_MODULE_NAME) > -1}
                         />
                     ) : (
                         this.renderDetailedFieldView()

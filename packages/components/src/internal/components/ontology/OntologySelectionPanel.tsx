@@ -3,7 +3,7 @@ import { getServerContext } from '@labkey/api';
 
 import { LoadingSpinner, Alert, SelectInput, buildURL } from '../../..';
 
-import { fetchChildPaths } from './actions';
+import { fetchChildPaths, ONTOLOGY_CONTROLLER } from './actions';
 import { PathModel } from './models';
 
 interface OntologySelectionPanelProps {
@@ -53,7 +53,7 @@ export const OntologySelectionPanelImpl: FC<OntologySelectionPanelImplProps> = m
                     No ontologies have been loaded for this server.
                     {getServerContext().user.isRootAdmin && (
                         <>
-                            &nbsp;Click <a href={buildURL('ontology', 'begin')}>here</a> to get started.
+                            &nbsp;Click <a href={buildURL(ONTOLOGY_CONTROLLER, 'begin')}>here</a> to get started.
                         </>
                     )}
                 </Alert>

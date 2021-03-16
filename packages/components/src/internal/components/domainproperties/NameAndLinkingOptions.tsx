@@ -17,6 +17,7 @@ import {
 import { DomainField } from './models';
 import { SectionHeading } from './SectionHeading';
 import { DomainFieldLabel } from './DomainFieldLabel';
+import { ONTOLOGY_MODULE_NAME } from '../ontology/actions';
 
 interface NameAndLinkingProps {
     index: number;
@@ -118,7 +119,7 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        {!appPropertiesOnly && serverModuleNames?.indexOf('ontology') > -1 && (
+                        {!appPropertiesOnly && serverModuleNames?.indexOf(ONTOLOGY_MODULE_NAME) > -1 && (
                             <OntologyConceptAnnotation
                                 id={createFormInputId(DOMAIN_FIELD_ONTOLOGY_PRINCIPAL_CONCEPT, domainIndex, index)}
                                 field={field}

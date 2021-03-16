@@ -31,6 +31,7 @@ export const OntologyTreePanel: FC<OntologyTreeProps> = props => {
     // watch for changes to alternatePath so that we can make sure the tree data down to that node is loaded
     useEffect(() => {
         if (alternatePath?.path) {
+            // Get the predecessors for the path, this provides the depth and nodes to potentially load
             fetchParentPaths(alternatePath.path).then(parentPaths => {
                 // if this is a deeply nested path, let's mask the tree with a loading message while we toggle parents
                 if (parentPaths.length > 5) setShowLoading(true);

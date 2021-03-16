@@ -2,7 +2,8 @@ import { ActionURL, Ajax, getServerContext, Utils } from '@labkey/api';
 
 import { ConceptModel, OntologyModel, PathModel } from './models';
 
-const ONTOLOGY_CONTROLLER = 'ontology';
+export const ONTOLOGY_MODULE_NAME = 'ontology';
+export const ONTOLOGY_CONTROLLER = 'ontology';
 const GET_CHILD_PATHS_ACTION = 'getChildPaths.api';
 const GET_ONTOLOGY_ACTION = 'getOntology.api';
 const GET_CONCEPT_ACTION = 'getConcept.api';

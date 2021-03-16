@@ -35,6 +35,9 @@ export interface Option {
 // Copied from @types/react-select/src/Select.d.ts
 export type FilterOption = ((option: Option, rawInput: string) => boolean) | null;
 
+// Copied from @types/react-select/src/Select.d.ts
+export type NoOptionsMessage = (obj: { inputValue: string }) => string | null; // Should be => ReactNode
+
 // DO NOT CHANGE DELIMITER -- at least in react-select 1.0.0-rc.10
 // any other delimiter value will break the "multiple" configuration parameter
 export const DELIMITER = ',';
@@ -104,27 +107,30 @@ function initOptions(props: SelectInputProps): any {
 
 export interface SelectInputProps {
     addLabelAsterisk?: boolean;
-    addLabelText?: string;
+    // addLabelText?: string;  -- REMOVED
     afterInputElement?: ReactNode; // this can be used to render an element to the right of the input
     allowCreate?: boolean;
     allowDisable?: boolean;
+    autoFocus?: boolean;
     autoload?: boolean;
     autoValue?: boolean;
-    autoFocus?: boolean;
-    backspaceRemoves?: boolean;
+    // backspaceRemoves?: boolean;  -- RENAMED: backspaceRemovesValue
+    backspaceRemovesValue?: boolean;
     deleteRemoves?: boolean;
     cacheOptions?: boolean;
     clearCacheOnChange?: boolean;
-    clearable?: boolean;
+    // clearable?: boolean; -- RENAMED: isClearable
     containerClass?: string;
+    defaultOptions?: boolean | readonly any[];
     delimiter?: string;
     description?: string;
     disabled?: boolean;
     filterOptions?: FilterOption;
     formsy?: boolean;
-    // ignoreCase?: boolean;
+    // ignoreCase?: boolean;  -- REMOVED
     initiallyDisabled?: boolean;
     inputClass?: string;
+    isClearable?: boolean;
     isLoading?: boolean;
     // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
     //   the values when false.
@@ -134,7 +140,8 @@ export interface SelectInputProps {
     loadOptions?: any; // no way to currently require one or the other, options/loadOptions
     multiple?: boolean;
     name?: string;
-    noResultsText?: string;
+    noOptionsMessage?: NoOptionsMessage;
+    // noResultsText?: string; -- REMOVED. Use noOptionsMessage.
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
     onToggleDisable?: (disabled: boolean) => void;
@@ -177,6 +184,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         autoValue: true,
         clearCacheOnChange: true,
         containerClass: 'form-group row',
+        defaultOptions: true,
         delimiter: DELIMITER,
         initiallyDisabled: false,
         inputClass: 'col-sm-9 col-xs-12',
@@ -434,26 +442,25 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
     Input = inputProps => <components.Input {...inputProps} />;
     // Input = inputProps => <components.Input {...inputProps} id={this.getId()} />;
 
-    noOptionsMessage = () => this.props.noResultsText;
-
     renderSelect = (): ReactNode => {
         const {
-            addLabelText,
             autoFocus,
             // autoload,
-            backspaceRemoves,
+            backspaceRemovesValue,
             cacheOptions,
-            clearable,
+            defaultOptions,
             // deleteRemoves,
             delimiter,
             disabled,
             filterOptions,
             // ignoreCase,
+            isClearable,
             isLoading,
             // labelKey,
             loadOptions,
             multiple,
             name,
+            noOptionsMessage,
             // noResultsText,
             optionRenderer,
             options,
@@ -464,10 +471,9 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         } = this.props;
 
         const selectProps = {
-            // addLabelText, TODO: Removed. No guidance given.
             autoFocus,
             // autoload, TODO: See Async component default options
-            backspaceRemoves,
+            backspaceRemovesValue,
             // deleteRemoves, TODO: Removed. No guidance given.
             components: {
                 Input: this.Input,
@@ -476,20 +482,19 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             delimiter,
             filterOption: filterOptions, // TODO: Rename to filterOption() and determine if "value" is still a property
             id: this.getId(),
-            // ignoreCase, TODO: Removed. See `createFilter()`
+            // ignoreCase, TODO: Removed. See `createFilter()`. Default option is "ignoreCase" set to true.
             // inputProps: { id: this.getId() },
-            isClearable: clearable, // TODO: Rename "clearable" to "isClearable" on SelectInput props
+            isClearable,
             isDisabled: disabled || this.state.isDisabled, // TODO: Rename "disabled" to "isDisabled" on SelectInput props
             isLoading,
             isMulti: multiple, // TODO: Rename "multiple" to "isMulti" on SelectInput props
             // labelKey, // TODO: Removed. No guidance given.
             name,
-            // TODO: Rename "noResultsText" to "noOptionsMessage" on SelectInput props
-            noOptionsMessage: this.noOptionsMessage,
+            noOptionsMessage, // TODO: Rename "noResultsText" to "noOptionsMessage" on SelectInput props
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
-            // optionRenderer,
+            // optionRenderer, // TODO: Refactored to use "components.Options" rendering pattern
             options,
             placeholder,
             promptTextCreator,
@@ -509,13 +514,13 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         }
 
         if (this.isAsync()) {
-            const asyncProps = { ...selectProps, cacheOptions, loadOptions };
+            const asyncProps = { ...selectProps, cacheOptions, defaultOptions, loadOptions };
 
             if (this.isCreatable()) {
-                return <AsyncCreatableSelect defaultOptions {...asyncProps} />;
+                return <AsyncCreatableSelect {...asyncProps} />;
             }
 
-            return <AsyncSelect defaultOptions {...asyncProps} />;
+            return <AsyncSelect {...asyncProps} />;
         } else if (this.isCreatable()) {
             return <CreatableSelect {...selectProps} />;
         }

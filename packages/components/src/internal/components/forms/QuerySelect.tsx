@@ -19,7 +19,7 @@ import { Filter, Utils } from '@labkey/api';
 
 import { QueryColumn, SchemaQuery } from '../../..';
 
-import { DELIMITER, FilterOption, Option, SelectInput } from './input/SelectInput';
+import { DELIMITER, FilterOption, NoOptionsMessage, Option, SelectInput } from './input/SelectInput';
 import { resolveDetailFieldValue } from './renderers';
 import { initSelect } from './actions';
 import { FOCUS_FLAG } from './constants';
@@ -112,26 +112,25 @@ function renderPreviewOption(option: Option, model: QuerySelectModel): React.Rea
  * be specified by the user).
  */
 interface InheritedSelectInputProps {
-    addLabelText?: string;
     allowCreate?: boolean;
     allowDisable?: boolean;
     onToggleDisable?: (disabled: boolean) => void;
     backspaceRemoves?: boolean;
     clearCacheOnChange?: boolean;
-    clearable?: boolean;
     delimiter?: string;
     description?: string;
-    disabled?: boolean;
     filterOptions?: FilterOption;
     formsy?: boolean;
     initiallyDisabled?: boolean;
     inputClass?: string;
+    isClearable?: boolean;
+    isDisabled?: boolean;
     joinValues?: boolean;
     label?: React.ReactNode;
     labelClass?: string;
     multiple?: boolean;
     name?: string;
-    noResultsText?: string;
+    noOptionsMessage?: NoOptionsMessage;
     placeholder?: string;
     required?: boolean;
     saveOnBlur?: boolean;
@@ -292,6 +291,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
             onToggleDisable,
             description,
             filterOptions,
+            formsy,
             initiallyDisabled,
             label,
             previewOptions,
@@ -306,10 +306,10 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 onToggleDisable,
                 description,
                 initiallyDisabled,
-                disabled: true,
-                formsy: this.props.formsy,
+                formsy,
                 containerClass: this.props.containerClass,
                 inputClass: this.props.inputClass,
+                isDisabled: true,
                 labelClass: this.props.labelClass,
                 isLoading: false,
                 label,
@@ -357,9 +357,9 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 labelClass: this.props.labelClass,
                 description,
                 initiallyDisabled,
+                isDisabled: true,
                 onToggleDisable,
-                disabled: true,
-                formsy: this.props.formsy,
+                formsy,
                 label,
                 name: this.props.name || this.props.componentId + '-loader',
                 placeholder: 'Loading...',

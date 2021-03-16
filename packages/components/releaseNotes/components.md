@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.6.4
+*Released*: 16 March 2021
 * Item 8546: Ontology concept picker panel search
     - FileTree component updates show props to `showLoading` and `showAnimations`
     - Concept path display update for hover to get full path info for "current path"

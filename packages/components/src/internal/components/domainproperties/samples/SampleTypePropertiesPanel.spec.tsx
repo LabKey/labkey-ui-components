@@ -140,7 +140,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
         // Add parent alias button should be visible
         expect(wrapper.find('.container--addition-icon')).toHaveLength(1);
 
-        // Link to STudy dropdown should not be visible since allowTimepointProperties: false
+        // Link to Study dropdown should not be visible since allowTimepointProperties: false
         expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
 
         wrapper.unmount();

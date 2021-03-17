@@ -37,7 +37,7 @@ const GridTab: FC<GridTabProps> = memo(({ isActive, model, onSelect, pullRight }
 
     return (
         <li className={className}>
-            <a onClick={onClick}>{title || queryInfo.queryLabel || queryInfo.name}</a>
+            <a onClick={onClick}>{title || queryInfo?.queryLabel || queryInfo?.name}</a>
         </li>
     );
 });
@@ -48,6 +48,11 @@ interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
      * onTabSelect it will be used as the initial active tab.
      */
     activeModelId?: string;
+    /**
+     * By default if there is only one model, the tabs will not be shown.  Setting this to true will show the tab
+     * even if there is only one model.
+     */
+    alwaysShowTabs?: boolean;
     /**
      * Defaults to true. Determines if we render the TabbedGridPanel as a Bootstrap panel.
      */
@@ -77,6 +82,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
     const {
         activeModelId,
         actions,
+        alwaysShowTabs,
         asPanel = true,
         onTabSelect,
         queryModels,
@@ -97,7 +103,11 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
         [onTabSelect]
     );
     // If the component is passed onTabSelect we will only honor the activeModelId passed to this component.
-    const activeId = onTabSelect === undefined ? internalActiveId : activeModelId;
+    let activeId = onTabSelect === undefined ? internalActiveId : activeModelId;
+
+    // Default activeId if current activeId not in tabOrder
+    activeId = tabOrder.indexOf(activeId) === -1 ? tabOrder[0] : activeId;
+
     const activeModel = queryModels[activeId];
 
     return (
@@ -105,7 +115,7 @@ export const TabbedGridPanel: FC<TabbedGridPanelProps & InjectedQueryModels> = m
             {title !== undefined && asPanel && <div className="tabbed-grid-panel__title panel-heading">{title}</div>}
 
             <div className={classNames('tabbed-grid-panel__body', { 'panel-body': asPanel })}>
-                {tabOrder.length > 1 && (
+                {(tabOrder.length > 1 || alwaysShowTabs) && (
                     <ul className="nav nav-tabs">
                         {tabOrder.map(modelId => (
                             <GridTab

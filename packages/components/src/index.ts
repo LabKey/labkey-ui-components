@@ -73,6 +73,7 @@ import { MultiMenuButton } from './internal/components/menus/MultiMenuButton';
 import { SubMenu } from './internal/components/menus/SubMenu';
 import { SubMenuItem } from './internal/components/menus/SubMenuItem';
 import { SelectionMenuItem } from './internal/components/menus/SelectionMenuItem';
+import { DisabledMenuItem } from './internal/components/menus/DisabledMenuItem';
 import { LoadingModal } from './internal/components/base/LoadingModal';
 import { LoadingSpinner } from './internal/components/base/LoadingSpinner';
 import { InsufficientPermissionsPage } from './internal/components/permissions/InsufficientPermissionsPage';
@@ -770,6 +771,7 @@ export {
     SubMenu,
     SubMenuItem,
     SelectionMenuItem,
+    DisabledMenuItem,
     ManageDropdownButton,
     SplitButtonGroup,
     PaginationButtons,

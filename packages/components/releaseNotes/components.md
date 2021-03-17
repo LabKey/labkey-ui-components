@@ -5,6 +5,12 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add 'Auto-Link Data to Study' field in Sample Type properties
 
+### version 2.15.0
+*Released*: 16 March 2021
+* Add `<DisabledMenuItem/>`.
+* Update assays model getDefinitionsByTypes to list included/excluded types
+* Add isBiologicsEnables and isFreezerManagerEnabledInBiologics checks
+
 ### version 2.14.1
 *Released*: 15 March 2021
 * Update `<EntityInsertPanel/>` component for reuse for media materials.

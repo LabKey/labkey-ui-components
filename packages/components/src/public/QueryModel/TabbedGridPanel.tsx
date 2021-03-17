@@ -50,7 +50,7 @@ interface TabbedGridPanelProps<T = {}> extends GridPanelProps<T> {
     activeModelId?: string;
     /**
      * By default if there is only one model, the tabs will not be shown.  Setting this to true will show the tab
-     * even if there is only on model.
+     * even if there is only one model.
      */
     alwaysShowTabs?: boolean;
     /**

@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.15.x
+*Released*: TBD March 2021
+* Merge release21.3-SNAPSHOT to master.
+* Includes changes from versions 2.6.3 and 2.6.4.
+
 ### version 2.15.0
 *Released*: 16 March 2021
 * Add `<DisabledMenuItem/>`.

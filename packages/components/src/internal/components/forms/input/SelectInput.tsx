@@ -30,7 +30,7 @@ export interface Option {
     data?: any;
     label: string;
     value: any;
-    [key:string]: any;
+    [key: string]: any;
 }
 
 // Copied from @types/react-select/src/Select.d.ts
@@ -207,9 +207,9 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
 
         this.state = {
             asyncKey: 0,
-            selectedOptions: originalOptions,
+            isDisabled: !!props.initiallyDisabled,
             originalOptions,
-            isDisabled: props.initiallyDisabled,
+            selectedOptions: originalOptions,
         };
     }
 
@@ -306,6 +306,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         this.change = true;
 
         if (clearCacheOnChange) {
+            console.log('handleChange -- clearCacheOnChange');
             this.setState(state => ({ asyncKey: state.asyncKey + 1 }));
             // this.refs.reactSelect._cache = {};
         }
@@ -479,6 +480,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             autoFocus,
             // autoload, TODO: See Async component default options
             backspaceRemovesValue,
+            blurInputOnSelect: false, // TODO: This seems to have no effect
             // deleteRemoves, TODO: Removed. No guidance given.
             components: {
                 Input: this.Input,

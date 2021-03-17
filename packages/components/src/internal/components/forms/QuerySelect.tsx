@@ -164,8 +164,9 @@ export interface QuerySelectOwnProps extends InheritedSelectInputProps {
 }
 
 interface State {
-    model: QuerySelectModel;
     error: any;
+    focused: boolean;
+    model: QuerySelectModel;
 }
 
 export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
@@ -180,31 +181,31 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         showLoading: true,
     };
 
+    _deferredLoad: () => void;
+    _loadOnFocusEnabled: boolean = false;
     _mounted: boolean;
     querySelectTimer: number;
 
-    state: Readonly<State> = { error: undefined, model: undefined };
+    state: Readonly<State> = { error: undefined, focused: false, model: undefined };
 
     componentDidMount(): void {
         this._mounted = true;
-        this.initModel(this.props);
+        this.initModel();
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: QuerySelectOwnProps): void {
-        if (nextProps.componentId !== this.props.componentId) {
-            this.initModel(nextProps);
+    componentDidUpdate(prevProps: QuerySelectOwnProps): void {
+        if (prevProps.componentId !== this.props.componentId) {
+            this.initModel();
         }
     }
 
-    initModel = (props: QuerySelectOwnProps): void => {
-        initSelect(props).then(
-            model => {
-                this.setState(() => ({ error: undefined, model }));
-            },
-            reason => {
-                this.setState(() => ({ error: reason }));
-            }
-        );
+    initModel = async (): Promise<void> => {
+        try {
+            const model = await initSelect(this.props);
+            this.setState({ error: undefined, model });
+        } catch (error) {
+            this.setState({ error });
+        }
     };
 
     componentWillUnmount(): void {
@@ -212,7 +213,25 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         clearTimeout(this.querySelectTimer);
     }
 
+    loadOnFocus = (): boolean => {
+        // TODO: Works relatively well, however, the loading "..." still appears on the select until it is focused.
+        // Determine if there is a way to prevent it from displaying that symbol (passing "isLoading: false" does not work).
+        return this._loadOnFocusEnabled && !this.state.focused && (this.props.loadOnFocus || this.state.model.preLoad);
+    };
+
     loadOptions = (input: string): Promise<any> => {
+        if (this.loadOnFocus()) {
+            return new Promise((resolve): void => {
+                this._deferredLoad = async (): Promise<void> => {
+                    resolve(await this._loadOptions(input));
+                };
+            });
+        }
+
+        return this._loadOptions(input);
+    };
+
+    _loadOptions = (input: string): Promise<any> => {
         clearTimeout(this.querySelectTimer);
 
         return new Promise((resolve): void => {
@@ -249,22 +268,11 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         });
     };
 
-    onChange = (name: string, value: any, selectedOptions, selectRef: any): void => {
-        const { loadOnChange, onQSChange } = this.props;
-        const { model } = this.state;
-
+    onChange = (name: string, value: any, selectedOptions): void => {
         this.setState(
-            () => ({
-                model: model.setSelection(value),
-            }),
+            state => ({ model: state.model.setSelection(value) }),
             () => {
-                // TODO: Figure out if we need to support this again or if there is an alternative pattern
-                // with the new ReactSelect async implementation
-                // if (loadOnChange) {
-                //     selectRef.loadOptions?.(FOCUS_FLAG);
-                // }
-
-                onQSChange?.(name, value, selectedOptions, this.state.model.selectedItems);
+                this.props.onQSChange?.(name, value, selectedOptions, this.state.model.selectedItems);
             }
         );
     };
@@ -274,15 +282,16 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         return renderPreviewOption(option, model);
     };
 
-    onFocus = (event: FocusEvent<HTMLElement>, selectRef: any): void => {
-        const { loadOnFocus } = this.props;
-        const { model } = this.state;
-
-        // TODO: Figure out if we need to support this again or if there is an alternative pattern
-        // with the new ReactSelect async implementation
-        // if (model.preLoad || loadOnFocus) {
-        //     selectRef.loadOptions?.(FOCUS_FLAG);
-        // }
+    onFocus = (): void => {
+        if (this.loadOnFocus()) {
+            this.setState(
+                () => ({ focused: true }),
+                () => {
+                    this._deferredLoad?.();
+                    this._deferredLoad = undefined;
+                }
+            );
+        }
     };
 
     render() {
@@ -294,6 +303,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
             formsy,
             initiallyDisabled,
             label,
+            loadOnChange,
             previewOptions,
             required,
             showLoading,
@@ -332,6 +342,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                     autoValue: false, // QuerySelect will directly control value of ReactSelect via selectedOptions
                     // autoload: true,
                     cacheOptions: true,
+                    clearCacheOnChange: loadOnChange,
                     description,
                     filterOptions,
                     // ignoreCase: false,

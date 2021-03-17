@@ -21,6 +21,7 @@ import {
     ISelectRowsResult,
     LoadingState,
     naturalSort,
+    Option,
     QueryInfo,
     QuerySelectOwnProps,
     searchRows,

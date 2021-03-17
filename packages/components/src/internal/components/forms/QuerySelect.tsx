@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React, { FocusEvent, ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { fromJS, List, Map } from 'immutable';
 import { Filter, Utils } from '@labkey/api';
 
@@ -67,16 +67,16 @@ function noopFilterOptions(options: Option[]): Option[] {
     return options;
 }
 
-function renderPreviewOption(option: Option, model: QuerySelectModel): React.ReactNode {
+const PreviewOption: FC<any> = props => {
+    const { model, ...optionProps } = props;
     const { allResults, queryInfo } = model;
+    const { innerProps, label, value } = optionProps;
 
     if (queryInfo && allResults.size) {
-        const item = allResults.find(result => {
-            return option.value === result.getIn([model.valueColumn, 'value']);
-        });
+        const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
 
         return (
-            <div className="wizard--select-option">
+            <div className="wizard--select-option query-select-preview-option" {...innerProps}>
                 {queryInfo.getDisplayColumns(model.schemaQuery.viewName).map((column, i) => {
                     if (item !== undefined) {
                         let text = resolveDetailFieldValue(item.get(column.name));
@@ -94,7 +94,7 @@ function renderPreviewOption(option: Option, model: QuerySelectModel): React.Rea
 
                     return (
                         <div key={i} className="text__truncate">
-                            <span>{option.label}</span>
+                            <span>{label}</span>
                         </div>
                     );
                 })}
@@ -103,7 +103,7 @@ function renderPreviewOption(option: Option, model: QuerySelectModel): React.Rea
     }
 
     return null;
-}
+};
 
 /**
  * This is a subset of SelectInputProps that are passed through to the SelectInput. Mainly, this set should
@@ -117,14 +117,14 @@ interface InheritedSelectInputProps {
     onToggleDisable?: (disabled: boolean) => void;
     backspaceRemoves?: boolean;
     clearCacheOnChange?: boolean;
+    clearable?: boolean;
     delimiter?: string;
     description?: string;
+    disabled?: boolean;
     filterOptions?: FilterOption;
     formsy?: boolean;
     initiallyDisabled?: boolean;
     inputClass?: string;
-    isClearable?: boolean;
-    isDisabled?: boolean;
     joinValues?: boolean;
     label?: React.ReactNode;
     labelClass?: string;
@@ -169,6 +169,8 @@ interface State {
     model: QuerySelectModel;
 }
 
+const INITIAL_STATE: State = { error: undefined, focused: false, model: undefined };
+
 export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
     static defaultProps = {
         delimiter: DELIMITER,
@@ -181,12 +183,12 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         showLoading: true,
     };
 
-    _deferredLoad: () => void;
-    _loadOnFocusEnabled: boolean = false;
-    _mounted: boolean;
-    querySelectTimer: number;
+    private _deferredLoad: () => void;
+    private readonly _loadOnFocusEnabled = false;
+    private _mounted: boolean;
+    private querySelectTimer: number;
 
-    state: Readonly<State> = { error: undefined, focused: false, model: undefined };
+    state: Readonly<State> = INITIAL_STATE;
 
     componentDidMount(): void {
         this._mounted = true;
@@ -200,9 +202,11 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
     }
 
     initModel = async (): Promise<void> => {
+        this.setState(INITIAL_STATE);
+
         try {
             const model = await initSelect(this.props);
-            this.setState({ error: undefined, model });
+            this.setState({ model });
         } catch (error) {
             this.setState({ error });
         }
@@ -277,9 +281,8 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
         );
     };
 
-    optionRenderer = (option): ReactNode => {
-        const { model } = this.state;
-        return renderPreviewOption(option, model);
+    optionRenderer = (props): ReactNode => {
+        return <PreviewOption {...props} model={this.state.model} />;
     };
 
     onFocus = (): void => {
@@ -319,7 +322,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 formsy,
                 containerClass: this.props.containerClass,
                 inputClass: this.props.inputClass,
-                isDisabled: true,
+                disabled: true,
                 labelClass: this.props.labelClass,
                 isLoading: false,
                 label,
@@ -340,7 +343,6 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 {
                     allowCreate: false,
                     autoValue: false, // QuerySelect will directly control value of ReactSelect via selectedOptions
-                    // autoload: true,
                     cacheOptions: true,
                     clearCacheOnChange: loadOnChange,
                     description,
@@ -368,7 +370,7 @@ export class QuerySelect extends React.Component<QuerySelectOwnProps, State> {
                 labelClass: this.props.labelClass,
                 description,
                 initiallyDisabled,
-                isDisabled: true,
+                disabled: true,
                 onToggleDisable,
                 formsy,
                 label,

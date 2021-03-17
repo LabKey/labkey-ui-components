@@ -3,9 +3,7 @@ import { Button, Checkbox, Col, FormControl, Modal, Row } from 'react-bootstrap'
 
 import { getServerContext } from '@labkey/api';
 
-// import { Option } from 'react-select';
-
-import { helpLinkNode, initQueryGridState, LabelHelpTip, SelectInput } from '../../../..';
+import { helpLinkNode, initQueryGridState, LabelHelpTip, Option, SelectInput } from '../../../..';
 
 import { DATASET_PROPERTIES_TOPIC } from '../../../util/helpLinks';
 
@@ -19,8 +17,6 @@ import { SHOW_IN_OVERVIEW } from './constants';
 
 import '../../../../theme/dataset.scss';
 
-type Option = any;
-
 interface DatasetSettingsSelectProps {
     name: string;
     label: string;
@@ -28,26 +24,13 @@ interface DatasetSettingsSelectProps {
     selectedValue?: any;
     selectOptions: any;
     onSelectChange: (name, formValue, selected) => void;
-    labelKey?: string;
-    valueKey?: string;
     disabled?: boolean;
     clearable?: boolean;
 }
 
 export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSelectProps> {
     render() {
-        const {
-            name,
-            label,
-            helpTip,
-            selectedValue,
-            selectOptions,
-            onSelectChange,
-            labelKey,
-            valueKey,
-            disabled,
-            clearable,
-        } = this.props;
+        const { name, label, helpTip, selectedValue, selectOptions, onSelectChange, disabled, clearable } = this.props;
 
         return (
             <Row className="margin-top">
@@ -67,10 +50,8 @@ export class DatasetSettingsSelect extends React.PureComponent<DatasetSettingsSe
                         multiple={false}
                         required={false}
                         name={name}
-                        labelKey={labelKey}
-                        valueKey={valueKey}
                         disabled={disabled}
-                        isClearable={clearable}
+                        clearable={clearable}
                     />
                 </Col>
             </Row>

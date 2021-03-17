@@ -70,7 +70,6 @@ export const OntologySelectionPanelImpl: FC<OntologySelectionPanelImplProps> = m
                     formsy={false}
                     multiple={false}
                     valueKey="code"
-                    labelKey="label"
                     onChange={onOntologySelection}
                     options={ontologies}
                 />

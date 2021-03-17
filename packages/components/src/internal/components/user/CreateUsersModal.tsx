@@ -124,7 +124,7 @@ export class CreateUsersModal extends React.Component<Props, State> {
                             options={this.props.roleOptions}
                             valueKey="id"
                             onChange={this.handleRole}
-                            isClearable={false}
+                            clearable={false}
                         />
                     </>
                 )}

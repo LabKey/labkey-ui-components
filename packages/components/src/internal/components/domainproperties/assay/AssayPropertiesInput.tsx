@@ -3,7 +3,7 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
-import { Container, LoadingSpinner, RemoveEntityButton, AddEntityButton } from '../../../..';
+import { Container, RemoveEntityButton, AddEntityButton } from '../../../..';
 
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
@@ -12,6 +12,8 @@ import {
     PROGRAMMATIC_QC_TOPIC,
 } from '../../../util/helpLinks';
 import { DomainFieldLabel, DomainFieldLabelProps } from '../DomainFieldLabel';
+
+import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { getValidPublishTargets } from './actions';
 
@@ -288,7 +290,7 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
         };
     }
 
-    UNSAFE_componentWillMount(): void {
+    componentDidMount(): void {
         getValidPublishTargets()
             .then(containers => {
                 this.setState(() => ({ containers }));
@@ -310,7 +312,7 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
                     <>
                         <p>
                             When new runs are imported, automatically link their data rows to the specified target
-                            study. Only rows that include subject and visit/date information will be copied.
+                            study. Only rows that include subject and visit/date information will be linked.
                         </p>
                         <p>
                             The user performing the import must have insert permission in the target study and the
@@ -319,23 +321,12 @@ export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkD
                     </>
                 }
             >
-                {containers === undefined ? (
-                    <LoadingSpinner />
-                ) : (
-                    <FormControl
-                        componentClass="select"
-                        id={FORM_IDS.AUTO_LINK_TARGET}
-                        onChange={onChange}
-                        value={model.autoCopyTargetContainerId || ''}
-                    >
-                        <option key="_empty" value={null} />
-                        {containers.map((container, i) => (
-                            <option key={i} value={container.id}>
-                                {container.path}
-                            </option>
-                        ))}
-                    </FormControl>
-                )}
+                <AutoLinkToStudyDropdown
+                    containers={containers}
+                    onChange={onChange}
+                    autoLinkTarget={FORM_IDS.AUTO_LINK_TARGET}
+                    value={model.autoCopyTargetContainerId}
+                />
             </AssayPropertiesInput>
         );
     }

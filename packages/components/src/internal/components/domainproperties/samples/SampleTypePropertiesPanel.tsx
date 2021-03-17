@@ -33,6 +33,8 @@ import { SectionHeading } from '../SectionHeading';
 import { getValidPublishTargets } from '../assay/actions';
 import { ENTITY_FORM_IDS } from '../entities/constants';
 
+import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
+
 import { IParentAlias, SampleTypeModel } from './models';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
@@ -359,22 +361,30 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
                 {allowTimepointProperties && !appPropertiesOnly && (
                     <Row className="margin-top">
-                        <Col xs={2}> Auto-Link Data to Study </Col>
+                        <Col xs={2}>
+                            <DomainFieldLabel
+                                label="Auto-Link Data to Study"
+                                helpTipBody={
+                                    <>
+                                        <p>
+                                            Automatically link Sample Type data rows to the specified target study. Only
+                                            rows that include subject and visit/date information will be linked.
+                                        </p>
+                                        <p>
+                                            The user performing the import must have insert permission in the target
+                                            study and the corresponding dataset.
+                                        </p>
+                                    </>
+                                }
+                            />
+                        </Col>
                         <Col xs={5}>
-                            <FormControl
-                                componentClass="select"
-                                id={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
+                            <AutoLinkToStudyDropdown
+                                containers={containers}
                                 onChange={this.onFormChange}
-                                value={model.autoLinkTargetContainerId || ''}
-                            >
-                                <option key="_empty" value={null} />
-                                {containers &&
-                                    containers.map((container, i) => (
-                                        <option key={i} value={container.id}>
-                                            {container.name}
-                                        </option>
-                                    ))}
-                            </FormControl>
+                                autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
+                                value={model.autoLinkTargetContainerId}
+                            />
                         </Col>
                     </Row>
                 )}

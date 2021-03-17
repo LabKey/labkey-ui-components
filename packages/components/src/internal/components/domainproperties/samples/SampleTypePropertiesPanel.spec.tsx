@@ -111,7 +111,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                     description: descVal,
                 }),
                 domainKindName: 'SampleType',
-                domainDesign: DomainDesign.create({ allowTimepointProperties: false }),
+                domainDesign: sampleTypeModel.get('domain'),
             })
         );
 
@@ -222,7 +222,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test('allowTimepointProperties', async () => {
+    test('Auto-Link Data to Study', async () => {
         const sampleTypeModelWithTimepoint = SampleTypeModel.create({
             domainDesign: fromJS({ allowTimepointProperties: true }),
         } as DomainDetails);
@@ -239,6 +239,8 @@ describe('<SampleTypePropertiesPanel/>', () => {
             />
         );
 
+        // Currently appears only when 'allowTimepointProperties' is true and 'appPropertiesOnly' is false
+        // That is, only on LKS, and not on LKB or LKSM
         expect(wrapper.text()).toContain('Auto-Link Data to Study');
 
         wrapper.setProps({ appPropertiesOnly: true });

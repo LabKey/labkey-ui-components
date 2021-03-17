@@ -19606,7 +19606,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                               helpTipBody={
                                                 <React.Fragment>
                                                   <p>
-                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                                   </p>
                                                   <p>
                                                     The user performing the import must have insert permission in the target study and the corresponding dataset.
@@ -19636,7 +19636,7 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
-                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                                             </p>
                                                             <p>
                                                               The user performing the import must have insert permission in the target study and the corresponding dataset.
@@ -19739,21 +19739,26 @@ exports[`AssayDesignerPanels default properties 1`] = `
                                                     <div
                                                       className="col-lg-8 col-xs-9"
                                                     >
-                                                      <LoadingSpinner
-                                                        msg="Loading..."
-                                                        wrapperClassName=""
+                                                      <AutoLinkToStudyDropdown
+                                                        autoLinkTarget="assay-design-autoCopyTargetContainerId"
+                                                        onChange={[Function]}
                                                       >
-                                                        <span
-                                                          className=""
+                                                        <LoadingSpinner
+                                                          msg="Loading..."
+                                                          wrapperClassName=""
                                                         >
-                                                          <i
-                                                            aria-hidden="true"
-                                                            className="fa fa-spinner fa-pulse"
-                                                          />
-                                                           
-                                                          Loading...
-                                                        </span>
-                                                      </LoadingSpinner>
+                                                          <span
+                                                            className=""
+                                                          >
+                                                            <i
+                                                              aria-hidden="true"
+                                                              className="fa fa-spinner fa-pulse"
+                                                            />
+                                                             
+                                                            Loading...
+                                                          </span>
+                                                        </LoadingSpinner>
+                                                      </AutoLinkToStudyDropdown>
                                                     </div>
                                                   </Col>
                                                 </div>
@@ -23936,7 +23941,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                               helpTipBody={
                                                 <React.Fragment>
                                                   <p>
-                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                                   </p>
                                                   <p>
                                                     The user performing the import must have insert permission in the target study and the corresponding dataset.
@@ -23966,7 +23971,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
-                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                                             </p>
                                                             <p>
                                                               The user performing the import must have insert permission in the target study and the corresponding dataset.
@@ -24069,21 +24074,26 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain for new assay 1`] = `
                                                     <div
                                                       className="col-lg-8 col-xs-9"
                                                     >
-                                                      <LoadingSpinner
-                                                        msg="Loading..."
-                                                        wrapperClassName=""
+                                                      <AutoLinkToStudyDropdown
+                                                        autoLinkTarget="assay-design-autoCopyTargetContainerId"
+                                                        onChange={[Function]}
                                                       >
-                                                        <span
-                                                          className=""
+                                                        <LoadingSpinner
+                                                          msg="Loading..."
+                                                          wrapperClassName=""
                                                         >
-                                                          <i
-                                                            aria-hidden="true"
-                                                            className="fa fa-spinner fa-pulse"
-                                                          />
-                                                           
-                                                          Loading...
-                                                        </span>
-                                                      </LoadingSpinner>
+                                                          <span
+                                                            className=""
+                                                          >
+                                                            <i
+                                                              aria-hidden="true"
+                                                              className="fa fa-spinner fa-pulse"
+                                                            />
+                                                             
+                                                            Loading...
+                                                          </span>
+                                                        </LoadingSpinner>
+                                                      </AutoLinkToStudyDropdown>
                                                     </div>
                                                   </Col>
                                                 </div>
@@ -30321,7 +30331,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                               helpTipBody={
                                                 <React.Fragment>
                                                   <p>
-                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                                   </p>
                                                   <p>
                                                     The user performing the import must have insert permission in the target study and the corresponding dataset.
@@ -30351,7 +30361,7 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
-                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                                             </p>
                                                             <p>
                                                               The user performing the import must have insert permission in the target study and the corresponding dataset.
@@ -30454,21 +30464,26 @@ exports[`AssayDesignerPanels hideEmptyBatchDomain with initModel 1`] = `
                                                     <div
                                                       className="col-lg-8 col-xs-9"
                                                     >
-                                                      <LoadingSpinner
-                                                        msg="Loading..."
-                                                        wrapperClassName=""
+                                                      <AutoLinkToStudyDropdown
+                                                        autoLinkTarget="assay-design-autoCopyTargetContainerId"
+                                                        onChange={[Function]}
                                                       >
-                                                        <span
-                                                          className=""
+                                                        <LoadingSpinner
+                                                          msg="Loading..."
+                                                          wrapperClassName=""
                                                         >
-                                                          <i
-                                                            aria-hidden="true"
-                                                            className="fa fa-spinner fa-pulse"
-                                                          />
-                                                           
-                                                          Loading...
-                                                        </span>
-                                                      </LoadingSpinner>
+                                                          <span
+                                                            className=""
+                                                          >
+                                                            <i
+                                                              aria-hidden="true"
+                                                              className="fa fa-spinner fa-pulse"
+                                                            />
+                                                             
+                                                            Loading...
+                                                          </span>
+                                                        </LoadingSpinner>
+                                                      </AutoLinkToStudyDropdown>
                                                     </div>
                                                   </Col>
                                                 </div>
@@ -44393,7 +44408,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                               helpTipBody={
                                                 <React.Fragment>
                                                   <p>
-                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                    When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                                   </p>
                                                   <p>
                                                     The user performing the import must have insert permission in the target study and the corresponding dataset.
@@ -44423,7 +44438,7 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                         helpTipBody={
                                                           <React.Fragment>
                                                             <p>
-                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                              When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                                             </p>
                                                             <p>
                                                               The user performing the import must have insert permission in the target study and the corresponding dataset.
@@ -44526,21 +44541,26 @@ exports[`AssayDesignerPanels initModel 1`] = `
                                                     <div
                                                       className="col-lg-8 col-xs-9"
                                                     >
-                                                      <LoadingSpinner
-                                                        msg="Loading..."
-                                                        wrapperClassName=""
+                                                      <AutoLinkToStudyDropdown
+                                                        autoLinkTarget="assay-design-autoCopyTargetContainerId"
+                                                        onChange={[Function]}
                                                       >
-                                                        <span
-                                                          className=""
+                                                        <LoadingSpinner
+                                                          msg="Loading..."
+                                                          wrapperClassName=""
                                                         >
-                                                          <i
-                                                            aria-hidden="true"
-                                                            className="fa fa-spinner fa-pulse"
-                                                          />
-                                                           
-                                                          Loading...
-                                                        </span>
-                                                      </LoadingSpinner>
+                                                          <span
+                                                            className=""
+                                                          >
+                                                            <i
+                                                              aria-hidden="true"
+                                                              className="fa fa-spinner fa-pulse"
+                                                            />
+                                                             
+                                                            Loading...
+                                                          </span>
+                                                        </LoadingSpinner>
+                                                      </AutoLinkToStudyDropdown>
                                                     </div>
                                                   </Col>
                                                 </div>

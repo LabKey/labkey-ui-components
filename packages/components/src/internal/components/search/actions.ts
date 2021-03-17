@@ -8,8 +8,9 @@ import { SearchIdData, SearchResultCardData } from './models';
 
 export function searchUsingIndex(
     userConfig,
-    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
-): Promise<{}> {
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
+    filterCategories?: string[]
+): Promise<Record<string, any>> {
     return new Promise((resolve, reject) => {
         Ajax.request({
             url: buildURL('search', 'json.api'),
@@ -19,7 +20,10 @@ export function searchUsingIndex(
                 addDataObjects(json);
                 const urlResolver = new URLResolver();
                 urlResolver.resolveSearchUsingIndex(json).then(results => {
-                    resolve({ ...results, hits: getProcessedSearchHits(results['hits'], getCardDataFn) });
+                    resolve({
+                        ...results,
+                        hits: getProcessedSearchHits(results['hits'], getCardDataFn, filterCategories),
+                    });
                 });
             }),
             failure: Utils.getCallbackWrapper(
@@ -124,19 +128,14 @@ function getCardData(
 // TODO: add categories for other search results so the result['data'] check could be removed.
 export function getProcessedSearchHits(
     results: any,
-    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData
+    getCardDataFn?: (data: Map<any, any>, category?: string) => SearchResultCardData,
+    filterCategories = ['data', 'material', 'workflowJob', 'file workflowJob']
 ): {} {
     return results
         ? results
               .filter(result => {
                   const category = result['category'];
-                  return (
-                      category == 'data' ||
-                      category == 'material' ||
-                      category == 'workflowJob' ||
-                      category == 'file workflowJob' ||
-                      result['data']
-                  );
+                  return filterCategories?.indexOf(category) > -1 || result['data'];
               })
               .map(result => {
                   return {

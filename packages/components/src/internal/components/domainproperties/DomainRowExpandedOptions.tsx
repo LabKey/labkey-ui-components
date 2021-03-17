@@ -40,6 +40,7 @@ interface IDomainRowExpandedOptionsProps {
     onMultiChange: (changes: List<IFieldChange>) => void;
     showingModal: (boolean) => void;
     appPropertiesOnly?: boolean;
+    serverModuleNames: string[];
     domainIndex: number;
     successBsStyle?: string;
     domainFormDisplayOptions?: IDomainFormDisplayOptions;
@@ -203,6 +204,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
             onChange,
             showingModal,
             appPropertiesOnly,
+            serverModuleNames,
             domainIndex,
             successBsStyle,
             domainFormDisplayOptions,
@@ -220,6 +222,7 @@ export class DomainRowExpandedOptions extends React.Component<IDomainRowExpanded
                             field={field}
                             onChange={onChange}
                             appPropertiesOnly={appPropertiesOnly}
+                            serverModuleNames={serverModuleNames}
                         />
                     </Col>
                     {domainFormDisplayOptions?.derivationDataScopeConfig?.show && (

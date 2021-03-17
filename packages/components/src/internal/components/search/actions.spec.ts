@@ -1,6 +1,4 @@
-import { fromJS } from 'immutable';
-
-import { getSearchResultCardData } from './actions';
+import { getProcessedSearchHits, getSearchResultCardData } from './actions';
 
 describe('getSearchResultCardData', () => {
     test('data class object', () => {
@@ -105,5 +103,62 @@ describe('getSearchResultCardData', () => {
             iconSrc: 'samples',
             typeName: undefined,
         });
+    });
+});
+
+describe('getProcessedSearchHits', () => {
+    const SEARCH_RESULTS = [
+        {
+            id: 1,
+            title: 'Test data',
+            category: 'data',
+        },
+        {
+            id: 2,
+            title: 'Test material',
+            category: 'material',
+        },
+        {
+            id: 3,
+            title: 'Test workflowJob',
+            category: 'workflowJob',
+        },
+        {
+            id: 4,
+            title: 'Test file workflowJob',
+            category: 'file workflowJob',
+        },
+        {
+            id: 5,
+            title: 'Test other',
+            category: 'other',
+        },
+        {
+            id: 6,
+            title: 'Test has data',
+            category: 'always included',
+            data: { test: 123 },
+        },
+    ];
+
+    test('default category filters', () => {
+        const filteredHits = getProcessedSearchHits(SEARCH_RESULTS);
+        expect(filteredHits).toHaveLength(5);
+        expect(filteredHits[0].title).toBe(SEARCH_RESULTS[0].title);
+        expect(filteredHits[1].title).toBe(SEARCH_RESULTS[1].title);
+        expect(filteredHits[2].title).toBe(SEARCH_RESULTS[2].title);
+        expect(filteredHits[3].title).toBe(SEARCH_RESULTS[3].title);
+        expect(filteredHits[4].title).toBe(SEARCH_RESULTS[5].title);
+    });
+
+    test('custom category filters', () => {
+        let filteredHits = getProcessedSearchHits(SEARCH_RESULTS, undefined, ['other']);
+        expect(filteredHits).toHaveLength(2);
+        expect(filteredHits[0].title).toBe(SEARCH_RESULTS[4].title);
+        expect(filteredHits[1].title).toBe(SEARCH_RESULTS[5].title);
+
+        filteredHits = getProcessedSearchHits(SEARCH_RESULTS, undefined, []);
+        expect(filteredHits).toHaveLength(1);
+        expect(filteredHits[0].title).toBe(SEARCH_RESULTS[5].title);
     });
 });

@@ -37,6 +37,7 @@ const DEFAULT_PROPS = {
     field,
     onChange: jest.fn,
     appPropertiesOnly: false,
+    serverModuleNames: undefined,
 };
 
 describe('NameAndLinkingOptions', () => {

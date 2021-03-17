@@ -137,6 +137,7 @@ export interface SelectInputProps {
     name?: string;
     noResultsText?: string;
     onBlur?: (event: FocusEvent<HTMLElement>) => void;
+    onChange?: Function; // this is getting confused with formsy on change, need to separate
     onFocus?: (event: FocusEvent<HTMLElement>, selectRef) => void;
     onToggleDisable?: (disabled: boolean) => void;
     optionRenderer?: any;
@@ -149,7 +150,6 @@ export interface SelectInputProps {
     selectedOptions?: any; // Option | Option[];
     showLabel?: boolean;
     valueKey?: string;
-    onChange?: Function; // this is getting confused with formsy on change, need to separate
 
     id?: any;
     label?: ReactNode;
@@ -191,7 +191,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         valueKey: 'value',
     };
 
-    _id: string;
+    private readonly _id: string;
     change = false; // indicates if the initial value has been changed or not
 
     constructor(props: SelectInputProps) {

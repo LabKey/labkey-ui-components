@@ -76,7 +76,7 @@ const PreviewOption: FC<any> = props => {
         const item = allResults.find(result => value === result.getIn([model.valueColumn, 'value']));
 
         return (
-            <div className="wizard--select-option query-select-preview-option" {...innerProps}>
+            <div className="wizard--select-option" {...innerProps}>
                 {queryInfo.getDisplayColumns(model.schemaQuery.viewName).map((column, i) => {
                     if (item !== undefined) {
                         let text = resolveDetailFieldValue(item.get(column.name));

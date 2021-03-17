@@ -110,14 +110,13 @@ export interface SelectInputProps {
     allowCreate?: boolean;
     allowDisable?: boolean;
     autoFocus?: boolean;
-    autoload?: boolean;
+    // autoload?: boolean; -- RENAMED: defaultOptions
     autoValue?: boolean;
     // backspaceRemoves?: boolean;  -- RENAMED: backspaceRemovesValue
     backspaceRemovesValue?: boolean;
-    // deleteRemoves?: boolean;
     cacheOptions?: boolean;
     clearCacheOnChange?: boolean;
-    // clearable?: boolean; -- RENAMED: isClearable
+    clearable?: boolean;
     containerClass?: string;
     defaultOptions?: boolean | readonly any[];
     delimiter?: string;
@@ -128,13 +127,11 @@ export interface SelectInputProps {
     // ignoreCase?: boolean;  -- REMOVED
     initiallyDisabled?: boolean;
     inputClass?: string;
-    isClearable?: boolean;
     isLoading?: boolean;
     // FIXME: this is named incorrectly. I would expect that if this is true it would join the values, nope, it joins
     //   the values when false.
     joinValues?: boolean;
     labelClass?: string;
-    labelKey?: string;
     loadOptions?: any; // no way to currently require one or the other, options/loadOptions
     multiple?: boolean;
     name?: string;
@@ -181,7 +178,6 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
     static defaultProps = {
         allowCreate: false,
         allowDisable: false,
-        autoload: true,
         autoValue: true,
         clearCacheOnChange: true,
         containerClass: 'form-group row',
@@ -190,7 +186,6 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         initiallyDisabled: false,
         inputClass: 'col-sm-9 col-xs-12',
         labelClass: 'control-label col-sm-3 text-left col-xs-12',
-        labelKey: 'label',
         saveOnBlur: false,
         showLabel: true,
         valueKey: 'value',
@@ -262,39 +257,19 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
     handleBlur = (event: FocusEvent<HTMLElement>): void => {
         const { onBlur, saveOnBlur } = this.props;
 
-        // TODO: Consider using onBlur or onMenuClose -- ReactSelect does not natively support "saveOnBlur".
-        // See: https://github.com/JedWatson/react-select/issues/1764
-
         // 33774: fields should be able to preserve input onBlur
         if (saveOnBlur) {
-            console.warn('SelectInput: "saveOnBlur" is not yet implemented.');
-            // determine which ReactSelect version we are using
-            // then get the associated inputValue
-            // const { reactSelect } = this.refs;
-            //
-            // if (this.isAsync()) {
-            //     // <AsyncSelect/> || <AsyncCreatableSelect/>
-            //     if (reactSelect.state.inputValue) {
-            //         if (reactSelect.select && Utils.isFunction(reactSelect.select.selectFocusedOption)) {
-            //             reactSelect.select.selectFocusedOption();
-            //         } else if (getServerContext().devMode) {
-            //             console.warn(
-            //                 'ReactSelect.Async implementation may have changed. SelectInput "saveOnBlur" no longer working.'
-            //             );
-            //         }
-            //     }
-            // } else if (this.isCreatable()) {
-            //     // <CreatableSelect/>
-            //     if (reactSelect.inputValue) {
-            //         if (Utils.isFunction(reactSelect.createNewOption)) {
-            //             reactSelect.createNewOption();
-            //         } else if (getServerContext().devMode) {
-            //             console.warn(
-            //                 'ReactSelect.Creatable implementation may have changed. SelectInput "saveOnBlur" no longer working.'
-            //             );
-            //         }
-            //     }
-            // }
+            const select = this.refs.reactSelect?.select?.select;
+
+            if (select?.selectOption) {
+                if (select?.state?.focusedOption) {
+                    select.selectOption(select.state.focusedOption);
+                }
+            } else if (getServerContext().devMode) {
+                console.warn(
+                    'ReactSelect implementation may have changed. SelectInput "saveOnBlur" no longer working.'
+                );
+            }
         }
 
         onBlur?.(event);
@@ -306,9 +281,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
         this.change = true;
 
         if (clearCacheOnChange) {
-            console.log('handleChange -- clearCacheOnChange');
             this.setState(state => ({ asyncKey: state.asyncKey + 1 }));
-            // this.refs.reactSelect._cache = {};
         }
 
         // set the formsy value from the selected options
@@ -446,25 +419,21 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
     };
 
     Input = inputProps => <components.Input {...inputProps} />;
-    // Input = inputProps => <components.Input {...inputProps} id={this.getId()} />;
+    // Input = inputProps => <components.Input {...inputProps} id={this.getId()} />; // TODO: Configure id on the input
 
     noOptionsMessage = (): string => this.props.noResultsText;
 
     renderSelect = (): ReactNode => {
         const {
             autoFocus,
-            // autoload,
             backspaceRemovesValue,
             cacheOptions,
+            clearable,
             defaultOptions,
-            // deleteRemoves,
             delimiter,
             disabled,
             filterOptions,
-            // ignoreCase,
-            isClearable,
             isLoading,
-            // labelKey,
             loadOptions,
             multiple,
             name,
@@ -472,43 +441,39 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             options,
             placeholder,
             promptTextCreator,
-            // required,
-            // valueKey,
         } = this.props;
+
+        const components: any = { Input: this.Input };
+
+        if (optionRenderer) {
+            components.Option = optionRenderer;
+        }
 
         const selectProps = {
             autoFocus,
-            // autoload, TODO: See Async component default options
             backspaceRemovesValue,
             blurInputOnSelect: false, // TODO: This seems to have no effect
-            // deleteRemoves, TODO: Removed. No guidance given.
-            components: {
-                Input: this.Input,
-                Options: optionRenderer,
-            },
+            components,
             delimiter,
             filterOption: filterOptions, // TODO: Rename to filterOption() and determine if "value" is still a property
             id: this.getId(),
             // ignoreCase, TODO: Removed. See `createFilter()`. Default option is "ignoreCase" set to true.
             // inputProps: { id: this.getId() },
-            isClearable,
-            isDisabled: disabled || this.state.isDisabled, // TODO: Rename "disabled" to "isDisabled" on SelectInput props
+            isClearable: clearable,
+            isDisabled: disabled || this.state.isDisabled,
             isLoading,
             isMulti: multiple, // TODO: Rename "multiple" to "isMulti" on SelectInput props
-            // labelKey, // TODO: Removed. No guidance given.
             name,
             noOptionsMessage: this.noOptionsMessage,
             onBlur: this.handleBlur,
             onChange: this.handleChange,
             onFocus: this.handleFocus,
-            // optionRenderer, // TODO: Refactored to use "components.Options" rendering pattern
             options,
             placeholder,
             promptTextCreator,
             ref: 'reactSelect',
             // required, // TODO: No longer supported by ReactSelect. Consider keeping prop for field display. See how this acts on forms.
             value: this.state.selectedOptions,
-            // valueKey, TODO: Removed. No guidance given.
         };
 
         if (Array.isArray(selectProps.value) && selectProps.value.length === 0) {

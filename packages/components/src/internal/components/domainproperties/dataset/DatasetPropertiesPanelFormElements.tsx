@@ -286,8 +286,6 @@ export class DataRowUniquenessContainer extends React.PureComponent<DataRowUniqu
                         label="Additional Key Field"
                         selectOptions={additionalKeyFields.toArray()}
                         onSelectChange={onSelectChange}
-                        labelKey="label"
-                        valueKey="value"
                         selectedValue={keyPropertyName}
                         disabled={!showAdditionalKeyField || model.isFromAssay()}
                         helpTip={this.getHelpTipForAdditionalField()}

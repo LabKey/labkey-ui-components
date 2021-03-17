@@ -252,8 +252,6 @@ export class AuditQueriesListingPage extends PureComponent<Props, State> {
                     multiple={false}
                     required={false}
                     value={this.state.selected}
-                    valueKey="value"
-                    labelKey="label"
                     onChange={this.onSelectionChange}
                     options={auditQueries}
                 />

@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.15.1
+*Released*: 18 March 2021
+* Fix problem with undefined references in `getDisambiguatedSelectInputOptions`
+
 ### version 2.15.0
 *Released*: 16 March 2021
 * Add `<DisabledMenuItem/>`.

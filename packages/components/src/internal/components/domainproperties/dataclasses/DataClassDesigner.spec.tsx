@@ -28,7 +28,7 @@ describe('DataClassDesigner', () => {
     test('default properties', () => {
         const form = <DataClassDesigner {...BASE_PROPS} />;
 
-        const tree = renderer.create(form).toJSON();
+        const tree = renderer.create(form);
         expect(tree).toMatchSnapshot();
     });
 

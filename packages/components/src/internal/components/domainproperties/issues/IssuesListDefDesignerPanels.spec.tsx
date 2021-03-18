@@ -30,7 +30,7 @@ describe('IssuesListDefDesignerPanel', () => {
     test('new Issue List Definition', () => {
         const issuesDesignerPanels = <IssuesListDefDesignerPanels {...BASE_PROPS} initModel={emptyNewModel} />;
 
-        const tree = renderer.create(issuesDesignerPanels).toJSON();
+        const tree = renderer.create(issuesDesignerPanels);
         expect(tree).toMatchSnapshot();
     });
 

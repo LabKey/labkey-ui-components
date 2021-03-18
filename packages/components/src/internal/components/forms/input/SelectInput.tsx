@@ -453,6 +453,7 @@ export class SelectInputImpl extends Component<SelectInputProps, SelectInputStat
             autoFocus,
             backspaceRemovesValue,
             blurInputOnSelect: false, // TODO: This seems to have no effect
+            classNamePrefix: 'select-input',
             components,
             delimiter,
             filterOption: filterOptions, // TODO: Rename to filterOption() and determine if "value" is still a property

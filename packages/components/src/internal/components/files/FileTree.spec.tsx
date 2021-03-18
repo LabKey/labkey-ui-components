@@ -2,6 +2,7 @@ import React from 'react';
 import { Checkbox } from 'react-bootstrap';
 import { mount, ReactWrapper, shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
+import { Treebeard, animations } from 'react-treebeard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faFileAlt, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 
@@ -49,6 +50,35 @@ describe('FileTree', () => {
                 tree.unmount();
             });
         });
+    });
+
+    function validate(wrapper: ReactWrapper, loading = false): void {
+        expect(wrapper.find(LoadingSpinner)).toHaveLength(loading ? 1 : 0);
+        expect(wrapper.find(Treebeard)).toHaveLength(!loading ? 1 : 0);
+    }
+
+    test('showLoading', () => {
+        const wrapper = mount(
+            <FileTree loadData={fetchFileTestTree} onFileSelect={jest.fn(() => true)} showLoading={true} />
+        );
+        validate(wrapper, true);
+        wrapper.unmount();
+    });
+
+    test('showAnimations', () => {
+        let wrapper = mount(
+            <FileTree loadData={fetchFileTestTree} onFileSelect={jest.fn(() => true)} showAnimations={true} />
+        );
+        validate(wrapper);
+        expect(wrapper.find(Treebeard).prop('animations')).toBe(animations);
+        wrapper.unmount();
+
+        wrapper = mount(
+            <FileTree loadData={fetchFileTestTree} onFileSelect={jest.fn(() => true)} showAnimations={false} />
+        );
+        validate(wrapper);
+        expect(wrapper.find(Treebeard).prop('animations')).toBe(false);
+        wrapper.unmount();
     });
 });
 

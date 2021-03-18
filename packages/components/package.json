@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.15.0-fb-copytostudy-8591.0",
+  "version": "2.15.2-fb-copytostudy-8591.0",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

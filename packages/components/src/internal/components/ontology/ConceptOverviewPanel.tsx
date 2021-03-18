@@ -1,10 +1,13 @@
-import React, { FC, memo, useEffect, useState } from 'react';
-import { Modal } from 'react-bootstrap';
+import React, { FC, memo, useCallback, useEffect, useState } from 'react';
+import { Button, Modal } from 'react-bootstrap';
 
-import { Alert } from '../../..';
+import { Alert, naturalSort } from '../../..';
 
-import { ConceptModel } from './models';
+import { ConceptModel, PathModel } from './models';
 import { fetchConceptForCode } from './actions';
+import { ConceptPathDisplay } from './ConceptPathDisplay';
+
+const CURRENT_PATH_TITLE = 'Current Path';
 
 interface ConceptOverviewPanelProps {
     code: string;
@@ -39,31 +42,67 @@ export const OntologyConceptOverviewPanel: FC<ConceptOverviewPanelProps> = memo(
 
 interface ConceptOverviewPanelImplProps {
     concept: ConceptModel;
+    selectedPath?: PathModel;
 }
+
+// exported for jest testing
+export const ConceptSynonyms: FC<{ synonyms: string[] }> = memo(props => {
+    const { synonyms } = props;
+    if (!synonyms || synonyms.length === 0) return undefined;
+
+    const synonymList = synonyms.sort(naturalSort).map(synonym => {
+        return <li key={synonym}>{synonym}</li>;
+    });
+
+    return (
+        <>
+            <div className="synonyms-title">Synonyms</div>
+            <ul className="synonyms-text">{synonymList}</ul>
+        </>
+    );
+});
 
 /**
  * The ontology concept overview display panel that takes in the concept prop (i.e. ConceptModel) and displays
  * the information about the concept label, code, description, etc.
  */
 export const ConceptOverviewPanelImpl: FC<ConceptOverviewPanelImplProps> = memo(props => {
-    const { concept } = props;
+    const { concept, selectedPath = undefined } = props;
+    const [showPath, setShowPath] = useState<boolean>();
+
+    const handleShowPath = useCallback((): void => {
+        setShowPath(!showPath);
+    }, [showPath, setShowPath]);
 
     if (!concept) {
         return <div className="none-selected">No concept selected</div>;
     }
 
-    const { code, label, description } = concept;
+    const { code, label, description, synonyms } = concept;
 
     return (
         <>
-            {label && <div className="title margin-bottom">{label}</div>}
-            {code && <span className="code">{code}</span>}
+            {selectedPath && (
+                <div className="path-button-container">
+                    <Button className={showPath ? 'show-path' : ''} onClick={handleShowPath}>
+                        {showPath ? 'Hide' : 'Show'} Path
+                    </Button>
+                </div>
+            )}
+            {label && <div className="title small-margin-bottom">{label}</div>}
+            {code && <span className="code margin-bottom">{code}</span>}
+            {selectedPath && showPath && (
+                <div className="concept-overview-selected-path">
+                    <ConceptPathDisplay title={CURRENT_PATH_TITLE} path={selectedPath} isSelected={true} />
+                </div>
+            )}
             {description && (
                 <div>
                     <div className="description-title">Description</div>
                     <p className="description-text">{description}</p>
                 </div>
             )}
+            <ConceptSynonyms synonyms={synonyms} />
         </>
     );
 });

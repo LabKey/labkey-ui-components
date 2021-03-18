@@ -6,7 +6,7 @@ import React, { FC, useCallback } from 'react';
 
 import { getUsersWithPermissions } from '../actions';
 
-import { SelectInput, SelectInputProps } from './SelectInput';
+import { Option, SelectInput, SelectInputProps } from './SelectInput';
 
 interface UserSelectInputProps extends SelectInputProps {
     // specify whether this Select should correspond with a NotifyList on the server
@@ -18,35 +18,25 @@ interface UserSelectInputProps extends SelectInputProps {
 export const UserSelectInput: FC<UserSelectInputProps> = props => {
     const { notifyList, permissions, useEmail, ...selectInputProps } = props;
 
-    const loadOptions = useCallback(
-        async (value: string, cb): Promise<void> => {
-            let options = [];
+    const loadOptions = useCallback((): Promise<Option[]> => {
+        return new Promise(async resolve => {
+            let options: Option[] = [];
 
             try {
                 const users = await getUsersWithPermissions(permissions);
                 options = users
-                    .map(v => {
-                        if (notifyList) {
-                            return {
-                                label: v.displayName,
-                                value: v.displayName,
-                            };
-                        }
-
-                        return {
-                            label: v.displayName,
-                            value: useEmail ? v.email : v.userId,
-                        };
-                    })
+                    .map(v => ({
+                        label: v.displayName,
+                        value: notifyList ? v.displayName : useEmail ? v.email : v.userId,
+                    }))
                     .toArray();
             } catch (error) {
                 console.error(error);
             }
 
-            cb(options);
-        },
-        [notifyList, permissions, useEmail]
-    );
+            resolve(options);
+        });
+    }, [notifyList, permissions, useEmail]);
 
     return <SelectInput delimiter={notifyList ? ';' : ','} loadOptions={loadOptions} {...selectInputProps} />;
 };

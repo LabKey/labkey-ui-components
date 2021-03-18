@@ -29,7 +29,7 @@ describe('IssuesListDefPropertiesPanel', () => {
             <IssuesListDefPropertiesPanel {...BASE_PROPS} model={emptyNewModel} onChange={jest.fn()} />
         );
 
-        const tree = renderer.create(issuesPropertiesPanel).toJSON();
+        const tree = renderer.create(issuesPropertiesPanel);
         expect(tree).toMatchSnapshot();
     });
 

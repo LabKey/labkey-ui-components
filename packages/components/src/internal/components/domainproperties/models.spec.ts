@@ -572,25 +572,21 @@ describe('DomainDesign', () => {
     });
 
     test('getGridData with ontology', () => {
-        LABKEY.container.activeModules = ['Core', 'Query', 'Ontology'];
-        const gridData = GRID_DATA.getGridData(false);
+        const gridData = GRID_DATA.getGridData(false, true);
         expect(gridData.toJS()).toStrictEqual(gridDataConstWithOntology);
     });
 
     test('getGridData without ontology', () => {
-        LABKEY.container.activeModules = ['Core', 'Query'];
-        const gridData = GRID_DATA.getGridData(false);
+        const gridData = GRID_DATA.getGridData(false, false);
         expect(gridData.toJS()).toStrictEqual(gridDataConst);
     });
 
     test('getGridData appPropertiesOnly', () => {
-        LABKEY.container.activeModules = ['Core', 'Query', 'Ontology'];
-        let gridData = GRID_DATA.getGridData(true);
+        let gridData = GRID_DATA.getGridData(true, true);
         expect(gridData.toJS()).toStrictEqual(gridDataAppPropsOnlyConst);
 
         // should be the same with or without the Ontology module in this case
-        LABKEY.container.activeModules = ['Core', 'Query'];
-        gridData = GRID_DATA.getGridData(true);
+        gridData = GRID_DATA.getGridData(true, false);
         expect(gridData.toJS()).toStrictEqual(gridDataAppPropsOnlyConst);
     });
 
@@ -600,7 +596,7 @@ describe('DomainDesign', () => {
                 { name: 'a', rangeURI: INTEGER_TYPE.rangeURI },
                 { name: 'b', rangeURI: TEXT_TYPE.rangeURI },
             ],
-        }).getGridColumns(jest.fn(), jest.fn(), 'domainKindName', false);
+        }).getGridColumns(jest.fn(), jest.fn(), 'domainKindName', false, false);
 
         expect(gridColumns.toJS().slice(2)).toStrictEqual(gridColumnsConst.slice(2));
 

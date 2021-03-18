@@ -1,13 +1,14 @@
 import React, { FC, memo, useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 
-import { Alert, LoadingSpinner } from '../../..';
+import { Alert, LabelHelpTip, LoadingSpinner } from '../../..';
 
 import { fetchConceptForCode, getOntologyDetails } from './actions';
 import { ConceptModel, OntologyModel, PathModel } from './models';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { OntologyTreePanel } from './OntologyTreePanel';
 import { OntologySelectionPanel } from './OntologySelectionPanel';
+import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
 
 export interface OntologyBrowserProps {
     initOntologyId?: string;
@@ -20,8 +21,9 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     const [error, setError] = useState<string>();
     const [selectedOntologyId, setSelectedOntologyId] = useState<string>();
     const [ontology, setOntologyModel] = useState<OntologyModel>();
-    const [selectedConceptCode, setSelectedCode] = useState<string>();
     const [selectedConcept, setSelectedConcept] = useState<ConceptModel>();
+    const [selectedPath, setSelectedPath] = useState<PathModel>();
+    const [alternatePath, setAlternatePath] = useState<PathModel>();
     const [conceptCache, setConceptCache] = useState<Map<string, ConceptModel>>(new Map<string, ConceptModel>());
     const ontologyId = selectedOntologyId ?? (!error ? initOntologyId : undefined);
 
@@ -37,15 +39,21 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
         [conceptCache, setConceptCache]
     );
 
-    const updateSelectedConceptCode = useCallback(
-        async (selectedCode: string): Promise<void> => {
-            if (!conceptCache.has(selectedCode)) {
-                const concept = await fetchConceptForCode(selectedCode);
+    const onSelectedPathChange = useCallback(
+        async (path: PathModel, isAlternatePath = false): Promise<void> => {
+            const { code } = path;
+            if (!conceptCache.has(code)) {
+                const concept = await fetchConceptForCode(code);
                 cacheConcepts([concept]);
             }
-            setSelectedCode(selectedCode);
+
+            if (isAlternatePath) {
+                setAlternatePath(path);
+            } else {
+                setSelectedPath(path);
+            }
         },
-        [setSelectedCode, conceptCache]
+        [conceptCache, setSelectedPath, setAlternatePath]
     );
 
     const onOntologySelection = useCallback(
@@ -69,10 +77,12 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
     }, [setOntologyModel, selectedOntologyId, setSelectedOntologyId, setError]);
 
     useEffect(() => {
-        const concept = conceptCache.get(selectedConceptCode);
-        setSelectedConcept(concept);
-        onConceptSelect?.(concept);
-    }, [selectedConceptCode, conceptCache, setSelectedConcept, onConceptSelect]);
+        if (selectedPath?.code) {
+            const concept = conceptCache.get(selectedPath.code);
+            setSelectedConcept(concept);
+            onConceptSelect?.(concept);
+        }
+    }, [selectedPath, conceptCache, setSelectedConcept, onConceptSelect]);
 
     return (
         <>
@@ -82,7 +92,9 @@ export const OntologyBrowserPanel: FC<OntologyBrowserProps> = memo(props => {
                 <OntologyBrowserPanelImpl
                     ontology={ontology}
                     selectedConcept={selectedConcept}
-                    setSelectedConcept={updateSelectedConceptCode}
+                    alternatePath={alternatePath}
+                    selectedPath={selectedPath}
+                    setSelectedPath={onSelectedPathChange}
                     asPanel={asPanel}
                 />
             )}
@@ -97,13 +109,15 @@ OntologyBrowserPanel.defaultProps = {
 interface OntologyBrowserPanelImplProps {
     ontology: OntologyModel;
     selectedConcept?: ConceptModel;
-    setSelectedConcept: (conceptCode: string) => void;
+    alternatePath?: PathModel;
+    selectedPath?: PathModel;
+    setSelectedPath: (path: PathModel, isAlternatePath?: boolean) => void;
     asPanel: boolean;
 }
 
 // exported for jest testing
 export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(props => {
-    const { ontology, selectedConcept, setSelectedConcept, asPanel } = props;
+    const { ontology, selectedConcept, alternatePath, selectedPath, setSelectedPath, asPanel } = props;
 
     if (!ontology) {
         return <LoadingSpinner />;
@@ -113,18 +127,19 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
     const root = ontology.getPathModel();
 
     const body = (
-        <>
-            {description && <p className="ontology-description">{description}</p>}
-            <Row>
-                <Col xs={6} className="left-panel">
-                    <p className="ontology-concept-count">{conceptCount} total concepts</p>
-                    <OntologyTreePanel root={root} onNodeSelection={setSelectedConcept} />
-                </Col>
-                <Col xs={6} className="right-panel">
-                    <ConceptInformationTabs concept={selectedConcept} />
-                </Col>
-            </Row>
-        </>
+        <Row>
+            <Col xs={6} className="left-panel">
+                <OntologyTreeSearchContainer ontology={ontology} searchPathClickHandler={setSelectedPath} />
+                <OntologyTreePanel root={root} onNodeSelection={setSelectedPath} alternatePath={alternatePath} />
+            </Col>
+            <Col xs={6} className="right-panel">
+                <ConceptInformationTabs
+                    concept={selectedConcept}
+                    selectedPath={selectedPath}
+                    alternatePathClickHandler={setSelectedPath}
+                />
+            </Col>
+        </Row>
     );
 
     if (!asPanel) {
@@ -133,7 +148,18 @@ export const OntologyBrowserPanelImpl: FC<OntologyBrowserPanelImplProps> = memo(
 
     return (
         <div className="panel panel-default ontology-browser-container">
-            <div className="panel-heading">Browse {ontology.getDisplayName()}</div>
+            <div className="panel-heading">
+                Browse {ontology.getDisplayName()}
+                &nbsp;
+                <LabelHelpTip
+                    title="Ontology Details"
+                    placement="bottom"
+                    iconComponent={<i className="fa fa-info-circle" />}
+                >
+                    {description && <p className="ontology-description">{description}</p>}
+                    <p className="ontology-concept-count">{Number(conceptCount).toLocaleString()} total concepts</p>
+                </LabelHelpTip>
+            </div>
             <div className="panel-body">{body}</div>
         </div>
     );

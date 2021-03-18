@@ -1,10 +1,11 @@
 import React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 
-import { Alert, LoadingSpinner } from '../../..';
+import { Alert, LabelHelpTip, LoadingSpinner } from '../../..';
 
 import { OntologyBrowserPanel, OntologyBrowserPanelImpl } from './OntologyBrowserPanel';
 import { OntologySelectionPanel } from './OntologySelectionPanel';
+import { OntologyTreeSearchContainer } from './OntologyTreeSearchContainer';
 import { OntologyTreePanel } from './OntologyTreePanel';
 import { ConceptInformationTabs } from './ConceptInformationTabs';
 import { ConceptModel, OntologyModel } from './models';
@@ -43,6 +44,7 @@ const DEFAULT_PROPS = {
     ontology: undefined,
     selectedConcept: undefined,
     setSelectedConcept: jest.fn,
+    setSelectedPath: jest.fn,
     asPanel: false,
 };
 
@@ -57,13 +59,13 @@ const TEST_CONCEPT = new ConceptModel({ code: 'a', label: 'b' });
 describe('OntologyBrowserPanelImpl', () => {
     function validate(wrapper: ReactWrapper, loading: boolean, asPanel = false): void {
         expect(wrapper.find('.ontology-browser-container')).toHaveLength(!loading ? 1 : 0);
-        expect(wrapper.find('.ontology-description')).toHaveLength(!loading ? 1 : 0);
-        expect(wrapper.find('.ontology-concept-count')).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find('.left-panel')).toHaveLength(!loading ? 2 : 0);
         expect(wrapper.find('.right-panel')).toHaveLength(!loading ? 2 : 0);
+        expect(wrapper.find(OntologyTreeSearchContainer)).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find(OntologyTreePanel)).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find(ConceptInformationTabs)).toHaveLength(!loading ? 1 : 0);
         expect(wrapper.find('.panel-body')).toHaveLength(asPanel ? 1 : 0);
+        expect(wrapper.find(LabelHelpTip)).toHaveLength(asPanel ? 1 : 0);
     }
 
     test('loading', () => {
@@ -76,8 +78,7 @@ describe('OntologyBrowserPanelImpl', () => {
     test('ontology', () => {
         const wrapper = mount(<OntologyBrowserPanelImpl {...DEFAULT_PROPS} ontology={TEST_ONTOLOGY} />);
         validate(wrapper, false);
-        expect(wrapper.find('.ontology-description').text()).toBe(TEST_ONTOLOGY.description);
-        expect(wrapper.find('.ontology-concept-count').text()).toBe(TEST_ONTOLOGY.conceptCount + ' total concepts');
+        expect(wrapper.find(OntologyTreeSearchContainer).prop('ontology')).toBe(TEST_ONTOLOGY);
         expect(wrapper.find(OntologyTreePanel).prop('root').label).toBe(TEST_ONTOLOGY.name);
         wrapper.unmount();
     });
@@ -94,7 +95,7 @@ describe('OntologyBrowserPanelImpl', () => {
     test('asPanel', () => {
         const wrapper = mount(<OntologyBrowserPanelImpl {...DEFAULT_PROPS} ontology={TEST_ONTOLOGY} asPanel={true} />);
         validate(wrapper, false, true);
-        expect(wrapper.find('.panel-heading').text()).toBe('Browse test name (t)');
+        expect(wrapper.find('.panel-heading').text()).toContain('Browse test name (t)');
         wrapper.unmount();
     });
 });

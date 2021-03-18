@@ -1,6 +1,11 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.15.2
+*Released*: 18 March 2021
+* Merge release21.3-SNAPSHOT to master.
+* Includes changes from versions 2.6.3 and 2.6.4.
+
 ### version 2.15.1
 *Released*: 18 March 2021
 * Fix problem with undefined references in `getDisambiguatedSelectInputOptions`
@@ -87,6 +92,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add TabbedGridPanel component
   * To be used as a replacement for QueryGridPanel's tabbed mode
 * Add "title" field to QueryModel
+
+### version 2.6.4
+*Released*: 16 March 2021
+* Item 8546: Ontology concept picker panel search
+    - FileTree component updates show props to `showLoading` and `showAnimations`
+    - Concept path display update for hover to get full path info for "current path"
+    - Ontology tree panel update for adding search input field and results menu behavior
+    - Ontology tree panel update to allow for loading data into tree and navigating to an alternate path via search or alternate path click in path information tab
+    - Ontology panel header update to show ontology description and concept count in tooltip
+    - search/actions.ts update to allow for a custom category filter array
+
+### version 2.6.3
+*Released*: 10 March 2021
+* Item 8360: Expand the ontology and concept browsers with additional information
+    - Added synonym and path information to the concept information panels
+    - Added selected path and alternate path displays to path information tab & panel
 
 ### version 2.6.2
 *Released*: 4 March 2021

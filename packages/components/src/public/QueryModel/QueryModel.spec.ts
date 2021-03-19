@@ -1,4 +1,4 @@
-import { LoadingState, QueryInfo, SchemaQuery, QuerySort } from '../..';
+import { GRID_CHECKBOX_OPTIONS, LoadingState, QueryInfo, QuerySort, SchemaQuery } from '../..';
 import { initUnitTests, makeQueryInfo } from '../../internal/testHelpers';
 import mixturesQueryInfo from '../../test/data/mixtures-getQueryDetails.json';
 
@@ -143,4 +143,57 @@ describe('QueryModel', () => {
         expect(model.displayColumns).toEqual(expectedDisplayCols);
         expect(model.columnString).toEqual('Name,RowId,Flag,mixtureTypeId,expirationTime');
     });
+
+    test('SelectedState', () => {
+        let model = new QueryModel({schemaQuery: SCHEMA_QUERY });
+        // not loaded, no data
+        expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.NONE);
+
+        // loaded, no selections
+        model = model.mutate({
+            rows: {'1': {test: 1}, '2': {test: 2}, '3': {test: 3}},
+            orderedRows: ['1', '3', '2'],
+            rowCount: 3,
+            maxRows: 20,
+            queryInfoLoadingState: LoadingState.LOADED,
+            rowsLoadingState: LoadingState.LOADED
+        });
+        expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.NONE);
+
+        // loaded, all selected on page but more data
+        model = model.mutate({
+            selections: new Set(['1', '2', '3']),
+            rowCount: 30,
+            maxRows: 3,
+        });
+        expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.ALL);
+
+        // some selected on page
+        model = model.mutate({
+            selections: new Set(['2', '3'])
+        });
+        expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.SOME);
+
+        // none selected on page
+        model = model.mutate({
+            selections: new Set()
+        });
+        expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.NONE);
+
+        // all selected, total rows less than a page
+        model = model.mutate({
+            selections: new Set(['1', '2', '3']),
+            rowCount: 3,
+            maxRows: 20,
+        });
+        expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.ALL);
+
+        // some selected from total less than a page
+        model = model.mutate({
+            selections: new Set(['3']),
+            rowCount: 3,
+            maxRows: 33,
+        });
+        expect(model.selectedState).toBe(GRID_CHECKBOX_OPTIONS.SOME);
+    })
 });

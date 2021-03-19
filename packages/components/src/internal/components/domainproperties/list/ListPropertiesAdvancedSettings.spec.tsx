@@ -28,7 +28,7 @@ describe('AdvancedSettings', () => {
             <AdvancedSettings title="Advanced Settings" model={emptyNewModel} applyAdvancedProperties={jest.fn()} />
         );
 
-        const tree = renderer.create(advancedSettings).toJSON();
+        const tree = renderer.create(advancedSettings);
         expect(tree).toMatchSnapshot();
     });
 
@@ -41,7 +41,7 @@ describe('AdvancedSettings', () => {
             />
         );
 
-        const tree = renderer.create(advancedSettings).toJSON();
+        const tree = renderer.create(advancedSettings);
         expect(tree).toMatchSnapshot();
     });
 
@@ -50,8 +50,8 @@ describe('AdvancedSettings', () => {
             <DisplayTitle model={populatedExistingModel} onSelectChange={jest.fn()} titleColumn="Name" />
         );
 
-        expect(displayTitle.find('.Select-value-label').text()).toEqual('Name');
-        expect(displayTitle.exists('.is-disabled')).toBeFalsy();
+        expect(displayTitle.find('div.select-input__single-value').text()).toEqual('Name');
+        expect(displayTitle.exists('div.select-input--is-disabled')).toBeFalsy();
         displayTitle.unmount();
     });
 
@@ -60,8 +60,8 @@ describe('AdvancedSettings', () => {
             <DisplayTitle model={emptyNewModel} onSelectChange={jest.fn()} titleColumn={null} />
         );
 
-        expect(displayTitle.find('.Select-placeholder').text()).toEqual('No fields have been defined yet');
-        expect(displayTitle.exists('.is-disabled')).toBeTruthy();
+        expect(displayTitle.find('div.select-input__placeholder').text()).toEqual('No fields have been defined yet');
+        expect(displayTitle.exists('div.select-input--is-disabled')).toBeTruthy();
         displayTitle.unmount();
     });
 
@@ -72,8 +72,8 @@ describe('AdvancedSettings', () => {
             <DisplayTitle model={newModelWithOneField} onSelectChange={jest.fn()} titleColumn={null} />
         );
 
-        expect(displayTitle.find('.Select-placeholder').text()).toEqual('Auto');
-        expect(displayTitle.exists('.is-disabled')).toBeFalsy();
+        expect(displayTitle.find('div.select-input__placeholder').text()).toEqual('Auto');
+        expect(displayTitle.exists('div.select-input--is-disabled')).toBeFalsy();
         displayTitle.unmount();
     });
 

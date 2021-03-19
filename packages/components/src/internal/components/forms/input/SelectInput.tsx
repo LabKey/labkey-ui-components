@@ -28,8 +28,8 @@ import { generateId, QueryColumn } from '../../../..';
 // Molded from @types/react-select/src/filter.d.ts
 export interface Option {
     data?: any;
-    label: string;
-    value: any;
+    label?: string;
+    value?: any;
     [key: string]: any;
 }
 
@@ -95,6 +95,9 @@ function initOptions(props: SelectInputProps): any {
                     }
                 }
             });
+        } else if (typeof value === 'string') {
+            // ReactSelect no longer supports primitive string as "value"
+            options = { label: value, [props.valueKey]: value };
         } else {
             options = value;
         }

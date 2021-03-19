@@ -141,12 +141,12 @@ Array [
                         onTouchEnd={[Function]}
                       >
                         <div
-                          className="select-input__value-container css-g1d714-ValueContainer"
+                          className="select-input__value-container select-input__value-container--has-value css-g1d714-ValueContainer"
                         >
                           <div
-                            className="select-input__placeholder css-1wa3eu0-placeholder"
+                            className="select-input__single-value css-1uccc91-singleValue"
                           >
-                            Select...
+                            ASC
                           </div>
                           <div
                             className="css-b8ldur-Input"
@@ -236,7 +236,6 @@ Array [
                       <input
                         name="commentSortDirection"
                         type="hidden"
-                        value=""
                       />
                     </div>
                   </div>

@@ -15,7 +15,6 @@
  */
 import { AuditBehaviorTypes, Filter, Utils } from '@labkey/api';
 import { List, Map, OrderedMap, Record } from 'immutable';
-// import { Option } from 'react-select';
 
 import { getEditorModel } from '../../global';
 import { gridShowError } from '../../actions';
@@ -24,6 +23,7 @@ import {
     generateId,
     insertRows,
     InsertRowsResponse,
+    Option,
     QueryColumn,
     QueryGridModel,
     QueryInfo,
@@ -33,8 +33,6 @@ import {
 } from '../../..';
 import { decodePart, encodePart } from '../../../public/SchemaQuery';
 import { IEntityDetails } from '../domainproperties/entities/models';
-
-type Option = any;
 
 export interface EntityInputProps {
     role: string;

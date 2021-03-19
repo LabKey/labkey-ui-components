@@ -125,6 +125,14 @@ export function isSampleManagerEnabled(): boolean {
     return getServerContext().moduleContext?.samplemanagement !== undefined;
 }
 
+export function isBiologicsEnabled(): boolean {
+    return getServerContext().moduleContext?.biologics !== undefined;
+}
+
+export function isFreezerManagerEnabledInBiologics(): boolean {
+    return getServerContext().moduleContext?.biologics?.isFreezerManagerEnabled === true;
+}
+
 export function isSampleAliquotEnabled(): boolean {
     return getServerContext().experimental['sampleAliquot'] === true;
 }

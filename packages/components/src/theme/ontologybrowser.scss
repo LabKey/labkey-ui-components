@@ -1,27 +1,103 @@
 .ontology-browser-container {
-    .right-panel {
-        padding-left: 15px;
+    .left-panel {
+        border-right: 1px solid $gray-border;
     }
 
     .concept-information-tabs {
-        padding-right: 15px;
+        padding: 0 15px 0 25px;
     }
 
     .filetree-directory-name {
         max-width: unset;
+        width: max-content;
+    }
+
+    .filetree-container {
+        min-height: 300px;
+        height: 65vh;
+    }
+
+    .concept-search-container {
+        padding-bottom: 30px;
+
+        input {
+            max-width: 450px;
+        }
+
+        .result-menu {
+            margin: 0;
+            padding: 0;
+            z-index: 1000;
+            position: absolute;
+            list-style: none;
+            background-color: $white;
+            border: 1px solid $gray-border;
+            box-shadow: 0 2px 2px 0 rgba(0,0,0,0.12);
+
+            max-height: 500px;
+            overflow-y: scroll;
+            min-width: 450px;
+            max-width: 800px;
+            width: 65vw;
+
+            li.selectable-item {
+                cursor: pointer;
+                &:hover {
+                    background-color: $gray-lighter;
+                }
+            }
+
+            li .row {
+                margin: 0;
+                border-bottom: 1px solid $gray-border;
+                display: flex;
+
+                .col {
+                    color: $gray-light;
+                    padding: 10px;
+                    border-right: 1px solid $gray-border;
+                    display: flex;
+                }
+
+                .bold {
+                    font-weight: bold;
+                }
+            }
+
+            li:last-child .row {
+                border-bottom: none;
+            }
+            li .row .col:last-child {
+                border-right: none;
+            }
+
+            .result-footer {
+                color: $gray-light;
+                font-size: 12px;
+                padding: 10px;
+            }
+        }
+    }
+
+    .title {
+        font-weight: bold;
     }
 }
 
 /* CONCEPT OVERVIEW */
 .ontology-concept-overview-container {
     padding-top: 10px;
+    padding-right: 5px;
+    min-height: 315px;
+    height: 67vh;
+    overflow-y: scroll;
 
     .none-selected {
         font-size: 20px;
         color: $gray-light;
     }
 
-    .title, .description-title, .description-text {
+    .title, .description-title, .description-text, .synonyms-title, .synonyms-text {
         color: $text-color;
     }
 
@@ -30,7 +106,7 @@
         font-weight: bold;
     }
 
-    .description-title {
+    .description-title, .synonyms-title {
         font-weight: bold;
         padding-top: 30px;
     }
@@ -43,16 +119,99 @@
         background-color: $light-gray;
         font-size: 14px;
     }
+
+    .synonyms-text {
+        padding-left: 15px;
+
+        li {
+            padding-top: 5px;
+        }
+    }
+
+    .path-button-container {
+        float: right;
+        width: 80px;
+        margin-left: 5px;
+    }
+
+    .concept-overview-selected-path {
+        width: 100%;
+
+        .concept-path-container {
+            width: 100%;
+            border: $gray-lighter;
+        }
+
+        &:before {
+            content: "";
+            float: right;
+            line-height: 0;
+            margin-top: -20px;
+            margin-right: 26px;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 20px solid $gray-lighter;
+        }
+    }
 }
 
 /* PATH INFORMATION */
 .ontology-concept-pathinfo-container {
     padding-top: 10px;
 
-    .placeholder {
+    .none-selected, .no-path-info {
         font-size: 20px;
         color: $gray-light;
     }
 }
 
+.concept-pathinfo-container {
+    min-height: 315px;
+    height: 65vh;
+    overflow-y: scroll;
 
+    .title {
+        font-size: 20px;
+    }
+
+    .current-path-container, .alternate-paths-container {
+        padding-top: 15px;
+
+        .title {
+            font-size: 14px;
+        }
+
+        .no-path-info {
+            font-size: 14px;
+            padding: 15px;
+        }
+    }
+
+    .alternate-paths-container .concept-path-container:hover {
+        background-color: $gray-lighter;
+        cursor: pointer;
+    }
+}
+
+.concept-path-container {
+    color: $text-color;
+    display: inline-block;
+    padding: 15px;
+
+    &.selected {
+        background-color: $gray-lighter;
+    }
+
+    .title {
+        font-size: 14px;
+        padding-bottom: 5px;
+    }
+
+    .concept-path-spacer {
+        padding: 0 5px 0;
+    }
+
+    .concept-path-label {
+        line-height: 23px;
+    }
+}

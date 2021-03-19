@@ -424,9 +424,9 @@ export function getDisambiguatedSelectInputOptions(
         Object.keys(rows).forEach(row => {
             const data = rows[row];
             rawOptions.push({
-                value: data[keyField].value,
-                label: data[valueField].value,
-                type: data[typeField].value,
+                value: data[keyField]?.value,
+                label: data[valueField]?.value,
+                type: data[typeField]?.value,
             });
         });
     }

@@ -12,7 +12,7 @@ const DOMAIN = DomainDesign.create({
     fields: [
         { name: 'a', rangeURI: INTEGER_TYPE.rangeURI },
         { name: 'b', rangeURI: DATETIME_TYPE.rangeURI },
-        { name: 'c' }
+        { name: 'c' },
     ],
 });
 const ACTIONS = {
@@ -30,6 +30,7 @@ describe('DomainPropertiesGrid', () => {
                 actions={ACTIONS}
                 selectAll={false}
                 appPropertiesOnly={false}
+                hasOntologyModule={false}
             />
         );
         const text = domainPropertiesGrid.text();
@@ -44,7 +45,7 @@ describe('DomainPropertiesGrid', () => {
 
         expect(text).toContain('http://www.w3.org/2001/XMLSchema#int'); // rangeURI of field 'a'
         expect(text).toContain('http://www.w3.org/2001/XMLSchema#dateTime'); // rangeURI of field 'b'
-        expect(text).toContain('http://www.w3.org/2001/XMLSchema#string'); //rangeURI of field 'c' -- string is default
+        expect(text).toContain('http://www.w3.org/2001/XMLSchema#string'); // rangeURI of field 'c' -- string is default
 
         // Removed column, as this information does not surface in UI
         expect(text).not.toContain('Property URI');
@@ -62,6 +63,7 @@ describe('DomainPropertiesGrid', () => {
                 actions={ACTIONS}
                 selectAll={false}
                 appPropertiesOnly={true}
+                hasOntologyModule={false}
             />
         );
         const text = domainPropertiesGrid.text();
@@ -76,6 +78,29 @@ describe('DomainPropertiesGrid', () => {
 
         expect(text).not.toContain('Property URI');
         expect(text).not.toContain('Source Ontology');
+
+        domainPropertiesGrid.unmount();
+    });
+
+    test('with ontology module', () => {
+        const domainPropertiesGrid = mount(
+            <DomainPropertiesGrid
+                domain={DOMAIN}
+                search="searchStr"
+                actions={ACTIONS}
+                selectAll={false}
+                appPropertiesOnly={false}
+                hasOntologyModule={true}
+            />
+        );
+        const text = domainPropertiesGrid.text();
+
+        expect(text).toContain('Source Ontology');
+        expect(text).toContain('Concept Import Column');
+        expect(text).toContain('Concept Label Column');
+        expect(text).toContain('Principal Concept Code');
+
+        expect(text).not.toContain('Property URI');
 
         domainPropertiesGrid.unmount();
     });

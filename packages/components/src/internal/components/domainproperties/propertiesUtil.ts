@@ -18,7 +18,6 @@ import { List } from 'immutable';
 
 import { DOMAIN_FIELD_FULLY_LOCKED, DOMAIN_FIELD_PARTIALLY_LOCKED, DOMAIN_FIELD_PRIMARY_KEY_LOCKED } from './constants';
 import { DomainDesign, DomainField, DomainPropertiesGridColumn } from './models';
-import { hasActiveModule } from './actions';
 
 // this is similar to what's in PropertiesEditorUtil.java that does the name validation in the old UI
 export function isLegalName(str: string): boolean {
@@ -178,12 +177,10 @@ export function removeUnusedProperties(obj) {
 }
 
 export function removeUnusedOntologyProperties(obj) {
-    if (!hasActiveModule('Ontology')) {
-        delete obj.sourceOntology;
-        delete obj.conceptImportColumn;
-        delete obj.conceptLabelColumn;
-        delete obj.principalConceptCode;
-    }
+    delete obj.sourceOntology;
+    delete obj.conceptImportColumn;
+    delete obj.conceptLabelColumn;
+    delete obj.principalConceptCode;
     return obj;
 }
 

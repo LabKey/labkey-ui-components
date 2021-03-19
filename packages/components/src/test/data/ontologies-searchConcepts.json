@@ -1,0 +1,101 @@
+{
+  "hits" : [ {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C2866 Alzheimer's Disease\nThis is the description for the Alzheimer's Disease concept in the OWL ontology.",
+    "score" : 35.357669830322266,
+    "identifiers" : "owl:C2866",
+    "id" : "concept:owl:C2866",
+    "title" : "Alzheimer's Disease",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC2866&_docid=concept%3Aowl%3AC2866"
+  }, {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C169104 Alzheimer's Disease 17",
+    "score" : 31.31378936767578,
+    "identifiers" : "owl:C169104",
+    "id" : "concept:owl:C169104",
+    "title" : "Alzheimer's Disease 17",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC169104&_docid=concept%3Aowl%3AC169104"
+  }, {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C38778 Alzheimer's Disease Pathway KEGG",
+    "score" : 28.10464096069336,
+    "identifiers" : "owl:C38778",
+    "id" : "concept:owl:C38778",
+    "title" : "Alzheimer's Disease Pathway KEGG",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC38778&_docid=concept%3Aowl%3AC38778"
+  }, {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C39177 Alzheimer's Disease Pathway BioCarta",
+    "score" : 28.10464096069336,
+    "identifiers" : "owl:C39177",
+    "id" : "concept:owl:C39177",
+    "title" : "Alzheimer's Disease Pathway BioCarta",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC39177&_docid=concept%3Aowl%3AC39177"
+  }, {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C120911 Alzheimer Type II Astrocyte",
+    "score" : 28.10464096069336,
+    "identifiers" : "owl:C120911",
+    "id" : "concept:owl:C120911",
+    "title" : "Alzheimer Type II Astrocyte",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC120911&_docid=concept%3Aowl%3AC120911"
+  }, {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C86983 NINCDS-ADRDA Criteria for Alzheimer's Disease",
+    "score" : 25.49503517150879,
+    "identifiers" : "owl:C86983",
+    "id" : "concept:owl:C86983",
+    "title" : "NINCDS-ADRDA Criteria for Alzheimer's Disease",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC86983&_docid=concept%3Aowl%3AC86983"
+  }, {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C146894 Familial Alzheimer's Disease, Type 1",
+    "score" : 25.49503517150879,
+    "identifiers" : "owl:C146894",
+    "id" : "concept:owl:C146894",
+    "title" : "Familial Alzheimer's Disease, Type 1",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC146894&_docid=concept%3Aowl%3AC146894"
+  }, {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C123412 Familial Alzheimer's Disease, Type 3",
+    "score" : 25.49503517150879,
+    "identifiers" : "owl:C123412",
+    "id" : "concept:owl:C123412",
+    "title" : "Familial Alzheimer's Disease, Type 3",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC123412&_docid=concept%3Aowl%3AC123412"
+  }, {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C123413 Familial Alzheimer's Disease, Type 4",
+    "score" : 25.49503517150879,
+    "identifiers" : "owl:C123413",
+    "id" : "concept:owl:C123413",
+    "title" : "Familial Alzheimer's Disease, Type 4",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC123413&_docid=concept%3Aowl%3AC123413"
+  }, {
+    "container" : "7aacb1ca-040d-1037-88ec-f467162bb89c",
+    "summary" : "owl:C21010 Discomfort Scale for Patients with Dementia of the Alzheimer's Type",
+    "score" : 23.330781936645508,
+    "identifiers" : "owl:C21010",
+    "id" : "concept:owl:C21010",
+    "title" : "Discomfort Scale for Patients with Dementia of the Alzheimer's Type",
+    "category" : "concept",
+    "url" : "/labkey/7aacb1ca-040d-1037-88ec-f467162bb89c/ontology-concept.view?code=owl%3AC21010&_docid=concept%3Aowl%3AC21010"
+  } ],
+  "metaData" : {
+    "successProperty" : "success",
+    "idProperty" : "id",
+    "root" : "hits"
+  },
+  "q" : "Alzheimer's",
+  "totalHits" : 19,
+  "success" : true
+}

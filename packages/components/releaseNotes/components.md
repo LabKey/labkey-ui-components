@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version XXX
+*Released*: XXX
+* add lookupStoreInvalidate function
+
 ### version 2.15.2
 *Released*: 18 March 2021
 * Merge release21.3-SNAPSHOT to master.

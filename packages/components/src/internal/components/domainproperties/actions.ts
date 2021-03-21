@@ -48,6 +48,7 @@ import {
     VISIT_DATE_TYPE,
     VISIT_ID_TYPE,
     PropDescType,
+    UNIQUE_ID_TYPE,
 } from './PropDescType';
 import {
     DOMAIN_FIELD_CLIENT_SIDE_ERROR,
@@ -63,6 +64,7 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
+import { isCommunityDistribution } from "../../app/utils";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -239,6 +241,10 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
     }
 
     if (type === ONTOLOGY_LOOKUP_TYPE && ontologies.length === 0) {
+        return false;
+    }
+
+    if (type === UNIQUE_ID_TYPE && isCommunityDistribution()) {
         return false;
     }
 

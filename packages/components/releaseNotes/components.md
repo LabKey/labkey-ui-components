@@ -5,8 +5,9 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add support for uniqueId (barcode) fields
     * Add Concept URI for unique Id fields.
-    * In EntityInsertPanel, add placeholder text for generated Ids
-    * Add condition on column filter used for bulk insert to remove the unique id filds
+    * In EntityInsertPanel, add placeholder text for generated Ids and make them read-only
+    * Add condition on column filter used for bulk insert to remove the unique id fields
+* add `isCommunityDistribution` method
 
 ### version 2.15.2
 *Released*: 18 March 2021

@@ -142,6 +142,10 @@ export function hasPremiumModule(): boolean {
     return useMemo(() => moduleContext?.samplemanagement?.hasPremiumModule ?? false, [moduleContext]);
 }
 
+export function isCommunityDistribution(): boolean {
+    return !isSampleManagerEnabled() && !hasPremiumModule();
+}
+
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {
     let sectionConfigs = List<Map<string, MenuSectionConfig>>();
 

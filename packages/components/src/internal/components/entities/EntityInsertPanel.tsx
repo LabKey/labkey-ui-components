@@ -797,9 +797,9 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
         queryInfo?.columns.filter((column) => column.conceptURI === UNIQUE_ID_CONCEPT_URI).forEach(
             column => {
                 columnMetadata = columnMetadata.set(column.fieldKey, {
-                    readOnly: false,
+                    readOnly: true,
                     placeholder: '[generated value]',
-                    toolTip: `A unique value will be provided for ${nounPlural} that don't have a user-provided value in the grid.`
+                    toolTip: `A unique value will be provided by LabKey for this field.`
                 })
             }
         );

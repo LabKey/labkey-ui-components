@@ -96,6 +96,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -136,6 +137,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -198,6 +200,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -260,6 +263,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -322,6 +326,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -393,6 +398,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -469,6 +475,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -537,6 +544,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -597,6 +605,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -645,6 +654,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );
@@ -669,6 +679,7 @@ describe('DomainRow', () => {
                     defaultDefaultValueType={DOMAIN_EDITABLE_DEFAULT}
                     defaultValueOptions={DEFAULT_OPTIONS}
                     helpNoun="domain"
+                    serverModuleNames={undefined}
                 />
             )
         );

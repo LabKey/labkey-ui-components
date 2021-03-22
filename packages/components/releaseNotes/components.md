@@ -8,6 +8,37 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add URL.replaceFilter uti
 * Update EntityDeleteModal to work with QueryModel
 
+### version 2.16.1
+*Released*: 22 March 2021
+* add lookupStoreInvalidate util
+
+### version 2.16.0
+*Released*: 22 March 2021
+* Add 'Auto-Link Data to Study' field in Sample Type properties
+
+### version 2.15.3
+*Released*: 21 March 2021
+* Fix for `selectedState` in `QueryModel` when total rows is less than page size
+
+### version 2.15.2
+*Released*: 18 March 2021
+* Merge release21.3-SNAPSHOT to master.
+* Includes changes from versions 2.6.3 and 2.6.4.
+
+### version 2.15.1
+*Released*: 18 March 2021
+* Fix problem with undefined references in `getDisambiguatedSelectInputOptions`
+
+### version 2.15.0
+*Released*: 16 March 2021
+* Add `<DisabledMenuItem/>`.
+* Update assays model getDefinitionsByTypes to list included/excluded types
+* Add isBiologicsEnables and isFreezerManagerEnabledInBiologics checks
+
+### version 2.14.1
+*Released*: 15 March 2021
+* Update `<EntityInsertPanel/>` component for reuse for media materials.
+
 ### version 2.14.0
 *Released*: 11 March 2021
 * Update DomainForm and FileAttachmentForm to ignore reserved fields when inferring fields
@@ -80,6 +111,22 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add TabbedGridPanel component
   * To be used as a replacement for QueryGridPanel's tabbed mode
 * Add "title" field to QueryModel
+
+### version 2.6.4
+*Released*: 16 March 2021
+* Item 8546: Ontology concept picker panel search
+    - FileTree component updates show props to `showLoading` and `showAnimations`
+    - Concept path display update for hover to get full path info for "current path"
+    - Ontology tree panel update for adding search input field and results menu behavior
+    - Ontology tree panel update to allow for loading data into tree and navigating to an alternate path via search or alternate path click in path information tab
+    - Ontology panel header update to show ontology description and concept count in tooltip
+    - search/actions.ts update to allow for a custom category filter array
+
+### version 2.6.3
+*Released*: 10 March 2021
+* Item 8360: Expand the ontology and concept browsers with additional information
+    - Added synonym and path information to the concept information panels
+    - Added selected path and alternate path displays to path information tab & panel
 
 ### version 2.6.2
 *Released*: 4 March 2021

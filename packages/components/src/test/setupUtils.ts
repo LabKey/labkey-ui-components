@@ -51,7 +51,6 @@ export function notificationInit() {
             'API',
             'Announcements',
             'Core',
-            'Ontology',
         ],
     };
     LABKEY.project = {

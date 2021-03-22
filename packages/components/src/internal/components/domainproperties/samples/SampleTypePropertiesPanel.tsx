@@ -1,5 +1,5 @@
 import React from 'react';
-import { OrderedMap } from 'immutable';
+import { List, OrderedMap } from 'immutable';
 import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import { getFormNameFromId } from '../entities/actions';
@@ -13,6 +13,7 @@ import {
     MetricUnitProps,
     SCHEMAS,
     SelectInput,
+    Container,
 } from '../../../..';
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 
@@ -28,6 +29,11 @@ import { HelpTopicURL } from '../HelpTopicURL';
 
 import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SectionHeading } from '../SectionHeading';
+
+import { getValidPublishTargets } from '../assay/actions';
+import { ENTITY_FORM_IDS } from '../entities/constants';
+
+import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { IParentAlias, SampleTypeModel } from './models';
 
@@ -65,6 +71,7 @@ interface EntityProps {
 
 interface State {
     isValid: boolean;
+    containers: List<Container>;
 }
 
 type Props = OwnProps & EntityProps & BasePropertiesPanelProps;
@@ -112,7 +119,19 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
 
         this.state = {
             isValid: true,
+            containers: undefined,
         };
+    }
+
+    componentDidMount() {
+        getValidPublishTargets()
+            .then(containers => {
+                this.setState({ containers });
+            })
+            .catch(response => {
+                console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
+                this.setState(() => ({ containers: List<Container>() }));
+            });
     }
 
     updateValidStatus = (newModel?: SampleTypeModel) => {
@@ -266,7 +285,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
             appPropertiesOnly,
             metricUnitProps,
         } = this.props;
-        const { isValid } = this.state;
+        const { isValid, containers } = this.state;
 
         const includeMetricUnitProperty = metricUnitProps?.includeMetricUnitProperty,
             metricUnitLabel = metricUnitProps?.metricUnitLabel || 'Metric Unit',
@@ -274,6 +293,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 metricUnitProps?.metricUnitHelpMsg || 'The unit of measurement used for the sample type.',
             metricUnitOptions = metricUnitProps?.metricUnitOptions,
             metricUnitRequired = metricUnitProps?.metricUnitRequired;
+        const allowTimepointProperties = model.domain.get('allowTimepointProperties');
 
         const showDataClass = includeDataClasses && useSeparateDataClassesAliasMenu && this.containsDataClassOptions();
         return (
@@ -338,6 +358,37 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         </Col>
                     </Row>
                 )}
+
+                {allowTimepointProperties && !appPropertiesOnly && (
+                    <Row className="margin-top">
+                        <Col xs={2}>
+                            <DomainFieldLabel
+                                label="Auto-Link Data to Study"
+                                helpTipBody={
+                                    <>
+                                        <p>
+                                            Automatically link Sample Type data rows to the specified target study. Only
+                                            rows that include subject and visit/date information will be linked.
+                                        </p>
+                                        <p>
+                                            The user performing the import must have insert permission in the target
+                                            study and the corresponding dataset.
+                                        </p>
+                                    </>
+                                }
+                            />
+                        </Col>
+                        <Col xs={5}>
+                            <AutoLinkToStudyDropdown
+                                containers={containers}
+                                onChange={this.onFormChange}
+                                autoLinkTarget={ENTITY_FORM_IDS.AUTO_LINK_TARGET}
+                                value={model.autoLinkTargetContainerId}
+                            />
+                        </Col>
+                    </Row>
+                )}
+
                 {appPropertiesOnly && (
                     <>
                         <SectionHeading title="Appearance Settings" />

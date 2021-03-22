@@ -1,0 +1,29 @@
+{
+  "paths": [
+    {
+      "path": "/NCIT/ST1000023/C7057/C3367/C36278/C36289/C35877/C35880/C35883/C157653/C157287/C162512/C167155/C136411/C142112/C136648/C36214/C140330/C150453/C138065/C163008/C154097/",
+      "code": "NCIT:C154097",
+      "pathLabel": "Test National Cancer Institute Thesaurus > Conceptual Entity > Disease, Disorder or Finding > Finding > Finding by Site or System > Hematopoietic System Finding > Abnormal Hematology Test Result > Blast Cells Present > Blast Cells Increased in Bone Marrow > Blasts 0.01 Percent or More of Bone Marrow Nucleated Cells > Blasts 0.1 Percent or More of Bone Marrow Nucleated Cells > Blasts 1 Percent or More of Bone Marrow Nucleated Cells > Blasts 2 Percent or More of Bone Marrow Nucleated Cells > Blasts 5 Percent or More of Bone Marrow Nucleated Cells > Blasts More than 5 Percent of Bone Marrow Nucleated Cells > Blasts 10 Percent or More of Bone Marrow Nucleated Cells > Blasts 20 Percent or More of Bone Marrow Nucleated Cells > Blasts 25 Percent or More of Bone Marrow Nucleated Cells > Blasts 30 Percent or More of Bone Marrow Nucleated Cells > Blasts 50 Percent or More of Bone Marrow Nucleated Cells > Blasts 60 Percent or More of Bone Marrow Nucleated Cells",
+      "hasChildren": false
+    },
+    {
+      "path": "/NCIT/ST1000023/C7057/C3367/C77140/C36292/C26683/C35553/C35877/C35880/C35883/C157653/C157287/C162512/C167155/C136411/C142112/C136648/C36214/C140330/C150453/C138065/C163008/C154097/",
+      "code": "NCIT:C154097",
+      "pathLabel": "Test National Cancer Institute Thesaurus > Conceptual Entity > Disease, Disorder or Finding > Finding > Clinical Test Result > Laboratory Test Result > Abnormal Laboratory Test Result > Abnormal Blood Chemistry and Hematology Test Result > Abnormal Hematology Test Result > Blast Cells Present > Blast Cells Increased in Bone Marrow > Blasts 0.01 Percent or More of Bone Marrow Nucleated Cells > Blasts 0.1 Percent or More of Bone Marrow Nucleated Cells > Blasts 1 Percent or More of Bone Marrow Nucleated Cells > Blasts 2 Percent or More of Bone Marrow Nucleated Cells > Blasts 5 Percent or More of Bone Marrow Nucleated Cells > Blasts More than 5 Percent of Bone Marrow Nucleated Cells > Blasts 10 Percent or More of Bone Marrow Nucleated Cells > Blasts 20 Percent or More of Bone Marrow Nucleated Cells > Blasts 25 Percent or More of Bone Marrow Nucleated Cells > Blasts 30 Percent or More of Bone Marrow Nucleated Cells > Blasts 50 Percent or More of Bone Marrow Nucleated Cells > Blasts 60 Percent or More of Bone Marrow Nucleated Cells",
+      "hasChildren": false
+    },
+    {
+      "path": "/NCIT/ST1000023/C7057/C3367/C36278/C36289/C35877/C35508/C35883/C157653/C157287/C162512/C167155/C136411/C142112/C136648/C36214/C140330/C150453/C138065/C163008/C154097/",
+      "code": "NCIT:C154097",
+      "pathLabel": "Test National Cancer Institute Thesaurus > Conceptual Entity > Disease, Disorder or Finding > Finding > Finding by Site or System > Hematopoietic System Finding > Abnormal Hematology Test Result > Abnormal Bone Marrow Test Result > Blast Cells Increased in Bone Marrow > Blasts 0.01 Percent or More of Bone Marrow Nucleated Cells > Blasts 0.1 Percent or More of Bone Marrow Nucleated Cells > Blasts 1 Percent or More of Bone Marrow Nucleated Cells > Blasts 2 Percent or More of Bone Marrow Nucleated Cells > Blasts 5 Percent or More of Bone Marrow Nucleated Cells > Blasts More than 5 Percent of Bone Marrow Nucleated Cells > Blasts 10 Percent or More of Bone Marrow Nucleated Cells > Blasts 20 Percent or More of Bone Marrow Nucleated Cells > Blasts 25 Percent or More of Bone Marrow Nucleated Cells > Blasts 30 Percent or More of Bone Marrow Nucleated Cells > Blasts 50 Percent or More of Bone Marrow Nucleated Cells > Blasts 60 Percent or More of Bone Marrow Nucleated Cells",
+      "hasChildren": false
+    },
+    {
+      "path": "/NCIT/ST1000023/C7057/C3367/C77140/C36292/C26683/C35553/C35877/C35508/C35883/C157653/C157287/C162512/C167155/C136411/C142112/C136648/C36214/C140330/C150453/C138065/C163008/C154097/",
+      "code": "NCIT:C154097",
+      "pathLabel": "Test National Cancer Institute Thesaurus > Conceptual Entity > Disease, Disorder or Finding > Finding > Clinical Test Result > Laboratory Test Result > Abnormal Laboratory Test Result > Abnormal Blood Chemistry and Hematology Test Result > Abnormal Hematology Test Result > Abnormal Bone Marrow Test Result > Blast Cells Increased in Bone Marrow > Blasts 0.01 Percent or More of Bone Marrow Nucleated Cells > Blasts 0.1 Percent or More of Bone Marrow Nucleated Cells > Blasts 1 Percent or More of Bone Marrow Nucleated Cells > Blasts 2 Percent or More of Bone Marrow Nucleated Cells > Blasts 5 Percent or More of Bone Marrow Nucleated Cells > Blasts More than 5 Percent of Bone Marrow Nucleated Cells > Blasts 10 Percent or More of Bone Marrow Nucleated Cells > Blasts 20 Percent or More of Bone Marrow Nucleated Cells > Blasts 25 Percent or More of Bone Marrow Nucleated Cells > Blasts 30 Percent or More of Bone Marrow Nucleated Cells > Blasts 50 Percent or More of Bone Marrow Nucleated Cells > Blasts 60 Percent or More of Bone Marrow Nucleated Cells",
+      "hasChildren": false
+    }
+  ],
+  "success": true
+}

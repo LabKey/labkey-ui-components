@@ -314,12 +314,14 @@ export class DomainDesign
         return mapping;
     }
 
-    getGridData(appPropertiesOnly: boolean): List<any> {
+    getGridData(appPropertiesOnly: boolean, hasOntologyModule: boolean): List<any> {
         return this.fields.map((field, i) => {
             let fieldSerial = DomainField.serialize(field);
             const dataType = field.dataType;
             fieldSerial = removeUnusedProperties(fieldSerial);
-            fieldSerial = removeUnusedOntologyProperties(fieldSerial);
+            if (!hasOntologyModule) {
+                fieldSerial = removeUnusedOntologyProperties(fieldSerial);
+            }
             if (appPropertiesOnly) {
                 fieldSerial = removeNonAppProperties(fieldSerial);
             }
@@ -363,7 +365,8 @@ export class DomainDesign
         onFieldsChange: DomainOnChange,
         scrollFunction: (i: number) => void,
         domainKindName: string,
-        appPropertiesOnly: boolean
+        appPropertiesOnly: boolean,
+        hasOntologyModule: boolean
     ): List<GridColumn | DomainPropertiesGridColumn> {
         const selectionCol = new GridColumn({
             index: GRID_SELECTION_INDEX,
@@ -415,7 +418,9 @@ export class DomainDesign
 
         delete columns.name;
         columns = removeUnusedProperties(columns);
-        columns = removeUnusedOntologyProperties(columns);
+        if (!hasOntologyModule) {
+            columns = removeUnusedOntologyProperties(columns);
+        }
         if (appPropertiesOnly) {
             columns = removeNonAppProperties(columns);
         }

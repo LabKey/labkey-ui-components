@@ -8,13 +8,18 @@ import {
     SubMenuItem,
     SubMenuItemProps,
     QueryGridModel,
-    withAssayModels,
+    withAssayModels, QueryModel,
 } from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+import { getImportItemsForAssayDefinitionsQM } from './actions';
 
 interface Props extends SubMenuItemProps {
     isLoaded?: boolean;
+    /**
+     * @deprecated: Use QueryModel instead.
+     */
     model?: QueryGridModel;
+    queryModel?: QueryModel;
     requireSelection: boolean;
     nounPlural?: string;
     providerType?: string;
@@ -29,15 +34,16 @@ export class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAs
     };
 
     getItems = (): ISubItem[] => {
-        const { assayModel, model, providerType } = this.props;
+        const { assayModel, model, providerType, queryModel } = this.props;
+        let importItems;
 
-        return getImportItemsForAssayDefinitions(assayModel, model, providerType).reduce((subItems, href, assay) => {
-            subItems.push({
-                text: assay.name,
-                href,
-            });
-            return subItems;
-        }, []);
+        if (queryModel !== undefined) {
+            importItems = getImportItemsForAssayDefinitionsQM(assayModel, queryModel, providerType);
+        } else {
+            importItems = getImportItemsForAssayDefinitions(assayModel, model, providerType);
+        }
+
+        return importItems.map((subItems, href, assay) => ({ text: assay.name, href }));
     };
 
     render(): ReactNode {

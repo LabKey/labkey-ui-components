@@ -1478,6 +1478,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
               "instructions": undefined,
               "domainKindName": undefined,
             },
+            "autoLinkTargetContainerId": undefined,
             "exception": undefined,
           }
         }
@@ -1630,6 +1631,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                 "instructions": undefined,
                 "domainKindName": undefined,
               },
+              "autoLinkTargetContainerId": undefined,
               "exception": undefined,
             }
           }
@@ -1788,6 +1790,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                   "instructions": undefined,
                   "domainKindName": undefined,
                 },
+                "autoLinkTargetContainerId": undefined,
                 "exception": undefined,
               }
             }
@@ -2138,6 +2141,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                         "instructions": undefined,
                                         "domainKindName": undefined,
                                       },
+                                      "autoLinkTargetContainerId": undefined,
                                       "exception": undefined,
                                     }
                                   }

@@ -2295,7 +2295,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                 Import Settings
                               </div>
                             </SectionHeading>
-                            <AutoCopyDataInput
+                            <AutoLinkDataInput
                               model={
                                 Immutable.Record {
                                   "allowBackgroundUpload": false,
@@ -2404,14 +2404,14 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                 helpTipBody={
                                   <React.Fragment>
                                     <p>
-                                      When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                      When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                     </p>
                                     <p>
                                       The user performing the import must have insert permission in the target study and the corresponding dataset.
                                     </p>
                                   </React.Fragment>
                                 }
-                                label="Auto-Copy Data to Study"
+                                label="Auto-Link Data to Study"
                               >
                                 <Row
                                   bsClass="row"
@@ -2434,16 +2434,16 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                           helpTipBody={
                                             <React.Fragment>
                                               <p>
-                                                When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                               </p>
                                               <p>
                                                 The user performing the import must have insert permission in the target study and the corresponding dataset.
                                               </p>
                                             </React.Fragment>
                                           }
-                                          label="Auto-Copy Data to Study"
+                                          label="Auto-Link Data to Study"
                                         >
-                                          Auto-Copy Data to 
+                                          Auto-Link Data to 
                                           <span
                                             className="domain-no-wrap"
                                           >
@@ -2452,7 +2452,7 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
-                                              title="Auto-Copy Data to Study"
+                                              title="Auto-Link Data to Study"
                                             >
                                               <span
                                                 className="label-help-target"
@@ -2537,27 +2537,32 @@ exports[`AssayPropertiesPanel default properties 1`] = `
                                       <div
                                         className="col-lg-8 col-xs-9"
                                       >
-                                        <LoadingSpinner
-                                          msg="Loading..."
-                                          wrapperClassName=""
+                                        <AutoLinkToStudyDropdown
+                                          autoLinkTarget="assay-design-autoCopyTargetContainerId"
+                                          onChange={[Function]}
                                         >
-                                          <span
-                                            className=""
+                                          <LoadingSpinner
+                                            msg="Loading..."
+                                            wrapperClassName=""
                                           >
-                                            <i
-                                              aria-hidden="true"
-                                              className="fa fa-spinner fa-pulse"
-                                            />
-                                             
-                                            Loading...
-                                          </span>
-                                        </LoadingSpinner>
+                                            <span
+                                              className=""
+                                            >
+                                              <i
+                                                aria-hidden="true"
+                                                className="fa fa-spinner fa-pulse"
+                                              />
+                                               
+                                              Loading...
+                                            </span>
+                                          </LoadingSpinner>
+                                        </AutoLinkToStudyDropdown>
                                       </div>
                                     </Col>
                                   </div>
                                 </Row>
                               </Component>
-                            </AutoCopyDataInput>
+                            </AutoLinkDataInput>
                           </div>
                         </div>
                       </Col>
@@ -3826,7 +3831,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                 Import Settings
                               </div>
                             </SectionHeading>
-                            <AutoCopyDataInput
+                            <AutoLinkDataInput
                               model={
                                 Immutable.Record {
                                   "allowBackgroundUpload": false,
@@ -3935,14 +3940,14 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                 helpTipBody={
                                   <React.Fragment>
                                     <p>
-                                      When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                      When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                     </p>
                                     <p>
                                       The user performing the import must have insert permission in the target study and the corresponding dataset.
                                     </p>
                                   </React.Fragment>
                                 }
-                                label="Auto-Copy Data to Study"
+                                label="Auto-Link Data to Study"
                               >
                                 <Row
                                   bsClass="row"
@@ -3965,16 +3970,16 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                           helpTipBody={
                                             <React.Fragment>
                                               <p>
-                                                When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                               </p>
                                               <p>
                                                 The user performing the import must have insert permission in the target study and the corresponding dataset.
                                               </p>
                                             </React.Fragment>
                                           }
-                                          label="Auto-Copy Data to Study"
+                                          label="Auto-Link Data to Study"
                                         >
-                                          Auto-Copy Data to 
+                                          Auto-Link Data to 
                                           <span
                                             className="domain-no-wrap"
                                           >
@@ -3983,7 +3988,7 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
-                                              title="Auto-Copy Data to Study"
+                                              title="Auto-Link Data to Study"
                                             >
                                               <span
                                                 className="label-help-target"
@@ -4068,27 +4073,32 @@ exports[`AssayPropertiesPanel panelCls, initCollapsed, and markComplete 1`] = `
                                       <div
                                         className="col-lg-8 col-xs-9"
                                       >
-                                        <LoadingSpinner
-                                          msg="Loading..."
-                                          wrapperClassName=""
+                                        <AutoLinkToStudyDropdown
+                                          autoLinkTarget="assay-design-autoCopyTargetContainerId"
+                                          onChange={[Function]}
                                         >
-                                          <span
-                                            className=""
+                                          <LoadingSpinner
+                                            msg="Loading..."
+                                            wrapperClassName=""
                                           >
-                                            <i
-                                              aria-hidden="true"
-                                              className="fa fa-spinner fa-pulse"
-                                            />
-                                             
-                                            Loading...
-                                          </span>
-                                        </LoadingSpinner>
+                                            <span
+                                              className=""
+                                            >
+                                              <i
+                                                aria-hidden="true"
+                                                className="fa fa-spinner fa-pulse"
+                                              />
+                                               
+                                              Loading...
+                                            </span>
+                                          </LoadingSpinner>
+                                        </AutoLinkToStudyDropdown>
                                       </div>
                                     </Col>
                                   </div>
                                 </Row>
                               </Component>
-                            </AutoCopyDataInput>
+                            </AutoLinkDataInput>
                           </div>
                         </div>
                       </Col>
@@ -4957,7 +4967,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                 Import Settings
                               </div>
                             </SectionHeading>
-                            <AutoCopyDataInput
+                            <AutoLinkDataInput
                               model={
                                 Immutable.Record {
                                   "allowBackgroundUpload": false,
@@ -4999,14 +5009,14 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                 helpTipBody={
                                   <React.Fragment>
                                     <p>
-                                      When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                      When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                     </p>
                                     <p>
                                       The user performing the import must have insert permission in the target study and the corresponding dataset.
                                     </p>
                                   </React.Fragment>
                                 }
-                                label="Auto-Copy Data to Study"
+                                label="Auto-Link Data to Study"
                               >
                                 <Row
                                   bsClass="row"
@@ -5029,16 +5039,16 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                           helpTipBody={
                                             <React.Fragment>
                                               <p>
-                                                When new runs are imported, automatically copy their data rows to the specified target study. Only rows that include subject and visit/date information will be copied.
+                                                When new runs are imported, automatically link their data rows to the specified target study. Only rows that include subject and visit/date information will be linked.
                                               </p>
                                               <p>
                                                 The user performing the import must have insert permission in the target study and the corresponding dataset.
                                               </p>
                                             </React.Fragment>
                                           }
-                                          label="Auto-Copy Data to Study"
+                                          label="Auto-Link Data to Study"
                                         >
-                                          Auto-Copy Data to 
+                                          Auto-Link Data to 
                                           <span
                                             className="domain-no-wrap"
                                           >
@@ -5047,7 +5057,7 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                               customStyle={Object {}}
                                               id="tooltip"
                                               size="1x"
-                                              title="Auto-Copy Data to Study"
+                                              title="Auto-Link Data to Study"
                                             >
                                               <span
                                                 className="label-help-target"
@@ -5132,27 +5142,32 @@ exports[`AssayPropertiesPanel with initial model 1`] = `
                                       <div
                                         className="col-lg-8 col-xs-9"
                                       >
-                                        <LoadingSpinner
-                                          msg="Loading..."
-                                          wrapperClassName=""
+                                        <AutoLinkToStudyDropdown
+                                          autoLinkTarget="assay-design-autoCopyTargetContainerId"
+                                          onChange={[Function]}
                                         >
-                                          <span
-                                            className=""
+                                          <LoadingSpinner
+                                            msg="Loading..."
+                                            wrapperClassName=""
                                           >
-                                            <i
-                                              aria-hidden="true"
-                                              className="fa fa-spinner fa-pulse"
-                                            />
-                                             
-                                            Loading...
-                                          </span>
-                                        </LoadingSpinner>
+                                            <span
+                                              className=""
+                                            >
+                                              <i
+                                                aria-hidden="true"
+                                                className="fa fa-spinner fa-pulse"
+                                              />
+                                               
+                                              Loading...
+                                            </span>
+                                          </LoadingSpinner>
+                                        </AutoLinkToStudyDropdown>
                                       </div>
                                     </Col>
                                   </div>
                                 </Row>
                               </Component>
-                            </AutoCopyDataInput>
+                            </AutoLinkDataInput>
                           </div>
                         </div>
                       </Col>

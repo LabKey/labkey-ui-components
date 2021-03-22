@@ -3,7 +3,7 @@ import { Col, FormControl, Row } from 'react-bootstrap';
 import { List } from 'immutable';
 import { ActionURL } from '@labkey/api';
 
-import { Container, LoadingSpinner, RemoveEntityButton, AddEntityButton } from '../../../..';
+import { Container, RemoveEntityButton, AddEntityButton } from '../../../..';
 
 import {
     ASSAY_EDIT_PLATE_TEMPLATE_TOPIC,
@@ -12,6 +12,8 @@ import {
     PROGRAMMATIC_QC_TOPIC,
 } from '../../../util/helpLinks';
 import { DomainFieldLabel, DomainFieldLabelProps } from '../DomainFieldLabel';
+
+import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { getValidPublishTargets } from './actions';
 
@@ -275,11 +277,11 @@ export function BackgroundUploadInput(props: InputProps) {
     );
 }
 
-interface AutoCopyDataInputState {
+interface AutoLinkDataInputState {
     containers: List<Container>;
 }
 
-export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyDataInputState> {
+export class AutoLinkDataInput extends React.PureComponent<InputProps, AutoLinkDataInputState> {
     constructor(props) {
         super(props);
 
@@ -288,13 +290,13 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
         };
     }
 
-    UNSAFE_componentWillMount(): void {
+    componentDidMount(): void {
         getValidPublishTargets()
             .then(containers => {
                 this.setState(() => ({ containers }));
             })
             .catch(response => {
-                console.error('Unable to load valid study targets for Auto-Copy Data to Study input.');
+                console.error('Unable to load valid study targets for Auto-Link Data to Study input.');
                 this.setState(() => ({ containers: List<Container>() }));
             });
     }
@@ -305,12 +307,12 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
 
         return (
             <AssayPropertiesInput
-                label="Auto-Copy Data to Study"
+                label="Auto-Link Data to Study"
                 helpTipBody={
                     <>
                         <p>
-                            When new runs are imported, automatically copy their data rows to the specified target
-                            study. Only rows that include subject and visit/date information will be copied.
+                            When new runs are imported, automatically link their data rows to the specified target
+                            study. Only rows that include subject and visit/date information will be linked.
                         </p>
                         <p>
                             The user performing the import must have insert permission in the target study and the
@@ -319,23 +321,12 @@ export class AutoCopyDataInput extends React.PureComponent<InputProps, AutoCopyD
                     </>
                 }
             >
-                {containers === undefined ? (
-                    <LoadingSpinner />
-                ) : (
-                    <FormControl
-                        componentClass="select"
-                        id={FORM_IDS.AUTO_COPY_TARGET}
-                        onChange={onChange}
-                        value={model.autoCopyTargetContainerId || ''}
-                    >
-                        <option key="_empty" value={null} />
-                        {containers.map((container, i) => (
-                            <option key={i} value={container.id}>
-                                {container.path}
-                            </option>
-                        ))}
-                    </FormControl>
-                )}
+                <AutoLinkToStudyDropdown
+                    containers={containers}
+                    onChange={onChange}
+                    autoLinkTarget={FORM_IDS.AUTO_LINK_TARGET}
+                    value={model.autoCopyTargetContainerId}
+                />
             </AssayPropertiesInput>
         );
     }

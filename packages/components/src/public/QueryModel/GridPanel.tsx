@@ -1,7 +1,7 @@
 import React, { ComponentType, FC, memo, PureComponent, ReactNode, useMemo } from 'react';
 import classNames from 'classnames';
 import { fromJS, List } from 'immutable';
-import { Query } from '@labkey/api';
+import { Filter, Query } from '@labkey/api';
 
 import {
     Alert,
@@ -34,6 +34,7 @@ import { ChartMenu } from './ChartMenu';
 
 import { actionValuesToString, filtersEqual, sortsEqual } from './utils';
 import { createQueryModelId } from './QueryModel';
+import { GridAliquotViewSelector } from "../../internal/components/gridbar/GridAliquotViewSelector";
 
 export interface GridPanelProps<ButtonsComponentProps> {
     allowSelections?: boolean;
@@ -55,6 +56,7 @@ export interface GridPanelProps<ButtonsComponentProps> {
     showOmniBox?: boolean;
     showPagination?: boolean;
     showSampleComparisonReports?: boolean;
+    showSampleAliquotSelector?: boolean;
     showViewMenu?: boolean;
     showHeader?: boolean;
     getFilterDisplayValue?: (columnName: string, rawValue: string) => string;
@@ -64,6 +66,7 @@ type Props<T> = GridPanelProps<T> & RequiresModelAndActions;
 
 interface GridBarProps<T> extends Props<T> {
     onViewSelect: (viewName) => void;
+    onAliquotViewChange: (filter: Filter.IFilter, filterColumnToRemove?: string) => void;
 }
 
 class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
@@ -103,11 +106,13 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
             onChartClicked,
             onCreateReportClicked,
             onViewSelect,
+            onAliquotViewChange,
             pageSizes,
             showChartMenu,
             showExport,
             showPagination,
             showSampleComparisonReports,
+            showSampleAliquotSelector,
             showViewMenu,
         } = this.props;
 
@@ -159,6 +164,10 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                         {canSelectView && (
                             <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />
                         )}
+
+                        {(!canSelectView && showSampleAliquotSelector) && (
+                            <GridAliquotViewSelector queryModel={model} updateFilter={onAliquotViewChange}/>
+                        )}
                     </div>
                 </div>
             </div>
@@ -186,6 +195,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         showExport: true,
         showOmniBox: true,
         showSampleComparisonReports: false,
+        showSampleAliquotSelector: false,
         showViewMenu: true,
         showHeader: true,
     };
@@ -259,6 +269,23 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
         });
 
         return actionValues;
+    };
+
+    onAliquotViewChange = (filter: Filter.IFilter, filterColumnToRemove?: string) : void => {
+        const { model, actions, allowSelections } = this.props;
+
+        let filterToReplace = filter?.getColumnName() ?? filterColumnToRemove;
+        let newFilters = [];
+        model.filterArray.forEach((filter): void => {
+            if (filterToReplace.toLowerCase() !== filter.getColumnName().toLowerCase())
+                newFilters.push(filter);
+        });
+
+        if (filter)
+            newFilters.push(filter);
+
+        console.log(newFilters);
+        actions.setFilters(model.id, newFilters, allowSelections);
     };
 
     /**
@@ -575,7 +602,7 @@ export class GridPanel<T = {}> extends PureComponent<Props<T>, State> {
                 )}
 
                 <div className={classNames('grid-panel__body', { 'panel-body': asPanel })}>
-                    {showButtonBar && <ButtonBar {...this.props} onViewSelect={this.onViewSelect} />}
+                    {showButtonBar && <ButtonBar {...this.props} onViewSelect={this.onViewSelect} onAliquotViewChange={this.onAliquotViewChange} />}
 
                     {showOmniBox && (
                         <div className="grid-panel__omnibox">

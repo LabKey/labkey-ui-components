@@ -4,7 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version XXX
 *Released*: XXX
 * Add GridAliquotViewSelector
-* Add showSampleAliquotSelector to QueryGridBar
+* Add showSampleAliquotSelector to QueryGridBar and GridPanel
 * Add URL.replaceFilter uti
 * Update EntityDeleteModal to work with QueryModel
 

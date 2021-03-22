@@ -19,12 +19,14 @@ import { List } from 'immutable';
 
 import { Filter } from "@labkey/api";
 
-import { generateId, QueryGridModel} from '../../..';
+import { generateId, QueryGridModel, QueryModel } from '../../..';
 import { getCheckedValue } from "../domainproperties/actions";
 import { replaceFilter } from "../../util/URL";
 
 interface Props {
-    model: QueryGridModel;
+    queryGridModel?: QueryGridModel;
+    queryModel?: QueryModel;
+    updateFilter?: (filter: Filter.IFilter, filterColumnToRemove?: string) => void
 }
 
 enum MODE {
@@ -54,7 +56,7 @@ export class GridAliquotViewSelector extends Component<Props> {
     };
 
     updateAliquotFilter(isAliquot: boolean, check: boolean) {
-        const { model } = this.props;
+        const { queryGridModel, queryModel, updateFilter } = this.props;
         const filterMode = this.getAliquotFilterMode();
 
         let newFilter;
@@ -63,7 +65,13 @@ export class GridAliquotViewSelector extends Component<Props> {
         else
             newFilter = null; // if neither is checked, or if both are checked, clear the filter
 
-        replaceFilter(model, IS_ALIQUOT_COL, newFilter);
+        if (queryGridModel) {
+            replaceFilter(queryGridModel, IS_ALIQUOT_COL, newFilter);
+        }
+        else if (updateFilter) {
+            updateFilter(newFilter, IS_ALIQUOT_COL);
+        }
+
     };
 
     getTitle(mode: MODE) {
@@ -80,10 +88,11 @@ export class GridAliquotViewSelector extends Component<Props> {
     };
 
     getAliquotFilterMode = () : MODE => {
-        const { model } = this.props;
+        const { queryGridModel, queryModel } = this.props;
         let mode = MODE.all;
-        if (model.filterArray) {
-            model.filterArray.forEach(filter => {
+        const filterArray = queryGridModel ? queryGridModel.filterArray : queryModel?.filterArray;
+        if (filterArray) {
+            filterArray.forEach(filter => {
                 if (filter.getColumnName().toLowerCase() === IS_ALIQUOT_COL.toLowerCase()) {
 
                     const filterType = filter.getFilterType();

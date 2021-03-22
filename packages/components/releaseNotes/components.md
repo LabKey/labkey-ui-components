@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.16.1
+*Released*: 22 March 2021
+* add lookupStoreInvalidate util
+
 ### version 2.16.0
 *Released*: 22 March 2021
 * Add 'Auto-Link Data to Study' field in Sample Type properties

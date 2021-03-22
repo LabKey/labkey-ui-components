@@ -5,6 +5,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Add 'Auto-Link Data to Study' field in Sample Type properties
 
+### version 2.15.3
+*Released*: 21 March 2021
+* Fix for `selectedState` in `QueryModel` when total rows is less than page size
+
 ### version 2.15.2
 *Released*: 18 March 2021
 * Merge release21.3-SNAPSHOT to master.

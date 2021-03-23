@@ -3,9 +3,17 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import { insertColumnFilter, LastActionStatus, QueryColumn, QuerySort, SchemaQuery, ViewInfo } from '..';
+import {
+    insertColumnFilter,
+    LastActionStatus,
+    QueryColumn,
+    QuerySort,
+    SchemaQuery,
+    ViewInfo
+} from '..';
 
 import { toLowerSafe } from '../internal/util/utils';
+import { UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 
 export enum QueryInfoStatus {
     ok,
@@ -275,6 +283,10 @@ export class QueryInfo extends Record({
             console.warn(`Unable to resolve pkCol '${pkFieldKey}' on (${this.schemaName}.${this.name})`);
             return list;
         }, List<QueryColumn>());
+    }
+
+    getUniqueIdColumns() :  List<QueryColumn> {
+        return this.columns.filter((column) => (column.conceptURI === UNIQUE_ID_CONCEPT_URI)).toList();
     }
 
     getSorts(view?: string): List<QuerySort> {

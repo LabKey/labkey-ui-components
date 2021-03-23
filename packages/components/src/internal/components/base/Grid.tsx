@@ -171,28 +171,38 @@ class GridHeader extends React.PureComponent<GridHeaderProps, any> {
             <thead>
                 <tr>
                     {columns.map((column: GridColumn, i: number) => {
-                        let minWidth = column.width;
+                        const { headerCls, index, raw, title, width } = column;
+                        let minWidth = width;
+
                         if (minWidth === undefined) {
-                            minWidth = calcWidths && column.title ? 30 + column.title.length * 8 : undefined;
+                            minWidth = calcWidths && title ? 30 + title.length * 8 : undefined;
                         }
+
                         if (minWidth !== undefined) {
                             minWidth += 'px';
                         }
 
                         if (column.showHeader) {
-                            const headerCls = column.headerCls ? column.headerCls : 'grid-header-cell';
+                            // const className = headerCls ? headerCls : 'grid-header-cell';
+                            const className = classNames(headerCls, {
+                                'grid-header-cell': headerCls === undefined,
+                                'phi-protected': raw?.phiProtected === true,
+                            });
+                            const _title = raw?.phiProtected === true ? '(PHI protected data removed)' : undefined;
+
                             return (
                                 <th
-                                    className={headerCls}
-                                    key={i}
+                                    className={className}
+                                    key={index}
                                     onClick={this._handleClick.bind(this, column)}
                                     style={{ minWidth }}
+                                    title={_title}
                                 >
-                                    {headerCell ? headerCell(column, i, columns.size) : column.title}
+                                    {headerCell ? headerCell(column, i, columns.size) : title}
                                 </th>
                             );
                         }
-                        return <th key={i} style={{ minWidth }} />;
+                        return <th key={index} style={{ minWidth }} />;
                     }, this)}
                 </tr>
             </thead>

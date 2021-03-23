@@ -7,7 +7,9 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Add Concept URI for unique Id fields.
     * In EntityInsertPanel, add placeholder text for generated Ids and make them read-only
     * Add condition on column filter used for bulk insert to remove the unique id fields
+    * Add UniqueIdBanner containing call to action in SampleTypeDesigner properties panel and fields panel for adding uniqueIds
 * add `isCommunityDistribution` method
+* add `alert-button` css class for buttons that appear in alert banners
 
 ### version 2.15.2
 *Released*: 18 March 2021

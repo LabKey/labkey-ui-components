@@ -4,12 +4,13 @@ import { Col, FormControl, FormControlProps, Row } from 'react-bootstrap';
 
 import { getFormNameFromId } from '../entities/actions';
 import {
-    IParentOption,
     AddEntityButton,
     ColorPickerInput,
     generateId,
     getHelpLink,
     helpLinkNode,
+    IDomainField,
+    IParentOption,
     MetricUnitProps,
     SCHEMAS,
     SelectInput,
@@ -17,7 +18,7 @@ import {
 import { EntityDetailsForm } from '../entities/EntityDetailsForm';
 
 import { PARENT_ALIAS_HELPER_TEXT, SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
-import { DERIVE_SAMPLES_ALIAS_TOPIC, DEFINE_SAMPLE_TYPE_TOPIC } from '../../../util/helpLinks';
+import { DEFINE_SAMPLE_TYPE_TOPIC, DERIVE_SAMPLES_ALIAS_TOPIC, UNIQUE_IDS_TOPIC } from '../../../util/helpLinks';
 import { SampleSetParentAliasRow } from '../../samples/SampleSetParentAliasRow';
 import {
     InjectedDomainPropertiesPanelCollapseProps,
@@ -30,12 +31,14 @@ import { DomainFieldLabel } from '../DomainFieldLabel';
 import { SectionHeading } from '../SectionHeading';
 
 import { IParentAlias, SampleTypeModel } from './models';
+import { UniqueIdBanner } from './UniqueIdBanner';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
 // Splitting these out to clarify where they end-up
 interface OwnProps {
     model: SampleTypeModel;
+    onAddUniqueIdField: (fieldConfig: Partial<IDomainField>) => void;
     parentOptions: IParentOption[];
     updateModel: (newModel: SampleTypeModel) => void;
     onParentAliasChange: (id: string, field: string, newValue: any) => void;
@@ -248,9 +251,21 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         return parentOptions.filter(dataClassOptionFilterFn).length > 0;
     }
 
+    renderUniqueIdHelpText = () => {
+        return (
+            <>
+                Use a Unique ID field to represent barcodes or other ID fields in use in your lab.
+                <br/>
+                <br/>
+                Learn more about using {helpLinkNode(UNIQUE_IDS_TOPIC, 'barcodes and unique IDs')} in Sample Manager.
+            </>
+        );
+    }
+
     render() {
         const {
             model,
+            onAddUniqueIdField,
             parentOptions,
             nameExpressionInfoUrl,
             nameExpressionPlaceholder,
@@ -307,7 +322,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {this.renderParentAliases(true, includeDataClasses && !useSeparateDataClassesAliasMenu)}
                 {parentOptions && (
                     <Row>
-                        <Col xs={2}></Col>
+                        <Col xs={2}/>
                         <Col xs={10}>
                             <span>
                                 <AddEntityButton
@@ -326,7 +341,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {showDataClass && this.renderParentAliases(false, true)}
                 {showDataClass && (
                     <Row>
-                        <Col xs={2}></Col>
+                        <Col xs={2}/>
                         <Col xs={10}>
                             <span>
                                 <AddEntityButton
@@ -340,7 +355,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 )}
                 {appPropertiesOnly && (
                     <>
-                        <SectionHeading title="Appearance Settings" />
+                        <SectionHeading title="Storage Settings" />
                         <Row className="margin-top">
                             <Col xs={2}>
                                 <DomainFieldLabel
@@ -390,6 +405,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                             name="metricUnit"
                                             type="text"
                                             placeholder="Enter a unit"
+                                            required={metricUnitRequired}
                                             value={model.metricUnit}
                                             onChange={(e: React.ChangeEvent<FormControlProps>) => {
                                                 this.onFieldChange(e.target.name, e.target.value);
@@ -399,6 +415,17 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                 </Col>
                             </Row>
                         )}
+                        <Row className="margin-top">
+                            <Col xs={2}>
+                                <DomainFieldLabel
+                                    label={"Barcodes"}
+                                    helpTipBody={this.renderUniqueIdHelpText()}
+                                />
+                            </Col>
+                            <Col xs={10}>
+                                <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField}/>
+                            </Col>
+                        </Row>
                     </>
                 )}
             </BasePropertiesPanel>

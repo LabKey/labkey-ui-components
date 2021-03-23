@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { fromJS, List, Map, OrderedMap } from 'immutable';
 import { Domain } from '@labkey/api';
 
-import { DomainDesign, DomainDetails, IDomainField, IDomainFormDisplayOptions } from '../models';
+import { DomainDesign, DomainDetails, IAppDomainHeader, IDomainField, IDomainFormDisplayOptions } from '../models';
 import DomainForm from '../DomainForm';
 import {
     IParentOption,
@@ -26,6 +26,7 @@ import { SAMPLE_TYPE } from '../PropDescType';
 
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
+import { UniqueIdBanner } from './UniqueIdBanner';
 
 export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -460,6 +461,18 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         }
     };
 
+    onAddUniqueIdField = (fieldConfig: Partial<IDomainField>): void => {
+        this.setState((state) => ({
+            model: state.model.set("domain", addDomainField(this.state.model.domain, fieldConfig)) as SampleTypeModel,
+        }));
+    }
+
+    uniqueIdBannerRenderer = (config: IAppDomainHeader): ReactNode  => {
+        return (
+            <UniqueIdBanner model={this.state.model} isFieldsPanel={true} onAddField={config.onAddField}/>
+        )
+    }
+
     render() {
         const {
             containerTop,
@@ -538,9 +551,11 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                     appPropertiesOnly={appPropertiesOnly}
                     useTheme={useTheme}
                     metricUnitProps={metricUnitProps}
+                    onAddUniqueIdField={this.onAddUniqueIdField}
                 />
                 <DomainForm
                     key={model.domain.domainId || 0}
+                    appDomainHeaderRenderer={this.uniqueIdBannerRenderer}
                     domainIndex={0}
                     domain={model.domain}
                     headerTitle="Fields"

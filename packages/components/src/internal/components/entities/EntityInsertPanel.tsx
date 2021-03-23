@@ -942,7 +942,14 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     render() {
-        const { canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural } = this.props;
+        const {
+            canEditEntityTypeDetails,
+            disableMerge,
+            fileSizeLimits,
+            importOnly,
+            nounPlural,
+            entityDataType,
+        } = this.props;
         const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
 
         if (!insertModel) {
@@ -955,9 +962,10 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         const isGridStep = this.isGridStep();
         const entityTypeName = insertModel.getTargetEntityTypeLabel();
-        const editEntityTypeDetailsLink = entityTypeName
-            ? AppURL.create(nounPlural, entityTypeName, 'update')
-            : undefined;
+        const editEntityTypeDetailsLink =
+            entityTypeName && entityDataType?.editTypeAppUrlPrefix
+                ? AppURL.create(entityDataType.editTypeAppUrlPrefix, entityTypeName)
+                : undefined;
 
         return (
             <>

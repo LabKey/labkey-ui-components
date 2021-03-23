@@ -43,7 +43,7 @@ export class AssayImportSubMenuItemImpl extends PureComponent<Props & InjectedAs
             importItems = getImportItemsForAssayDefinitions(assayModel, model, providerType);
         }
 
-        return importItems.map((subItems, href, assay) => ({ text: assay.name, href }));
+        return importItems.map((href, assay) => ({ text: assay.name, href }));
     };
 
     render(): ReactNode {

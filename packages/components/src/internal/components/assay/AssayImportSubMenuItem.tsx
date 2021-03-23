@@ -27,7 +27,17 @@ interface Props extends SubMenuItemProps {
 
 // exported for jest testing
 export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props => {
-    const { assayModel, isLoaded, model, nounPlural, providerType, queryModel, requireSelection } = props;
+    const {
+        assayModel,
+        isLoaded = true,
+        model,
+        nounPlural = 'items',
+        providerType,
+        queryModel,
+        requireSelection,
+        text = 'Upload Assay Data',
+    } = props;
+
     const items = useMemo(() => {
         if (!isLoaded) {
             return [];
@@ -80,6 +90,7 @@ export const AssayImportSubMenuItemImpl: FC<Props & InjectedAssayModel> = props 
         items,
         model: undefined,
         queryModel: undefined,
+        text,
     });
 
     if (menuProps.disabled) {

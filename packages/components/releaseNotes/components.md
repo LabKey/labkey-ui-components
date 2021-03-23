@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Issue 42741: EntityInsertPanel fix to use selected sample type name instead of value (which is lowercase) for navigation
+
 ### version 2.16.1
 *Released*: 22 March 2021
 * add lookupStoreInvalidate util

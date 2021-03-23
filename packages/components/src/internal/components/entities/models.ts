@@ -371,8 +371,12 @@ export class EntityIdCreationModel extends Record({
         return this.targetEntityType && this.targetEntityType.value;
     }
 
-    getTargetEntityTypeName(): string {
+    getTargetEntityTypeValue(): string {
         return this.hasTargetEntityType() ? this.targetEntityType.value : undefined;
+    }
+
+    getTargetEntityTypeLabel(): string {
+        return this.hasTargetEntityType() ? this.targetEntityType.label : undefined;
     }
 
     getParentCount(): number {
@@ -469,7 +473,7 @@ export class EntityIdCreationModel extends Record({
     }
 
     getSchemaQuery(): SchemaQuery {
-        const entityTypeName = this.getTargetEntityTypeName();
+        const entityTypeName = this.getTargetEntityTypeValue();
         return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 

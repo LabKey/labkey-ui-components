@@ -154,6 +154,7 @@ import {
     getQueryGridModelsForGridId,
     initQueryGridState,
     invalidateUsers,
+    lookupStoreInvalidate,
     removeQueryGridModel,
     updateEditorModel,
 } from './internal/global';
@@ -431,6 +432,7 @@ export {
     getQueryGridModel,
     getQueryGridModelsForGridId,
     getEditorModel,
+    lookupStoreInvalidate,
     removeQueryGridModel,
     invalidateUsers,
     clearSelected,

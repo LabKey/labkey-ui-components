@@ -5,6 +5,7 @@
     "nameExpression": "S-${now:date}-${dailySampleCount}",
     "description": "tacocat",
     "labelColor": "#009ce0",
+    "autoLinkTargetContainerId": "E0EA3E55-3420-1035-8057-68FEA9BFB3A0",
     "importAliases": {
       "a": "materialInputs/Fruits",
       "b": "dataInputs/Source 1",

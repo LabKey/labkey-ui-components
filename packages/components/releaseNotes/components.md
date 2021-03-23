@@ -11,6 +11,18 @@ Components, models, actions, and utility functions for LabKey applications and p
 * add `isCommunityDistribution` method
 * add `alert-button` css class for buttons that appear in alert banners
 
+### version 2.16.1
+*Released*: 22 March 2021
+* add lookupStoreInvalidate util
+
+### version 2.16.0
+*Released*: 22 March 2021
+* Add 'Auto-Link Data to Study' field in Sample Type properties
+
+### version 2.15.3
+*Released*: 21 March 2021
+* Fix for `selectedState` in `QueryModel` when total rows is less than page size
+
 ### version 2.15.2
 *Released*: 18 March 2021
 * Merge release21.3-SNAPSHOT to master.

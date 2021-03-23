@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import React from 'react';
+import React, { FC, memo, PureComponent, ReactNode, RefObject } from 'react';
 import classNames from 'classnames';
 import { fromJS, List, Map } from 'immutable';
 
@@ -151,7 +151,7 @@ interface GridHeaderProps {
     transpose?: boolean;
 }
 
-class GridHeader extends React.PureComponent<GridHeaderProps, any> {
+class GridHeader extends PureComponent<GridHeaderProps, any> {
     _handleClick(column: GridColumn, evt) {
         evt.stopPropagation();
         if (this.props.onCellClick) {
@@ -214,23 +214,17 @@ interface GridMessagesProps {
     messages: List<Map<string, string>>;
 }
 
-class GridMessages extends React.PureComponent<GridMessagesProps, any> {
-    render() {
-        const { messages } = this.props;
-
-        return (
-            <div className="grid-messages">
-                {messages.map((message: Map<string, string>, i) => {
-                    return (
-                        <div className="grid-message" key={i}>
-                            {message.get('content')}
-                        </div>
-                    );
-                })}
-            </div>
-        );
-    }
-}
+const GridMessages: FC<GridMessagesProps> = memo(({ messages }) => (
+    <div className="grid-messages">
+        {messages.map((message: Map<string, string>, i) => {
+            return (
+                <div className="grid-message" key={i}>
+                    {message.get('content')}
+                </div>
+            );
+        })}
+    </div>
+));
 
 interface GridBodyProps {
     data: List<Map<string, any>>;
@@ -238,12 +232,12 @@ interface GridBodyProps {
     columns: List<GridColumn>;
     emptyText: string;
     isLoading: boolean;
-    loadingText: React.ReactNode;
+    loadingText: ReactNode;
     rowKey: any;
     transpose: boolean;
 }
 
-class GridBody extends React.PureComponent<GridBodyProps> {
+class GridBody extends PureComponent<GridBodyProps> {
     constructor(props: GridBodyProps) {
         super(props);
 
@@ -329,22 +323,22 @@ export interface GridProps {
     gridId?: string;
     headerCell?: any;
     isLoading?: boolean;
-    loadingText?: React.ReactNode;
+    loadingText?: ReactNode;
     messages?: List<Map<string, string>>;
     responsive?: boolean;
 
     /**
      * If a rowKey is specified the <Grid> will use it as a lookup key into each row. The associated value
-     * will be used as the React.Key for the row.
+     * will be used as the Key for the row.
      */
     rowKey?: any; // a valid React key
     showHeader?: boolean;
     striped?: boolean;
-    tableRef?: React.RefObject<HTMLTableElement>;
+    tableRef?: RefObject<HTMLTableElement>;
     transpose?: boolean;
 }
 
-export class Grid extends React.PureComponent<GridProps> {
+export class Grid extends PureComponent<GridProps> {
     static defaultProps = {
         bordered: true,
         calcWidths: false,

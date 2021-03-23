@@ -244,7 +244,7 @@ function _isAvailablePropType(type: PropDescType, domain: DomainDesign, ontologi
         return false;
     }
 
-    if (type === UNIQUE_ID_TYPE && isCommunityDistribution()) {
+    if (type === UNIQUE_ID_TYPE && (isCommunityDistribution() || domain.domainKindName !== Domain.KINDS.SAMPLE_TYPE)) {
         return false;
     }
 

@@ -2,7 +2,7 @@
 Components, models, actions, and utility functions for LabKey applications and pages.
 
 ### version 2.17.0
-*Released*: ?? March 2021
+*Released*: 23 March 2021
 * Add queryModel prop to AssayImportSubMenuItem
 
 ### version 2.16.1

@@ -25,10 +25,10 @@ export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddFiel
     }, [onAddField]);
 
 
-    if (model.isNew() && !isFieldsPanel) {
+    const uniqueIdFields = model.domain.fields.filter(field => field.isUniqueIdField()).toArray();
+    if (model.isNew() && !isFieldsPanel && uniqueIdFields.length === 0) {
         return <div>Not currently enabled for this sample type</div>
     } else {
-        const uniqueIdFields = model.domain.fields.filter(field => field.conceptURI === UNIQUE_ID_CONCEPT_URI).toArray();
         if (uniqueIdFields.length === 0) {
             return (
                 <Alert bsStyle="info">

@@ -47,6 +47,7 @@ export class User extends Record(defaultUser) implements IUserProps {
     declare email: string;
     declare phone: string;
     declare avatar: string;
+    declare maxAllowedPhi: string;
 
     declare isAdmin: boolean;
     declare isAnalyst: boolean;

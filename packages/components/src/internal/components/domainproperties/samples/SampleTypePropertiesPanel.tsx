@@ -38,6 +38,7 @@ import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { getCurrentProductName } from '../../../app/utils';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
@@ -276,7 +277,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 Use a Unique ID field to represent barcodes or other ID fields in use in your lab.
                 <br/>
                 <br/>
-                Learn more about using {helpLinkNode(UNIQUE_IDS_TOPIC, 'barcodes and unique IDs')} in Sample Manager.
+                Learn more about using {helpLinkNode(UNIQUE_IDS_TOPIC, 'barcodes and unique IDs')} in {getCurrentProductName()}.
             </>
         );
     }
@@ -404,9 +405,9 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     </Row>
                 )}
 
+                <SectionHeading title="Storage Settings" />
                 {appPropertiesOnly && (
                     <>
-                        <SectionHeading title="Storage Settings" />
                         <Row className="margin-top">
                             <Col xs={2}>
                                 <DomainFieldLabel
@@ -466,19 +467,20 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                                 </Col>
                             </Row>
                         )}
-                        <Row className="margin-top">
-                            <Col xs={2}>
-                                <DomainFieldLabel
-                                    label={"Barcodes"}
-                                    helpTipBody={this.renderUniqueIdHelpText()}
-                                />
-                            </Col>
-                            <Col xs={10}>
-                                <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField}/>
-                            </Col>
-                        </Row>
                     </>
                 )}
+                <Row className="margin-top">
+                    <Col xs={2}>
+                        <DomainFieldLabel
+                            label={"Barcodes"}
+                            helpTipBody={this.renderUniqueIdHelpText()}
+                        />
+                    </Col>
+                    <Col xs={10}>
+                        <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField}/>
+                    </Col>
+                </Row>
+
             </BasePropertiesPanel>
         );
     }

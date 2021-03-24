@@ -73,7 +73,7 @@ import { DATA_IMPORT_TOPIC } from '../../util/helpLinks';
 
 import { BulkAddData } from '../editable/EditableGrid';
 
-import { DERIVATION_DATA_SCOPE_CHILD_ONLY, UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
+import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
 
 import {
     EntityDataType,
@@ -86,6 +86,7 @@ import {
 } from './models';
 
 import { getEntityTypeData } from './actions';
+import { getUniqueIdColumnMetadata } from './utils';
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -764,16 +765,19 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     getInsertColumns = (): List<QueryColumn> => {
-        return this.getQueryGridModel()
+        const model = this.getQueryGridModel();
+        let columns : List<QueryColumn> = model
             .getInsertColumns()
             .filter(col => col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY)
             .toList();
+        // we add the UniqueId columns, which will be displayed as read-only fields
+        columns = columns.concat(model.queryInfo.getUniqueIdColumns()).toList();
+        return columns;
     };
 
     columnFilter = (col: QueryColumn): boolean => {
         return (
             insertColumnFilter(col) &&
-            col.conceptURI !== UNIQUE_ID_CONCEPT_URI &&
             col.fieldKey !== this.props.entityDataType.uniqueFieldKey &&
             col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY
         );
@@ -781,7 +785,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     getGeneratedIdColumnMetadata() : Map<string, EditableColumnMetadata> {
         const { entityDataType, nounSingular, nounPlural } = this.props;
-        let columnMetadata = Map<string, EditableColumnMetadata>();
+        let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
         if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
@@ -793,16 +797,6 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 toolTip: `A ${nounSingular} ID is required for each ${nounSingular} since this ${this.typeTextSingular} has no naming pattern. You can provide a naming pattern by editing the ${this.typeTextSingular} design.`,
             });
         }
-        const queryInfo = this.getGridQueryInfo();
-        queryInfo?.columns.filter((column) => column.conceptURI === UNIQUE_ID_CONCEPT_URI).forEach(
-            column => {
-                columnMetadata = columnMetadata.set(column.fieldKey, {
-                    readOnly: true,
-                    placeholder: '[generated value]',
-                    toolTip: `A unique value will be provided by LabKey for this field.`
-                })
-            }
-        );
         return columnMetadata;
     }
 

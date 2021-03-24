@@ -286,7 +286,7 @@ export class QueryInfo extends Record({
     }
 
     getUniqueIdColumns() :  List<QueryColumn> {
-        return this.columns.filter((column) => (column.conceptURI === UNIQUE_ID_CONCEPT_URI)).toList();
+        return this.columns.filter((column) => (column.isUniqueIdColumn)).toList();
     }
 
     getSorts(view?: string): List<QuerySort> {

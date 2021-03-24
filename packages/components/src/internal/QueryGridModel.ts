@@ -437,7 +437,8 @@ export class QueryGridModel
     getRequestColumnsString(): string {
         let fieldKeys = this.requiredColumns
             .concat(this.getKeyColumns().map(c => c.fieldKey))
-            .concat(this.getDisplayColumns().map(c => c.fieldKey));
+            .concat(this.getDisplayColumns().map(c => c.fieldKey))
+            .concat(this.getUniqueIdColumns().map(c => c.fieldKey));
 
         if (this.omittedColumns.size > 0) {
             const lowerOmit = toLowerSafe(this.omittedColumns);

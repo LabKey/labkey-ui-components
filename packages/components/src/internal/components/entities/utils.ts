@@ -1,9 +1,11 @@
 import { List, Map, Set } from 'immutable';
 
-import { naturalSort, QueryGridModel } from '../../..';
+import { EditableColumnMetadata, naturalSort, QueryGridModel, QueryInfo } from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
+import { UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
+import { getCurrentProductName } from '../../app/utils';
 
 export function parentValuesDiffer(
     sortedOriginalParents: List<EntityChoice>,
@@ -124,4 +126,18 @@ export function getUpdatedRowForParentChanges(
         }
     });
     return updatedValues;
+}
+
+export function getUniqueIdColumnMetadata(queryInfo: QueryInfo) : Map<string, EditableColumnMetadata> {
+    let columnMetadata = Map<string, EditableColumnMetadata>();
+    queryInfo?.columns.filter((column) => column.conceptURI === UNIQUE_ID_CONCEPT_URI).forEach(
+        column => {
+            columnMetadata = columnMetadata.set(column.fieldKey, {
+                readOnly: true,
+                placeholder: '[generated value]',
+                toolTip: `A unique value will be provided by ${getCurrentProductName()} for this field.`
+            })
+        }
+    );
+    return columnMetadata;
 }

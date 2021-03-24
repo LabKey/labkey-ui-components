@@ -27,6 +27,7 @@ import {
     QueryGridModel,
     SCHEMAS,
     SchemaQuery,
+    QueryModel,
 } from '../../..';
 
 import { AssayUploadTabs } from '../../constants';
@@ -241,6 +242,32 @@ export function deleteAssayRuns(
             }),
         });
     });
+}
+
+export function getImportItemsForAssayDefinitionsQM(
+    assayStateModel: AssayStateModel,
+    sampleModel?: QueryModel,
+    providerType?: string
+): OrderedMap<AssayDefinitionModel, string> {
+    let targetSQ;
+    const selectionKey = sampleModel ? sampleModel.id : undefined;
+
+    if (sampleModel?.queryInfo) {
+        targetSQ = sampleModel.queryInfo.schemaQuery;
+    }
+
+    return assayStateModel.definitions
+        .filter(assay => providerType === undefined || assay.type === providerType)
+        .filter(assay => !targetSQ || assay.hasLookup(targetSQ))
+        .sort(naturalSortByProperty('name'))
+        .reduce((items, assay) => {
+            const href = assay.getImportUrl(
+                selectionKey ? AssayUploadTabs.Grid : AssayUploadTabs.Files,
+                selectionKey,
+                sampleModel ? List(sampleModel.filters) : undefined
+            );
+            return items.set(assay, href);
+        }, OrderedMap<AssayDefinitionModel, string>());
 }
 
 export function getImportItemsForAssayDefinitions(

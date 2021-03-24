@@ -12,6 +12,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 * add `isCommunityDistribution` method
 * add `alert-button` css class for buttons that appear in alert banners
 
+### version 2.17.0
+*Released*: 23 March 2021
+* Add queryModel prop to AssayImportSubMenuItem
+
 ### version 2.16.1
 *Released*: 22 March 2021
 * add lookupStoreInvalidate util

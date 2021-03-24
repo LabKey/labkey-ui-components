@@ -1,6 +1,10 @@
 # @labkey/themes
 UI themes for LabKey Server.
 
+### version 1.1.0
+*Released*: ??
+* Add styling for PHI protected columns in data regions
+
 ### version 1.0.2
 *Released*: 22 December 2020
 * Dependabot package updates

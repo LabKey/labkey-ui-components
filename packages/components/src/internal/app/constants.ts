@@ -9,6 +9,10 @@ export const BIOLOGICS_PRODUCT_ID = 'biologics';
 export const SAMPLE_MANAGER_PRODUCT_ID = 'sampleManager';
 export const FREEZER_MANAGER_PRODUCT_ID = 'freezerManager';
 
+export const SAMPLE_MANAGER_PRODUCT_NAME = 'Sample Manager';
+export const BIOLOGICS_PRODUCT_NAME = 'Biologics';
+export const LABKEY_SERVER_PRODUCT_NAME = 'LabKey Server';
+
 export const ASSAYS_KEY = 'assays';
 export const ASSAY_DESIGN_KEY = 'assayDesign';
 export const SAMPLES_KEY = 'samples';

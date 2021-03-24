@@ -11,6 +11,8 @@ Components, models, actions, and utility functions for LabKey applications and p
     * Add `getUniqueIdFields` method to QueryInfo class
 * add `isCommunityDistribution` method
 * add `alert-button` css class for buttons that appear in alert banners
+* Update EntityInsertPanel and FilePreviewGrid to show warnings about fields detected that will be ignored during import,
+either because they are not known or because they are uniqueId fields.
 
 ### version 2.17.0
 *Released*: 23 March 2021

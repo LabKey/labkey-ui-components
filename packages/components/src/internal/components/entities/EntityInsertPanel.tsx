@@ -29,8 +29,10 @@ import {
     Alert,
     AppURL,
     capitalizeFirstChar,
+    DomainDesign,
     EditableColumnMetadata,
     EditableGridPanel,
+    fetchDomain,
     FileAttachmentForm,
     FileSizeLimitProps,
     FormStep,
@@ -46,6 +48,7 @@ import {
     helpLinkNode,
     IGridLoader,
     IGridResponse,
+    InferDomainResponse,
     insertColumnFilter,
     LabelHelpTip,
     LoadingSpinner,
@@ -87,6 +90,7 @@ import {
 
 import { getEntityTypeData } from './actions';
 import { getUniqueIdColumnMetadata } from './utils';
+import { getCurrentProductName } from '../../app/utils';
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -149,6 +153,7 @@ interface StateProps {
     isSubmitting: boolean;
     originalQueryInfo: QueryInfo;
     useAsync: boolean;
+    fieldsWarningMsg: ReactNode;
 }
 
 class EntityInsertPanelImpl extends Component<Props, StateProps> {
@@ -182,6 +187,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             isMerge: false,
             file: undefined,
             useAsync: false,
+            fieldsWarningMsg: undefined,
         };
     }
 
@@ -871,6 +877,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             error: undefined,
             file: files.first(),
             useAsync: asyncSize && fileSize > asyncSize,
+            fieldsWarningMsg: undefined,
         });
     };
 
@@ -881,6 +888,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             error: undefined,
             file: undefined,
             useAsync: false,
+            fieldsWarningMsg: undefined,
         });
     };
 
@@ -951,6 +959,74 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             />
         );
     };
+
+    static getWarningFieldList(names: string[])  {
+        const oxfordComma = names.length > 2 ? ',' : '';
+        return names.map((unknown, index) => (
+            <>
+                <b>{unknown}</b>{index === names.length-2 ? oxfordComma + ' and ' : index < names.length-2 ? ', ': ''}
+            </>
+        ))
+    }
+
+    static getInferredFieldWarnings(inferred: InferDomainResponse, domainDesign: DomainDesign, columns: OrderedMap<string, QueryColumn>) : Array<ReactNode> {
+        let uniqueIdFields = [];
+        let unknownFields = [];
+
+        inferred.fields.forEach(field => {
+            const lcName = field.name.toLowerCase();
+            let aliasField = domainDesign.fields.find(domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0);
+            const columnName = aliasField ? aliasField.name : field.name;
+            const column = columns.find(column => (column.isImportColumn(columnName)));
+
+            if (!column) {
+                if (unknownFields.indexOf(field.name) < 0) {
+                    unknownFields.push(field.name);
+                }
+            }
+            else if (column.isUniqueIdColumn) {
+                if (uniqueIdFields.indexOf(field.name) < 0) { // duplicate fields are
+                    uniqueIdFields.push(field.name);
+                }
+            }
+        });
+
+        let msg = [];
+        if (unknownFields.length > 0) {
+            msg.push(
+                <p>
+                    {EntityInsertPanelImpl.getWarningFieldList(unknownFields)}
+                    {((unknownFields.length === 1) ? " is an unknown field" : " are unknown fields") + " and will be ignored."}
+                </p>
+            );
+        }
+        if (uniqueIdFields.length > 0) {
+            msg.push(
+                <p>
+                    {EntityInsertPanelImpl.getWarningFieldList(uniqueIdFields)}
+                    {((uniqueIdFields.length === 1) ? " is a unique ID field. It " : " are unique ID fields. These")  + " will not be imported and will be managed by " + getCurrentProductName() + "."}
+                </p>
+            );
+        }
+        return msg;
+    }
+
+    onPreviewLoad = (inferred: InferDomainResponse): any => {
+        let uniqueIdFields = [];
+        let unknownFields = [];
+        const { insertModel, originalQueryInfo } = this.state;
+        fetchDomain(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName).
+            then(domainDesign => {
+                const msg = EntityInsertPanelImpl.getInferredFieldWarnings(inferred, domainDesign, originalQueryInfo.columns);
+
+                if (msg.length > 0) {
+                    this.setState({fieldsWarningMsg: <>{msg}</>});
+                }
+            })
+            .catch(reason => {
+                console.error("Unable to retrieve domain ", reason);
+            });
+    }
 
     render() {
         const { canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural } = this.props;
@@ -1038,7 +1114,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                         acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
                                         allowMultiple={false}
                                         allowDirectories={false}
-                                        previewGridProps={{ previewCount: 3 }}
+                                        previewGridProps={{ previewCount: 3, onPreviewLoad: this.onPreviewLoad, warningMsg: this.state.fieldsWarningMsg }}
                                         onFileChange={this.handleFileChange}
                                         onFileRemoval={this.handleFileRemoval}
                                         templateUrl={this.getTemplateUrl()}

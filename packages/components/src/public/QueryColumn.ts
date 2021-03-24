@@ -234,6 +234,17 @@ export class QueryColumn extends Record({
         return (this.conceptURI === UNIQUE_ID_CONCEPT_URI);
     }
 
+    isImportColumn(importName: string): boolean {
+        if (!importName)
+            return false;
+
+        const lcName = importName.toLowerCase();
+        return this.caption?.toLowerCase() === lcName
+            || this.caption?.replace(" ", "").toLowerCase() === lcName
+            || this.name?.toLowerCase() === lcName
+            || this.fieldKey?.toLowerCase() === lcName;
+    }
+
     resolveFieldKey(): string {
         let fieldKey: string;
 

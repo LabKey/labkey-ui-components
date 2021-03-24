@@ -18,7 +18,7 @@ export class FilePreviewGrid extends React.Component<Props, any> {
     };
 
     render() {
-        const { data, columns, header, infoMsg, errorMsg, errorStyle } = this.props;
+        const { data, columns, header, infoMsg, errorMsg, errorStyle, warningMsg } = this.props;
         const numRows = data ? data.size : 0;
 
         return (
@@ -28,6 +28,7 @@ export class FilePreviewGrid extends React.Component<Props, any> {
                 ) : (
                     <>
                         <strong>{header}</strong>
+                        <Alert bsStyle="warning">{warningMsg}</Alert>
                         <p className="margin-top">
                             <span>
                                 The {numRows === 1 ? 'one row ' : 'first ' + numRows + ' rows '} of your data file{' '}

@@ -96,17 +96,21 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                             onChange={this.handleChange}
                             disabled={isFieldFullyLocked(field.lockType)}
                         />
-                        <div className="domain-field-label">
-                            <DomainFieldLabel label="Import Aliases" helpTipBody={this.getImportAliasHelpText()} />
-                        </div>
-                        <FormControl
-                            type="text"
-                            value={field.importAliases || ''}
-                            id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
-                            name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
-                            onChange={this.handleChange}
-                            disabled={isFieldFullyLocked(field.lockType)}
-                        />
+                        {!field.isUniqueIdField() && (
+                            <>
+                                <div className="domain-field-label">
+                                    <DomainFieldLabel label="Import Aliases" helpTipBody={this.getImportAliasHelpText()} />
+                                </div>
+                                <FormControl
+                                    type="text"
+                                    value={field.importAliases || ''}
+                                    id={createFormInputId(DOMAIN_FIELD_IMPORTALIASES, domainIndex, index)}
+                                    name={createFormInputName(DOMAIN_FIELD_IMPORTALIASES)}
+                                    onChange={this.handleChange}
+                                    disabled={isFieldFullyLocked(field.lockType)}
+                                />
+                            </>
+                        )}
                     </Col>
                     <Col xs={4}>
                         <div className="domain-field-label">

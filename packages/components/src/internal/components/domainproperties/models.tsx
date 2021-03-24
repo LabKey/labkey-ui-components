@@ -1229,7 +1229,12 @@ export function acceptablePropertyType(type: PropDescType, rangeURI: string): bo
         return true;
     }
 
-    // Catches Multiline text
+    // Original field is a string, we can't convert to a unique Id
+    if (type.isUniqueId() && PropDescType.isString(rangeURI)) {
+        return false;
+    }
+
+    // Original field is a uniqueId, text, or multi-line text, can convert to a string type
     if (type.isString() && PropDescType.isString(rangeURI)) {
         return true;
     }

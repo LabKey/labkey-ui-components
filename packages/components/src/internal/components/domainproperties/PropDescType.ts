@@ -69,6 +69,10 @@ export class PropDescType
         return conceptURI === CONCEPT_CODE_CONCEPT_URI;
     }
 
+    static isUniqueIdField(conceptURI: string): boolean {
+        return conceptURI === UNIQUE_ID_CONCEPT_URI;
+    }
+
     static isLookup(name: string): boolean {
         return name === 'lookup';
     }
@@ -158,6 +162,10 @@ export class PropDescType
 
     isOntologyLookup(): boolean {
         return PropDescType.isOntologyLookup(this.conceptURI);
+    }
+
+    isUniqueId(): boolean {
+        return PropDescType.isUniqueIdField(this.conceptURI);
     }
 }
 

@@ -183,7 +183,6 @@ class GridHeader extends PureComponent<GridHeaderProps, any> {
                         }
 
                         if (column.showHeader) {
-                            // const className = headerCls ? headerCls : 'grid-header-cell';
                             const className = classNames(headerCls, {
                                 'grid-header-cell': headerCls === undefined,
                                 'phi-protected': raw?.phiProtected === true,

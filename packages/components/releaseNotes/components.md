@@ -5,6 +5,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Issue 42741: EntityInsertPanel fix to use selected sample type name instead of value (which is lowercase) for navigation
 * Add EntityDataType.editTypeAppUrlPrefix to use for linking to the edit design app URL on the create/import page
+* EntityInsertPanel fix to handle case where parent param is a schema/query but without specific values to add to grid
 
 ### version 2.16.1
 *Released*: 22 March 2021

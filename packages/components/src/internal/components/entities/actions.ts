@@ -130,6 +130,21 @@ function initParents(initialParents: string[], selectionKey: string): Promise<Li
             const parent = initialParents[0];
             const [schema, query, value] = parent.toLowerCase().split(':');
 
+            // if the parent key doesn't have a value, we don't need to make the request to getSelectedParents
+            if (value === undefined) {
+                resolve(
+                    List<EntityParentType>([
+                        EntityParentType.create({
+                            index: 1,
+                            schema,
+                            query,
+                            value: List<DisplayObject>(),
+                            isParentTypeOnly: true, // tell the UI to keep the parent type but not add any default rows to the editable grid
+                        }),
+                    ])
+                );
+            }
+
             return getSelectedParents(SchemaQuery.create(schema, query), [Filter.create('RowId', value)])
                 .then(response => resolve(response))
                 .catch(reason => reject(reason));
@@ -196,9 +211,13 @@ function getChosenParentData(
                         parent => parent.value !== undefined && parentSchemaNames.contains(parent.schema)
                     );
                     const numPerParent = model.numPerParent ?? 1;
-                    const validEntityCount = parentRep ? (model.creationType === SampleCreationType.PooledSamples ? numPerParent : parentRep.value.size * numPerParent ) : 0;
+                    const validEntityCount = parentRep
+                        ? model.creationType === SampleCreationType.PooledSamples
+                            ? numPerParent
+                            : parentRep.value.size * numPerParent
+                        : 0;
 
-                    if (validEntityCount >= 1) {
+                    if (validEntityCount >= 1 || parentRep?.isParentTypeOnly) {
                         resolve({
                             entityCount: validEntityCount,
                             entityParents: entityParents.set(

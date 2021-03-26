@@ -76,12 +76,14 @@ export class EntityParentType extends Record({
     query: undefined,
     schema: undefined,
     value: undefined,
+    isParentTypeOnly: false,
 }) {
     declare index: number;
     declare key: string;
     declare query: string;
     declare schema: string;
     declare value: List<DisplayObject>;
+    declare isParentTypeOnly: boolean;
 
     static create(values: any): EntityParentType {
         if (!values.key) values.key = generateId('parent-type-');

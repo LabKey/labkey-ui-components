@@ -472,7 +472,6 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
         try {
             const response: DomainDesign = await saveDomain(domainDesign, Domain.KINDS.SAMPLE_TYPE, details, name);
-            console.log("And here we will add the data for the uniqueId columns.");
             setSubmitting(false, () => {
                 this.props.onComplete(response);
             });

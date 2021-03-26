@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add showSampleAliquotSelector to QueryGridBar and GridPanel
 * Add URL.replaceFilter uti
 * Update EntityDeleteModal to work with QueryModel
+* Group lineage nodes based on materialLineageType
 
 ### version 2.16.1
 *Released*: 22 March 2021

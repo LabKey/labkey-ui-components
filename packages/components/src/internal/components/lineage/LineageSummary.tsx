@@ -18,7 +18,7 @@ interface LineageSummaryOwnProps extends LineageOptions {
 }
 
 class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryOwnProps> {
-    renderNodeList = (direction: LINEAGE_DIRECTIONS, lineage: LineageResult, edges: List<LineageLink>): ReactNode => {
+    renderNodeList = (direction: LINEAGE_DIRECTIONS, lineage: LineageResult, edges: List<LineageLink>, nodeName: string): ReactNode => {
         if (this.empty(edges)) {
             return null;
         }
@@ -33,18 +33,21 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         // Issue 40008:  TBD This isn't a full fix here because of differences in treatment of the text of the queryName that identifies the groups
         const suffixes = groupTitles?.get(direction) || Map<string, string>();
 
-        return groups.map(groupName => (
-            <DetailsListNodes
+        return groups.map(groupName => {
+            const group = nodesByType[groupName];
+            const groupDisplayName = group.displayType;
+            const isAliquot = group.materialLineageType === 'Aliquot';
+            const title = isAliquot && group.nodes.length > 1 ? nodeName + ' Aliquots' :
+                (groupDisplayName +
+                ' ' +
+                (suffixes.has(nodesByType[groupName].queryName) ? suffixes.get(nodesByType[groupName].queryName) : defaultTitleSuffix));
+            return (<DetailsListNodes
                 key={groupName}
-                title={
-                    groupName +
-                    ' ' +
-                    (suffixes.has(nodesByType[groupName].queryName) ? suffixes.get(nodesByType[groupName].queryName) : defaultTitleSuffix)
-                }
+                title={title}
                 nodes={nodesByType[groupName]}
                 highlightNode={highlightNode}
-            />
-        ));
+            />)}
+        );
     };
 
     private empty(nodes?: List<LineageLink>): boolean {
@@ -77,9 +80,9 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
 
         return (
             <>
-                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents)}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Parent, result, parents, node.name)}
                 {hasChildren && hasParents && <hr />}
-                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children)}
+                {this.renderNodeList(LINEAGE_DIRECTIONS.Children, result, children, node.name)}
             </>
         );
     }

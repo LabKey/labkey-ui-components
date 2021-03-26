@@ -102,8 +102,7 @@ export class QueryGridBar extends PureComponent<QueryGridBarProps> {
 
         let view = model?.showViewSelector ? <ViewSelector model={model} /> : null;
 
-        if (!view && showSampleAliquotSelector && model)
-            view = <GridAliquotViewSelector queryGridModel={model}/>
+        let aliquotView = showSampleAliquotSelector && model ? <GridAliquotViewSelector queryGridModel={model}/> : null;
 
         let leftContent;
         if (buttons || chart) {
@@ -120,6 +119,7 @@ export class QueryGridBar extends PureComponent<QueryGridBarProps> {
                 {paging}
                 {pageSizeBtn}
                 {exportBtn}
+                {aliquotView}
                 {view}
             </span>
         );

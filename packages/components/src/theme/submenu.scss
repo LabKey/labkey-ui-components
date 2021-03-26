@@ -27,7 +27,7 @@
     padding: 0;
 
     // This is a clone of ".dropdown-menu > li > a"
-    & > li > a, & > li > div.dropdown-menu-row {
+    & > li > a {
       display: block;
       padding: 3px 20px;
       clear: both;

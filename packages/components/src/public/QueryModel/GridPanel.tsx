@@ -165,7 +165,7 @@ class ButtonBar<T> extends PureComponent<GridBarProps<T>> {
                             <ViewMenu model={model} onViewSelect={onViewSelect} hideEmptyViewMenu={hideEmptyViewMenu} />
                         )}
 
-                        {(!canSelectView && showSampleAliquotSelector) && (
+                        {showSampleAliquotSelector && (
                             <GridAliquotViewSelector queryModel={model} updateFilter={onAliquotViewChange}/>
                         )}
                     </div>

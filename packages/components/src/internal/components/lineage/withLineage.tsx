@@ -39,11 +39,11 @@ export function withLineage<Props>(
 
         private _mounted = true;
 
-        loadLineage = async (): Promise<void> => {
+        loadLineage = async (forceReload?: boolean): Promise<void> => {
             const { distance, prefetchSeed, lsid, seedContainer } = this.props;
 
             // Lineage is already processed
-            if (this.state.lineage && lsid === this.state.lineage.seed) {
+            if (this.state.lineage && lsid === this.state.lineage.seed && !forceReload) {
                 return;
             }
 
@@ -140,8 +140,8 @@ export function withLineage<Props>(
         }
 
         componentDidUpdate(prevProps: Readonly<Props & WithLineageOptions>): void {
-            if (prevProps.lsid !== this.props.lsid) {
-                this.loadLineage();
+            if (prevProps.lsid !== this.props.lsid || prevProps.filters !== this.props.filters || prevProps.materialRunType !== this.props.materialRunType) {
+                this.loadLineage(prevProps.materialRunType !== this.props.materialRunType);
             }
         }
 

@@ -1403,10 +1403,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@labkey/api@1.1.9":
-  version "1.1.9"
-  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.9.tgz#df684a77847cc7c416e77a8c83d2f0eb3182d618"
-  integrity sha1-32hKd4R8x8QW53qMg9Lw6zGC1hg=
+"@labkey/api@1.1.10-fb-smAliquotGrid.1":
+  version "1.1.10-fb-smAliquotGrid.1"
+  resolved "https://artifactory.labkey.com/artifactory/api/npm/libs-client/@labkey/api/-/@labkey/api-1.1.10-fb-smAliquotGrid.1.tgz#43a1155d032de8a7266483d731e49e9a60c7208a"
+  integrity sha1-Q6EVXQMt6KcmZIPXMeSemmDHIIo=
 
 "@labkey/eslint-config-base@0.0.8":
   version "0.0.8"

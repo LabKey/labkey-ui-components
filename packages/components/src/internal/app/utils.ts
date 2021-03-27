@@ -143,7 +143,7 @@ export function isSampleAliquotEnabled(): boolean {
 
 export function hasPremiumModule(): boolean {
     const { moduleContext } = getServerContext();
-    return useMemo(() => moduleContext?.samplemanagement?.hasPremiumModule ?? false, [moduleContext]);
+    return  moduleContext?.samplemanagement?.hasPremiumModule ?? false;
 }
 
 export function isCommunityDistribution(): boolean {

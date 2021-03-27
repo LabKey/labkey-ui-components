@@ -1,6 +1,6 @@
 {
   "name": "@labkey/components",
-  "version": "2.18.0-generate-unique.8",
+  "version": "2.18.0-generate-unique.9",
   "description": "Components, models, actions, and utility functions for LabKey applications and pages",
   "main": "dist/components.js",
   "module": "dist/components.js",

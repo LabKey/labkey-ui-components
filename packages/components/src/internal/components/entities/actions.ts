@@ -189,7 +189,8 @@ export function extractEntityTypeOptionFromRow(row: Map<string, any>, lowerCaseV
     };
 }
 
-function getChosenParentData(
+// exported for jest testing
+export function getChosenParentData(
     model: EntityIdCreationModel,
     parentEntityDataTypes: Map<string, EntityDataType>,
     allowParents: boolean

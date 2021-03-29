@@ -532,6 +532,10 @@ describe('parentValuesDiffer', () => {
 });
 
 describe('createEntityParentKey', () => {
-    expect(createEntityParentKey(SchemaQuery.create('schema', 'query'))).toBe('schema:query');
-    expect(createEntityParentKey(SchemaQuery.create('schema', 'query'), 'id')).toBe('schema:query:id');
+    test('without id', () => {
+        expect(createEntityParentKey(SchemaQuery.create('schema', 'query'))).toBe('schema:query');
+    });
+    test('with id', () => {
+        expect(createEntityParentKey(SchemaQuery.create('schema', 'query'), 'id')).toBe('schema:query:id');
+    });
 });

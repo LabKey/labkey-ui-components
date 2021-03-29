@@ -247,6 +247,16 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "display": "Unique ID",
+                      "name": "uniqueId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -2444,6 +2454,16 @@ exports[`DomainRow client side warning on field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "display": "Unique ID",
+                      "name": "uniqueId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -3148,6 +3168,12 @@ exports[`DomainRow client side warning on field 1`] = `
                                                 value="visitId"
                                               >
                                                 Visit ID
+                                              </option>
+                                              <option
+                                                key="16"
+                                                value="uniqueId"
+                                              >
+                                                Unique ID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -4593,6 +4619,16 @@ exports[`DomainRow date time field 1`] = `
                       "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "display": "Unique ID",
+                      "name": "uniqueId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -6893,6 +6929,16 @@ exports[`DomainRow decimal field 1`] = `
                       "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "display": "Unique ID",
+                      "name": "uniqueId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -9233,6 +9279,16 @@ exports[`DomainRow participant id field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "display": "Unique ID",
+                      "name": "uniqueId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -11336,6 +11392,16 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "display": "Unique ID",
+                      "name": "uniqueId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -12040,6 +12106,12 @@ exports[`DomainRow server side error on reserved field 1`] = `
                                                 value="visitId"
                                               >
                                                 Visit ID
+                                              </option>
+                                              <option
+                                                key="16"
+                                                value="uniqueId"
+                                              >
+                                                Unique ID
                                               </option>
                                             </select>
                                           </FormControl>
@@ -13374,6 +13446,16 @@ exports[`DomainRow string field test 1`] = `
                       "display": "Visit ID",
                       "name": "visitId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#double",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "display": "Unique ID",
+                      "name": "uniqueId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
                       "alternateRangeURI": undefined,
                       "shortDisplay": undefined,
                       "lookupSchema": undefined,
@@ -15792,6 +15874,16 @@ exports[`DomainRow with empty domain form 1`] = `
                       "lookupSchema": undefined,
                       "lookupQuery": undefined,
                     },
+                    Immutable.Record {
+                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "display": "Unique ID",
+                      "name": "uniqueId",
+                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                      "alternateRangeURI": undefined,
+                      "shortDisplay": undefined,
+                      "lookupSchema": undefined,
+                      "lookupQuery": undefined,
+                    },
                   ]
                 }
                 defaultDefaultValueType="FIXED_EDITABLE"
@@ -16483,6 +16575,12 @@ exports[`DomainRow with empty domain form 1`] = `
                                                 value="visitId"
                                               >
                                                 Visit ID
+                                              </option>
+                                              <option
+                                                key="16"
+                                                value="uniqueId"
+                                              >
+                                                Unique ID
                                               </option>
                                             </select>
                                           </FormControl>

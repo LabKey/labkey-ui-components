@@ -1,10 +1,9 @@
-import React, {FC, memo, useCallback} from 'react';
-import {SampleTypeModel} from './models';
-import {UNIQUE_ID_CONCEPT_URI} from '../constants';
-import {Alert} from '../../base/Alert';
-import {Button} from 'react-bootstrap';
-import {IDomainField} from "../models";
-import {UNIQUE_ID_TYPE} from "../PropDescType";
+import React, { FC, memo, useCallback } from 'react';
+import { SampleTypeModel } from './models';
+import { Alert } from '../../base/Alert';
+import { Button } from 'react-bootstrap';
+import { IDomainField } from '../models';
+import { UNIQUE_ID_TYPE } from '../PropDescType';
 
 interface Props  {
     model: SampleTypeModel
@@ -25,11 +24,11 @@ export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddFiel
     }, [onAddField]);
 
 
-    const uniqueIdFields = model.domain.fields.filter(field => field.isUniqueIdField()).toArray();
-    if (model.isNew() && !isFieldsPanel && uniqueIdFields.length === 0) {
+    const uniqueIdFields = model.domain?.fields?.filter(field => field.isUniqueIdField()).toArray();
+    if (model.isNew() && !isFieldsPanel && !uniqueIdFields?.length) {
         return <div>Not currently enabled for this sample type</div>
     } else {
-        if (uniqueIdFields.length === 0) {
+        if (!uniqueIdFields?.length) {
             return (
                 <Alert bsStyle="info">
                     Do you want to add a unique ID field to create barcodes for this sample type?
@@ -48,7 +47,7 @@ export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddFiel
                 <div>
                     <i className="fa fa-check-circle domain-panel-status-icon-green"/>
                     <span className="left-spacing">
-                    { (uniqueIdFields.length === 1) ?
+                    { (uniqueIdFields?.length === 1) ?
                         'A Unique ID field for barcodes is defined: ' + uniqueIdFields[0].name  :
                         (uniqueIdFields.length + ' Unique ID fields are defined: ' + uniqueIdFields.map(field => field.name).join(", "))}
                     </span>

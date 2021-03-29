@@ -90,9 +90,11 @@ describe('SampleTypeDesigner', () => {
         expect(wrapped.find('#domain-header').at(2).hasClass('domain-panel-header-expanded')).toBeTruthy();
         expect(wrapped.find(FileAttachmentForm)).toHaveLength(1);
 
-        expect(wrapped.find(Alert)).toHaveLength(2);
-        expect(wrapped.find(Alert).at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
-        expect(wrapped.find(Alert).at(1).text()).toEqual(
+        const alerts = wrapped.find(Alert);
+        expect(alerts).toHaveLength(3);
+        expect(alerts.at(0).text()).toEqual(PROPERTIES_PANEL_ERROR_MSG);
+        expect(alerts.at(1).text()).toContain("Do you want to add a unique ID field to create barcodes for this sample type?");
+        expect(alerts.at(2).text()).toEqual(
             'Please correct errors in the properties panel before saving.'
         );
         wrapped.unmount();

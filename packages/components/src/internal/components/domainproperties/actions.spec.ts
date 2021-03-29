@@ -331,36 +331,40 @@ describe('domain properties actions', () => {
         expect(hasActiveModule('Query')).toBeTruthy();
     });
 
-    test('getAvailableTypes', () => {
+    test('getAvailableTypes, all optional allowed', () => {
         let domain = DomainDesign.create({
             allowFlagProperties: true,
             allowFileLinkProperties: true,
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
         });
-        expect(getAvailableTypes(domain).contains(FLAG_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(FILE_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(ATTACHMENT_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(VISIT_DATE_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(VISIT_ID_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(UNIQUE_ID_TYPE)).toBeTruthy();
+        let available = getAvailableTypes(domain);
+        expect(available.contains(FLAG_TYPE)).toBeTruthy();
+        expect(available.contains(FILE_TYPE)).toBeTruthy();
+        expect(available.contains(ATTACHMENT_TYPE)).toBeTruthy();
+        expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
+        expect(available.contains(TEXT_TYPE)).toBeTruthy();
+        expect(available.contains(VISIT_DATE_TYPE)).toBeTruthy();
+        expect(available.contains(VISIT_ID_TYPE)).toBeTruthy();
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
+    })
 
-        domain = DomainDesign.create({
+    test("getAvailableTypes, no optional allowed", () => {
+        const domain = DomainDesign.create({
             allowFlagProperties: false,
             allowFileLinkProperties: false,
             allowAttachmentProperties: false,
             allowTimepointProperties: false,
         });
-        expect(getAvailableTypes(domain).contains(FLAG_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(FILE_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(ATTACHMENT_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(TEXT_TYPE)).toBeTruthy();
-        expect(getAvailableTypes(domain).contains(VISIT_DATE_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(VISIT_ID_TYPE)).toBeFalsy();
-        expect(getAvailableTypes(domain).contains(UNIQUE_ID_TYPE)).toBeTruthy();
+        const available = getAvailableTypes(domain);
+        expect(available.contains(FLAG_TYPE)).toBeFalsy();
+        expect(available.contains(FILE_TYPE)).toBeFalsy();
+        expect(available.contains(ATTACHMENT_TYPE)).toBeFalsy();
+        expect(available.contains(ONTOLOGY_LOOKUP_TYPE)).toBeFalsy();
+        expect(available.contains(TEXT_TYPE)).toBeTruthy();
+        expect(available.contains(VISIT_DATE_TYPE)).toBeFalsy();
+        expect(available.contains(VISIT_ID_TYPE)).toBeFalsy();
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
     });
 
     test('getAvailableTypesForOntology', async () => {

@@ -128,7 +128,7 @@ exports[`<PermissionAssignments/> custom props 1`] = `
         </div>
         <br />
         <button
-          className="pull-right btn btn-success"
+          className="pull-right alert-button btn btn-success"
           disabled={true}
           onClick={[Function]}
           type="button"
@@ -971,7 +971,7 @@ exports[`<PermissionAssignments/> default props 1`] = `
         </div>
         <br />
         <button
-          className="pull-right btn btn-success"
+          className="pull-right alert-button btn btn-success"
           disabled={true}
           onClick={[Function]}
           type="button"

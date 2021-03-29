@@ -226,6 +226,55 @@ Array [
             </div>
           </div>
         </form>
+        <div
+          className="domain-field-section-heading"
+        >
+          Storage Settings
+        </div>
+        <div
+          className="margin-top row"
+        >
+          <div
+            className="col-xs-2"
+          >
+            <span
+              className="domain-no-wrap"
+            >
+              Barcodes
+              <span
+                className="label-help-target"
+                onMouseOut={[Function]}
+                onMouseOver={[Function]}
+              >
+                <svg
+                  aria-hidden="true"
+                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                  data-icon="question-circle"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  style={Object {}}
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                    fill="currentColor"
+                    style={Object {}}
+                  />
+                </svg>
+              </span>
+              
+            </span>
+          </div>
+          <div
+            className="col-xs-10"
+          >
+            <div>
+              Not currently enabled for this sample type
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>,
@@ -304,6 +353,20 @@ Array [
           <div
             className="col-xs-12"
           />
+        </div>
+        <div
+          className="alert alert-info"
+          role="alert"
+        >
+          Do you want to add a unique ID field to create barcodes for this sample type?
+          <button
+            className="pull-right alert-button btn btn-info"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Yes, Add Unique ID Field
+          </button>
         </div>
         <span
           className="translator--toggle__wizard"
@@ -662,7 +725,7 @@ Array [
         <div
           className="domain-field-section-heading"
         >
-          Appearance Settings
+          Storage Settings
         </div>
         <div
           className="margin-top row"
@@ -720,6 +783,50 @@ Array [
               <div
                 className="color-picker__picker"
               />
+            </div>
+          </div>
+        </div>
+        <div
+          className="margin-top row"
+        >
+          <div
+            className="col-xs-2"
+          >
+            <span
+              className="domain-no-wrap"
+            >
+              Barcodes
+              <span
+                className="label-help-target"
+                onMouseOut={[Function]}
+                onMouseOver={[Function]}
+              >
+                <svg
+                  aria-hidden="true"
+                  className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                  data-icon="question-circle"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  style={Object {}}
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                    fill="currentColor"
+                    style={Object {}}
+                  />
+                </svg>
+              </span>
+              
+            </span>
+          </div>
+          <div
+            className="col-xs-10"
+          >
+            <div>
+              Not currently enabled for this sample type
             </div>
           </div>
         </div>
@@ -801,6 +908,20 @@ Array [
           <div
             className="col-xs-12"
           />
+        </div>
+        <div
+          className="alert alert-info"
+          role="alert"
+        >
+          Do you want to add a unique ID field to create barcodes for this sample type?
+          <button
+            className="pull-right alert-button btn btn-info"
+            disabled={false}
+            onClick={[Function]}
+            type="button"
+          >
+            Yes, Add Unique ID Field
+          </button>
         </div>
         <span
           className="translator--toggle__wizard"
@@ -1485,6 +1606,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
         nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
         onAddParentAlias={[Function]}
+        onAddUniqueIdField={[Function]}
         onParentAliasChange={[Function]}
         onRemoveParentAlias={[Function]}
         onToggle={[Function]}
@@ -1640,6 +1762,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           nounPlural="Sample Types"
           nounSingular="Sample Type"
           onAddParentAlias={[Function]}
+          onAddUniqueIdField={[Function]}
           onParentAliasChange={[Function]}
           onRemoveParentAlias={[Function]}
           panelStatus="NONE"
@@ -1799,6 +1922,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             nounPlural="Sample Types"
             nounSingular="Sample Type"
             onAddParentAlias={[Function]}
+            onAddUniqueIdField={[Function]}
             onParentAliasChange={[Function]}
             onRemoveParentAlias={[Function]}
             panelStatus="NONE"
@@ -2576,12 +2700,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                   </Form>
                                 </EntityDetailsForm>
                                 <SectionHeading
-                                  title="Appearance Settings"
+                                  title="Storage Settings"
                                 >
                                   <div
                                     className="domain-field-section-heading"
                                   >
-                                    Appearance Settings
+                                    Storage Settings
                                   </div>
                                 </SectionHeading>
                                 <Row
@@ -2724,6 +2848,270 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
+                                <Row
+                                  bsClass="row"
+                                  className="margin-top"
+                                  componentClass="div"
+                                >
+                                  <div
+                                    className="margin-top row"
+                                  >
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      xs={2}
+                                    >
+                                      <div
+                                        className="col-xs-2"
+                                      >
+                                        <DomainFieldLabel
+                                          helpTipBody={
+                                            <React.Fragment>
+                                              Use a Unique ID field to represent barcodes or other ID fields in use in your lab.
+                                              <br />
+                                              <br />
+                                              Learn more about using 
+                                              <a
+                                                href="https://www.labkey.org/Documentation/wiki-page.view?name=uniqueIds"
+                                                target="_blank"
+                                              >
+                                                barcodes and unique IDs
+                                              </a>
+                                               in 
+                                              .
+                                            </React.Fragment>
+                                          }
+                                          label="Barcodes"
+                                        >
+                                          <span
+                                            className="domain-no-wrap"
+                                          >
+                                            Barcodes
+                                            <Component
+                                              customStyle={Object {}}
+                                              id="tooltip"
+                                              size="1x"
+                                              title="Barcodes"
+                                            >
+                                              <span
+                                                className="label-help-target"
+                                                onMouseOut={[Function]}
+                                                onMouseOver={[Function]}
+                                              >
+                                                <FontAwesomeIcon
+                                                  border={false}
+                                                  className="label-help-icon"
+                                                  fixedWidth={false}
+                                                  flip={null}
+                                                  icon={
+                                                    Object {
+                                                      "icon": Array [
+                                                        512,
+                                                        512,
+                                                        Array [],
+                                                        "f059",
+                                                        "M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z",
+                                                      ],
+                                                      "iconName": "question-circle",
+                                                      "prefix": "fas",
+                                                    }
+                                                  }
+                                                  inverse={false}
+                                                  listItem={false}
+                                                  mask={null}
+                                                  pull={null}
+                                                  pulse={false}
+                                                  rotation={null}
+                                                  size="1x"
+                                                  spin={false}
+                                                  style={Object {}}
+                                                  swapOpacity={false}
+                                                  symbol={false}
+                                                  title=""
+                                                  transform={null}
+                                                >
+                                                  <svg
+                                                    aria-hidden="true"
+                                                    className="svg-inline--fa fa-question-circle fa-w-16 fa-1x label-help-icon"
+                                                    data-icon="question-circle"
+                                                    data-prefix="fas"
+                                                    focusable="false"
+                                                    role="img"
+                                                    style={Object {}}
+                                                    viewBox="0 0 512 512"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                  >
+                                                    <path
+                                                      d="M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zM262.655 90c-54.497 0-89.255 22.957-116.549 63.758-3.536 5.286-2.353 12.415 2.715 16.258l34.699 26.31c5.205 3.947 12.621 3.008 16.665-2.122 17.864-22.658 30.113-35.797 57.303-35.797 20.429 0 45.698 13.148 45.698 32.958 0 14.976-12.363 22.667-32.534 33.976C247.128 238.528 216 254.941 216 296v4c0 6.627 5.373 12 12 12h56c6.627 0 12-5.373 12-12v-1.333c0-28.462 83.186-29.647 83.186-106.667 0-58.002-60.165-102-116.531-102zM256 338c-25.365 0-46 20.635-46 46 0 25.364 20.635 46 46 46s46-20.636 46-46c0-25.365-20.635-46-46-46z"
+                                                      fill="currentColor"
+                                                      style={Object {}}
+                                                    />
+                                                  </svg>
+                                                </FontAwesomeIcon>
+                                                <Overlay
+                                                  animation={[Function]}
+                                                  placement="right"
+                                                  rootClose={false}
+                                                  show={false}
+                                                >
+                                                  <Overlay
+                                                    placement="right"
+                                                    rootClose={false}
+                                                    show={false}
+                                                    transition={[Function]}
+                                                  />
+                                                </Overlay>
+                                              </span>
+                                            </Component>
+                                          </span>
+                                        </DomainFieldLabel>
+                                      </div>
+                                    </Col>
+                                    <Col
+                                      bsClass="col"
+                                      componentClass="div"
+                                      xs={10}
+                                    >
+                                      <div
+                                        className="col-xs-10"
+                                      >
+                                        <Memo()
+                                          isFieldsPanel={false}
+                                          model={
+                                            Immutable.Record {
+                                              "rowId": undefined,
+                                              "name": "Test Name",
+                                              "nameReadOnly": true,
+                                              "nameExpression": undefined,
+                                              "description": undefined,
+                                              "labelColor": undefined,
+                                              "metricUnit": undefined,
+                                              "parentAliases": undefined,
+                                              "importAliases": Immutable.Map {},
+                                              "domainId": undefined,
+                                              "domain": Immutable.Record {
+                                                "name": "Test Name",
+                                                "container": undefined,
+                                                "description": undefined,
+                                                "domainURI": undefined,
+                                                "domainId": null,
+                                                "allowFileLinkProperties": false,
+                                                "allowAttachmentProperties": false,
+                                                "allowFlagProperties": true,
+                                                "allowTimepointProperties": false,
+                                                "showDefaultValueSettings": false,
+                                                "defaultDefaultValueType": undefined,
+                                                "defaultValueOptions": Immutable.List [],
+                                                "fields": Immutable.List [
+                                                  Immutable.Record {
+                                                    "conceptURI": undefined,
+                                                    "conditionalFormats": Immutable.List [],
+                                                    "defaultScale": undefined,
+                                                    "defaultValueType": undefined,
+                                                    "defaultValue": undefined,
+                                                    "defaultDisplayValue": undefined,
+                                                    "description": undefined,
+                                                    "dimension": undefined,
+                                                    "excludeFromShifting": false,
+                                                    "format": undefined,
+                                                    "hidden": false,
+                                                    "importAliases": undefined,
+                                                    "label": undefined,
+                                                    "lookupContainer": undefined,
+                                                    "lookupQuery": undefined,
+                                                    "lookupSchema": undefined,
+                                                    "lookupValidator": undefined,
+                                                    "measure": undefined,
+                                                    "mvEnabled": false,
+                                                    "name": "testfield",
+                                                    "PHI": undefined,
+                                                    "propertyId": undefined,
+                                                    "propertyURI": undefined,
+                                                    "propertyValidators": Immutable.List [],
+                                                    "rangeValidators": Immutable.List [],
+                                                    "rangeURI": undefined,
+                                                    "regexValidators": Immutable.List [],
+                                                    "recommendedVariable": false,
+                                                    "required": false,
+                                                    "scale": 4000,
+                                                    "URL": undefined,
+                                                    "shownInDetailsView": true,
+                                                    "shownInInsertView": true,
+                                                    "shownInUpdateView": true,
+                                                    "visible": true,
+                                                    "dataType": Immutable.Record {
+                                                      "conceptURI": undefined,
+                                                      "display": "Text",
+                                                      "name": "string",
+                                                      "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                      "alternateRangeURI": "xsd:string",
+                                                      "shortDisplay": "String",
+                                                      "lookupSchema": undefined,
+                                                      "lookupQuery": undefined,
+                                                    },
+                                                    "lookupQueryValue": undefined,
+                                                    "lookupType": Immutable.Record {
+                                                      "conceptURI": undefined,
+                                                      "display": "Lookup",
+                                                      "name": "lookup",
+                                                      "rangeURI": undefined,
+                                                      "alternateRangeURI": undefined,
+                                                      "shortDisplay": undefined,
+                                                      "lookupSchema": undefined,
+                                                      "lookupQuery": undefined,
+                                                    },
+                                                    "original": Object {
+                                                      "conceptURI": undefined,
+                                                      "dataType": Immutable.Record {
+                                                        "conceptURI": undefined,
+                                                        "display": "Text",
+                                                        "name": "string",
+                                                        "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                        "alternateRangeURI": "xsd:string",
+                                                        "shortDisplay": "String",
+                                                        "lookupSchema": undefined,
+                                                        "lookupQuery": undefined,
+                                                      },
+                                                      "rangeURI": undefined,
+                                                    },
+                                                    "updatedField": false,
+                                                    "isPrimaryKey": false,
+                                                    "lockType": "NotLocked",
+                                                    "wrappedColumnName": undefined,
+                                                    "disablePhiLevel": false,
+                                                    "lockExistingField": false,
+                                                    "sourceOntology": undefined,
+                                                    "conceptLabelColumn": undefined,
+                                                    "conceptImportColumn": undefined,
+                                                    "principalConceptCode": undefined,
+                                                    "derivationDataScope": undefined,
+                                                    "selected": false,
+                                                  },
+                                                ],
+                                                "indices": Immutable.List [],
+                                                "domainException": undefined,
+                                                "mandatoryFieldNames": Immutable.List [],
+                                                "reservedFieldNames": Immutable.List [
+                                                  "sampleid",
+                                                ],
+                                                "newDesignFields": undefined,
+                                                "instructions": undefined,
+                                                "domainKindName": undefined,
+                                              },
+                                              "autoLinkTargetContainerId": undefined,
+                                              "exception": undefined,
+                                            }
+                                          }
+                                          onAddField={[Function]}
+                                        >
+                                          <div>
+                                            Not currently enabled for this sample type
+                                          </div>
+                                        </Memo()>
+                                      </div>
+                                    </Col>
+                                  </div>
+                                </Row>
                               </div>
                             </div>
                           </Transition>
@@ -2739,6 +3127,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
         allowImportExport={true}
+        appDomainHeaderRenderer={[Function]}
         appPropertiesOnly={true}
         controlledCollapse={true}
         domain={
@@ -2881,6 +3270,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         <LookupProvider>
           <DomainFormImpl
             allowImportExport={true}
+            appDomainHeaderRenderer={[Function]}
             appPropertiesOnly={true}
             controlledCollapse={true}
             domain={
@@ -3441,6 +3831,170 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                     </Col>
                                   </div>
                                 </Row>
+                                <Memo()
+                                  isFieldsPanel={true}
+                                  model={
+                                    Immutable.Record {
+                                      "rowId": undefined,
+                                      "name": "Test Name",
+                                      "nameReadOnly": true,
+                                      "nameExpression": undefined,
+                                      "description": undefined,
+                                      "labelColor": undefined,
+                                      "metricUnit": undefined,
+                                      "parentAliases": undefined,
+                                      "importAliases": Immutable.Map {},
+                                      "domainId": undefined,
+                                      "domain": Immutable.Record {
+                                        "name": "Test Name",
+                                        "container": undefined,
+                                        "description": undefined,
+                                        "domainURI": undefined,
+                                        "domainId": null,
+                                        "allowFileLinkProperties": false,
+                                        "allowAttachmentProperties": false,
+                                        "allowFlagProperties": true,
+                                        "allowTimepointProperties": false,
+                                        "showDefaultValueSettings": false,
+                                        "defaultDefaultValueType": undefined,
+                                        "defaultValueOptions": Immutable.List [],
+                                        "fields": Immutable.List [
+                                          Immutable.Record {
+                                            "conceptURI": undefined,
+                                            "conditionalFormats": Immutable.List [],
+                                            "defaultScale": undefined,
+                                            "defaultValueType": undefined,
+                                            "defaultValue": undefined,
+                                            "defaultDisplayValue": undefined,
+                                            "description": undefined,
+                                            "dimension": undefined,
+                                            "excludeFromShifting": false,
+                                            "format": undefined,
+                                            "hidden": false,
+                                            "importAliases": undefined,
+                                            "label": undefined,
+                                            "lookupContainer": undefined,
+                                            "lookupQuery": undefined,
+                                            "lookupSchema": undefined,
+                                            "lookupValidator": undefined,
+                                            "measure": undefined,
+                                            "mvEnabled": false,
+                                            "name": "testfield",
+                                            "PHI": undefined,
+                                            "propertyId": undefined,
+                                            "propertyURI": undefined,
+                                            "propertyValidators": Immutable.List [],
+                                            "rangeValidators": Immutable.List [],
+                                            "rangeURI": undefined,
+                                            "regexValidators": Immutable.List [],
+                                            "recommendedVariable": false,
+                                            "required": false,
+                                            "scale": 4000,
+                                            "URL": undefined,
+                                            "shownInDetailsView": true,
+                                            "shownInInsertView": true,
+                                            "shownInUpdateView": true,
+                                            "visible": true,
+                                            "dataType": Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Text",
+                                              "name": "string",
+                                              "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                              "alternateRangeURI": "xsd:string",
+                                              "shortDisplay": "String",
+                                              "lookupSchema": undefined,
+                                              "lookupQuery": undefined,
+                                            },
+                                            "lookupQueryValue": undefined,
+                                            "lookupType": Immutable.Record {
+                                              "conceptURI": undefined,
+                                              "display": "Lookup",
+                                              "name": "lookup",
+                                              "rangeURI": undefined,
+                                              "alternateRangeURI": undefined,
+                                              "shortDisplay": undefined,
+                                              "lookupSchema": undefined,
+                                              "lookupQuery": undefined,
+                                            },
+                                            "original": Object {
+                                              "conceptURI": undefined,
+                                              "dataType": Immutable.Record {
+                                                "conceptURI": undefined,
+                                                "display": "Text",
+                                                "name": "string",
+                                                "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
+                                                "alternateRangeURI": "xsd:string",
+                                                "shortDisplay": "String",
+                                                "lookupSchema": undefined,
+                                                "lookupQuery": undefined,
+                                              },
+                                              "rangeURI": undefined,
+                                            },
+                                            "updatedField": false,
+                                            "isPrimaryKey": false,
+                                            "lockType": "NotLocked",
+                                            "wrappedColumnName": undefined,
+                                            "disablePhiLevel": false,
+                                            "lockExistingField": false,
+                                            "sourceOntology": undefined,
+                                            "conceptLabelColumn": undefined,
+                                            "conceptImportColumn": undefined,
+                                            "principalConceptCode": undefined,
+                                            "derivationDataScope": undefined,
+                                            "selected": false,
+                                          },
+                                        ],
+                                        "indices": Immutable.List [],
+                                        "domainException": undefined,
+                                        "mandatoryFieldNames": Immutable.List [],
+                                        "reservedFieldNames": Immutable.List [
+                                          "sampleid",
+                                        ],
+                                        "newDesignFields": undefined,
+                                        "instructions": undefined,
+                                        "domainKindName": undefined,
+                                      },
+                                      "autoLinkTargetContainerId": undefined,
+                                      "exception": undefined,
+                                    }
+                                  }
+                                  onAddField={[Function]}
+                                >
+                                  <Alert
+                                    bsStyle="info"
+                                  >
+                                    <Alert
+                                      bsClass="alert"
+                                      bsStyle="info"
+                                      closeLabel="Close alert"
+                                    >
+                                      <div
+                                        className="alert alert-info"
+                                        role="alert"
+                                      >
+                                        Do you want to add a unique ID field to create barcodes for this sample type?
+                                        <Button
+                                          active={false}
+                                          block={false}
+                                          bsClass="btn"
+                                          bsStyle="info"
+                                          className="pull-right alert-button"
+                                          disabled={false}
+                                          onClick={[Function]}
+                                        >
+                                          <button
+                                            className="pull-right alert-button btn btn-info"
+                                            disabled={false}
+                                            onClick={[Function]}
+                                            type="button"
+                                          >
+                                            Yes, Add Unique ID Field
+                                          </button>
+                                        </Button>
+                                      </div>
+                                    </Alert>
+                                  </Alert>
+                                </Memo()>
                                 <DragDropContext
                                   onBeforeDragStart={[Function]}
                                   onDragEnd={[Function]}

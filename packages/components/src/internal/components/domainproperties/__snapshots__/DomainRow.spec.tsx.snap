@@ -248,7 +248,7 @@ exports[`DomainRow Sample Field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -2455,7 +2455,7 @@ exports[`DomainRow client side warning on field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -4625,7 +4625,7 @@ exports[`DomainRow date time field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -6935,7 +6935,7 @@ exports[`DomainRow decimal field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -9280,7 +9280,7 @@ exports[`DomainRow participant id field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -11393,7 +11393,7 @@ exports[`DomainRow server side error on reserved field 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -13452,7 +13452,7 @@ exports[`DomainRow string field test 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",
@@ -15875,7 +15875,7 @@ exports[`DomainRow with empty domain form 1`] = `
                       "lookupQuery": undefined,
                     },
                     Immutable.Record {
-                      "conceptURI": "http://www.labkey.org/types#uniqueId",
+                      "conceptURI": "http://www.labkey.org/types#storageUniqueId",
                       "display": "Unique ID",
                       "name": "uniqueId",
                       "rangeURI": "http://www.w3.org/2001/XMLSchema#string",

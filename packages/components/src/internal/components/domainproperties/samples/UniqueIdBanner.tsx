@@ -18,6 +18,10 @@ export const DEFAULT_UNIQUE_ID_FIELD = {
     name: 'Barcode',
 } as Partial<IDomainField>;
 
+// exported for Jest tests
+export const NEW_TYPE_NO_BARCODE_FIELDS_MSG = 'Not currently enabled for this sample type';
+export const ADD_NEW_UNIQUE_ID_MSG = 'Do you want to add a unique ID field to create barcodes for this sample type?';
+
 export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddField }) => {
     const onClick = useCallback(() => {
         onAddField(DEFAULT_UNIQUE_ID_FIELD);
@@ -26,12 +30,12 @@ export const UniqueIdBanner: FC<Props> = memo(({ model, isFieldsPanel, onAddFiel
 
     const uniqueIdFields = model.domain?.fields?.filter(field => field.isUniqueIdField()).toArray();
     if (model.isNew() && !isFieldsPanel && !uniqueIdFields?.length) {
-        return <div>Not currently enabled for this sample type</div>
+        return <div>{NEW_TYPE_NO_BARCODE_FIELDS_MSG}</div>
     } else {
         if (!uniqueIdFields?.length) {
             return (
                 <Alert bsStyle="info">
-                    Do you want to add a unique ID field to create barcodes for this sample type?
+                    {ADD_NEW_UNIQUE_ID_MSG}
                     <Button
                         className="pull-right alert-button"
                         bsStyle="info"

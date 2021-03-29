@@ -65,6 +65,7 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
 } from './constants';
+import { Domain } from '@labkey/api';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -375,6 +376,24 @@ describe('domain properties actions', () => {
         expect(types.contains(ATTACHMENT_TYPE)).toBeFalsy();
         expect(types.contains(ONTOLOGY_LOOKUP_TYPE)).toBeTruthy();
         expect(types.contains(TEXT_TYPE)).toBeTruthy();
+    });
+
+    test("getAvailableTypes, sampleType", () => {
+        LABKEY.moduleContext.samplemanagement = { hasPremiumModule: true };
+        const domain = DomainDesign.create({
+            domainKindName: Domain.KINDS.SAMPLE_TYPE,
+        });
+        const available = getAvailableTypes(domain);
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
+    });
+
+    test("getAvailableTypes, sampleType community", () => {
+        // LABKEY.moduleContext.samplemanagement = { hasPremiumModule: true };
+        const domain = DomainDesign.create({
+            domainKindName: Domain.KINDS.SAMPLE_TYPE,
+        });
+        const available = getAvailableTypes(domain);
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
     });
 
     test('updateOntologyFieldProperties', () => {

@@ -4,7 +4,7 @@ import { EditableColumnMetadata, naturalSort, QueryGridModel, QueryInfo } from '
 import { DELIMITER } from '../forms/input/SelectInput';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
-import { UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 import { getCurrentProductName } from '../../app/utils';
 
 export function parentValuesDiffer(
@@ -130,7 +130,7 @@ export function getUpdatedRowForParentChanges(
 
 export function getUniqueIdColumnMetadata(queryInfo: QueryInfo) : Map<string, EditableColumnMetadata> {
     let columnMetadata = Map<string, EditableColumnMetadata>();
-    queryInfo?.columns.filter((column) => column.conceptURI === UNIQUE_ID_CONCEPT_URI).forEach(
+    queryInfo?.columns.filter((column) => column.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI).forEach(
         column => {
             columnMetadata = columnMetadata.set(column.fieldKey, {
                 readOnly: true,

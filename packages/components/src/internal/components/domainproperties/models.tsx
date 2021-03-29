@@ -40,7 +40,7 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
-    UNIQUE_ID_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
     UNLIMITED_TEXT_LENGTH,
     USER_RANGE_URI,
 } from './constants';
@@ -994,7 +994,7 @@ export class DomainField
     }
 
     isUniqueIdField(): boolean {
-        return this.conceptURI === UNIQUE_ID_CONCEPT_URI;
+        return this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
     }
 
     static hasRangeValidation(field: DomainField): boolean {

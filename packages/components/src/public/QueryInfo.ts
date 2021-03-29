@@ -13,7 +13,7 @@ import {
 } from '..';
 
 import { toLowerSafe } from '../internal/util/utils';
-import { UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 
 export enum QueryInfoStatus {
     ok,

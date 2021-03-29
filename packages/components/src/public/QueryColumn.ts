@@ -3,7 +3,7 @@
 import { Record } from 'immutable';
 
 import { SchemaQuery } from './SchemaQuery';
-import { UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
 
 export class QueryLookup extends Record({
     // server defaults
@@ -231,7 +231,7 @@ export class QueryColumn extends Record({
     }
 
     get isUniqueIdColumn(): boolean {
-        return (this.conceptURI === UNIQUE_ID_CONCEPT_URI);
+        return (this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI);
     }
 
     isImportColumn(importName: string): boolean {

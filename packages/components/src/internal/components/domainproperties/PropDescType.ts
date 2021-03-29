@@ -21,7 +21,7 @@ import {
     TIME_RANGE_URI,
     USER_RANGE_URI,
     VISITID_CONCEPT_URI,
-    UNIQUE_ID_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './constants';
 
 export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
@@ -70,7 +70,7 @@ export class PropDescType
     }
 
     static isUniqueIdField(conceptURI: string): boolean {
-        return conceptURI === UNIQUE_ID_CONCEPT_URI;
+        return conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
     }
 
     static isLookup(name: string): boolean {
@@ -278,7 +278,7 @@ export const UNIQUE_ID_TYPE = new PropDescType({
     name: 'uniqueId',
     display: 'Unique ID',
     rangeURI: STRING_RANGE_URI,
-    conceptURI: UNIQUE_ID_CONCEPT_URI
+    conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI
 })
 
 export const PROP_DESC_TYPES = List([

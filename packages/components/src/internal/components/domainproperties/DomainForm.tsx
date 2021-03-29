@@ -51,7 +51,7 @@ import {
     EXPAND_TRANSITION_FAST,
     PHILEVEL_NOT_PHI,
     SEVERITY_LEVEL_ERROR,
-    UNIQUE_ID_CONCEPT_URI,
+    STORAGE_UNIQUE_ID_CONCEPT_URI,
 } from './constants';
 import { LookupProvider } from './Lookup/Context';
 import {
@@ -629,7 +629,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
 
     applyAddField = (config?: Partial<IDomainField>) => {
         let newConfig = config ? {...config} : undefined;
-        if (config?.conceptURI === UNIQUE_ID_CONCEPT_URI) {
+        if (config?.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI) {
             newConfig = {...config, shownInInsertView: false};
         }
         const newDomain = addDomainField(this.props.domain, newConfig);

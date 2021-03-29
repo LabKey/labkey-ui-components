@@ -87,6 +87,8 @@
     margin-bottom: 8px;
 }
 
-.alert-button {
-    padding: 0 12px;
+.alert {
+    .alert-button {
+        padding: 0 12px;
+    }
 }

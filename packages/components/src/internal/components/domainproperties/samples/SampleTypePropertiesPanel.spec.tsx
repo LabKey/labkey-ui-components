@@ -53,6 +53,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
                 parentOptions={[]}
             />
         );
@@ -72,6 +73,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
                 parentOptions={[]}
             />
         );
@@ -91,6 +93,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
                 parentOptions={[]}
             />
         );
@@ -123,6 +126,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
                 parentOptions={[]}
             />
         );
@@ -155,6 +159,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
                 parentOptions={[{ schema: 'exp.data' }]}
                 includeDataClasses={true}
                 useSeparateDataClassesAliasMenu={true}
@@ -182,6 +187,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
                 parentOptions={[]}
             />
         );
@@ -213,6 +219,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
                 parentOptions={[]}
             />
         );
@@ -235,6 +242,7 @@ describe('<SampleTypePropertiesPanel/>', () => {
                 onAddParentAlias={jest.fn}
                 onRemoveParentAlias={jest.fn}
                 onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
                 parentOptions={[]}
             />
         );

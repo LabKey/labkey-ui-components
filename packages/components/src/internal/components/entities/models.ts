@@ -370,7 +370,7 @@ export class EntityIdCreationModel extends Record({
     }
 
     hasTargetEntityType(): boolean {
-        return this.targetEntityType && this.targetEntityType.value;
+        return this.targetEntityType && this.targetEntityType.value !== undefined;
     }
 
     getTargetEntityTypeValue(): string {

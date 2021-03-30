@@ -43,7 +43,6 @@ interface SubMenuItemState {
     activeIdx?: number;
     expanded?: boolean;
     filterInput?: string;
-    filterItems?: ISubItem[];
 }
 
 export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemState> {
@@ -71,7 +70,6 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
         this.state = {
             activeIdx: 0,
             expanded: false,
-            filterItems: this.props.items,
         };
     }
 
@@ -115,24 +113,23 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
     onFilterChange(evt: React.ChangeEvent<HTMLInputElement>) {
         const filterInput = evt.target.value ? evt.target.value.toLowerCase() : undefined;
 
-        const filterItems = [];
-        this.props.items.forEach(item => {
-            if (!filterInput || (item && item.text && item.text.toLowerCase().indexOf(filterInput) > -1)) {
-                filterItems.push(item);
-            }
-        });
-
         this.setState(() => ({
             activeIdx: 0,
             filterInput,
-            filterItems,
         }));
     }
 
-    select() {
-        const { activeIdx, filterItems } = this.state;
+    getFilteredItems(): ISubItem[] {
+        const { items } = this.props;
+        const { filterInput } = this.state;
+        return items.filter(item => !filterInput || item?.text.toLowerCase().indexOf(filterInput) > -1);
+    }
 
-        if (filterItems && filterItems.length > activeIdx) {
+    select() {
+        const { activeIdx } = this.state;
+        const filterItems = this.getFilteredItems();
+
+        if (filterItems?.length > activeIdx) {
             const item: ISubItem = filterItems[activeIdx];
 
             // TODO: support rest of MenuItemProps interface
@@ -153,19 +150,18 @@ export class SubMenuItem extends React.Component<SubMenuItemProps, SubMenuItemSt
                 activeIdx: 0,
                 expanded,
                 filterInput: undefined,
-                filterItems: this.props.items,
             };
         });
 
         if (expanded) {
             window.setTimeout(() => {
-                this.refs.filter && this.refs.filter.focus();
+                this.refs.filter?.focus();
             }, 25);
         }
     }
 
     renderItems(filter?: boolean) {
-        const itemSet = filter ? this.state.filterItems : this.props.items;
+        const itemSet = filter ? this.getFilteredItems() : this.props.items;
 
         if (itemSet && itemSet.length) {
             const activeIdx = this.state.activeIdx;

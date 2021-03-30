@@ -240,7 +240,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (
             insertModel &&
-            insertModel.getTargetEntityTypeName() === target &&
+            insertModel.getTargetEntityTypeValue() === target &&
             insertModel.selectionKey === selectionKey &&
             (insertModel.originalParents === parents || !allowParents)
         ) {
@@ -303,7 +303,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                 'Problem retrieving data for ' +
                                 this.typeTextSingular +
                                 " '" +
-                                insertModel.getTargetEntityTypeName() +
+                                insertModel.getTargetEntityTypeLabel() +
                                 "'.",
                         }) as EntityIdCreationModel,
                     });
@@ -322,7 +322,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { insertModel } = this.state;
 
         if (insertModel) {
-            const entityTypeName = insertModel ? insertModel.getTargetEntityTypeName() : undefined;
+            const entityTypeName = insertModel ? insertModel.getTargetEntityTypeValue() : undefined;
             if (entityTypeName) {
                 const model = getStateQueryGridModel(
                     'insert-entities',
@@ -670,7 +670,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             if (response?.rows) {
                 this.props.onDataChange?.(false);
                 this.props.afterEntityCreation?.(
-                    insertModel.getTargetEntityTypeName(),
+                    insertModel.getTargetEntityTypeLabel(),
                     response.getFilter(),
                     response.rows.length,
                     'created',
@@ -887,10 +887,10 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             this.setSubmitting(false);
             this.props.onDataChange?.(false);
             if (useAsync) {
-                this.props.onBackgroundJobStart?.(insertModel.getTargetEntityTypeName(), file.name, response.jobId);
+                this.props.onBackgroundJobStart?.(insertModel.getTargetEntityTypeLabel(), file.name, response.jobId);
             } else {
                 this.props.afterEntityCreation?.(
-                    insertModel.getTargetEntityTypeName(),
+                    insertModel.getTargetEntityTypeLabel(),
                     null,
                     response.rowCount,
                     'imported',
@@ -942,7 +942,14 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     render() {
-        const { canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural } = this.props;
+        const {
+            canEditEntityTypeDetails,
+            disableMerge,
+            fileSizeLimits,
+            importOnly,
+            nounPlural,
+            entityDataType,
+        } = this.props;
         const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
 
         if (!insertModel) {
@@ -954,10 +961,11 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
         }
 
         const isGridStep = this.isGridStep();
-        const entityTypeName = insertModel.getTargetEntityTypeName();
-        const editEntityTypeDetailsLink = entityTypeName
-            ? AppURL.create(nounPlural, entityTypeName, 'update')
-            : undefined;
+        const entityTypeName = insertModel.getTargetEntityTypeLabel();
+        const editEntityTypeDetailsLink =
+            entityTypeName && entityDataType?.editTypeAppUrlPrefix
+                ? AppURL.create(entityDataType.editTypeAppUrlPrefix, entityTypeName)
+                : undefined;
 
         return (
             <>

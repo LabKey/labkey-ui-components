@@ -76,12 +76,14 @@ export class EntityParentType extends Record({
     query: undefined,
     schema: undefined,
     value: undefined,
+    isParentTypeOnly: false,
 }) {
     declare index: number;
     declare key: string;
     declare query: string;
     declare schema: string;
     declare value: List<DisplayObject>;
+    declare isParentTypeOnly: boolean;
 
     static create(values: any): EntityParentType {
         if (!values.key) values.key = generateId('parent-type-');
@@ -368,11 +370,15 @@ export class EntityIdCreationModel extends Record({
     }
 
     hasTargetEntityType(): boolean {
-        return this.targetEntityType && this.targetEntityType.value;
+        return this.targetEntityType && this.targetEntityType.value !== undefined;
     }
 
-    getTargetEntityTypeName(): string {
+    getTargetEntityTypeValue(): string {
         return this.hasTargetEntityType() ? this.targetEntityType.value : undefined;
+    }
+
+    getTargetEntityTypeLabel(): string {
+        return this.hasTargetEntityType() ? this.targetEntityType.label : undefined;
     }
 
     getParentCount(): number {
@@ -469,7 +475,7 @@ export class EntityIdCreationModel extends Record({
     }
 
     getSchemaQuery(): SchemaQuery {
-        const entityTypeName = this.getTargetEntityTypeName();
+        const entityTypeName = this.getTargetEntityTypeValue();
         return entityTypeName ? SchemaQuery.create(this.entityDataType.instanceSchemaName, entityTypeName) : undefined;
     }
 
@@ -574,4 +580,5 @@ export interface EntityDataType {
     appUrlPrefixParts?: string[]; // the prefix used for creating links to this type in the application
     insertColumnNamePrefix: string; // when updating this value as an input, the name of that column (e.g, MaterialInputs)
     filterArray?: Filter.IFilter[]; // A list of filters to use when selecting the set of values
+    editTypeAppUrlPrefix?: string; // the app url route prefix for the edit design page for the given data type
 }

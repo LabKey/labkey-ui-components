@@ -962,10 +962,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     static getWarningFieldList(names: string[])  {
         const oxfordComma = names.length > 2 ? ',' : '';
-        return names.map((unknown, index) => (
-            <>
-                <b>{unknown}</b>{index === names.length-2 ? oxfordComma + ' and ' : index < names.length-2 ? ', ': ''}
-            </>
+        return names.map((name, index) => (
+            <span key={name}>
+                <b>{name}</b>{index === names.length-2 ? oxfordComma + ' and ' : index < names.length-2 ? ', ': ''}
+            </span>
         ))
     }
 
@@ -994,7 +994,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         let msg = [];
         if (unknownFields.length > 0) {
             msg.push(
-                <p>
+                <p key='unknownFields'>
                     {EntityInsertPanelImpl.getWarningFieldList(unknownFields)}
                     {((unknownFields.length === 1) ? " is an unknown field" : " are unknown fields") + " and will be ignored."}
                 </p>
@@ -1002,9 +1002,9 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         }
         if (uniqueIdFields.length > 0) {
             msg.push(
-                <p>
+                <p key='uniqueIdFields'>
                     {EntityInsertPanelImpl.getWarningFieldList(uniqueIdFields)}
-                    {((uniqueIdFields.length === 1) ? " is a unique ID field. It " : " are unique ID fields. These")  + " will not be imported and will be managed by " + getCurrentProductName() + "."}
+                    {((uniqueIdFields.length === 1) ? " is a unique ID field. It" : " are unique ID fields. They")  + " will not be imported and will be managed by " + getCurrentProductName() + "."}
                 </p>
             );
         }
@@ -1012,8 +1012,6 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     }
 
     onPreviewLoad = (inferred: InferDomainResponse): any => {
-        let uniqueIdFields = [];
-        let unknownFields = [];
         const { insertModel, originalQueryInfo } = this.state;
         fetchDomain(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName).
             then(domainDesign => {

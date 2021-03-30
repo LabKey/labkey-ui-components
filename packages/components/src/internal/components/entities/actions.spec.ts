@@ -1,8 +1,8 @@
-import { fromJS, Map } from "immutable";
+import { fromJS, Map } from 'immutable';
 
-import { extractEntityTypeOptionFromRow, getChosenParentData } from "./actions";
-import { EntityDataType, EntityIdCreationModel } from "./models";
-import { DataClassDataType, SampleTypeDataType } from "./constants";
+import { extractEntityTypeOptionFromRow, getChosenParentData } from './actions';
+import { EntityDataType, EntityIdCreationModel } from './models';
+import { DataClassDataType, SampleTypeDataType } from './constants';
 
 describe('extractEntityTypeOptionFromRow', () => {
     const NAME = 'Test Name';

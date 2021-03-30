@@ -39,29 +39,39 @@ describe('EntityParentType', () => {
     });
 
     test('getInputType', () => {
-        expect(EntityParentType.create({
-            schema: SCHEMAS.DATA_CLASSES.SCHEMA
-        }).getInputType()).toBe(QueryColumn.DATA_INPUTS);
-        expect(EntityParentType.create({
-            schema: SCHEMAS.SAMPLE_SETS.SCHEMA
-        }).getInputType()).toBe(QueryColumn.MATERIAL_INPUTS);
+        expect(
+            EntityParentType.create({
+                schema: SCHEMAS.DATA_CLASSES.SCHEMA,
+            }).getInputType()
+        ).toBe(QueryColumn.DATA_INPUTS);
+        expect(
+            EntityParentType.create({
+                schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+            }).getInputType()
+        ).toBe(QueryColumn.MATERIAL_INPUTS);
     });
 
     test('createColumnName', () => {
-        expect(EntityParentType.create({
-            schema: SCHEMAS.DATA_CLASSES.SCHEMA,
-            query: 'TEST',
-        }).createColumnName()).toBe('DataInputs/TEST');
-        expect(EntityParentType.create({
-            schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
-            query: 'TEST',
-        }).createColumnName()).toBe('MaterialInputs/TEST');
+        expect(
+            EntityParentType.create({
+                schema: SCHEMAS.DATA_CLASSES.SCHEMA,
+                query: 'TEST',
+            }).createColumnName()
+        ).toBe('DataInputs/TEST');
+        expect(
+            EntityParentType.create({
+                schema: SCHEMAS.SAMPLE_SETS.SCHEMA,
+                query: 'TEST',
+            }).createColumnName()
+        ).toBe('MaterialInputs/TEST');
     });
 });
 
 describe('EntityIdCreationModel', () => {
     test('getEmptyEntityParents', () => {
-        const map = EntityIdCreationModel.getEmptyEntityParents(List<string>(['a','b']));
+        const map = EntityIdCreationModel.getEmptyEntityParents(
+            List<string>(['a', 'b'])
+        );
         expect(map.size).toBe(2);
         expect(map.get('a').size).toBe(0);
         expect(map.get('b').size).toBe(0);
@@ -69,19 +79,45 @@ describe('EntityIdCreationModel', () => {
 
     test('hasTargetEntityType', () => {
         expect(new EntityIdCreationModel({ targetEntityType: undefined }).hasTargetEntityType()).toBeFalsy();
-        expect(new EntityIdCreationModel({ targetEntityType: new EntityTypeOption() }).hasTargetEntityType()).toBeFalsy();
-        expect(new EntityIdCreationModel({ targetEntityType: new EntityTypeOption({ value: undefined }) }).hasTargetEntityType()).toBeFalsy();
-        expect(new EntityIdCreationModel({ targetEntityType: new EntityTypeOption({ value: 'a', label: 'A' }) }).hasTargetEntityType()).toBeTruthy();
+        expect(
+            new EntityIdCreationModel({ targetEntityType: new EntityTypeOption() }).hasTargetEntityType()
+        ).toBeFalsy();
+        expect(
+            new EntityIdCreationModel({
+                targetEntityType: new EntityTypeOption({ value: undefined }),
+            }).hasTargetEntityType()
+        ).toBeFalsy();
+        expect(
+            new EntityIdCreationModel({
+                targetEntityType: new EntityTypeOption({ value: 'a', label: 'A' }),
+            }).hasTargetEntityType()
+        ).toBeTruthy();
     });
 
     test('getTargetEntityTypeValue', () => {
-        expect(new EntityIdCreationModel({ targetEntityType: new EntityTypeOption({ value: undefined }) }).getTargetEntityTypeValue()).toBe(undefined);
-        expect(new EntityIdCreationModel({ targetEntityType: new EntityTypeOption({ value: 'a', label: 'A' }) }).getTargetEntityTypeValue()).toBe('a');
+        expect(
+            new EntityIdCreationModel({
+                targetEntityType: new EntityTypeOption({ value: undefined }),
+            }).getTargetEntityTypeValue()
+        ).toBe(undefined);
+        expect(
+            new EntityIdCreationModel({
+                targetEntityType: new EntityTypeOption({ value: 'a', label: 'A' }),
+            }).getTargetEntityTypeValue()
+        ).toBe('a');
     });
 
     test('getTargetEntityTypeLabel', () => {
-        expect(new EntityIdCreationModel({ targetEntityType: new EntityTypeOption({ value: undefined }) }).getTargetEntityTypeLabel()).toBe(undefined);
-        expect(new EntityIdCreationModel({ targetEntityType: new EntityTypeOption({ value: 'a', label: 'A' }) }).getTargetEntityTypeLabel()).toBe('A');
+        expect(
+            new EntityIdCreationModel({
+                targetEntityType: new EntityTypeOption({ value: undefined }),
+            }).getTargetEntityTypeLabel()
+        ).toBe(undefined);
+        expect(
+            new EntityIdCreationModel({
+                targetEntityType: new EntityTypeOption({ value: 'a', label: 'A' }),
+            }).getTargetEntityTypeLabel()
+        ).toBe('A');
     });
 
     test('getSchemaQuery', () => {

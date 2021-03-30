@@ -8,7 +8,7 @@ import {
     naturalSort,
     SampleCreationType,
     SchemaQuery,
-    selectRows
+    selectRows,
 } from '../../..';
 
 import {

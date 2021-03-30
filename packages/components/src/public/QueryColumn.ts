@@ -65,6 +65,7 @@ export class QueryColumn extends Record({
     // mvEnabled: undefined,
     name: undefined,
     // nullable: undefined,
+    phiProtected: undefined,
     protected: undefined,
     rangeURI: undefined,
     readOnly: undefined,
@@ -128,6 +129,7 @@ export class QueryColumn extends Record({
     // declare mvEnabled: boolean;
     declare name: string;
     // declare nullable: boolean;
+    declare phiProtected: boolean;
     declare 'protected': boolean;
     declare rangeURI: string;
     declare readOnly: boolean;

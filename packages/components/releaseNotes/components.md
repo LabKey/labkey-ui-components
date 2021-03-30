@@ -1,7 +1,7 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version 2.18.0
+### version 2.19.0
 *Released*: 30 March 2021
 * Add maxAllowedPhi attribute to User
 * Add styling to Grids for PHI protected columns

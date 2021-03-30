@@ -7,6 +7,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Add EntityDataType.editTypeAppUrlPrefix to use for linking to the edit design app URL on the create/import page
 * EntityInsertPanel fix to handle case where parent param is a schema/query but without specific values to add to grid
 * Add createEntityParentKey helper util function
+* SubMenuItem fix for expanded menu with filter issue with item disabled state change
 
 ### version 2.17.0
 *Released*: 23 March 2021

@@ -156,7 +156,7 @@ interface StateProps {
     fieldsWarningMsg: ReactNode;
 }
 
-class EntityInsertPanelImpl extends Component<Props, StateProps> {
+export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     static defaultProps = {
         numPerParent: 1,
         tab: EntityInsertPanelTabs.First,

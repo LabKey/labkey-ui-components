@@ -39,7 +39,7 @@ export const DATA_IMPORT_TOPIC = 'dataImport';
 
 export const SAMPLE_ALIQUOT_TOPIC = 'aliquot';
 
-export const UNIQUE_IDS_TOPIC = 'uniqueIds';
+export const UNIQUE_IDS_TOPIC = 'uniqueStorageIds';
 
 export function getHelpLink(topic: string): string {
     return getServerContext().helpLinkPrefix + topic;

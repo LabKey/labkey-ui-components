@@ -25,6 +25,7 @@ import { DomainDesign, DomainDetails, DomainPanelStatus } from '../models';
 
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { SampleTypeModel } from './models';
+import { UniqueIdBanner } from './UniqueIdBanner';
 
 const BASE_PROPS = {
     panelStatus: 'NONE' as DomainPanelStatus,
@@ -254,6 +255,31 @@ describe('<SampleTypePropertiesPanel/>', () => {
         wrapper.setProps({ appPropertiesOnly: true });
         expect(wrapper.text()).not.toContain('Auto-Link Data to Study');
 
+        wrapper.unmount();
+    });
+
+    test('premium edition with barcodes', async () => {
+        LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['premium']
+            },
+        }
+        const wrapper = mount(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                model={sampleTypeModel}
+                updateModel={jest.fn}
+                onAddParentAlias={jest.fn}
+                onRemoveParentAlias={jest.fn}
+                onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
+                parentOptions={[]}
+            />
+        );
+
+        await sleep();
+
+        expect(wrapper.find(UniqueIdBanner)).toHaveLength(1);
         wrapper.unmount();
     });
 });

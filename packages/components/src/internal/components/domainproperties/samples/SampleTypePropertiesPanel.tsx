@@ -38,7 +38,7 @@ import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
 import { IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import { getCurrentProductName } from '../../../app/utils';
+import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
@@ -469,17 +469,19 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         )}
                     </>
                 )}
-                <Row className="margin-top">
-                    <Col xs={2}>
-                        <DomainFieldLabel
-                            label={"Barcodes"}
-                            helpTipBody={this.renderUniqueIdHelpText()}
-                        />
-                    </Col>
-                    <Col xs={10}>
-                        <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField}/>
-                    </Col>
-                </Row>
+                {!isCommunityDistribution() &&
+                    <Row className="margin-top">
+                        <Col xs={2}>
+                            <DomainFieldLabel
+                                label={"Barcodes"}
+                                helpTipBody={this.renderUniqueIdHelpText()}
+                            />
+                        </Col>
+                        <Col xs={10}>
+                            <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField}/>
+                        </Col>
+                    </Row>
+                }
 
             </BasePropertiesPanel>
         );

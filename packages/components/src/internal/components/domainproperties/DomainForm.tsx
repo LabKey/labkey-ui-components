@@ -229,6 +229,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
         }
 
         // query to get the set of available modules for the given LabKey server
+        // TODO change this to use hasModule instead
         Security.getModules({
             containerPath: getServerContext().container.path,
             success: async data => {

@@ -378,8 +378,22 @@ describe('domain properties actions', () => {
         expect(types.contains(TEXT_TYPE)).toBeTruthy();
     });
 
-    test("getAvailableTypes, sampleType", () => {
-        LABKEY.moduleContext.samplemanagement = { hasPremiumModule: true };
+    test("getAvailableTypes, sampleType LKSM", () => {
+        LABKEY.moduleContext = {
+            sampleManagement: {},
+            api: {
+                moduleNames: ['samplemanagement']
+            }
+        };
+        const domain = DomainDesign.create({
+            domainKindName: Domain.KINDS.SAMPLE_TYPE,
+        });
+        const available = getAvailableTypes(domain);
+        expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
+    });
+
+    test("getAvailableTypes, sampleType Premium", () => {
+        LABKEY.moduleContext.api = { moduleNames: ['premium'] };
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
         });
@@ -388,7 +402,7 @@ describe('domain properties actions', () => {
     });
 
     test("getAvailableTypes, sampleType community", () => {
-        // LABKEY.moduleContext.samplemanagement = { hasPremiumModule: true };
+        LABKEY.moduleContext.api = { moduleNames: ['api', 'core'] };
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
         });

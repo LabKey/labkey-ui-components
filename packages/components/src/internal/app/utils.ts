@@ -141,13 +141,17 @@ export function isSampleAliquotEnabled(): boolean {
     return getServerContext().experimental['sampleAliquot'] === true;
 }
 
-export function hasPremiumModule(): boolean {
+export function hasModule(moduleName: string) {
     const { moduleContext } = getServerContext();
-    return  moduleContext?.samplemanagement?.hasPremiumModule ?? false;
+    return  moduleContext.api?.moduleNames?.indexOf(moduleName.toLowerCase()) >= 0;
+}
+
+export function hasPremiumModule(): boolean {
+    return hasModule("Premium");
 }
 
 export function isCommunityDistribution(): boolean {
-    return !isSampleManagerEnabled() && !hasPremiumModule();
+    return !hasModule("SampleManagement") && !hasPremiumModule();
 }
 
 export function getMenuSectionConfigs(user: User, currentApp: string): List<Map<string, MenuSectionConfig>> {
@@ -269,7 +273,7 @@ export function getDateFormat(): string {
 export function getCurrentProductName() {
     const lcController = ActionURL.getController().toLowerCase();
     if (!lcController)
-        return undefined;
+        return LABKEY_SERVER_PRODUCT_NAME;
 
     if (lcController === SAMPLE_MANAGER_PRODUCT_ID.toLowerCase() || lcController === FREEZER_MANAGER_PRODUCT_ID.toLowerCase())
         return SAMPLE_MANAGER_PRODUCT_NAME;

@@ -28,6 +28,7 @@ import { SAMPLE_TYPE } from '../PropDescType';
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
 import { UniqueIdBanner } from './UniqueIdBanner';
+import { isCommunityDistribution } from '../../../app/utils';
 
 export const DEFAULT_SAMPLE_FIELD_CONFIG = {
     required: true,
@@ -498,6 +499,9 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     }
 
     uniqueIdBannerRenderer = (config: IAppDomainHeader): ReactNode  => {
+        if (isCommunityDistribution()) {
+            return null;
+        }
         return (
             <UniqueIdBanner model={this.state.model} isFieldsPanel={true} onAddField={config.onAddField}/>
         )

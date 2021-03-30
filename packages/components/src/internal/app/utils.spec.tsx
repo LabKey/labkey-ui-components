@@ -25,9 +25,10 @@ import {
 describe('getMenuSectionConfigs', () => {
     test('sampleManager enabled', () => {
         LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['samplemanagement','study','premium']
+            },
             samplemanagement: {
-                hasPremiumModule: true,
-                hasStudyModule: true,
                 productId: 'SampleManager',
             },
         };
@@ -66,9 +67,10 @@ describe('getMenuSectionConfigs', () => {
 
     test('SM and FM enabled, SM current app', () => {
         LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['samplemanagement','study','premium']
+            },
             samplemanagement: {
-                hasPremiumModule: true,
-                hasStudyModule: true,
                 productId: 'SampleManager',
             },
             inventory: {
@@ -98,9 +100,10 @@ describe('getMenuSectionConfigs', () => {
 
     test('SM and FM enabled, FM current app', () => {
         LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['samplemanagement','study','premium']
+            },
             samplemanagement: {
-                hasPremiumModule: true,
-                hasStudyModule: true,
                 productId: 'SampleManager',
             },
             inventory: {
@@ -137,9 +140,10 @@ describe('getMenuSectionConfigs', () => {
 
 describe('utils', () => {
     LABKEY.moduleContext = {
+        api: {
+            moduleNames: ['samplemanagement','study','premium']
+        },
         samplemanagement: {
-            hasPremiumModule: true,
-            hasStudyModule: true,
             productId: 'SampleManager',
         },
     };
@@ -201,28 +205,24 @@ describe('utils', () => {
             return <div>{hasPremiumModule() ? 'true' : 'false'}</div>;
         };
 
+        LABKEY.moduleContext = {};
         let wrapper = mount(<Component />);
         expect(wrapper.find('div').text()).toBe('false');
         wrapper.unmount();
 
-        LABKEY.moduleContext = {};
+        LABKEY.moduleContext = { api: { moduleNames: ['sampleManagement']} };
         wrapper = mount(<Component />);
         expect(wrapper.find('div').text()).toBe('false');
         wrapper.unmount();
 
-        LABKEY.moduleContext = { samplemanagement: {} };
-        wrapper = mount(<Component />);
-        expect(wrapper.find('div').text()).toBe('false');
-        wrapper.unmount();
-
-        LABKEY.moduleContext = { samplemanagement: { hasPremiumModule: false } };
-        wrapper = mount(<Component />);
-        expect(wrapper.find('div').text()).toBe('false');
-        wrapper.unmount();
-
-        LABKEY.moduleContext = { samplemanagement: { hasPremiumModule: true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium']} };
         wrapper = mount(<Component />);
         expect(wrapper.find('div').text()).toBe('true');
+        wrapper.unmount();
+
+        LABKEY.moduleContext = { api: {  } };
+        wrapper = mount(<Component />);
+        expect(wrapper.find('div').text()).toBe('false');
         wrapper.unmount();
     });
 });

@@ -79,6 +79,7 @@ import { getSortFromUrl } from './url/ActionURL';
 
 import { intersect, not } from './util/utils';
 import { resolveErrorMessage } from './util/messaging';
+import { hasModule } from './app/utils';
 
 const EMPTY_ROW = Map<string, any>();
 let ID_COUNTER = 0;
@@ -1382,7 +1383,7 @@ export function fetchCharts(schemaQuery: SchemaQuery, containerPath?: string): P
         if (
             LABKEY.getModuleContext &&
             LABKEY.getModuleContext('samplemanagement') &&
-            !LABKEY.getModuleContext('samplemanagement').hasStudyModule
+            !hasModule("Study")
         ) {
             resolve(List<DataViewInfo>());
             return;

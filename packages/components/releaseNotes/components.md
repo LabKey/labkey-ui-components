@@ -4,6 +4,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 ### version 2.19.0
 *Released*: 30 March 2021
 * Add maxAllowedPhi attribute to User
+* Add phiProtected attribute to QueryColumn
 * Add styling to Grids for PHI protected columns
 * Convert GridMessages to FC
 

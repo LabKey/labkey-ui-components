@@ -15,12 +15,11 @@
  */
 import { fromJS, List, Map, Record } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
-import { immerable } from 'immer';
 import React, { ReactNode } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 
-import { caseInsensitive, createFormInputId, GridColumn, SCHEMAS, valueIsEmpty } from '../../..';
+import { createFormInputId, GridColumn, SCHEMAS, valueIsEmpty } from '../../..';
 
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
@@ -28,6 +27,7 @@ import { camelCaseToTitleCase } from '../../util/utils';
 
 import {
     ALL_SAMPLES_DISPLAY_TEXT,
+    CREATED_TIMESTAMP_CONCEPT_URI,
     DOMAIN_FIELD_DIMENSION,
     DOMAIN_FIELD_FULLY_LOCKED,
     DOMAIN_FIELD_MEASURE,
@@ -37,6 +37,7 @@ import {
     DOMAIN_FILTER_HASANYVALUE,
     INT_RANGE_URI,
     MAX_TEXT_LENGTH,
+    MODIFIED_TIMESTAMP_CONCEPT_URI,
     SAMPLE_TYPE_CONCEPT_URI,
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
@@ -1250,6 +1251,11 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
                     !rawField.lookupQuery &&
                     ((!type.conceptURI && !rawField.conceptURI) || type.conceptURI === rawField.conceptURI)
                 ) {
+                    return true;
+                }
+
+                // special case for created/modified timestamp conceptURI
+                if (rawField.conceptURI === CREATED_TIMESTAMP_CONCEPT_URI || rawField.conceptURI === MODIFIED_TIMESTAMP_CONCEPT_URI) {
                     return true;
                 }
             }

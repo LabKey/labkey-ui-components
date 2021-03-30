@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version TBD
+*Released*: TBD
+* Handle domain field data type check for created/modified timestamp conceptURI
+
 ### version 2.19.0
 *Released*: 30 March 2021
 * Add maxAllowedPhi attribute to User

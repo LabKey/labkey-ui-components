@@ -2,7 +2,7 @@
 UI themes for LabKey Server.
 
 ### version 1.1.0
-*Released*: ??
+*Released*: 30 March 2021
 * Add styling for PHI protected columns in data regions
 
 ### version 1.0.2

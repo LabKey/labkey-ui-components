@@ -43,6 +43,7 @@ Array [
               "isSignedIn": false,
               "isSystemAdmin": false,
               "isTrusted": false,
+              "maxAllowedPhi": undefined,
               "permissionsList": Immutable.List [],
             }
           }
@@ -84,6 +85,7 @@ Array [
               "isSignedIn": false,
               "isSystemAdmin": false,
               "isTrusted": false,
+              "maxAllowedPhi": undefined,
               "permissionsList": Immutable.List [],
             }
           }
@@ -129,6 +131,7 @@ Array [
           "isSignedIn": false,
           "isSystemAdmin": false,
           "isTrusted": false,
+          "maxAllowedPhi": undefined,
           "permissionsList": Immutable.List [],
         }
       }
@@ -172,6 +175,7 @@ Array [
           "isSignedIn": false,
           "isSystemAdmin": false,
           "isTrusted": false,
+          "maxAllowedPhi": undefined,
           "permissionsList": Immutable.List [],
         }
       }
@@ -223,6 +227,7 @@ exports[`<Notification/> one notification 1`] = `
         "isSignedIn": false,
         "isSystemAdmin": false,
         "isTrusted": false,
+        "maxAllowedPhi": undefined,
         "permissionsList": Immutable.List [],
       }
     }
@@ -252,6 +257,7 @@ exports[`<Notification/> with trial notification for admin 1`] = `
       "isSignedIn": false,
       "isSystemAdmin": false,
       "isTrusted": false,
+      "maxAllowedPhi": undefined,
       "permissionsList": Immutable.List [],
     }
   }
@@ -294,6 +300,7 @@ exports[`<Notification/> with trial notification for admin 1`] = `
           "isSignedIn": false,
           "isSystemAdmin": false,
           "isTrusted": false,
+          "maxAllowedPhi": undefined,
           "permissionsList": Immutable.List [],
         }
       }
@@ -346,6 +353,7 @@ exports[`<Notification/> with trial notification for non-admin 1`] = `
       "isSignedIn": false,
       "isSystemAdmin": false,
       "isTrusted": false,
+      "maxAllowedPhi": undefined,
       "permissionsList": Immutable.List [],
     }
   }
@@ -388,6 +396,7 @@ exports[`<Notification/> with trial notification for non-admin 1`] = `
           "isSignedIn": false,
           "isSystemAdmin": false,
           "isTrusted": false,
+          "maxAllowedPhi": undefined,
           "permissionsList": Immutable.List [],
         }
       }

@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import { List, Map } from 'immutable';
 import { Ajax, Domain, getServerContext, Query, Security, Utils } from '@labkey/api';
 
-import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL } from '../../..';
+import { Container, QueryColumn, SchemaDetails, naturalSort, buildURL, DomainDetails } from '../../..';
 
 import { processSchemas } from '../../schemas';
 
@@ -131,6 +131,29 @@ export function fetchDomain(domainId: number, schemaName: string, queryName: str
             queryName,
             success: data => {
                 resolve(DomainDesign.create(data.domainDesign ? data.domainDesign : data, undefined));
+            },
+            failure: error => {
+                reject(error);
+            },
+        });
+    });
+}
+
+/**
+ * @param domainId: Fetch domain details by Id. Priority param over schema and query name.
+ * @param schemaName: Schema of domain.
+ * @param queryName: Query of domain.
+ * @return Promise wrapped Domain API call.
+ */
+export function fetchDomainDetails(domainId: number, schemaName: string, queryName: string): Promise<DomainDetails> {
+    return new Promise((resolve, reject) => {
+        Domain.getDomainDetails({
+            containerPath: LABKEY.container.path,
+            domainId,
+            schemaName,
+            queryName,
+            success: data => {
+                resolve(DomainDetails.create(  Map<string, any>({...data} )));
             },
             failure: error => {
                 reject(error);

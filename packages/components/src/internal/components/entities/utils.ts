@@ -138,7 +138,7 @@ export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): st
 
 export function getUniqueIdColumnMetadata(queryInfo: QueryInfo) : Map<string, EditableColumnMetadata> {
     let columnMetadata = Map<string, EditableColumnMetadata>();
-    queryInfo?.columns.filter((column) => column.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI).forEach(
+    queryInfo?.columns.filter((column) => column.isUniqueIdColumn).forEach(
         column => {
             columnMetadata = columnMetadata.set(column.fieldKey, {
                 readOnly: true,

@@ -405,7 +405,7 @@ export class QueryGridModel
     }
 
     getUniqueIdColumns(): QueryColumn[] {
-        return this.getAllColumns().filter(column => column.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI).toArray();
+        return this.getAllColumns().filter(column => column.isUniqueIdColumn).toArray();
     }
 
     getMaxRowIndex() {

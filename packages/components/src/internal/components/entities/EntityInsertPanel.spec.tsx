@@ -1,13 +1,13 @@
 import React from 'react';
 import { EntityInsertPanelImpl } from './EntityInsertPanel';
 import { mount } from 'enzyme';
-import { List, OrderedMap } from 'immutable';
+import { List, Map, OrderedMap } from 'immutable';
 import { QueryColumn } from '../../../public/QueryColumn';
-import { DomainDesign } from '../domainproperties/models';
+import { DomainDesign, DomainDetails } from '../domainproperties/models';
 import { InferDomainResponse } from '../../../public/InferDomainResponse';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 
-describe("<EntityInsertPanel/>, getWarningFieldList", () => {
+describe("EntityInsertPanel.getWarningFieldList", () => {
     test("no fields", () => {
         expect(EntityInsertPanelImpl.getWarningFieldList([])).toStrictEqual([]);
 
@@ -32,7 +32,7 @@ describe("<EntityInsertPanel/>, getWarningFieldList", () => {
     });
 });
 
-describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
+describe("EntityInsertPanel.getInferredFieldWarnings", () => {
     const knownColumn = QueryColumn.create({
         name: 'known'
     });
@@ -43,12 +43,20 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
         name: 'aliased'
     });
 
-    const domainDesign = DomainDesign.create({
-        fields: [
-            { name: 'known' },
-            { name: 'aliased', importAliases: 'aliasName,otherAlias'}
-        ]
-    });
+    const domainDetails = DomainDetails.create( Map<string, any>( {
+        domainDesign: {
+            fields: [
+                { name: 'known' },
+                { name: 'aliased', importAliases: 'aliasName,otherAlias'}
+            ]
+        },
+        options: {
+            importAliases: {
+                parentA: 'materialInputs/P',
+                parentB: 'dataInputs/B'
+            }
+        }
+    }));
 
     const baseColumns = OrderedMap<string, QueryColumn>({
         known: knownColumn,
@@ -59,17 +67,14 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
     test("none unknown, none unique", () => {
         const wrapper = mount(
             <div>
-                {EntityInsertPanelImpl.getInferredFieldWarnings(
-                    new InferDomainResponse({
-                        data: List<any>(),
-                        fields: List<QueryColumn>( [
-                            QueryColumn.create({name: 'known'}),
-                            QueryColumn.create({name: 'aliasName'}),
-                        ]),
-                        reservedFields: List<QueryColumn>()
-                    }),
-                    domainDesign,
-                    baseColumns)}
+                {EntityInsertPanelImpl.getInferredFieldWarnings(new InferDomainResponse({
+                    data: List<any>(),
+                    fields: List<QueryColumn>([
+                        QueryColumn.create({name: 'known'}),
+                        QueryColumn.create({name: 'aliasName'}),
+                    ]),
+                    reservedFields: List<QueryColumn>()
+                }), domainDetails, baseColumns)}
             </div>
         );
         expect(wrapper.text()).toHaveLength(0);
@@ -86,17 +91,14 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
 
         const wrapper = mount(
             <div>
-                {EntityInsertPanelImpl.getInferredFieldWarnings(
-                    new InferDomainResponse({
-                        data: List<any>(),
-                        fields: List<QueryColumn>( [
-                            QueryColumn.create({name: 'known'}),
-                            QueryColumn.create({name: 'barcode1'}),
-                        ]),
-                        reservedFields: List<QueryColumn>()
-                    }),
-                    domainDesign,
-                    columns)}
+                {EntityInsertPanelImpl.getInferredFieldWarnings(new InferDomainResponse({
+                    data: List<any>(),
+                    fields: List<QueryColumn>([
+                        QueryColumn.create({name: 'known'}),
+                        QueryColumn.create({name: 'barcode1'}),
+                    ]),
+                    reservedFields: List<QueryColumn>()
+                }), domainDetails, columns)}
             </div>
         );
         expect(wrapper.text()).toContain("barcode1 is a unique ID field. It will not be imported and will be managed by LabKey Server.");
@@ -123,13 +125,13 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
             <div>
                 {EntityInsertPanelImpl.getInferredFieldWarnings(new InferDomainResponse({
                     data: List<any>(),
-                    fields: List<QueryColumn>( [
+                    fields: List<QueryColumn>([
                         QueryColumn.create({name: 'known'}),
                         QueryColumn.create({name: 'barcode1'}),
                         QueryColumn.create({name: 'Other Code'}),
                     ]),
                     reservedFields: List<QueryColumn>()
-                }), domainDesign, columns)}
+                }), domainDetails, columns)}
             </div>
         );
         expect(wrapper.text()).toContain("barcode1 and Other Code are unique ID fields. They will not be imported and will be managed by LabKey Server.");
@@ -141,12 +143,12 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
             <div>
                 {EntityInsertPanelImpl.getInferredFieldWarnings(new InferDomainResponse({
                     data: List<any>(),
-                    fields: List<QueryColumn>( [
+                    fields: List<QueryColumn>([
                         QueryColumn.create({name: 'known'}),
                         QueryColumn.create({name: 'Nonesuch'}),
                     ]),
                     reservedFields: List<QueryColumn>()
-                }), domainDesign, baseColumns)}
+                }), domainDetails, baseColumns)}
             </div>
         );
         expect(wrapper.text()).toContain("Nonesuch is an unknown field and will be ignored.");
@@ -173,7 +175,7 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
             <div>
                 {EntityInsertPanelImpl.getInferredFieldWarnings(new InferDomainResponse({
                     data: List<any>(),
-                    fields: List<QueryColumn>( [
+                    fields: List<QueryColumn>([
                         QueryColumn.create({name: 'known'}),
                         QueryColumn.create({name: 'Nonesuch'}),
                         QueryColumn.create({name: 'Nonesuch'}),
@@ -183,11 +185,51 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
                         QueryColumn.create({name: 'OtherCode'}),
                     ]),
                     reservedFields: List<QueryColumn>()
-                }), domainDesign, columns)}
+                }), domainDetails, columns)}
             </div>
         );
         expect(wrapper.text()).toContain("Nonesuch and Not Again are unknown fields and will be ignored.");
         expect(wrapper.text()).toContain("bcode and OtherCode are unique ID fields. They will not be imported and will be managed by LabKey Server.");
+        wrapper.unmount();
+    });
+
+    test("with parent import aliases", () => {
+        const wrapper = mount(
+            <div>
+                {EntityInsertPanelImpl.getInferredFieldWarnings(new InferDomainResponse({
+                    data: List<any>(),
+                    fields: List<QueryColumn>([
+                        QueryColumn.create({name: 'known'}),
+                        QueryColumn.create({name: 'parentA'}),
+                        QueryColumn.create({name: 'parentB'}),
+                        QueryColumn.create({name: 'parentc'}),
+                        QueryColumn.create({name: 'materialInputs/X'}),
+                        QueryColumn.create({name: 'dataInputs/Y'}),
+                    ]),
+                    reservedFields: List<QueryColumn>()
+                }), domainDetails, baseColumns)}
+            </div>
+        );
+        expect(wrapper.text()).toContain("parentc is an unknown field and will be ignored.");
+        wrapper.unmount();
+    });
+
+    test("with other allowed fields", () => {
+        const wrapper = mount(
+            <div>
+                {EntityInsertPanelImpl.getInferredFieldWarnings(new InferDomainResponse({
+                    data: List<any>(),
+                    fields: List<QueryColumn>([
+                        QueryColumn.create({name: 'known'}),
+                        QueryColumn.create({name: 'alsoAllowed'}),
+                        QueryColumn.create({name: 'materialInputs/X'}),
+                        QueryColumn.create({name: 'dataInputs/Y'}),
+                    ]),
+                    reservedFields: List<QueryColumn>()
+                }), domainDetails, baseColumns, ['otherAllowed', 'alsoAllowed'])}
+            </div>
+        );
+        expect(wrapper.text()).toHaveLength(0);
         wrapper.unmount();
     });
 });

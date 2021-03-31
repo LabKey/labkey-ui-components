@@ -29,10 +29,9 @@ import {
     Alert,
     AppURL,
     capitalizeFirstChar,
-    DomainDesign,
+    DomainDetails,
     EditableColumnMetadata,
     EditableGridPanel,
-    fetchDomain,
     FileAttachmentForm,
     FileSizeLimitProps,
     FormStep,
@@ -90,8 +89,8 @@ import {
 
 import { getUniqueIdColumnMetadata } from './utils';
 import { getCurrentProductName } from '../../app/utils';
-import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../domainproperties/samples/SampleTypeDesigner';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
+import { fetchDomainDetails } from '../domainproperties/actions';
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -114,6 +113,7 @@ interface OwnProps {
     asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?) => void;
+    allowedNonDomainFields?: string[];
     canEditEntityTypeDetails?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     creationTypeOptions?: SampleCreationTypeModel[];
@@ -983,13 +983,20 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         ))
     }
 
-    static getInferredFieldWarnings(inferred: InferDomainResponse, domainDesign: DomainDesign, columns: OrderedMap<string, QueryColumn>) : Array<ReactNode> {
+    static getInferredFieldWarnings(inferred: InferDomainResponse, domainDetails: DomainDetails, columns: OrderedMap<string, QueryColumn>, otherAllowedFields?: string[]): Array<React.ReactNode> {
         let uniqueIdFields = [];
         let unknownFields = [];
+        const { domainDesign } = domainDetails;
+        let allowedFields = Object.keys(domainDetails.options.get('importAliases')).map((key => key.toLowerCase()));
+        if (otherAllowedFields) {
+            allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
+        }
 
         inferred.fields.forEach(field => {
-            if (!field.name.startsWith(SAMPLE_SET_IMPORT_PREFIX) && !field.name.startsWith(DATA_CLASS_IMPORT_PREFIX)) {
-                const lcName = field.name.toLowerCase();
+
+            const lcName = field.name.toLowerCase();
+
+            if (!field.isExpInput() && allowedFields.indexOf(lcName) < 0) {
                 const aliasField = domainDesign.fields.find(domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0);
                 const columnName = aliasField ? aliasField.name : field.name;
                 const column = columns.find(column => (column.isImportColumn(columnName)));
@@ -1027,10 +1034,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     }
 
     onPreviewLoad = (inferred: InferDomainResponse): any => {
+        const { allowedNonDomainFields } = this.props;
         const { insertModel, originalQueryInfo } = this.state;
-        fetchDomain(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName).
-            then(domainDesign => {
-                const msg = EntityInsertPanelImpl.getInferredFieldWarnings(inferred, domainDesign, originalQueryInfo.columns);
+        fetchDomainDetails(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName).
+            then(domainDetails => {
+                const msg = EntityInsertPanelImpl.getInferredFieldWarnings(inferred, domainDetails, originalQueryInfo.columns, allowedNonDomainFields);
 
                 if (msg.length > 0) {
                     this.setState({fieldsWarningMsg: <>{msg}</>});

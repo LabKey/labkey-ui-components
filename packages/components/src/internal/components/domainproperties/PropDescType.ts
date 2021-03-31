@@ -21,6 +21,8 @@ import {
     TIME_RANGE_URI,
     USER_RANGE_URI,
     VISITID_CONCEPT_URI,
+    CREATED_TIMESTAMP_CONCEPT_URI,
+    MODIFIED_TIMESTAMP_CONCEPT_URI,
 } from './constants';
 
 export type JsonType = 'boolean' | 'date' | 'float' | 'int' | 'string';
@@ -285,3 +287,4 @@ export const PROP_DESC_TYPES = List([
 ]);
 
 export const READONLY_DESC_TYPES = List([BINARY_TYPE, DATE_TYPE, DECIMAL_TYPE, FLOAT_TYPE, LONG_TYPE, TIME_TYPE]);
+export const CONCEPT_URIS_NOT_USED_IN_TYPES = List([CREATED_TIMESTAMP_CONCEPT_URI, MODIFIED_TIMESTAMP_CONCEPT_URI]);

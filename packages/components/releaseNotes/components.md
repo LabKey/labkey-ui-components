@@ -1,6 +1,10 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.20.1
+*Released*: 31 March 2021
+* Handle domain field data type check for created/modified timestamp conceptURI
+
 ### version 2.20.0
 *Released*: 31 March 2021
 * Item 8703: Move handleFileImport code into shared components and use in EntityInsertPanel for file importData call

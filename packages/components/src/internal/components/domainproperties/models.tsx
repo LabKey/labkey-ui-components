@@ -15,12 +15,11 @@
  */
 import { fromJS, List, Map, Record } from 'immutable';
 import { Domain, getServerContext } from '@labkey/api';
-import { immerable } from 'immer';
 import React, { ReactNode } from 'react';
 
 import { Checkbox } from 'react-bootstrap';
 
-import { caseInsensitive, createFormInputId, GridColumn, SCHEMAS, valueIsEmpty } from '../../..';
+import { createFormInputId, GridColumn, SCHEMAS, valueIsEmpty } from '../../..';
 
 import { GRID_NAME_INDEX, GRID_SELECTION_INDEX } from '../../constants';
 
@@ -46,6 +45,7 @@ import {
 } from './constants';
 import {
     ATTACHMENT_TYPE,
+    CONCEPT_URIS_NOT_USED_IN_TYPES,
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
@@ -1248,7 +1248,9 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
             if (type.rangeURI === rawField.rangeURI && !type.isUser()) {
                 if (
                     !rawField.lookupQuery &&
-                    ((!type.conceptURI && !rawField.conceptURI) || type.conceptURI === rawField.conceptURI)
+                    ((!type.conceptURI && !rawField.conceptURI) ||
+                        type.conceptURI === rawField.conceptURI ||
+                        CONCEPT_URIS_NOT_USED_IN_TYPES.contains(rawField.conceptURI))
                 ) {
                     return true;
                 }

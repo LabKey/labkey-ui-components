@@ -1071,7 +1071,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 {!isGridStep && (
                     <WizardNavButtons
                         cancel={this.onCancel}
-                        containerClassName=""
+                        containerClassName="test-loc-import-btn"
                         canFinish={file !== undefined && originalQueryInfo !== undefined}
                         finish
                         nextStep={this.submitFileHandler} // nextStep is the function that will get called when finish button clicked

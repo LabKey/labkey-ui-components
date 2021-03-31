@@ -27,6 +27,7 @@ export const SampleTypeDataType: EntityDataType = {
     inputTypeValueField: 'lsid',
     insertColumnNamePrefix: 'MaterialInputs/',
     editTypeAppUrlPrefix: SAMPLE_TYPE_KEY,
+    importFileAction: 'importSamples',
 };
 
 export const DataClassDataType: EntityDataType = {
@@ -46,4 +47,5 @@ export const DataClassDataType: EntityDataType = {
     inputTypeColumnName: 'Inputs/Data/First/DataClass',
     inputTypeValueField: 'rowId',
     insertColumnNamePrefix: 'DataInputs/',
+    importFileAction: 'importData',
 };

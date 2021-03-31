@@ -2,6 +2,8 @@ import { SCHEMAS } from '../../schemas';
 
 import { DELETE_SAMPLES_TOPIC } from '../../util/helpLinks';
 
+import { SAMPLE_TYPE_KEY } from '../../app/constants';
+
 import { EntityDataType } from './models';
 
 export const DATA_DELETE_CONFIRMATION_ACTION = 'getDataDeleteConfirmationData.api';
@@ -24,6 +26,7 @@ export const SampleTypeDataType: EntityDataType = {
     inputTypeColumnName: 'Inputs/Materials/First/SampleSet',
     inputTypeValueField: 'lsid',
     insertColumnNamePrefix: 'MaterialInputs/',
+    editTypeAppUrlPrefix: SAMPLE_TYPE_KEY,
 };
 
 export const DataClassDataType: EntityDataType = {

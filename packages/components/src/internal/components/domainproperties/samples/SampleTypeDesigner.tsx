@@ -500,7 +500,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
 
     uniqueIdBannerRenderer = (config: IAppDomainHeader): ReactNode  => {
         const { model } = this.state;
-        if (isCommunityDistribution() || !model.isNew()) {
+        if (isCommunityDistribution() || !model.isNew() || model.domain?.fields?.isEmpty()) {
             return null;
         }
         return (

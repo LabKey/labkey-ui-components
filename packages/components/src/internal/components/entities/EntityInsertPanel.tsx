@@ -91,6 +91,7 @@ import {
 import { getEntityTypeData } from './actions';
 import { getUniqueIdColumnMetadata } from './utils';
 import { getCurrentProductName } from '../../app/utils';
+import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../domainproperties/samples/SampleTypeDesigner';
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -247,7 +248,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (
             insertModel &&
-            insertModel.getTargetEntityTypeName() === target &&
+            insertModel.getTargetEntityTypeValue() === target &&
             insertModel.selectionKey === selectionKey &&
             (insertModel.originalParents === parents || !allowParents)
         ) {
@@ -310,7 +311,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                 'Problem retrieving data for ' +
                                 this.typeTextSingular +
                                 " '" +
-                                insertModel.getTargetEntityTypeName() +
+                                insertModel.getTargetEntityTypeLabel() +
                                 "'.",
                         }) as EntityIdCreationModel,
                     });
@@ -329,7 +330,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { insertModel } = this.state;
 
         if (insertModel) {
-            const entityTypeName = insertModel ? insertModel.getTargetEntityTypeName() : undefined;
+            const entityTypeName = insertModel ? insertModel.getTargetEntityTypeValue() : undefined;
             if (entityTypeName) {
                 const model = getStateQueryGridModel(
                     'insert-entities',
@@ -677,7 +678,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             if (response?.rows) {
                 this.props.onDataChange?.(false);
                 this.props.afterEntityCreation?.(
-                    insertModel.getTargetEntityTypeName(),
+                    insertModel.getTargetEntityTypeLabel(),
                     response.getFilter(),
                     response.rows.length,
                     'created',
@@ -906,10 +907,10 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
             this.setSubmitting(false);
             this.props.onDataChange?.(false);
             if (useAsync) {
-                this.props.onBackgroundJobStart?.(insertModel.getTargetEntityTypeName(), file.name, response.jobId);
+                this.props.onBackgroundJobStart?.(insertModel.getTargetEntityTypeLabel(), file.name, response.jobId);
             } else {
                 this.props.afterEntityCreation?.(
-                    insertModel.getTargetEntityTypeName(),
+                    insertModel.getTargetEntityTypeLabel(),
                     null,
                     response.rowCount,
                     'imported',
@@ -960,7 +961,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    static getWarningFieldList(names: string[])  {
+    static getWarningFieldList(names: string[]) : ReactNode {
         const oxfordComma = names.length > 2 ? ',' : '';
         return names.map((name, index) => (
             <span key={name}>
@@ -974,19 +975,20 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         let unknownFields = [];
 
         inferred.fields.forEach(field => {
-            const lcName = field.name.toLowerCase();
-            let aliasField = domainDesign.fields.find(domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0);
-            const columnName = aliasField ? aliasField.name : field.name;
-            const column = columns.find(column => (column.isImportColumn(columnName)));
+            if (!field.name.startsWith(SAMPLE_SET_IMPORT_PREFIX) && !field.name.startsWith(DATA_CLASS_IMPORT_PREFIX)) {
+                const lcName = field.name.toLowerCase();
+                const aliasField = domainDesign.fields.find(domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0);
+                const columnName = aliasField ? aliasField.name : field.name;
+                const column = columns.find(column => (column.isImportColumn(columnName)));
 
-            if (!column) {
-                if (unknownFields.indexOf(field.name) < 0) {
-                    unknownFields.push(field.name);
-                }
-            }
-            else if (column.isUniqueIdColumn) {
-                if (uniqueIdFields.indexOf(field.name) < 0) { // duplicate fields are
-                    uniqueIdFields.push(field.name);
+                if (!column) {
+                    if (unknownFields.indexOf(field.name) < 0) {
+                        unknownFields.push(field.name);
+                    }
+                } else if (column.isUniqueIdColumn) {
+                    if (uniqueIdFields.indexOf(field.name) < 0) { // duplicate fields are handled as errors during import; we do not issue warnings about that here.
+                        uniqueIdFields.push(field.name);
+                    }
                 }
             }
         });
@@ -1027,7 +1029,14 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     }
 
     render() {
-        const { canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural } = this.props;
+        const {
+            canEditEntityTypeDetails,
+            disableMerge,
+            fileSizeLimits,
+            importOnly,
+            nounPlural,
+            entityDataType,
+        } = this.props;
         const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
 
         if (!insertModel) {
@@ -1039,10 +1048,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         }
 
         const isGridStep = this.isGridStep();
-        const entityTypeName = insertModel.getTargetEntityTypeName();
-        const editEntityTypeDetailsLink = entityTypeName
-            ? AppURL.create(nounPlural, entityTypeName, 'update')
-            : undefined;
+        const entityTypeName = insertModel.getTargetEntityTypeLabel();
+        const editEntityTypeDetailsLink =
+            entityTypeName && entityDataType?.editTypeAppUrlPrefix
+                ? AppURL.create(entityDataType.editTypeAppUrlPrefix, entityTypeName)
+                : undefined;
 
         return (
             <>

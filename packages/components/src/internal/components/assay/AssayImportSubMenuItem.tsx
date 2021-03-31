@@ -11,6 +11,7 @@ import {
     QueryModel,
 } from '../../..';
 import { MAX_EDITABLE_GRID_ROWS } from '../../constants';
+
 import { getImportItemsForAssayDefinitionsQM } from './actions';
 
 interface Props extends SubMenuItemProps {

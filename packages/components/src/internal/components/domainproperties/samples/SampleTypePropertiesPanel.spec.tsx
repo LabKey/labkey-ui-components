@@ -258,6 +258,31 @@ describe('<SampleTypePropertiesPanel/>', () => {
         wrapper.unmount();
     });
 
+    test('community edition, no barcodes', async () => {
+        LABKEY.moduleContext = {
+            api: {
+                moduleNames: ['api', 'core']
+            },
+        }
+        const wrapper = mount(
+            <SampleTypePropertiesPanel
+                {...BASE_PROPS}
+                model={sampleTypeModel}
+                updateModel={jest.fn}
+                onAddParentAlias={jest.fn}
+                onRemoveParentAlias={jest.fn}
+                onParentAliasChange={jest.fn}
+                onAddUniqueIdField={jest.fn}
+                parentOptions={[]}
+            />
+        );
+
+        await sleep();
+
+        expect(wrapper.find(UniqueIdBanner)).toHaveLength(0);
+        wrapper.unmount();
+    });
+
     test('premium edition with barcodes', async () => {
         LABKEY.moduleContext = {
             api: {

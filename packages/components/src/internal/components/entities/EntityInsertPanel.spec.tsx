@@ -133,6 +133,7 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
             </div>
         );
         expect(wrapper.text()).toContain("barcode1 and Other Code are unique ID fields. They will not be imported and will be managed by LabKey Server.");
+        wrapper.unmount();
     });
 
     test("one unknown, none unique", () => {
@@ -149,6 +150,7 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
             </div>
         );
         expect(wrapper.text()).toContain("Nonesuch is an unknown field and will be ignored.");
+        wrapper.unmount();
     });
 
     test("multiple unknown, multiple unique", () => {
@@ -186,5 +188,6 @@ describe("<EntityInsertPanel/>, getInferredFieldWarnings", () => {
         );
         expect(wrapper.text()).toContain("Nonesuch and Not Again are unknown fields and will be ignored.");
         expect(wrapper.text()).toContain("bcode and OtherCode are unique ID fields. They will not be imported and will be managed by LabKey Server.");
+        wrapper.unmount();
     });
 });

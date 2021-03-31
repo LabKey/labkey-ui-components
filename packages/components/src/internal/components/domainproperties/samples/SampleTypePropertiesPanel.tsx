@@ -405,7 +405,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                     </Row>
                 )}
 
-                <SectionHeading title="Storage Settings" />
+                {(appPropertiesOnly || isCommunityDistribution()) && <SectionHeading title="Storage Settings" />}
                 {appPropertiesOnly && (
                     <>
                         <Row className="margin-top">

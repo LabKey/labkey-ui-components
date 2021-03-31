@@ -23,7 +23,7 @@ import { initSampleSetSelects } from '../../samples/actions';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';
 import { BaseDomainDesigner, InjectedBaseDomainDesignerProps, withBaseDomainDesigner } from '../BaseDomainDesigner';
 
-import { SAMPLE_TYPE } from '../PropDescType';
+import { SAMPLE_TYPE, UNIQUE_ID_TYPE } from '../PropDescType';
 
 import { IParentAlias, SampleTypeModel } from './models';
 import { SampleTypePropertiesPanel } from './SampleTypePropertiesPanel';
@@ -383,7 +383,7 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
         const { defaultSampleFieldConfig, setSubmitting, metricUnitProps } = this.props;
         const { model, uniqueIdsConfirmed } = this.state;
 
-        if (this.getNumNewUniqueIdFields() > 0 && !uniqueIdsConfirmed) {
+        if (!model.isNew() && this.getNumNewUniqueIdFields() > 0 && !uniqueIdsConfirmed) {
             this.setState({
                 showUniqueIdConfirmation: true
             });
@@ -499,7 +499,8 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
     }
 
     uniqueIdBannerRenderer = (config: IAppDomainHeader): ReactNode  => {
-        if (isCommunityDistribution()) {
+        const { model } = this.state;
+        if (isCommunityDistribution() || !model.isNew()) {
             return null;
         }
         return (
@@ -623,11 +624,12 @@ class SampleTypeDesignerImpl extends React.PureComponent<Props & InjectedBaseDom
                 {showUniqueIdConfirmation && (
                     <ConfirmModal
                         title={'Updating Sample Type with Unique ID field' + (numNewUniqueIdFields !== 1 ? 's' : '')}
-                        msg={'You have added ' + numNewUniqueIdFields + ' Unique ID field' + (numNewUniqueIdFields !== 1 ? 's' : '') + ' to this Sample Type. ' +
+                        msg={'You have added ' + numNewUniqueIdFields + ' ' + UNIQUE_ID_TYPE.display + ' field' + (numNewUniqueIdFields !== 1 ? 's' : '') + ' to this Sample Type. ' +
                         'Values for ' + (numNewUniqueIdFields !== 1 ? 'these fields' : 'this field') + ' will be created for all existing samples.'}
                         onCancel={this.onUniqueIdCancel}
                         onConfirm={this.onUniqueIdConfirm}
                         confirmButtonText={'Finish Updating Sample Type'}
+                        confirmVariant={'success'}
                         cancelButtonText={'Cancel'}
                     />
                 )}

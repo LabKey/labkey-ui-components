@@ -51,6 +51,8 @@ describe("<UniqueIdBanner/>", () => {
             />
         );
         expect(wrapper.text()).toBe(NEW_TYPE_NO_BARCODE_FIELDS_MSG);
+        expect(wrapper.find(Alert)).toHaveLength(0);
+        expect(wrapper.find(Button)).toHaveLength(0);
         wrapper.unmount();
     });
 

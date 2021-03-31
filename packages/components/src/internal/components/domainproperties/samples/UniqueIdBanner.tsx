@@ -16,6 +16,7 @@ export const DEFAULT_UNIQUE_ID_FIELD = {
     conceptURI: UNIQUE_ID_TYPE.conceptURI,
     rangeURI: UNIQUE_ID_TYPE.rangeURI,
     name: 'Barcode',
+    shownInInsertView: false,
 } as Partial<IDomainField>;
 
 // exported for Jest tests

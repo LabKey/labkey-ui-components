@@ -625,7 +625,7 @@ Array [
     File preview:
   </strong>,
   <div
-    className="alert alert-warning"
+    className="margin-top alert alert-warning"
     role="alert"
   >
     Testing warning message

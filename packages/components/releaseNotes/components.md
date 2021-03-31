@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.20.0
+*Released*: 31 March 2021
 * Item 8703: Move handleFileImport code into shared components and use in EntityInsertPanel for file importData call
     * Replace EntityInsertPanel handleFileImport prop with fileImportParameters
     * Add handleEntityFileImport implementation based on usages in LK modules

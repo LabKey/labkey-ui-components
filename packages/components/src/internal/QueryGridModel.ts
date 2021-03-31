@@ -6,7 +6,7 @@ import { formatDate, formatDateTime, QueryColumn, QueryInfo, resolveKey, SchemaQ
 import { intersect, toLowerSafe } from './util/utils';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
-import { STORAGE_UNIQUE_ID_CONCEPT_URI } from "./components/domainproperties/constants";
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from './components/domainproperties/constants';
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -405,7 +405,9 @@ export class QueryGridModel
     }
 
     getUniqueIdColumns(): QueryColumn[] {
-        return this.getAllColumns().filter(column => column.isUniqueIdColumn).toArray();
+        return this.getAllColumns()
+            .filter(column => column.isUniqueIdColumn)
+            .toArray();
     }
 
     getMaxRowIndex() {

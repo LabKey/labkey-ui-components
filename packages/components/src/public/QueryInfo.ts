@@ -3,14 +3,7 @@ import { List, Map, OrderedMap, Record } from 'immutable';
 
 import { Filter } from '@labkey/api';
 
-import {
-    insertColumnFilter,
-    LastActionStatus,
-    QueryColumn,
-    QuerySort,
-    SchemaQuery,
-    ViewInfo
-} from '..';
+import { insertColumnFilter, LastActionStatus, QueryColumn, QuerySort, SchemaQuery, ViewInfo } from '..';
 
 import { toLowerSafe } from '../internal/util/utils';
 
@@ -284,8 +277,8 @@ export class QueryInfo extends Record({
         }, List<QueryColumn>());
     }
 
-    getUniqueIdColumns() :  List<QueryColumn> {
-        return this.columns.filter((column) => (column.isUniqueIdColumn)).toList();
+    getUniqueIdColumns(): List<QueryColumn> {
+        return this.columns.filter(column => column.isUniqueIdColumn).toList();
     }
 
     getSorts(view?: string): List<QuerySort> {

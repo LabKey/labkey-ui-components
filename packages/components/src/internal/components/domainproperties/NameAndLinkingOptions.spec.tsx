@@ -36,10 +36,10 @@ const uniqueIdField = DomainField.create({
     name: 'uniqueId',
     rangeURI: STRING_RANGE_URI,
     propertyId: 2,
-    description: "test uniqueId",
-    label: "UniqueId label",
+    description: 'test uniqueId',
+    label: 'UniqueId label',
     conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
-})
+});
 
 const DEFAULT_PROPS = {
     index: 1,
@@ -105,13 +105,13 @@ describe('NameAndLinkingOptions', () => {
     });
 
     test('uniqueId field', () => {
-        const wrapper = mount(
-            <NameAndLinkingOptions {...DEFAULT_PROPS} field={uniqueIdField} />
-        );
-        expect(wrapper.find({
-            id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1),
-            className: 'form-control',
-        })).toHaveLength(0);
+        const wrapper = mount(<NameAndLinkingOptions {...DEFAULT_PROPS} field={uniqueIdField} />);
+        expect(
+            wrapper.find({
+                id: createFormInputId(DOMAIN_FIELD_IMPORTALIASES, 1, 1),
+                className: 'form-control',
+            })
+        ).toHaveLength(0);
         wrapper.unmount();
-    })
+    });
 });

@@ -25,6 +25,8 @@ import { SimpleResponse } from '../files/models';
 
 import { OntologyModel } from '../ontology/models';
 
+import { isCommunityDistribution } from '../../app/utils';
+
 import {
     decodeLookup,
     DomainDesign,
@@ -64,7 +66,6 @@ import {
     SEVERITY_LEVEL_ERROR,
     SEVERITY_LEVEL_WARN,
 } from './constants';
-import { isCommunityDistribution } from "../../app/utils";
 
 let sharedCache = Map<string, Promise<any>>();
 
@@ -153,7 +154,11 @@ export function fetchDomainDetails(domainId: number, schemaName: string, queryNa
             schemaName,
             queryName,
             success: data => {
-                resolve(DomainDetails.create(  Map<string, any>({...data} )));
+                resolve(
+                    DomainDetails.create(
+                        Map<string, any>({ ...data })
+                    )
+                );
             },
             failure: error => {
                 reject(error);

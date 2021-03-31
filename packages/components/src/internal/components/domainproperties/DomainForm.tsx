@@ -629,7 +629,7 @@ export class DomainFormImpl extends React.PureComponent<IDomainFormInput, IDomai
     };
 
     applyAddField = (config?: Partial<IDomainField>) => {
-        let newConfig = config ? {...config} : undefined;
+        const newConfig = config ? { ...config } : undefined;
         const newDomain = addDomainField(this.props.domain, newConfig);
         this.onDomainChange(newDomain);
         this.setState({ selectAll: false, visibleFieldsCount: getVisibleFieldCount(newDomain) });

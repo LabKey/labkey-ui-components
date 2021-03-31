@@ -64,7 +64,9 @@ describe('<FilePreviewGrid/>', () => {
     });
 
     test('error message with custom style', () => {
-        const component = <FilePreviewGrid data={DATA} previewCount={null} errorMsg="Testing error message" errorStyle="danger"/>;
+        const component = (
+            <FilePreviewGrid data={DATA} previewCount={null} errorMsg="Testing error message" errorStyle="danger" />
+        );
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
@@ -77,9 +79,9 @@ describe('<FilePreviewGrid/>', () => {
         expect(tree).toMatchSnapshot();
     });
 
-    test("warning message", () => {
-        const component = <FilePreviewGrid data={DATA} previewCount={null} warningMsg="Testing warning message"/>;
+    test('warning message', () => {
+        const component = <FilePreviewGrid data={DATA} previewCount={null} warningMsg="Testing warning message" />;
         const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
-    })
+    });
 });

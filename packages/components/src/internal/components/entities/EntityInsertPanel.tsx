@@ -77,6 +77,10 @@ import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
 
+import { getCurrentProductName } from '../../app/utils';
+
+import { fetchDomainDetails } from '../domainproperties/actions';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -88,9 +92,7 @@ import {
 } from './models';
 
 import { getUniqueIdColumnMetadata } from './utils';
-import { getCurrentProductName } from '../../app/utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
-import { fetchDomainDetails } from '../domainproperties/actions';
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -773,7 +775,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
     getInsertColumns = (): List<QueryColumn> => {
         const model = this.getQueryGridModel();
-        let columns : List<QueryColumn> = model
+        let columns: List<QueryColumn> = model
             .getInsertColumns()
             .filter(col => col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY)
             .toList();
@@ -790,7 +792,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    getGeneratedIdColumnMetadata() : Map<string, EditableColumnMetadata> {
+    getGeneratedIdColumnMetadata(): Map<string, EditableColumnMetadata> {
         const { entityDataType, nounSingular, nounPlural } = this.props;
         let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
         if (!this.isNameRequired()) {
@@ -811,7 +813,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { insertModel } = this.state;
         const { creationTypeOptions, entityDataType, nounPlural, nounSingular, onBulkAdd } = this.props;
 
-        let columnMetadata = this.getGeneratedIdColumnMetadata();
+        const columnMetadata = this.getGeneratedIdColumnMetadata();
 
         const queryGridModel = this.getQueryGridModel();
         const isLoaded = !!queryGridModel?.isLoaded;
@@ -974,59 +976,71 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    static getWarningFieldList(names: string[]) : ReactNode {
+    static getWarningFieldList(names: string[]): ReactNode {
         const oxfordComma = names.length > 2 ? ',' : '';
         return names.map((name, index) => (
             <span key={name}>
-                <b>{name}</b>{index === names.length-2 ? oxfordComma + ' and ' : index < names.length-2 ? ', ': ''}
+                <b>{name}</b>
+                {index === names.length - 2 ? oxfordComma + ' and ' : index < names.length - 2 ? ', ' : ''}
             </span>
-        ))
+        ));
     }
 
-    static getInferredFieldWarnings(inferred: InferDomainResponse, domainDetails: DomainDetails, columns: OrderedMap<string, QueryColumn>, otherAllowedFields?: string[]): Array<React.ReactNode> {
-        let uniqueIdFields = [];
-        let unknownFields = [];
+    static getInferredFieldWarnings(
+        inferred: InferDomainResponse,
+        domainDetails: DomainDetails,
+        columns: OrderedMap<string, QueryColumn>,
+        otherAllowedFields?: string[]
+    ): React.ReactNode[] {
+        const uniqueIdFields = [];
+        const unknownFields = [];
         const { domainDesign } = domainDetails;
-        let allowedFields = Object.keys(domainDetails.options.get('importAliases')).map((key => key.toLowerCase()));
+        let allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
         if (otherAllowedFields) {
             allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
         }
 
         inferred.fields.forEach(field => {
-
             const lcName = field.name.toLowerCase();
 
             if (!field.isExpInput() && allowedFields.indexOf(lcName) < 0) {
-                const aliasField = domainDesign.fields.find(domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0);
+                const aliasField = domainDesign.fields.find(
+                    domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0
+                );
                 const columnName = aliasField ? aliasField.name : field.name;
-                const column = columns.find(column => (column.isImportColumn(columnName)));
+                const column = columns.find(column => column.isImportColumn(columnName));
 
                 if (!column) {
                     if (unknownFields.indexOf(field.name) < 0) {
                         unknownFields.push(field.name);
                     }
                 } else if (column.isUniqueIdColumn) {
-                    if (uniqueIdFields.indexOf(field.name) < 0) { // duplicate fields are handled as errors during import; we do not issue warnings about that here.
+                    if (uniqueIdFields.indexOf(field.name) < 0) {
+                        // duplicate fields are handled as errors during import; we do not issue warnings about that here.
                         uniqueIdFields.push(field.name);
                     }
                 }
             }
         });
 
-        let msg = [];
+        const msg = [];
         if (unknownFields.length > 0) {
             msg.push(
-                <p key='unknownFields'>
+                <p key="unknownFields">
                     {EntityInsertPanelImpl.getWarningFieldList(unknownFields)}
-                    {((unknownFields.length === 1) ? " is an unknown field" : " are unknown fields") + " and will be ignored."}
+                    {(unknownFields.length === 1 ? ' is an unknown field' : ' are unknown fields') +
+                        ' and will be ignored.'}
                 </p>
             );
         }
         if (uniqueIdFields.length > 0) {
             msg.push(
-                <p key='uniqueIdFields'>
+                <p key="uniqueIdFields">
                     {EntityInsertPanelImpl.getWarningFieldList(uniqueIdFields)}
-                    {((uniqueIdFields.length === 1) ? " is a unique ID field. It" : " are unique ID fields. They")  + " will not be imported and will be managed by " + getCurrentProductName() + "."}
+                    {(uniqueIdFields.length === 1 ? ' is a unique ID field. It' : ' are unique ID fields. They') +
+                        ' will not be imported and will be managed by ' +
+                        getCurrentProductName() +
+                        '.'}
                 </p>
             );
         }
@@ -1036,18 +1050,23 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     onPreviewLoad = (inferred: InferDomainResponse): any => {
         const { allowedNonDomainFields } = this.props;
         const { insertModel, originalQueryInfo } = this.state;
-        fetchDomainDetails(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName).
-            then(domainDetails => {
-                const msg = EntityInsertPanelImpl.getInferredFieldWarnings(inferred, domainDetails, originalQueryInfo.columns, allowedNonDomainFields);
+        fetchDomainDetails(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName)
+            .then(domainDetails => {
+                const msg = EntityInsertPanelImpl.getInferredFieldWarnings(
+                    inferred,
+                    domainDetails,
+                    originalQueryInfo.columns,
+                    allowedNonDomainFields
+                );
 
                 if (msg.length > 0) {
-                    this.setState({fieldsWarningMsg: <>{msg}</>});
+                    this.setState({ fieldsWarningMsg: <>{msg}</> });
                 }
             })
             .catch(reason => {
-                console.error("Unable to retrieve domain ", reason);
+                console.error('Unable to retrieve domain ', reason);
             });
-    }
+    };
 
     render() {
         const {
@@ -1143,7 +1162,11 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                         acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
                                         allowMultiple={false}
                                         allowDirectories={false}
-                                        previewGridProps={{ previewCount: 3, onPreviewLoad: this.onPreviewLoad, warningMsg: this.state.fieldsWarningMsg }}
+                                        previewGridProps={{
+                                            previewCount: 3,
+                                            onPreviewLoad: this.onPreviewLoad,
+                                            warningMsg: this.state.fieldsWarningMsg,
+                                        }}
                                         onFileChange={this.handleFileChange}
                                         onFileRemoval={this.handleFileRemoval}
                                         templateUrl={this.getTemplateUrl()}

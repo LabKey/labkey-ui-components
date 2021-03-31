@@ -156,5 +156,5 @@ describe('QueryColumn: Sample Lookup', () => {
         expect(validColumn.isImportColumn('Special Column')).toBeTruthy();
         expect(validColumn.isImportColumn('special_column')).toBeTruthy();
         expect(validColumn.isImportColumn('Special_column')).toBeTruthy();
-    })
+    });
 });

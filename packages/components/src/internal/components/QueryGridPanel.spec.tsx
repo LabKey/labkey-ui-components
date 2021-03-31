@@ -26,7 +26,7 @@ import { initUnitTestMocks } from '../testHelperMocks';
 beforeAll(() => {
     initUnitTestMocks();
     registerDefaultURLMappers();
-    LABKEY.moduleContext.api = { moduleNames: ['study'] }
+    LABKEY.moduleContext.api = { moduleNames: ['study'] };
 });
 
 describe('QueryGridPanel render', () => {

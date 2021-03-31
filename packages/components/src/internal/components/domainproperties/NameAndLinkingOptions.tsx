@@ -99,7 +99,10 @@ export class NameAndLinkingOptions extends PureComponent<NameAndLinkingProps> {
                         {!field.isUniqueIdField() && (
                             <>
                                 <div className="domain-field-label">
-                                    <DomainFieldLabel label="Import Aliases" helpTipBody={this.getImportAliasHelpText()} />
+                                    <DomainFieldLabel
+                                        label="Import Aliases"
+                                        helpTipBody={this.getImportAliasHelpText()}
+                                    />
                                 </div>
                                 <FormControl
                                     type="text"

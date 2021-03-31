@@ -2,8 +2,9 @@
 // commented out attributes are not used in app
 import { Record } from 'immutable';
 
-import { SchemaQuery } from './SchemaQuery';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../internal/components/domainproperties/constants';
+
+import { SchemaQuery } from './SchemaQuery';
 
 export class QueryLookup extends Record({
     // server defaults
@@ -233,18 +234,19 @@ export class QueryColumn extends Record({
     }
 
     get isUniqueIdColumn(): boolean {
-        return (this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI);
+        return this.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI;
     }
 
     isImportColumn(importName: string): boolean {
-        if (!importName)
-            return false;
+        if (!importName) return false;
 
         const lcName = importName.toLowerCase();
-        return this.caption?.toLowerCase() === lcName
-            || this.caption?.replace(" ", "").toLowerCase() === lcName
-            || this.name?.toLowerCase() === lcName
-            || this.fieldKey?.toLowerCase() === lcName;
+        return (
+            this.caption?.toLowerCase() === lcName ||
+            this.caption?.replace(' ', '').toLowerCase() === lcName ||
+            this.name?.toLowerCase() === lcName ||
+            this.fieldKey?.toLowerCase() === lcName
+        );
     }
 
     resolveFieldKey(): string {

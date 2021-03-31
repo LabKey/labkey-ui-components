@@ -3,9 +3,10 @@ import { List, Map, Set } from 'immutable';
 import { EditableColumnMetadata, naturalSort, QueryGridModel, QueryInfo, SchemaQuery } from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
-import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 import { STORAGE_UNIQUE_ID_CONCEPT_URI } from '../domainproperties/constants';
 import { getCurrentProductName } from '../../app/utils';
+
+import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
 
 export function parentValuesDiffer(
     sortedOriginalParents: List<EntityChoice>,
@@ -136,16 +137,16 @@ export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): st
     return keys.join(':').toLowerCase();
 }
 
-export function getUniqueIdColumnMetadata(queryInfo: QueryInfo) : Map<string, EditableColumnMetadata> {
+export function getUniqueIdColumnMetadata(queryInfo: QueryInfo): Map<string, EditableColumnMetadata> {
     let columnMetadata = Map<string, EditableColumnMetadata>();
-    queryInfo?.columns.filter((column) => column.isUniqueIdColumn).forEach(
-        column => {
+    queryInfo?.columns
+        .filter(column => column.isUniqueIdColumn)
+        .forEach(column => {
             columnMetadata = columnMetadata.set(column.fieldKey, {
                 readOnly: true,
                 placeholder: '[generated value]',
-                toolTip: `A unique value will be provided by ${getCurrentProductName()} for this field.`
-            })
-        }
-    );
+                toolTip: `A unique value will be provided by ${getCurrentProductName()} for this field.`,
+            });
+        });
     return columnMetadata;
 }

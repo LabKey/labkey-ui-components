@@ -280,8 +280,8 @@ export const UNIQUE_ID_TYPE = new PropDescType({
     name: 'uniqueId',
     display: 'Unique ID',
     rangeURI: STRING_RANGE_URI,
-    conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI
-})
+    conceptURI: STORAGE_UNIQUE_ID_CONCEPT_URI,
+});
 
 export const PROP_DESC_TYPES = List([
     TEXT_TYPE,

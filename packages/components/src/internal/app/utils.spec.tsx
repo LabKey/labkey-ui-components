@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { mount } from "enzyme";
+import React, { FC } from 'react';
+import { mount } from 'enzyme';
 
 import { User } from '../..';
 
@@ -26,7 +26,7 @@ describe('getMenuSectionConfigs', () => {
     test('sampleManager enabled', () => {
         LABKEY.moduleContext = {
             api: {
-                moduleNames: ['samplemanagement','study','premium']
+                moduleNames: ['samplemanagement', 'study', 'premium'],
             },
             samplemanagement: {
                 productId: 'SampleManager',
@@ -68,7 +68,7 @@ describe('getMenuSectionConfigs', () => {
     test('SM and FM enabled, SM current app', () => {
         LABKEY.moduleContext = {
             api: {
-                moduleNames: ['samplemanagement','study','premium']
+                moduleNames: ['samplemanagement', 'study', 'premium'],
             },
             samplemanagement: {
                 productId: 'SampleManager',
@@ -101,7 +101,7 @@ describe('getMenuSectionConfigs', () => {
     test('SM and FM enabled, FM current app', () => {
         LABKEY.moduleContext = {
             api: {
-                moduleNames: ['samplemanagement','study','premium']
+                moduleNames: ['samplemanagement', 'study', 'premium'],
             },
             samplemanagement: {
                 productId: 'SampleManager',
@@ -141,7 +141,7 @@ describe('getMenuSectionConfigs', () => {
 describe('utils', () => {
     LABKEY.moduleContext = {
         api: {
-            moduleNames: ['samplemanagement','study','premium']
+            moduleNames: ['samplemanagement', 'study', 'premium'],
         },
         samplemanagement: {
             productId: 'SampleManager',
@@ -210,17 +210,17 @@ describe('utils', () => {
         expect(wrapper.find('div').text()).toBe('false');
         wrapper.unmount();
 
-        LABKEY.moduleContext = { api: { moduleNames: ['sampleManagement']} };
+        LABKEY.moduleContext = { api: { moduleNames: ['sampleManagement'] } };
         wrapper = mount(<Component />);
         expect(wrapper.find('div').text()).toBe('false');
         wrapper.unmount();
 
-        LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium']} };
+        LABKEY.moduleContext = { api: { moduleNames: ['api', 'core', 'premium'] } };
         wrapper = mount(<Component />);
         expect(wrapper.find('div').text()).toBe('true');
         wrapper.unmount();
 
-        LABKEY.moduleContext = { api: {  } };
+        LABKEY.moduleContext = { api: {} };
         wrapper = mount(<Component />);
         expect(wrapper.find('div').text()).toBe('false');
         wrapper.unmount();

@@ -6,8 +6,9 @@ import { getEditorModel } from '../../global';
 import { QueryGridModel, SchemaQuery, WizardNavButtons } from '../../..';
 import { capitalizeFirstChar, getUpdatedDataFromGrid } from '../../util/utils';
 
-import { EditableGridPanel } from './EditableGridPanel';
 import { getUniqueIdColumnMetadata } from '../entities/utils';
+
+import { EditableGridPanel } from './EditableGridPanel';
 
 interface Props {
     model: QueryGridModel;

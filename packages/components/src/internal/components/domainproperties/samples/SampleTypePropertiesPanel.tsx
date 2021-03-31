@@ -36,9 +36,10 @@ import { ENTITY_FORM_IDS } from '../entities/constants';
 
 import { AutoLinkToStudyDropdown } from '../AutoLinkToStudyDropdown';
 
+import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
+
 import { IParentAlias, SampleTypeModel } from './models';
 import { UniqueIdBanner } from './UniqueIdBanner';
-import { getCurrentProductName, isCommunityDistribution } from '../../../app/utils';
 
 const PROPERTIES_HEADER_ID = 'sample-type-properties-hdr';
 
@@ -275,12 +276,13 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
         return (
             <>
                 Use a Unique ID field to represent barcodes or other ID fields in use in your lab.
-                <br/>
-                <br/>
-                Learn more about using {helpLinkNode(UNIQUE_IDS_TOPIC, 'barcodes and unique IDs')} in {getCurrentProductName()}.
+                <br />
+                <br />
+                Learn more about using {helpLinkNode(UNIQUE_IDS_TOPIC, 'barcodes and unique IDs')} in{' '}
+                {getCurrentProductName()}.
             </>
         );
-    }
+    };
 
     render() {
         const {
@@ -343,7 +345,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {this.renderParentAliases(true, includeDataClasses && !useSeparateDataClassesAliasMenu)}
                 {parentOptions && (
                     <Row>
-                        <Col xs={2}/>
+                        <Col xs={2} />
                         <Col xs={10}>
                             <span>
                                 <AddEntityButton
@@ -362,7 +364,7 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                 {showDataClass && this.renderParentAliases(false, true)}
                 {showDataClass && (
                     <Row>
-                        <Col xs={2}/>
+                        <Col xs={2} />
                         <Col xs={10}>
                             <span>
                                 <AddEntityButton
@@ -469,20 +471,16 @@ class SampleTypePropertiesPanelImpl extends React.PureComponent<
                         )}
                     </>
                 )}
-                {!isCommunityDistribution() &&
+                {!isCommunityDistribution() && (
                     <Row className="margin-top">
                         <Col xs={2}>
-                            <DomainFieldLabel
-                                label={"Barcodes"}
-                                helpTipBody={this.renderUniqueIdHelpText()}
-                            />
+                            <DomainFieldLabel label="Barcodes" helpTipBody={this.renderUniqueIdHelpText()} />
                         </Col>
                         <Col xs={10}>
-                            <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField}/>
+                            <UniqueIdBanner model={model} isFieldsPanel={false} onAddField={onAddUniqueIdField} />
                         </Col>
                     </Row>
-                }
-
+                )}
             </BasePropertiesPanel>
         );
     }

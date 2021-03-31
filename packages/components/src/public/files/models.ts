@@ -1,5 +1,6 @@
-import { InferDomainResponse } from '../..';
 import { ReactNode } from 'react';
+
+import { InferDomainResponse } from '../..';
 
 export interface FileSizeLimitProps {
     maxSize?: {

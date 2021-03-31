@@ -15,6 +15,8 @@
  */
 import { List } from 'immutable';
 
+import { Domain } from '@labkey/api';
+
 import { QueryColumn } from '../../..';
 
 import { initUnitTestMocks } from '../../testHelperMocks';
@@ -65,7 +67,6 @@ import {
     SEVERITY_LEVEL_WARN,
     STRING_RANGE_URI,
 } from './constants';
-import { Domain } from '@labkey/api';
 
 beforeAll(() => {
     initUnitTestMocks();
@@ -333,13 +334,13 @@ describe('domain properties actions', () => {
     });
 
     test('getAvailableTypes, all optional allowed', () => {
-        let domain = DomainDesign.create({
+        const domain = DomainDesign.create({
             allowFlagProperties: true,
             allowFileLinkProperties: true,
             allowAttachmentProperties: true,
             allowTimepointProperties: true,
         });
-        let available = getAvailableTypes(domain);
+        const available = getAvailableTypes(domain);
         expect(available.contains(FLAG_TYPE)).toBeTruthy();
         expect(available.contains(FILE_TYPE)).toBeTruthy();
         expect(available.contains(ATTACHMENT_TYPE)).toBeTruthy();
@@ -348,9 +349,9 @@ describe('domain properties actions', () => {
         expect(available.contains(VISIT_DATE_TYPE)).toBeTruthy();
         expect(available.contains(VISIT_ID_TYPE)).toBeTruthy();
         expect(available.contains(UNIQUE_ID_TYPE)).toBeFalsy();
-    })
+    });
 
-    test("getAvailableTypes, no optional allowed", () => {
+    test('getAvailableTypes, no optional allowed', () => {
         const domain = DomainDesign.create({
             allowFlagProperties: false,
             allowFileLinkProperties: false,
@@ -378,12 +379,12 @@ describe('domain properties actions', () => {
         expect(types.contains(TEXT_TYPE)).toBeTruthy();
     });
 
-    test("getAvailableTypes, sampleType LKSM", () => {
+    test('getAvailableTypes, sampleType LKSM', () => {
         LABKEY.moduleContext = {
             sampleManagement: {},
             api: {
-                moduleNames: ['samplemanagement']
-            }
+                moduleNames: ['samplemanagement'],
+            },
         };
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
@@ -392,7 +393,7 @@ describe('domain properties actions', () => {
         expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
     });
 
-    test("getAvailableTypes, sampleType Premium", () => {
+    test('getAvailableTypes, sampleType Premium', () => {
         LABKEY.moduleContext.api = { moduleNames: ['premium'] };
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,
@@ -401,7 +402,7 @@ describe('domain properties actions', () => {
         expect(available.contains(UNIQUE_ID_TYPE)).toBeTruthy();
     });
 
-    test("getAvailableTypes, sampleType community", () => {
+    test('getAvailableTypes, sampleType community', () => {
         LABKEY.moduleContext.api = { moduleNames: ['api', 'core'] };
         const domain = DomainDesign.create({
             domainKindName: Domain.KINDS.SAMPLE_TYPE,

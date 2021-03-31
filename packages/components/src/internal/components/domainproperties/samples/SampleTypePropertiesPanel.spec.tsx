@@ -261,9 +261,9 @@ describe('<SampleTypePropertiesPanel/>', () => {
     test('community edition, no barcodes', async () => {
         LABKEY.moduleContext = {
             api: {
-                moduleNames: ['api', 'core']
+                moduleNames: ['api', 'core'],
             },
-        }
+        };
         const wrapper = mount(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}
@@ -286,9 +286,9 @@ describe('<SampleTypePropertiesPanel/>', () => {
     test('premium edition with barcodes', async () => {
         LABKEY.moduleContext = {
             api: {
-                moduleNames: ['premium']
+                moduleNames: ['premium'],
             },
-        }
+        };
         const wrapper = mount(
             <SampleTypePropertiesPanel
                 {...BASE_PROPS}

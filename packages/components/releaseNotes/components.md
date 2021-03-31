@@ -5,6 +5,14 @@ Components, models, actions, and utility functions for LabKey applications and p
 *Released*: TBD
 * Handle domain field data type check for created/modified timestamp conceptURI
 
+### version 2.20.0
+*Released*: 31 March 2021
+* Item 8703: Move handleFileImport code into shared components and use in EntityInsertPanel for file importData call
+    * Replace EntityInsertPanel handleFileImport prop with fileImportParameters
+    * Add handleEntityFileImport implementation based on usages in LK modules
+    * Change EntityInsertPanel submitFileHandler to use shared handleEntityFileImport with passed in fileImportParameters
+    * Add EntityDataType importFileAction prop to be used for handleEntityFileImport
+
 ### version 2.19.0
 *Released*: 30 March 2021
 * Add maxAllowedPhi attribute to User

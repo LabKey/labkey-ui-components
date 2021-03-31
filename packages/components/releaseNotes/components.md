@@ -1,8 +1,8 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
-### version TBD
-*Released*: TBD
+### version 2.20.1
+*Released*: 31 March 2021
 * Handle domain field data type check for created/modified timestamp conceptURI
 
 ### version 2.20.0

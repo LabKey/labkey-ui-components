@@ -392,15 +392,17 @@ export function handleEntityFileImport(
             importLookupByAlternateKey: true,
             useAsync,
             insertOption: InsertOptions[isMerge ? InsertOptions.MERGE : InsertOptions.IMPORT],
-        }).then((response) => {
-            if (response.success) {
-                resolve(response);
-            } else {
-                reject({msg: response.errors._form})
-            }
-        }).catch((error) => {
-            console.error(error);
-            reject({msg: error.exception})
-        });
+        })
+            .then(response => {
+                if (response.success) {
+                    resolve(response);
+                } else {
+                    reject({ msg: response.errors._form });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                reject({ msg: error.exception });
+            });
     });
-};
+}

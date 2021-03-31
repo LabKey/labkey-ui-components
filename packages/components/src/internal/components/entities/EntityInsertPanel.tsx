@@ -85,7 +85,7 @@ import {
     IParentOption,
 } from './models';
 
-import { getEntityTypeData } from './actions';
+import { getEntityTypeData, handleEntityFileImport } from './actions';
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -115,7 +115,7 @@ interface OwnProps {
     entityDataType: EntityDataType;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo) => string;
-    handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean, isAsync?: boolean) => Promise<any>;
+    fileImportParameters: Record<string, any>;
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
     maxEntities?: number;
@@ -240,7 +240,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
 
         if (
             insertModel &&
-            insertModel.getTargetEntityTypeName() === target &&
+            insertModel.getTargetEntityTypeValue() === target &&
             insertModel.selectionKey === selectionKey &&
             (insertModel.originalParents === parents || !allowParents)
         ) {
@@ -303,7 +303,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                 'Problem retrieving data for ' +
                                 this.typeTextSingular +
                                 " '" +
-                                insertModel.getTargetEntityTypeName() +
+                                insertModel.getTargetEntityTypeLabel() +
                                 "'.",
                         }) as EntityIdCreationModel,
                     });
@@ -322,7 +322,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
         const { insertModel } = this.state;
 
         if (insertModel) {
-            const entityTypeName = insertModel ? insertModel.getTargetEntityTypeName() : undefined;
+            const entityTypeName = insertModel ? insertModel.getTargetEntityTypeValue() : undefined;
             if (entityTypeName) {
                 const model = getStateQueryGridModel(
                     'insert-entities',
@@ -670,7 +670,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             if (response?.rows) {
                 this.props.onDataChange?.(false);
                 this.props.afterEntityCreation?.(
-                    insertModel.getTargetEntityTypeName(),
+                    insertModel.getTargetEntityTypeLabel(),
                     response.getFilter(),
                     response.rows.length,
                     'created',
@@ -874,23 +874,36 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     submitFileHandler = async (): Promise<void> => {
-        const { handleFileImport, nounPlural } = this.props;
+        const {
+            fileImportParameters,
+            nounPlural,
+            entityDataType,
+            onDataChange,
+            onBackgroundJobStart,
+            afterEntityCreation,
+        } = this.props;
         const { insertModel, file, isMerge, originalQueryInfo, useAsync } = this.state;
 
-        if (!handleFileImport) return;
+        if (!fileImportParameters) return;
 
         this.setSubmitting(true);
-
         try {
-            const response = await handleFileImport(originalQueryInfo, file, isMerge, useAsync);
+            const response = await handleEntityFileImport(
+                entityDataType.importFileAction,
+                fileImportParameters,
+                originalQueryInfo,
+                file,
+                isMerge,
+                useAsync
+            );
 
             this.setSubmitting(false);
-            this.props.onDataChange?.(false);
+            onDataChange?.(false);
             if (useAsync) {
-                this.props.onBackgroundJobStart?.(insertModel.getTargetEntityTypeName(), file.name, response.jobId);
+                onBackgroundJobStart?.(insertModel.getTargetEntityTypeLabel(), file.name, response.jobId);
             } else {
-                this.props.afterEntityCreation?.(
-                    insertModel.getTargetEntityTypeName(),
+                afterEntityCreation?.(
+                    insertModel.getTargetEntityTypeLabel(),
                     null,
                     response.rowCount,
                     'imported',
@@ -942,7 +955,14 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     render() {
-        const { canEditEntityTypeDetails, disableMerge, fileSizeLimits, importOnly, nounPlural } = this.props;
+        const {
+            canEditEntityTypeDetails,
+            disableMerge,
+            fileSizeLimits,
+            importOnly,
+            nounPlural,
+            entityDataType,
+        } = this.props;
         const { error, file, insertModel, isMerge, isSubmitting, originalQueryInfo } = this.state;
 
         if (!insertModel) {
@@ -954,10 +974,11 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
         }
 
         const isGridStep = this.isGridStep();
-        const entityTypeName = insertModel.getTargetEntityTypeName();
-        const editEntityTypeDetailsLink = entityTypeName
-            ? AppURL.create(nounPlural, entityTypeName, 'update')
-            : undefined;
+        const entityTypeName = insertModel.getTargetEntityTypeLabel();
+        const editEntityTypeDetailsLink =
+            entityTypeName && entityDataType?.editTypeAppUrlPrefix
+                ? AppURL.create(entityDataType.editTypeAppUrlPrefix, entityTypeName)
+                : undefined;
 
         return (
             <>
@@ -1050,7 +1071,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 {!isGridStep && (
                     <WizardNavButtons
                         cancel={this.onCancel}
-                        containerClassName=""
+                        containerClassName="test-loc-import-btn"
                         canFinish={file !== undefined && originalQueryInfo !== undefined}
                         finish
                         nextStep={this.submitFileHandler} // nextStep is the function that will get called when finish button clicked

@@ -9,6 +9,33 @@ Components, models, actions, and utility functions for LabKey applications and p
 * Update EntityDeleteModal to work with QueryModel
 * Group lineage nodes based on materialLineageType
 
+### version 2.20.1
+*Released*: 31 March 2021
+* Handle domain field data type check for created/modified timestamp conceptURI
+
+### version 2.20.0
+*Released*: 31 March 2021
+* Item 8703: Move handleFileImport code into shared components and use in EntityInsertPanel for file importData call
+    * Replace EntityInsertPanel handleFileImport prop with fileImportParameters
+    * Add handleEntityFileImport implementation based on usages in LK modules
+    * Change EntityInsertPanel submitFileHandler to use shared handleEntityFileImport with passed in fileImportParameters
+    * Add EntityDataType importFileAction prop to be used for handleEntityFileImport
+
+### version 2.19.0
+*Released*: 30 March 2021
+* Add maxAllowedPhi attribute to User
+* Add phiProtected attribute to QueryColumn
+* Add styling to Grids for PHI protected columns
+* Convert GridMessages to FC
+
+### version 2.18.0
+*Released*: 30 March 2021
+* Issue 42741: EntityInsertPanel fix to use selected sample type name instead of value (which is lowercase) for navigation
+* Add EntityDataType.editTypeAppUrlPrefix to use for linking to the edit design app URL on the create/import page
+* EntityInsertPanel fix to handle case where parent param is a schema/query but without specific values to add to grid
+* Add createEntityParentKey helper util function
+* SubMenuItem fix for expanded menu with filter issue with item disabled state change
+
 ### version 2.17.0
 *Released*: 23 March 2021
 * Add queryModel prop to AssayImportSubMenuItem

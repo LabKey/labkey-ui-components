@@ -775,6 +775,18 @@ export class QueryModel {
         };
     }
 
+    get showImportDataButton(): boolean {
+        const query = this.queryInfo;
+
+        return query && query.showInsertNewButton && query.importUrl && !query.importUrlDisabled;
+    }
+
+    get showInsertNewButton(): boolean {
+        const query = this.queryInfo;
+
+        return query && query.showInsertNewButton && query.insertUrl && !query.insertUrlDisabled;
+    }
+
     /**
      * Returns the model attributes given a set of queryParams from the URL. Used for URL Binding.
      * @param queryParams: The query attribute from a ReactRouter Location object.

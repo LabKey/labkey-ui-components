@@ -3,7 +3,7 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version TBD
 *Released*: TBD
-* Move handleFileImport code into shared components and use in EntityInsertPanel for file importData call
+* Item 8703: Move handleFileImport code into shared components and use in EntityInsertPanel for file importData call
     * Replace EntityInsertPanel handleFileImport prop with fileImportParameters
     * Add handleEntityFileImport implementation based on usages in LK modules
     * Change EntityInsertPanel submitFileHandler to use shared handleEntityFileImport with passed in fileImportParameters

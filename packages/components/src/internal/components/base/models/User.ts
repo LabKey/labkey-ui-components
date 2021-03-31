@@ -28,6 +28,7 @@ const defaultUser: IUserProps = {
     isSystemAdmin: false,
     isTrusted: false,
 
+    maxAllowedPhi: undefined,
     permissionsList: List(),
 };
 
@@ -57,6 +58,7 @@ export class User extends Record(defaultUser) implements IUserProps {
     declare isSystemAdmin: boolean;
     declare isTrusted: boolean;
 
+    declare maxAllowedPhi: string;
     declare permissionsList: List<string>;
 
     static getDefaultUser(): User {

@@ -1,6 +1,21 @@
 # @labkey/components
 Components, models, actions, and utility functions for LabKey applications and pages.
 
+### version 2.19.0
+*Released*: 30 March 2021
+* Add maxAllowedPhi attribute to User
+* Add phiProtected attribute to QueryColumn
+* Add styling to Grids for PHI protected columns
+* Convert GridMessages to FC
+
+### version 2.18.0
+*Released*: 30 March 2021
+* Issue 42741: EntityInsertPanel fix to use selected sample type name instead of value (which is lowercase) for navigation
+* Add EntityDataType.editTypeAppUrlPrefix to use for linking to the edit design app URL on the create/import page
+* EntityInsertPanel fix to handle case where parent param is a schema/query but without specific values to add to grid
+* Add createEntityParentKey helper util function
+* SubMenuItem fix for expanded menu with filter issue with item disabled state change
+
 ### version 2.17.0
 *Released*: 23 March 2021
 * Add queryModel prop to AssayImportSubMenuItem

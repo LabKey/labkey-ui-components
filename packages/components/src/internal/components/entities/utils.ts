@@ -1,6 +1,6 @@
 import { List, Map, Set } from 'immutable';
 
-import { naturalSort, QueryGridModel } from '../../..';
+import { naturalSort, QueryGridModel, SchemaQuery } from '../../..';
 import { DELIMITER } from '../forms/input/SelectInput';
 
 import { EntityChoice, EntityDataType, IEntityTypeOption } from './models';
@@ -124,4 +124,12 @@ export function getUpdatedRowForParentChanges(
         }
     });
     return updatedValues;
+}
+
+export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): string {
+    const keys = [schemaQuery.schemaName, schemaQuery.queryName];
+    if (id) {
+        keys.push(id);
+    }
+    return keys.join(':').toLowerCase();
 }

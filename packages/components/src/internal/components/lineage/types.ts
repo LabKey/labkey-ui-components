@@ -60,7 +60,7 @@ export interface LineageOptions {
     groupTitles?: Map<LINEAGE_DIRECTIONS, Map<string, string>>;
     request?: Experiment.ExperimentJSONConverterOptions;
     urlResolver?: LineageURLResolvers;
-    materialRunType?: string;
+    runProtocolLsid?: string;
 }
 
 export interface LineageIconMetadata {

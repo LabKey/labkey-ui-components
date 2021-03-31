@@ -140,8 +140,8 @@ export function withLineage<Props>(
         }
 
         componentDidUpdate(prevProps: Readonly<Props & WithLineageOptions>): void {
-            if (prevProps.lsid !== this.props.lsid || prevProps.filters !== this.props.filters || prevProps.materialRunType !== this.props.materialRunType) {
-                this.loadLineage(prevProps.materialRunType !== this.props.materialRunType);
+            if (prevProps.lsid !== this.props.lsid || prevProps.filters !== this.props.filters || prevProps.runProtocolLsid !== this.props.runProtocolLsid) {
+                this.loadLineage(prevProps.runProtocolLsid !== this.props.runProtocolLsid);
             }
         }
 

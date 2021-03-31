@@ -215,7 +215,7 @@ export function loadLineageResult(
     const fetchOptions: Experiment.LineageOptions = {
         ...options?.request,
         lsid: seed,
-        materialRunType: options?.materialRunType
+        runProtocolLsid: options?.runProtocolLsid
     };
 
     const currentContainerId = getServerContext().container.id;
@@ -243,7 +243,7 @@ export function loadLineageResult(
         fetchOptions.includeInputsAndOutputs === true,
         fetchOptions.includeRunSteps === true,
         fetchOptions.includeProperties === true,
-        options?.materialRunType ?? ''
+        options?.runProtocolLsid ?? ''
     ].join('|');
 
     if (!lineageResultCache[key]) {

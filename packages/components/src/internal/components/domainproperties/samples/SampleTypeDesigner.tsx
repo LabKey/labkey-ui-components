@@ -7,7 +7,6 @@ import DomainForm from '../DomainForm';
 import {
     Alert,
     ConfirmModal,
-    DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS,
     generateId,
     getHelpLink,
     initQueryGridState,
@@ -18,6 +17,7 @@ import {
     SCHEMAS,
 } from '../../../..';
 
+import { DEFAULT_DOMAIN_FORM_DISPLAY_OPTIONS } from '../constants';
 import { addDomainField, getDomainPanelStatus, saveDomain } from '../actions';
 import { initSampleSetSelects } from '../../samples/actions';
 import { SAMPLE_SET_DISPLAY_TEXT } from '../../../constants';

@@ -88,10 +88,10 @@ import {
     IParentOption,
 } from './models';
 
-import { getEntityTypeData } from './actions';
 import { getUniqueIdColumnMetadata } from './utils';
 import { getCurrentProductName } from '../../app/utils';
 import { DATA_CLASS_IMPORT_PREFIX, SAMPLE_SET_IMPORT_PREFIX } from '../domainproperties/samples/SampleTypeDesigner';
+import { getEntityTypeData, handleEntityFileImport } from './actions';
 
 class EntityGridLoader implements IGridLoader {
     model: EntityIdCreationModel;
@@ -121,7 +121,7 @@ interface OwnProps {
     entityDataType: EntityDataType;
     fileSizeLimits?: Map<string, FileSizeLimitProps>;
     getFileTemplateUrl?: (queryInfo: QueryInfo) => string;
-    handleFileImport?: (queryInfo: QueryInfo, file: File, isMerge: boolean, isAsync?: boolean) => Promise<any>;
+    fileImportParameters: Record<string, any>;
     importHelpLinkNode: ReactNode;
     importOnly?: boolean;
     maxEntities?: number;
@@ -894,22 +894,35 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     submitFileHandler = async (): Promise<void> => {
-        const { handleFileImport, nounPlural } = this.props;
+        const {
+            fileImportParameters,
+            nounPlural,
+            entityDataType,
+            onDataChange,
+            onBackgroundJobStart,
+            afterEntityCreation,
+        } = this.props;
         const { insertModel, file, isMerge, originalQueryInfo, useAsync } = this.state;
 
-        if (!handleFileImport) return;
+        if (!fileImportParameters) return;
 
         this.setSubmitting(true);
-
         try {
-            const response = await handleFileImport(originalQueryInfo, file, isMerge, useAsync);
+            const response = await handleEntityFileImport(
+                entityDataType.importFileAction,
+                fileImportParameters,
+                originalQueryInfo,
+                file,
+                isMerge,
+                useAsync
+            );
 
             this.setSubmitting(false);
-            this.props.onDataChange?.(false);
+            onDataChange?.(false);
             if (useAsync) {
-                this.props.onBackgroundJobStart?.(insertModel.getTargetEntityTypeLabel(), file.name, response.jobId);
+                onBackgroundJobStart?.(insertModel.getTargetEntityTypeLabel(), file.name, response.jobId);
             } else {
-                this.props.afterEntityCreation?.(
+                afterEntityCreation?.(
                     insertModel.getTargetEntityTypeLabel(),
                     null,
                     response.rowCount,
@@ -1145,7 +1158,7 @@ export class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 {!isGridStep && (
                     <WizardNavButtons
                         cancel={this.onCancel}
-                        containerClassName=""
+                        containerClassName="test-loc-import-btn"
                         canFinish={file !== undefined && originalQueryInfo !== undefined}
                         finish
                         nextStep={this.submitFileHandler} // nextStep is the function that will get called when finish button clicked

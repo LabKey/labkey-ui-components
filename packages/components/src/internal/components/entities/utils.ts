@@ -128,6 +128,14 @@ export function getUpdatedRowForParentChanges(
     return updatedValues;
 }
 
+export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): string {
+    const keys = [schemaQuery.schemaName, schemaQuery.queryName];
+    if (id) {
+        keys.push(id);
+    }
+    return keys.join(':').toLowerCase();
+}
+
 export function getUniqueIdColumnMetadata(queryInfo: QueryInfo) : Map<string, EditableColumnMetadata> {
     let columnMetadata = Map<string, EditableColumnMetadata>();
     queryInfo?.columns.filter((column) => column.conceptURI === STORAGE_UNIQUE_ID_CONCEPT_URI).forEach(
@@ -140,12 +148,4 @@ export function getUniqueIdColumnMetadata(queryInfo: QueryInfo) : Map<string, Ed
         }
     );
     return columnMetadata;
-}
-
-export function createEntityParentKey(schemaQuery: SchemaQuery, id?: string): string {
-    const keys = [schemaQuery.schemaName, schemaQuery.queryName];
-    if (id) {
-        keys.push(id);
-    }
-    return keys.join(':').toLowerCase();
 }

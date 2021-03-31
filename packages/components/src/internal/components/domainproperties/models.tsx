@@ -46,6 +46,7 @@ import {
 } from './constants';
 import {
     ATTACHMENT_TYPE,
+    CONCEPT_URIS_NOT_USED_IN_TYPES,
     DATETIME_TYPE,
     DOUBLE_TYPE,
     FILE_TYPE,
@@ -1257,7 +1258,9 @@ function resolveDataType(rawField: Partial<IDomainField>): PropDescType {
             if (type.rangeURI === rawField.rangeURI && !type.isUser()) {
                 if (
                     !rawField.lookupQuery &&
-                    ((!type.conceptURI && !rawField.conceptURI) || type.conceptURI === rawField.conceptURI)
+                    ((!type.conceptURI && !rawField.conceptURI) ||
+                        type.conceptURI === rawField.conceptURI ||
+                        CONCEPT_URIS_NOT_USED_IN_TYPES.contains(rawField.conceptURI))
                 ) {
                     return true;
                 }

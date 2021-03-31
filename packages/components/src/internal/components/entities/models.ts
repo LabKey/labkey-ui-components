@@ -581,4 +581,5 @@ export interface EntityDataType {
     insertColumnNamePrefix: string; // when updating this value as an input, the name of that column (e.g, MaterialInputs)
     filterArray?: Filter.IFilter[]; // A list of filters to use when selecting the set of values
     editTypeAppUrlPrefix?: string; // the app url route prefix for the edit design page for the given data type
+    importFileAction: string; // the action in the 'experiment' controller to use for file import for the given data type
 }

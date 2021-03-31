@@ -1,11 +1,14 @@
-import { Ajax, Filter, Utils } from '@labkey/api';
+import { ActionURL, Ajax, Filter, Utils } from '@labkey/api';
 import { fromJS, List, Map } from 'immutable';
 
 import {
     buildURL,
     getQueryGridModel,
     getSelected,
+    importData,
+    InsertOptions,
     naturalSort,
+    QueryInfo,
     SampleCreationType,
     SchemaQuery,
     selectRows,
@@ -363,5 +366,43 @@ export function deleteEntityType(deleteActionName: string, rowId: number): Promi
                 reject(response);
             }),
         });
+    });
+}
+
+export function handleEntityFileImport(
+    importAction: string,
+    importParameters: Record<string, any>,
+    queryInfo: QueryInfo,
+    file: File,
+    isMerge: boolean,
+    useAsync: boolean
+): Promise<any> {
+    return new Promise((resolve, reject) => {
+        const { schemaQuery } = queryInfo;
+
+        return importData({
+            schemaName: schemaQuery.getSchema(),
+            queryName: schemaQuery.getQuery(),
+            file,
+            importUrl: ActionURL.buildURL('experiment', importAction, null, {
+                ...importParameters,
+                schemaName: schemaQuery.getSchema(),
+                'query.queryName': schemaQuery.getQuery(),
+            }),
+            importLookupByAlternateKey: true,
+            useAsync,
+            insertOption: InsertOptions[isMerge ? InsertOptions.MERGE : InsertOptions.IMPORT],
+        })
+            .then(response => {
+                if (response.success) {
+                    resolve(response);
+                } else {
+                    reject({ msg: response.errors._form });
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                reject({ msg: error.exception });
+            });
     });
 }

@@ -776,15 +776,16 @@ export class QueryModel {
     }
 
     get showImportDataButton(): boolean {
-        const query = this.queryInfo;
-
-        return query && query.showInsertNewButton && query.importUrl && !query.importUrlDisabled;
+        return this.queryInfo?.showInsertNewButton && this.queryInfo.importUrl && !this.queryInfo.importUrlDisabled;
     }
 
     get showInsertNewButton(): boolean {
-        const query = this.queryInfo;
+        return this.queryInfo?.showInsertNewButton && this.queryInfo.insertUrl && !this.queryInfo.insertUrlDisabled;
+    }
 
-        return query && query.showInsertNewButton && query.insertUrl && !query.insertUrlDisabled;
+    get isFiltered(): boolean {
+        return this.baseFilters?.length > 0 || this.filterArray?.length > 0
+            || this.queryInfo?.getFilters(this.schemaQuery.viewName)?.size > 0
     }
 
     /**

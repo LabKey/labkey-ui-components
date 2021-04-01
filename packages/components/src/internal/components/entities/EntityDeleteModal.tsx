@@ -10,14 +10,14 @@ import {
     SchemaQuery,
     createDeleteErrorNotification,
     createDeleteSuccessNotification,
-    deleteRows,
+    deleteRows, QueryModel,
 } from '../../..';
 
 import { EntityDeleteConfirmModal } from './EntityDeleteConfirmModal';
 import { EntityDataType } from './models';
 
 interface Props {
-    model: QueryGridModel;
+    model: QueryGridModel | QueryModel;
     maxSelected?: number;
     useSelected: boolean;
     beforeDelete?: () => any;
@@ -43,17 +43,30 @@ export const EntityDeleteModal: React.FC<Props> = props => {
     const [showProgress, setShowProgress] = useState(false);
     const [numConfirmed, setNumConfirmed] = useState(0);
     const noun = ' ' + getNoun(numConfirmed);
+    const isFiltered = model instanceof QueryGridModel ? model.isFiltered() : model.isFiltered;
     let rowIds;
     let numSelected = 0;
     if (useSelected) {
-        if (model.isFiltered()) {
-            rowIds = model.selectedIds.toArray();
-            numSelected = rowIds.length;
-        } else {
-            numSelected = model.selectedQuantity;
+        if( model instanceof QueryGridModel ) {
+            if (isFiltered) {
+                rowIds = model.selectedIds.toArray();
+                numSelected = rowIds.length;
+            }
+            else {
+                numSelected = model.selectedQuantity;
+            }
+        }
+        else {
+            rowIds = model.selections ?? [];
+            numSelected = rowIds.length
         }
     } else {
-        rowIds = [model.dataIds.get(0)];
+        if( model instanceof QueryGridModel ) {
+            rowIds = [model.dataIds.get(0)];
+        }
+        else {
+            rowIds = model.gridData[0]?.key
+        }
         numSelected = 1;
     }
 
@@ -67,7 +80,9 @@ export const EntityDeleteModal: React.FC<Props> = props => {
         beforeDelete?.();
         const noun = ' ' + getNoun(rowsToDelete.length);
 
-        const schemaQuery = SchemaQuery.create(model.schema, model.query);
+        const schema = model['schema'] ?? model['schemaName'];
+        const query = model['query'] ?? model['queryName'];
+        const schemaQuery = SchemaQuery.create(schema, query);
 
         deleteRows({
             schemaQuery,
@@ -100,7 +115,7 @@ export const EntityDeleteModal: React.FC<Props> = props => {
         <>
             {!showProgress && (
                 <EntityDeleteConfirmModal
-                    selectionKey={useSelected && !model.isFiltered() ? model.getId() : undefined}
+                    selectionKey={useSelected && !isFiltered ? model.id : undefined}
                     rowIds={rowIds}
                     onConfirm={onConfirm}
                     onCancel={onCancel}

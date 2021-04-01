@@ -104,10 +104,10 @@ export class GridAliquotViewSelector extends Component<Props> {
                     else if (filterType == Filter.Types.EQUAL) {
                         if (value === '')
                             return;
-                        mode = value === 'true' ? MODE.aliquots : MODE.samples;
+                        mode = value === 'true' || value === true ? MODE.aliquots : MODE.samples;
                     }
                     else if (filterType == Filter.Types.NOT_EQUAL || filterType == Filter.Types.NEQ || filterType == Filter.Types.NEQ_OR_NULL) {
-                        mode = value === 'true' ? MODE.samples : MODE.aliquots;
+                        mode = value === 'true' || value === true ? MODE.samples : MODE.aliquots;
                     }
 
                     return;

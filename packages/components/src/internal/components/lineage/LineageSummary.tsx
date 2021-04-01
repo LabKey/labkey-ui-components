@@ -9,7 +9,7 @@ import { LoadingSpinner } from '../../..';
 
 import { LINEAGE_DIRECTIONS, LineageOptions } from './types';
 import { LineageLink, LineageResult } from './models';
-import { createLineageNodeCollections } from './vis/VisGraphGenerator';
+import {createLineageNodeCollections, isAliquotNodeCollection} from './vis/VisGraphGenerator';
 import { DetailsListNodes } from './node/DetailsList';
 import { InjectedLineage, withLineage } from './withLineage';
 
@@ -36,7 +36,7 @@ class LineageSummaryImpl extends PureComponent<InjectedLineage & LineageSummaryO
         return groups.map(groupName => {
             const group = nodesByType[groupName];
             const groupDisplayName = group.displayType;
-            const isAliquot = group.materialLineageType === 'Aliquot';
+            const isAliquot = isAliquotNodeCollection(group);
             const title = isAliquot && group.nodes.length > 1 ? nodeName + ' Aliquots' :
                 (groupDisplayName +
                 ' ' +

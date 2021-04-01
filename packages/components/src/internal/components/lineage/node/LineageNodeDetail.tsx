@@ -5,7 +5,11 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 
-import { createLineageNodeCollections, LineageNodeCollectionByType } from '../vis/VisGraphGenerator';
+import {
+    createLineageNodeCollections,
+    isAliquotNodeCollection,
+    LineageNodeCollectionByType
+} from '../vis/VisGraphGenerator';
 import { LineageSummary } from '../LineageSummary';
 import { LineageNode } from '../models';
 import { LineageOptions } from '../types';
@@ -111,7 +115,7 @@ export class ClusterNodeDetail extends PureComponent<ClusterNodeDetailProps> {
 
     static getGroupDisplayName (nodesByType, groupName, parentNodeName?) {
         const group = nodesByType[groupName];
-        const isAliquot = group.materialLineageType === 'Aliquot';
+        const isAliquot = isAliquotNodeCollection(group);
         const aliquotDisplayName = (parentNodeName ? parentNodeName + ' ' : '') + 'Aliquots';
         return isAliquot ? aliquotDisplayName : group.displayType;
     }

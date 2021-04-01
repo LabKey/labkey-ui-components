@@ -81,6 +81,10 @@ export interface LineageNodeCollection {
     nodes: LineageNode[];
 }
 
+export function isAliquotNodeCollection(node: LineageNodeCollection | LineageNode) : boolean {
+    return node.materialLineageType === 'Aliquot';
+}
+
 export type LineageNodeCollectionByType = { [nodeType: string]: LineageNodeCollection };
 
 // group the array of nodes into collections by type
@@ -461,7 +465,7 @@ function _processNodes(
 
             edges.forEach(e => {
                 const node = nodes.get(e.lsid);
-                const isAliquot = node.materialLineageType === 'Aliquot';
+                const isAliquot = isAliquotNodeCollection(node);
                 const combinedNode = isAliquot ? combineAliquotNode : combineNonAliquotNode;
 
                 if (!combinedNode)

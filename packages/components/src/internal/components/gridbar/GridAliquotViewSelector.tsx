@@ -56,7 +56,7 @@ export class GridAliquotViewSelector extends Component<Props> {
     };
 
     updateAliquotFilter(isAliquot: boolean, check: boolean) {
-        const { queryGridModel, queryModel, updateFilter } = this.props;
+        const { queryGridModel, updateFilter } = this.props;
         const filterMode = this.getAliquotFilterMode();
 
         let newFilter;
@@ -77,13 +77,13 @@ export class GridAliquotViewSelector extends Component<Props> {
     getTitle(mode: MODE) {
         switch (mode) {
             case MODE.samples:
-                return 'Samples only';
+                return 'Samples Only';
             case MODE.aliquots:
-                return 'Aliquots only';
+                return 'Aliquots Only';
             case MODE.none:
                 return 'None';
             default:
-                return 'All samples amount';
+                return 'All Samples';
         }
     };
 
@@ -138,7 +138,7 @@ export class GridAliquotViewSelector extends Component<Props> {
         const items = List<ReactNode>().asMutable();
         items.push(
             <MenuItem header key="aliquot-selector-header">
-                Show sample amounts
+                Show Samples
             </MenuItem>
         );
 
@@ -152,6 +152,11 @@ export class GridAliquotViewSelector extends Component<Props> {
     }
 
     render(): ReactNode {
+        const {queryGridModel, queryModel} = this.props;
+
+        if (!queryGridModel && !queryModel)
+            return null;
+
         const filterMode = this.getAliquotFilterMode();
 
         const viewItems = this.createMenuItems(filterMode);

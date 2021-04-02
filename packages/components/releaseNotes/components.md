@@ -3,6 +3,10 @@ Components, models, actions, and utility functions for LabKey applications and p
 
 ### version 2.21.0
 *Released*: 2 April 2021
+* Issue 42598: FileTree component styling fixes for font family, text color, and node display for wide text
+
+### version 2.21.0
+*Released*: 2 April 2021
 * Add support for uniqueId (barcode) fields
     * Add Concept URI for unique Id fields.
     * In EntityInsertPanel, add placeholder text for generated Ids and make them read-only

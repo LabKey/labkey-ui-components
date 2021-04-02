@@ -32,40 +32,42 @@ const COLUMNS = List<GridColumn>([
 
 // NOTE that the previewCount prop here is not used by FilePreviewGrid but by FileAttachmentForm
 
-describe('<Cards/>', () => {
+describe('<FilePreviewGrid/>', () => {
     test('no data', () => {
         const component = <FilePreviewGrid data={fromJS([])} previewCount={null} />;
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
     test('one row of data', () => {
         const component = <FilePreviewGrid data={fromJS([{ test: 123 }])} previewCount={null} />;
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
     test('three rows of data', () => {
         const component = <FilePreviewGrid data={DATA} previewCount={null} />;
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
     test('custom column headers', () => {
         const component = <FilePreviewGrid data={DATA} previewCount={null} columns={COLUMNS} />;
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
     test('error message', () => {
         const component = <FilePreviewGrid data={DATA} previewCount={null} errorMsg="Testing error message" />;
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
     test('error message with custom style', () => {
-        const component = <FilePreviewGrid data={DATA} previewCount={null} errorMsg="Testing error message" errorStyle="danger"/>;
-        const tree = renderer.create(component).toJSON();
+        const component = (
+            <FilePreviewGrid data={DATA} previewCount={null} errorMsg="Testing error message" errorStyle="danger" />
+        );
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 
@@ -73,7 +75,13 @@ describe('<Cards/>', () => {
         const component = (
             <FilePreviewGrid data={DATA} previewCount={null} header="Custom Header" infoMsg="Custom info message." />
         );
-        const tree = renderer.create(component).toJSON();
+        const tree = renderer.create(component);
+        expect(tree).toMatchSnapshot();
+    });
+
+    test('warning message', () => {
+        const component = <FilePreviewGrid data={DATA} previewCount={null} warningMsg="Testing warning message" />;
+        const tree = renderer.create(component);
         expect(tree).toMatchSnapshot();
     });
 });

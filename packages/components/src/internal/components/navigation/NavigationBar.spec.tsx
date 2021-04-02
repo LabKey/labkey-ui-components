@@ -107,7 +107,7 @@ describe('<NavigationBar/>', () => {
     });
 
     test('show ProductNavigation for hasPremiumModule', () => {
-        LABKEY.moduleContext = { samplemanagement: { hasPremiumModule: true } };
+        LABKEY.moduleContext = { api: { moduleNames: ['premium'] } };
         const component = mount(<NavigationBar model={null} />);
         validate(component, { ProductNavigation: 1 });
         component.unmount();

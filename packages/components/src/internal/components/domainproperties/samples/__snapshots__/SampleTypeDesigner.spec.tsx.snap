@@ -226,6 +226,11 @@ Array [
             </div>
           </div>
         </form>
+        <div
+          className="domain-field-section-heading"
+        >
+          Storage Settings
+        </div>
       </div>
     </div>
   </div>,
@@ -662,7 +667,7 @@ Array [
         <div
           className="domain-field-section-heading"
         >
-          Appearance Settings
+          Storage Settings
         </div>
         <div
           className="margin-top row"
@@ -1485,6 +1490,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         nameExpressionInfoUrl="https://www.labkey.org/Documentation/wiki-page.view?name=sampleIDs#patterns"
         nameExpressionPlaceholder="Enter a naming pattern (e.g., S-\${now:date}-\${dailySampleCount})"
         onAddParentAlias={[Function]}
+        onAddUniqueIdField={[Function]}
         onParentAliasChange={[Function]}
         onRemoveParentAlias={[Function]}
         onToggle={[Function]}
@@ -1640,6 +1646,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
           nounPlural="Sample Types"
           nounSingular="Sample Type"
           onAddParentAlias={[Function]}
+          onAddUniqueIdField={[Function]}
           onParentAliasChange={[Function]}
           onRemoveParentAlias={[Function]}
           panelStatus="NONE"
@@ -1799,6 +1806,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
             nounPlural="Sample Types"
             nounSingular="Sample Type"
             onAddParentAlias={[Function]}
+            onAddUniqueIdField={[Function]}
             onParentAliasChange={[Function]}
             onRemoveParentAlias={[Function]}
             panelStatus="NONE"
@@ -2576,12 +2584,12 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
                                   </Form>
                                 </EntityDetailsForm>
                                 <SectionHeading
-                                  title="Appearance Settings"
+                                  title="Storage Settings"
                                 >
                                   <div
                                     className="domain-field-section-heading"
                                   >
-                                    Appearance Settings
+                                    Storage Settings
                                   </div>
                                 </SectionHeading>
                                 <Row
@@ -2739,6 +2747,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
       </ComponentWithDomainPropertiesPanelCollapse>
       <DomainForm
         allowImportExport={true}
+        appDomainHeaderRenderer={[Function]}
         appPropertiesOnly={true}
         controlledCollapse={true}
         domain={
@@ -2881,6 +2890,7 @@ exports[`SampleTypeDesigner initModel with name URL props 1`] = `
         <LookupProvider>
           <DomainFormImpl
             allowImportExport={true}
+            appDomainHeaderRenderer={[Function]}
             appPropertiesOnly={true}
             controlledCollapse={true}
             domain={

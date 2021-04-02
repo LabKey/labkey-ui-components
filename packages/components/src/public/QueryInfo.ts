@@ -277,6 +277,10 @@ export class QueryInfo extends Record({
         }, List<QueryColumn>());
     }
 
+    getUniqueIdColumns(): List<QueryColumn> {
+        return this.columns.filter(column => column.isUniqueIdColumn).toList();
+    }
+
     getSorts(view?: string): List<QuerySort> {
         if (view) {
             const viewInfo = this.getView(view);

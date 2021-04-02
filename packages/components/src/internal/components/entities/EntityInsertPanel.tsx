@@ -29,6 +29,7 @@ import {
     Alert,
     AppURL,
     capitalizeFirstChar,
+    DomainDetails,
     EditableColumnMetadata,
     EditableGridPanel,
     FileAttachmentForm,
@@ -46,6 +47,7 @@ import {
     helpLinkNode,
     IGridLoader,
     IGridResponse,
+    InferDomainResponse,
     insertColumnFilter,
     LabelHelpTip,
     LoadingSpinner,
@@ -75,6 +77,10 @@ import { BulkAddData } from '../editable/EditableGrid';
 
 import { DERIVATION_DATA_SCOPE_CHILD_ONLY } from '../domainproperties/constants';
 
+import { getCurrentProductName } from '../../app/utils';
+
+import { fetchDomainDetails } from '../domainproperties/actions';
+
 import {
     EntityDataType,
     EntityIdCreationModel,
@@ -85,6 +91,7 @@ import {
     IParentOption,
 } from './models';
 
+import { getUniqueIdColumnMetadata } from './utils';
 import { getEntityTypeData, handleEntityFileImport } from './actions';
 
 class EntityGridLoader implements IGridLoader {
@@ -108,6 +115,7 @@ interface OwnProps {
     asyncSize?: number; // the file size cutoff to enable async import. If undefined, async is not supported
     auditBehavior?: AuditBehaviorTypes;
     afterEntityCreation?: (entityTypeName, filter, entityCount, actionStr, transactionAuditId?) => void;
+    allowedNonDomainFields?: string[];
     canEditEntityTypeDetails?: boolean;
     combineParentTypes?: boolean; // Puts all parent types in one parent button. Name on the button will be the first parent type listed
     creationTypeOptions?: SampleCreationTypeModel[];
@@ -148,9 +156,10 @@ interface StateProps {
     isSubmitting: boolean;
     originalQueryInfo: QueryInfo;
     useAsync: boolean;
+    fieldsWarningMsg: ReactNode;
 }
 
-class EntityInsertPanelImpl extends Component<Props, StateProps> {
+export class EntityInsertPanelImpl extends Component<Props, StateProps> {
     static defaultProps = {
         numPerParent: 1,
         tab: EntityInsertPanelTabs.First,
@@ -181,6 +190,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             isMerge: false,
             file: undefined,
             useAsync: false,
+            fieldsWarningMsg: undefined,
         };
     }
 
@@ -764,10 +774,14 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
     };
 
     getInsertColumns = (): List<QueryColumn> => {
-        return this.getQueryGridModel()
+        const model = this.getQueryGridModel();
+        let columns: List<QueryColumn> = model
             .getInsertColumns()
             .filter(col => col.derivationDataScope !== DERIVATION_DATA_SCOPE_CHILD_ONLY)
             .toList();
+        // we add the UniqueId columns, which will be displayed as read-only fields
+        columns = columns.concat(model.queryInfo.getUniqueIdColumns()).toList();
+        return columns;
     };
 
     columnFilter = (col: QueryColumn): boolean => {
@@ -778,11 +792,9 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
         );
     };
 
-    renderCreateFromGrid = (): ReactNode => {
-        const { insertModel } = this.state;
-        const { creationTypeOptions, entityDataType, nounPlural, nounSingular, onBulkAdd } = this.props;
-
-        let columnMetadata = Map<string, EditableColumnMetadata>();
+    getGeneratedIdColumnMetadata(): Map<string, EditableColumnMetadata> {
+        const { entityDataType, nounSingular, nounPlural } = this.props;
+        let columnMetadata = getUniqueIdColumnMetadata(this.getGridQueryInfo());
         if (!this.isNameRequired()) {
             columnMetadata = columnMetadata.set(entityDataType.uniqueFieldKey, {
                 readOnly: false,
@@ -794,6 +806,14 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 toolTip: `A ${nounSingular} ID is required for each ${nounSingular} since this ${this.typeTextSingular} has no naming pattern. You can provide a naming pattern by editing the ${this.typeTextSingular} design.`,
             });
         }
+        return columnMetadata;
+    }
+
+    renderCreateFromGrid = (): ReactNode => {
+        const { insertModel } = this.state;
+        const { creationTypeOptions, entityDataType, nounPlural, nounSingular, onBulkAdd } = this.props;
+
+        const columnMetadata = this.getGeneratedIdColumnMetadata();
 
         const queryGridModel = this.getQueryGridModel();
         const isLoaded = !!queryGridModel?.isLoaded;
@@ -860,6 +880,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             error: undefined,
             file: files.first(),
             useAsync: asyncSize && fileSize > asyncSize,
+            fieldsWarningMsg: undefined,
         });
     };
 
@@ -870,6 +891,7 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
             error: undefined,
             file: undefined,
             useAsync: false,
+            fieldsWarningMsg: undefined,
         });
     };
 
@@ -952,6 +974,98 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                 toggle={isSubmitting}
             />
         );
+    };
+
+    static getWarningFieldList(names: string[]): ReactNode {
+        const oxfordComma = names.length > 2 ? ',' : '';
+        return names.map((name, index) => (
+            <span key={name}>
+                <b>{name}</b>
+                {index === names.length - 2 ? oxfordComma + ' and ' : index < names.length - 2 ? ', ' : ''}
+            </span>
+        ));
+    }
+
+    static getInferredFieldWarnings(
+        inferred: InferDomainResponse,
+        domainDetails: DomainDetails,
+        columns: OrderedMap<string, QueryColumn>,
+        otherAllowedFields?: string[]
+    ): React.ReactNode[] {
+        const uniqueIdFields = [];
+        const unknownFields = [];
+        const { domainDesign } = domainDetails;
+        let allowedFields = Object.keys(domainDetails.options.get('importAliases')).map(key => key.toLowerCase());
+        if (otherAllowedFields) {
+            allowedFields = allowedFields.concat(otherAllowedFields.map(field => field.toLowerCase()));
+        }
+
+        inferred.fields.forEach(field => {
+            const lcName = field.name.toLowerCase();
+
+            if (!field.isExpInput() && allowedFields.indexOf(lcName) < 0) {
+                const aliasField = domainDesign.fields.find(
+                    domainField => domainField.importAliases?.toLowerCase().indexOf(lcName) >= 0
+                );
+                const columnName = aliasField ? aliasField.name : field.name;
+                const column = columns.find(column => column.isImportColumn(columnName));
+
+                if (!column) {
+                    if (unknownFields.indexOf(field.name) < 0) {
+                        unknownFields.push(field.name);
+                    }
+                } else if (column.isUniqueIdColumn) {
+                    if (uniqueIdFields.indexOf(field.name) < 0) {
+                        // duplicate fields are handled as errors during import; we do not issue warnings about that here.
+                        uniqueIdFields.push(field.name);
+                    }
+                }
+            }
+        });
+
+        const msg = [];
+        if (unknownFields.length > 0) {
+            msg.push(
+                <p key="unknownFields">
+                    {EntityInsertPanelImpl.getWarningFieldList(unknownFields)}
+                    {(unknownFields.length === 1 ? ' is an unknown field' : ' are unknown fields') +
+                        ' and will be ignored.'}
+                </p>
+            );
+        }
+        if (uniqueIdFields.length > 0) {
+            msg.push(
+                <p key="uniqueIdFields">
+                    {EntityInsertPanelImpl.getWarningFieldList(uniqueIdFields)}
+                    {(uniqueIdFields.length === 1 ? ' is a unique ID field. It' : ' are unique ID fields. They') +
+                        ' will not be imported and will be managed by ' +
+                        getCurrentProductName() +
+                        '.'}
+                </p>
+            );
+        }
+        return msg;
+    }
+
+    onPreviewLoad = (inferred: InferDomainResponse): any => {
+        const { allowedNonDomainFields } = this.props;
+        const { insertModel, originalQueryInfo } = this.state;
+        fetchDomainDetails(undefined, insertModel.getSchemaQuery().schemaName, insertModel.getSchemaQuery().queryName)
+            .then(domainDetails => {
+                const msg = EntityInsertPanelImpl.getInferredFieldWarnings(
+                    inferred,
+                    domainDetails,
+                    originalQueryInfo.columns,
+                    allowedNonDomainFields
+                );
+
+                if (msg.length > 0) {
+                    this.setState({ fieldsWarningMsg: <>{msg}</> });
+                }
+            })
+            .catch(reason => {
+                console.error('Unable to retrieve domain ', reason);
+            });
     };
 
     render() {
@@ -1048,7 +1162,11 @@ class EntityInsertPanelImpl extends Component<Props, StateProps> {
                                         acceptedFormats=".csv, .tsv, .txt, .xls, .xlsx"
                                         allowMultiple={false}
                                         allowDirectories={false}
-                                        previewGridProps={{ previewCount: 3 }}
+                                        previewGridProps={{
+                                            previewCount: 3,
+                                            onPreviewLoad: this.onPreviewLoad,
+                                            warningMsg: this.state.fieldsWarningMsg,
+                                        }}
                                         onFileChange={this.handleFileChange}
                                         onFileRemoval={this.handleFileRemoval}
                                         templateUrl={this.getTemplateUrl()}

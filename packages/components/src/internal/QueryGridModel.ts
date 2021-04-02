@@ -6,6 +6,7 @@ import { formatDate, formatDateTime, QueryColumn, QueryInfo, resolveKey, SchemaQ
 import { intersect, toLowerSafe } from './util/utils';
 
 import { GRID_CHECKBOX_OPTIONS, GRID_EDIT_INDEX, GRID_SELECTION_INDEX } from './constants';
+import { STORAGE_UNIQUE_ID_CONCEPT_URI } from './components/domainproperties/constants';
 
 const emptyList = List<string>();
 const emptyColumns = List<QueryColumn>();
@@ -403,6 +404,12 @@ export class QueryGridModel
         return emptyColumns;
     }
 
+    getUniqueIdColumns(): QueryColumn[] {
+        return this.getAllColumns()
+            .filter(column => column.isUniqueIdColumn)
+            .toArray();
+    }
+
     getMaxRowIndex() {
         const max = this.pageNumber > 1 ? this.pageNumber * this.maxRows : this.maxRows;
 
@@ -432,7 +439,8 @@ export class QueryGridModel
     getRequestColumnsString(): string {
         let fieldKeys = this.requiredColumns
             .concat(this.getKeyColumns().map(c => c.fieldKey))
-            .concat(this.getDisplayColumns().map(c => c.fieldKey));
+            .concat(this.getDisplayColumns().map(c => c.fieldKey))
+            .concat(this.getUniqueIdColumns().map(c => c.fieldKey));
 
         if (this.omittedColumns.size > 0) {
             const lowerOmit = toLowerSafe(this.omittedColumns);
